@@ -44,6 +44,31 @@
             .header-labels { display: none; }
             input { font-size: 16px; }
         }
+
+        /* Estilos da Calculadora de Materiais */
+.calc-expansivel { margin: 20px 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; background: #fff; }
+.calc-header { background: #f1f5f9; padding: 12px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #1e3a8a; border-bottom: 1px solid #e2e8f0; }
+.calc-content { display: none; padding: 15px; }
+.grid-calc { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.res-calc { background: #eff6ff; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; border-left: 4px solid #2563eb; color: #1e40af; }
+.calc-secao-titulo { margin: 15px 0 10px 0; font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 5px; color: #475569; font-weight: bold; }
+
+@media (max-width: 600px) {
+    .grid-calc { grid-template-columns: 1fr; }
+}
+
+.checklist-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.btn-frase { 
+    background: #f1f5f9; 
+    border: 1px solid #cbd5e1; 
+    padding: 6px 12px; 
+    border-radius: 20px; 
+    font-size: 12px; 
+    cursor: pointer; 
+    color: #475569; 
+    transition: all 0.2s; 
+}
+.btn-frase:hover { background: #e2e8f0; border-color: #94a3b8; color: #1e293b; }
     </style>
 </head>
 <body>
@@ -102,6 +127,8 @@
 </div>
 
         <hr color="#c3c3c3" size="3px"></hr>
+ 
+
 		        <div class="dadositens">
             ITENS DO ORÇAMENTO
         </div>
@@ -124,6 +151,82 @@
             TOTAL: R$ <span id="total-geral">0,00</span>
         </div>
 <div style="margin-bottom: 20px;">
+           <div class="calc-expansivel">
+    <div class="calc-header" onclick="toggleCalculadora()">
+        <span>🧮 Calculadora de Materiais (Construção)</span>
+        <span id="seta-calc">▼</span>
+    </div>
+    <div id="calc-corpo" class="calc-content">
+        
+        
+        <div class="calc-secao-titulo">Blocos e Tijolos</div>
+        <div class="form-group">
+            <label>Área da Parede (m²)</label>
+            <input type="number" id="c_area_bloco" placeholder="Ex: 20" oninput="calcBlocosAux()">
+        </div>
+        <div class="grid-calc">
+            <div>
+                <label>Tipo de Bloco</label>
+<select id="c_tipo_bloco" onchange="calcBlocosAux()">
+    <option value="6furos_pequeno">Tijolo 6 Furos (9x14x19)</option>
+    <option value="6furos_grande">Tijolo 6 Furos (11,5x14x24)</option> <option value="8furos">Tijolo 8 Furos (9x19x19)</option>
+    <option value="concreto">Bloco de Concreto (19x39)</option>
+</select>
+            </div>
+            <div>
+                <label>Posição</label>
+                <select id="c_posicao_bloco" onchange="calcBlocosAux()">
+                    <option value="em_pe">Em pé (Meia vez)</option>
+                    <option value="deitado">Deitado (Parede inteira)</option>
+                </select>
+            </div>
+        </div>
+        <div id="res_bloco" class="res-calc" style="display:none"></div>
+
+        <div class="calc-secao-titulo">Concreto (Lajes/Pisos/Vigas)</div>
+<div class="grid-calc">
+    <div><label>Área (m²)</label><input type="number" id="c_area_conc" placeholder="Ex: 10" oninput="calcConcAux()"></div>
+    <div><label>Espessura (cm)</label><input type="number" id="c_esp_conc" placeholder="Ex: 10" oninput="calcConcAux()"></div>
+</div>
+<label>Traço (Cimento:Agregado)</label>
+<select id="c_traco" onchange="calcConcAux()" style="margin-bottom:10px;">
+    <option value="4.5">6:1 (Fraco/Contrapiso)</option>
+    <option value="6">5:1 (Médio/Vigas)</option>
+    <option value="7.5">4:1 (Forte/Laje)</option>
+</select>
+<div id="res_conc" class="res-calc" style="display:none"></div>
+    </div>
+</div>
+    <div class="calc-expansivel">
+    <div class="calc-header" onclick="toggleFrases()">
+        <span>📝 Termos e Condições Rápidas</span>
+        <span id="seta-frases">▼</span>
+    </div>
+    <div id="frases-corpo" class="calc-content">
+        <div style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Clique nas frases para adicioná-las automaticamente às observações.</div>
+        
+        <div class="calc-secao-titulo">Validade e Prazos</div>
+        <div class="checklist-container">
+            <button class="btn-frase" onclick="addFrase('• Orçamento válido por 7 dias.')">Validade 7 dias</button>
+            <button class="btn-frase" onclick="addFrase('• Orçamento válido por 15 dias.')">Validade 15 dias</button>
+            <button class="btn-frase" onclick="addFrase('• Prazo de entrega: ___ dias úteis após aprovação.')">Prazo de Entrega</button>
+        </div>
+
+        <div class="calc-secao-titulo">Pagamento</div>
+        <div class="checklist-container">
+            <button class="btn-frase" onclick="addFrase('• Forma de pagamento: 50% de entrada e 50% na entrega.')">50% Entrada / 50% Entrega</button>
+            <button class="btn-frase" onclick="addFrase('• Pagamento à vista com 5% de desconto.')">Desconto à Vista</button>
+            <button class="btn-frase" onclick="addFrase('• Parcelamos em até 3x sem juros no cartão.')">3x sem Juros</button>
+        </div>
+
+        <div class="calc-secao-titulo">Materiais e Serviços</div>
+        <div class="checklist-container">
+            <button class="btn-frase" onclick="addFrase('• Não incluso material de acabamento.')">Sem Acabamento</button>
+            <button class="btn-frase" onclick="addFrase('• Frete incluso para a região.')">Frete Incluso</button>
+            <button class="btn-frase" onclick="addFrase('• Responsabilidade por entulhos e limpeza por conta do contratante.')">Limpeza/Entulho</button>
+        </div>
+    </div>
+</div>
     <label>Observações</label>
     <textarea id="observacoes" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; font-family: inherit; resize: vertical;" placeholder="Ex: Telefone, Prazo de entrega, condições de pagamento, validade da proposta..."></textarea>
 </div>
@@ -442,6 +545,94 @@ function limparFormulario() {
 
     // 7. Rola a página para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+}
+
+// Funções da Calculadora de Apoio
+function toggleCalculadora() {
+    const corpo = document.getElementById('calc-corpo');
+    const seta = document.getElementById('seta-calc');
+    const isAberto = corpo.style.display === 'block';
+    corpo.style.display = isAberto ? 'none' : 'block';
+    seta.innerText = isAberto ? '▼' : '▲';
+}
+
+function calcBlocosAux() {
+    const area = parseFloat(document.getElementById('c_area_bloco').value) || 0;
+    const tipo = document.getElementById('c_tipo_bloco').value;
+    const posicao = document.getElementById('c_posicao_bloco').value;
+    const resDiv = document.getElementById('res_bloco');
+    let rendimento = 0;
+
+    if (tipo === "6furos_pequeno") {
+        // 9x14x19
+        rendimento = (posicao === "em_pe") ? 33 : 50; 
+    } else if (tipo === "6furos_grande") {
+        // 11,5x14x24 (Rendimento baseado no comprimento de 24cm + massa)
+        rendimento = (posicao === "em_pe") ? 30 : 37;
+    } else if (tipo === "8furos") {
+        // 9x19x19
+        rendimento = (posicao === "em_pe") ? 25 : 50;
+    } else if (tipo === "concreto") {
+        // 19x39
+        rendimento = (posicao === "em_pe") ? 12.5 : 25;
+    }
+
+    if (area > 0) {
+        const total = Math.ceil(area * rendimento);
+        resDiv.style.display = 'block';
+        resDiv.innerHTML = `<strong>Rendimento:</strong> ${rendimento} un/m² | <strong>Total Exato:</strong> ${total} unidades`;
+    } else {
+        resDiv.style.display = 'none';
+    }
+}
+
+function calcConcAux() {
+    const area = parseFloat(document.getElementById('c_area_conc').value) || 0;
+    const esp = (parseFloat(document.getElementById('c_esp_conc').value) || 0) / 100; // Converte cm para metros
+    const sacosM3 = parseFloat(document.getElementById('c_traco').value);
+    const resDiv = document.getElementById('res_conc');
+
+    if (area > 0 && esp > 0) {
+        const vol = area * esp; // Volume total em m³
+        const cimento = Math.ceil(vol * sacosM3);
+        
+        // No concreto 1:2:3 ou similar, usa-se aprox. 0.6m³ de cada agregado para cada 1m³ de concreto pronto
+        const areia = (vol * 0.6).toFixed(2);
+        const brita = (vol * 0.6).toFixed(2);
+
+        resDiv.style.display = 'block';
+        resDiv.innerHTML = `
+            <strong>Volume Total:</strong> ${vol.toFixed(2)}m³ <br>
+            <hr style="border:0; border-top:1px solid #dbeafe; margin:5px 0;">
+            <strong>Cimento:</strong> ${cimento} sacos <br>
+            <strong>Areia:</strong> ${areia} m³ <br>
+            <strong>Brita:</strong> ${brita} m³
+        `;
+    } else {
+        resDiv.style.display = 'none';
+    }
+}
+
+function toggleFrases() {
+    const corpo = document.getElementById('frases-corpo');
+    const seta = document.getElementById('seta-frases');
+    const isAberto = corpo.style.display === 'block';
+    corpo.style.display = isAberto ? 'none' : 'block';
+    seta.innerText = isAberto ? '▼' : '▲';
+}
+
+function addFrase(frase) {
+    const campoObs = document.getElementById('observacoes');
+    // Adiciona a frase e pula uma linha
+    if (campoObs.value.length > 0) {
+        campoObs.value += '\n' + frase;
+    } else {
+        campoObs.value = frase;
+    }
+    // Efeito visual simples no campo para mostrar que algo mudou
+    campoObs.style.borderColor = '#2563eb';
+    setTimeout(() => campoObs.style.borderColor = '#ddd', 500);
 }
     </script>
 
