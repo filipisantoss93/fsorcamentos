@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Despesas</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="data:application/json;base64,ewogICJkZWZhdWx0X2xvY2FsZSI6ICJwdC1iciIsCiAgIm5hbWUiOiAiTWluaGFzIERlc3Blc2FzIiwKICAic2hvcnRfbmFtZSI6ICJEZXNwZXNhcyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZjBma2YwIiwKICAidGhlbWVfY29sb3IiOiAiIzJlN2QzMiIKfQ==">
+
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --light-green: #e8f5e9;
+            --accent-green: #4caf50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary-green);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            background: var(--light-green);
+            padding: 10px;
+            border-radius: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        input {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        input[type="text"] { flex: 2; }
+        input[type="number"] { flex: 1; }
+
+        .btn {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+            padding: 12px;
+        }
+
+        .btn-add-row {
+            background-color: var(--accent-green);
+            color: white;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .btn-save {
+            background-color: var(--primary-green);
+            color: white;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        #lista-despesas { margin-bottom: 20px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .total {
+            text-align: right;
+            font-weight: bold;
+            color: var(--primary-green);
+            font-size: 1.2rem;
+            margin-top: 15px;
+            border-top: 2px solid var(--light-green);
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Minhas Despesas</h1>
+
+        <div id="lista-despesas">
+            </div>
+
+        <button class="btn btn-add-row" onclick="adicionarLinha()">+ Adicionar Item</button>
+        <button class="btn btn-save" onclick="salvarDados()">Salvar no Dispositivo</button>
+
+        <div class="total" id="exibir-total">Total: R$ 0,00</div>
+    </div>
+
+    <script>
+        // Carregar dados ao abrir
+        window.onload = () => {
+            const salvos = JSON.parse(localStorage.getItem('minhasDespesas') || '[]');
+            if (salvos.length > 0) {
+                salvos.forEach(item => adicionarLinha(item.nome, item.valor));
+            } else {
+                adicionarLinha(); // Começa com uma linha vazia
+            }
+            calcularTotal();
+        };
+
+        function adicionarLinha(nome = '', valor = '') {
+            const container = document.getElementById('lista-despesas');
+            const div = document.createElement('div');
+            div.className = 'input-group';
+            div.innerHTML = `
+                <input type="text" placeholder="Ex: Almoço" value="${nome}" class="desc">
+                <input type="number" placeholder="R$" value="${valor}" class="valor" oninput="calcularTotal()">
+            `;
+            container.appendChild(div);
+        }
+
+        function calcularTotal() {
+            const valores = document.querySelectorAll('.valor');
+            let total = 0;
+            valores.forEach(v => {
+                total += Number(v.value) || 0;
+            });
+            document.getElementById('exibir-total').innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        function salvarDados() {
+            const nomes = document.querySelectorAll('.desc');
+            const valores = document.querySelectorAll('.valor');
+            const dados = [];
+
+            nomes.forEach((input, i) => {
+                if (input.value || valores[i].value) {
+                    dados.push({
+                        nome: input.value,
+                        valor: valores[i].value
+                    });
+                }
+            });
+
+            localStorage.setItem('minhasDespesas', JSON.stringify(dados));
+            alert('Despesas salvas com sucesso!');
+        }
+
+        // Registrar Service Worker simples para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ZW50ID0+IHsgfSk7');
+        }
+    </script>
+</body>
+</html>
