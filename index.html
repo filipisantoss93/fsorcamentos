@@ -55,6 +55,37 @@
 
         .btn-download { display: none; background: #000 !important; color: white !important; margin-top: 20px; }
 
+#extra-emissor-container, #extra-cliente-container {
+    grid-column: span 2; /* Faz os campos ocuparem a largura total */
+    display: flex;
+    flex-direction: column;
+}
+
+.extra-field {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.extra-field input:first-child { width: 30%; } /* Descrição */
+.extra-field input:nth-child(2) { width: 60%; } /* Dados */
+.extra-field button { width: 10%; }           /* Botão X */
+
+.btn-extra {
+    grid-column: span 2;
+    background: none;
+    border: none;
+    color: #2563eb;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 10px 0;
+    font-weight: bold;
+    text-align: right; /* FIXA À DIREITA */
+    align-self: flex-end;
+}
+
         @media (max-width: 600px) {
             .item-row { grid-template-columns: 1fr 1fr; border-bottom: 1px solid #eee; padding-bottom: 10px; }
             .item-row .desc-cell { grid-column: span 2; }
@@ -110,42 +141,57 @@
     </div>
     <p style="color: #64748b; margin-bottom: 60px; margin-top: 5px; font-size: 14px;">Gerador de Orçamento Profissional</p>
 </div>
-        <hr color="#c3c3c3" size="3px"></hr>
+        <hr color="#c3c3c3" size="1px"></hr>
 		
 	    <div class="dadositens">
-            DADOS DO ORÇAMENTO
+            SEUS DADOS
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; margin-top: 0px;">
-            <div><label>Título do Orçamento</label><input type="text" id="titulo" maxlength="60" placeholder="Título do Orçamento"></div>
-            <div><label>Nome do Arquivo.PDF</label><input type="text" id="nome-arquivo" maxlength="30" placeholder="orcamento.pdf"></div>
-        </div>
-
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
     <div>
         <label>Seu Nome/Empresa</label>
-        <input type="text" id="emissor" maxlength="40" placeholder="Seu nome/Empresa" oninput="salvarDadosFixos()">
+        <input type="text" id="emissor" maxlength="40" placeholder="Seu nome/Empresa" oninput="salvarEstadoCompleto()">
     </div>
     <div>
         <label>Seu Telefone/WhatsApp</label>
-        <input type="text" id="tel-emissor" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarDadosFixos()">
+        <input type="text" id="tel-emissor" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
     </div>
+    <div id="extra-emissor-container"></div>
+<button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-emissor-container')">
+    + Adicionar Informações
+</button>
 </div>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+        <hr color="#c3c3c3" size="1px"></hr>
+	    <div class="dadositens">
+            DADOS DO CLIENTE
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
     <div>
         <label>Nome do Cliente</label>
-        <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente">
+        <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
     </div>
     <div>
         <label>Telefone do Cliente</label>
-        <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000">
+        <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
     </div>
+    <div id="extra-cliente-container"></div>
+<button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-cliente-container')">
+    + Adicionar Informações
+</button>
 </div>
 
-        <hr color="#c3c3c3" size="3px"></hr>
- 
+<hr color="#c3c3c3" size="1px"></hr>
 
+        <div class="dadositens">
+            DADOS DO ORÇAMENTO
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; margin-top: 0px;">
+            <div><label>Título do Orçamento</label><input type="text" id="titulo" maxlength="30" placeholder="Título do Orçamento" oninput="salvarEstadoCompleto()"></div>
+            <div><label>📂Nome do Arquivo.PDF</label><input type="text" id="nome-arquivo" maxlength="90" placeholder="orcamento.pdf" oninput="salvarEstadoCompleto()"></div>
+        </div>
+
+        <hr color="#c3c3c3" size="1px"></hr>
+ 
 		        <div class="dadositens">
             ITENS DO ORÇAMENTO
         </div>
@@ -160,7 +206,7 @@
     
     <button type="button" onclick="limparFormulario()" 
             style="background: #e2e8f0; color: #475569; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">
-        🗑️ Limpar Tudo
+        📄Novo Orçamento
     </button>
 </div>
 
@@ -328,20 +374,20 @@ function carregarDadosFixos() {
         }
 
         // Adiciona uma nova linha de item
-        function adicionarLinha() {
-            const container = document.getElementById('itens-lista');
-            const row = document.createElement('div');
-            row.className = 'item-row';
-            row.innerHTML = `
-                <div class="desc-cell"><input type="text" class="desc" placeholder="Nome do Item"></div>
-                <div><input type="number" class="qtd" value="" min="1" oninput="calcular()" placeholder="Quantidade"></div>
-                <div><input type="number" class="valor" value="" step="0.01" oninput="calcular()" placeholder="Valor Unitário"></div>
-                <div><input type="text" class="subtotal" value="0,00" disabled style="background:#f1f5f9; text-align:right"></div>
-                <button class="btn-remove" onclick="this.parentElement.remove(); calcular();">X</button>
-            `;
-            container.appendChild(row);
-            calcular();
-        }
+function adicionarLinha(desc = '', qtd = '', valor = '') {
+    const container = document.getElementById('itens-lista');
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+        <div class="desc-cell"><input type="text" class="desc" value="${desc}" placeholder="Nome do Item" oninput="salvarEstadoCompleto()"></div>
+        <div><input type="number" class="qtd" value="${qtd}" min="1" oninput="calcular(); salvarEstadoCompleto()" placeholder="Qtd"></div>
+        <div><input type="number" class="valor" value="${valor}" step="0.01" oninput="calcular(); salvarEstadoCompleto()" placeholder="R$"></div>
+        <div><input type="text" class="subtotal" value="0,00" disabled style="background:#f1f5f9; text-align:right"></div>
+        <button class="btn-remove" onclick="this.parentElement.remove(); calcular(); salvarEstadoCompleto();">X</button>
+    `;
+    container.appendChild(row);
+    calcular();
+}
 
         // Calcula o subtotal de cada linha e o total geral
         function calcular() {
@@ -358,6 +404,110 @@ function carregarDadosFixos() {
             });
             document.getElementById('total-geral').innerText = formatar(totalGeral);
         }
+
+function adicionarCampoExtra(containerId) {
+    const container = document.getElementById(containerId);
+    const div = document.createElement('div');
+    div.className = 'extra-field';
+    // Removemos o div.style daqui para usar apenas o CSS acima
+    div.innerHTML = `
+        <input type="text" class="extra-label" placeholder="Ex: CPF" oninput="salvarEstadoCompleto()">
+        <input type="text" class="extra-info" placeholder="Dados..." oninput="salvarEstadoCompleto()">
+        <button type="button" onclick="this.parentElement.remove(); salvarEstadoCompleto();" style="background:#fee2e2; border:none; color:#ef4444; border-radius:4px; cursor:pointer;">X</button>
+    `;
+    container.appendChild(div);
+}
+
+        function salvarEstadoCompleto() {
+const dados = {
+    titulo: document.getElementById('titulo').value,
+    nomeArquivo: document.getElementById('nome-arquivo').value,
+    emissor: document.getElementById('emissor').value,
+    telEmissor: document.getElementById('tel-emissor').value,
+    cliente: document.getElementById('cliente').value,
+    telCliente: document.getElementById('tel-cliente').value,
+    observacoes: document.getElementById('observacoes').value,
+    // Captura os campos extras do Emissor (Descrição e Dados)
+    extrasEmissor: Array.from(document.querySelectorAll('#extra-emissor-container .extra-field')).map(div => ({
+        label: div.querySelector('.extra-label').value,
+        info: div.querySelector('.extra-info').value
+    })),
+    // Captura os campos extras do Cliente (Descrição e Dados)
+    extrasCliente: Array.from(document.querySelectorAll('#extra-cliente-container .extra-field')).map(div => ({
+        label: div.querySelector('.extra-label').value,
+        info: div.querySelector('.extra-info').value
+    })),
+    // Captura os itens da tabela
+    itens: Array.from(document.querySelectorAll('.item-row')).slice(1).map(row => ({
+        desc: row.querySelector('.desc').value,
+        qtd: row.querySelector('.qtd').value,
+        valor: row.querySelector('.valor').value
+    }))
+};
+    localStorage.setItem('fs_backup', JSON.stringify(dados));
+}
+
+const extrasEmissor = [];
+    document.querySelectorAll('#extra-emissor-container .extra-field').forEach(div => {
+        extrasEmissor.push({
+            label: div.querySelector('.extra-label').value,
+            info: div.querySelector('.extra-info').value
+        });
+    });
+
+    const extrasCliente = [];
+    document.querySelectorAll('#extra-cliente-container .extra-field').forEach(div => {
+        extrasCliente.push({
+            label: div.querySelector('.extra-label').value,
+            info: div.querySelector('.extra-info').value
+        });
+    });
+
+
+
+function carregarEstadoSalvo() {
+    const salvo = localStorage.getItem('fs_backup');
+    if (!salvo) { adicionarLinha(); return; }
+
+    const d = JSON.parse(salvo);
+    document.getElementById('titulo').value = d.titulo || '';
+    document.getElementById('nome-arquivo').value = d.nomeArquivo || '';
+    document.getElementById('emissor').value = d.emissor || '';
+    document.getElementById('tel-emissor').value = d.telEmissor || '';
+    document.getElementById('cliente').value = d.cliente || '';
+    document.getElementById('tel-cliente').value = d.telCliente || '';
+    document.getElementById('observacoes').value = d.observacoes || '';
+
+    // RECRIA CAMPOS EXTRAS DO EMISSOR
+    if (d.extrasEmissor) {
+        d.extrasEmissor.forEach(item => {
+            adicionarCampoExtra('extra-emissor-container');
+            const fields = document.querySelectorAll('#extra-emissor-container .extra-field');
+            const last = fields[fields.length - 1];
+            last.querySelector('.extra-label').value = item.label;
+            last.querySelector('.extra-info').value = item.info;
+        });
+    }
+
+    // RECRIA CAMPOS EXTRAS DO CLIENTE
+    if (d.extrasCliente) {
+        d.extrasCliente.forEach(item => {
+            adicionarCampoExtra('extra-cliente-container');
+            const fields = document.querySelectorAll('#extra-cliente-container .extra-field');
+            const last = fields[fields.length - 1];
+            last.querySelector('.extra-label').value = item.label;
+            last.querySelector('.extra-info').value = item.info;
+        });
+    }
+
+    // RECRIA ITENS DA TABELA
+    if (d.itens && d.itens.length > 0) {
+        d.itens.forEach(item => adicionarLinha(item.desc, item.qtd, item.valor));
+    } else {
+        adicionarLinha();
+    }
+    calcular();
+}
 
 // Função para gerar a visualização (Atualizada para garantir visibilidade)
 function gerarPrevia() {
@@ -376,6 +526,20 @@ function gerarPrevia() {
     let linhasHtml = "";
     const rows = document.querySelectorAll('.item-row');
     
+let extrasHtml = "";
+document.querySelectorAll('#extra-emissor-container .extra-field').forEach(div => {
+    const label = div.querySelector('.extra-label').value;
+    const info = div.querySelector('.extra-info').value;
+    if(label || info) extrasHtml += `<br><strong>${label}:</strong> ${info}`;
+});
+
+let extrasClienteHtml = "";
+document.querySelectorAll('#extra-cliente-container .extra-field').forEach(div => {
+    const label = div.querySelector('.extra-label').value;
+    const info = div.querySelector('.extra-info').value;
+    if(label || info) extrasClienteHtml += `<br><strong>${label}:</strong> ${info}`;
+});
+
     if(rows.length <= 1) {
         alert("Por favor, adicione ao menos um item.");
         btn.innerText = "VER PRÉ-VISUALIZAÇÃO";
@@ -401,18 +565,24 @@ function gerarPrevia() {
 const template = `
         <div style="padding: 20px; background: white; font-family: Arial, sans-serif;">
             <div style="border-bottom: 3px solid #2563eb; padding-bottom: 10px; margin-bottom: 20px;">
+                                       <div style="text-align: right"> <small>Data: ${data}</small></div>
                 <h2 style="color:#2563eb; margin:0; text-transform: uppercase;">${titulo}</h2>
+ 
             </div>
             
 <div style="display:flex; justify-content:space-between; margin-bottom:30px; font-size:14px;">
     <div>
         <strong style="color:#2563eb">EMISSOR:</strong><br>
-        ${emissor}${telEmissor ? `<br>Tel: ${telEmissor}` : ''}
+        <span style="font-size: 16px; font-weight: bold;">${emissor}</span><br>
+        ${telEmissor ? `<strong style="color:#000">Tel: </strong>${telEmissor}` : ''}
+        ${extrasHtml}
     </div>
     <div style="text-align:right">
         <strong style="color:#2563eb">CLIENTE:</strong><br>
-        ${cliente}${telCliente ? `<br>Tel: ${telCliente}` : ''}<br>
-        <small>Data: ${data}</small>
+        <span style="font-size: 16px; font-weight: bold;">${cliente}</span><br>
+        ${telCliente ? `<strong style="color:#000">Tel: </strong>${telCliente}` : ''}
+        ${extrasClienteHtml}<br>
+
     </div>
 </div>
 
@@ -510,8 +680,7 @@ async function baixarPDF() {
 
 // Atualize seu window.onload
 window.onload = function() {
-    adicionarLinha();
-    carregarDadosFixos();
+carregarEstadoSalvo();
 };
 
 function resetarZoomTela() {
@@ -525,44 +694,33 @@ function resetarZoomTela() {
 
         // Função para limpar todo o formulário e resetar a página
 function limparFormulario() {
-    // 1. Confirmação para evitar cliques acidentais
-    if (!confirm("Tem certeza que deseja limpar todo o orçamento? Todos os dados inseridos serão perdidos.")) {
-        return; // Cancela a ação se o usuário clicar em 'Não'
-    }
+    if (!confirm("Deseja limpar os dados do cliente e itens? Seus dados de emissor serão mantidos.")) return;
 
-    // 2. Limpa os campos de texto principais
+    // 1. Limpa os campos de texto padrão
     document.getElementById('titulo').value = '';
     document.getElementById('cliente').value = '';
+    document.getElementById('tel-cliente').value = '';
     document.getElementById('observacoes').value = '';
-    
-    // Se você adicionou o campo de Nome do Arquivo, limpe-o também:
-    const nomeArquivo = document.getElementById('nome-arquivo');
-    if (nomeArquivo) nomeArquivo.value = '';
+    document.getElementById('nome-arquivo').value = '';
 
-    // 3. Remove todas as linhas de itens atuais
+    // 2. Remove todas as linhas extras de documentos (Emissor e Cliente)
+    document.querySelectorAll('#extra-emissor-container .extra-field').forEach(el => el.remove());
+    document.querySelectorAll('#extra-cliente-container .extra-field').forEach(el => el.remove());
+
+    // 3. Limpa os itens do orçamento (mantém apenas a primeira linha vazia)
     const container = document.getElementById('itens-lista');
     const rows = container.querySelectorAll('.item-row');
-    
-    // Mantém apenas o cabeçalho (index 0) e remove o resto
-    rows.forEach((row, index) => {
-        if (index > 0) {
-            row.remove();
-        }
+    rows.forEach((row, index) => { 
+        if (index > 0) row.remove(); 
     });
 
-    // 4. Recalcula o total (que voltará a 0,00)
-    calcular();
-
-    // 5. Adiciona uma linha vazia inicial para o novo orçamento
+    // 4. Reseta a tabela de itens e esconde a prévia
     adicionarLinha();
-
-    // 6. Esconde a área de pré-visualização do PDF
     document.getElementById('area-previa').style.display = 'none';
-    document.getElementById('conteudo-pdf').innerHTML = ''; // Limpa o HTML gerado
-
-    // 7. Rola a página para o topo
+    
+    // 5. Atualiza o banco de dados local e volta ao topo
+    salvarEstadoCompleto(); 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
 }
 
 // Funções da Calculadora de Apoio
@@ -650,6 +808,29 @@ function addFrase(frase) {
     // Efeito visual simples no campo para mostrar que algo mudou
     campoObs.style.borderColor = '#2563eb';
     setTimeout(() => campoObs.style.borderColor = '#ddd', 500);
+}
+function mascaraTelefone(event) {
+    let input = event.target;
+    let value = input.value.replace(/\D/g, ""); // Remove tudo que não for número
+    
+    if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+
+    if (value.length > 10) {
+        // Formato (00) 00000-0000
+        input.value = `(${value.slice(0, 2)}) ${value.slice(2, 7)}-${value.slice(7)}`;
+    } else if (value.length > 6) {
+        // Formato (00) 0000-0000
+        input.value = `(${value.slice(0, 2)}) ${value.slice(2, 6)}-${value.slice(6)}`;
+    } else if (value.length > 2) {
+        // Formato (00) 0000
+        input.value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+    } else if (value.length > 0) {
+        // Formato (00
+        input.value = `(${value}`;
+    }
+    
+    // Chama o salvamento para não perder os dados
+    salvarEstadoCompleto();
 }
     </script>
 
