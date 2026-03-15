@@ -80,7 +80,7 @@
     font-size: 12px;
     cursor: pointer;
     text-decoration: underline;
-    padding: 10px 0;
+    padding: 0px 0;
     font-weight: bold;
     text-align: right; /* FIXA À DIREITA */
     align-self: flex-end;
@@ -133,20 +133,20 @@
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
     <div class="container">
-<div style="text-align: center; margin-bottom: 20px; margin-top: 60px; font-family: 'Segoe UI', sans-serif;">
+<div style="text-align: center; margin-bottom: 20px; margin-top: 20px; font-family: 'Segoe UI', sans-serif;">
     <div style="font-size: 28px; letter-spacing: -1px; display: inline-flex; align-items: center; justify-content: center; gap: 5px;">
         <span style="font-weight: 800; color: #1e3a8a; background: #dbeafe; padding: 2px 8px; border-radius: 6px;">FS</span>
         <span style="font-weight: 400; color: #2563eb; text-transform: uppercase; letter-spacing: 1px;">Orçamentos</span>
         <span style="font-size: 24px; margin-left: 3px;">🖊️</span>
     </div>
-    <p style="color: #64748b; margin-bottom: 60px; margin-top: 5px; font-size: 14px;">Gerador de Orçamento Profissional</p>
+    <p style="color: #64748b; margin-bottom: 0px; margin-top: 5px; font-size: 14px;">Gerador de Orçamento Profissional</p>
 </div>
         <hr color="#c3c3c3" size="1px"></hr>
 		
 	    <div class="dadositens">
             SEUS DADOS
         </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
     <div>
         <label>Seu Nome/Empresa</label>
         <input type="text" id="emissor" maxlength="40" placeholder="Seu nome/Empresa" oninput="salvarEstadoCompleto()">
@@ -165,7 +165,8 @@
 	    <div class="dadositens">
             DADOS DO CLIENTE
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
     <div>
         <label>Nome do Cliente</label>
         <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
@@ -185,7 +186,7 @@
         <div class="dadositens">
             DADOS DO ORÇAMENTO
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; margin-top: 0px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
             <div><label>Título do Orçamento</label><input type="text" id="titulo" maxlength="30" placeholder="Título do Orçamento" oninput="salvarEstadoCompleto()"></div>
             <div><label>📂Nome do Arquivo.PDF</label><input type="text" id="nome-arquivo" maxlength="90" placeholder="orcamento.pdf" oninput="salvarEstadoCompleto()"></div>
         </div>
@@ -204,10 +205,7 @@
 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
     <button type="button" class="btn-add" onclick="adicionarLinha()" style="margin-bottom: 0;">+ Adicionar Item</button>
     
-    <button type="button" onclick="limparFormulario()" 
-            style="background: #e2e8f0; color: #475569; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">
-        📄Novo Orçamento
-    </button>
+
 </div>
 
         <div class="total-container">
@@ -293,7 +291,12 @@
     <label>Observações</label>
     <textarea id="observacoes" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; font-family: inherit; resize: vertical;" placeholder="Ex: Telefone, Prazo de entrega, condições de pagamento, validade da proposta..."></textarea>
 </div>
-        <center><button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">VER PRÉ-VISUALIZAÇÃO</button></center>
+        <center><button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">VER PRÉ-VISUALIZAÇÃO</button><p></p>
+            <button type="button" onclick="limparFormulario()" 
+            style="background: #ffc400; color: #3a3a3a; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 18px;">
+        📄Novo Orçamento
+    </button>
+</center>
     
 
         <div id="area-previa">
@@ -379,31 +382,35 @@ function adicionarLinha(desc = '', qtd = '', valor = '') {
     const row = document.createElement('div');
     row.className = 'item-row';
     row.innerHTML = `
-        <div class="desc-cell"><input type="text" class="desc" value="${desc}" placeholder="Nome do Item" oninput="salvarEstadoCompleto()"></div>
-        <div><input type="number" class="qtd" value="${qtd}" min="1" oninput="calcular(); salvarEstadoCompleto()" placeholder="Qtd"></div>
-        <div><input type="number" class="valor" value="${valor}" step="0.01" oninput="calcular(); salvarEstadoCompleto()" placeholder="R$"></div>
-        <div><input type="text" class="subtotal" value="0,00" disabled style="background:#f1f5f9; text-align:right"></div>
-        <button class="btn-remove" onclick="this.parentElement.remove(); calcular(); salvarEstadoCompleto();">X</button>
-    `;
+    <div class="desc-cell"><input type="text" class="desc" value="${desc}" placeholder="Nome do Item" oninput="salvarEstadoCompleto()"></div>
+    <div><input type="number" class="qtd" value="${qtd}" min="1" oninput="calcular(); salvarEstadoCompleto()" placeholder="Qtd"></div>
+    <div><input type="number" class="valor" value="${valor}" step="0.01" oninput="calcular(); salvarEstadoCompleto()" placeholder="R$"></div>
+    <div><input type="text" class="subtotal" value="R$ 0,00" disabled style="background:#f1f5f9; text-align:right"></div>
+    <button class="btn-remove" onclick="this.parentElement.remove(); calcular(); salvarEstadoCompleto();">X</button>
+`;
     container.appendChild(row);
     calcular();
 }
 
         // Calcula o subtotal de cada linha e o total geral
-        function calcular() {
-            let totalGeral = 0;
-            const rows = document.querySelectorAll('.item-row');
-            
-            rows.forEach((row, index) => {
-                if(index === 0) return; // Pula o cabeçalho
-                const q = parseFloat(row.querySelector('.qtd').value) || 0;
-                const v = parseFloat(row.querySelector('.valor').value) || 0;
-                const sub = q * v;
-                row.querySelector('.subtotal').value = formatar(sub);
-                totalGeral += sub;
-            });
-            document.getElementById('total-geral').innerText = formatar(totalGeral);
-        }
+function calcular() {
+    let totalGeral = 0;
+    const rows = document.querySelectorAll('.item-row');
+    
+    rows.forEach((row, index) => {
+        if(index === 0) return; // Pula o cabeçalho
+        const q = parseFloat(row.querySelector('.qtd').value) || 0;
+        const v = parseFloat(row.querySelector('.valor').value) || 0;
+        const sub = q * v;
+        
+        // Aplica a formatação de moeda diretamente no valor do input
+        row.querySelector('.subtotal').value = "R$ " + formatar(sub);
+        totalGeral += sub;
+    });
+    
+    // Atualiza o Total Geral no final da página
+    document.getElementById('total-geral').innerText = formatar(totalGeral);
+}
 
 function adicionarCampoExtra(containerId) {
     const container = document.getElementById(containerId);
@@ -547,20 +554,20 @@ document.querySelectorAll('#extra-cliente-container .extra-field').forEach(div =
     }
 
     rows.forEach((row, i) => {
-        if(i === 0) return;
-        const d = row.querySelector('.desc').value || "-";
-        const q = row.querySelector('.qtd').value || "0";
-        const v = parseFloat(row.querySelector('.valor').value) || 0;
-        const s = row.querySelector('.subtotal').value;
-        
-        linhasHtml += `
-            <tr>
-                <td style="border: 1px solid #ddd; padding: 10px;">${d}</td>
-                <td style="border: 1px solid #ddd; padding: 10px; text-align:center;">${q}</td>
-                <td style="border: 1px solid #ddd; padding: 10px;">R$ ${formatar(v)}</td>
-                <td style="border: 1px solid #ddd; padding: 10px; text-align:right;">R$ ${s}</td>
-            </tr>`;
-    });
+    if(i === 0) return;
+    const d = row.querySelector('.desc').value || "-";
+    const q = row.querySelector('.qtd').value || "0";
+    const v = parseFloat(row.querySelector('.valor').value) || 0;
+    const s = row.querySelector('.subtotal').value;
+    
+    linhasHtml += `
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 10px;">${d}</td>
+            <td style="border: 1px solid #ddd; padding: 10px; text-align:center;">${q}</td>
+            <td style="border: 1px solid #ddd; padding: 10px;">R$ ${formatar(v)}</td>
+            <td style="border: 1px solid #ddd; padding: 10px; text-align:right;">${s.includes('R$') ? s : 'R$ ' + s}</td>
+        </tr>`;
+});
 
 const template = `
         <div style="padding: 20px; background: white; font-family: Arial, sans-serif;">
