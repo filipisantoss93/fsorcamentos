@@ -58,7 +58,7 @@
         
         .total-container { text-align: right; font-size: 20px; font-weight: bold; margin-top: 15px; padding: 12px; background: #eff6ff; border-radius: 6px; color: var(--primary); }
 		
-		.dadositens { text-align: center; font-size: 16px; font-weight: bold; margin-top: 5px; padding: 12px; border-radius: 6px; color: var(--primary); }
+		.dadositens { text-align: center; font-size: 16px; font-weight: bold; margin-top: 5px; padding: 12px; border-radius: 6px; color: #4b4b4b;}
 
         #area-previa { display: none; margin-right: 0px; margin-top: 30px; border: 2px dashed #2563eb; background: #f1f5f9; width: 100%;}
 
@@ -166,7 +166,7 @@
 
 		
 	    <div class="dadositens">
-            SEUS DADOS
+            EMISSOR
         </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
     <div>
@@ -183,9 +183,9 @@
 </button>
 </div>
 
-        <hr color="#c3c3c3" size="1px"></hr>
+      <br>
 	    <div class="dadositens">
-            DADOS DO CLIENTE
+            CLIENTE
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
@@ -206,7 +206,7 @@
 <hr color="#c3c3c3" size="1px"></hr>
 
         <div class="dadositens">
-            DADOS DO ORÇAMENTO
+            ORÇAMENTO
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
             <div><label>Título do Orçamento</label><input type="text" id="titulo" maxlength="30" placeholder="Título do Orçamento" oninput="salvarEstadoCompleto()"></div>
@@ -215,7 +215,7 @@
 
  
 		        <div class="dadositens">
-            ITENS DO ORÇAMENTO
+            ITENS
         </div>
         <div id="itens-lista">
             <div class="item-row header-labels">
@@ -315,7 +315,7 @@
         <center><button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">VER PRÉ-VISUALIZAÇÃO</button><p></p>
             <button type="button" onclick="limparFormulario()" 
             style="background: #ffc400; color: #3a3a3a; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 18px;">
-        📄Novo Orçamento
+        📄NOVO ORÇAMENTO
     </button>
 </center>
     
