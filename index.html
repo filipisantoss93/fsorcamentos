@@ -376,10 +376,13 @@
         <div class="dadositens">
             ORÇAMENTO
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
-            <div><label>Título do Orçamento</label><input type="text" id="titulo" maxlength="30" placeholder="Título do Orçamento" oninput="salvarEstadoCompleto()"></div>
-            <div><label>📂Nome do Arquivo.PDF</label><input type="text" id="nome-arquivo" maxlength="90" placeholder="orcamento.pdf" oninput="salvarEstadoCompleto()"></div>
-        </div>
+  <div style="display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
+    <div>
+        <label>Título do Orçamento</label>
+        <input type="text" id="titulo" maxlength="50" placeholder="Ex: Manutenção de Suspensão / Pintura Residencial" oninput="salvarEstadoCompleto()">
+    </div>
+    </div>
+
 
  
 		        <div class="dadositens">
@@ -809,27 +812,28 @@ function gerarPrevia() {
 
 // Função para baixar o PDF (Corrigida para evitar páginas em branco)
 async function baixarPDF() {
-
     document.body.style.zoom = "1.0"; 
     const element = document.getElementById('conteudo-pdf');
     const btn = document.getElementById('btn-baixar');
 
-    // Pega o nome do arquivo digitado ou usa um padrão caso esteja vazio
-    let nomeFinal = document.getElementById('nome-arquivo').value.trim();
-    if (!nomeFinal) nomeFinal = 'orcamento'; 
-
+    // PEGA O TÍTULO PARA USAR COMO NOME DO ARQUIVO
+    let tituloOrcamento = document.getElementById('titulo').value.trim();
     
-    // Garante que termine com .pdf
-    if (!nomeFinal.toLowerCase().endsWith('.pdf')) {
-        nomeFinal += '.pdf';
-    }
+    // Se o título estiver vazio, usa um nome padrão
+    let nomeFinal = tituloOrcamento ? tituloOrcamento : 'Orcamento_FS';
+
+    // Limpa caracteres que o Windows/Celular não aceita em nomes de arquivos (opcional, mas recomendado)
+    nomeFinal = nomeFinal.replace(/[<>:"/\\|?*]/g, "");
+
+    // Garante a extensão .pdf
+    nomeFinal += '.pdf';
 
     btn.innerText = "⏳ GERANDO ARQUIVO...";
     btn.disabled = true;
 
     const opt = {
         margin: [10, 10],
-        filename: nomeFinal, // <--- Aqui entra o nome personalizado
+        filename: nomeFinal, // <--- Agora usa o título formatado
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
             scale: 2, 
