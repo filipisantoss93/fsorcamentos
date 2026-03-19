@@ -373,6 +373,17 @@
 .btn-float-previa { background: var(--accent-yellow); color: #3e2723; }
 .btn-float-novo { background: #fff; color: #3e2723; border: 1px solid #d7ccc8; }
 
+.btn-float-download {
+    background: #000; /* Preto como o seu botão original */
+    color: #fff;
+    border: 1px solid var(--accent-yellow);
+    animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
 
 
 
@@ -989,15 +1000,21 @@ function gerarPrevia() {
         </div>
     `;
 
+    // Localize o final da função gerarPrevia e deixe assim:
     document.getElementById('conteudo-pdf').innerHTML = template;
     document.getElementById('area-previa').style.display = 'block';
-    document.getElementById('btn-baixar').style.display = 'block';
+    document.getElementById('btn-baixar').style.display = 'block'; 
+    
+    // MOSTRAR o botão na barra flutuante
+    document.getElementById('btn-float-baixar').style.display = 'flex';
+    
     btn.innerText = "VER PRÉ-VISUALIZAÇÃO";
     
     setTimeout(() => {
         document.getElementById('area-previa').scrollIntoView({ behavior: 'smooth' });
     }, 100);
-}
+} // <--- Certifique-se de que só existe UMA chave fechando aqui
+
 
 
 // Função para baixar o PDF (Corrigida para evitar páginas em branco)
@@ -1095,7 +1112,8 @@ function limparFormulario() {
     // 7. Atualiza totais e salva o estado vazio
     calcular();
     
-    // 8. Feedback visual
+    document.getElementById('btn-float-baixar').style.display = 'none';
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1167,14 +1185,19 @@ function mascaraTelefone(event) {
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 <div class="floating-actions">
-<button type="button" class="btn-float btn-float-previa" aria-label="Ver pré-visualização" onclick="gerarPrevia()">
-    🔍
-</button>
+    <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Visualizar">
+        🔍
+    </button>
     
-    <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()">
+    <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display: none;">
+        ⬇️
+    </button>
+    
+    <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo">
         📄
     </button>
 </div>
+
 
 
 
