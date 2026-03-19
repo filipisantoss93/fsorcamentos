@@ -271,6 +271,110 @@
         background: #3e2723; padding: 15px; border-radius: 10px; margin-bottom: 15px; 
         text-align: center; border-bottom: 4px solid var(--accent-yellow);
     }
+	
+	.btn-remove-logo {
+    display: inline-block;
+    background: #4e342e; /* Marrom Café para o fundo (combina com o tema) */
+    color: #ef4444; /* Vermelho para o texto (alerta) */
+    border: 1px solid #d7ccc8; /* Borda suave */
+    padding: 8px 18px; /* Espaçamento interno */
+    border-radius: 20px; /* Bordas arredondadas (como os outros botões) */
+    font-size: 11px; /* Tamanho da fonte menor */
+    font-weight: bold; /* Fonte negrito */
+    cursor: pointer; /* Cursor de mãozinha */
+    text-transform: uppercase; /* Texto em maiúsculo */
+    transition: all 0.3s ease; /* Transição suave */
+    margin-left: 10px; /* Distância da imagem */
+    vertical-align: middle; /* Alinhamento vertical */
+    text-decoration: none; /* Remove sublinhado se for link */
+}
+
+.btn-remove-logo:hover {
+    background: #ef4444; /* Fundo fica vermelho no hover */
+    color: #fff; /* Texto fica branco no hover */
+    border-color: #ef4444; /* Borda fica vermelha no hover */
+}
+
+/* Esconde o input original feio */
+#logo-input {
+    display: none;
+}
+
+/* Estiliza o Label como o novo botão */
+.btn-upload-custom {
+    display: inline-block;
+    background: #4e342e; /* Marrom do seu tema */
+    color: var(--accent-yellow);
+    border: 1px solid var(--accent-yellow);
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-upload-custom:hover {
+    background: var(--accent-yellow);
+    color: #3e2723;
+    transform: translateY(-2px);
+}
+
+.btn-upload-custom i {
+    margin-right: 8px;
+}
+
+/* Container da Barra Flutuante */
+.floating-actions {
+    position: fixed;
+    bottom: -80px; /* Começa escondida */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    display: flex;
+    gap: 15px;
+    z-index: 9999;
+    background: rgba(62, 39, 35, 0.95);
+    padding: 10px 15px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--accent-yellow);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    pointer-events: none; /* Evita clicar nela enquanto invisível */
+}
+
+/* Quando a barra deve aparecer */
+.floating-actions.show {
+    bottom: 25px;
+    opacity: 1;
+    pointer-events: auto; /* Reativa cliques */
+}
+
+/* Estilo dos Botões Redondos */
+.btn-float {
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn-float:active { transform: scale(0.9); }
+
+.btn-float-previa { background: var(--accent-yellow); color: #3e2723; }
+.btn-float-novo { background: #fff; color: #3e2723; border: 1px solid #d7ccc8; }
+
+
+
 
     </style>
 </head>
@@ -330,9 +434,27 @@
 </p>
 </div>
 		
-	    <div class="dadositens">
-            EMISSOR
-        </div>
+
+	<div class="dadositens">EMISSOR</div>
+<div style="margin-bottom: 20px; text-align: center;">
+    
+    <div id="seletor-logo-container">
+        <p style="font-size: 13px; color: #5d4037; font-weight: bold; margin-bottom: 10px;">SUA LOGOMARCA (OPCIONAL)</p>
+        <label for="logo-input" class="btn-upload-custom">
+            <span>(+) SELECIONAR LOGO</span>
+        </label>
+        <input type="file" id="logo-input" accept="image/*" onchange="processarLogo(event)">
+        <p style="font-size: 10px; color: #9e9e9e; margin-top: 8px;">Formatos aceitos: PNG, JPG ou JPEG</p>
+    </div>
+
+    <div id="preview-logo-container" style="display: none; flex-direction: column; align-items: center; gap: 15px;">
+        <img id="img-logo-preview" src="" style="max-height: 100px; border: 2px solid #d7ccc8; border-radius: 8px; padding: 5px; background: #fff;">
+        <button type="button" onclick="removerLogo()" class="btn-remove-logo">Remover Logomarca</button>
+    </div>
+</div>
+
+
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
     <div>
         <label>Seu Nome/Empresa</label>
@@ -518,6 +640,54 @@
 const slides = document.querySelectorAll('.carousel-slide a');
 const totalSlides = slides.length;
 
+let logoBase64 = "";
+
+function processarLogo(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            logoBase64 = e.target.result;
+            exibirPreviewLogo();
+            salvarEstadoCompleto();
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+window.addEventListener('scroll', function() {
+    const btnFlutuante = document.querySelector('.floating-actions');
+    // Verifica a rolagem em diferentes navegadores
+    const scrollAtual = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollAtual > 300) {
+        btnFlutuante.classList.add('show');
+    } else {
+        btnFlutuante.classList.remove('show');
+    }
+});
+
+
+function exibirPreviewLogo() {
+    if (logoBase64) {
+        document.getElementById('img-logo-preview').src = logoBase64;
+        document.getElementById('preview-logo-container').style.display = 'flex'; // Usando flex para centralizar
+        document.getElementById('seletor-logo-container').style.display = 'none';
+    }
+}
+
+function removerLogo() {
+    logoBase64 = "";
+    document.getElementById('logo-input').value = "";
+    document.getElementById('preview-logo-container').style.display = 'none';
+    document.getElementById('seletor-logo-container').style.display = 'block';
+    
+    salvarEstadoCompleto();
+    if (document.getElementById('area-previa').style.display === 'block') {
+        gerarPrevia();
+    }
+}
+
 function moveCarousel() {
     currentSlide++;
     if (currentSlide >= totalSlides) {
@@ -548,21 +718,45 @@ function carregarDadosFixos() {
             return val.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2}); 
         }
 
-        // Adiciona uma nova linha de item
+        
+// Adiciona uma nova linha de item
 function adicionarLinha(desc = '', qtd = '', valor = '') {
     const container = document.getElementById('itens-lista');
     const row = document.createElement('div');
     row.className = 'item-row';
+    
+    // Geramos o HTML da linha
     row.innerHTML = `
-    <div class="desc-cell"><input type="text" class="desc" value="${desc}" placeholder="Nome do Item" oninput="salvarEstadoCompleto()"></div>
-    <div><input type="number" class="qtd" value="${qtd}" min="1" oninput="calcular(); salvarEstadoCompleto()" placeholder="Qtd"></div>
-    <div><input type="number" class="valor" value="${valor}" step="0.01" oninput="calcular(); salvarEstadoCompleto()" placeholder="R$"></div>
-    <div><input type="text" class="subtotal" value="R$ 0,00" disabled style="background:#f1f5f9; text-align:right"></div>
-    <button class="btn-remove" onclick="this.parentElement.remove(); calcular(); salvarEstadoCompleto();">X</button>
-`;
+        <div class="desc-cell">
+            <input type="text" class="desc" value="${desc}" placeholder="Nome do Item" oninput="salvarEstadoCompleto()">
+        </div>
+        <div>
+            <input type="number" class="qtd" value="${qtd}" min="1" oninput="calcular(); salvarEstadoCompleto()" placeholder="Qtd">
+        </div>
+        <div>
+            <input type="number" class="valor" value="${valor}" step="0.01" oninput="calcular(); salvarEstadoCompleto()" placeholder="R$">
+        </div>
+        <div>
+            <input type="text" class="subtotal" value="R$ 0,00" disabled style="background:#f1f5f9; text-align:right">
+        </div>
+        <button class="btn-remove" onclick="this.parentElement.remove(); calcular(); salvarEstadoCompleto();">X</button>
+    `;
+
+    // Adiciona ao container
     container.appendChild(row);
+    
+    // Seleciona o campo de descrição da nova linha
+    const novaDesc = row.querySelector('.desc');
+
+    // O "pulo do gato": setTimeout garante que o foco funcione após a renderização
+    setTimeout(() => {
+        novaDesc.focus();
+    }, 10);
+
+    // Recalcula os totais
     calcular();
 }
+
 
         // Calcula o subtotal de cada linha e o total geral
 function calcular() {
@@ -599,6 +793,7 @@ function adicionarCampoExtra(containerId) {
 
         function salvarEstadoCompleto() {
 const dados = {
+	logo: logoBase64,
     titulo: document.getElementById('titulo').value,
     emissor: document.getElementById('emissor').value,
     telEmissor: document.getElementById('tel-emissor').value,
@@ -625,21 +820,7 @@ const dados = {
     localStorage.setItem('fs_backup', JSON.stringify(dados));
 }
 
-const extrasEmissor = [];
-    document.querySelectorAll('#extra-emissor-container .extra-field').forEach(div => {
-        extrasEmissor.push({
-            label: div.querySelector('.extra-label').value,
-            info: div.querySelector('.extra-info').value
-        });
-    });
 
-    const extrasCliente = [];
-    document.querySelectorAll('#extra-cliente-container .extra-field').forEach(div => {
-        extrasCliente.push({
-            label: div.querySelector('.extra-label').value,
-            info: div.querySelector('.extra-info').value
-        });
-    });
 
 
 
@@ -656,6 +837,11 @@ function carregarEstadoSalvo() {
     document.getElementById('observacoes').value = d.observacoes || '';
 
     // RECRIA CAMPOS EXTRAS DO EMISSOR
+	if (d.logo) {
+    logoBase64 = d.logo;
+    exibirPreviewLogo();
+}
+
     if (d.extrasEmissor) {
         d.extrasEmissor.forEach(item => {
             adicionarCampoExtra('extra-emissor-container');
@@ -744,9 +930,15 @@ function gerarPrevia() {
                     <h1 style="margin:0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px;">${titulo}</h1>
                     <span style="font-size: 12px; opacity: 0.8;">Data ${data}</span>
                 </div>
-                <div style="text-align: right;">
-                    <span style="font-weight: 800; font-size: 28px; background: ${corDestaque}; color: ${corPrimaria}; padding: 2px 10px; border-radius: 4px;">FS</span>
-                </div>
+              
+
+<div style="text-align: right;">
+    ${logoBase64 
+        ? `<img src="${logoBase64}" style="max-height: 70px; max-width: 150px; object-fit: contain; margin-bottom: 5px;">` 
+        : `<span style="font-weight: 800; font-size: 28px; background: ${corDestaque}; color: ${corPrimaria}; padding: 2px 10px; border-radius: 4px;">FS</span>`
+    }
+</div>
+
             </div>
             
             <div style="display:flex; justify-content:space-between; margin-bottom:30px;">
@@ -870,43 +1062,44 @@ function resetarZoomTela() {
 
         // Função para limpar todo o formulário e resetar a página
 function limparFormulario() {
-    // Alerta de confirmação
-    if (!confirm("Isso limpará os dados do cliente e itens. Seus dados de emissor e informações extras dele serão mantidos. Deseja continuar?")) return;
+    if (!confirm("Deseja iniciar um novo orçamento? Isso limpará todos os dados preenchidos.")) return;
 
-    // 1. Limpa campos de texto do Cliente e do Orçamento
-    // Note que 'emissor' e 'tel-emissor' NÃO estão nesta lista para não serem apagados
-    const camposParaLimpar = ['cliente', 'tel-cliente', 'titulo', 'observacoes'];
-    camposParaLimpar.forEach(id => {
+    // 1. Limpa Campos de Texto principais
+    const campos = ['cliente', 'tel-cliente', 'titulo', 'observacoes'];
+    campos.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
 
-    // 2. Limpa campos extras APENAS do Cliente
-    const containerExtraCliente = document.getElementById('extra-cliente-container');
-    if (containerExtraCliente) containerExtraCliente.innerHTML = '';
+    // 2. Remove Campos Extras (Cliente e Emissor)
+    document.getElementById('extra-cliente-container').innerHTML = '';
+    document.getElementById('extra-emissor-container').innerHTML = '';
 
-    // IMPORTANTE: O 'extra-emissor-container' NÃO é resetado aqui, 
-    // mantendo seus dados extras de CNPJ, Endereço, etc.
-
-    // 3. Reseta a tabela de itens
+    // 3. Reseta a Tabela de Itens
     const containerItens = document.getElementById('itens-lista');
+    // Mantém o cabeçalho (index 0) e remove o resto
     while (containerItens.children.length > 1) {
         containerItens.removeChild(containerItens.lastChild);
     }
 
-    // 4. Adiciona uma linha vazia nova para o próximo serviço
+    // 4. Cria uma linha limpa e reseta cálculos
     adicionarLinha();
-
+    
     // 5. Esconde a prévia do PDF
     document.getElementById('area-previa').style.display = 'none';
 
-    // 6. Atualiza o cálculo e o backup no navegador
-    calcular();
-    salvarEstadoCompleto();
+    // 6. LIMPA O BACKUP DO NAVEGADOR
+    // Isso é vital para o botão "Novo" funcionar de verdade
+    localStorage.removeItem('fs_backup');
 
-    // 7. Volta ao topo
+    // 7. Atualiza totais e salva o estado vazio
+    calcular();
+    
+    // 8. Feedback visual
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+
 
 
 function toggleFrases() {
@@ -973,6 +1166,18 @@ function mascaraTelefone(event) {
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+<div class="floating-actions">
+<button type="button" class="btn-float btn-float-previa" aria-label="Ver pré-visualização" onclick="gerarPrevia()">
+    🔍
+</button>
+    
+    <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()">
+        📄
+    </button>
+</div>
+
+
+
 </body>
 
 </html>
