@@ -598,6 +598,20 @@
     font-weight: 500;
 }
 
+/* Garante que o AdSense não cubra os botões flutuantes */
+ins.adsbygoogle {
+    z-index: 1 !important;
+}
+
+.floating-actions {
+    z-index: 9999 !important; /* Sempre acima dos anúncios */
+}
+
+/* Evita espaços em branco gigantes se o anúncio não carregar */
+.adsbygoogle[data-ad-status="unfilled"] {
+    display: none !important;
+}
+
     </style>
 </head>
 <body>
@@ -611,16 +625,16 @@
         <p>Iniciando ferramenta...</p>
     </div>
 </div>
-<!-- anuncios -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5628949951885077"
-     data-ad-slot="5200213834"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+<div style="margin: 15px 0; text-align: center; min-height: 90px;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5628949951885077"
+         data-ad-slot="5200213834"
+         data-ad-format="horizontal"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
     <div class="container">
 		<div style="text-align: center; margin-bottom: 25px;">
     <div style="font-size: 40px; display: inline-flex; align-items: center; gap: 5px;">
@@ -822,16 +836,16 @@
 
 		
 
-<!-- anuncioquadrado -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5628949951885077"
-     data-ad-slot="6308389759"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+<div style="margin: 20px 0; text-align: center;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5628949951885077"
+         data-ad-slot="6308389759"
+         data-ad-format="rectangle"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
         <section class="no-print" style="margin-top: 50px; border-top: 1px solid #e2e8f0; padding-top: 30px; line-height: 1.6; color: #475569;">
     <h2 style="color: #1e293b; font-size: 22px;">Sobre o Gerador de Orçamento Profissional</h2>
     <p>
@@ -1462,16 +1476,16 @@ window.onload = function() {
         <a href="termos.html" style="color: #64748b;">Termos de Uso</a>
     </p>
 </footer>
-<!-- anuncios -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5628949951885077"
-     data-ad-slot="5200213834"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+<div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5628949951885077"
+         data-ad-slot="5200213834"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
 
 <button type="button" class="btn-help-trigger" onclick="toggleAjuda()">?</button>
 
