@@ -142,7 +142,7 @@
 
         .pdf-folha { width: 100%; max-width: 185mm; margin: 0 auto; background: white; color: black; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
 
-        .btn-download { display: none; background: #000 !important; color: white !important; margin-top: 20px; }
+
 
 
 
@@ -327,71 +327,290 @@
 }
 
 /* Container da Barra Flutuante */
+/* Container da Barra com Efeito Vidro */
 .floating-actions {
     position: fixed;
-    bottom: -80px; /* Começa escondida */
+    bottom: -80px;
     left: 50%;
-    transform: translateX(-50%); /* Centraliza horizontalmente */
+    transform: translateX(-50%);
     display: flex;
-    gap: 15px;
+    gap: 12px;
     z-index: 9999;
-    background: rgba(62, 39, 35, 0.95);
-    padding: 10px 15px;
-    border-radius: 50px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--accent-yellow);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Efeito Vidro (Glassmorphism) */
+    background: rgba(62, 39, 35, 0.7); /* Marrom translúcido */
+    backdrop-filter: blur(12px); /* O "embaçado" atrás da barra */
+    -webkit-backdrop-filter: blur(12px);
+    padding: 8px 16px;
+    border-radius: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.3); /* Borda amarela sutil */
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     opacity: 0;
-    pointer-events: none; /* Evita clicar nela enquanto invisível */
+    pointer-events: none;
 }
 
-/* Quando a barra deve aparecer */
 .floating-actions.show {
-    bottom: 25px;
+    bottom: 20px;
     opacity: 1;
-    pointer-events: auto; /* Reativa cliques */
+    pointer-events: auto;
 }
 
-/* Estilo dos Botões Redondos */
+/* Estilo Base dos Botões de Vidro */
 .btn-float {
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 20px;
     cursor: pointer;
-    transition: transform 0.2s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.btn-float:active { transform: scale(0.9); }
-
-.btn-float-previa { background: var(--accent-yellow); color: #3e2723; }
-.btn-float-novo { background: #fff; color: #3e2723; border: 1px solid #d7ccc8; }
+/* Cores específicas com transparência */
+.btn-float-previa { 
+    background: rgba(255, 196, 0, 0.2) !important; 
+    color: var(--accent-yellow) !important;
+    border-color: rgba(255, 196, 0, 0.4) !important;
+}
 
 .btn-float-download {
-    background: #000; /* Preto como o seu botão original */
-    color: #fff;
-    border: 1px solid var(--accent-yellow);
-    animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: rgba(46, 125, 50, 0.3) !important; /* Verde translúcido */
+    color: #81c784 !important;
+    border-color: rgba(129, 199, 132, 0.5) !important;
+    animation: pulse-green 2s infinite;
 }
 
-@keyframes bounceIn {
-    0% { transform: scale(0); opacity: 0; }
+.btn-float-novo { 
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+/* Hover e Animações */
+.btn-float:hover {
+    transform: scale(1.1) translateY(-5px);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}
+
+
+
+
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* Acima de tudo */
+    transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.splash-content {
+    text-align: center;
+}
+
+.splash-logo {
+    font-size: 45px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    animation: fadeInScale 0.8s ease-out;
+}
+
+.fs-box {
+    font-weight: 800;
+    color: #3e2723;
+    background: var(--accent-yellow);
+    padding: 5px 15px;
+    border-radius: 8px;
+}
+
+.fs-text {
+    font-weight: 300;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.loader-bar {
+    width: 150px;
+    height: 4px;
+    background: rgba(255, 215, 0, 0.1);
+    margin: 0 auto;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.loader-bar::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-yellow);
+    animation: loadingProgress 1.5s infinite linear;
+}
+
+@keyframes fadeInScale {
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes loadingProgress {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Classe para esconder a splash */
+.hide-splash {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Botão de Ajuda Lateral */
+.btn-help-trigger {
+    position: fixed;
+    bottom: 25px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: var(--accent-yellow);
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 9998;
+    transition: 0.3s;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: none; /* Escondido por padrão */
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+    background: #fff;
+    color: #3e2723;
+    width: 90%;
+    max-width: 400px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    animation: slideUp 0.4s ease-out;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--accent-yellow);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.help-item {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    border-left: 4px solid var(--accent-yellow);
+}
+
+.btn-entendi {
+    width: 100%;
+    background: #3e2723;
+    color: var(--accent-yellow);
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.stats-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #fff;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    margin-bottom: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.dot-online {
+    width: 8px;
+    height: 8px;
+    background: #25D366; /* Verde online */
+    border-radius: 50%;
+    box-shadow: 0 0 8px #25D366;
+    animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
     100% { transform: scale(1); opacity: 1; }
 }
 
-
+#contador-texto {
+    font-weight: 500;
+}
 
     </style>
 </head>
 <body>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
-     crossorigin="anonymous"></script>
+	<div id="splash-screen">
+    <div class="splash-content">
+        <div class="splash-logo">
+            <span class="fs-box">FS</span>
+            <span class="fs-text">Orçamentos</span>
+        </div>
+        <div class="loader-bar"></div>
+        <p>Iniciando ferramenta...</p>
+    </div>
+</div>
 <!-- anuncios -->
 <ins class="adsbygoogle"
      style="display:block"
@@ -411,6 +630,11 @@
     </div>
     <p style="color: #9e9e9e; margin-bottom: 0px; margin-top: -20px; font-size: 16px;">Gerador de Orçamento Profissional</p>
 </div>
+<div class="stats-counter">
+    <span class="dot-online"></span> 
+    <span id="contador-texto">Aguardando...</span>
+</div>
+
 <div class="carousel-container">
     <div class="carousel-slide" id="carousel">
         <a href="mailto:filipiasantos93@gmail.com" target="_blank">
@@ -575,13 +799,13 @@
         <hr color="#c3c3c3" size="1px"></hr>		
  <div style="text-align: center; margin-top: 30px;">
     <button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">
-        VER PRÉ-VISUALIZAÇÃO
+        👁️ PRÉ-VISUALIZAÇÃO
     </button>
     
     <div style="margin-top: 15px;"></div>
     
     <button type="button" class="btn-limpar" onclick="limparFormulario()">
-        📄 NOVO ORÇAMENTO
+        ➕ NOVO ORÇAMENTO
     </button>
 </div>
 
@@ -592,13 +816,12 @@
             <div id="conteudo-pdf" class="pdf-folha">
                 </div>
             <center><button class="btn-generate btn-download" id="btn-baixar" onclick="baixarPDF()">
-                ✅ TUDO CERTO, BAIXAR PDF
+                💾 BAIXAR PDF
             </button></center>
         </div>
 
 		
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
-     crossorigin="anonymous"></script>
+
 <!-- anuncioquadrado -->
 <ins class="adsbygoogle"
      style="display:block"
@@ -1008,7 +1231,7 @@ function gerarPrevia() {
     // MOSTRAR o botão na barra flutuante
     document.getElementById('btn-float-baixar').style.display = 'flex';
     
-    btn.innerText = "VER PRÉ-VISUALIZAÇÃO";
+    btn.innerText = "👁️ PRÉ-VISUALIZAÇÃO";
     
     setTimeout(() => {
         document.getElementById('area-previa').scrollIntoView({ behavior: 'smooth' });
@@ -1037,6 +1260,21 @@ async function baixarPDF() {
 
     btn.innerText = "⏳ GERANDO ARQUIVO...";
     btn.disabled = true;
+	
+    const btnFloat = document.getElementById('btn-float-baixar');
+    const btnGrande = document.getElementById('btn-baixar');
+    
+	btnGrande.style.background = "#555";
+    btnGrande.innerText = "⏳ GERANDO...";
+    btnFloat.style.opacity = "0.5";
+	
+	setTimeout(() => {
+        btnGrande.innerText = "💾 BAIXAR PDF";
+        btnGrande.style.background = ""; // Volta ao CSS original
+        btnFloat.style.opacity = "1";
+    }, 3000);
+
+
 
     const opt = {
         margin: [10, 10],
@@ -1058,15 +1296,22 @@ async function baixarPDF() {
         console.error(err);
         alert("Erro ao gerar o PDF.");
     } finally {
-        btn.innerText = "✅ TUDO CERTO, BAIXAR PDF";
+        btn.innerText = "💾 BAIXAR PDF";
         btn.disabled = false;
     }
 }
 
-// Atualize seu window.onload
 window.onload = function() {
-carregarEstadoSalvo();
+    // Carrega os dados salvos
+    carregarEstadoSalvo();
+
+    // Aguarda 1.5 segundos para dar tempo do usuário ver a marca e remove a splash
+    setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        splash.classList.add('hide-splash');
+    }, 1500);
 };
+
 
 function resetarZoomTela() {
     // Força o zoom do body para 1 (100%)
@@ -1163,6 +1408,51 @@ function mascaraTelefone(event) {
     // Chama o salvamento para não perder os dados
     salvarEstadoCompleto();
 }
+
+function toggleAjuda() {
+    const modal = document.getElementById('modal-ajuda');
+    const isVisivel = modal.style.display === 'flex';
+    modal.style.display = isVisivel ? 'none' : 'flex';
+}
+
+// Fechar modal ao clicar fora dele
+window.onclick = function(event) {
+    const modal = document.getElementById('modal-ajuda');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+function iniciarContador() {
+    // Número base (pode ser o que você quiser)
+    let baseOrcamentos = 1254; 
+    const el = document.getElementById('contador-texto');
+
+    function atualizarDisplay() {
+        el.innerText = `${baseOrcamentos.toLocaleString('pt-BR')} orçamentos gerados hoje`;
+    }
+
+    atualizarDisplay();
+
+    // Simula novos orçamentos acontecendo em tempo real
+    setInterval(() => {
+        // Aumenta de 1 a 3 orçamentos aleatoriamente
+        baseOrcamentos += Math.floor(Math.random() * 3) + 1;
+        atualizarDisplay();
+    }, 8000); // Atualiza a cada 8 segundos
+}
+
+// Adicione a chamada da função dentro do seu window.onload atual:
+window.onload = function() {
+    carregarEstadoSalvo();
+    iniciarContador(); // <--- Adicione esta linha
+    
+    setTimeout(() => {
+        document.getElementById('splash-screen').classList.add('hide-splash');
+    }, 1500);
+};
+
+
     </script>
 
 <footer class="no-print" style="text-align: center; margin-top: 30px; font-size: 12px; color: #94a3b8;">
@@ -1172,8 +1462,6 @@ function mascaraTelefone(event) {
         <a href="termos.html" style="color: #64748b;">Termos de Uso</a>
     </p>
 </footer>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
-     crossorigin="anonymous"></script>
 <!-- anuncios -->
 <ins class="adsbygoogle"
      style="display:block"
@@ -1184,19 +1472,47 @@ function mascaraTelefone(event) {
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+<button type="button" class="btn-help-trigger" onclick="toggleAjuda()">?</button>
+
+<div id="modal-ajuda" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Dicas Rápidas 💡</h3>
+            <button onclick="toggleAjuda()" class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="help-item">
+                <strong>📸 Sua Marca:</strong> Clique em "Selecionar Logo" para deixar o orçamento com a sua cara.
+            </div>
+            <div class="help-item">
+                <strong>➕ Campos Extras:</strong> Use o botão "+ Informações" para adicionar CPF, CNPJ, Placa ou Endereço.
+            </div>
+            <div class="help-item">
+                <strong>📝 Termos Rápidos:</strong> Clique em "Termos e Condições" para adicionar prazos e garantias com um clique.
+            </div>
+            <div class="help-item">
+                <strong>📥 Baixar:</strong> Após preencher tudo, clique em "Pré-visualização (👁️)" e depois no ícone de salvar (💾).
+            </div>
+        </div>
+        <button class="btn-entendi" onclick="toggleAjuda()">Entendi!</button>
+    </div>
+</div>
+
 <div class="floating-actions">
     <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Visualizar">
-        🔍
+        👁️
     </button>
     
-    <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display: none;">
-        ⬇️
+    <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display: none;" title="Baixar PDF">
+        💾
     </button>
     
-    <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo">
-        📄
+    <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo Orçamento">
+        ➕
     </button>
 </div>
+
 
 
 
