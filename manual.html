@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Instruções - FS Orçamentos</title>
+    <style>
+        :root {
+            --primary-brown: #3e2723;
+            --accent-yellow: #ffd700;
+            --bg-dark: #121212;
+            --glass: rgba(255, 255, 255, 0.05);
+            --text-light: #eeeeee;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--primary-brown);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-yellow);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: var(--primary-brown);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-voltar:hover {
+            background: #fff;
+            transform: scale(1.05);
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        h1, h2 { color: var(--accent-yellow); }
+        h2 { border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 10px; }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background: var(--accent-yellow);
+            color: var(--primary-brown);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-yellow);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        code {
+            background: rgba(255,215,0,0.1);
+            color: var(--accent-yellow);
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Manual do Gerador de Orçamentos</h1>
+    <p>Aprenda a utilizar todas as ferramentas do FS Orçamentos</p>
+</header>
+
+<div class="container">
+    <a href="index.html" class="btn-voltar">← Voltar ao Gerador</a>
+
+    <div class="card">
+        <h2>1. Identificação do Orçamento</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>
+                <strong>Título do Documento:</strong> Defina o nome do arquivo (ex: Orçamento Mecânica, Revisão Preventiva). Este título será usado como nome do arquivo PDF ao salvar.
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>
+                <strong>Dados do Cliente:</strong> Preencha Nome e Telefone. O campo de telefone possui máscara automática <code>(00) 00000-0000</code> para facilitar a digitação.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>2. Itens de Peças e Serviços</h2>
+        <p>Esta é a parte principal do seu orçamento. Você pode adicionar quantos itens forem necessários.</p>
+        <ul class="feature-list">
+            <li><strong>Adicionar Itens:</strong> Clique no botão "+" para inserir uma nova linha de serviço ou peça.</li>
+            <li><strong>Cálculo Automático:</strong> Insira a quantidade e o valor unitário. O sistema calcula o <strong>Total do Item</strong> e o <strong>Total Geral</strong> instantaneamente.</li>
+            <li><strong>Remoção:</strong> Utilize o ícone de lixeira (se disponível) ou limpe os campos caso desista de um item.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>3. Personalização Visual (Temas)</h2>
+        <p>No topo da página, você encontra o seletor de cores para combinar o orçamento com a identidade da sua oficina:</p>
+        <ul class="feature-list">
+            <li><strong>Original (Marrom/Amarelo):</strong> O padrão profissional do site.</li>
+            <li><strong>Preto e Branco:</strong> Ideal para impressões econômicas.</li>
+            <li><strong>Azul, Verde e Vermelho:</strong> Opções coloridas para destacar sua marca.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>4. Observações e Frases Rápidas</h2>
+        <p>No campo "Observações", você pode digitar detalhes sobre a garantia ou condições de pagamento.</p>
+        <p><strong>Dica:</strong> Use os botões de frases prontas (ex: "Garantia de 90 dias") para preencher o campo com apenas um clique.</p>
+    </div>
+
+    <div class="card">
+        <h2>5. Exportação e Compartilhamento</h2>
+        <div class="step">
+            <div class="step-number">A</div>
+            <div><strong>Gerar PDF:</strong> Clique em "Baixar PDF". O sistema processará o documento e iniciará o download automaticamente.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">B</div>
+            <div><strong>WhatsApp:</strong> Após baixar o PDF, você pode enviá-lo diretamente para o cliente usando o ícone do WhatsApp integrado.</div>
+        </div>
+    </div>
+
+    <div class="card" style="border: 1px solid var(--accent-yellow);">
+        <h2>⚠️ Dicas Importantes</h2>
+        <p>• O sistema salva o rascunho automaticamente no seu navegador. Se você fechar a página por acidente, os dados estarão lá ao voltar.</p>
+        <p>• Para começar um novo orçamento do zero, utilize o botão <strong>"Limpar Formulário"</strong>.</p>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 FS Orçamentos - Assis/SP<br>
+    Desenvolvido para profissionais autônomos.
+</footer>
+
+</body>
+</html>

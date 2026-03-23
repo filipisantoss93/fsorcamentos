@@ -506,6 +506,36 @@
     transition: 0.3s;
 }
 
+.btn-help-link {
+    text-decoration: none;
+    position: fixed; /* Opcional: mantém o botão visível ao rolar a página */
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.btn-help-trigger {
+    background-color: var(--accent-yellow);
+    color: #ff0000;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-help-trigger:hover {
+    background-color: #fff;
+    transform: scale(1.1);
+}
+
 /* Modal Overlay */
 .modal-overlay {
     position: fixed;
@@ -1002,7 +1032,9 @@ ins.adsbygoogle {
 </div>
 
 
-<button type="button" class="btn-help-trigger" onclick="toggleAjuda()">?</button>
+<a href="manual.html" class="btn-help-link" title="Manual de Instruções">
+    <button type="button" class="btn-help-trigger">?</button>
+</a>
 
 <div id="modal-ajuda" class="modal-overlay">
     <div class="modal-content">
@@ -1367,7 +1399,6 @@ function limparFormulario() {
     document.getElementById('area-previa').style.display = 'none';
     salvarEstadoCompleto();
 }
-</script>
 </script>
 
 </body>
