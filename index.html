@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -667,14 +668,15 @@ ins.adsbygoogle {
         display: none !important; /* Esconde a linha no celular por padrão */
         flex-direction: column;
         position: absolute;
-        top: 60px;
-        left: 0;
+        top: 70px;
+        right: 0;
         width: 100%;
         background: rgba(44, 44, 44, 0.98);
         backdrop-filter: blur(10px);
-        padding: 20px 0;
+        padding: 20px 25px 20px 20px;
         border-bottom: 2px solid var(--accent-yellow);
         gap: 15px;
+        text-align: right;
     }
 
     /* Quando clicado, o menu aparece no celular */
@@ -773,7 +775,7 @@ ins.adsbygoogle {
     <span id="contador-texto">Aguardando...</span>
 </div>
 
-<div class="carousel-container">
+<div class="carousel-container" style="display: none;">
     <div class="carousel-slide" id="carousel">
         <a href="mailto:filipiasantos93@gmail.com" target="_blank">
     <img src="anuncio1.png" alt="Anuncie Aqui - FS Orçamentos">

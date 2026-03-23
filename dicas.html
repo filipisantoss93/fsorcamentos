@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
+     crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-5628949951885077">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dicas de Gestão - FS Orçamentos</title>
@@ -68,14 +71,15 @@
         display: none !important; /* Esconde a linha no celular por padrão */
         flex-direction: column;
         position: absolute;
-        top: 60px;
-        left: 0;
+        top: 70px;
+        right: 0;
         width: 100%;
         background: rgba(44, 44, 44, 0.98);
         backdrop-filter: blur(10px);
-        padding: 20px 0;
+        padding: 20px 25px 20px 20px;
         border-bottom: 2px solid var(--accent-yellow);
         gap: 15px;
+        text-align: right;
     }
 
     /* Quando clicado, o menu aparece no celular */
@@ -144,17 +148,16 @@
 
 function toggleMenuMobile() {
     const menu = document.querySelector('.nav-menu');
-    // Alterna a classe 'active' para mostrar/esconder no celular
+    // Adiciona ou remove a classe 'active' para mostrar/esconder o menu
     menu.classList.toggle('active');
 }
 
-// Fecha o menu automaticamente ao clicar em um link (melhor experiência)
+// Fecha o menu automaticamente ao clicar em qualquer link (melhora a experiência)
 document.querySelectorAll('.nav-menu a').forEach(link => {
     link.addEventListener('click', () => {
         document.querySelector('.nav-menu').classList.remove('active');
     });
 });
-
 </script>
 <footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#777">Privacidade</a></footer>
 
