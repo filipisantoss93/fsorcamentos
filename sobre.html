@@ -35,7 +35,53 @@
         .logo-nav { font-weight: 800; color: #fff; font-size: 20px; }
 .logo-nav span { color: var(--accent-yellow); font-weight: 300; }
 
-.nav-menu { display: flex; list-style: none; gap: 20px; margin: 0; padding: 0; }
+/* Esconde o botão do menu por padrão no computador */
+.menu-mobile-btn {
+    display: none;
+    background: none;
+    border: 1px solid var(--accent-yellow);
+    color: var(--accent-yellow);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Garante que o menu esteja sempre em linha no computador */
+.nav-menu {
+    display: flex !important; /* Força o alinhamento em linha */
+    list-style: none;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    flex-direction: row;
+}
+
+/* Ajustes exclusivos para Celular */
+@media (max-width: 600px) {
+    .menu-mobile-btn {
+        display: block; /* Mostra o ícone apenas no celular */
+    }
+
+    .nav-menu {
+        display: none !important; /* Esconde a linha no celular por padrão */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(44, 44, 44, 0.98);
+        backdrop-filter: blur(10px);
+        padding: 20px 0;
+        border-bottom: 2px solid var(--accent-yellow);
+        gap: 15px;
+    }
+
+    /* Quando clicado, o menu aparece no celular */
+    .nav-menu.active {
+        display: flex !important;
+    }
+}
 .nav-menu a { 
     color: #eee; text-decoration: none; font-size: 14px; font-weight: 500;
     transition: 0.3s; text-transform: uppercase;
@@ -88,7 +134,21 @@
     <p>Idealizado por <strong>Filipi Aparecido dos Santos</strong>, o projeto foca em fortalecer a economia nacional, oferecendo tecnologia de ponta para quem está no "chão de fábrica" ou no canteiro de obras.</p>
 
     <ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-5628949951885077" data-ad-slot="6308389759"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});
+
+        function toggleMenuMobile() {
+    const menu = document.querySelector('.nav-menu');
+    // Alterna a classe 'active' para mostrar/esconder no celular
+    menu.classList.toggle('active');
+}
+
+// Fecha o menu automaticamente ao clicar em um link (melhor experiência)
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.querySelector('.nav-menu').classList.remove('active');
+    });
+});
+    </script>
 </div>
 
 <footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#777">Privacidade</a></footer>
