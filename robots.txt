@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /search
+Disallow: /admin/
 
-# Indica ao Google onde está o mapa das suas páginas
+# Permite que o robô do AdSense leia o site
+User-agent: Mediapartners-Google
+Allow: /
+
 Sitemap: https://fsorcamentos.com.br/sitemap.xml
