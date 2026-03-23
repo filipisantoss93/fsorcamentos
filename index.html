@@ -715,6 +715,7 @@ ins.adsbygoogle {
 .blue { background: #0056b3; }
 .green { background: #2e7d32; }
 .yellow { background: #f9a825; }
+.red { background: #ff0000; }
 
 /* Estilos de Cores para o PDF (Classes que o JS vai aplicar) */
 .theme-pdf-original { --pdf-bg: #3e2723; --pdf-text: #ffd700; }
@@ -722,6 +723,7 @@ ins.adsbygoogle {
 .theme-pdf-blue { --pdf-bg: #0056b3; --pdf-text: #ffffff; }
 .theme-pdf-green { --pdf-bg: #2e7d32; --pdf-text: #ffffff; }
 .theme-pdf-yellow { --pdf-bg: #f9a825; --pdf-text: #000000; }
+.theme-pdf-red { --pdf-bg: #ff0000; --pdf-text: #000000; }
 
 
 
@@ -945,6 +947,7 @@ ins.adsbygoogle {
         <div class="theme-dot blue" onclick="setTheme('blue')" title="Azul e Branco"></div>
         <div class="theme-dot green" onclick="setTheme('green')" title="Verde e Branco"></div>
         <div class="theme-dot yellow" onclick="setTheme('yellow')" title="Amarelo e Branco"></div>
+        <div class="theme-dot red" onclick="setTheme('red')" title="Vermelho e Branco"></div>
     </div>
     <input type="hidden" id="selected-theme" value="original">
 </div>
@@ -1172,10 +1175,12 @@ function gerarPrevia() {
     
     const temaAtivo = document.getElementById('selected-theme').value;
     const coresTema = {
-        'original': { primaria: '#3e2723', destaque: '#ffc400', fundo: '#efebe9', textoHeader: 'white' },
-        'bw': { primaria: '#ffffff', destaque: '#000000', fundo: '#f9f9f9', textoHeader: 'black' }, // TEMA BRANCO/PRETO
-        'blue': { primaria: '#0056b3', destaque: '#00aaff', fundo: '#e3f2fd', textoHeader: 'white' },
-        'green': { primaria: '#2e7d32', destaque: '#81c784', fundo: '#e8f5e9', textoHeader: 'white' }
+    'original': { primaria: '#3e2723', destaque: '#ffc400', fundo: '#efebe9', textoHeader: 'white' },
+    'yellow': { primaria: '#f9a825', destaque: '#ffc400', fundo: '#efebe9', textoHeader: 'white' }, // Amarelo ajustado
+    'red': { primaria: '#4a0000', destaque: '#ff0000', fundo: '#ffebee', textoHeader: 'white' }, // Novo Vermelho
+    'bw': { primaria: '#ffffff', destaque: '#000000', fundo: '#f9f9f9', textoHeader: 'black' },
+    'blue': { primaria: '#0056b3', destaque: '#00aaff', fundo: '#e3f2fd', textoHeader: 'white' },
+    'green': { primaria: '#2e7d32', destaque: '#81c784', fundo: '#e8f5e9', textoHeader: 'white' }
     };
     const cor = coresTema[temaAtivo] || coresTema['original'];
 
@@ -1250,6 +1255,29 @@ function autoUpdatePreview() {
     }
 }
 
+function baixarPDF() {
+    const element = document.getElementById('conteudo-pdf');
+    
+    // Garante que o elemento está visível para a captura
+    element.style.display = 'block';
+
+    const opt = {
+        margin: [10, 10, 10, 10], // Adiciona margens para não cortar
+        filename: (document.getElementById('titulo').value || 'orcamento') + '.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 2, 
+            useCORS: true, 
+            letterRendering: true,
+            scrollY: 0 // Evita que o scroll afete a captura
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    // Executa a conversão com promessa para garantir a renderização
+    html2pdf().set(opt).from(element).toPdf().get('pdf').save();
+}
+
 // Funções de salvamento e helpers permanecem as mesmas...
 function salvarEstadoCompleto() {
     const extraEmissor = Array.from(document.querySelectorAll('#extra-emissor-container .extra-field')).map(f => ({
@@ -1312,17 +1340,7 @@ function carregarEstadoSalvo() {
     else adicionarLinha();
 }
 
-function baixarPDF() {
-    const element = document.getElementById('conteudo-pdf');
-    const opt = {
-        margin: 0,
-        filename: (document.getElementById('titulo').value || 'orcamento') + '.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-}
+
 
 function addFrase(frase) {
     const obs = document.getElementById('observacoes');
