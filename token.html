@@ -132,9 +132,35 @@
             color: var(--text-gray);
             font-size: 0.9rem;
         }
+        .btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: 0.3s;
+    padding: 8px 0;
+}
+
+.btn-voltar:hover {
+    color: var(--accent-gold);
+    transform: translateX(-5px);
+}
+
+.btn-voltar i {
+    font-size: 0.8rem;
+}
+
     </style>
 </head>
 <body>
+<div style="max-width: 1000px; margin: 10px auto; padding: 0 20px;">
+    <a href="https://fsorcamentos.com.br" class="btn-voltar">
+        <i class="fas fa-arrow-left"></i> Voltar para FS Orçamentos
+    </a>
+</div>
 
     <header>
         <!-- Use o link da imagem que geramos aqui -->
