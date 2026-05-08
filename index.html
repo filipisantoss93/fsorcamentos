@@ -688,6 +688,16 @@ ins.adsbygoogle {
     flex-direction: row;
 }
 
+		.nav-menu a[href="token.html"] {
+    animation: glow 2s infinite;
+}
+
+@keyframes glow {
+    0% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+    50% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+    100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+}
+
 /* Ajustes exclusivos para Celular */
 @media (max-width: 600px) {
     .menu-mobile-btn {
@@ -773,13 +783,14 @@ ins.adsbygoogle {
 <header class="main-header">
     <nav class="nav-container">
         <div class="logo-nav">FS<span>Orçamentos</span></div>
-<ul class="nav-menu">
-    <li><a href="index.html">Início</a></li>
-    <li><a href="sobre.html">Sobre</a></li>
-    <li><a href="comunidade.html">Comunidade</a></li>
-    <li><a href="dicas.html">Dicas</a></li>
-    <li><a href="contato.html">Contato</a></li>
-</ul>
+        <ul class="nav-menu">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="token.html" style="color: var(--accent-yellow); font-weight: bold;">AP Token 🚀</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="comunidade.html">Comunidade</a></li>
+            <li><a href="contato.html">Contato</a></li>
+            <li><button onclick="sair()" style="background:none; border:1px solid #ff4444; color:#ff4444; cursor:pointer; padding:5px 10px; border-radius:5px; font-size:12px;">SAIR</button></li>
+        </ul>
         <button class="menu-mobile-btn" onclick="toggleMenuMobile()">☰</button>
     </nav>
 </header>
