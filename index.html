@@ -765,6 +765,71 @@ ins.adsbygoogle {
 .theme-pdf-yellow { --pdf-bg: #f9a825; --pdf-text: #000000; }
 .theme-pdf-red { --pdf-bg: #ff0000; --pdf-text: #000000; }
 
+.banner-ap-token {
+    display: block;
+    text-decoration: none;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+    border: 2px solid #ffc400; /* Cor de destaque que você já usa */
+    border-radius: 12px;
+    margin: 15px 15px 25px 15px; /* Espaçamento para o retângulo vermelho */
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.banner-ap-token:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 196, 0, 0.2);
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.banner-ap-token .emoji {
+    font-size: 30px;
+    background: #333;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.banner-ap-token .text-group {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.banner-ap-token .title {
+    color: #ffc400;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.banner-ap-token .subtitle {
+    color: #ccc;
+    font-size: 13px;
+}
+
+.banner-ap-token i {
+    color: #ffc400;
+    font-size: 20px;
+}
+
+/* Ajuste para telas pequenas */
+@media (max-width: 480px) {
+    .banner-ap-token {
+        margin: 10px 10px 20px 10px;
+    }
+    .banner-ap-token .title {
+        font-size: 16px;
+    }
+    .banner-ap-token .subtitle {
+        font-size: 11px;
+    }
+}
 
 
     </style>
@@ -805,6 +870,19 @@ ins.adsbygoogle {
 </div>
 
     <div class="container">
+      
+    <a href="token.html" class="banner-ap-token">
+        <div class="banner-content">
+            <span class="emoji">🚀</span>
+            <div class="text-group">
+                <span class="title">AP TOKEN</span>
+                <span class="subtitle">Conheça a moeda oficial dos mecânicos</span>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+    </a>
+    
+    
 		<div style="text-align: center; margin-bottom: 25px;">
     <div style="font-size: 40px; display: inline-flex; align-items: center; gap: 5px;">
         <span style="font-weight: 800; color: #3e2723; background: var(--accent-yellow); padding: 2px 12px; border-radius: 6px;">FS</span>
