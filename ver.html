@@ -322,10 +322,37 @@ function classeStatus(status) {
 }
 
 function normalizarItem(item) {
-  const descricao = item.descricao || item.desc || item.item || '';
-  const qtd = Number(item.qtd || item.quantidade || 0);
-  const valor = Number(item.valor || item.valor_unitario || 0);
-  const subtotal = Number(item.subtotal || (qtd * valor) || 0);
+  const descricao =
+    item.descricao ||
+    item.desc ||
+    item.item ||
+    item.nome ||
+    '';
+
+  const qtd =
+    Number(
+      item.qtd ??
+      item.quantidade ??
+      item.qtde ??
+      item.qtd_item ??
+      1
+    );
+
+  const valor =
+    Number(
+      item.valor ??
+      item.valor_unitario ??
+      item.preco ??
+      item.unitario ??
+      0
+    );
+
+  const subtotal =
+    Number(
+      item.subtotal ??
+      item.total ??
+      (qtd * valor)
+    );
 
   return {
     descricao,
@@ -415,18 +442,19 @@ function renderizarOrcamento(orcamento) {
   if (itens.length) {
     itens.forEach(item => {
       linhasItens += `
-        <tr>
-          <td>${escaparHtml(item.descricao)}</td>
-          <td>${escaparHtml(item.qtd)}</td>
-          <td>${formatarMoeda(item.subtotal)}</td>
-        </tr>
-      `;
+  <tr>
+    <td>${escaparHtml(item.descricao)}</td>
+    <td>${escaparHtml(item.qtd)}</td>
+    <td>${formatarMoeda(item.valor)}</td>
+    <td>${formatarMoeda(item.subtotal)}</td>
+  </tr>
+`;
     });
   } else {
     linhasItens = `
       <tr>
-        <td colspan="3">Nenhum item encontrado.</td>
-      </tr>
+<td colspan="4">Nenhum item encontrado.</td>
+</tr>
     `;
   }
 
@@ -451,10 +479,11 @@ function renderizarOrcamento(orcamento) {
       <table>
         <thead>
           <tr>
-            <th>Descrição</th>
-            <th>Qtd</th>
-            <th>Total</th>
-          </tr>
+  <th>Descrição</th>
+  <th>Qtd</th>
+  <th>Valor unit.</th>
+  <th>Subtotal</th>
+</tr>
         </thead>
         <tbody>
           ${linhasItens}
