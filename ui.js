@@ -640,7 +640,7 @@ async function enviarPorWhatsApp() {
         return;
     }
 
-    const nomeCliente =or
+    const nomeCliente =
         document.getElementById('cliente')?.value?.trim() || '';
 
     const whatsCliente =
