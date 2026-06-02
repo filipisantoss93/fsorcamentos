@@ -1,26 +1,511 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Política de Privacidade | FS Orçamentos</title>
-    <style>
-        body { font-family: sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; }
-        h1 { color: #2563eb; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Política de Privacidade | FS Orçamentos</title>
+
+  <meta name="description" content="Política de Privacidade do FS Orçamentos: entenda quais dados são coletados, como são usados, armazenados e protegidos na plataforma.">
+  <meta name="keywords" content="política de privacidade, FS Orçamentos, LGPD, dados pessoais, orçamento PDF, Google AdSense">
+  <meta name="author" content="Filipi Aparecido dos Santos">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fsorcamentos.com.br/privacidade.html">
+  <meta property="og:title" content="Política de Privacidade | FS Orçamentos">
+  <meta property="og:description" content="Saiba como o FS Orçamentos coleta, utiliza e protege dados pessoais, dados de orçamento, cookies e anúncios.">
+  <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://fsorcamentos.com.br/privacidade.html">
+  <meta property="twitter:title" content="Política de Privacidade | FS Orçamentos">
+  <meta property="twitter:description" content="Entenda como seus dados são tratados no FS Orçamentos.">
+  <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
+    crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "PrivacyPolicy",
+    "name": "Política de Privacidade - FS Orçamentos",
+    "url": "https://fsorcamentos.com.br/privacidade.html"
+  }
+  </script>
+
+  <style>
+    .privacidade-hero {
+      max-width: 1000px;
+      margin: 35px auto 20px;
+      padding: 30px 20px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .privacidade-logo {
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 2px;
+      margin-bottom: 10px;
+      border-bottom: 3px solid #ffc400;
+      padding: 10px 18px;
+      background: #2c2c2c;
+      border-radius: 12px;
+    }
+
+    .privacidade-logo strong {
+      color: #ffffff;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .privacidade-logo span {
+      color: #ffc400;
+      font-size: 28px;
+      font-weight: 400;
+    }
+
+    .privacidade-hero p {
+      max-width: 760px;
+      margin: 12px auto 0;
+      color: #dddddd;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .container-privacidade {
+      max-width: 920px;
+      margin: 25px auto 45px;
+      padding: 30px;
+      background: var(--body-brown, #f4ece1);
+      color: var(--text-dark, #3e2723);
+      border-radius: 18px;
+      border-top: 5px solid var(--accent-yellow, #ffc400);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      line-height: 1.7;
+    }
+
+    .container-privacidade h1,
+    .container-privacidade h2 {
+      color: #3e2723;
+      border-bottom: 2px solid #ffc400;
+      padding-bottom: 10px;
+    }
+
+    .container-privacidade h1 {
+      margin-top: 0;
+      font-size: 30px;
+    }
+
+    .container-privacidade h2 {
+      margin-top: 32px;
+      font-size: 21px;
+    }
+
+    .aviso-politica {
+      background: #fff3cd;
+      color: #3e2723;
+      border-left: 5px solid #ffc400;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-weight: 600;
+    }
+
+    .info-card-politica {
+      background: #ffffff;
+      border-left: 5px solid #ffc400;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 14px 0;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+
+    .container-privacidade ul {
+      padding-left: 22px;
+    }
+
+    .container-privacidade li {
+      margin-bottom: 8px;
+    }
+
+    .tabela-privacidade {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 18px 0;
+    }
+
+    .tabela-privacidade th,
+    .tabela-privacidade td {
+      padding: 12px;
+      border-bottom: 1px solid #eadfce;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    .tabela-privacidade th {
+      background: #3e2723;
+      color: #ffc400;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .privacidade-footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .privacidade-footer a {
+      color: #777;
+    }
+
+    .botoes-politica {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    .btn-politica {
+      display: inline-block;
+      background: #3e2723;
+      color: #ffc400;
+      padding: 11px 16px;
+      border-radius: 22px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .btn-politica:hover {
+      background: #ffc400;
+      color: #3e2723;
+    }
+
+    @media (max-width: 700px) {
+      .privacidade-hero {
+        padding-top: 25px;
+      }
+
+      .privacidade-logo strong {
+        font-size: 25px;
+      }
+
+      .privacidade-logo span {
+        font-size: 23px;
+      }
+
+      .container-privacidade {
+        margin: 20px 12px 35px;
+        padding: 22px;
+      }
+
+      .tabela-privacidade {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Política de Privacidade</h1>
-    <p>A sua privacidade é importante para nós. É política do FS Orçamentos respeitar a sua privacidade em relação a qualquer informação sua que possamos coletar no site.</p>
-    
-    <h2>1. Coleta de Dados</h2>
-    <p>Nosso gerador de orçamento funciona de forma local. Isso significa que os dados digitados (nomes, valores e itens) não são enviados para nossos servidores nem armazenados em bancos de dados. Eles permanecem apenas no seu navegador para a geração do PDF.</p>
-    
-    <h2>2. Cookies e Anúncios</h2>
-    <p>Utilizamos o Google AdSense para veicular anúncios. O Google utiliza cookies para exibir anúncios com base em suas visitas anteriores a este ou outros sites. Você pode desativar a publicidade personalizada visitando as Configurações de Anúncios do Google.</p>
-    
-    <h2>3. Segurança</h2>
-    <p>Embora não armazenemos dados pessoais de orçamentos, empregamos métodos de segurança padrão para proteger o acesso ao nosso site.</p>
-    <br>
-    <a href="index.html">Voltar para o Gerador</a>
+
+<div id="header-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+<script src="carregar-menu.js"></script>
+
+<script>
+async function carregarHeaderPublicoSeDeslogado() {
+  setTimeout(async () => {
+    const headerContainer = document.getElementById('header-container');
+
+    if (!headerContainer) return;
+    if (headerContainer.innerHTML.trim()) return;
+
+    let session = null;
+
+    try {
+      if (window._supabase) {
+        const result = await _supabase.auth.getSession();
+        session = result.data.session;
+      }
+    } catch (e) {
+      console.warn('Não foi possível verificar sessão para header público:', e);
+    }
+
+    if (session) return;
+
+    headerContainer.style.display = 'block';
+
+    headerContainer.innerHTML = `
+      <header class="main-header" style="display:block;">
+        <nav class="nav-container">
+          <div class="logo-nav">FS<span>Orçamentos</span></div>
+
+          <ul class="nav-menu">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="orcamentos.html">Orçamentos</a></li>
+            <li><a href="painel.html">Painel</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+
+          <button class="menu-mobile-btn" onclick="toggleMenuMobile()">☰</button>
+        </nav>
+      </header>
+    `;
+  }, 600);
+}
+
+document.addEventListener('DOMContentLoaded', carregarHeaderPublicoSeDeslogado);
+</script>
+
+<section class="privacidade-hero">
+  <div class="privacidade-logo">
+    <strong>FS</strong><span>Orçamentos</span>
+  </div>
+
+  <p>
+    Esta Política de Privacidade explica como a plataforma coleta, usa, armazena e protege dados de usuários,
+    empresas, orçamentos, anúncios e recursos de comunicação.
+  </p>
+</section>
+
+<main class="container-privacidade">
+  <h1>Política de Privacidade</h1>
+
+  <p>
+    A sua privacidade é importante para o <strong>FS Orçamentos</strong>. Esta página explica de forma clara
+    quais informações podem ser coletadas durante o uso da plataforma, como elas são utilizadas e quais cuidados
+    são adotados para proteger seus dados.
+  </p>
+
+  <div class="aviso-politica">
+    Última atualização: 02 de junho de 2026. Esta política pode ser atualizada conforme novos recursos forem
+    adicionados à plataforma.
+  </div>
+
+  <h2>1. Quem somos</h2>
+
+  <p>
+    O FS Orçamentos é uma plataforma online para criação de orçamentos profissionais em PDF, organização de
+    propostas, edição de dados da empresa e acompanhamento de orçamentos salvos conforme o plano contratado.
+  </p>
+
+  <h2>2. Quais dados podemos coletar</h2>
+
+  <p>
+    Dependendo do uso da plataforma, podemos tratar os seguintes tipos de dados:
+  </p>
+
+  <table class="tabela-privacidade">
+    <thead>
+      <tr>
+        <th>Categoria</th>
+        <th>Exemplos</th>
+        <th>Finalidade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Dados de cadastro</td>
+        <td>Nome, e-mail e senha de acesso.</td>
+        <td>Criar conta, autenticar o usuário e proteger o acesso à plataforma.</td>
+      </tr>
+
+      <tr>
+        <td>Dados da empresa</td>
+        <td>Nome da empresa, responsável, WhatsApp, endereço, CNPJ/CPF e logomarca.</td>
+        <td>Preencher automaticamente o emissor dos orçamentos e personalizar os PDFs.</td>
+      </tr>
+
+      <tr>
+        <td>Dados de orçamento</td>
+        <td>Título/assunto, nome do cliente, WhatsApp do cliente, itens, valores, status e data.</td>
+        <td>Gerar PDF, salvar propostas na nuvem para planos pagos e permitir acompanhamento comercial.</td>
+      </tr>
+
+      <tr>
+        <td>Dados técnicos</td>
+        <td>Cookies, armazenamento local do navegador, sessão de login e informações básicas de uso.</td>
+        <td>Manter login, melhorar funcionamento da plataforma e controlar exibição de recursos.</td>
+      </tr>
+
+      <tr>
+        <td>Dados de anúncios</td>
+        <td>Cookies e identificadores usados por parceiros de anúncios, como Google AdSense.</td>
+        <td>Exibir anúncios no plano Grátis e personalizar publicidade conforme as regras dos parceiros.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>3. Como usamos os dados</h2>
+
+  <p>
+    Os dados coletados são utilizados para:
+  </p>
+
+  <ul>
+    <li>Permitir login, cadastro e autenticação do usuário.</li>
+    <li>Salvar e atualizar os dados da empresa no Painel de Controle.</li>
+    <li>Gerar orçamentos profissionais em PDF.</li>
+    <li>Salvar orçamentos na nuvem para usuários dos planos Básico e Premium.</li>
+    <li>Permitir visualização, edição, exclusão e alteração de status dos orçamentos salvos.</li>
+    <li>Exibir anúncios para usuários do plano Grátis.</li>
+    <li>Melhorar a experiência, segurança e estabilidade da plataforma.</li>
+    <li>Viabilizar recursos futuros, como envio e lembretes automáticos via WhatsApp no plano Premium.</li>
+  </ul>
+
+  <h2>4. Diferença entre os planos</h2>
+
+  <div class="info-card-politica">
+    <strong>Plano Grátis:</strong> permite gerar e baixar PDF. Pode exibir anúncios. Os orçamentos não são salvos
+    na nuvem pela plataforma.
+  </div>
+
+  <div class="info-card-politica">
+    <strong>Plano Básico:</strong> remove anúncios, salva orçamentos na nuvem e permite envio manual por WhatsApp.
+  </div>
+
+  <div class="info-card-politica">
+    <strong>Plano Premium:</strong> inclui os recursos do Básico e pode utilizar automações, como envio de orçamento
+    e lembretes automáticos por WhatsApp, quando esse recurso estiver habilitado.
+  </div>
+
+  <h2>5. Armazenamento dos dados</h2>
+
+  <p>
+    Os dados de conta, perfil, empresa, logomarca e orçamentos salvos podem ser armazenados em serviços de banco de
+    dados, autenticação e armazenamento em nuvem utilizados pela plataforma, como Supabase ou serviços equivalentes.
+  </p>
+
+  <p>
+    Também podemos usar o <strong>localStorage</strong> do navegador para guardar preferências e informações temporárias,
+    como nome exibido, plano do usuário, estado de menus, filtros e dados de rascunho para melhorar a experiência.
+  </p>
+
+  <h2>6. Logomarca e arquivos enviados</h2>
+
+  <p>
+    Quando o usuário envia uma logomarca, o arquivo pode ser armazenado em um bucket de arquivos para que seja exibido
+    nos orçamentos e no painel. O usuário pode atualizar ou remover sua logo pelo Painel de Controle.
+  </p>
+
+  <h2>7. Cookies, anúncios e Google AdSense</h2>
+
+  <p>
+    A plataforma pode utilizar o Google AdSense para exibir anúncios, especialmente no plano Grátis. Fornecedores
+    terceirizados, incluindo o Google, podem usar cookies para veicular anúncios com base em visitas anteriores do
+    usuário a este site ou a outros sites.
+  </p>
+
+  <p>
+    O uso de cookies de publicidade permite que o Google e seus parceiros exibam anúncios com base nas visitas do
+    usuário. O usuário pode desativar a publicidade personalizada nas configurações de anúncios do Google.
+  </p>
+
+  <h2>8. WhatsApp e comunicações</h2>
+
+  <p>
+    Nos recursos de envio manual, a plataforma pode abrir o WhatsApp do usuário com uma mensagem pronta para envio.
+    No plano Premium, quando habilitado, a plataforma poderá enviar mensagens automáticas ao cliente, como envio do
+    orçamento e lembretes de orçamentos pendentes.
+  </p>
+
+  <p>
+    Para mensagens automáticas, os dados necessários podem incluir nome do cliente, WhatsApp do cliente, assunto,
+    valor e link do orçamento. Esses dados são usados exclusivamente para viabilizar a comunicação relacionada ao
+    orçamento.
+  </p>
+
+  <h2>9. Compartilhamento de dados</h2>
+
+  <p>
+    Não vendemos dados pessoais. Podemos compartilhar dados somente quando necessário para funcionamento da plataforma,
+    como com provedores de hospedagem, autenticação, banco de dados, armazenamento, anúncios ou comunicação.
+  </p>
+
+  <p>
+    Também poderemos compartilhar informações quando houver obrigação legal, ordem de autoridade competente ou necessidade
+    de proteção dos direitos da plataforma e de seus usuários.
+  </p>
+
+  <h2>10. Segurança</h2>
+
+  <p>
+    Adotamos medidas técnicas razoáveis para proteger os dados, como autenticação, controle de acesso, permissões por
+    usuário e regras de segurança no banco de dados e armazenamento. Ainda assim, nenhum sistema é totalmente imune a
+    riscos, e o usuário também deve proteger sua senha e seus dispositivos.
+  </p>
+
+  <h2>11. Direitos do usuário</h2>
+
+  <p>
+    Conforme aplicável pela legislação brasileira de proteção de dados, o usuário pode solicitar informações sobre seus
+    dados, correção, atualização, exclusão ou esclarecimentos sobre o tratamento realizado pela plataforma.
+  </p>
+
+  <p>
+    Para solicitações relacionadas à privacidade, entre em contato pela página de contato da plataforma.
+  </p>
+
+  <h2>12. Retenção e exclusão</h2>
+
+  <p>
+    Os dados são mantidos enquanto forem necessários para a prestação do serviço, cumprimento de obrigações legais,
+    segurança, prevenção de fraudes, solução de problemas ou enquanto a conta estiver ativa.
+  </p>
+
+  <p>
+    Orçamentos salvos podem ser excluídos pelo próprio usuário na página de orçamentos. Dados de perfil podem ser
+    atualizados no Painel de Controle.
+  </p>
+
+  <h2>13. Links externos</h2>
+
+  <p>
+    A plataforma pode conter links para sites de terceiros, como Google, WhatsApp, páginas de suporte ou anúncios.
+    Não somos responsáveis pelas práticas de privacidade desses sites externos.
+  </p>
+
+  <h2>14. Alterações nesta política</h2>
+
+  <p>
+    Esta Política de Privacidade pode ser atualizada periodicamente para refletir melhorias na plataforma, novos recursos,
+    alterações legais ou ajustes operacionais. A versão mais recente estará sempre disponível nesta página.
+  </p>
+
+  <div class="botoes-politica">
+    <a href="index.html" class="btn-politica">Voltar ao gerador</a>
+    <a href="contato.html" class="btn-politica">Falar com suporte</a>
+  </div>
+</main>
+
+<footer class="privacidade-footer">
+  &copy; 2026 FS Orçamentos |
+  <a href="sobre.html">Sobre</a> |
+  <a href="contato.html">Contato</a>
+</footer>
+
 </body>
 </html>

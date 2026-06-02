@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Controle - FS Orçamentos</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  <style>
+    .painel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .painel-subtitulo {
+      color: #5d4037;
+      margin-top: -8px;
+      font-size: 14px;
+    }
+
+    .painel-card {
+      width: 100%;
+      background: #f4ece1;
+      color: #3e2723;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      border-top: 5px solid #ffc400;
+      box-sizing: border-box;
+    }
+
+    .painel-card h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #ffc400;
+      padding-bottom: 10px;
+      color: #3e2723;
+    }
+
+    .grid-painel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .campo-painel label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      color: #5d4037;
+      margin-bottom: 5px;
+    }
+
+    .campo-painel label span {
+      color: #dc2626;
+      margin-left: 3px;
+    }
+
+    .campo-painel input {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d7ccc8;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 14px;
+      background: #fff;
+      color: #333;
+    }
+
+    .logo-area {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 18px;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid #e0d6c8;
+      margin-top: 18px;
+    }
+
+    .logo-preview-box {
+      width: 160px;
+      height: 120px;
+      border: 2px dashed #d7ccc8;
+      border-radius: 14px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #8d6e63;
+      text-align: center;
+      font-size: 12px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .logo-preview-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    .logo-info h3 {
+      margin: 0 0 6px 0;
+      color: #3e2723;
+    }
+
+    .logo-info p {
+      margin: 0 0 12px 0;
+      color: #6d4c41;
+      font-size: 13px;
+    }
+
+    .upload-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .input-logo-escondido {
+      display: none;
+    }
+
+    .btn-upload-logo,
+    .btn-remover-logo,
+    .btn-salvar,
+    .btn-senha,
+    .btn-cancelar,
+    .btn-confirmar {
+      border: none;
+      border-radius: 8px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .btn-upload-logo {
+      background: #3e2723;
+      color: #ffc400;
+      border: 1px solid #ffc400;
+      display: inline-block;
+    }
+
+    .btn-remover-logo {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .acoes-painel {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn-salvar {
+      background: #2e7d32;
+      color: #fff;
+    }
+
+    .btn-senha {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .status-msg {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: bold;
+      display: none;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .status-msg.sucesso {
+      display: block;
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-msg.erro {
+      display: block;
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .modal-overlay-painel {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10050;
+      padding: 20px;
+    }
+
+    .modal-painel {
+      width: 100%;
+      max-width: 520px;
+      background: #f4ece1;
+      color: #3e2723;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-top: 5px solid #ffc400;
+      box-sizing: border-box;
+    }
+
+    .modal-painel h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #ffc400;
+      padding-bottom: 10px;
+    }
+
+    .modal-painel .campo-painel {
+      margin-bottom: 12px;
+    }
+
+    .botoes-modal-painel {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .btn-cancelar {
+      background: #777;
+      color: #fff;
+    }
+
+    .btn-confirmar {
+      background: #2e7d32;
+      color: #fff;
+    }
+
+    .dica-seguranca {
+      background: #fff3cd;
+      color: #5d4037;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .grid-painel,
+      .logo-area {
+        grid-template-columns: 1fr;
+      }
+
+      .logo-preview-box {
+        width: 100%;
+        height: 140px;
+      }
+
+      .acoes-painel {
+        flex-direction: column;
+      }
+
+      .btn-salvar,
+      .btn-senha {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+<script src="carregar-menu.js"></script>
+
+<div class="container">
+  <div class="painel-header">
+    <div>
+      <h1>Painel de Controle</h1>
+      <p class="painel-subtitulo">
+        Cadastre os dados da sua empresa. Eles serão usados automaticamente nos seus orçamentos em PDF.
+      </p>
+    </div>
+  </div>
+
+  <section class="painel-card">
+    <h2>Dados da Empresa / Administrador</h2>
+
+    <form id="form-cadastro-perfil" onsubmit="salvarPerfil(event)">
+      <div class="logo-area">
+        <div class="logo-preview-box" id="logo-preview-box">
+          <span id="logo-placeholder">Nenhuma logo cadastrada</span>
+          <img id="preview-logo" src="" alt="Pré-visualização da logo da empresa">
+        </div>
+
+        <div class="logo-info">
+          <h3>Logo da empresa</h3>
+          <p>
+            Envie uma imagem PNG ou JPG de até 500KB. A logo salva aqui aparecerá automaticamente no cabeçalho dos seus orçamentos.
+          </p>
+
+          <div class="upload-row">
+            <label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label>
+            <button type="button" class="btn-remover-logo" onclick="removerLogoPerfil()">Remover logo</button>
+            <input type="file" id="logo_file" class="input-logo-escondido" accept="image/png, image/jpeg">
+            <input type="hidden" id="foto_url">
+          </div>
+
+          <div id="status-logo" class="status-msg"></div>
+        </div>
+      </div>
+
+      <div class="grid-painel">
+        <div class="campo-painel">
+          <label>Seu nome <span>*</span></label>
+          <input type="text" id="nome" required placeholder="Nome do responsável">
+        </div>
+
+        <div class="campo-painel">
+          <label>Nome da empresa <span>*</span></label>
+          <input type="text" id="nome_empresa" required placeholder="Nome da sua empresa ou negócio">
+        </div>
+
+        <div class="campo-painel">
+          <label>WhatsApp / Telefone <span>*</span></label>
+          <input type="tel" id="telefone_empresa" required placeholder="Ex: (18) 99999-9999">
+        </div>
+
+        <div class="campo-painel">
+          <label>CNPJ / CPF</label>
+          <input type="text" id="cnpj_empresa" placeholder="00.000.000/0000-00">
+        </div>
+
+        <div class="campo-painel" style="grid-column: 1 / -1;">
+          <label>Endereço</label>
+          <input type="text" id="endereco_empresa" placeholder="Rua, número, bairro, cidade/UF">
+        </div>
+      </div>
+
+      <div id="status-perfil" class="status-msg"></div>
+
+      <div class="acoes-painel">
+        <button type="button" class="btn-senha" onclick="abrirModalSenha()">
+          Alterar senha
+        </button>
+
+        <button type="submit" class="btn-salvar">
+          Salvar alterações
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<div id="modal-senha" class="modal-overlay-painel">
+  <div class="modal-painel">
+    <h2>Alterar senha</h2>
+
+    <div class="dica-seguranca">
+      Para sua segurança, informe sua senha atual antes de cadastrar uma nova senha.
+    </div>
+
+    <div class="campo-painel">
+      <label>Senha atual</label>
+      <input type="password" id="senha_atual" autocomplete="current-password" placeholder="Digite sua senha atual">
+    </div>
+
+    <div class="campo-painel">
+      <label>Nova senha</label>
+      <input type="password" id="nova_senha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres">
+    </div>
+
+    <div class="campo-painel">
+      <label>Confirmar nova senha</label>
+      <input type="password" id="confirmar_senha" autocomplete="new-password" placeholder="Digite a nova senha novamente">
+    </div>
+
+    <div id="status-senha" class="status-msg"></div>
+
+    <div class="botoes-modal-painel">
+      <button type="button" class="btn-cancelar" onclick="fecharModalSenha()">
+        Cancelar
+      </button>
+
+      <button type="button" class="btn-confirmar" onclick="alterarSenhaSegura()">
+        Confirmar alteração
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  await carregarPerfil();
+  configurarUploadLogo();
+});
+
+function mostrarStatus(id, mensagem, tipo = 'sucesso') {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.className = `status-msg ${tipo}`;
+  el.innerText = mensagem;
+
+  if (mensagem) {
+    setTimeout(() => {
+      el.className = 'status-msg';
+      el.innerText = '';
+    }, 4500);
+  }
+}
+
+function atualizarPreviewLogo(url) {
+  const img = document.getElementById('preview-logo');
+  const placeholder = document.getElementById('logo-placeholder');
+
+  if (!img || !placeholder) return;
+
+  if (url) {
+    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+    placeholder.style.display = 'block';
+  }
+}
+
+async function obterSessaoPainel() {
+  const { data: { session }, error } = await _supabase.auth.getSession();
+
+  if (error || !session) {
+    window.location.href = '/index.html';
+    return null;
+  }
+
+  return session;
+}
+
+async function carregarPerfil() {
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const { data, error } = await _supabase
+    .from('perfis')
+    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
+    .eq('id', session.user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Erro ao carregar perfil:', error);
+    mostrarStatus('status-perfil', 'Erro ao carregar os dados do perfil.', 'erro');
+    return;
+  }
+
+  if (!data) {
+    atualizarPreviewLogo('');
+    return;
+  }
+
+  document.getElementById('nome').value = data.nome || '';
+  document.getElementById('nome_empresa').value = data.nome_empresa || '';
+  document.getElementById('telefone_empresa').value = data.telefone_empresa || '';
+  document.getElementById('endereco_empresa').value = data.endereco_empresa || '';
+  document.getElementById('cnpj_empresa').value = data.cnpj_empresa || '';
+  document.getElementById('foto_url').value = data.foto_url || '';
+
+  atualizarPreviewLogo(data.foto_url || '');
+
+  localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email.split('@')[0]);
+  localStorage.setItem('usuario_plano', data.plano || 'gratis');
+}
+
+async function salvarPerfil(event) {
+  event.preventDefault();
+
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const payload = {
+    id: session.user.id,
+    nome: document.getElementById('nome').value.trim(),
+    nome_empresa: document.getElementById('nome_empresa').value.trim(),
+    telefone_empresa: document.getElementById('telefone_empresa').value.trim(),
+    endereco_empresa: document.getElementById('endereco_empresa').value.trim(),
+    cnpj_empresa: document.getElementById('cnpj_empresa').value.trim(),
+    foto_url: document.getElementById('foto_url').value.trim(),
+    atualizado_em: new Date().toISOString()
+  };
+
+  if (!payload.nome || !payload.nome_empresa || !payload.telefone_empresa) {
+    mostrarStatus('status-perfil', 'Preencha nome, empresa e WhatsApp.', 'erro');
+    return;
+  }
+
+  const { error } = await _supabase
+    .from('perfis')
+    .upsert([payload]);
+
+  if (error) {
+    console.error('Erro ao salvar perfil:', error);
+    mostrarStatus('status-perfil', 'Erro ao salvar perfil.', 'erro');
+    return;
+  }
+
+  localStorage.setItem('usuario_nome', payload.nome || payload.nome_empresa);
+  localStorage.setItem('nome_empresa', payload.nome_empresa);
+  localStorage.setItem('telefone_empresa', payload.telefone_empresa);
+  localStorage.setItem('endereco_empresa', payload.endereco_empresa);
+  localStorage.setItem('cnpj_empresa', payload.cnpj_empresa);
+  localStorage.setItem('foto_url', payload.foto_url);
+
+  mostrarStatus('status-perfil', 'Perfil atualizado com sucesso.', 'sucesso');
+
+  if (typeof carregarMenu === 'function') {
+    await carregarMenu(session);
+  }
+}
+
+function configurarUploadLogo() {
+  const input = document.getElementById('logo_file');
+  if (!input) return;
+
+  input.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!['image/png', 'image/jpeg'].includes(file.type)) {
+      mostrarStatus('status-logo', 'Envie uma imagem PNG ou JPG.', 'erro');
+      input.value = '';
+      return;
+    }
+
+    if (file.size > 500 * 1024) {
+      mostrarStatus('status-logo', 'A imagem é muito grande. O limite é 500KB.', 'erro');
+      input.value = '';
+      return;
+    }
+
+    const session = await obterSessaoPainel();
+    if (!session) return;
+
+    const extensao = file.name.split('.').pop().toLowerCase();
+    const nomeArquivo = `${session.user.id}/logo.${extensao}`;
+
+    mostrarStatus('status-logo', 'Enviando logo...', 'sucesso');
+
+    const { error } = await _supabase.storage
+      .from('logos')
+      .upload(nomeArquivo, file, {
+        upsert: true,
+        contentType: file.type
+      });
+
+    if (error) {
+      console.error('Erro ao enviar logo:', error);
+      mostrarStatus('status-logo', 'Erro ao enviar a logo. Verifique o bucket logos.', 'erro');
+      return;
+    }
+
+    const { data: publicUrlData } = _supabase.storage
+      .from('logos')
+      .getPublicUrl(nomeArquivo);
+
+    const logoUrl = publicUrlData.publicUrl;
+
+    document.getElementById('foto_url').value = logoUrl;
+    atualizarPreviewLogo(logoUrl);
+    mostrarStatus('status-logo', 'Logo enviada com sucesso. Clique em Salvar alterações.', 'sucesso');
+  });
+}
+
+async function removerLogoPerfil() {
+  const confirmar = confirm('Deseja remover a logo cadastrada do perfil?');
+  if (!confirmar) return;
+
+  document.getElementById('foto_url').value = '';
+  atualizarPreviewLogo('');
+  mostrarStatus('status-logo', 'Logo removida da pré-visualização. Clique em Salvar alterações.', 'sucesso');
+}
+
+function abrirModalSenha() {
+  document.getElementById('senha_atual').value = '';
+  document.getElementById('nova_senha').value = '';
+  document.getElementById('confirmar_senha').value = '';
+
+  const status = document.getElementById('status-senha');
+  if (status) {
+    status.className = 'status-msg';
+    status.innerText = '';
+  }
+
+  document.getElementById('modal-senha').style.display = 'flex';
+}
+
+function fecharModalSenha() {
+  document.getElementById('modal-senha').style.display = 'none';
+}
+
+async function alterarSenhaSegura() {
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const senhaAtual = document.getElementById('senha_atual').value;
+  const novaSenha = document.getElementById('nova_senha').value;
+  const confirmarSenha = document.getElementById('confirmar_senha').value;
+
+  if (!senhaAtual || !novaSenha || !confirmarSenha) {
+    mostrarStatus('status-senha', 'Preencha todos os campos.', 'erro');
+    return;
+  }
+
+  if (novaSenha.length < 6) {
+    mostrarStatus('status-senha', 'A nova senha deve ter pelo menos 6 caracteres.', 'erro');
+    return;
+  }
+
+  if (novaSenha !== confirmarSenha) {
+    mostrarStatus('status-senha', 'As novas senhas não coincidem.', 'erro');
+    return;
+  }
+
+  mostrarStatus('status-senha', 'Validando senha atual...', 'sucesso');
+
+  const { error: loginError } = await _supabase.auth.signInWithPassword({
+    email: session.user.email,
+    password: senhaAtual
+  });
+
+  if (loginError) {
+    console.error('Senha atual inválida:', loginError);
+    mostrarStatus('status-senha', 'Senha atual incorreta.', 'erro');
+    return;
+  }
+
+  const { error: updateError } = await _supabase.auth.updateUser({
+    password: novaSenha
+  });
+
+  if (updateError) {
+    console.error('Erro ao alterar senha:', updateError);
+    mostrarStatus('status-senha', updateError.message || 'Erro ao alterar senha.', 'erro');
+    return;
+  }
+
+  mostrarStatus('status-senha', 'Senha alterada com sucesso.', 'sucesso');
+
+  setTimeout(() => {
+    fecharModalSenha();
+  }, 1200);
+}
+</script>
+
+</body>
+</html>

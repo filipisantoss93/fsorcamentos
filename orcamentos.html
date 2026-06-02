@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Meus Orçamentos - FS Orçamentos</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  <style>
+    .orcamentos-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .btn-atualizar {
+      background: #3e2723;
+      color: #ffc400;
+      border: 1px solid #ffc400;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .filtro-flutuante {
+      position: sticky;
+      top: 76px;
+      z-index: 850;
+      background: rgba(244, 236, 225, 0.96);
+      backdrop-filter: blur(8px);
+      border: 1px solid #e0d6c8;
+      border-left: 5px solid #ffc400;
+      border-radius: 14px;
+      padding: 12px;
+      margin: 0 0 18px 0;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filtro-grupo {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 190px;
+      flex: 1;
+    }
+
+    .filtro-grupo label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #5d4037;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .filtro-grupo select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d7ccc8;
+      border-radius: 10px;
+      background: #fff;
+      color: #3e2723;
+      font-weight: 700;
+      box-sizing: border-box;
+    }
+
+    .tabela-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .tabela-orcamentos {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      min-width: 850px;
+    }
+
+    .tabela-orcamentos th,
+    .tabela-orcamentos td {
+      padding: 10px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    .tabela-orcamentos th {
+      background: #3e2723;
+      color: #ffc400;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .linha-orcamento {
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .linha-orcamento:hover {
+      background: #fff8dc;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .status-pendente {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-aprovado {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-recusado {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-em_servico {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status-finalizado {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .btn-pequeno {
+      border: none;
+      padding: 7px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .btn-editar {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn-excluir {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .msg-vazia {
+      padding: 20px;
+      background: #fff3cd;
+      color: #5d4037;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .modal-overlay-orcamento {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10050;
+      padding: 20px;
+    }
+
+    .modal-orcamento,
+    .modal-visualizacao {
+      width: 100%;
+      max-width: 850px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #f4ece1;
+      color: #3e2723;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-top: 5px solid #ffc400;
+    }
+
+    .modal-orcamento h2,
+    .modal-visualizacao h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #ffc400;
+      padding-bottom: 10px;
+    }
+
+    .grid-modal,
+    .visual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .campo-modal label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      color: #5d4037;
+      margin-bottom: 4px;
+    }
+
+    .campo-modal input,
+    .campo-modal select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d7ccc8;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    .visual-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px;
+      border-left: 5px solid #ffc400;
+    }
+
+    .visual-card strong {
+      display: block;
+      color: #3e2723;
+      margin-bottom: 4px;
+    }
+
+    .editor-itens {
+      margin-top: 18px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .linha-item-edit {
+      display: grid;
+      grid-template-columns: 2fr 0.7fr 1fr 1fr auto;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .linha-item-edit input {
+      padding: 9px;
+      border: 1px solid #d7ccc8;
+      border-radius: 6px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .tabela-itens-visual {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .tabela-itens-visual th,
+    .tabela-itens-visual td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .tabela-itens-visual th {
+      background: #3e2723;
+      color: #ffc400;
+      text-align: left;
+    }
+
+    .total-modal,
+    .total-visual {
+      text-align: right;
+      margin-top: 14px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #3e2723;
+    }
+
+    .botoes-modal {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .btn-cancelar {
+      background: #777;
+      color: #fff;
+    }
+
+    .btn-salvar-modal {
+      background: #2e7d32;
+      color: #fff;
+    }
+
+    .btn-add-item {
+      background: #4e342e;
+      color: #ffc400;
+      border: 1px solid #ffc400;
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .painel-resumo {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      margin: 10px 0 22px 0;
+      border-top: 4px solid #ffc400;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .resumo-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .resumo-topo h2 {
+      margin: 0;
+      color: #3e2723;
+      font-size: 20px;
+    }
+
+    .cards-resumo {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .card-resumo {
+      border-radius: 12px;
+      padding: 14px;
+      background: #f9f9f9;
+      border-left: 5px solid #d7ccc8;
+    }
+
+    .card-resumo strong {
+      display: block;
+      font-size: 12px;
+      color: #5d4037;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .card-resumo .valor-resumo {
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      color: #3e2723;
+    }
+
+    .card-resumo small {
+      color: #777;
+    }
+
+    .card-pendente { border-left-color: #ffc107; background: #fff8e1; }
+    .card-aprovado { border-left-color: #28a745; background: #eaf7ed; }
+    .card-recusado { border-left-color: #dc3545; background: #fdecee; }
+    .card-em-servico { border-left-color: #2563eb; background: #eff6ff; }
+    .card-finalizado { border-left-color: #7c3aed; background: #f3e8ff; }
+    .card-total { border-left-color: #3e2723; background: #efebe9; }
+
+    @media (max-width: 1100px) {
+      .cards-resumo { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 850px) {
+      .cards-resumo { grid-template-columns: repeat(2, 1fr); }
+      .filtro-flutuante { top: 64px; }
+    }
+
+    @media (max-width: 700px) {
+      .grid-modal,
+      .visual-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .linha-item-edit {
+        grid-template-columns: 1fr;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+
+      .modal-orcamento,
+      .modal-visualizacao {
+        padding: 18px;
+      }
+
+      .filtro-flutuante {
+        align-items: stretch;
+        top: 0;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .cards-resumo { grid-template-columns: 1fr; }
+      .tabela-orcamentos { min-width: 760px; }
+    }
+
+    .resumo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #3e2723;
+  color: #ffc400;
+  padding: 12px 16px;
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  margin-top: 18px;
+}
+
+.resumo-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #ffc400;
+  border: none;
+  padding: 0;
+}
+
+.btn-toggle-resumo {
+  background: #ffc400;
+  color: #3e2723;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.resumo-financeiro.minimizado .resumo-conteudo {
+  display: none;
+}
+
+.resumo-conteudo {
+  background: #f4ece1;
+  border: 1px solid #d7ccc8;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 15px;
+}
+
+@media (max-width: 700px) {
+  .resumo-header h2 {
+    font-size: 15px;
+  }
+
+  .btn-toggle-resumo {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+<script src="carregar-menu.js"></script>
+
+<div class="container">
+  <div class="orcamentos-header">
+    <h1>Meus Orçamentos</h1>
+
+    <button type="button" class="btn-atualizar" onclick="carregarOrcamentos()">
+      Atualizar
+    </button>
+  </div>
+
+  <div class="filtro-flutuante">
+    <div class="filtro-grupo">
+      <label for="filtro-status">Status exibido</label>
+      <select id="filtro-status" onchange="trocarAbaOrcamentos(this.value)">
+        <option value="todos">Todos</option>
+        <option value="pendente">Pendentes</option>
+        <option value="aprovado">Aprovados</option>
+        <option value="recusado">Recusados</option>
+        <option value="em_servico">Em serviço</option>
+        <option value="finalizado">Finalizados</option>
+      </select>
+    </div>
+
+    <div class="filtro-grupo">
+      <label for="filtro-periodo">Período do resumo</label>
+      <select id="filtro-periodo" onchange="trocarPeriodoResumo(this.value)">
+        <option value="15">Últimos 15 dias</option>
+        <option value="30">Últimos 30 dias</option>
+        <option value="60">Últimos 60 dias</option>
+        <option value="total" selected>Total</option>
+      </select>
+    </div>
+  </div>
+
+<div id="resumo-financeiro" class="resumo-financeiro">
+    <div class="resumo-header" onclick="toggleResumoFinanceiro()">
+      <div>
+        <h2>Resumo financeiro</h2>
+        <small id="resumo-periodo-label" style="display:block; color:#f7e6a1; margin-top:4px;">
+          Período: Total
+        </small>
+      </div>
+
+      <button type="button" id="btn-toggle-resumo" class="btn-toggle-resumo">
+        Minimizar ▲
+      </button>
+    </div>
+
+    <div class="resumo-conteudo">
+      <div class="cards-resumo">
+        <div class="card-resumo card-pendente">
+          <strong>Pendentes</strong>
+          <span class="valor-resumo" id="resumo-pendente">R$ 0,00</span>
+          <small><span id="qtd-pendente">0</span> orçamento(s)</small>
+        </div>
+
+        <div class="card-resumo card-aprovado">
+          <strong>Aprovados</strong>
+          <span class="valor-resumo" id="resumo-aprovado">R$ 0,00</span>
+          <small><span id="qtd-aprovado">0</span> orçamento(s)</small>
+        </div>
+
+        <div class="card-resumo card-recusado">
+          <strong>Recusados</strong>
+          <span class="valor-resumo" id="resumo-recusado">R$ 0,00</span>
+          <small><span id="qtd-recusado">0</span> orçamento(s)</small>
+        </div>
+
+        <div class="card-resumo card-em-servico">
+          <strong>Em serviço</strong>
+          <span class="valor-resumo" id="resumo-em-servico">R$ 0,00</span>
+          <small><span id="qtd-em-servico">0</span> orçamento(s)</small>
+        </div>
+
+        <div class="card-resumo card-finalizado">
+          <strong>Finalizados</strong>
+          <span class="valor-resumo" id="resumo-finalizado">R$ 0,00</span>
+          <small><span id="qtd-finalizado">0</span> orçamento(s)</small>
+        </div>
+
+        <div class="card-resumo card-total">
+          <strong>Total geral</strong>
+          <span class="valor-resumo" id="resumo-total-geral">R$ 0,00</span>
+          <small><span id="qtd-total-geral">0</span> orçamento(s)</small>
+        </div>
+      </div>
+    </div>
+  </div>
+<p></p>
+  <div id="lista-orcamentos">
+    <p>Carregando orçamentos...</p>
+  </div>
+</div>
+
+<div id="modal-visualizar-orcamento" class="modal-overlay-orcamento">
+  <div class="modal-visualizacao">
+    <h2 id="visual-assunto">Visualizar Orçamento</h2>
+
+    <div class="visual-grid">
+      <div class="visual-card">
+        <strong>Cliente</strong>
+        <span id="visual-cliente">-</span>
+      </div>
+
+      <div class="visual-card">
+        <strong>WhatsApp</strong>
+        <span id="visual-whatsapp">-</span>
+      </div>
+
+      <div class="visual-card">
+        <strong>Status</strong>
+        <span id="visual-status">-</span>
+      </div>
+
+      <div class="visual-card">
+        <strong>Data</strong>
+        <span id="visual-data">-</span>
+      </div>
+    </div>
+
+    <h3>Itens do orçamento</h3>
+    <div id="visual-itens"></div>
+
+    <div class="total-visual">
+      Total: <span id="visual-total">R$ 0,00</span>
+    </div>
+
+    <div class="botoes-modal">
+      <button type="button" class="btn-pequeno btn-cancelar" onclick="fecharModalVisualizar()">Fechar</button>
+      <button type="button" class="btn-pequeno btn-editar" onclick="editarOrcamentoVisualizado()">Editar</button>
+      <button type="button" class="btn-pequeno btn-excluir" onclick="excluirOrcamentoVisualizado()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-editar-orcamento" class="modal-overlay-orcamento">
+  <div class="modal-orcamento">
+    <h2>Editar Orçamento</h2>
+
+    <input type="hidden" id="edit-orcamento-id">
+    <input type="hidden" id="edit-status-original">
+
+    <div class="grid-modal">
+      <div class="campo-modal">
+        <label>Assunto / Título</label>
+        <input type="text" id="edit-assunto">
+      </div>
+
+      <div class="campo-modal">
+        <label>Status</label>
+        <select id="edit-status">
+          <option value="pendente">Pendente</option>
+          <option value="aprovado">Aprovado</option>
+          <option value="recusado">Recusado</option>
+          <option value="em_servico">Em serviço</option>
+          <option value="finalizado">Finalizado</option>
+        </select>
+      </div>
+
+      <div class="campo-modal">
+        <label>Nome do Cliente</label>
+        <input type="text" id="edit-cliente-nome">
+      </div>
+
+      <div class="campo-modal">
+        <label>WhatsApp do Cliente</label>
+        <input type="text" id="edit-cliente-whatsapp">
+      </div>
+    </div>
+
+    <div class="editor-itens">
+      <strong>Itens do orçamento</strong>
+
+      <div id="edit-itens-lista" style="margin-top: 12px;"></div>
+
+      <button type="button" class="btn-add-item" onclick="adicionarItemModal()">
+        + Adicionar Item
+      </button>
+
+      <div class="total-modal">
+        Total: R$ <span id="edit-total">0,00</span>
+      </div>
+    </div>
+
+    <div class="botoes-modal">
+      <button type="button" class="btn-pequeno btn-cancelar" onclick="fecharModalEditar()">Cancelar</button>
+      <button type="button" class="btn-pequeno btn-salvar-modal" onclick="salvarEdicaoOrcamento()">Salvar Alterações</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STATUS_CONFIG = {
+  pendente: 'Pendente',
+  aprovado: 'Aprovado',
+  recusado: 'Recusado',
+  em_servico: 'Em serviço',
+  finalizado: 'Finalizado'
+};
+
+let statusAtual = 'todos';
+let periodoResumoAtual = 'total';
+let orcamentosCache = [];
+let orcamentoVisualizadoId = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await carregarOrcamentos();
+  restaurarEstadoResumoFinanceiro();
+});
+
+function escaparHtml(valor) {
+  return String(valor || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function formatarMoeda(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+}
+
+function formatarNumeroBR(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function formatarData(dataValor) {
+  if (!dataValor) return '-';
+
+  const data = new Date(dataValor);
+
+  if (isNaN(data.getTime())) return '-';
+
+  return data.toLocaleDateString('pt-BR');
+}
+
+function statusLabel(status) {
+  return STATUS_CONFIG[status] || status || 'Pendente';
+}
+
+function classeStatus(status) {
+  return String(status || 'pendente').replace(/[^a-zA-Z0-9_\-]/g, '');
+}
+
+function trocarAbaOrcamentos(status) {
+  statusAtual = status;
+
+  const select = document.getElementById('filtro-status');
+  if (select && select.value !== status) select.value = status;
+
+  carregarOrcamentos();
+}
+
+async function obterSessaoObrigatoria() {
+  const { data: { session }, error } = await _supabase.auth.getSession();
+
+  if (error || !session) {
+    window.location.href = '/index.html';
+    return null;
+  }
+
+  return session;
+}
+
+async function carregarOrcamentos() {
+  const lista = document.getElementById('lista-orcamentos');
+  if (!lista) return;
+
+  lista.innerHTML = '<p>Carregando orçamentos...</p>';
+
+  const session = await obterSessaoObrigatoria();
+  if (!session) return;
+
+  let query = _supabase
+    .from('orcamentos')
+    .select('*')
+    .eq('usuario_id', session.user.id)
+    .order('criado_em', { ascending: false });
+
+  if (statusAtual !== 'todos') {
+    query = query.eq('status', statusAtual);
+  }
+
+  const { data: orcamentos, error } = await query;
+
+  if (error) {
+    console.error('Erro ao buscar orçamentos:', error);
+    lista.innerHTML = `<div class="msg-vazia">Erro ao carregar orçamentos: ${escaparHtml(error.message)}</div>`;
+    return;
+  }
+
+  orcamentosCache = orcamentos || [];
+  renderizarTabelaOrcamentos(orcamentosCache);
+  await carregarResumoFinanceiro();
+}
+
+function trocarPeriodoResumo(periodo) {
+  periodoResumoAtual = periodo;
+
+  const select = document.getElementById('filtro-periodo');
+  if (select && select.value !== periodo) select.value = periodo;
+
+  carregarResumoFinanceiro();
+}
+
+function atualizarLabelPeriodo() {
+  const label = document.getElementById('resumo-periodo-label');
+  if (!label) return;
+
+  if (periodoResumoAtual === 'total') {
+    label.innerText = 'Período: Total';
+  } else {
+    label.innerText = `Período: últimos ${periodoResumoAtual} dias`;
+  }
+}
+
+async function carregarResumoFinanceiro() {
+  const session = await obterSessaoObrigatoria();
+  if (!session) return;
+
+  atualizarLabelPeriodo();
+
+  let query = _supabase
+    .from('orcamentos')
+    .select('status,total,criado_em')
+    .eq('usuario_id', session.user.id);
+
+  if (periodoResumoAtual !== 'total') {
+    const dias = Number(periodoResumoAtual);
+    const dataInicial = new Date();
+    dataInicial.setDate(dataInicial.getDate() - dias);
+    dataInicial.setHours(0, 0, 0, 0);
+
+    query = query.gte('criado_em', dataInicial.toISOString());
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Erro ao carregar resumo financeiro:', error);
+    return;
+  }
+
+  const resumo = {
+    pendente: { total: 0, qtd: 0 },
+    aprovado: { total: 0, qtd: 0 },
+    recusado: { total: 0, qtd: 0 },
+    em_servico: { total: 0, qtd: 0 },
+    finalizado: { total: 0, qtd: 0 }
+  };
+
+  (data || []).forEach(orcamento => {
+    const status = orcamento.status || 'pendente';
+    const total = Number(orcamento.total || 0);
+
+    if (!resumo[status]) return;
+
+    resumo[status].total += total;
+    resumo[status].qtd += 1;
+  });
+
+  const totalGeral = Object.values(resumo).reduce((soma, item) => soma + item.total, 0);
+  const qtdGeral = Object.values(resumo).reduce((soma, item) => soma + item.qtd, 0);
+
+  atualizarTextoResumo('resumo-pendente', formatarMoeda(resumo.pendente.total));
+  atualizarTextoResumo('qtd-pendente', resumo.pendente.qtd);
+
+  atualizarTextoResumo('resumo-aprovado', formatarMoeda(resumo.aprovado.total));
+  atualizarTextoResumo('qtd-aprovado', resumo.aprovado.qtd);
+
+  atualizarTextoResumo('resumo-recusado', formatarMoeda(resumo.recusado.total));
+  atualizarTextoResumo('qtd-recusado', resumo.recusado.qtd);
+
+  atualizarTextoResumo('resumo-em-servico', formatarMoeda(resumo.em_servico.total));
+  atualizarTextoResumo('qtd-em-servico', resumo.em_servico.qtd);
+
+  atualizarTextoResumo('resumo-finalizado', formatarMoeda(resumo.finalizado.total));
+  atualizarTextoResumo('qtd-finalizado', resumo.finalizado.qtd);
+
+  atualizarTextoResumo('resumo-total-geral', formatarMoeda(totalGeral));
+  atualizarTextoResumo('qtd-total-geral', qtdGeral);
+}
+
+function atualizarTextoResumo(id, valor) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = valor;
+}
+
+function toggleResumoFinanceiro() {
+  const resumo = document.getElementById('resumo-financeiro');
+  const botao = document.getElementById('btn-toggle-resumo');
+
+  if (!resumo || !botao) return;
+
+  resumo.classList.toggle('minimizado');
+
+  const estaMinimizado = resumo.classList.contains('minimizado');
+
+  botao.innerText = estaMinimizado
+    ? 'Ampliar ▼'
+    : 'Minimizar ▲';
+
+  localStorage.setItem(
+    'resumo_financeiro_minimizado',
+    estaMinimizado ? 'sim' : 'nao'
+  );
+}
+
+function restaurarEstadoResumoFinanceiro() {
+  const resumo = document.getElementById('resumo-financeiro');
+  const botao = document.getElementById('btn-toggle-resumo');
+
+  if (!resumo || !botao) return;
+
+  const minimizado =
+    localStorage.getItem('resumo_financeiro_minimizado') === 'sim';
+
+  if (minimizado) {
+    resumo.classList.add('minimizado');
+    botao.innerText = 'Ampliar ▼';
+  } else {
+    resumo.classList.remove('minimizado');
+    botao.innerText = 'Minimizar ▲';
+  }
+}
+
+function renderizarTabelaOrcamentos(orcamentos) {
+  const lista = document.getElementById('lista-orcamentos');
+
+  if (!orcamentos || orcamentos.length === 0) {
+    lista.innerHTML = '<div class="msg-vazia">Nenhum orçamento encontrado neste filtro.</div>';
+    return;
+  }
+
+  let html = `
+    <div class="tabela-wrapper">
+      <table class="tabela-orcamentos">
+        <thead>
+          <tr>
+            <th>Assunto</th>
+            <th>Cliente</th>
+            <th>WhatsApp</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  orcamentos.forEach(orcamento => {
+    const assunto = orcamento.assunto || 'Sem título';
+    const clienteNome = orcamento.cliente_nome || 'Não informado';
+    const clienteWhatsapp = orcamento.cliente_whatsapp || 'Não informado';
+    const total = orcamento.total || 0;
+    const status = orcamento.status || 'pendente';
+    const dataCriacao = orcamento.criado_em || '';
+
+    html += `
+      <tr class="linha-orcamento" onclick="abrirModalVisualizar('${orcamento.id}')">
+        <td><strong>${escaparHtml(assunto)}</strong></td>
+        <td>${escaparHtml(clienteNome)}</td>
+        <td>${escaparHtml(clienteWhatsapp)}</td>
+        <td>${formatarMoeda(total)}</td>
+        <td><span class="status status-${classeStatus(status)}">${escaparHtml(statusLabel(status))}</span></td>
+        <td>${formatarData(dataCriacao)}</td>
+      </tr>
+    `;
+  });
+
+  html += `
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  lista.innerHTML = html;
+}
+
+function normalizarItem(item) {
+  const descricao = item.descricao || item.desc || item.item || '';
+  const qtd = Number(item.qtd || item.quantidade || 0);
+  const valor = Number(item.valor || item.valor_unitario || 0);
+  const subtotal = Number(item.subtotal || (qtd * valor) || 0);
+
+  return { descricao, qtd, valor, subtotal };
+}
+
+function abrirModalVisualizar(id) {
+  const orcamento = orcamentosCache.find(o => o.id === id);
+
+  if (!orcamento) {
+    alert('Orçamento não encontrado.');
+    return;
+  }
+
+  orcamentoVisualizadoId = id;
+
+  const assunto = orcamento.assunto || 'Sem título';
+  const clienteNome = orcamento.cliente_nome || 'Não informado';
+  const clienteWhatsapp = orcamento.cliente_whatsapp || 'Não informado';
+  const status = orcamento.status || 'pendente';
+  const dataCriacao = orcamento.criado_em || '';
+  const total = orcamento.total || 0;
+
+  document.getElementById('visual-assunto').innerText = assunto;
+  document.getElementById('visual-cliente').innerText = clienteNome;
+  document.getElementById('visual-whatsapp').innerText = clienteWhatsapp;
+  document.getElementById('visual-status').innerHTML = `<span class="status status-${classeStatus(status)}">${escaparHtml(statusLabel(status))}</span>`;
+  document.getElementById('visual-data').innerText = formatarData(dataCriacao);
+  document.getElementById('visual-total').innerText = formatarMoeda(total);
+
+  renderizarItensVisualizacao(orcamento.itens);
+  document.getElementById('modal-visualizar-orcamento').style.display = 'flex';
+}
+
+function fecharModalVisualizar() {
+  document.getElementById('modal-visualizar-orcamento').style.display = 'none';
+}
+
+function renderizarItensVisualizacao(itensOriginais) {
+  const container = document.getElementById('visual-itens');
+
+  const itens = Array.isArray(itensOriginais)
+    ? itensOriginais.map(normalizarItem)
+    : [];
+
+  if (!itens.length) {
+    container.innerHTML = '<div class="msg-vazia">Nenhum item encontrado neste orçamento.</div>';
+    return;
+  }
+
+  let html = `
+    <table class="tabela-itens-visual">
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Qtd</th>
+          <th>Valor Unit.</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  itens.forEach(item => {
+    html += `
+      <tr>
+        <td>${escaparHtml(item.descricao)}</td>
+        <td>${item.qtd}</td>
+        <td>${formatarMoeda(item.valor)}</td>
+        <td>${formatarMoeda(item.subtotal)}</td>
+      </tr>
+    `;
+  });
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function editarOrcamentoVisualizado() {
+  if (!orcamentoVisualizadoId) return;
+
+  fecharModalVisualizar();
+  abrirModalEditar(orcamentoVisualizadoId);
+}
+
+function abrirModalEditar(id) {
+  const orcamento = orcamentosCache.find(o => o.id === id);
+
+  if (!orcamento) {
+    alert('Orçamento não encontrado.');
+    return;
+  }
+
+  const statusAtualOrcamento = orcamento.status || 'pendente';
+
+  document.getElementById('edit-orcamento-id').value = orcamento.id;
+  document.getElementById('edit-status-original').value = statusAtualOrcamento;
+  document.getElementById('edit-assunto').value = orcamento.assunto || '';
+  document.getElementById('edit-status').value = statusAtualOrcamento;
+  document.getElementById('edit-cliente-nome').value = orcamento.cliente_nome || '';
+  document.getElementById('edit-cliente-whatsapp').value = orcamento.cliente_whatsapp || '';
+
+  const lista = document.getElementById('edit-itens-lista');
+  lista.innerHTML = '';
+
+  const itens = Array.isArray(orcamento.itens)
+    ? orcamento.itens.map(normalizarItem)
+    : [];
+
+  if (itens.length) {
+    itens.forEach(item => adicionarItemModal(item));
+  } else {
+    adicionarItemModal();
+  }
+
+  recalcularTotalModal();
+  document.getElementById('modal-editar-orcamento').style.display = 'flex';
+}
+
+function fecharModalEditar() {
+  document.getElementById('modal-editar-orcamento').style.display = 'none';
+}
+
+function adicionarItemModal(item = {}) {
+  const lista = document.getElementById('edit-itens-lista');
+
+  const descricao = item.descricao || '';
+  const qtd = item.qtd || 1;
+  const valor = item.valor || 0;
+  const subtotal = item.subtotal || 0;
+
+  const div = document.createElement('div');
+  div.className = 'linha-item-edit';
+
+  div.innerHTML = `
+    <input type="text" class="edit-desc" placeholder="Descrição" value="${escaparHtml(descricao)}" oninput="recalcularTotalModal()">
+    <input type="number" class="edit-qtd" placeholder="Qtd" value="${qtd}" step="0.01" oninput="recalcularTotalModal()">
+    <input type="number" class="edit-valor" placeholder="Valor unit." value="${valor}" step="0.01" oninput="recalcularTotalModal()">
+    <input type="text" class="edit-subtotal" value="${formatarNumeroBR(subtotal)}" readonly>
+    <button type="button" class="btn-pequeno btn-excluir" onclick="this.parentElement.remove(); recalcularTotalModal();">X</button>
+  `;
+
+  lista.appendChild(div);
+  recalcularTotalModal();
+}
+
+function recalcularTotalModal() {
+  let total = 0;
+
+  document.querySelectorAll('#edit-itens-lista .linha-item-edit').forEach(row => {
+    const qtd = Number(row.querySelector('.edit-qtd')?.value || 0);
+    const valor = Number(row.querySelector('.edit-valor')?.value || 0);
+    const subtotal = qtd * valor;
+
+    const subtotalEl = row.querySelector('.edit-subtotal');
+    if (subtotalEl) subtotalEl.value = formatarNumeroBR(subtotal);
+
+    total += subtotal;
+  });
+
+  document.getElementById('edit-total').innerText = formatarNumeroBR(total);
+}
+
+function coletarItensModal() {
+  const itens = [];
+
+  document.querySelectorAll('#edit-itens-lista .linha-item-edit').forEach(row => {
+    const descricao = row.querySelector('.edit-desc')?.value?.trim() || '';
+    const qtd = Number(row.querySelector('.edit-qtd')?.value || 0);
+    const valor = Number(row.querySelector('.edit-valor')?.value || 0);
+    const subtotal = qtd * valor;
+
+    if (descricao) {
+      itens.push({ descricao, qtd, valor, subtotal });
+    }
+  });
+
+  return itens;
+}
+
+async function salvarEdicaoOrcamento() {
+  const session = await obterSessaoObrigatoria();
+  if (!session) return;
+
+  const id = document.getElementById('edit-orcamento-id').value;
+  const statusOriginal = document.getElementById('edit-status-original').value || 'pendente';
+  const assunto = document.getElementById('edit-assunto').value.trim() || 'Sem título';
+  const status = document.getElementById('edit-status').value;
+  const clienteNome = document.getElementById('edit-cliente-nome').value.trim();
+  const clienteWhatsapp = document.getElementById('edit-cliente-whatsapp').value.trim();
+  const itens = coletarItensModal();
+  const total = itens.reduce((soma, item) => soma + Number(item.subtotal || 0), 0);
+
+  if (!clienteNome) {
+    alert('Informe o nome do cliente.');
+    return;
+  }
+
+  if (!itens.length) {
+    alert('Adicione pelo menos um item ao orçamento.');
+    return;
+  }
+
+  if (status !== statusOriginal) {
+    const confirmarStatus = confirm(
+      `Deseja realmente alterar o status deste orçamento de "${statusLabel(statusOriginal)}" para "${statusLabel(status)}"?`
+    );
+
+    if (!confirmarStatus) {
+      document.getElementById('edit-status').value = statusOriginal;
+      return;
+    }
+  }
+
+  const payload = {
+    assunto,
+    status,
+    cliente_nome: clienteNome,
+    cliente_whatsapp: clienteWhatsapp,
+    itens,
+    total
+  };
+
+  const { error } = await _supabase
+    .from('orcamentos')
+    .update(payload)
+    .eq('id', id)
+    .eq('usuario_id', session.user.id);
+
+  if (error) {
+    console.error('Erro ao salvar edição:', error);
+    alert('Erro ao salvar alterações.');
+    return;
+  }
+
+  fecharModalEditar();
+  await carregarOrcamentos();
+
+  alert('Orçamento atualizado com sucesso.');
+}
+
+async function excluirOrcamentoVisualizado() {
+  if (!orcamentoVisualizadoId) return;
+
+  const id = orcamentoVisualizadoId;
+
+  const confirmar = confirm(
+    'Tem certeza que deseja excluir este orçamento? Esta ação não poderá ser desfeita.'
+  );
+
+  if (!confirmar) return;
+
+  fecharModalVisualizar();
+  await excluirOrcamentoDireto(id);
+}
+
+async function excluirOrcamentoDireto(id) {
+  const session = await obterSessaoObrigatoria();
+  if (!session) return;
+
+  const { error } = await _supabase
+    .from('orcamentos')
+    .delete()
+    .eq('id', id)
+    .eq('usuario_id', session.user.id);
+
+  if (error) {
+    console.error('Erro ao excluir orçamento:', error);
+    alert('Erro ao excluir orçamento.');
+    return;
+  }
+
+  await carregarOrcamentos();
+  alert('Orçamento excluído com sucesso.');
+}
+</script>
+
+</body>
+</html>
