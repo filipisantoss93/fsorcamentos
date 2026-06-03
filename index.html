@@ -42,16 +42,182 @@
 	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+
+<style>
+.emissor-readonly-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e0d6c8;
+  border-left: 7px solid #ffc400;
+  padding: 14px;
+  margin: 0 0 12px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  color: #3e2723;
+}
+
+.emissor-readonly-topo {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.emissor-logo-mini {
+  width: 90px;
+  height: 72px;
+  border: 1px dashed #d7ccc8;
+  border-radius: 10px;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #8d6e63;
+  font-size: 12px;
+  text-align: center;
+}
+
+.emissor-logo-mini img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: none;
+}
+
+.emissor-info-principal span,
+.emissor-readonly-grid span {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  color: #6d4c41;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  margin-bottom: 4px;
+}
+
+.emissor-info-principal strong {
+  display: block;
+  font-size: 18px;
+  color: #3e2723;
+  word-break: break-word;
+}
+
+.emissor-readonly-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.emissor-readonly-grid div {
+  background: #f7f2ea;
+  border-radius: 10px;
+  padding: 10px;
+  border-left: 4px solid #ffc400;
+}
+
+.emissor-readonly-grid strong {
+  display: block;
+  font-size: 14px;
+  color: #3e2723;
+  word-break: break-word;
+}
+
+@media (max-width: 650px) {
+  .emissor-readonly-topo,
+  .emissor-readonly-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .emissor-logo-mini {
+    width: 100%;
+    height: 90px;
+  }
+}
+</style>
+
 </head>
 <body>
 
+
 <div id="header-container"></div>
+<div id="modal-login" class="modal-login-overlay">
+  <div class="modal-login-box">
+
+    <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">
+      ×
+    </button>
+
+    <div class="auth-logo-box">
+      <div class="auth-logo-text">
+        <strong>FS</strong><span>Orçamentos</span>
+      </div>
+      <p>Acesse sua conta para gerar orçamentos profissionais</p>
+    </div>
+
+    <div id="auth-area" style="display:block;">
+      <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
+
+        <form id="form-autenticacao" onsubmit="return false;">
+
+          <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
+            Acesse sua Conta
+          </h3>
+
+          <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome</label>
+            <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">E-mail</label>
+            <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome da Empresa</label>
+            <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">WhatsApp da Empresa</label>
+            <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Senha</label>
+            <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Confirmar Senha</label>
+            <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">
+            Entrar
+          </button>
+
+        </form>
+
+        <div style="text-align: center; margin-top: 15px;">
+          <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #007bff; text-decoration: none;">
+            Não tem cadastro? Clique aqui.
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script src="ui.js"></script>
 <script src="carregar-menu.js"></script>
+<script src="notificacoes.js"></script>
 
     <div id="splash-screen">
     <div class="splash-content">
@@ -63,71 +229,485 @@
         <p>Iniciando ferramenta...</p>
     </div>
 </div>
-<div id="auth-area" style="display: none; max-width: 380px; margin: 45px auto; font-family: sans-serif;">
 
-  <div class="auth-logo-box">
-    <div class="auth-logo-text">
+
+<main id="home-publica" class="home-publica">
+  <section class="hero-publico">
+    <div class="hero-marca">
       <strong>FS</strong><span>Orçamentos</span>
     </div>
-    <p>Acesse sua conta para gerar orçamentos profissionais</p>
+
+    <h1>Crie orçamentos profissionais em PDF de forma rápida e organizada.</h1>
+
+    <p>
+      O FS Orçamentos ajuda profissionais autônomos, MEIs, oficinas e prestadores de serviço
+      a montar propostas com aparência profissional, salvar orçamentos nos planos pagos e
+      acompanhar clientes com mais controle.
+    </p>
+
+<div class="hero-acoes hero-acoes-principal">
+  <button type="button" class="btn-gerar-orcamento-home btn-gerar-destaque" onclick="abrirModalGerador()">
+    🧾 Gerar Orçamento Agora
+  </button>
+
+  <a href="sobre.html" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor">
+    Conhecer os planos
+  </a>
+</div>
+
+  </section>
+
+  <section class="cards-explicativos">
+    <div class="card-explicativo">
+      <div class="icone">🧾</div>
+      <h3>PDF profissional</h3>
+      <p>Monte um orçamento claro, bonito e pronto para baixar ou enviar ao cliente.</p>
+    </div>
+
+    <div class="card-explicativo">
+      <div class="icone">🏢</div>
+      <h3>Dados da empresa</h3>
+      <p>Cadastre nome, WhatsApp, endereço, CNPJ/CPF e logo no Painel de Controle.</p>
+    </div>
+
+    <div class="card-explicativo">
+      <div class="icone">📊</div>
+      <h3>Controle por status</h3>
+      <p>Nos planos pagos, acompanhe orçamentos pendentes, aprovados, recusados, em serviço e finalizados.</p>
+    </div>
+  </section>
+
+<section class="secao-como-funciona">
+  <div class="como-funciona-topo">
+    <span class="tag-demo">Demonstração</span>
+    <h2>Veja como funciona na prática</h2>
+    <p>
+      Confira telas reais do FS Orçamentos e veja exemplos de PDFs profissionais gerados pela plataforma.
+    </p>
   </div>
 
-  <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">  
-  <form id="form-autenticacao" onsubmit="return false;">
-    
-    <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">Acesse sua Conta</h3>
-    
-    <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
-      <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome</label>
-      <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+  <div class="passos-funciona">
+    <div class="passo-card">
+      <strong>1</strong>
+      <h3>Preencha os dados</h3>
+      <p>Informe cliente, itens, valores, observações e condições do orçamento.</p>
     </div>
 
-    <div style="margin-bottom: 15px;">
-      <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">E-mail</label>
-      <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
-    
-    <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
-      <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome da Empresa</label>
-      <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
-        
-    <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
-      <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">WhatsApp da Empresa</label>
-      <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+    <div class="passo-card">
+      <strong>2</strong>
+      <h3>Escolha o visual</h3>
+      <p>Selecione uma cor para deixar o PDF com a identidade do seu serviço.</p>
     </div>
 
-    <div style="margin-bottom: 15px;">
-      <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Senha</label>
-      <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+    <div class="passo-card">
+      <strong>3</strong>
+      <h3>Gere o PDF</h3>
+      <p>Baixe o orçamento pronto ou envie para o cliente conforme seu plano.</p>
+    </div>
+  </div>
+
+    <div class="galeria-demo">
+  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/dados-orcamento.png', 'Dados do orçamento')">
+    <img src="exemplos/dados-orcamento.png" alt="Tela de dados do orçamento">
+    <span>Dados do orçamento</span>
+  </button>
+
+  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/tabela-preenchimento.png', 'Itens e serviços')">
+    <img src="exemplos/tabela-preenchimento.png" alt="Tabela para preencher orçamento">
+    <span>Itens e serviços</span>
+  </button>
+
+  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/termos-condicoes.png', 'Termos e condições rápidas')">
+    <img src="exemplos/termos-condicoes.png" alt="Termos e condições rápidas">
+    <span>Termos rápidos</span>
+  </button>
+
+  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/azul.png', 'Modelo azul do PDF')">
+    <img src="exemplos/azul.png" alt="PDF azul gerado pelo FS Orçamentos">
+    <span>Modelo azul</span>
+  </button>
+</div>
+  </div>
+  <section class="whatsapp-preview-home">
+  <div class="whatsapp-preview-texto">
+    <span class="tag-whatsapp">Envio pelo WhatsApp</span>
+
+    <h2>Veja como o cliente recebe o orçamento</h2>
+
+    <p>
+      No plano Premium, o FS Orçamentos pode enviar automaticamente o orçamento
+      para o WhatsApp do cliente, sem precisar abrir o aplicativo manualmente.
+    </p>
+
+    <ul>
+      <li>Mensagem profissional pronta para o cliente.</li>
+      <li>Link do orçamento para visualizar online.</li>
+      <li>Acompanhamento de orçamentos pendentes.</li>
+    </ul>
+  </div>
+
+  <div class="whatsapp-mockup">
+    <div class="whatsapp-topo">
+      <div class="whatsapp-avatar">FS</div>
+      <div>
+        <strong>FS Orçamentos</strong>
+        <span>online</span>
+      </div>
     </div>
 
-    <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
-      <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Confirmar Senha</label>
-      <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+    <div class="whatsapp-conversa">
+      <div class="msg-whatsapp recebida">
+        Olá, João! Tudo bem?
+      </div>
+
+      <div class="msg-whatsapp recebida">
+        Segue o orçamento solicitado:
+      </div>
+
+      <div class="orcamento-whatsapp-card">
+        <div class="orcamento-whatsapp-header">
+          🧾 Orçamento #1024
+        </div>
+
+        <div class="orcamento-whatsapp-body">
+          <strong>Manutenção de Suspensão</strong>
+          <span>Cliente: João Silva</span>
+          <span>Total: R$ 850,00</span>
+        </div>
+
+        <button type="button">
+          Visualizar orçamento
+        </button>
+      </div>
+
+      <div class="msg-whatsapp recebida">
+        Qualquer dúvida, estou à disposição. ✅
+      </div>
+
+      <div class="whatsapp-hora">
+        enviado automaticamente pelo FS Orçamentos
+      </div>
     </div>
-    
-    <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">Entrar</button>
-  
-  </form> 
-  <div style="text-align: center; margin-top: 15px;">
-    <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #007bff; text-decoration: none;">
-      Não tem cadastro? Clique aqui.
+  </div>
+</section>
+
+<section class="cliente-aprovacao-home">
+  <div class="cliente-aprovacao-topo">
+    <span class="tag-aprovacao">Aprovação online</span>
+
+    <h2>O cliente visualiza e responde o orçamento pelo link</h2>
+
+    <p>
+      Depois de receber o orçamento, o cliente pode abrir o link, conferir os dados,
+      visualizar os itens e escolher entre aprovar ou recusar a proposta.
+    </p>
+  </div>
+
+  <div class="fluxo-aprovacao-grid">
+    <div class="fluxo-card">
+      <div class="fluxo-numero">1</div>
+      <h3>Recebe no WhatsApp</h3>
+      <p>O cliente recebe uma mensagem com o resumo e o botão para visualizar o orçamento.</p>
+    </div>
+
+    <div class="fluxo-card">
+      <div class="fluxo-numero">2</div>
+      <h3>Abre o orçamento</h3>
+      <p>O link leva para uma página limpa, com dados do emissor, cliente, itens e valor total.</p>
+    </div>
+
+    <div class="fluxo-card">
+      <div class="fluxo-numero">3</div>
+      <h3>Aprova ou recusa</h3>
+      <p>Com um clique, o cliente informa a decisão e o status é atualizado na plataforma.</p>
+    </div>
+  </div>
+
+  <div class="cliente-tela-preview">
+    <div class="cliente-tela-topo">
+      <div>
+        <strong>Orçamento recebido</strong>
+        <span>Visualização do cliente</span>
+      </div>
+      <div class="cliente-status pendente">Pendente</div>
+    </div>
+
+    <div class="cliente-orcamento-card">
+      <div class="cliente-empresa-linha">
+        <div class="cliente-logo-demo">FS</div>
+
+        <div>
+          <strong>FS Orçamentos</strong>
+          <span>Responsável: Consultor selecionado</span>
+          <span>WhatsApp: (18) 99999-9999</span>
+        </div>
+      </div>
+
+      <div class="cliente-info-grid">
+        <div>
+          <small>Cliente</small>
+          <strong>João Silva</strong>
+        </div>
+
+        <div>
+          <small>Orçamento</small>
+          <strong>Manutenção de Suspensão</strong>
+        </div>
+      </div>
+
+      <div class="cliente-itens-demo">
+        <div>
+          <span>Troca de amortecedores</span>
+          <strong>R$ 520,00</strong>
+        </div>
+
+        <div>
+          <span>Alinhamento e balanceamento</span>
+          <strong>R$ 180,00</strong>
+        </div>
+
+        <div>
+          <span>Mão de obra</span>
+          <strong>R$ 150,00</strong>
+        </div>
+      </div>
+
+      <div class="cliente-total-demo">
+        Total: R$ 850,00
+      </div>
+
+      <div class="cliente-acoes-demo">
+        <button type="button" class="btn-cliente-aprovar">
+          ✅ Aprovar orçamento
+        </button>
+
+        <button type="button" class="btn-cliente-recusar">
+          ❌ Recusar orçamento
+        </button>
+      </div>
+
+      <p class="cliente-aviso-demo">
+        Ao aprovar ou recusar, o responsável é avisado e o status muda automaticamente.
+      </p>
+    </div>
+  </div>
+</section>
+<section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
+  <div class="planos-pix-topo">
+    <span class="tag-plano-pix">Plano Básico</span>
+
+    <h2>Escolha o período do seu Plano Básico</h2>
+
+    <p>
+      Pague via Pix e libere os recursos do Plano Básico pelo período escolhido.
+      A confirmação será feita automaticamente assim que o pagamento for identificado.
+    </p>
+  </div>
+
+  <div class="planos-pix-grid">
+    <div class="plano-pix-card">
+      <div class="plano-pix-periodo">1 mês</div>
+      <div class="plano-pix-preco">R$ 19,90</div>
+      <p>Ideal para testar os recursos pagos por 30 dias.</p>
+
+      <button type="button" onclick="gerarPixPlanoBasico('mensal')">
+        Gerar Pix
+      </button>
+    </div>
+
+    <div class="plano-pix-card destaque">
+      <div class="plano-pix-selo">Mais escolhido</div>
+      <div class="plano-pix-periodo">6 meses</div>
+      <div class="plano-pix-preco">R$ 109,90</div>
+      <p>Economize em relação ao pagamento mensal.</p>
+
+      <button type="button" onclick="gerarPixPlanoBasico('semestral')">
+        Gerar Pix
+      </button>
+    </div>
+
+    <div class="plano-pix-card">
+      <div class="plano-pix-periodo">12 meses</div>
+      <div class="plano-pix-preco">R$ 209,90</div>
+      <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
+
+      <button type="button" onclick="gerarPixPlanoBasico('anual')">
+        Gerar Pix
+      </button>
+    </div>
+  </div>
+
+  <div class="plano-pix-beneficios">
+    <strong>O Plano Básico inclui:</strong>
+    <span>Salvar orçamentos na nuvem</span>
+    <span>Histórico de orçamentos</span>
+    <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
+    <span>Até 2 responsáveis</span>
+    <span>Envio manual pelo WhatsApp com link</span>
+    <span>Resumo financeiro</span>
+  </div>
+</section>
+
+<div id="modal-pix-basico" class="modal-pix-overlay">
+  <div class="modal-pix-card">
+    <div class="modal-pix-topo">
+      <div>
+        <strong>Pagamento via Pix</strong>
+        <span id="pix-modal-subtitulo">Plano Básico</span>
+      </div>
+
+      <button type="button" onclick="fecharModalPixBasico()">×</button>
+    </div>
+
+    <div id="pix-loading" class="pix-loading">
+      Gerando Pix, aguarde...
+    </div>
+
+    <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
+      <div class="pix-resumo">
+        <div>
+          <small>Plano</small>
+          <strong id="pix-plano-label">Plano Básico</strong>
+        </div>
+
+        <div>
+          <small>Valor</small>
+          <strong id="pix-valor">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <div class="pix-qrcode-box">
+        <img id="pix-qrcode-img" src="" alt="QR Code Pix">
+      </div>
+
+      <label class="pix-label">Pix copia e cola</label>
+
+      <textarea id="pix-copia-cola" readonly></textarea>
+
+      <div class="pix-acoes">
+        <button type="button" onclick="copiarPixCopiaCola()">
+          Copiar Pix
+        </button>
+
+        <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">
+          Já paguei, verificar
+        </button>
+      </div>
+
+      <p class="pix-aviso">
+        Após o pagamento, seu Plano Básico será liberado automaticamente quando a Efí confirmar o Pix.
+      </p>
+    </div>
+
+    <div id="pix-erro" class="pix-erro" style="display:none;"></div>
+  </div>
+</div>
+
+<center><a href="exemplos.html" class="btn-secundario-home">
+VER MAIS EXEMPLOS</a></center>
+
+</section>
+
+  <section class="status-orcamentos-home">
+  <div class="status-home-texto">
+    <span class="tag-status-home">Controle por status</span>
+
+    <h2>Acompanhe cada orçamento sem se perder</h2>
+
+    <p>
+      Nos planos pagos, seus orçamentos ficam salvos na nuvem e podem ser organizados
+      por status. Assim você sabe rapidamente quais clientes ainda estão analisando,
+      quais aprovaram, quais recusaram e quais serviços já estão em andamento.
+    </p>
+  </div>
+
+  <div class="status-home-grid">
+    <div class="status-explicacao-card status-pendente">
+      <div class="status-explicacao-topo">
+        <span class="bolinha-status"></span>
+        <strong>Pendente</strong>
+      </div>
+      <p>
+        Orçamentos enviados ou salvos que ainda aguardam resposta do cliente.
+        Ideal para acompanhar propostas em aberto.
+      </p>
+      <small>Exemplo: cliente recebeu, mas ainda não decidiu.</small>
+    </div>
+
+    <div class="status-explicacao-card status-aprovado">
+      <div class="status-explicacao-topo">
+        <span class="bolinha-status"></span>
+        <strong>Aprovado</strong>
+      </div>
+      <p>
+        Propostas aceitas pelo cliente. Ajuda você a saber quais vendas ou serviços
+        foram confirmados.
+      </p>
+      <small>Exemplo: cliente clicou em aprovar ou você marcou manualmente.</small>
+    </div>
+
+    <div class="status-explicacao-card status-recusado">
+      <div class="status-explicacao-topo">
+        <span class="bolinha-status"></span>
+        <strong>Recusado</strong>
+      </div>
+      <p>
+        Orçamentos que o cliente não aceitou. Mantém o histórico organizado sem
+        misturar com oportunidades em aberto.
+      </p>
+      <small>Exemplo: proposta recusada por valor, prazo ou outro motivo.</small>
+    </div>
+
+    <div class="status-explicacao-card status-servico">
+      <div class="status-explicacao-topo">
+        <span class="bolinha-status"></span>
+        <strong>Em serviço</strong>
+      </div>
+      <p>
+        Orçamentos aprovados que já viraram trabalho em execução. Ajuda a acompanhar
+        o andamento dos serviços.
+      </p>
+      <small>Exemplo: serviço iniciado, mas ainda não finalizado.</small>
+    </div>
+
+    <div class="status-explicacao-card status-finalizado">
+      <div class="status-explicacao-topo">
+        <span class="bolinha-status"></span>
+        <strong>Finalizado</strong>
+      </div>
+      <p>
+        Serviços concluídos. Facilita a conferência dos trabalhos realizados e dos
+        valores já fechados.
+      </p>
+      <small>Exemplo: orçamento aprovado, executado e concluído.</small>
+    </div>
+  </div>
+
+  <div class="status-home-resumo">
+    <div>
+      <strong>Resumo financeiro por período</strong>
+      <p>
+        Na página de orçamentos, você pode filtrar por 15, 30, 60 dias ou total
+        e visualizar a soma dos valores por status.
+      </p>
+    </div>
+
+    <a href="/exemplos.html" class="btn-status-home">
+      Ver exemplos da plataforma
     </a>
   </div>
+</section>
+</main>
 
-  </div>
-</div>
+<div id="modal-gerador-orcamento" class="modal-gerador-overlay">
+  <div class="modal-gerador-box">
+    <div class="modal-gerador-topo">
+      <strong>Gerador de Orçamento</strong>
+      <button type="button" class="btn-fechar-gerador" onclick="fecharModalGerador()">×</button>
+    </div>
+
 <div id="formulario-orcamento" style="display:none;">
-<div style="margin: 15px 0; text-align: center; min-height: 90px;">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5628949951885077"
-         data-ad-slot="5200213834"
-         data-ad-format="horizontal"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
+
 
     <div class="container">
 		<div style="text-align: center; margin-bottom: 25px;">
@@ -169,9 +749,7 @@
 
 </p>
 </div>
-		        <div class="dadositens">
-            ORÇAMENTO
-        </div>
+<div class="dadositens">🧾 ORÇAMENTO</div>
   <div style="display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
  <div>
         <label>Título do Orçamento</label>
@@ -179,16 +757,51 @@
     </div>
 </div>
 
-<div class="dadositens">EMISSOR</div>
+<div class="dadositens">🏢 EMISSOR</div>
+
+<div class="emissor-readonly-card">
+  <div class="emissor-readonly-topo">
+    <div class="emissor-logo-mini">
+      <span id="emissor-logo-placeholder">Logo</span>
+      <img id="emissor-logo-visual" src="" alt="Logo da empresa">
+    </div>
+
+    <div class="emissor-info-principal">
+      <span>Consultor</span>
+      <strong id="emissor-consultor-visual">-</strong>
+    </div>
+  </div>
+
+  <div class="emissor-readonly-grid">
+    <div>
+      <span>Empresa</span>
+      <strong id="emissor-empresa-visual">-</strong>
+    </div>
+
+    <div>
+      <span>WhatsApp / Telefone</span>
+      <strong id="emissor-whatsapp-visual">-</strong>
+    </div>
+
+    <div>
+      <span>CNPJ / CPF</span>
+      <strong id="emissor-cnpj-visual">-</strong>
+    </div>
+
+    <div>
+      <span>Endereço</span>
+      <strong id="emissor-endereco-visual">-</strong>
+    </div>
+  </div>
+</div>
 
 <div style="max-width: 100%; margin: 0 auto 15px auto; padding: 12px 15px; text-align: center; background: #fff3cd; border-radius: 10px; color: #5d4037; font-size: 14px;">
     Edite os dados do Emissor no
     <a href="/painel.html" style="font-weight: bold; color: #3e2723;">Painel de Controle</a>.
 </div>
 
-	    <div class="dadositens">
-            CLIENTE
-        </div>
+<div class="dadositens">👤 CLIENTE</div>
+
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
     <div>
@@ -196,7 +809,7 @@
         <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
     </div>
     <div>
-        <label>Telefone do Cliente</label>
+        <label>Telefone do Cliente (Whatsapp)</label>
         <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
     </div>
 <div id="extra-cliente-container" style="grid-column: span 2;"></div>
@@ -207,9 +820,7 @@
 
 </div>
  
-		        <div class="dadositens">
-            ITENS/SERVIÇOS
-        </div>
+<div class="dadositens">🛠️ ITENS/SERVIÇOS</div>
         <div id="itens-lista">
             <div class="item-row header-labels">
                 <span>Descrição</span><span>Qtd</span><span>V. Unit</span><span>Subtotal</span><span></span>
@@ -217,7 +828,7 @@
         </div>
 
 <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-    <button type="button" class="btn-add" onclick="adicionarLinha()">+ Item</button>
+    <button type="button" class="btn-add" onclick="adicionarLinha()"> <span style="font-size: 16px; margin-right: 4px;">+</span> Item</button>
     
 
 </div>
@@ -315,9 +926,6 @@
 
  
     </div>
-<center><p></p><p></p>
-<footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#777">Privacidade</a></footer></center>
-
 <a href="manual.html" class="btn-help-link" title="Manual de Instruções">
     <button type="button" class="btn-help-trigger">?</button>
 </a>
@@ -361,6 +969,951 @@
 </div>
 
 </div>
-</body>
 
+  </div>
+</div>
+
+</div>
+
+<script>
+function valorEmissorOuTraco(valor) {
+  return valor && String(valor).trim() ? valor : '-';
+}
+
+function atualizarCampoEmissorVisual(id, valor) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = valorEmissorOuTraco(valor);
+}
+
+function atualizarLogoEmissorVisual(url) {
+  const img = document.getElementById('emissor-logo-visual');
+  const placeholder = document.getElementById('emissor-logo-placeholder');
+
+  if (!img || !placeholder) return;
+
+  if (url) {
+    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+  }
+}
+
+async function carregarDadosEmissorNoModal() {
+  let perfil = {
+    nome: localStorage.getItem('usuario_nome') || '',
+    nome_empresa: localStorage.getItem('nome_empresa') || '',
+    telefone_empresa: localStorage.getItem('telefone_empresa') || '',
+    endereco_empresa: localStorage.getItem('endereco_empresa') || '',
+    cnpj_empresa: localStorage.getItem('cnpj_empresa') || '',
+    foto_url: localStorage.getItem('foto_url') || ''
+  };
+
+  try {
+    if (window._supabase) {
+      const { data: { session } } = await _supabase.auth.getSession();
+
+      if (session?.user?.id) {
+        const { data, error } = await _supabase
+          .from('perfis')
+          .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
+          .eq('id', session.user.id)
+          .maybeSingle();
+
+        if (!error && data) {
+          perfil = {
+            ...perfil,
+            ...data
+          };
+
+          localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email?.split('@')[0] || 'Usuário');
+          localStorage.setItem('usuario_plano', data.plano || 'gratis');
+          localStorage.setItem('nome_empresa', data.nome_empresa || '');
+          localStorage.setItem('telefone_empresa', data.telefone_empresa || '');
+          localStorage.setItem('endereco_empresa', data.endereco_empresa || '');
+          localStorage.setItem('cnpj_empresa', data.cnpj_empresa || '');
+          localStorage.setItem('foto_url', data.foto_url || '');
+        }
+      }
+    }
+  } catch (error) {
+    console.warn('Não foi possível carregar os dados do emissor:', error);
+  }
+
+  atualizarCampoEmissorVisual('emissor-consultor-visual', perfil.nome);
+  atualizarCampoEmissorVisual('emissor-empresa-visual', perfil.nome_empresa);
+  atualizarCampoEmissorVisual('emissor-whatsapp-visual', perfil.telefone_empresa);
+  atualizarCampoEmissorVisual('emissor-cnpj-visual', perfil.cnpj_empresa);
+  atualizarCampoEmissorVisual('emissor-endereco-visual', perfil.endereco_empresa);
+  atualizarLogoEmissorVisual(perfil.foto_url);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  carregarDadosEmissorNoModal();
+
+  const tentarIntegrarModal = setInterval(function() {
+    if (typeof window.abrirModalGerador === 'function' && !window.abrirModalGeradorComEmissor) {
+      const abrirModalGeradorOriginal = window.abrirModalGerador;
+
+      window.abrirModalGerador = async function() {
+        const resultado = await abrirModalGeradorOriginal.apply(this, arguments);
+        await carregarDadosEmissorNoModal();
+        return resultado;
+      };
+
+      window.abrirModalGeradorComEmissor = true;
+      clearInterval(tentarIntegrarModal);
+    }
+  }, 100);
+
+  setTimeout(function() {
+    clearInterval(tentarIntegrarModal);
+  }, 3000);
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('modal-gerador-orcamento');
+
+  if (modal) {
+    modal.addEventListener('click', function(event) {
+      if (event.target === modal) {
+        fecharModalGerador();
+      }
+    });
+  }
+});
+
+function abrirImagemDemo(src, titulo) {
+  const modal = document.getElementById('modal-imagem-demo');
+  const img = document.getElementById('modal-imagem-img');
+  const tituloEl = document.getElementById('modal-imagem-titulo');
+
+  if (!modal || !img || !tituloEl) return;
+
+  img.src = src;
+  tituloEl.innerText = titulo || 'Exemplo';
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharImagemDemo() {
+  const modal = document.getElementById('modal-imagem-demo');
+  const img = document.getElementById('modal-imagem-img');
+
+  if (!modal || !img) return;
+
+  modal.style.display = 'none';
+  img.src = '';
+
+  document.body.style.overflow = '';
+}
+
+function fecharImagemDemoAoClicarFora(event) {
+  const modal = document.getElementById('modal-imagem-demo');
+
+  if (event.target === modal) {
+    fecharImagemDemo();
+  }
+}
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    fecharImagemDemo();
+  }
+});
+</script>
+<center><p></p><p></p>
+<footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer></center><p></p>
+<div id="modal-imagem-demo" class="modal-imagem-demo" onclick="fecharImagemDemoAoClicarFora(event)">
+  <div class="modal-imagem-card">
+    <div class="modal-imagem-topo">
+      <strong id="modal-imagem-titulo">Exemplo</strong>
+      <button type="button" onclick="fecharImagemDemo()">×</button>
+    </div>
+
+    <img id="modal-imagem-img" src="" alt="Imagem demonstrativa do FS Orçamentos">
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   SALVAMENTO CONTROLADO + WHATSAPP CORRIGIDO
+   - Pré-visualização não salva no Supabase.
+   - Baixar PDF salva somente para plano básico/premium.
+   - Enviar por WhatsApp salva somente para plano básico/premium.
+   - Plano grátis continua podendo baixar PDF, mas não salva na nuvem.
+   ========================================================= */
+
+let orcamentoSalvoAtualId = null;
+let baixarPDFOriginalFS = null;
+let whatsappJanelaFS = null;
+let enviandoWhatsappFS = false;
+
+function fsPlanoAtualNormalizado() {
+  return String(localStorage.getItem('usuario_plano') || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function fsPlanoPermiteSalvarOrcamento() {
+  const plano = fsPlanoAtualNormalizado();
+  return plano === 'basico' || plano === 'premium';
+}
+
+function fsLimparTelefoneWhatsapp(valor) {
+  let telefone = String(valor || '').replace(/\D/g, '');
+
+  if (!telefone) return '';
+
+  if (telefone.startsWith('00')) {
+    telefone = telefone.substring(2);
+  }
+
+  if (telefone.length === 10 || telefone.length === 11) {
+    telefone = '55' + telefone;
+  }
+
+  return telefone;
+}
+
+function fsValorNumerico(valor) {
+  if (typeof valor === 'number') return valor;
+
+  let texto = String(valor || '').trim();
+
+  if (!texto) return 0;
+
+  texto = texto
+    .replace(/[^\d,.-]/g, '')
+    .replace(/\./g, '')
+    .replace(',', '.');
+
+  const numero = Number(texto);
+
+  return Number.isFinite(numero) ? numero : 0;
+}
+
+function fsColetarItensParaSalvar() {
+  const itens = [];
+
+  document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach(row => {
+    const inputs = Array.from(row.querySelectorAll('input'));
+
+    if (!inputs.length) return;
+
+    const descricao =
+      row.querySelector('.desc-cell input')?.value?.trim() ||
+      row.querySelector('.desc-cell')?.value?.trim() ||
+      inputs[0]?.value?.trim() ||
+      '';
+
+    let qtd = 1;
+    let valor = 0;
+
+    const inputQtd =
+      row.querySelector('.qtd-cell input') ||
+      row.querySelector('.qtd') ||
+      row.querySelector('input[name="qtd"]') ||
+      row.querySelector('input[name="quantidade"]') ||
+      inputs[1];
+
+    const inputValor =
+      row.querySelector('.valor-cell input') ||
+      row.querySelector('.valor') ||
+      row.querySelector('input[name="valor"]') ||
+      row.querySelector('input[name="valor_unitario"]') ||
+      inputs[2];
+
+    const inputSubtotal =
+      row.querySelector('.subtotal-cell input') ||
+      row.querySelector('.subtotal') ||
+      row.querySelector('input[name="subtotal"]') ||
+      inputs[3];
+
+    qtd = fsValorNumerico(inputQtd?.value ?? 1);
+    valor = fsValorNumerico(inputValor?.value ?? 0);
+
+    let subtotal = fsValorNumerico(inputSubtotal?.value);
+
+    if (!subtotal) {
+      subtotal = qtd * valor;
+    }
+
+    if (descricao) {
+      itens.push({
+        descricao,
+        qtd,
+        valor,
+        subtotal
+      });
+    }
+  });
+
+  return itens;
+}
+
+function fsColetarDadosOrcamentoAtual() {
+  const titulo = document.getElementById('titulo')?.value?.trim() || 'Sem título';
+  const clienteNome = document.getElementById('cliente')?.value?.trim() || '';
+  const clienteWhatsapp = document.getElementById('tel-cliente')?.value?.trim() || '';
+  const observacoes = document.getElementById('observacoes')?.value?.trim() || '';
+  const tema = document.getElementById('selected-theme')?.value || 'original';
+
+  const itens = fsColetarItensParaSalvar();
+  const total = itens.reduce((soma, item) => soma + Number(item.subtotal || 0), 0);
+
+  return {
+    titulo,
+    clienteNome,
+    clienteWhatsapp,
+    observacoes,
+    tema,
+    itens,
+    total
+  };
+}
+
+async function fsSalvarOrcamentoSePlanoPermitido(origem = 'acao') {
+  if (!fsPlanoPermiteSalvarOrcamento()) {
+    console.log('Plano grátis: orçamento não salvo na nuvem.');
+    return null;
+  }
+
+  if (!window._supabase) {
+    console.warn('Supabase não disponível. Orçamento não salvo.');
+    return null;
+  }
+
+  const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
+
+  if (sessionError || !session?.user?.id) {
+    console.warn('Usuário não logado. Orçamento não salvo.');
+    return null;
+  }
+
+  const dados = fsColetarDadosOrcamentoAtual();
+
+  if (!dados.clienteNome) {
+    console.warn('Cliente não informado. Orçamento não salvo.');
+    return null;
+  }
+
+  if (!dados.itens.length) {
+    console.warn('Nenhum item informado. Orçamento não salvo.');
+    return null;
+  }
+
+  const payloadBase = {
+    usuario_id: session.user.id,
+    assunto: dados.titulo,
+    cliente_nome: dados.clienteNome,
+    cliente_whatsapp: dados.clienteWhatsapp,
+    observacoes: dados.observacoes,
+    itens: dados.itens,
+    total: dados.total,
+    status: 'pendente'
+  };
+
+  /*
+    As colunas origem_salvamento e tema_pdf são opcionais.
+    Se existirem na tabela, serão salvas.
+    Se não existirem, o código tenta novamente sem elas.
+  */
+  const payloadCompleto = {
+    ...payloadBase,
+    origem_salvamento: origem,
+    tema_pdf: dados.tema
+  };
+
+  let resposta;
+
+  if (orcamentoSalvoAtualId) {
+    resposta = await _supabase
+      .from('orcamentos')
+      .update(payloadCompleto)
+      .eq('id', orcamentoSalvoAtualId)
+      .eq('usuario_id', session.user.id)
+      .select()
+      .single();
+  } else {
+    resposta = await _supabase
+      .from('orcamentos')
+      .insert(payloadCompleto)
+      .select()
+      .single();
+  }
+
+  if (resposta.error) {
+    const mensagemErro = String(resposta.error.message || '');
+
+    // Fallback para bancos que ainda não possuem as colunas opcionais.
+    // Mantém o salvamento funcionando e permite gerar o link do orçamento.
+    if (
+      mensagemErro.includes('origem_salvamento') ||
+      mensagemErro.includes('tema_pdf') ||
+      mensagemErro.includes('observacoes')
+    ) {
+      const payloadMinimo = {
+        usuario_id: session.user.id,
+        assunto: dados.titulo,
+        cliente_nome: dados.clienteNome,
+        cliente_whatsapp: dados.clienteWhatsapp,
+        itens: dados.itens,
+        total: dados.total,
+        status: 'pendente'
+      };
+
+      if (orcamentoSalvoAtualId) {
+        resposta = await _supabase
+          .from('orcamentos')
+          .update(payloadMinimo)
+          .eq('id', orcamentoSalvoAtualId)
+          .eq('usuario_id', session.user.id)
+          .select()
+          .single();
+      } else {
+        resposta = await _supabase
+          .from('orcamentos')
+          .insert(payloadMinimo)
+          .select()
+          .single();
+      }
+    }
+  }
+
+  if (resposta.error) {
+    console.error('Erro ao salvar orçamento:', resposta.error);
+    alert('Não foi possível salvar o orçamento na nuvem. O PDF/WhatsApp continuará funcionando.');
+    return null;
+  }
+
+  orcamentoSalvoAtualId = resposta.data.id;
+
+  return resposta.data;
+}
+
+async function fsBaixarPDFCorrigido() {
+  await fsSalvarOrcamentoSePlanoPermitido('download_pdf');
+
+  if (typeof baixarPDFOriginalFS === 'function') {
+    return baixarPDFOriginalFS();
+  }
+
+  const elemento = document.getElementById('conteudo-pdf');
+
+  if (!elemento || !elemento.innerHTML.trim()) {
+    alert('Gere a pré-visualização antes de baixar o PDF.');
+    return;
+  }
+
+  const nomeArquivo = (document.getElementById('titulo')?.value || 'orcamento')
+    .trim()
+    .replace(/[^\w\-]+/g, '_')
+    .toLowerCase();
+
+  const opt = {
+    margin: 0,
+    filename: `${nomeArquivo || 'orcamento'}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(elemento).save();
+}
+
+function montarMensagemWhatsappCliente(clienteNome, linkOrcamento) {
+  const nome = clienteNome && String(clienteNome).trim()
+    ? String(clienteNome).trim()
+    : 'cliente';
+
+  return `Olá, ${nome}! Tudo bem?
+
+Seu orçamento está pronto para visualização.
+
+Acesse o link abaixo para conferir os detalhes e aprovar ou recusar a proposta:
+
+${linkOrcamento}
+
+Qualquer dúvida, estou à disposição.`;
+}
+
+async function enviarPorWhatsApp() {
+  if (enviandoWhatsappFS) {
+    return;
+  }
+
+  enviandoWhatsappFS = true;
+
+  const botaoWhatsapp = document.querySelector('.btn-whatsapp');
+
+  if (botaoWhatsapp) {
+    botaoWhatsapp.disabled = true;
+    botaoWhatsapp.innerText = 'AGUARDE...';
+  }
+
+  try {
+    const dados = fsColetarDadosOrcamentoAtual();
+    const telefoneLimpo = fsLimparTelefoneWhatsapp(dados.clienteWhatsapp);
+
+    if (!telefoneLimpo) {
+      alert('Informe o WhatsApp do cliente.');
+      return;
+    }
+
+    if (!dados.clienteNome) {
+      alert('Informe o nome do cliente.');
+      return;
+    }
+
+    if (!dados.itens.length) {
+      alert('Adicione pelo menos um item ao orçamento.');
+      return;
+    }
+
+    const orcamentoSalvo = await fsSalvarOrcamentoSePlanoPermitido('whatsapp_manual');
+
+    const linkOrcamento = orcamentoSalvo?.id
+      ? `${window.location.origin}/ver.html?id=${orcamentoSalvo.id}`
+      : '';
+
+    if (!linkOrcamento) {
+      alert('Não foi possível gerar o link do orçamento. Para enviar pelo WhatsApp com link, o orçamento precisa ser salvo na nuvem. Verifique se o plano é Básico/Premium e se as colunas do Supabase estão corretas.');
+      return;
+    }
+
+    const mensagem = montarMensagemWhatsappCliente(dados.clienteNome, linkOrcamento);
+    const urlWhatsapp = `https://wa.me/${telefoneLimpo}?text=${encodeURIComponent(mensagem)}`;
+
+    /*
+      Usa sempre o mesmo nome de janela.
+      Assim o navegador reaproveita a aba do WhatsApp em vez de abrir várias.
+      Também evita abrir aba em branco antes do salvamento terminar.
+    */
+    whatsappJanelaFS = window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
+
+    if (!whatsappJanelaFS) {
+      alert('O navegador bloqueou a abertura do WhatsApp. Permita pop-ups para este site ou tente novamente.');
+      return;
+    }
+
+    whatsappJanelaFS.focus();
+
+    /*
+      Fecha o modal do gerador depois que o WhatsApp foi aberto.
+      Isso evita que o overlay invisível continue bloqueando a home.
+    */
+    fsFecharModalGeradorSeguro();
+
+  } catch (error) {
+    console.error('Erro ao enviar por WhatsApp:', error);
+    alert('Não foi possível abrir o WhatsApp.');
+  } finally {
+    enviandoWhatsappFS = false;
+
+    if (botaoWhatsapp) {
+      botaoWhatsapp.disabled = false;
+      botaoWhatsapp.innerText = 'ENVIAR POR WHATSAPP';
+    }
+
+    fsLiberarTelaAposModal();
+  }
+}
+
+
+function fsFecharModalGeradorSeguro() {
+  const modal = document.getElementById('modal-gerador-orcamento');
+  const formulario = document.getElementById('formulario-orcamento');
+
+  if (typeof fecharModalGerador === 'function') {
+    try {
+      fecharModalGerador();
+    } catch (error) {
+      console.warn('Não foi possível executar fecharModalGerador:', error);
+    }
+  }
+
+  if (modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('ativo');
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  if (formulario) {
+    formulario.style.display = 'none';
+  }
+
+  fsLiberarTelaAposModal();
+}
+
+function fsLiberarTelaAposModal() {
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = '';
+  document.documentElement.style.overflow = '';
+
+  document.body.classList.remove('modal-aberto');
+  document.body.classList.remove('login-modal-aberto');
+  document.body.classList.remove('modal-open');
+
+  const overlays = document.querySelectorAll('.modal-gerador-overlay, .modal-overlay, .modal-login-overlay');
+
+  overlays.forEach(overlay => {
+    if (
+      overlay.id === 'modal-gerador-orcamento' &&
+      overlay.style.display !== 'none'
+    ) {
+      overlay.style.display = 'none';
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof window.baixarPDF === 'function' && window.baixarPDF !== fsBaixarPDFCorrigido) {
+    baixarPDFOriginalFS = window.baixarPDF;
+  }
+
+  window.baixarPDF = fsBaixarPDFCorrigido;
+
+  const limparOriginal = window.limparFormulario;
+
+  if (typeof limparOriginal === 'function' && !window.limparFormularioComResetOrcamento) {
+    window.limparFormulario = function() {
+      orcamentoSalvoAtualId = null;
+      return limparOriginal.apply(this, arguments);
+    };
+
+    window.limparFormularioComResetOrcamento = true;
+  }
+});
+function atualizarBotaoPlanosHome() {
+  const botaoPlanos = document.getElementById('btn-conhecer-planos-home');
+
+  if (!botaoPlanos) return;
+
+  const plano = String(localStorage.getItem('usuario_plano') || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  botaoPlanos.style.display = plano === 'gratis' ? 'inline-flex' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', atualizarBotaoPlanosHome);
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(() => {
+    setTimeout(atualizarBotaoPlanosHome, 500);
+  });
+}
+
+setTimeout(atualizarBotaoPlanosHome, 1200);
+</script>
+
+<script>
+let pagamentoPixAtualId = null;
+
+const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
+
+function formatarMoedaPix(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+}
+
+function abrirModalPixBasico() {
+  const modal = document.getElementById('modal-pix-basico');
+
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function fecharModalPixBasico() {
+  const modal = document.getElementById('modal-pix-basico');
+
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function setEstadoModalPixCarregando() {
+  abrirModalPixBasico();
+
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  if (loading) loading.style.display = 'block';
+  if (conteudo) conteudo.style.display = 'none';
+  if (erro) {
+    erro.style.display = 'none';
+    erro.innerText = '';
+  }
+}
+
+function setEstadoModalPixErro(mensagem) {
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  if (loading) loading.style.display = 'none';
+  if (conteudo) conteudo.style.display = 'none';
+  if (erro) {
+    erro.style.display = 'block';
+    erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
+  }
+}
+
+function setEstadoModalPixConteudo(dados) {
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  const subtitulo = document.getElementById('pix-modal-subtitulo');
+  const planoLabel = document.getElementById('pix-plano-label');
+  const pixValor = document.getElementById('pix-valor');
+  const qrImg = document.getElementById('pix-qrcode-img');
+  const copiaCola = document.getElementById('pix-copia-cola');
+
+  pagamentoPixAtualId = dados.pagamento_id || null;
+
+  if (loading) loading.style.display = 'none';
+  if (conteudo) conteudo.style.display = 'block';
+  if (erro) erro.style.display = 'none';
+
+  if (subtitulo) subtitulo.innerText = `${dados.label || 'Plano Básico'} - ${formatarMoedaPix(dados.valor)}`;
+  if (planoLabel) planoLabel.innerText = dados.label || 'Plano Básico';
+  if (pixValor) pixValor.innerText = formatarMoedaPix(dados.valor);
+
+  if (qrImg) {
+    if (dados.qr_code) {
+      qrImg.src = dados.qr_code;
+      qrImg.style.display = 'inline-block';
+    } else {
+      qrImg.src = '';
+      qrImg.style.display = 'none';
+    }
+  }
+
+  if (copiaCola) {
+    copiaCola.value = dados.pix_copia_cola || '';
+  }
+}
+
+async function gerarPixPlanoBasico(periodo) {
+  try {
+    if (!window._supabase) {
+      alert('Supabase não carregou. Atualize a página e tente novamente.');
+      return;
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session) {
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
+      } else {
+        alert('Faça login para assinar o Plano Básico.');
+      }
+
+      return;
+    }
+
+    setEstadoModalPixCarregando();
+
+    const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        periodo
+      })
+    });
+
+    const dados = await resposta.json().catch(() => ({}));
+
+    if (!resposta.ok) {
+      setEstadoModalPixErro(dados.erro || 'Erro ao gerar Pix.');
+      return;
+    }
+
+    setEstadoModalPixConteudo(dados);
+
+  } catch (error) {
+    console.error('Erro ao gerar Pix:', error);
+    setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
+  }
+}
+
+async function copiarPixCopiaCola() {
+  const campo = document.getElementById('pix-copia-cola');
+
+  if (!campo || !campo.value) {
+    alert('Pix copia e cola não disponível.');
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(campo.value);
+    alert('Pix copia e cola copiado!');
+  } catch (error) {
+    campo.select();
+    document.execCommand('copy');
+    alert('Pix copia e cola copiado!');
+  }
+}
+
+async function verificarPagamentoPixAtual() {
+  if (!pagamentoPixAtualId) {
+    alert('Nenhum pagamento Pix foi gerado nesta tela.');
+    return;
+  }
+
+  if (!window._supabase) {
+    alert('Supabase não carregou. Atualize a página.');
+    return;
+  }
+
+  const { data: { session } } = await _supabase.auth.getSession();
+
+  if (!session) {
+    alert('Faça login novamente para verificar o pagamento.');
+    return;
+  }
+
+  const { data, error } = await _supabase
+    .from('pagamentos_pix')
+    .select('status, pago_em')
+    .eq('id', pagamentoPixAtualId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Erro ao verificar pagamento:', error);
+    alert('Não foi possível verificar o pagamento agora.');
+    return;
+  }
+
+  if (!data) {
+    alert('Pagamento não encontrado.');
+    return;
+  }
+
+  if (data.status === 'pago') {
+    alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
+    fecharModalPixBasico();
+    window.location.reload();
+    return;
+  }
+
+  alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
+}
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    fecharModalPixBasico();
+  }
+});
+
+document.addEventListener('click', function(event) {
+  const modal = document.getElementById('modal-pix-basico');
+
+  if (event.target === modal) {
+    fecharModalPixBasico();
+  }
+});
+</script>
+
+
+
+<script>
+/* =========================================================
+   EXIBIR PLANO BÁSICO NA HOME SOMENTE PARA USUÁRIO LOGADO
+   E COM PLANO GRÁTIS
+   ========================================================= */
+function fsNormalizarPlanoHome(valor) {
+  return String(valor || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+async function atualizarPainelPlanoBasicoHome() {
+  const painel = document.getElementById('painel-plano-basico-home');
+
+  if (!painel) return;
+
+  // Começa sempre oculto. Só exibe depois de confirmar sessão + plano grátis.
+  painel.style.display = 'none';
+
+  if (!window._supabase) return;
+
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      return;
+    }
+
+    let plano = localStorage.getItem('usuario_plano') || 'gratis';
+
+    // Busca o plano real no Supabase, porque localStorage pode estar vazio ou desatualizado.
+    const { data, error } = await _supabase
+      .from('perfis')
+      .select('plano, plano_status, plano_expira_em')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    if (!error && data) {
+      plano = data.plano || 'gratis';
+      localStorage.setItem('usuario_plano', plano);
+
+      if (data.plano_status) {
+        localStorage.setItem('usuario_plano_status', data.plano_status);
+      }
+
+      if (data.plano_expira_em) {
+        localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+      }
+    }
+
+    const planoNormalizado = fsNormalizarPlanoHome(plano);
+
+    painel.style.display = planoNormalizado === 'gratis' ? 'block' : 'none';
+  } catch (error) {
+    console.warn('Não foi possível verificar o plano para exibir o painel Básico:', error);
+    painel.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  atualizarPainelPlanoBasicoHome();
+  setTimeout(atualizarPainelPlanoBasicoHome, 700);
+  setTimeout(atualizarPainelPlanoBasicoHome, 1600);
+});
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(() => {
+    setTimeout(atualizarPainelPlanoBasicoHome, 300);
+    setTimeout(atualizarPainelPlanoBasicoHome, 1200);
+  });
+}
+
+window.atualizarPainelPlanoBasicoHome = atualizarPainelPlanoBasicoHome;
+</script>
+
+</body>
 </html>

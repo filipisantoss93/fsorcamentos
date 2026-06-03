@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Orçamento</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #f4f6f9; color: #333; }
+    .container { max-width: 650px; margin: 30px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    h2 { text-align: center; color: #222; margin-top: 0; margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+    .info-bloco { background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 25px; border-left: 4px solid #0056b3; }
+    .info-bloco p { margin: 8px 0; font-size: 15px; }
+    .tabela-itens { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .tabela-itens th { background: #f1f3f5; text-align: left; padding: 10px; font-weight: 600; border-bottom: 2px solid #dee2e6; }
+    .tabela-itens td { padding: 12px 10px; border-bottom: 1px solid #eee; font-size: 15px; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .total-container { text-align: right; font-size: 22px; font-weight: bold; margin-top: 25px; padding-top: 15px; border-top: 2px solid #eee; color: #111; }
+    .acoes { display: flex; gap: 15px; margin-top: 35px; }
+    button { flex: 1; padding: 16px; font-size: 16px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s, transform 0.1s; color: white; text-transform: uppercase; letter-spacing: 0.5px; }
+    button:active { transform: scale(0.98); }
+    .btn-aprovar { background-color: #2e7d32; }
+    .btn-aprovar:hover { background-color: #1b5e20; }
+    .btn-recusar { background-color: #c62828; }
+    .btn-recusar:hover { background-color: #b71c1c; }
+    .status-alerta { text-align: center; font-size: 18px; font-weight: bold; padding: 15px; margin-top: 25px; border-radius: 6px; display: none; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 id="titulo-orcamento">A carregar orçamento...</h2>
+  
+  <div class="info-bloco">
+    <p><strong>Emissor:</strong> <span id="emissor-nome">...</span></p>
+    <p><strong>Cliente:</strong> <span id="cliente-nome">...</span></p>
+    <p><strong>Contacto:</strong> <span id="cliente-contacto">...</span></p>
+  </div>
+
+  <table class="tabela-itens">
+    <thead>
+      <tr>
+        <th>Descrição</th>
+        <th class="text-center" style="width: 80px;">Qtd</th>
+        <th class="text-right" style="width: 120px;">Total</th>
+      </tr>
+    </thead>
+    <tbody id="lista-itens">
+      </tbody>
+  </table>
+
+  <div class="total-container">
+    Total: <span id="total-geral">R$ 0,00</span>
+  </div>
+
+  <div id="bloco-status" class="status-alerta"></div>
+
+  <div id="bloco-botoes" class="acoes">
+    <button class="btn-recusar" onclick="alterarStatus('recusado')">Recusar Orçamento</button>
+    <button class="btn-aprovar" onclick="alterarStatus('aprovado')">Aprovar Orçamento</button>
+  </div>
+</div>
+
+<script>
+  // Captura o ID diretamente do final da URL (/ver/ID)
+  const urlParts = window.location.pathname.split('/');
+  const orcamentoId = urlParts[urlParts.length - 1];
+
+  async function buscarOrcamento() {
+    if (!orcamentoId) {
+      mostrarErro('Link de orçamento inválido.');
+      return;
+    }
+
+    try {
+      // Faz a requisição para a rota do seu próprio servidor Node
+      const response = await fetch(`/orcamentos/${orcamentoId}`);
+      if (!response.ok) throw new Error();
+      const orcamento = await response.json();
+
+      // Preenche os dados nos campos estruturados
+      document.getElementById('titulo-orcamento').innerText = `Orçamento Disponível`;
+      document.getElementById('emissor-nome').innerText = orcamento.consultor || 'Não especificado';
+      document.getElementById('cliente-nome').innerText = orcamento.cliente_nome || 'Não informado';
+      document.getElementById('cliente-contacto').innerText = orcamento.cliente_whatsapp || 'Não informado';
+      document.getElementById('total-geral').innerText = Number(orcamento.total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+      // Renderiza as linhas dos itens (peças / serviços)
+      const tabelaBody = document.getElementById('lista-itens');
+      tabelaBody.innerHTML = '';
+      
+      if (orcamento.itens && orcamento.itens.length > 0) {
+        orcamento.itens.forEach(item => {
+          const totalItem = (parseFloat(item.qtd) || 0) * (parseFloat(item.valor) || 0);
+          tabelaBody.innerHTML += `
+            <tr>
+              <td>${item.desc}</td>
+              <td class="text-center">${item.qtd}</td>
+              <td class="text-right">${totalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+            </tr>`;
+        });
+      } else {
+        tabelaBody.innerHTML = `<tr><td colspan="3" class="text-center">Nenhum item listado.</td></tr>`;
+      }
+
+      // Se o status já foi decidido (aprovado ou recusado), atualiza a interface
+      if (orcamento.status && orcamento.status !== 'pendente') {
+        aplicarLayoutStatus(orcamento.status);
+      }
+
+    } catch (err) {
+      mostrarErro('Orçamento não encontrado ou removido.');
+    }
+  }
+
+  async function alterarStatus(novoStatus) {
+    const acaoTexto = novoStatus === 'aprovado' ? 'APROVAR' : 'RECUSAR';
+    if (!confirm(`Confirma que deseja ${acaoTexto} este orçamento?`)) return;
+
+    try {
+      const response = await fetch(`/orcamentos/${orcamentoId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: novoStatus })
+      });
+
+      if (!response.ok) throw new Error();
+      
+      aplicarLayoutStatus(novoStatus);
+      alert(`Orçamento atualizado para ${novoStatus} com sucesso!`);
+    } catch (err) {
+      alert('Não foi possível atualizar o status do orçamento.');
+    }
+  }
+
+  function aplicarLayoutStatus(status) {
+    const botoes = document.getElementById('bloco-botoes');
+    const alerta = document.getElementById('bloco-status');
+    
+    botoes.style.display = 'none';
+    alerta.style.display = 'block';
+
+    if (status === 'aprovado') {
+      alerta.innerText = '✅ ESTE ORÇAMENTO FOI APROVADO';
+      alerta.style.background = '#e8f5e9';
+      alerta.style.color = '#2e7d32';
+      alerta.style.border = '1px solid #c8e6c9';
+    } else if (status === 'recusado') {
+      alerta.innerText = '❌ ESTE ORÇAMENTO FOI RECUSADO';
+      alerta.style.background = '#ffebee';
+      alerta.style.color = '#c62828';
+      alerta.style.border = '1px solid #ffcdd2';
+    }
+  }
+
+  function mostrarErro(mensagem) {
+    document.getElementById('titulo-orcamento').innerText = 'Aviso';
+    document.getElementById('container').innerHTML = `<h3 class="text-center" style="color: #c62828; padding: 20px;">${mensagem}</h3>`;
+  }
+
+  // Executa a busca assim que a página abre
+  buscarOrcamento();
+</script>
+</body>
+</html>

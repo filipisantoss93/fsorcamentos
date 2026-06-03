@@ -189,7 +189,7 @@ function limparTelefone(telefone) {
 }
 
 function montarLinkOrcamento(id) {
-    return `https://fsorcamentos.com.br/ver.html?id=${id}`;
+    return `https://fsorcamentos.com.br/ver/${id}`;
 }
 
 // ==================== CAMPOS EXTRAS E ITENS ====================
@@ -640,7 +640,7 @@ async function enviarPorWhatsApp() {
         return;
     }
 
-    const nomeCliente =
+    const nomeCliente =or
         document.getElementById('cliente')?.value?.trim() || '';
 
     const whatsCliente =

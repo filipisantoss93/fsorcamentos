@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Exemplos - FS Orçamentos</title>
+  <meta name="description" content="Veja exemplos reais de telas e PDFs gerados pelo FS Orçamentos. Entenda como preencher, escolher cores e gerar orçamentos profissionais.">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  <style>
+    .pagina-exemplos {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 34px 16px 50px;
+      color: #3e2723;
+    }
+
+    .hero-exemplos {
+      background: linear-gradient(135deg, #fff7e0, #f4ece1);
+      border-radius: 24px;
+      padding: 40px 26px;
+      border-top: 6px solid #ffc400;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.16);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero-exemplos .tag {
+      display: inline-block;
+      background: #3e2723;
+      color: #ffc400;
+      border: 1px solid #ffc400;
+      border-radius: 999px;
+      padding: 7px 15px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .hero-exemplos h1 {
+      margin: 0 0 12px;
+      font-size: 36px;
+      line-height: 1.15;
+      color: #3e2723;
+    }
+
+    .hero-exemplos p {
+      max-width: 780px;
+      margin: 0 auto;
+      color: #6d4c41;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .passos-exemplos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .passo-exemplo {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px;
+      border-left: 6px solid #ffc400;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+    }
+
+    .passo-exemplo strong {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ffc400;
+      color: #3e2723;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .passo-exemplo h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: #3e2723;
+    }
+
+    .passo-exemplo p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .secao-exemplos {
+      background: #f4ece1;
+      border-radius: 22px;
+      padding: 24px;
+      border-top: 5px solid #ffc400;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.20);
+      margin-bottom: 28px;
+    }
+
+    .secao-exemplos h2 {
+      margin: 0 0 8px;
+      color: #3e2723;
+      border-bottom: 2px solid #ffc400;
+      padding-bottom: 10px;
+    }
+
+    .secao-exemplos .intro {
+      color: #6d4c41;
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+
+    .galeria-exemplos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card-exemplo-img {
+      background: #ffffff;
+      border: 1px solid #eadfce;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+      font-family: inherit;
+      color: #3e2723;
+      transition: 0.2s;
+    }
+
+    .card-exemplo-img:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.20);
+    }
+
+    .card-exemplo-img img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #ffffff;
+      display: block;
+      border-bottom: 1px solid #eadfce;
+    }
+
+    .card-exemplo-img div {
+      padding: 14px;
+    }
+
+    .card-exemplo-img strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 5px;
+      color: #3e2723;
+    }
+
+    .card-exemplo-img span {
+      display: block;
+      font-size: 13px;
+      color: #6d4c41;
+      line-height: 1.4;
+    }
+
+    .pdf-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .pdf-card {
+      background: #3e2723;
+      color: #fff;
+      border-radius: 18px;
+      padding: 22px;
+      border: 2px solid #ffc400;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.20);
+    }
+
+    .pdf-card .icone-pdf {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .pdf-card h3 {
+      margin: 0 0 8px;
+      color: #ffc400;
+    }
+
+    .pdf-card p {
+      margin: 0 0 16px;
+      color: #f4ece1;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .pdf-acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ver-pdf,
+    .btn-baixar-pdf {
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid #ffc400;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-ver-pdf {
+      background: #ffc400;
+      color: #3e2723;
+    }
+
+    .btn-baixar-pdf {
+      background: transparent;
+      color: #ffc400;
+    }
+
+    .btn-ver-pdf:hover,
+    .btn-baixar-pdf:hover {
+      background: #ffffff;
+      color: #3e2723;
+    }
+
+    .cta-exemplos {
+      text-align: center;
+      background: linear-gradient(135deg, #3e2723, #2c2c2c);
+      border: 2px solid #ffc400;
+      border-radius: 22px;
+      padding: 28px 18px;
+      color: #fff;
+    }
+
+    .cta-exemplos h2 {
+      margin: 0 0 8px;
+      color: #ffc400;
+    }
+
+    .cta-exemplos p {
+      margin: 0 auto 18px;
+      max-width: 700px;
+      color: #f4ece1;
+      line-height: 1.5;
+    }
+
+    .btn-cta-exemplos {
+      background: #ffc400;
+      color: #3e2723;
+      border: 2px solid #ffc400;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-cta-exemplos:hover {
+      background: #ffffff;
+      color: #3e2723;
+    }
+
+    .modal-imagem-demo,
+    .modal-pdf-demo {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.84);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 15000;
+      padding: 18px;
+    }
+
+    .modal-imagem-card,
+    .modal-pdf-card {
+      width: min(100%, 1000px);
+      max-height: 92vh;
+      background: #f4ece1;
+      border-radius: 18px;
+      border-top: 5px solid #ffc400;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-demo-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: #3e2723;
+      color: #ffc400;
+    }
+
+    .modal-demo-topo strong {
+      font-size: 16px;
+    }
+
+    .modal-demo-topo button {
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-imagem-card img {
+      width: 100%;
+      height: auto;
+      max-height: calc(92vh - 62px);
+      object-fit: contain;
+      background: #ffffff;
+      display: block;
+    }
+
+    .modal-pdf-card iframe {
+      width: 100%;
+      height: calc(92vh - 62px);
+      border: none;
+      background: #ffffff;
+    }
+
+    @media (max-width: 900px) {
+      .passos-exemplos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .galeria-exemplos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .pdf-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .pagina-exemplos {
+        padding: 24px 10px 40px;
+      }
+
+      .hero-exemplos {
+        padding: 30px 16px;
+        border-radius: 18px;
+      }
+
+      .hero-exemplos h1 {
+        font-size: 27px;
+      }
+
+      .passos-exemplos,
+      .galeria-exemplos {
+        grid-template-columns: 1fr;
+      }
+
+      .card-exemplo-img img {
+        height: 210px;
+      }
+
+      .secao-exemplos {
+        padding: 18px 14px;
+        border-radius: 18px;
+      }
+
+      .pdf-acoes {
+        flex-direction: column;
+      }
+
+      .btn-ver-pdf,
+      .btn-baixar-pdf,
+      .btn-cta-exemplos {
+        width: 100%;
+      }
+
+      .modal-imagem-demo,
+      .modal-pdf-demo {
+        padding: 8px;
+      }
+
+      .modal-imagem-card,
+      .modal-pdf-card {
+        max-height: 94vh;
+        border-radius: 14px;
+      }
+
+      .modal-demo-topo {
+        padding: 12px;
+      }
+
+      .modal-demo-topo strong {
+        font-size: 14px;
+      }
+
+      .modal-pdf-card iframe {
+        height: calc(94vh - 58px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+<script src="carregar-menu.js"></script>
+<script src="notificacoes.js"></script>
+
+<main class="pagina-exemplos">
+  <section class="hero-exemplos">
+    <span class="tag">Exemplos reais</span>
+    <h1>Veja como o FS Orçamentos funciona na prática</h1>
+    <p>
+      Confira as principais telas da ferramenta, veja as opções de cores do PDF
+      e visualize exemplos prontos de orçamento para enviar ao cliente ou imprimir.
+    </p>
+  </section>
+
+  <section class="passos-exemplos">
+    <div class="passo-exemplo">
+      <strong>1</strong>
+      <h3>Preencha os dados</h3>
+      <p>Informe título, cliente, serviços, quantidades, valores e observações.</p>
+    </div>
+
+    <div class="passo-exemplo">
+      <strong>2</strong>
+      <h3>Use recursos rápidos</h3>
+      <p>Adicione informações extras, termos, prazos e condições com poucos cliques.</p>
+    </div>
+
+    <div class="passo-exemplo">
+      <strong>3</strong>
+      <h3>Escolha a cor</h3>
+      <p>Personalize o visual do PDF com cores diferentes para cada tipo de proposta.</p>
+    </div>
+
+    <div class="passo-exemplo">
+      <strong>4</strong>
+      <h3>Gere o resultado</h3>
+      <p>Baixe o PDF pronto ou envie ao cliente conforme o plano contratado.</p>
+    </div>
+  </section>
+
+  <section class="secao-exemplos">
+    <h2>Galeria da ferramenta</h2>
+    <p class="intro">
+      Clique em qualquer imagem para visualizar dentro da própria página.
+    </p>
+
+    <div class="galeria-exemplos">
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/dados-orcamento.png', 'Dados do orçamento')">
+        <img src="exemplos/dados-orcamento.png" alt="Tela de dados do orçamento">
+        <div>
+          <strong>Dados do orçamento</strong>
+          <span>Veja onde informar o título, cliente e dados principais.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/tabela-preenchimento.png', 'Tabela de itens e serviços')">
+        <img src="exemplos/tabela-preenchimento.png" alt="Tabela de itens e serviços">
+        <div>
+          <strong>Itens e serviços</strong>
+          <span>Adicione serviços, produtos, quantidades e valores.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/termos-condicoes.png', 'Termos e condições rápidas')">
+        <img src="exemplos/termos-condicoes.png" alt="Termos e condições rápidas">
+        <div>
+          <strong>Termos rápidos</strong>
+          <span>Inclua condições de pagamento, validade e prazos.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/amarelo.png', 'Modelo amarelo')">
+        <img src="exemplos/amarelo.png" alt="Modelo de PDF amarelo">
+        <div>
+          <strong>Modelo amarelo</strong>
+          <span>Visual com destaque amarelo para propostas modernas.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/azul.png', 'Modelo azul')">
+        <img src="exemplos/azul.png" alt="Modelo de PDF azul">
+        <div>
+          <strong>Modelo azul</strong>
+          <span>Opção visual com aparência profissional e limpa.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/marrom.png', 'Modelo marrom')">
+        <img src="exemplos/marrom.png" alt="Modelo de PDF marrom">
+        <div>
+          <strong>Modelo marrom</strong>
+          <span>Modelo padrão do FS Orçamentos.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/verde.png', 'Modelo verde')">
+        <img src="exemplos/verde.png" alt="Modelo de PDF verde">
+        <div>
+          <strong>Modelo verde</strong>
+          <span>Alternativa visual para serviços e propostas comerciais.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/vermelho.png', 'Modelo vermelho')">
+        <img src="exemplos/vermelho.png" alt="Modelo de PDF vermelho">
+        <div>
+          <strong>Modelo vermelho</strong>
+          <span>PDF com destaque visual forte para sua proposta.</span>
+        </div>
+      </button>
+
+      <button type="button" class="card-exemplo-img" onclick="abrirImagemDemo('exemplos/preto-impressao.png', 'Modelo preto para impressão')">
+        <img src="exemplos/preto-impressao.png" alt="Modelo preto para impressão">
+        <div>
+          <strong>Preto para impressão</strong>
+          <span>Modelo mais simples e indicado para impressão.</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <section class="secao-exemplos">
+    <h2>Exemplos de PDF final</h2>
+    <p class="intro">
+      Veja o resultado final que pode ser enviado ao cliente ou usado para impressão.
+    </p>
+
+    <div class="pdf-grid">
+      <div class="pdf-card">
+        <div class="icone-pdf">📄</div>
+        <h3>Orçamento exemplo</h3>
+        <p>
+          Modelo completo de orçamento profissional, com dados do cliente,
+          serviços, valores, total e observações.
+        </p>
+
+        <div class="pdf-acoes">
+          <button type="button" class="btn-ver-pdf" onclick="abrirPdfDemo('exemplos/orcamento-exemplo.pdf', 'Orçamento exemplo')">
+            Visualizar PDF
+          </button>
+
+          <a href="exemplos/orcamento-exemplo.pdf" class="btn-baixar-pdf" download>
+            Baixar PDF
+          </a>
+        </div>
+      </div>
+
+      <div class="pdf-card">
+        <div class="icone-pdf">🖨️</div>
+        <h3>Preto ideal para impressão</h3>
+        <p>
+          Modelo com visual mais limpo, pensado para quem precisa imprimir
+          ou enviar uma proposta mais econômica em tinta.
+        </p>
+
+        <div class="pdf-acoes">
+          <button type="button" class="btn-ver-pdf" onclick="abrirPdfDemo('exemplos/preto-ideal-impressao.pdf', 'Preto ideal para impressão')">
+            Visualizar PDF
+          </button>
+
+          <a href="exemplos/preto-ideal-impressao.pdf" class="btn-baixar-pdf" download>
+            Baixar PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-exemplos">
+    <h2>Pronto para criar seu orçamento?</h2>
+    <p>
+      Agora que você viu como funciona, acesse a ferramenta e gere seu orçamento profissional em poucos minutos.
+    </p>
+
+    <a href="/index.html" class="btn-cta-exemplos">
+      Criar meu orçamento
+    </a>
+  </section>
+</main>
+
+<div id="modal-imagem-demo" class="modal-imagem-demo" onclick="fecharImagemDemoAoClicarFora(event)">
+  <div class="modal-imagem-card">
+    <div class="modal-demo-topo">
+      <strong id="modal-imagem-titulo">Exemplo</strong>
+      <button type="button" onclick="fecharImagemDemo()">×</button>
+    </div>
+
+    <img id="modal-imagem-img" src="" alt="Imagem demonstrativa do FS Orçamentos">
+  </div>
+</div>
+
+<div id="modal-pdf-demo" class="modal-pdf-demo" onclick="fecharPdfDemoAoClicarFora(event)">
+  <div class="modal-pdf-card">
+    <div class="modal-demo-topo">
+      <strong id="modal-pdf-titulo">PDF de exemplo</strong>
+      <button type="button" onclick="fecharPdfDemo()">×</button>
+    </div>
+
+    <iframe id="modal-pdf-frame" src="" title="PDF de exemplo do FS Orçamentos"></iframe>
+  </div>
+</div>
+
+<footer style="text-align:center; color:#aaa; padding: 10px 0 24px;">
+  &copy; 2026 FS Orçamentos |
+  <a href="privacidade.html" style="color:#aaa">Privacidade</a>
+</footer>
+
+<script>
+function abrirImagemDemo(src, titulo) {
+  const modal = document.getElementById('modal-imagem-demo');
+  const img = document.getElementById('modal-imagem-img');
+  const tituloEl = document.getElementById('modal-imagem-titulo');
+
+  if (!modal || !img || !tituloEl) return;
+
+  img.src = src;
+  tituloEl.innerText = titulo || 'Exemplo';
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharImagemDemo() {
+  const modal = document.getElementById('modal-imagem-demo');
+  const img = document.getElementById('modal-imagem-img');
+
+  if (!modal || !img) return;
+
+  modal.style.display = 'none';
+  img.src = '';
+
+  document.body.style.overflow = '';
+}
+
+function fecharImagemDemoAoClicarFora(event) {
+  const modal = document.getElementById('modal-imagem-demo');
+
+  if (event.target === modal) {
+    fecharImagemDemo();
+  }
+}
+
+function abrirPdfDemo(src, titulo) {
+  const modal = document.getElementById('modal-pdf-demo');
+  const frame = document.getElementById('modal-pdf-frame');
+  const tituloEl = document.getElementById('modal-pdf-titulo');
+
+  if (!modal || !frame || !tituloEl) return;
+
+  frame.src = src;
+  tituloEl.innerText = titulo || 'PDF de exemplo';
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharPdfDemo() {
+  const modal = document.getElementById('modal-pdf-demo');
+  const frame = document.getElementById('modal-pdf-frame');
+
+  if (!modal || !frame) return;
+
+  modal.style.display = 'none';
+  frame.src = '';
+
+  document.body.style.overflow = '';
+}
+
+function fecharPdfDemoAoClicarFora(event) {
+  const modal = document.getElementById('modal-pdf-demo');
+
+  if (event.target === modal) {
+    fecharPdfDemo();
+  }
+}
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    fecharImagemDemo();
+    fecharPdfDemo();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,109 +1,124 @@
-async function carregarMenu(sessionRecebida = null) {
-    const headerContainer = document.getElementById('header-container');
+let headerJaCarregado = false;
 
-    if (!headerContainer) {
-        console.error('Erro: #header-container não encontrado.');
+async function carregarMenu(sessionRecebida = undefined) {
+  const headerContainer = document.getElementById('header-container');
+
+  if (!headerContainer) return;
+
+  try {
+    if (!headerJaCarregado) {
+      const response = await fetch('/header.html');
+
+      if (!response.ok) {
+        console.error('Erro ao carregar header.html:', response.status);
         return;
+      }
+
+      const html = await response.text();
+
+      headerContainer.innerHTML = html;
+      headerContainer.style.display = 'block';
+      headerJaCarregado = true;
     }
 
-    if (!window._supabase) {
-        console.error('Erro: _supabase ainda não existe.');
-        return;
+    let session = sessionRecebida;
+
+    if (session === undefined && window._supabase) {
+      const { data } = await _supabase.auth.getSession();
+      session = data.session;
     }
 
-    try {
-        let session = sessionRecebida;
+    await atualizarHeaderUsuario(session || null);
 
-        if (!session) {
-            const { data, error } = await _supabase.auth.getSession();
-
-            if (error) {
-                console.error('Erro ao buscar sessão:', error);
-                return;
-            }
-
-            session = data.session;
-        }
-
-        if (!session) {
-            headerContainer.innerHTML = '';
-            headerContainer.style.display = 'none';
-            console.log('Menu oculto: sem sessão.');
-            return;
-        }
-
-        const response = await fetch('/header.html');
-
-        if (!response.ok) {
-            console.error('Erro ao carregar header.html:', response.status);
-            return;
-        }
-
-        const html = await response.text();
-
-        headerContainer.innerHTML = html;
-        headerContainer.style.display = 'block';
-
-        let nomeFinal =
-            localStorage.getItem('usuario_nome') ||
-            session.user.email.split('@')[0];
-
-        const { data: perfil, error: perfilError } = await _supabase
-            .from('perfis')
-            .select('nome, nome_empresa, foto_url')
-            .eq('id', session.user.id)
-            .maybeSingle();
-
-        if (perfilError) {
-            console.warn('Erro ao buscar perfil para o menu:', perfilError);
-        }
-
-        if (perfil) {
-            nomeFinal =
-                perfil.nome ||
-                perfil.nome_empresa ||
-                nomeFinal;
-
-            localStorage.setItem('usuario_nome', nomeFinal);
-        }
-
-        const saudacao = document.getElementById('usuario-saudacao');
-
-        if (saudacao) {
-            saudacao.innerText = `Olá, ${nomeFinal}`;
-        }
-
-        const logoEmpresa = document.getElementById('logo-empresa');
-
-        if (logoEmpresa && perfil?.foto_url) {
-            logoEmpresa.src = perfil.foto_url;
-            logoEmpresa.style.display = 'block';
-        }
-
-        console.log('Menu carregado com sucesso.');
-
-    } catch (err) {
-        console.error('Erro geral ao carregar menu:', err);
-    }
+  } catch (error) {
+    console.error('Erro ao carregar menu:', error);
+  }
 }
 
-window.carregarMenu = carregarMenu;
+async function atualizarHeaderUsuario(session) {
+  const saudacao = document.getElementById('usuario-saudacao');
+
+  const btnEntrarDesktop = document.getElementById('btn-header-entrar');
+  const btnSairDesktop = document.getElementById('btn-header-sair');
+
+  const btnEntrarMobile = document.getElementById('btn-menu-mobile-entrar');
+  const btnSairMobile = document.getElementById('btn-menu-mobile-sair');
+
+  if (!saudacao) return;
+
+  function mostrarDeslogado() {
+    saudacao.innerText = 'Olá, Convidado';
+
+    if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'inline-block';
+    if (btnSairDesktop) btnSairDesktop.style.display = 'none';
+
+    if (btnEntrarMobile) btnEntrarMobile.style.display = 'block';
+    if (btnSairMobile) btnSairMobile.style.display = 'none';
+  }
+
+  function mostrarLogado(nomeFinal) {
+    saudacao.innerText = `Olá, ${nomeFinal}`;
+
+    if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'none';
+    if (btnSairDesktop) btnSairDesktop.style.display = 'inline-block';
+
+    if (btnEntrarMobile) btnEntrarMobile.style.display = 'none';
+    if (btnSairMobile) btnSairMobile.style.display = 'block';
+  }
+
+  if (!session) {
+    mostrarDeslogado();
+    return;
+  }
+
+  let nomeFinal =
+    localStorage.getItem('usuario_nome') ||
+    session.user.user_metadata?.nome ||
+    session.user.email?.split('@')[0] ||
+    'Usuário';
+
+  try {
+    if (window._supabase) {
+      const { data: perfil, error } = await _supabase
+        .from('perfis')
+        .select('nome, nome_empresa, plano')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (!error && perfil) {
+        nomeFinal =
+          perfil.nome ||
+          perfil.nome_empresa ||
+          nomeFinal;
+
+        localStorage.setItem('usuario_nome', nomeFinal);
+        localStorage.setItem('usuario_plano', perfil.plano || 'gratis');
+      }
+    }
+  } catch (error) {
+    console.warn('Não foi possível atualizar perfil no header:', error);
+  }
+
+  mostrarLogado(nomeFinal);
+}
+
+function irParaLogin() {
+  if (typeof abrirModalLogin === 'function') {
+    abrirModalLogin();
+    return;
+  }
+
+  window.location.href = '/painel.html';
+}
+
+function toggleMenuMobile() {
+  const menuLinha = document.querySelector('.header-menu-linha');
+
+  if (menuLinha) {
+    menuLinha.classList.toggle('menu-aberto');
+  }
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await carregarMenu();
-
-    if (window._supabase) {
-        _supabase.auth.onAuthStateChange(async (event, session) => {
-            if (event === 'SIGNED_OUT') {
-                const headerContainer = document.getElementById('header-container');
-                if (headerContainer) {
-                    headerContainer.innerHTML = '';
-                    headerContainer.style.display = 'none';
-                }
-                return;
-            }
-
-            await carregarMenu(session);
-        });
-    }
+  await carregarMenu();
 });

@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "outputDirectory": ".",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/$1"
+      "src": "index.js",
+      "use": "@vercel/node"
     }
+  ],
+  "routes": [
+    { "src": "/orcamentos(.*)", "dest": "index.js" },
+    { "src": "/ver/(.*)", "dest": "/v.html" }
   ]
 }

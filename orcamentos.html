@@ -112,8 +112,34 @@
     }
 
     .linha-orcamento:hover {
-      background: #fff8dc;
+      filter: brightness(0.97);
     }
+
+    .linha-status-pendente {
+      background: #fff8e1;
+    }
+
+    .linha-status-aprovado {
+      background: #eaf7ed;
+    }
+
+    .linha-status-recusado {
+      background: #fdecee;
+    }
+
+    .linha-status-em_servico {
+      background: #eff6ff;
+    }
+
+    .linha-status-finalizado {
+      background: #f3e8ff;
+    }
+
+    .linha-status-pendente td:first-child { border-left: 7px solid #ffc107; }
+    .linha-status-aprovado td:first-child { border-left: 7px solid #28a745; }
+    .linha-status-recusado td:first-child { border-left: 7px solid #dc3545; }
+    .linha-status-em_servico td:first-child { border-left: 7px solid #2563eb; }
+    .linha-status-finalizado td:first-child { border-left: 7px solid #7c3aed; }
 
     .status {
       display: inline-block;
@@ -333,30 +359,6 @@
       margin-top: 10px;
     }
 
-    .painel-resumo {
-      background: #fff;
-      border-radius: 14px;
-      padding: 16px;
-      margin: 10px 0 22px 0;
-      border-top: 4px solid #ffc400;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    }
-
-    .resumo-topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .resumo-topo h2 {
-      margin: 0;
-      color: #3e2723;
-      font-size: 20px;
-    }
-
     .cards-resumo {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -396,6 +398,50 @@
     .card-finalizado { border-left-color: #7c3aed; background: #f3e8ff; }
     .card-total { border-left-color: #3e2723; background: #efebe9; }
 
+    .resumo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: #3e2723;
+      color: #ffc400;
+      padding: 12px 16px;
+      border-radius: 12px 12px 0 0;
+      cursor: pointer;
+      margin-top: 18px;
+    }
+
+    .resumo-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #ffc400;
+      border: none;
+      padding: 0;
+    }
+
+    .btn-toggle-resumo {
+      background: #ffc400;
+      color: #3e2723;
+      border: none;
+      border-radius: 20px;
+      padding: 7px 12px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .resumo-financeiro.minimizado .resumo-conteudo {
+      display: none;
+    }
+
+    .resumo-conteudo {
+      background: #f4ece1;
+      border: 1px solid #d7ccc8;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 15px;
+    }
+
     @media (max-width: 1100px) {
       .cards-resumo { grid-template-columns: repeat(3, 1fr); }
     }
@@ -426,6 +472,15 @@
         align-items: stretch;
         top: 0;
       }
+
+      .resumo-header h2 {
+        font-size: 15px;
+      }
+
+      .btn-toggle-resumo {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
     }
 
     @media (max-width: 520px) {
@@ -433,61 +488,65 @@
       .tabela-orcamentos { min-width: 760px; }
     }
 
-    .resumo-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  background: #3e2723;
-  color: #ffc400;
-  padding: 12px 16px;
-  border-radius: 12px 12px 0 0;
-  cursor: pointer;
-  margin-top: 18px;
-}
+    /* ==================== LINHA INTEIRA POR STATUS - ORÇAMENTOS ==================== */
 
-.resumo-header h2 {
-  margin: 0;
-  font-size: 18px;
-  color: #ffc400;
-  border: none;
-  padding: 0;
-}
+    .linha-orcamento {
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
 
-.btn-toggle-resumo {
-  background: #ffc400;
-  color: #3e2723;
-  border: none;
-  border-radius: 20px;
-  padding: 7px 12px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 13px;
-}
+    .linha-orcamento:hover {
+      filter: brightness(0.97);
+      transform: translateY(-1px);
+    }
 
-.resumo-financeiro.minimizado .resumo-conteudo {
-  display: none;
-}
+    /* A cor precisa ser aplicada no TD para funcionar bem em tabelas */
+    .linha-orcamento.status-pendente td {
+      background: #fff8e1 !important;
+    }
 
-.resumo-conteudo {
-  background: #f4ece1;
-  border: 1px solid #d7ccc8;
-  border-top: none;
-  border-radius: 0 0 12px 12px;
-  padding: 15px;
-}
+    .linha-orcamento.status-aprovado td {
+      background: #eaf7ed !important;
+    }
 
-@media (max-width: 700px) {
-  .resumo-header h2 {
-    font-size: 15px;
-  }
+    .linha-orcamento.status-recusado td {
+      background: #fff1f1 !important;
+    }
 
-  .btn-toggle-resumo {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-}
+    .linha-orcamento.status-em-servico td {
+      background: #eff6ff !important;
+    }
 
+    .linha-orcamento.status-finalizado td {
+      background: #f4ece1 !important;
+    }
+
+    .linha-orcamento.status-pendente td:first-child {
+      border-left: 7px solid #ffc107 !important;
+    }
+
+    .linha-orcamento.status-aprovado td:first-child {
+      border-left: 7px solid #28a745 !important;
+    }
+
+    .linha-orcamento.status-recusado td:first-child {
+      border-left: 7px solid #dc2626 !important;
+    }
+
+    .linha-orcamento.status-em-servico td:first-child {
+      border-left: 7px solid #2563eb !important;
+    }
+
+    .linha-orcamento.status-finalizado td:first-child {
+      border-left: 7px solid #6d4c41 !important;
+    }
+
+    /* Mantém o selo de status visível, mas sem brigar com a cor da linha */
+    .linha-orcamento .status {
+      background: rgba(255, 255, 255, 0.68) !important;
+      color: #3e2723 !important;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
   </style>
 </head>
 
@@ -500,193 +559,249 @@
 <script src="auth.js"></script>
 <script src="ui.js"></script>
 <script src="carregar-menu.js"></script>
+<script src="notificacoes.js"></script>
 
-<div class="container">
-  <div class="orcamentos-header">
-    <h1>Meus Orçamentos</h1>
-
-    <button type="button" class="btn-atualizar" onclick="carregarOrcamentos()">
-      Atualizar
-    </button>
+<div id="auth-area" style="display:none; max-width: 380px; margin: 45px auto; font-family: sans-serif;">
+  <div class="auth-logo-box">
+    <div class="auth-logo-text">
+      <strong>FS</strong><span>Orçamentos</span>
+    </div>
+    <p>Acesse sua conta para continuar</p>
   </div>
 
-  <div class="filtro-flutuante">
-    <div class="filtro-grupo">
-      <label for="filtro-status">Status exibido</label>
-      <select id="filtro-status" onchange="trocarAbaOrcamentos(this.value)">
-        <option value="todos">Todos</option>
-        <option value="pendente">Pendentes</option>
-        <option value="aprovado">Aprovados</option>
-        <option value="recusado">Recusados</option>
-        <option value="em_servico">Em serviço</option>
-        <option value="finalizado">Finalizados</option>
-      </select>
-    </div>
+  <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
+    <form id="form-autenticacao" onsubmit="return false;">
+      <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">Acesse sua Conta</h3>
 
-    <div class="filtro-grupo">
-      <label for="filtro-periodo">Período do resumo</label>
-      <select id="filtro-periodo" onchange="trocarPeriodoResumo(this.value)">
-        <option value="15">Últimos 15 dias</option>
-        <option value="30">Últimos 30 dias</option>
-        <option value="60">Últimos 60 dias</option>
-        <option value="total" selected>Total</option>
-      </select>
-    </div>
-  </div>
-
-<div id="resumo-financeiro" class="resumo-financeiro">
-    <div class="resumo-header" onclick="toggleResumoFinanceiro()">
-      <div>
-        <h2>Resumo financeiro</h2>
-        <small id="resumo-periodo-label" style="display:block; color:#f7e6a1; margin-top:4px;">
-          Período: Total
-        </small>
+      <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome</label>
+        <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
       </div>
 
-      <button type="button" id="btn-toggle-resumo" class="btn-toggle-resumo">
-        Minimizar ▲
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">E-mail</label>
+        <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome da Empresa</label>
+        <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">WhatsApp da Empresa</label>
+        <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Senha</label>
+        <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Confirmar Senha</label>
+        <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">Entrar</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 15px;">
+      <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #007bff; text-decoration: none;">Não tem cadastro? Clique aqui.</a>
+    </div>
+  </div>
+</div>
+
+<div id="conteudo-protegido" style="display:none;">
+  <div class="container">
+    <div class="orcamentos-header">
+      <h1>Meus Orçamentos</h1>
+
+      <button type="button" class="btn-atualizar" onclick="carregarOrcamentos()">
+        Atualizar
       </button>
     </div>
 
-    <div class="resumo-conteudo">
-      <div class="cards-resumo">
-        <div class="card-resumo card-pendente">
-          <strong>Pendentes</strong>
-          <span class="valor-resumo" id="resumo-pendente">R$ 0,00</span>
-          <small><span id="qtd-pendente">0</span> orçamento(s)</small>
-        </div>
-
-        <div class="card-resumo card-aprovado">
-          <strong>Aprovados</strong>
-          <span class="valor-resumo" id="resumo-aprovado">R$ 0,00</span>
-          <small><span id="qtd-aprovado">0</span> orçamento(s)</small>
-        </div>
-
-        <div class="card-resumo card-recusado">
-          <strong>Recusados</strong>
-          <span class="valor-resumo" id="resumo-recusado">R$ 0,00</span>
-          <small><span id="qtd-recusado">0</span> orçamento(s)</small>
-        </div>
-
-        <div class="card-resumo card-em-servico">
-          <strong>Em serviço</strong>
-          <span class="valor-resumo" id="resumo-em-servico">R$ 0,00</span>
-          <small><span id="qtd-em-servico">0</span> orçamento(s)</small>
-        </div>
-
-        <div class="card-resumo card-finalizado">
-          <strong>Finalizados</strong>
-          <span class="valor-resumo" id="resumo-finalizado">R$ 0,00</span>
-          <small><span id="qtd-finalizado">0</span> orçamento(s)</small>
-        </div>
-
-        <div class="card-resumo card-total">
-          <strong>Total geral</strong>
-          <span class="valor-resumo" id="resumo-total-geral">R$ 0,00</span>
-          <small><span id="qtd-total-geral">0</span> orçamento(s)</small>
-        </div>
-      </div>
-    </div>
-  </div>
-<p></p>
-  <div id="lista-orcamentos">
-    <p>Carregando orçamentos...</p>
-  </div>
-</div>
-
-<div id="modal-visualizar-orcamento" class="modal-overlay-orcamento">
-  <div class="modal-visualizacao">
-    <h2 id="visual-assunto">Visualizar Orçamento</h2>
-
-    <div class="visual-grid">
-      <div class="visual-card">
-        <strong>Cliente</strong>
-        <span id="visual-cliente">-</span>
-      </div>
-
-      <div class="visual-card">
-        <strong>WhatsApp</strong>
-        <span id="visual-whatsapp">-</span>
-      </div>
-
-      <div class="visual-card">
-        <strong>Status</strong>
-        <span id="visual-status">-</span>
-      </div>
-
-      <div class="visual-card">
-        <strong>Data</strong>
-        <span id="visual-data">-</span>
-      </div>
-    </div>
-
-    <h3>Itens do orçamento</h3>
-    <div id="visual-itens"></div>
-
-    <div class="total-visual">
-      Total: <span id="visual-total">R$ 0,00</span>
-    </div>
-
-    <div class="botoes-modal">
-      <button type="button" class="btn-pequeno btn-cancelar" onclick="fecharModalVisualizar()">Fechar</button>
-      <button type="button" class="btn-pequeno btn-editar" onclick="editarOrcamentoVisualizado()">Editar</button>
-      <button type="button" class="btn-pequeno btn-excluir" onclick="excluirOrcamentoVisualizado()">Excluir</button>
-    </div>
-  </div>
-</div>
-
-<div id="modal-editar-orcamento" class="modal-overlay-orcamento">
-  <div class="modal-orcamento">
-    <h2>Editar Orçamento</h2>
-
-    <input type="hidden" id="edit-orcamento-id">
-    <input type="hidden" id="edit-status-original">
-
-    <div class="grid-modal">
-      <div class="campo-modal">
-        <label>Assunto / Título</label>
-        <input type="text" id="edit-assunto">
-      </div>
-
-      <div class="campo-modal">
-        <label>Status</label>
-        <select id="edit-status">
-          <option value="pendente">Pendente</option>
-          <option value="aprovado">Aprovado</option>
-          <option value="recusado">Recusado</option>
+    <div class="filtro-flutuante">
+      <div class="filtro-grupo">
+        <label for="filtro-status">Status exibido</label>
+        <select id="filtro-status" onchange="trocarAbaOrcamentos(this.value)">
+          <option value="todos">Todos</option>
+          <option value="pendente">Pendentes</option>
+          <option value="aprovado">Aprovados</option>
+          <option value="recusado">Recusados</option>
           <option value="em_servico">Em serviço</option>
-          <option value="finalizado">Finalizado</option>
+          <option value="finalizado">Finalizados</option>
         </select>
       </div>
 
-      <div class="campo-modal">
-        <label>Nome do Cliente</label>
-        <input type="text" id="edit-cliente-nome">
-      </div>
-
-      <div class="campo-modal">
-        <label>WhatsApp do Cliente</label>
-        <input type="text" id="edit-cliente-whatsapp">
-      </div>
-    </div>
-
-    <div class="editor-itens">
-      <strong>Itens do orçamento</strong>
-
-      <div id="edit-itens-lista" style="margin-top: 12px;"></div>
-
-      <button type="button" class="btn-add-item" onclick="adicionarItemModal()">
-        + Adicionar Item
-      </button>
-
-      <div class="total-modal">
-        Total: R$ <span id="edit-total">0,00</span>
+      <div class="filtro-grupo">
+        <label for="filtro-periodo">Período do resumo</label>
+        <select id="filtro-periodo" onchange="trocarPeriodoResumo(this.value)">
+          <option value="15">Últimos 15 dias</option>
+          <option value="30">Últimos 30 dias</option>
+          <option value="60">Últimos 60 dias</option>
+          <option value="total" selected>Total</option>
+        </select>
       </div>
     </div>
 
-    <div class="botoes-modal">
-      <button type="button" class="btn-pequeno btn-cancelar" onclick="fecharModalEditar()">Cancelar</button>
-      <button type="button" class="btn-pequeno btn-salvar-modal" onclick="salvarEdicaoOrcamento()">Salvar Alterações</button>
+    <div id="resumo-financeiro" class="resumo-financeiro">
+      <div class="resumo-header" onclick="toggleResumoFinanceiro()">
+        <div>
+          <h2>Resumo financeiro</h2>
+          <small id="resumo-periodo-label" style="display:block; color:#f7e6a1; margin-top:4px;">Período: Total</small>
+        </div>
+
+        <button type="button" id="btn-toggle-resumo" class="btn-toggle-resumo">Minimizar ▲</button>
+      </div>
+
+      <div class="resumo-conteudo">
+        <div class="cards-resumo">
+          <div class="card-resumo card-pendente">
+            <strong>Pendentes</strong>
+            <span class="valor-resumo" id="resumo-pendente">R$ 0,00</span>
+            <small><span id="qtd-pendente">0</span> orçamento(s)</small>
+          </div>
+
+          <div class="card-resumo card-aprovado">
+            <strong>Aprovados</strong>
+            <span class="valor-resumo" id="resumo-aprovado">R$ 0,00</span>
+            <small><span id="qtd-aprovado">0</span> orçamento(s)</small>
+          </div>
+
+          <div class="card-resumo card-recusado">
+            <strong>Recusados</strong>
+            <span class="valor-resumo" id="resumo-recusado">R$ 0,00</span>
+            <small><span id="qtd-recusado">0</span> orçamento(s)</small>
+          </div>
+
+          <div class="card-resumo card-em-servico">
+            <strong>Em serviço</strong>
+            <span class="valor-resumo" id="resumo-em-servico">R$ 0,00</span>
+            <small><span id="qtd-em-servico">0</span> orçamento(s)</small>
+          </div>
+
+          <div class="card-resumo card-finalizado">
+            <strong>Finalizados</strong>
+            <span class="valor-resumo" id="resumo-finalizado">R$ 0,00</span>
+            <small><span id="qtd-finalizado">0</span> orçamento(s)</small>
+          </div>
+
+          <div class="card-resumo card-total">
+            <strong>Total geral</strong>
+            <span class="valor-resumo" id="resumo-total-geral">R$ 0,00</span>
+            <small><span id="qtd-total-geral">0</span> orçamento(s)</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p></p>
+
+    <div id="lista-orcamentos">
+      <p>Carregando orçamentos...</p>
+    </div>
+  </div>
+
+  <div id="modal-visualizar-orcamento" class="modal-overlay-orcamento">
+    <div class="modal-visualizacao">
+      <h2 id="visual-assunto">Visualizar Orçamento</h2>
+
+      <div class="visual-grid">
+        <div class="visual-card">
+          <strong>Cliente</strong>
+          <span id="visual-cliente">-</span>
+        </div>
+
+        <div class="visual-card">
+          <strong>WhatsApp</strong>
+          <span id="visual-whatsapp">-</span>
+        </div>
+
+        <div class="visual-card">
+          <strong>Status</strong>
+          <span id="visual-status">-</span>
+        </div>
+
+        <div class="visual-card">
+          <strong>Data</strong>
+          <span id="visual-data">-</span>
+        </div>
+      </div>
+
+      <h3>Itens do orçamento</h3>
+      <div id="visual-itens"></div>
+
+      <div class="total-visual">
+        Total: <span id="visual-total">R$ 0,00</span>
+      </div>
+
+<div class="botoes-modal">
+  <button type="button" class="btn-pequeno btn-cancelar" onclick="fecharModalVisualizar()">Fechar</button>
+
+  <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="abrirConversaWhatsappVisualizado()">
+    Abrir conversa
+  </button>
+
+  <button type="button" class="btn-pequeno btn-editar" onclick="editarOrcamentoVisualizado()">Editar</button>
+
+  <button type="button" class="btn-pequeno btn-excluir" onclick="excluirOrcamentoVisualizado()">Excluir</button>
+</div>
+    </div>
+  </div>
+
+  <div id="modal-editar-orcamento" class="modal-overlay-orcamento">
+    <div class="modal-orcamento">
+      <h2>Editar Orçamento</h2>
+
+      <input type="hidden" id="edit-orcamento-id">
+      <input type="hidden" id="edit-status-original">
+
+      <div class="grid-modal">
+        <div class="campo-modal">
+          <label>Assunto / Título</label>
+          <input type="text" id="edit-assunto">
+        </div>
+
+        <div class="campo-modal">
+          <label>Status</label>
+          <select id="edit-status">
+            <option value="pendente">Pendente</option>
+            <option value="aprovado">Aprovado</option>
+            <option value="recusado">Recusado</option>
+            <option value="em_servico">Em serviço</option>
+            <option value="finalizado">Finalizado</option>
+          </select>
+        </div>
+
+        <div class="campo-modal">
+          <label>Nome do Cliente</label>
+          <input type="text" id="edit-cliente-nome">
+        </div>
+
+        <div class="campo-modal">
+          <label>WhatsApp do Cliente</label>
+          <input type="text" id="edit-cliente-whatsapp">
+        </div>
+      </div>
+
+      <div class="editor-itens">
+        <strong>Itens do orçamento</strong>
+
+        <div id="edit-itens-lista" style="margin-top: 12px;"></div>
+
+        <button type="button" class="btn-add-item" onclick="adicionarItemModal()">+ Adicionar Item</button>
+
+        <div class="total-modal">
+          Total: R$ <span id="edit-total">0,00</span>
+        </div>
+      </div>
+
+      <div class="botoes-modal">
+        <button type="button" class="btn-pequeno btn-cancelar" onclick="fecharModalEditar()">Cancelar</button>
+        <button type="button" class="btn-pequeno btn-salvar-modal" onclick="salvarEdicaoOrcamento()">Salvar Alterações</button>
+      </div>
     </div>
   </div>
 </div>
@@ -704,11 +819,31 @@ let statusAtual = 'todos';
 let periodoResumoAtual = 'total';
 let orcamentosCache = [];
 let orcamentoVisualizadoId = null;
+let orcamentosJaCarregados = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const session = await obterSessaoObrigatoria();
+
+  if (!session) return;
+
   await carregarOrcamentos();
   restaurarEstadoResumoFinanceiro();
+  orcamentosJaCarregados = true;
 });
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(async (event, session) => {
+    if (session && !orcamentosJaCarregados) {
+      await carregarOrcamentos();
+      restaurarEstadoResumoFinanceiro();
+      orcamentosJaCarregados = true;
+    }
+
+    if (!session) {
+      orcamentosJaCarregados = false;
+    }
+  });
+}
 
 function escaparHtml(valor) {
   return String(valor || '')
@@ -751,6 +886,23 @@ function classeStatus(status) {
   return String(status || 'pendente').replace(/[^a-zA-Z0-9_\-]/g, '');
 }
 
+function classeLinhaPorStatus(status) {
+  const s = String(status || 'pendente')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/_/g, '-')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+
+  if (s === 'aprovado') return 'status-aprovado';
+  if (s === 'recusado') return 'status-recusado';
+  if (s === 'em-servico') return 'status-em-servico';
+  if (s === 'finalizado') return 'status-finalizado';
+
+  return 'status-pendente';
+}
+
 function trocarAbaOrcamentos(status) {
   statusAtual = status;
 
@@ -764,7 +916,6 @@ async function obterSessaoObrigatoria() {
   const { data: { session }, error } = await _supabase.auth.getSession();
 
   if (error || !session) {
-    window.location.href = '/index.html';
     return null;
   }
 
@@ -905,9 +1056,7 @@ function toggleResumoFinanceiro() {
 
   const estaMinimizado = resumo.classList.contains('minimizado');
 
-  botao.innerText = estaMinimizado
-    ? 'Ampliar ▼'
-    : 'Minimizar ▲';
+  botao.innerText = estaMinimizado ? 'Ampliar ▼' : 'Minimizar ▲';
 
   localStorage.setItem(
     'resumo_financeiro_minimizado',
@@ -921,8 +1070,7 @@ function restaurarEstadoResumoFinanceiro() {
 
   if (!resumo || !botao) return;
 
-  const minimizado =
-    localStorage.getItem('resumo_financeiro_minimizado') === 'sim';
+  const minimizado = localStorage.getItem('resumo_financeiro_minimizado') === 'sim';
 
   if (minimizado) {
     resumo.classList.add('minimizado');
@@ -966,7 +1114,7 @@ function renderizarTabelaOrcamentos(orcamentos) {
     const dataCriacao = orcamento.criado_em || '';
 
     html += `
-      <tr class="linha-orcamento" onclick="abrirModalVisualizar('${orcamento.id}')">
+      <tr class="linha-orcamento ${classeLinhaPorStatus(status)}" onclick="abrirModalVisualizar('${orcamento.id}')">
         <td><strong>${escaparHtml(assunto)}</strong></td>
         <td>${escaparHtml(clienteNome)}</td>
         <td>${escaparHtml(clienteWhatsapp)}</td>
@@ -987,10 +1135,29 @@ function renderizarTabelaOrcamentos(orcamentos) {
 }
 
 function normalizarItem(item) {
-  const descricao = item.descricao || item.desc || item.item || '';
-  const qtd = Number(item.qtd || item.quantidade || 0);
-  const valor = Number(item.valor || item.valor_unitario || 0);
-  const subtotal = Number(item.subtotal || (qtd * valor) || 0);
+  const descricao = item.descricao || item.desc || item.item || item.nome || '';
+
+  const qtd = Number(
+    item.qtd ??
+    item.quantidade ??
+    item.qtde ??
+    item.qtd_item ??
+    1
+  );
+
+  const valor = Number(
+    item.valor ??
+    item.valor_unitario ??
+    item.preco ??
+    item.unitario ??
+    0
+  );
+
+  const subtotal = Number(
+    item.subtotal ??
+    item.total ??
+    (qtd * valor)
+  );
 
   return { descricao, qtd, valor, subtotal };
 }
@@ -1027,6 +1194,54 @@ function fecharModalVisualizar() {
   document.getElementById('modal-visualizar-orcamento').style.display = 'none';
 }
 
+function abrirConversaWhatsappVisualizado() {
+  if (!orcamentoVisualizadoId) {
+    alert('Nenhum orçamento selecionado.');
+    return;
+  }
+
+  const orcamento = orcamentosCache.find(o => o.id === orcamentoVisualizadoId);
+
+  if (!orcamento) {
+    alert('Orçamento não encontrado.');
+    return;
+  }
+
+  const telefoneOriginal = orcamento.cliente_whatsapp || '';
+  const telefoneLimpo = limparTelefoneWhatsapp(telefoneOriginal);
+
+  if (!telefoneLimpo) {
+    alert('Este orçamento não possui WhatsApp do cliente cadastrado.');
+    return;
+  }
+
+  const assunto = orcamento.assunto || 'orçamento';
+  const cliente = orcamento.cliente_nome || 'cliente';
+
+  const mensagem = `Olá, ${cliente}! Estou entrando em contato sobre o orçamento "${assunto}".`;
+
+  const url = `https://wa.me/${telefoneLimpo}?text=${encodeURIComponent(mensagem)}`;
+
+  window.open(url, '_blank');
+}
+
+function limparTelefoneWhatsapp(valor) {
+  let telefone = String(valor || '').replace(/\D/g, '');
+
+  if (!telefone) return '';
+
+  /*
+    Se o número tiver 10 ou 11 dígitos, considera Brasil e adiciona 55.
+    Ex:
+    18999999999 -> 5518999999999
+  */
+  if (telefone.length === 10 || telefone.length === 11) {
+    telefone = '55' + telefone;
+  }
+
+  return telefone;
+}
+
 function renderizarItensVisualizacao(itensOriginais) {
   const container = document.getElementById('visual-itens');
 
@@ -1056,7 +1271,7 @@ function renderizarItensVisualizacao(itensOriginais) {
     html += `
       <tr>
         <td>${escaparHtml(item.descricao)}</td>
-        <td>${item.qtd}</td>
+        <td>${escaparHtml(item.qtd)}</td>
         <td>${formatarMoeda(item.valor)}</td>
         <td>${formatarMoeda(item.subtotal)}</td>
       </tr>
@@ -1265,6 +1480,7 @@ async function excluirOrcamentoDireto(id) {
   alert('Orçamento excluído com sucesso.');
 }
 </script>
-
+<center><p></p><p></p>
+<footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer></center><p></p>
 </body>
 </html>

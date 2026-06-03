@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (formPerfil) {
         await carregarPerfil();
+        await carregarResponsaveis();
         configurarUploadLogo();
         configurarModalSenha();
     }
@@ -530,6 +531,17 @@ async function carregarOrcamentos() {
             '<tr><td colspan="5" style="color:red">Erro ao carregar dados.</td></tr>';
     }
 }
+
+function limiteResponsaveisPorPlano() {
+  const plano = localStorage.getItem('usuario_plano') || 'gratis';
+
+  if (plano === 'premium') return 10;
+  if (plano === 'basico') return 2;
+
+  return 1;
+}
+
+
 
 // ==================== COMPATIBILIDADE GLOBAL ====================
 
