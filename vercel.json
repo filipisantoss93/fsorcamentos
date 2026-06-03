@@ -1,13 +1,39 @@
 {
   "version": 2,
-  "builds": [
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
     {
-      "src": "index.js",
-      "use": "@vercel/node"
+      "source": "/painel",
+      "destination": "/painel.html"
+    },
+    {
+      "source": "/orcamentos",
+      "destination": "/orcamentos.html"
+    },
+    {
+      "source": "/sobre",
+      "destination": "/sobre.html"
+    },
+    {
+      "source": "/contato",
+      "destination": "/contato.html"
+    },
+    {
+      "source": "/exemplos",
+      "destination": "/exemplos.html"
+    },
+    {
+      "source": "/privacidade",
+      "destination": "/privacidade.html"
+    },
+    {
+      "source": "/manual",
+      "destination": "/manual.html"
+    },
+    {
+      "source": "/ver",
+      "destination": "/ver.html"
     }
-  ],
-  "routes": [
-    { "src": "/orcamentos(.*)", "dest": "index.js" },
-    { "src": "/ver/(.*)", "dest": "/v.html" }
   ]
 }
