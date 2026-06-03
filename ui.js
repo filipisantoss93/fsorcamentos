@@ -169,12 +169,37 @@ function textoComQuebra(valor) {
 }
 
 function valorMonetarioParaNumero(valor) {
-    return Number(
-        String(valor || '0')
+    const textoOriginal = String(valor ?? '').trim();
+
+    if (!textoOriginal) return 0;
+
+    let texto = textoOriginal
+        .replace(/R\$/gi, '')
+        .replace(/\s/g, '')
+        .trim();
+
+    if (!texto) return 0;
+
+    /*
+      Aceita formatos:
+      - 100
+      - 100.50
+      - 100,50
+      - 1.000,50
+      - R$ 1.000,50
+    */
+    if (texto.includes(',')) {
+        texto = texto
             .replace(/\./g, '')
             .replace(',', '.')
-            .replace(/[^\d.]/g, '')
-    ) || 0;
+            .replace(/[^\d.-]/g, '');
+
+        return Number.parseFloat(texto) || 0;
+    }
+
+    texto = texto.replace(/[^\d.-]/g, '');
+
+    return Number.parseFloat(texto) || 0;
 }
 
 function formatarMoeda(valor) {
@@ -182,6 +207,69 @@ function formatarMoeda(valor) {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
+}
+
+function formatarMoedaComSimbolo(valor) {
+    return Number(valor || 0).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+}
+
+function obterValorCampoMoeda(campo) {
+    if (!campo) return 0;
+
+    if (campo.dataset && campo.dataset.valorNumerico !== undefined && campo.dataset.valorNumerico !== '') {
+        return Number(campo.dataset.valorNumerico) || 0;
+    }
+
+    return valorMonetarioParaNumero(campo.value);
+}
+
+function aplicarValorMoedaNoCampo(campo, valor) {
+    if (!campo) return;
+
+    const numero = valorMonetarioParaNumero(valor);
+
+    campo.dataset.valorNumerico = String(numero);
+    campo.value = formatarMoedaComSimbolo(numero);
+}
+
+function formatarCampoMoedaEmTempoReal(campo) {
+    if (!campo) return;
+
+    /*
+      Máscara de moeda em tempo real:
+      digite 1990 para virar R$ 19,90
+      digite 10000 para virar R$ 100,00
+    */
+    const somenteDigitos = String(campo.value || '').replace(/\D/g, '');
+    const numero = somenteDigitos ? Number(somenteDigitos) / 100 : 0;
+
+    campo.dataset.valorNumerico = String(numero);
+    campo.value = formatarMoedaComSimbolo(numero);
+
+    calcular();
+}
+
+function prepararCampoMoedaAoFocar(campo) {
+    if (!campo) return;
+
+    if (!campo.value || valorMonetarioParaNumero(campo.value) === 0) {
+        campo.value = '';
+        campo.dataset.valorNumerico = '0';
+    }
+}
+
+function finalizarCampoMoeda(campo) {
+    if (!campo) return;
+
+    const numero = obterValorCampoMoeda(campo);
+
+    campo.dataset.valorNumerico = String(numero);
+    campo.value = formatarMoedaComSimbolo(numero);
+
+    calcular();
 }
 
 function limparTelefone(telefone) {
@@ -217,11 +305,14 @@ function adicionarLinha(desc = '', qtd = 1, valor = 0) {
     const div = document.createElement('div');
     div.className = 'item-row';
 
+    const valorNumerico = valorMonetarioParaNumero(valor);
+    const valorFormatado = formatarMoedaComSimbolo(valorNumerico);
+
     div.innerHTML = `
         <input type="text" class="desc desc-cell" placeholder="Serviço/Produto" value="${escaparHtml(desc)}" oninput="calcular()">
-        <input type="number" class="qtd" value="${escaparHtml(qtd)}" oninput="calcular()">
-        <input type="number" class="valor" value="${escaparHtml(valor)}" step="0.01" oninput="calcular()">
-        <input type="text" class="subtotal" value="0,00" readonly>
+        <input type="number" class="qtd" value="${escaparHtml(qtd)}" min="0" step="1" oninput="calcular()">
+        <input type="text" class="valor campo-moeda" inputmode="numeric" placeholder="R$ 0,00" value="${escaparHtml(valorFormatado)}" data-valor-numerico="${escaparHtml(valorNumerico)}" onfocus="prepararCampoMoedaAoFocar(this)" oninput="formatarCampoMoedaEmTempoReal(this)" onblur="finalizarCampoMoeda(this)">
+        <input type="text" class="subtotal campo-moeda" value="R$ 0,00" readonly>
         <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcular()">X</button>
     `;
 
@@ -233,14 +324,19 @@ function calcular() {
     let totalGeral = 0;
 
     document.querySelectorAll('.item-row:not(.header-labels)').forEach(row => {
-        const qtd = parseFloat(row.querySelector('.qtd')?.value) || 0;
-        const valor = parseFloat(row.querySelector('.valor')?.value) || 0;
+        const qtd = Number(row.querySelector('.qtd')?.value) || 0;
+        const valorEl = row.querySelector('.valor');
+        const valor = obterValorCampoMoeda(valorEl);
         const subtotal = qtd * valor;
+
+        if (valorEl && valorEl.value && !valorEl.value.includes('R$')) {
+            aplicarValorMoedaNoCampo(valorEl, valor);
+        }
 
         const subtotalEl = row.querySelector('.subtotal');
 
         if (subtotalEl) {
-            subtotalEl.value = formatarMoeda(subtotal);
+            subtotalEl.value = formatarMoedaComSimbolo(subtotal);
         }
 
         totalGeral += subtotal;
@@ -261,8 +357,8 @@ function coletarItensDoOrcamento() {
 
     linhas.forEach(row => {
         const descricao = row.querySelector('.desc-cell')?.value || '';
-        const qtd = parseFloat(row.querySelector('.qtd')?.value) || 0;
-        const valor = parseFloat(row.querySelector('.valor')?.value) || 0;
+        const qtd = Number(row.querySelector('.qtd')?.value) || 0;
+        const valor = obterValorCampoMoeda(row.querySelector('.valor'));
         const subtotal = qtd * valor;
 
         if (descricao.trim()) {
@@ -355,7 +451,7 @@ async function gerarPrevia() {
         document.querySelectorAll('.item-row:not(.header-labels)').forEach((row, i) => {
             const d = row.querySelector('.desc-cell')?.value || '-';
             const q = row.querySelector('.qtd')?.value || '0';
-            const v = parseFloat(row.querySelector('.valor')?.value) || 0;
+            const v = obterValorCampoMoeda(row.querySelector('.valor')) || 0;
             const s = row.querySelector('.subtotal')?.value || '0,00';
 
             linhasHtml += `
@@ -363,7 +459,7 @@ async function gerarPrevia() {
                     <td style="padding:10px; font-size:12px;">${escaparHtml(d)}</td>
                     <td style="padding:10px; text-align:center; font-size:12px;">${escaparHtml(q)}</td>
                     <td style="padding:10px; font-size:12px;">R$ ${formatarMoeda(v)}</td>
-                    <td style="padding:10px; text-align:right; font-weight:bold; font-size:12px;">R$ ${escaparHtml(s)}</td>
+                    <td style="padding:10px; text-align:right; font-weight:bold; font-size:12px;">${escaparHtml(s)}</td>
                 </tr>
             `;
         });
@@ -640,7 +736,7 @@ async function enviarPorWhatsApp() {
         return;
     }
 
-    const nomeCliente =or
+    const nomeCliente =
         document.getElementById('cliente')?.value?.trim() || '';
 
     const whatsCliente =
@@ -710,7 +806,7 @@ function salvarEstadoCompleto() {
         itens: Array.from(document.querySelectorAll('.item-row:not(.header-labels)')).map(row => ({
             desc: row.querySelector('.desc-cell')?.value || '',
             qtd: row.querySelector('.qtd')?.value || '1',
-            valor: row.querySelector('.valor')?.value || '0'
+            valor: obterValorCampoMoeda(row.querySelector('.valor')) || 0
         }))
     };
 
