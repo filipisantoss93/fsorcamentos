@@ -250,11 +250,7 @@
     🧾 Gerar Orçamento Agora
   </button>
 
-<a
-  href="#painel-plano-basico-home"
-  id="btn-conhecer-planos-home"
-  class="btn-secundario-home btn-planos-menor"
-  onclick="rolarParaPlanosHome(event)">
+<a href="#painel-plano-basico-home" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor">
   Conhecer os planos
 </a>
 </div>
@@ -478,7 +474,7 @@ VER MAIS</a></center>
   </div>
 </section>
 
-<section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
+<section id="painel-plano-basico-home" class="planos-pix-section" style="display:block;">
   <div class="planos-pix-topo">
     <span class="tag-plano-pix">Plano Básico</span>
 
@@ -1897,25 +1893,7 @@ if (window._supabase) {
   });
 }
 
-function rolarParaPlanosHome(event) {
-  if (event) event.preventDefault();
 
-  const secaoPlanos = document.getElementById('painel-plano-basico-home');
-
-  if (!secaoPlanos) {
-    return;
-  }
-
-  if (secaoPlanos.style.display === 'none') {
-    alert('Os planos aparecem aqui quando você está logado em uma conta grátis.');
-    return;
-  }
-
-  secaoPlanos.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
-}
 
 window.atualizarPainelPlanoBasicoHome = atualizarPainelPlanoBasicoHome;
 </script>
