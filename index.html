@@ -24,7 +24,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>FS Orçamentos - Gerador de Orçamento PDF Grátis</title>
+  <title>FS Orçamentos - Gerador de Orçamento Profissional</title>
   <meta name="description" content="Crie orçamentos profissionais em PDF de forma rápida e gratuita. Ideal para MEI, oficinas mecânicas e prestadores de serviços.">
   <meta name="keywords" content="gerador de orçamento, orçamento pdf grátis, fsorçamentos, orçamento mecânica, orçamento prestador de serviço">
   <meta name="author" content="Filipi Aparecido dos Santos">
@@ -581,9 +581,9 @@
     </p>
 
     <div class="hero-acoes hero-acoes-principal">
-      <button type="button" class="btn-gerar-orcamento-home btn-gerar-destaque" onclick="abrirModalGerador()">
-        🧾 Gerar Orçamento Agora
-      </button>
+<button type="button" class="btn-gerar-orcamento-home btn-gerar-destaque" onclick="abrirGeradorHomeProtegido()">
+  🧾 Gerar Orçamento Agora
+</button>
 
       <a href="#painel-plano-basico-home" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor" onclick="rolarParaPlanosHome(event)">
         Conhecer os planos
@@ -2437,6 +2437,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 700);
   }
 });
+
+async function abrirGeradorHomeProtegido() {
+  try {
+    if (!window._supabase) {
+      alert('Sistema ainda carregando. Aguarde alguns segundos e tente novamente.');
+      return;
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
+      } else {
+        window.location.href = '/index.html?login=1';
+      }
+
+      return;
+    }
+
+    if (typeof abrirModalGerador === 'function') {
+      abrirModalGerador();
+      document.body.classList.add('gerador-aberto');
+      return;
+    }
+
+    const modal = document.getElementById('modal-gerador-orcamento');
+    const formulario = document.getElementById('formulario-orcamento');
+
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('ativo');
+      modal.removeAttribute('aria-hidden');
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('gerador-aberto');
+    }
+
+    if (formulario) {
+      formulario.style.display = 'block';
+    }
+
+  } catch (error) {
+    console.error('Erro ao abrir gerador protegido:', error);
+    alert('Não foi possível verificar o login. Atualize a página e tente novamente.');
+  }
+}
 
 </script>
 
