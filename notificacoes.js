@@ -1,3 +1,5 @@
+const LIMITE_NOTIFICACOES = 10;
+
 let canalNotificacoes = null;
 let notificacoesIniciadas = false;
 let notificacoesCache = [];
@@ -26,9 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function iniciarNotificacoes(session) {
   if (!session?.user?.id) return;
 
- setTimeout(() => {
-  mostrarSininhoNotificacoes(true);
-}, 300);
+  setTimeout(() => {
+    mostrarSininhoNotificacoes(true);
+  }, 300);
+
   criarBotaoAtivarNotificacoes();
 
   await carregarNotificacoesRecentes(session.user.id);
@@ -51,9 +54,11 @@ async function iniciarNotificacoes(session) {
         const notificacao = payload.new;
 
         notificacoesCache.unshift(notificacao);
-        notificacoesCache = notificacoesCache.slice(0, 15);
+        notificacoesCache = notificacoesCache.slice(0, LIMITE_NOTIFICACOES);
 
-        await atualizarContadorNaoLidas(session.user.id);
+        atualizarContadorNaoLidasPeloCache();
+
+        renderizarListaNotificacoes();
 
         mostrarToastNotificacao(notificacao);
         mostrarNotificacaoNavegador(notificacao);
@@ -92,34 +97,46 @@ async function carregarNotificacoesRecentes(usuarioId) {
     .select('*')
     .eq('usuario_id', usuarioId)
     .order('criado_em', { ascending: false })
-    .limit(15);
+    .limit(LIMITE_NOTIFICACOES);
 
   if (error) {
     console.error('Erro ao carregar notificações:', error);
     return;
   }
 
-  notificacoesCache = data || [];
+  notificacoesCache = (data || []).slice(0, LIMITE_NOTIFICACOES);
 
-  await atualizarContadorNaoLidas(usuarioId);
+  atualizarContadorNaoLidasPeloCache();
   renderizarListaNotificacoes();
 }
 
 async function atualizarContadorNaoLidas(usuarioId) {
   if (!window._supabase || !usuarioId) return;
 
-  const { count, error } = await _supabase
+  const { data, error } = await _supabase
     .from('notificacoes')
-    .select('id', { count: 'exact', head: true })
+    .select('id, lida')
     .eq('usuario_id', usuarioId)
-    .eq('lida', false);
+    .order('criado_em', { ascending: false })
+    .limit(LIMITE_NOTIFICACOES);
 
   if (error) {
     console.error('Erro ao contar notificações:', error);
     return;
   }
 
-  atualizarSininhoNotificacoes(count || 0);
+  const qtdNaoLidas = (data || []).filter(n => !n.lida).length;
+
+  atualizarSininhoNotificacoes(qtdNaoLidas);
+}
+
+function atualizarContadorNaoLidasPeloCache() {
+  const qtdNaoLidas = notificacoesCache
+    .slice(0, LIMITE_NOTIFICACOES)
+    .filter(n => !n.lida)
+    .length;
+
+  atualizarSininhoNotificacoes(qtdNaoLidas);
 }
 
 function atualizarSininhoNotificacoes(qtd) {
@@ -127,8 +144,10 @@ function atualizarSininhoNotificacoes(qtd) {
 
   if (!contador) return;
 
-  if (qtd > 0) {
-    contador.innerText = qtd > 99 ? '99+' : String(qtd);
+  const numero = Math.min(Number(qtd || 0), LIMITE_NOTIFICACOES);
+
+  if (numero > 0) {
+    contador.innerText = String(numero);
     contador.style.display = 'inline-flex';
   } else {
     contador.innerText = '0';
@@ -212,7 +231,9 @@ function renderizarListaNotificacoes() {
 
   if (!lista) return;
 
-  if (!notificacoesCache.length) {
+  const notificacoesLimitadas = notificacoesCache.slice(0, LIMITE_NOTIFICACOES);
+
+  if (!notificacoesLimitadas.length) {
     lista.innerHTML = `
       <div class="notificacao-vazia">
         Nenhuma notificação recente.
@@ -221,8 +242,9 @@ function renderizarListaNotificacoes() {
     return;
   }
 
-  lista.innerHTML = notificacoesCache.map(notificacao => {
+  lista.innerHTML = notificacoesLimitadas.map(notificacao => {
     const tipo = notificacao.tipo || 'info';
+
     const classeTipo =
       tipo === 'aprovado'
         ? 'notificacao-aprovado'
@@ -264,11 +286,23 @@ async function marcarTodasNotificacoesComoLidas() {
 
   if (!session?.user?.id) return;
 
+  const idsVisiveis = notificacoesCache
+    .slice(0, LIMITE_NOTIFICACOES)
+    .filter(n => !n.lida)
+    .map(n => n.id)
+    .filter(Boolean);
+
+  if (!idsVisiveis.length) {
+    atualizarSininhoNotificacoes(0);
+    renderizarListaNotificacoes();
+    return;
+  }
+
   const { error } = await _supabase
     .from('notificacoes')
     .update({ lida: true })
     .eq('usuario_id', session.user.id)
-    .eq('lida', false);
+    .in('id', idsVisiveis);
 
   if (error) {
     console.error('Erro ao marcar notificações como lidas:', error);
@@ -276,10 +310,12 @@ async function marcarTodasNotificacoesComoLidas() {
     return;
   }
 
-  notificacoesCache = notificacoesCache.map(n => ({
-    ...n,
-    lida: true
-  }));
+  notificacoesCache = notificacoesCache
+    .slice(0, LIMITE_NOTIFICACOES)
+    .map(n => ({
+      ...n,
+      lida: true
+    }));
 
   atualizarSininhoNotificacoes(0);
   renderizarListaNotificacoes();
@@ -296,24 +332,34 @@ async function marcarNotificacaoComoLidaPorOrcamento(orcamentoId) {
 
   if (!session?.user?.id || !orcamentoId) return;
 
+  const idsVisiveisDoOrcamento = notificacoesCache
+    .slice(0, LIMITE_NOTIFICACOES)
+    .filter(n => n.orcamento_id === orcamentoId)
+    .map(n => n.id)
+    .filter(Boolean);
+
+  if (!idsVisiveisDoOrcamento.length) return;
+
   await _supabase
     .from('notificacoes')
     .update({ lida: true })
     .eq('usuario_id', session.user.id)
-    .eq('orcamento_id', orcamentoId);
+    .in('id', idsVisiveisDoOrcamento);
 
-  notificacoesCache = notificacoesCache.map(n => {
-    if (n.orcamento_id === orcamentoId) {
-      return {
-        ...n,
-        lida: true
-      };
-    }
+  notificacoesCache = notificacoesCache
+    .slice(0, LIMITE_NOTIFICACOES)
+    .map(n => {
+      if (n.orcamento_id === orcamentoId) {
+        return {
+          ...n,
+          lida: true
+        };
+      }
 
-    return n;
-  });
+      return n;
+    });
 
-  await atualizarContadorNaoLidas(session.user.id);
+  atualizarContadorNaoLidasPeloCache();
 }
 
 function criarBotaoAtivarNotificacoes() {
