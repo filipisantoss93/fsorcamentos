@@ -2377,6 +2377,67 @@ if (window._supabase) {
 }
 
 window.atualizarAnunciosGratisHome = atualizarAnunciosGratisHome;
+
+async function abrirGeradorGlobal() {
+  try {
+    if (!window._supabase) return;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
+      }
+
+      return;
+    }
+
+    if (typeof abrirModalGerador === 'function') {
+      abrirModalGerador();
+      return;
+    }
+
+    const modal = document.getElementById('modal-gerador-orcamento');
+    const formulario = document.getElementById('formulario-orcamento');
+
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('ativo');
+      modal.removeAttribute('aria-hidden');
+    }
+
+    if (formulario) {
+      formulario.style.display = 'block';
+    }
+
+    document.body.classList.add('gerador-aberto');
+    document.body.style.overflow = 'hidden';
+
+  } catch (error) {
+    console.warn('Não foi possível abrir o gerador:', error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('login') === '1') {
+    setTimeout(() => {
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
+      }
+    }, 600);
+  }
+
+  if (params.get('abrirGerador') === '1') {
+    setTimeout(() => {
+      if (typeof abrirGeradorGlobal === 'function') {
+        abrirGeradorGlobal();
+      }
+    }, 700);
+  }
+});
+
 </script>
 
 </body>
