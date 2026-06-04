@@ -3400,7 +3400,7 @@ body:has(.painel-card) .container {
   position: fixed;
   right: 18px;
   bottom: 22px;
-  z-index: 15000;
+  z-index: 12000;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3420,11 +3420,15 @@ body:has(.painel-card) .container {
 #btn-flutuante-gerador-global:hover {
   transform: translateY(-2px);
   background: #ffda3d;
-  box-shadow: 0 14px 34px rgba(0,0,0,0.38);
 }
 
 #btn-flutuante-gerador-global span {
   white-space: nowrap;
+}
+
+/* Quando o modal do gerador estiver aberto, esconde o botão global */
+body.gerador-aberto #btn-flutuante-gerador-global {
+  display: none !important;
 }
 
 @media (max-width: 650px) {
