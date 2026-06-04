@@ -190,6 +190,187 @@
       display: none !important;
     }
 
+    .modal-gerador-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      z-index: 14000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal-gerador-box {
+      width: min(100%, 980px);
+      max-height: 94vh;
+      overflow-y: auto;
+      background: #f4ece1;
+      border-radius: 18px;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.45);
+      border-top: 5px solid #ffc400;
+      position: relative;
+    }
+
+    .modal-gerador-topo {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: #3e2723;
+      color: #ffc400;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .modal-gerador-topo strong {
+      font-size: 18px;
+    }
+
+    .btn-fechar-gerador {
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      font-size: 26px;
+      font-weight: 900;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .acoes-profissionais-orcamento {
+      margin: 22px auto 12px;
+      background: linear-gradient(135deg, #3e2723, #251714);
+      border: 2px solid #ffc400;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+      color: #fff;
+      display: none;
+    }
+
+    .acoes-profissionais-orcamento-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .acoes-profissionais-orcamento-topo strong {
+      color: #ffc400;
+      display: block;
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    .acoes-profissionais-orcamento-topo span {
+      color: #f4ece1;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .acoes-profissionais-botoes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .btn-acao-orcamento {
+      border: none;
+      border-radius: 14px;
+      padding: 15px 16px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 54px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      transition: .2s ease;
+    }
+
+    .btn-acao-orcamento:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    .btn-acao-pdf {
+      background: #ffc400;
+      color: #3e2723;
+      border: 2px solid #f5b800;
+    }
+
+    .btn-acao-whatsapp {
+      background: #25d366;
+      color: #073b1d;
+      border: 2px solid #1fb957;
+    }
+
+    .btn-acao-secundaria {
+      background: #ffffff;
+      color: #3e2723;
+      border: 1px solid #e0d6c8;
+    }
+
+    .floating-actions {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 15050;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .floating-actions.show {
+      display: flex;
+    }
+
+    .btn-float {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 2px solid #3e2723;
+      background: #ffc400;
+      color: #3e2723;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-float-download {
+      background: #3e2723;
+      color: #ffc400;
+      border-color: #ffc400;
+    }
+
+    .btn-float-whatsapp {
+      background: #25d366;
+      color: #073b1d;
+      border-color: #0b6b31;
+    }
+
+    .btn-float-novo {
+      background: #ffffff;
+      color: #3e2723;
+      border-color: #ffc400;
+    }
+
     @media (max-width: 650px) {
       .emissor-readonly-topo,
       .emissor-readonly-grid {
@@ -199,6 +380,30 @@
       .emissor-logo-mini {
         width: 100%;
         height: 90px;
+      }
+
+      .acoes-profissionais-botoes {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-gerador-overlay {
+        padding: 7px;
+      }
+
+      .modal-gerador-box {
+        max-height: 96vh;
+        border-radius: 14px;
+      }
+
+      .floating-actions {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .btn-float {
+        width: 54px;
+        height: 54px;
+        font-size: 20px;
       }
     }
 
@@ -749,7 +954,7 @@
   </div>
 </div>
 
-<div id="modal-gerador-orcamento" class="modal-gerador-overlay">
+<div id="modal-gerador-orcamento" class="modal-gerador-overlay" aria-hidden="true">
   <div class="modal-gerador-box">
     <div class="modal-gerador-topo">
       <strong>Gerador de Orçamento</strong>
@@ -934,7 +1139,7 @@
 
         <div style="text-align: center; margin-top: 30px;">
           <button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">
-            👁️ PRÉ-VISUALIZAÇÃO
+            👁️ GERAR PRÉ-VISUALIZAÇÃO
           </button>
 
           <div style="margin-top: 15px;"></div>
@@ -948,16 +1153,23 @@
           <p style="text-align:center; font-size:12px; color:#64748b; font-weight: bold;">PRÉVIA DO DOCUMENTO:</p>
           <div id="conteudo-pdf" class="pdf-folha"></div>
 
-          <div id="botoes-acao" style="display: none;">
-            <center>
-              <button class="btn-generate btn-download" id="btn-baixar" onclick="baixarPDF()">💾 BAIXAR PDF</button>
-            </center>
+          <div id="botoes-acao" class="acoes-profissionais-orcamento">
+            <div class="acoes-profissionais-orcamento-topo">
+              <div>
+                <strong>Orçamento pronto</strong>
+                <span>Baixe o PDF ou envie o link para o cliente pelo WhatsApp.</span>
+              </div>
+            </div>
 
-            <center>
-              <button type="button" onclick="enviarPorWhatsApp()" class="btn-whatsapp">
-                ENVIAR POR WHATSAPP
+            <div class="acoes-profissionais-botoes">
+              <button type="button" class="btn-acao-orcamento btn-acao-pdf" id="btn-baixar" onclick="baixarPDF()">
+                💾 Baixar PDF
               </button>
-            </center>
+
+              <button type="button" class="btn-acao-orcamento btn-acao-whatsapp" onclick="enviarPorWhatsApp()">
+                🟢 Enviar por WhatsApp
+              </button>
+            </div>
           </div>
 
           <div id="msg-aviso" style="display: none; color: #d32f2f; font-size: 0.9em; margin-top: 10px; text-align: center;">
@@ -990,7 +1202,7 @@
               </div>
 
               <div class="help-item">
-                <strong>📥 Baixar:</strong> Após preencher tudo, clique em "Pré-visualização (👁️)" e depois no ícone de salvar (💾).
+                <strong>📥 Baixar:</strong> Após preencher tudo, clique em "Pré-visualização" e depois em "Baixar PDF".
               </div>
             </div>
 
@@ -999,7 +1211,7 @@
         </div>
 
         <div class="floating-actions">
-          <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Visualizar">
+          <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Gerar prévia">
             👁️
           </button>
 
@@ -1007,7 +1219,11 @@
             💾
           </button>
 
-          <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo Orçamento">
+          <button type="button" class="btn-float btn-float-whatsapp" id="btn-float-whatsapp" onclick="enviarPorWhatsApp()" style="display: none;" title="Enviar por WhatsApp">
+            🟢
+          </button>
+
+          <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo orçamento">
             ➕
           </button>
         </div>
@@ -1039,6 +1255,8 @@ function abrirModalGerador() {
   }
 
   document.body.style.overflow = 'hidden';
+  document.body.style.pointerEvents = '';
+  document.documentElement.style.overflow = '';
   document.body.classList.add('gerador-aberto');
 
   if (typeof carregarDadosEmissorNoModal === 'function') {
@@ -1061,9 +1279,61 @@ function fecharModalGerador() {
     formulario.style.display = 'none';
   }
 
-  document.body.style.overflow = '';
-  document.body.classList.remove('gerador-aberto');
+  liberarTelaTravadaGerador();
 }
+
+function liberarTelaTravadaGerador() {
+  document.body.style.overflow = '';
+  document.body.style.pointerEvents = '';
+  document.documentElement.style.overflow = '';
+
+  document.body.classList.remove('gerador-aberto');
+  document.body.classList.remove('modal-aberto');
+  document.body.classList.remove('modal-open');
+  document.body.classList.remove('login-modal-aberto');
+
+  const modal = document.getElementById('modal-gerador-orcamento');
+
+  if (modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('ativo');
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('modal-gerador-orcamento');
+
+  if (modal) {
+    modal.addEventListener('click', function(event) {
+      if (event.target === modal) {
+        fecharModalGerador();
+      }
+    });
+  }
+
+  setInterval(function() {
+    const modalGerador = document.getElementById('modal-gerador-orcamento');
+
+    if (!modalGerador) return;
+
+    const estaAberto =
+      modalGerador.style.display === 'flex' ||
+      modalGerador.classList.contains('ativo') ||
+      modalGerador.classList.contains('active');
+
+    if (!estaAberto && document.body.classList.contains('gerador-aberto')) {
+      liberarTelaTravadaGerador();
+    }
+  }, 1000);
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    fecharModalGerador();
+  }
+});
 </script>
 
 <script>
@@ -1142,19 +1412,7 @@ async function carregarDadosEmissorNoModal() {
   atualizarLogoEmissorVisual(perfil.foto_url);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  carregarDadosEmissorNoModal();
-
-  const modal = document.getElementById('modal-gerador-orcamento');
-
-  if (modal) {
-    modal.addEventListener('click', function(event) {
-      if (event.target === modal) {
-        fecharModalGerador();
-      }
-    });
-  }
-});
+document.addEventListener('DOMContentLoaded', carregarDadosEmissorNoModal);
 </script>
 
 <script>
@@ -1452,12 +1710,11 @@ async function enviarPorWhatsApp() {
 
   enviandoWhatsappFS = true;
 
-  const botaoWhatsapp = document.querySelector('.btn-whatsapp');
+  const botoesWhatsapp = document.querySelectorAll('.btn-whatsapp, .btn-acao-whatsapp, .btn-float-whatsapp');
 
-  if (botaoWhatsapp) {
-    botaoWhatsapp.disabled = true;
-    botaoWhatsapp.innerText = 'AGUARDE...';
-  }
+  botoesWhatsapp.forEach(btn => {
+    btn.disabled = true;
+  });
 
   try {
     const dados = fsColetarDadosOrcamentoAtual();
@@ -1508,61 +1765,21 @@ async function enviarPorWhatsApp() {
   } finally {
     enviandoWhatsappFS = false;
 
-    if (botaoWhatsapp) {
-      botaoWhatsapp.disabled = false;
-      botaoWhatsapp.innerText = 'ENVIAR POR WHATSAPP';
-    }
+    botoesWhatsapp.forEach(btn => {
+      btn.disabled = false;
+    });
 
-    fsLiberarTelaAposModal();
+    liberarTelaTravadaGerador();
   }
 }
 
 function fsFecharModalGeradorSeguro() {
-  const modal = document.getElementById('modal-gerador-orcamento');
-  const formulario = document.getElementById('formulario-orcamento');
-
-  if (typeof fecharModalGerador === 'function') {
-    try {
-      fecharModalGerador();
-    } catch (error) {
-      console.warn('Não foi possível executar fecharModalGerador:', error);
-    }
-  }
-
-  if (modal) {
-    modal.style.display = 'none';
-    modal.classList.remove('ativo');
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
-  }
-
-  if (formulario) {
-    formulario.style.display = 'none';
-  }
-
-  fsLiberarTelaAposModal();
+  fecharModalGerador();
+  liberarTelaTravadaGerador();
 }
 
 function fsLiberarTelaAposModal() {
-  document.body.style.overflow = '';
-  document.body.style.pointerEvents = '';
-  document.documentElement.style.overflow = '';
-
-  document.body.classList.remove('modal-aberto');
-  document.body.classList.remove('login-modal-aberto');
-  document.body.classList.remove('modal-open');
-  document.body.classList.remove('gerador-aberto');
-
-  const overlays = document.querySelectorAll('.modal-gerador-overlay, .modal-overlay, .modal-login-overlay');
-
-  overlays.forEach(overlay => {
-    if (
-      overlay.id === 'modal-gerador-orcamento' &&
-      overlay.style.display !== 'none'
-    ) {
-      overlay.style.display = 'none';
-    }
-  });
+  liberarTelaTravadaGerador();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1581,6 +1798,53 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     window.limparFormularioComResetOrcamento = true;
+  }
+});
+</script>
+
+<script>
+function exibirAcoesProfissionaisOrcamento() {
+  const botoesAcao = document.getElementById('botoes-acao');
+  const btnFloatBaixar = document.getElementById('btn-float-baixar');
+  const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
+  const floatingActions = document.querySelector('.floating-actions');
+
+  if (botoesAcao) {
+    botoesAcao.style.display = 'block';
+  }
+
+  if (btnFloatBaixar) {
+    btnFloatBaixar.style.display = 'flex';
+  }
+
+  if (btnFloatWhatsapp) {
+    btnFloatWhatsapp.style.display = 'flex';
+  }
+
+  if (floatingActions) {
+    floatingActions.classList.add('show');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const previaOriginal = window.gerarPrevia;
+
+  if (typeof previaOriginal === 'function' && !window.gerarPreviaComAcoesProfissionais) {
+    window.gerarPrevia = async function() {
+      const resultado = await previaOriginal.apply(this, arguments);
+
+      setTimeout(() => {
+        const conteudo = document.getElementById('conteudo-pdf');
+
+        if (conteudo && conteudo.innerHTML.trim()) {
+          exibirAcoesProfissionaisOrcamento();
+        }
+      }, 250);
+
+      return resultado;
+    };
+
+    window.gerarPreviaComAcoesProfissionais = true;
   }
 });
 </script>
