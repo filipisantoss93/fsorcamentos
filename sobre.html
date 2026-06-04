@@ -296,9 +296,34 @@
             color: #3e2723;
         }
 
-        .ad-area {
-            margin-top: 30px;
+        .fs-adsense-bloco {
+            display: none;
+            margin: 32px auto;
+            padding: 14px;
+            background: #fffaf0;
+            border: 1px solid #e7ded2;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+
+        .fs-adsense-bloco .ads-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #8d6e63;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            text-align: center;
+        }
+
+        .fs-adsense-bloco ins.adsbygoogle {
             min-height: 90px;
+        }
+
+        .fs-adsense-bloco-horizontal ins.adsbygoogle {
+            min-height: 120px;
         }
 
         .sobre-footer {
@@ -341,6 +366,11 @@
             .container-sobre {
                 margin: 20px 12px 35px;
                 padding: 22px;
+            }
+
+            .fs-adsense-bloco {
+                margin: 26px auto;
+                padding: 10px;
             }
         }
     </style>
@@ -400,48 +430,96 @@ async function carregarHeaderPublicoSeDeslogado() {
     }, 600);
 }
 
-async function controlarAnuncioSobre() {
-    setTimeout(async () => {
-        const blocos = document.querySelectorAll('.bloco-anuncio');
-        if (!blocos.length) return;
+function normalizarPlanoSobre(valor) {
+    return String(valor || 'gratis')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim();
+}
 
-        let plano = 'gratis';
+async function obterPlanoAtualSobre() {
+    let plano = localStorage.getItem('usuario_plano') || 'gratis';
 
-        try {
-            if (window._supabase) {
-                const { data: { session } } = await _supabase.auth.getSession();
+    try {
+        if (!window._supabase) return normalizarPlanoSobre(plano);
 
-                if (session) {
-                    const { data: perfil } = await _supabase
-                        .from('perfis')
-                        .select('plano')
-                        .eq('id', session.user.id)
-                        .maybeSingle();
+        const { data: { session } } = await _supabase.auth.getSession();
 
-                    plano = perfil?.plano || 'gratis';
-                }
-            }
-        } catch (e) {
-            console.warn('Não foi possível verificar plano para anúncios:', e);
+        if (!session?.user?.id) {
+            return 'gratis';
         }
 
-        blocos.forEach(bloco => {
-            bloco.style.display = plano === 'gratis' ? 'block' : 'none';
-        });
+        const { data: perfil, error } = await _supabase
+            .from('perfis')
+            .select('plano')
+            .eq('id', session.user.id)
+            .maybeSingle();
 
-        if (plano === 'gratis') {
+        if (error) {
+            console.warn('Não foi possível verificar plano para anúncios:', error);
+            return normalizarPlanoSobre(plano);
+        }
+
+        plano = perfil?.plano || plano || 'gratis';
+        localStorage.setItem('usuario_plano', plano);
+
+        return normalizarPlanoSobre(plano);
+    } catch (e) {
+        console.warn('Não foi possível verificar plano para anúncios:', e);
+        return normalizarPlanoSobre(plano);
+    }
+}
+
+async function controlarAnunciosSobre() {
+    const blocos = document.querySelectorAll('.fs-adsense-bloco');
+    if (!blocos.length) return;
+
+    const plano = await obterPlanoAtualSobre();
+    const deveExibir = plano !== 'basico' && plano !== 'premium';
+
+    blocos.forEach(bloco => {
+        bloco.style.display = deveExibir ? 'block' : 'none';
+    });
+
+    if (!deveExibir) return;
+
+    setTimeout(() => {
+        blocos.forEach(bloco => {
+            const anuncio = bloco.querySelector('ins.adsbygoogle');
+
+            if (!anuncio) return;
+            if (anuncio.dataset.carregado === 'true') return;
+
             try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
+                (window.adsbygoogle = window.adsbygoogle || []).push({});
+                anuncio.dataset.carregado = 'true';
             } catch (e) {
                 console.warn('AdSense não carregado:', e);
             }
-        }
-    }, 900);
+        });
+    }, 300);
+}
+
+function configurarAtualizacaoAnunciosSobre() {
+    controlarAnunciosSobre();
+
+    if (window._supabase) {
+        _supabase.auth.onAuthStateChange(() => {
+            setTimeout(controlarAnunciosSobre, 500);
+        });
+    }
+
+    setTimeout(controlarAnunciosSobre, 1200);
+}
+
+function irParaPlanosHome() {
+    window.location.href = 'index.html#painel-plano-basico-home';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     carregarHeaderPublicoSeDeslogado();
-    controlarAnuncioSobre();
+    configurarAtualizacaoAnunciosSobre();
 });
 </script>
 
@@ -472,6 +550,16 @@ document.addEventListener('DOMContentLoaded', () => {
         propostas na nuvem, facilitar o envio por WhatsApp e, no plano Premium, acompanhar automaticamente
         orçamentos pendentes para ajudar você a recuperar vendas que poderiam ser esquecidas.
     </p>
+
+    <div class="fs-adsense-bloco fs-adsense-bloco-horizontal" data-local="sobre-topo">
+        <span class="ads-label">Publicidade</span>
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-5628949951885077"
+            data-ad-slot="6308389759"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+    </div>
 
     <div class="cards-sobre">
         <div class="card-sobre">
@@ -512,6 +600,16 @@ document.addEventListener('DOMContentLoaded', () => {
         <li><strong>Acompanhamento:</strong> o Básico permite acompanhar manualmente; o Premium acompanha pendências automaticamente a cada 24 horas.</li>
     </ul>
 
+    <div class="fs-adsense-bloco" data-local="sobre-meio">
+        <span class="ads-label">Publicidade</span>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-5628949951885077"
+            data-ad-slot="6308389759"></ins>
+    </div>
+
     <h2>Diferença entre os planos</h2>
 
     <p>
@@ -530,7 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             <ul>
                 <li>Gera orçamento em PDF.</li>
-                <li>Exibe anúncios nas páginas da plataforma.</li>
+                <li>Exibe anúncios nas páginas públicas e na plataforma.</li>
                 <li>Não salva o orçamento na nuvem.</li>
                 <li>Não envia link automático ao cliente.</li>
             </ul>
@@ -657,15 +755,17 @@ document.addEventListener('DOMContentLoaded', () => {
         Gere uma proposta profissional agora mesmo.
         <br>
         <a href="index.html">Gerar orçamento agora</a>
+        <a href="javascript:void(0)" onclick="irParaPlanosHome()" style="margin-left:8px;">Ver Plano Básico</a>
     </div>
 
-    <div class="ad-area bloco-anuncio" style="display:none;">
+    <div class="fs-adsense-bloco" data-local="sobre-final">
+        <span class="ads-label">Publicidade</span>
         <ins class="adsbygoogle"
-            style="display:block; text-align:center;"
-            data-ad-layout="in-article"
-            data-ad-format="fluid"
+            style="display:block"
             data-ad-client="ca-pub-5628949951885077"
-            data-ad-slot="6308389759"></ins>
+            data-ad-slot="6308389759"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
     </div>
 </main>
 
