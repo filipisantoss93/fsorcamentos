@@ -3395,3 +3395,7 @@ body:has(.painel-card) .container {
     flex-direction: column;
   }
 }
+
+#painel-plano-basico-home {
+  scroll-margin-top: 110px;
+}
