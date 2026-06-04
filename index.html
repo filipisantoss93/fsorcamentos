@@ -474,7 +474,7 @@ VER MAIS</a></center>
   </div>
 </section>
 
-<section id="painel-plano-basico-home" class="planos-pix-section" style="display:block;">
+<section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
   <div class="planos-pix-topo">
     <span class="tag-plano-pix">Plano Básico</span>
 
@@ -1832,70 +1832,64 @@ function fsNormalizarPlanoHome(valor) {
     .trim();
 }
 
+
+<script>
 async function atualizarPainelPlanoBasicoHome() {
   const painel = document.getElementById('painel-plano-basico-home');
 
   if (!painel) return;
 
-  // Começa sempre oculto. Só exibe depois de confirmar sessão + plano grátis.
-  painel.style.display = 'none';
+  // Por padrão, exibe. Assim visitantes/deslogados veem o plano.
+  painel.style.display = 'block';
 
-  if (!window._supabase) return;
+  if (!window._supabase) {
+    return;
+  }
 
-  try {
-    const { data: { session } } = await _supabase.auth.getSession();
+  const { data: { session } } = await _supabase.auth.getSession();
 
-    if (!session?.user?.id) {
-      return;
-    }
+  // Se não estiver logado, mantém exibido.
+  if (!session?.user?.id) {
+    painel.style.display = 'block';
+    return;
+  }
 
-    let plano = localStorage.getItem('usuario_plano') || 'gratis';
+  const { data: perfil, error } = await _supabase
+    .from('perfis')
+    .select('plano')
+    .eq('id', session.user.id)
+    .maybeSingle();
 
-    // Busca o plano real no Supabase, porque localStorage pode estar vazio ou desatualizado.
-    const { data, error } = await _supabase
-      .from('perfis')
-      .select('plano, plano_status, plano_expira_em')
-      .eq('id', session.user.id)
-      .maybeSingle();
+  if (error) {
+    console.error('Erro ao verificar plano:', error);
 
-    if (!error && data) {
-      plano = data.plano || 'gratis';
-      localStorage.setItem('usuario_plano', plano);
+    // Se der erro, mantém exibido para não esconder oferta de plano.
+    painel.style.display = 'block';
+    return;
+  }
 
-      if (data.plano_status) {
-        localStorage.setItem('usuario_plano_status', data.plano_status);
-      }
+  const plano = String(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 
-      if (data.plano_expira_em) {
-        localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
-      }
-    }
-
-    const planoNormalizado = fsNormalizarPlanoHome(plano);
-
-    painel.style.display = planoNormalizado === 'gratis' ? 'block' : 'none';
-  } catch (error) {
-    console.warn('Não foi possível verificar o plano para exibir o painel Básico:', error);
+  if (plano === 'basico' || plano === 'premium') {
     painel.style.display = 'none';
+  } else {
+    painel.style.display = 'block';
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  atualizarPainelPlanoBasicoHome();
-  setTimeout(atualizarPainelPlanoBasicoHome, 700);
-  setTimeout(atualizarPainelPlanoBasicoHome, 1600);
-});
+document.addEventListener('DOMContentLoaded', atualizarPainelPlanoBasicoHome);
 
 if (window._supabase) {
   _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarPainelPlanoBasicoHome, 300);
-    setTimeout(atualizarPainelPlanoBasicoHome, 1200);
+    setTimeout(atualizarPainelPlanoBasicoHome, 500);
   });
 }
 
-
-
-window.atualizarPainelPlanoBasicoHome = atualizarPainelPlanoBasicoHome;
+setTimeout(atualizarPainelPlanoBasicoHome, 1200);
+</script>
 </script>
 
 </body>
