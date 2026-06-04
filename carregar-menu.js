@@ -122,3 +122,79 @@ function toggleMenuMobile() {
 document.addEventListener('DOMContentLoaded', async () => {
   await carregarMenu();
 });
+
+function criarBotaoFlutuanteGeradorGlobal() {
+  if (document.getElementById('btn-flutuante-gerador-global')) return;
+
+  const botao = document.createElement('button');
+  botao.type = 'button';
+  botao.id = 'btn-flutuante-gerador-global';
+  botao.innerHTML = '🧾 <span>Gerar orçamento</span>';
+  botao.onclick = abrirGeradorGlobal;
+
+  document.body.appendChild(botao);
+}
+
+function abrirGeradorGlobal() {
+  const estaNaHome =
+    window.location.pathname === '/' ||
+    window.location.pathname.endsWith('/index.html') ||
+    window.location.pathname.endsWith('index.html');
+
+  if (estaNaHome) {
+    if (typeof abrirModalGerador === 'function') {
+      abrirModalGerador();
+      return;
+    }
+
+    const modal = document.getElementById('modal-gerador-orcamento');
+    const formulario = document.getElementById('formulario-orcamento');
+
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.add('ativo');
+      document.body.style.overflow = 'hidden';
+    }
+
+    if (formulario) {
+      formulario.style.display = 'block';
+    }
+
+    return;
+  }
+
+  window.location.href = '/index.html?abrirGerador=1';
+}
+
+function abrirGeradorAutomaticamenteSeSolicitado() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('abrirGerador') !== '1') return;
+
+  setTimeout(function() {
+    if (typeof abrirModalGerador === 'function') {
+      abrirModalGerador();
+    } else {
+      const modal = document.getElementById('modal-gerador-orcamento');
+      const formulario = document.getElementById('formulario-orcamento');
+
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.add('ativo');
+        document.body.style.overflow = 'hidden';
+      }
+
+      if (formulario) {
+        formulario.style.display = 'block';
+      }
+    }
+
+    const novaUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, novaUrl);
+  }, 700);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  criarBotaoFlutuanteGeradorGlobal();
+  abrirGeradorAutomaticamenteSeSolicitado();
+});
