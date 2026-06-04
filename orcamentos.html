@@ -20,16 +20,6 @@
       margin-bottom: 16px;
     }
 
-    .btn-atualizar {
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
     .filtro-flutuante {
       position: sticky;
       top: 76px;
@@ -398,8 +388,6 @@
       padding: 15px;
     }
 
-    /* ==================== BLOQUEIO PARA PLANO GRÁTIS ==================== */
-
     .upgrade-orcamentos-box {
       max-width: 1120px;
       margin: 32px auto;
@@ -490,8 +478,6 @@
       font-size: 13px;
       line-height: 1.4;
     }
-
-    /* ==================== PLANOS PIX ==================== */
 
     .planos-pix-section {
       max-width: 1150px;
@@ -638,8 +624,6 @@
       font-size: 13px;
       font-weight: 700;
     }
-
-    /* ==================== MODAL PIX ==================== */
 
     .modal-pix-overlay {
       position: fixed;
@@ -797,6 +781,30 @@
       text-align: center;
     }
 
+    #btn-flutuante-gerador-global {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 18000;
+      border: 2px solid #3e2723;
+      background: #ffc400;
+      color: #3e2723;
+      border-radius: 999px;
+      padding: 12px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.30);
+    }
+
+    #btn-flutuante-gerador-global:hover {
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
     @media (max-width: 1100px) {
       .cards-resumo { grid-template-columns: repeat(3, 1fr); }
       .upgrade-beneficios-grid { grid-template-columns: repeat(2, 1fr); }
@@ -846,6 +854,18 @@
       .pix-acoes {
         grid-template-columns: 1fr;
         flex-direction: column;
+      }
+
+      #btn-flutuante-gerador-global span {
+        display: none;
+      }
+
+      #btn-flutuante-gerador-global {
+        width: 58px;
+        height: 58px;
+        padding: 0;
+        justify-content: center;
+        font-size: 24px;
       }
     }
   </style>
@@ -1008,10 +1028,6 @@
     <div class="container">
       <div class="orcamentos-header">
         <h1>Meus Orçamentos</h1>
-
-        <button type="button" class="btn-atualizar" onclick="carregarOrcamentos()">
-          Atualizar
-        </button>
       </div>
 
       <div class="filtro-flutuante">
@@ -1271,6 +1287,9 @@ let orcamentosJaCarregados = false;
 let usuarioPodeUsarNuvemOrcamentos = false;
 let pagamentoPixAtualId = null;
 
+let canalOrcamentosTempoReal = null;
+let atualizacaoAutomaticaTimer = null;
+
 const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1290,6 +1309,7 @@ if (window._supabase) {
     if (!session) {
       orcamentosJaCarregados = false;
       usuarioPodeUsarNuvemOrcamentos = false;
+      pararAtualizacaoAutomaticaOrcamentos();
     }
   });
 }
@@ -1341,13 +1361,62 @@ async function verificarPlanoEControlarPaginaOrcamentos(session) {
     if (!orcamentosJaCarregados) {
       await carregarOrcamentos();
       restaurarEstadoResumoFinanceiro();
+      iniciarAtualizacaoAutomaticaOrcamentos(session.user.id);
       orcamentosJaCarregados = true;
+    } else {
+      iniciarAtualizacaoAutomaticaOrcamentos(session.user.id);
     }
   } else {
     area.style.display = 'none';
     bloqueio.style.display = 'block';
     orcamentosJaCarregados = false;
+    pararAtualizacaoAutomaticaOrcamentos();
   }
+}
+
+function iniciarAtualizacaoAutomaticaOrcamentos(usuarioId) {
+  if (!window._supabase || !usuarioId) return;
+
+  pararAtualizacaoAutomaticaOrcamentos();
+
+  canalOrcamentosTempoReal = _supabase
+    .channel(`orcamentos-tempo-real-${usuarioId}`)
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'orcamentos',
+        filter: `usuario_id=eq.${usuarioId}`
+      },
+      () => {
+        agendarAtualizacaoAutomaticaOrcamentos();
+      }
+    )
+    .subscribe(status => {
+      console.log('Canal de orçamentos:', status);
+    });
+}
+
+function agendarAtualizacaoAutomaticaOrcamentos() {
+  if (!usuarioPodeUsarNuvemOrcamentos) return;
+
+  clearTimeout(atualizacaoAutomaticaTimer);
+
+  atualizacaoAutomaticaTimer = setTimeout(async () => {
+    await carregarOrcamentos();
+  }, 500);
+}
+
+function pararAtualizacaoAutomaticaOrcamentos() {
+  clearTimeout(atualizacaoAutomaticaTimer);
+  atualizacaoAutomaticaTimer = null;
+
+  if (canalOrcamentosTempoReal && window._supabase) {
+    _supabase.removeChannel(canalOrcamentosTempoReal);
+  }
+
+  canalOrcamentosTempoReal = null;
 }
 
 function escaparHtml(valor) {
@@ -1704,7 +1773,8 @@ function abrirModalVisualizar(id) {
 }
 
 function fecharModalVisualizar() {
-  document.getElementById('modal-visualizar-orcamento').style.display = 'none';
+  const modal = document.getElementById('modal-visualizar-orcamento');
+  if (modal) modal.style.display = 'none';
 }
 
 function abrirConversaWhatsappVisualizado() {
@@ -1832,7 +1902,8 @@ function abrirModalEditar(id) {
 }
 
 function fecharModalEditar() {
-  document.getElementById('modal-editar-orcamento').style.display = 'none';
+  const modal = document.getElementById('modal-editar-orcamento');
+  if (modal) modal.style.display = 'none';
 }
 
 function adicionarItemModal(item = {}) {
@@ -2179,6 +2250,16 @@ async function verificarPagamentoPixAtual() {
   alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
 }
 
+function abrirGeradorGlobal() {
+  try {
+    localStorage.setItem('fs_abrir_gerador_automatico', 'sim');
+  } catch (error) {
+    console.warn('Não foi possível salvar intenção de abrir gerador:', error);
+  }
+
+  window.location.href = '/index.html?abrirGerador=1';
+}
+
 document.addEventListener('keydown', function(event) {
   if (event.key === 'Escape') {
     fecharModalPixBasico();
@@ -2196,6 +2277,8 @@ document.addEventListener('click', function(event) {
   if (event.target === modalVisual) fecharModalVisualizar();
   if (event.target === modalEdit) fecharModalEditar();
 });
+
+window.addEventListener('beforeunload', pararAtualizacaoAutomaticaOrcamentos);
 </script>
 
 <center><p></p><p></p>
@@ -2205,5 +2288,6 @@ document.addEventListener('click', function(event) {
   🧾
   <span>Gerar orçamento</span>
 </button>
+
 </body>
 </html>
