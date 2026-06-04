@@ -374,7 +374,7 @@
     <div class="ver-emissor-info">
       <span class="ver-label">Orçamento emitido por</span>
       <h1 id="ver-nome-empresa">Carregando empresa...</h1>
-      <p id="ver-consultor">Responsável: -</p>
+      <p id="ver-consultor">Consultor: -</p>
 
       <div class="ver-emissor-dados">
         <span id="ver-whatsapp-empresa"></span>
@@ -856,7 +856,6 @@ function renderizarOrcamento(orcamento) {
 
   container.innerHTML = `
     <div class="box-info">
-      <div><strong>Responsável:</strong> ${escaparHtml(emissor)}</div>
       <div><strong>Cliente:</strong> ${escaparHtml(cliente)}</div>
       <div><strong>Contato:</strong> ${escaparHtml(contato)}</div>
       <div><strong>Data:</strong> ${formatarData(dataCriacao)}</div>
