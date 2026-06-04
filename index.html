@@ -134,6 +134,94 @@
     height: 90px;
   }
 }
+
+
+/* Botão Conhecer os Planos - CTA secundário personalizado */
+.btn-planos-menor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 10px 18px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 196, 0, 0.14) !important;
+  color: #3e2723 !important;
+  border: 1px solid rgba(62, 39, 35, 0.28) !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  letter-spacing: .2px;
+  text-decoration: none !important;
+  transition: .2s ease;
+}
+
+.btn-planos-menor::before {
+  content: '⭐';
+  font-size: 14px;
+}
+
+.btn-planos-menor:hover {
+  transform: translateY(-1px);
+  background: #fff8d6 !important;
+  border-color: #ffc400 !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+}
+
+#painel-plano-basico-home {
+  scroll-margin-top: 110px;
+}
+
+
+
+/* ==================== ADSENSE / ANÚNCIOS PLANO GRÁTIS ==================== */
+.bloco-anuncio.fs-adsense-zone {
+  display: none;
+  max-width: 970px;
+  min-height: 110px;
+  margin: 22px auto;
+  padding: 14px;
+  background: #fffaf0;
+  border: 1px dashed rgba(62, 39, 35, 0.28);
+  border-radius: 14px;
+  text-align: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.bloco-anuncio.fs-adsense-zone .adsense-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #8d6e63;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+.bloco-anuncio.fs-adsense-zone .adsense-fallback {
+  display: none;
+  color: #8d6e63;
+  font-size: 12px;
+  line-height: 1.35;
+  margin: 8px 0 0 0;
+}
+
+.bloco-anuncio.fs-adsense-zone.adsense-slot-pendente .adsense-fallback {
+  display: block;
+}
+
+.bloco-anuncio.fs-adsense-zone .adsbygoogle {
+  min-height: 90px;
+}
+
+@media (max-width: 620px) {
+  .bloco-anuncio.fs-adsense-zone {
+    min-height: 100px;
+    margin: 18px auto;
+    padding: 10px;
+  }
+}
 </style>
 
 </head>
@@ -250,9 +338,9 @@
     🧾 Gerar Orçamento Agora
   </button>
 
-<a href="#painel-plano-basico-home" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor">
-  Conhecer os planos
-</a>
+  <a href="#painel-plano-basico-home" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor" onclick="rolarParaPlanosHome(event)">
+    Conhecer os planos
+  </a>
 </div>
 
   </section>
@@ -305,9 +393,10 @@
       <p>Baixe o orçamento pronto ou envie para o cliente conforme seu plano.</p>
     </div>
   </div>
+
 <center><a href="exemplos.html" class="btn-secundario-home">
 VER MAIS</a></center>
-
+</div>
   </div>
   <section class="whatsapp-preview-home">
   <div class="whatsapp-preview-texto">
@@ -473,7 +562,6 @@ VER MAIS</a></center>
     </div>
   </div>
 </section>
-
 <section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
   <div class="planos-pix-topo">
     <span class="tag-plano-pix">Plano Básico</span>
@@ -585,7 +673,8 @@ VER MAIS</a></center>
   </div>
 </div>
 
-
+<center><a href="exemplos.html" class="btn-secundario-home">
+VER MAIS EXEMPLOS</a></center>
 
 </section>
 
@@ -699,9 +788,23 @@ VER MAIS</a></center>
     </div>
     <p style="color: #9e9e9e; margin-bottom: 0px; margin-top: -20px; font-size: 16px;">Gerador de Orçamento Profissional</p>
 </div>
-<div class="bloco-anuncio" style="display: none; margin: 20px auto; padding: 15px; background: #fff3cd; text-align: center;">
-  <h5>Área de Anúncio (Google AdSense)</h5>
-  <p>Usuários do plano Grátis visualizam anúncios aqui.</p>
+<div id="adsense-gratis-topo" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis adsense-slot-pendente" data-ad-slot-pendente="true" aria-label="Publicidade">
+  <span class="adsense-label">Publicidade</span>
+
+  <!--
+    AdSense: depois que sua conta estiver pronta, crie um bloco de anúncio responsivo
+    e substitua COLE_SEU_SLOT_ADSENSE_1 pelo data-ad-slot real do AdSense.
+  -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-5628949951885077"
+       data-ad-slot="COLE_SEU_SLOT_ADSENSE_1"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+
+  <p class="adsense-fallback">
+    Espaço reservado para anúncio. Substitua o <strong>data-ad-slot</strong> pelo bloco criado no AdSense.
+  </p>
 </div>
 
 <div class="carousel-container" style="display: none;">
@@ -786,11 +889,11 @@ VER MAIS</a></center>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
     <div>
-        <label>Nome</label>
+        <label>Nome do Cliente</label>
         <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
     </div>
     <div>
-        <label>Telefone (Whatsapp)</label>
+        <label>Telefone do Cliente (Whatsapp)</label>
         <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
     </div>
 <div id="extra-cliente-container" style="grid-column: span 2;"></div>
@@ -899,9 +1002,23 @@ VER MAIS</a></center>
   * Preencha os dados da empresa no <a href="/painel">Painel</a> para liberar o envio.
 </div>
 
-<div class="bloco-anuncio" style="display: none; margin: 20px auto; padding: 15px; background: #fff3cd; text-align: center;">
-  <h5>Área de Anúncio (Google AdSense)</h5>
-  <p>Usuários do plano Grátis visualizam anúncios aqui.</p>
+<div id="adsense-gratis-rodape" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis adsense-slot-pendente" data-ad-slot-pendente="true" aria-label="Publicidade">
+  <span class="adsense-label">Publicidade</span>
+
+  <!--
+    AdSense: depois que sua conta estiver pronta, crie um segundo bloco de anúncio responsivo
+    e substitua COLE_SEU_SLOT_ADSENSE_2 pelo data-ad-slot real do AdSense.
+  -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-5628949951885077"
+       data-ad-slot="COLE_SEU_SLOT_ADSENSE_2"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+
+  <p class="adsense-fallback">
+    Espaço reservado para anúncio. Substitua o <strong>data-ad-slot</strong> pelo bloco criado no AdSense.
+  </p>
 </div>
 	
 
@@ -1381,18 +1498,22 @@ async function fsSalvarOrcamentoSePlanoPermitido(origem = 'acao') {
 }
 
 async function fsBaixarPDFCorrigido() {
-  await fsSalvarOrcamentoSePlanoPermitido('download_pdf');
-
-  if (typeof baixarPDFOriginalFS === 'function') {
-    return baixarPDFOriginalFS();
-  }
-
   const elemento = document.getElementById('conteudo-pdf');
 
-  if (!elemento || !elemento.innerHTML.trim()) {
+  if (!elemento) return;
+
+  if (!elemento.innerHTML.trim()) {
+    if (typeof gerarPrevia === 'function') {
+      await gerarPrevia();
+    }
+  }
+
+  if (!elemento.innerHTML.trim()) {
     alert('Gere a pré-visualização antes de baixar o PDF.');
     return;
   }
+
+  await fsSalvarOrcamentoSePlanoPermitido('download_pdf');
 
   const nomeArquivo = (document.getElementById('titulo')?.value || 'orcamento')
     .trim()
@@ -1574,17 +1695,72 @@ document.addEventListener('DOMContentLoaded', function() {
     window.limparFormularioComResetOrcamento = true;
   }
 });
-function atualizarBotaoPlanosHome() {
+function fsNormalizarPlanoBotao(valor) {
+  return String(valor || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+async function atualizarBotaoPlanosHome() {
   const botaoPlanos = document.getElementById('btn-conhecer-planos-home');
 
   if (!botaoPlanos) return;
 
-  const plano = String(localStorage.getItem('usuario_plano') || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  // Deslogado vê o botão. Logado grátis também. Básico/Premium não vê.
+  botaoPlanos.style.display = 'inline-flex';
 
-  botaoPlanos.style.display = plano === 'gratis' ? 'inline-flex' : 'none';
+  try {
+    if (!window._supabase) return;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      botaoPlanos.style.display = 'inline-flex';
+      return;
+    }
+
+    let plano = localStorage.getItem('usuario_plano') || 'gratis';
+
+    const { data, error } = await _supabase
+      .from('perfis')
+      .select('plano')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    if (!error && data?.plano) {
+      plano = data.plano;
+      localStorage.setItem('usuario_plano', plano);
+    }
+
+    const planoNormalizado = fsNormalizarPlanoBotao(plano);
+
+    botaoPlanos.style.display =
+      planoNormalizado === 'basico' || planoNormalizado === 'premium'
+        ? 'none'
+        : 'inline-flex';
+  } catch (error) {
+    console.warn('Não foi possível atualizar o botão de planos:', error);
+    botaoPlanos.style.display = 'inline-flex';
+  }
+}
+
+function rolarParaPlanosHome(event) {
+  if (event) event.preventDefault();
+
+  const painel = document.getElementById('painel-plano-basico-home');
+
+  if (!painel) return;
+
+  if (getComputedStyle(painel).display === 'none') {
+    painel.style.display = 'block';
+  }
+
+  painel.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
 
 document.addEventListener('DOMContentLoaded', atualizarBotaoPlanosHome);
@@ -1821,8 +1997,10 @@ document.addEventListener('click', function(event) {
 
 <script>
 /* =========================================================
-   EXIBIR PLANO BÁSICO NA HOME SOMENTE PARA USUÁRIO LOGADO
-   E COM PLANO GRÁTIS
+   EXIBIR PLANO BÁSICO NA HOME
+   - Visitante/deslogado: exibe
+   - Logado grátis: exibe
+   - Logado básico/premium: oculta
    ========================================================= */
 function fsNormalizarPlanoHome(valor) {
   return String(valor || 'gratis')
@@ -1832,64 +2010,184 @@ function fsNormalizarPlanoHome(valor) {
     .trim();
 }
 
-
-<script>
 async function atualizarPainelPlanoBasicoHome() {
   const painel = document.getElementById('painel-plano-basico-home');
 
   if (!painel) return;
 
-  // Por padrão, exibe. Assim visitantes/deslogados veem o plano.
+  // Por padrão, exibe para visitantes.
   painel.style.display = 'block';
 
-  if (!window._supabase) {
-    return;
-  }
+  try {
+    if (!window._supabase) return;
 
-  const { data: { session } } = await _supabase.auth.getSession();
+    const { data: { session } } = await _supabase.auth.getSession();
 
-  // Se não estiver logado, mantém exibido.
-  if (!session?.user?.id) {
-    painel.style.display = 'block';
-    return;
-  }
+    // Deslogado/visitante continua vendo o painel.
+    if (!session?.user?.id) {
+      painel.style.display = 'block';
+      return;
+    }
 
-  const { data: perfil, error } = await _supabase
-    .from('perfis')
-    .select('plano')
-    .eq('id', session.user.id)
-    .maybeSingle();
+    let plano = localStorage.getItem('usuario_plano') || 'gratis';
 
-  if (error) {
-    console.error('Erro ao verificar plano:', error);
+    const { data, error } = await _supabase
+      .from('perfis')
+      .select('plano, plano_status, plano_expira_em')
+      .eq('id', session.user.id)
+      .maybeSingle();
 
-    // Se der erro, mantém exibido para não esconder oferta de plano.
-    painel.style.display = 'block';
-    return;
-  }
+    if (!error && data) {
+      plano = data.plano || 'gratis';
+      localStorage.setItem('usuario_plano', plano);
 
-  const plano = String(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+      if (data.plano_status) {
+        localStorage.setItem('usuario_plano_status', data.plano_status);
+      }
 
-  if (plano === 'basico' || plano === 'premium') {
-    painel.style.display = 'none';
-  } else {
+      if (data.plano_expira_em) {
+        localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+      }
+    }
+
+    const planoNormalizado = fsNormalizarPlanoHome(plano);
+
+    painel.style.display =
+      planoNormalizado === 'basico' || planoNormalizado === 'premium'
+        ? 'none'
+        : 'block';
+  } catch (error) {
+    console.warn('Não foi possível verificar o plano para exibir o painel Básico:', error);
     painel.style.display = 'block';
   }
 }
 
-document.addEventListener('DOMContentLoaded', atualizarPainelPlanoBasicoHome);
+document.addEventListener('DOMContentLoaded', function() {
+  atualizarPainelPlanoBasicoHome();
+  setTimeout(atualizarPainelPlanoBasicoHome, 700);
+  setTimeout(atualizarPainelPlanoBasicoHome, 1600);
+});
 
 if (window._supabase) {
   _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarPainelPlanoBasicoHome, 500);
+    setTimeout(atualizarPainelPlanoBasicoHome, 300);
+    setTimeout(atualizarPainelPlanoBasicoHome, 1200);
   });
 }
 
-setTimeout(atualizarPainelPlanoBasicoHome, 1200);
-</script>
+window.atualizarPainelPlanoBasicoHome = atualizarPainelPlanoBasicoHome;</script>
+
+
+
+<script>
+/* =========================================================
+   ADSENSE CONDICIONAL
+   - Visitante/deslogado: exibe blocos de anúncio
+   - Logado plano grátis: exibe blocos de anúncio
+   - Logado básico/premium: oculta blocos de anúncio
+   ========================================================= */
+function fsNormalizarPlanoAdsense(valor) {
+  return String(valor || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .trim();
+}
+
+function fsSlotAdsenseValido(slot) {
+  const valor = String(slot || '').trim();
+
+  return /^\d{6,}$/.test(valor);
+}
+
+function fsInicializarAdsenseVisivel() {
+  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
+
+  blocos.forEach(bloco => {
+    if (bloco.style.display === 'none') return;
+
+    const ins = bloco.querySelector('ins.adsbygoogle');
+    if (!ins) return;
+
+    const slot = ins.getAttribute('data-ad-slot');
+
+    if (!fsSlotAdsenseValido(slot)) {
+      bloco.classList.add('adsense-slot-pendente');
+      bloco.dataset.adSlotPendente = 'true';
+      return;
+    }
+
+    bloco.classList.remove('adsense-slot-pendente');
+    bloco.dataset.adSlotPendente = 'false';
+
+    if (ins.dataset.adsenseInicializado === 'true') return;
+
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      ins.dataset.adsenseInicializado = 'true';
+    } catch (error) {
+      console.warn('AdSense ainda não inicializado:', error);
+    }
+  });
+}
+
+async function atualizarAnunciosGratisHome() {
+  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
+
+  if (!blocos.length) return;
+
+  let deveExibir = true;
+
+  try {
+    if (window._supabase) {
+      const { data: { session } } = await _supabase.auth.getSession();
+
+      if (session?.user?.id) {
+        let plano = localStorage.getItem('usuario_plano') || 'gratis';
+
+        const { data, error } = await _supabase
+          .from('perfis')
+          .select('plano')
+          .eq('id', session.user.id)
+          .maybeSingle();
+
+        if (!error && data?.plano) {
+          plano = data.plano;
+          localStorage.setItem('usuario_plano', plano);
+        }
+
+        const planoNormalizado = fsNormalizarPlanoAdsense(plano);
+        deveExibir = !(planoNormalizado === 'basico' || planoNormalizado === 'premium');
+      }
+    }
+  } catch (error) {
+    console.warn('Não foi possível verificar plano para anúncios:', error);
+    deveExibir = true;
+  }
+
+  blocos.forEach(bloco => {
+    bloco.style.display = deveExibir ? 'block' : 'none';
+  });
+
+  if (deveExibir) {
+    setTimeout(fsInicializarAdsenseVisivel, 250);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  atualizarAnunciosGratisHome();
+  setTimeout(atualizarAnunciosGratisHome, 900);
+  setTimeout(atualizarAnunciosGratisHome, 1800);
+});
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(() => {
+    setTimeout(atualizarAnunciosGratisHome, 400);
+    setTimeout(atualizarAnunciosGratisHome, 1400);
+  });
+}
+
+window.atualizarAnunciosGratisHome = atualizarAnunciosGratisHome;
 </script>
 
 </body>
