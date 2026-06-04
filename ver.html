@@ -19,7 +19,7 @@
     }
 
     .pagina-ver {
-      max-width: 820px;
+      max-width: 860px;
       margin: 25px auto;
       background: #ffffff;
       border-radius: 18px;
@@ -27,33 +27,93 @@
       box-shadow: 0 12px 35px rgba(0,0,0,0.12);
     }
 
-    .topo-logo {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .logo-fs {
-      display: inline-flex;
+    .ver-emissor-topo {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 18px;
       align-items: center;
-      gap: 4px;
-      font-size: 28px;
-      line-height: 1;
+      background: linear-gradient(135deg, #3e2723, #2c1b17);
+      color: #ffffff;
+      border-bottom: 5px solid #ffc400;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 22px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.22);
     }
 
-    .logo-fs strong {
-      background: #ffc400;
-      color: #3e2723;
-      padding: 5px 12px;
-      border-radius: 7px;
+    .ver-logo-box {
+      width: 120px;
+      height: 96px;
+      background: #ffffff;
+      border-radius: 15px;
+      border: 2px solid #ffc400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .ver-logo-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    #ver-logo-placeholder {
+      font-size: 32px;
       font-weight: 900;
-    }
-
-    .logo-fs span {
       color: #3e2723;
-      font-weight: 300;
+      background: #ffc400;
+      padding: 8px 12px;
+      border-radius: 10px;
     }
 
-    h1 {
+    .ver-emissor-info .ver-label {
+      display: block;
+      color: #f7e6a1;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 5px;
+    }
+
+    .ver-emissor-info h1 {
+      margin: 0;
+      color: #ffc400;
+      font-size: 30px;
+      line-height: 1.12;
+      word-break: break-word;
+      text-align: left;
+    }
+
+    .ver-emissor-info p {
+      margin: 8px 0 12px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .ver-emissor-dados {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .ver-emissor-dados span {
+      display: none;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,196,0,0.35);
+      color: #f4ece1;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    h1#titulo-orcamento {
       text-align: center;
       font-size: 30px;
       margin: 18px 0 18px;
@@ -70,11 +130,11 @@
     .box-info {
       background: #fafafa;
       border: 1px solid #e5e5e5;
-      border-left: 6px solid #0d6efd;
+      border-left: 6px solid #ffc400;
       border-radius: 12px;
       padding: 18px;
       margin-bottom: 22px;
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1.7;
     }
 
@@ -130,11 +190,11 @@
     }
 
     th {
-      background: #eef2f3;
-      color: #222;
+      background: #3e2723;
+      color: #ffc400;
       text-align: left;
       padding: 14px;
-      font-size: 17px;
+      font-size: 15px;
     }
 
     td {
@@ -150,6 +210,7 @@
       margin-top: 26px;
       padding-top: 20px;
       border-top: 3px solid #eeeeee;
+      color: #3e2723;
     }
 
     .botoes-status {
@@ -216,6 +277,10 @@
       padding-top: 16px;
     }
 
+    .rodape strong {
+      color: #3e2723;
+    }
+
     @media (max-width: 650px) {
       body {
         padding: 12px;
@@ -226,8 +291,27 @@
         margin: 15px auto;
       }
 
-      h1 {
-        font-size: 26px;
+      .ver-emissor-topo {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 18px;
+      }
+
+      .ver-logo-box {
+        margin: 0 auto;
+      }
+
+      .ver-emissor-info h1 {
+        text-align: center;
+        font-size: 24px;
+      }
+
+      .ver-emissor-dados {
+        justify-content: center;
+      }
+
+      h1#titulo-orcamento {
+        font-size: 25px;
       }
 
       .box-info {
@@ -248,9 +332,23 @@
 <body>
 
 <div class="pagina-ver">
-  <div class="topo-logo">
-    <div class="logo-fs">
-      <strong>FS</strong><span>Orçamentos</span>
+
+  <div class="ver-emissor-topo">
+    <div class="ver-logo-box">
+      <img id="ver-logo-empresa" src="" alt="Logo da empresa">
+      <div id="ver-logo-placeholder">FS</div>
+    </div>
+
+    <div class="ver-emissor-info">
+      <span class="ver-label">Orçamento emitido por</span>
+      <h1 id="ver-nome-empresa">Carregando empresa...</h1>
+      <p id="ver-consultor">Responsável: -</p>
+
+      <div class="ver-emissor-dados">
+        <span id="ver-whatsapp-empresa"></span>
+        <span id="ver-cnpj-empresa"></span>
+        <span id="ver-endereco-empresa"></span>
+      </div>
     </div>
   </div>
 
@@ -284,6 +382,7 @@ const STATUS_CONFIG = {
 };
 
 let orcamentoAtual = null;
+let perfilEmissorAtual = null;
 
 document.addEventListener('DOMContentLoaded', carregarOrcamento);
 
@@ -319,6 +418,10 @@ function statusLabel(status) {
 
 function classeStatus(status) {
   return String(status || 'pendente').replace(/[^a-zA-Z0-9_\-]/g, '');
+}
+
+function valorOuVazio(valor) {
+  return valor && String(valor).trim() ? String(valor).trim() : '';
 }
 
 function normalizarItem(item) {
@@ -362,6 +465,108 @@ function normalizarItem(item) {
   };
 }
 
+async function carregarPerfilEmissor(usuarioId) {
+  if (!usuarioId) return null;
+
+  try {
+    const { data, error } = await _supabase
+      .from('perfis')
+      .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url')
+      .eq('id', usuarioId)
+      .maybeSingle();
+
+    if (error) {
+      console.warn('Não foi possível carregar perfil do emissor:', error);
+      return null;
+    }
+
+    return data || null;
+  } catch (error) {
+    console.warn('Erro inesperado ao carregar perfil do emissor:', error);
+    return null;
+  }
+}
+
+function preencherTopoEmpresaVer(orcamento, perfil) {
+  const logoImg = document.getElementById('ver-logo-empresa');
+  const logoPlaceholder = document.getElementById('ver-logo-placeholder');
+
+  const nomeEmpresaEl = document.getElementById('ver-nome-empresa');
+  const consultorEl = document.getElementById('ver-consultor');
+  const whatsappEl = document.getElementById('ver-whatsapp-empresa');
+  const cnpjEl = document.getElementById('ver-cnpj-empresa');
+  const enderecoEl = document.getElementById('ver-endereco-empresa');
+
+  const nomeEmpresa =
+    valorOuVazio(perfil?.nome_empresa) ||
+    valorOuVazio(orcamento?.nome_empresa) ||
+    valorOuVazio(orcamento?.empresa) ||
+    'Empresa';
+
+  const consultor =
+    valorOuVazio(orcamento?.consultor) ||
+    valorOuVazio(orcamento?.responsavel) ||
+    valorOuVazio(perfil?.nome) ||
+    'Consultor';
+
+  const telefone =
+    valorOuVazio(perfil?.telefone_empresa) ||
+    valorOuVazio(orcamento?.telefone_empresa) ||
+    valorOuVazio(orcamento?.whatsapp_empresa);
+
+  const cnpj =
+    valorOuVazio(perfil?.cnpj_empresa) ||
+    valorOuVazio(orcamento?.cnpj_empresa);
+
+  const endereco =
+    valorOuVazio(perfil?.endereco_empresa) ||
+    valorOuVazio(orcamento?.endereco_empresa);
+
+  const fotoUrl =
+    valorOuVazio(perfil?.foto_url) ||
+    valorOuVazio(orcamento?.foto_url) ||
+    valorOuVazio(orcamento?.logo_url);
+
+  if (nomeEmpresaEl) {
+    nomeEmpresaEl.innerText = nomeEmpresa;
+  }
+
+  if (consultorEl) {
+    consultorEl.innerText = `Responsável: ${consultor}`;
+  }
+
+  preencherChipEmissor(whatsappEl, telefone ? `WhatsApp: ${telefone}` : '');
+  preencherChipEmissor(cnpjEl, cnpj ? `CNPJ/CPF: ${cnpj}` : '');
+  preencherChipEmissor(enderecoEl, endereco ? `Endereço: ${endereco}` : '');
+
+  if (logoImg && logoPlaceholder) {
+    if (fotoUrl) {
+      logoImg.src = fotoUrl + (fotoUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
+      logoImg.style.display = 'block';
+      logoPlaceholder.style.display = 'none';
+    } else {
+      logoImg.src = '';
+      logoImg.style.display = 'none';
+      logoPlaceholder.style.display = 'block';
+      logoPlaceholder.innerText = nomeEmpresa.substring(0, 2).toUpperCase();
+    }
+  }
+
+  document.title = `${nomeEmpresa} - ${orcamento?.assunto || 'Orçamento'}`;
+}
+
+function preencherChipEmissor(elemento, texto) {
+  if (!elemento) return;
+
+  if (texto) {
+    elemento.innerText = texto;
+    elemento.style.display = 'inline-flex';
+  } else {
+    elemento.innerText = '';
+    elemento.style.display = 'none';
+  }
+}
+
 async function carregarOrcamento() {
   const container = document.getElementById('conteudo-orcamento');
   const titulo = document.getElementById('titulo-orcamento');
@@ -378,6 +583,7 @@ async function carregarOrcamento() {
       </div>
     `;
 
+    preencherTopoEmpresaVer({}, null);
     return;
   }
 
@@ -400,6 +606,7 @@ async function carregarOrcamento() {
       </div>
     `;
 
+    preencherTopoEmpresaVer({}, null);
     return;
   }
 
@@ -412,10 +619,15 @@ async function carregarOrcamento() {
       </div>
     `;
 
+    preencherTopoEmpresaVer({}, null);
     return;
   }
 
   orcamentoAtual = data;
+
+  perfilEmissorAtual = await carregarPerfilEmissor(data.usuario_id);
+
+  preencherTopoEmpresaVer(data, perfilEmissorAtual);
   renderizarOrcamento(data);
 }
 
@@ -424,7 +636,12 @@ function renderizarOrcamento(orcamento) {
   const titulo = document.getElementById('titulo-orcamento');
 
   const assunto = orcamento.assunto || 'Orçamento';
-  const emissor = orcamento.consultor || 'Não informado';
+  const emissor =
+    orcamento.consultor ||
+    orcamento.responsavel ||
+    perfilEmissorAtual?.nome ||
+    'Não informado';
+
   const cliente = orcamento.cliente_nome || 'Não informado';
   const contato = orcamento.cliente_whatsapp || 'Não informado';
   const status = orcamento.status || 'pendente';
@@ -442,19 +659,19 @@ function renderizarOrcamento(orcamento) {
   if (itens.length) {
     itens.forEach(item => {
       linhasItens += `
-  <tr>
-    <td>${escaparHtml(item.descricao)}</td>
-    <td>${escaparHtml(item.qtd)}</td>
-    <td>${formatarMoeda(item.valor)}</td>
-    <td>${formatarMoeda(item.subtotal)}</td>
-  </tr>
-`;
+        <tr>
+          <td>${escaparHtml(item.descricao)}</td>
+          <td>${escaparHtml(item.qtd)}</td>
+          <td>${formatarMoeda(item.valor)}</td>
+          <td>${formatarMoeda(item.subtotal)}</td>
+        </tr>
+      `;
     });
   } else {
     linhasItens = `
       <tr>
-<td colspan="4">Nenhum item encontrado.</td>
-</tr>
+        <td colspan="4">Nenhum item encontrado.</td>
+      </tr>
     `;
   }
 
@@ -463,7 +680,7 @@ function renderizarOrcamento(orcamento) {
 
   container.innerHTML = `
     <div class="box-info">
-      <div><strong>Emissor:</strong> ${escaparHtml(emissor)}</div>
+      <div><strong>Responsável:</strong> ${escaparHtml(emissor)}</div>
       <div><strong>Cliente:</strong> ${escaparHtml(cliente)}</div>
       <div><strong>Contato:</strong> ${escaparHtml(contato)}</div>
       <div><strong>Data:</strong> ${formatarData(dataCriacao)}</div>
@@ -479,11 +696,11 @@ function renderizarOrcamento(orcamento) {
       <table>
         <thead>
           <tr>
-  <th>Descrição</th>
-  <th>Qtd</th>
-  <th>Valor unit.</th>
-  <th>Subtotal</th>
-</tr>
+            <th>Descrição</th>
+            <th>Qtd</th>
+            <th>Valor unit.</th>
+            <th>Subtotal</th>
+          </tr>
         </thead>
         <tbody>
           ${linhasItens}
