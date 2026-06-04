@@ -474,6 +474,10 @@
       padding-bottom: 10px;
     }
 
+    #painel-assinatura-basico {
+      display: none;
+    }
+
     @media (max-width: 760px) {
       .perfil-layout,
       .perfil-dados-grid,
@@ -528,7 +532,6 @@
 <script src="notificacoes.js"></script>
 
 <div id="auth-area" style="display:none; max-width: 380px; margin: 45px auto; font-family: sans-serif;">
-
   <div class="auth-logo-box">
     <div class="auth-logo-text">
       <strong>FS</strong><span>Orçamentos</span>
@@ -537,9 +540,7 @@
   </div>
 
   <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
-
     <form id="form-autenticacao" onsubmit="return false;">
-
       <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
         Acesse sua Conta
       </h3>
@@ -577,7 +578,6 @@
       <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">
         Entrar
       </button>
-
     </form>
 
     <div style="text-align: center; margin-top: 15px;">
@@ -585,7 +585,6 @@
         Não tem cadastro? Clique aqui.
       </a>
     </div>
-
   </div>
 </div>
 
@@ -660,123 +659,116 @@
     </section>
   </div>
 
-<section class="planos-pix-section">
-  <div class="planos-pix-topo">
-    <span class="tag-plano-pix">Plano Básico</span>
+  <section id="painel-assinatura-basico" class="planos-pix-section" style="display:none;">
+    <div class="planos-pix-topo">
+      <span class="tag-plano-pix">Plano Básico</span>
 
-    <h2>Escolha o período do seu Plano Básico</h2>
+      <h2>Escolha o período do seu Plano Básico</h2>
 
-    <p>
-      Pague via Pix e libere os recursos do Plano Básico pelo período escolhido.
-      A confirmação será feita automaticamente assim que o pagamento for identificado.
-    </p>
-  </div>
-
-  <div class="planos-pix-grid">
-    <div class="plano-pix-card">
-      <div class="plano-pix-periodo">1 mês</div>
-      <div class="plano-pix-preco">R$ 19,90</div>
-      <p>Ideal para testar os recursos pagos por 30 dias.</p>
-
-      <button type="button" onclick="gerarPixPlanoBasico('mensal')">
-        Gerar Pix
-      </button>
-    </div>
-
-    <div class="plano-pix-card destaque">
-      <div class="plano-pix-selo">Mais escolhido</div>
-      <div class="plano-pix-periodo">6 meses</div>
-      <div class="plano-pix-preco">R$ 109,90</div>
-      <p>Economize em relação ao pagamento mensal.</p>
-
-      <button type="button" onclick="gerarPixPlanoBasico('semestral')">
-        Gerar Pix
-      </button>
-    </div>
-
-    <div class="plano-pix-card">
-      <div class="plano-pix-periodo">12 meses</div>
-      <div class="plano-pix-preco">R$ 209,90</div>
-      <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
-
-      <button type="button" onclick="gerarPixPlanoBasico('anual')">
-        Gerar Pix
-      </button>
-    </div>
-  </div>
-
-  <div class="plano-pix-beneficios">
-    <strong>O Plano Básico inclui:</strong>
-    <span>Salvar orçamentos na nuvem</span>
-    <span>Histórico de orçamentos</span>
-    <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
-    <span>Até 2 responsáveis</span>
-    <span>Envio manual pelo WhatsApp com link</span>
-    <span>Resumo financeiro</span>
-  </div>
-</section>
-
-<div id="modal-pix-basico" class="modal-pix-overlay">
-  <div class="modal-pix-card">
-    <div class="modal-pix-topo">
-      <div>
-        <strong>Pagamento via Pix</strong>
-        <span id="pix-modal-subtitulo">Plano Básico</span>
-      </div>
-
-      <button type="button" onclick="fecharModalPixBasico()">×</button>
-    </div>
-
-    <div id="pix-loading" class="pix-loading">
-      Gerando Pix, aguarde...
-    </div>
-
-    <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
-      <div class="pix-resumo">
-        <div>
-          <small>Plano</small>
-          <strong id="pix-plano-label">Plano Básico</strong>
-        </div>
-
-        <div>
-          <small>Valor</small>
-          <strong id="pix-valor">R$ 0,00</strong>
-        </div>
-      </div>
-
-      <div class="pix-qrcode-box">
-        <img id="pix-qrcode-img" src="" alt="QR Code Pix">
-      </div>
-
-      <label class="pix-label">Pix copia e cola</label>
-
-      <textarea id="pix-copia-cola" readonly></textarea>
-
-      <div class="pix-acoes">
-        <button type="button" onclick="copiarPixCopiaCola()">
-          Copiar Pix
-        </button>
-
-        <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">
-          Já paguei, verificar
-        </button>
-      </div>
-
-      <p class="pix-aviso">
-        Após o pagamento, seu Plano Básico será liberado automaticamente quando a Efí confirmar o Pix.
+      <p>
+        Pague via Pix e libere os recursos do Plano Básico pelo período escolhido.
+        A confirmação será feita automaticamente assim que o pagamento for identificado.
       </p>
     </div>
 
-    <div id="pix-erro" class="pix-erro" style="display:none;"></div>
+    <div class="planos-pix-grid">
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">1 mês</div>
+        <div class="plano-pix-preco">R$ 19,90</div>
+        <p>Ideal para testar os recursos pagos por 30 dias.</p>
+
+        <button type="button" onclick="gerarPixPlanoBasico('mensal')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card destaque">
+        <div class="plano-pix-selo">Mais escolhido</div>
+        <div class="plano-pix-periodo">6 meses</div>
+        <div class="plano-pix-preco">R$ 109,90</div>
+        <p>Economize em relação ao pagamento mensal.</p>
+
+        <button type="button" onclick="gerarPixPlanoBasico('semestral')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">12 meses</div>
+        <div class="plano-pix-preco">R$ 209,90</div>
+        <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
+
+        <button type="button" onclick="gerarPixPlanoBasico('anual')">
+          Gerar Pix
+        </button>
+      </div>
+    </div>
+
+    <div class="plano-pix-beneficios">
+      <strong>O Plano Básico inclui:</strong>
+      <span>Salvar orçamentos na nuvem</span>
+      <span>Histórico de orçamentos</span>
+      <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
+      <span>Até 2 responsáveis</span>
+      <span>Envio manual pelo WhatsApp com link</span>
+      <span>Resumo financeiro</span>
+    </div>
+  </section>
+
+  <div id="modal-pix-basico" class="modal-pix-overlay">
+    <div class="modal-pix-card">
+      <div class="modal-pix-topo">
+        <div>
+          <strong>Pagamento via Pix</strong>
+          <span id="pix-modal-subtitulo">Plano Básico</span>
+        </div>
+
+        <button type="button" onclick="fecharModalPixBasico()">×</button>
+      </div>
+
+      <div id="pix-loading" class="pix-loading">
+        Gerando Pix, aguarde...
+      </div>
+
+      <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
+        <div class="pix-resumo">
+          <div>
+            <small>Plano</small>
+            <strong id="pix-plano-label">Plano Básico</strong>
+          </div>
+
+          <div>
+            <small>Valor</small>
+            <strong id="pix-valor">R$ 0,00</strong>
+          </div>
+        </div>
+
+        <div class="pix-qrcode-box">
+          <img id="pix-qrcode-img" src="" alt="QR Code Pix">
+        </div>
+
+        <label class="pix-label">Pix copia e cola</label>
+
+        <textarea id="pix-copia-cola" readonly></textarea>
+
+        <div class="pix-acoes">
+          <button type="button" onclick="copiarPixCopiaCola()">
+            Copiar Pix
+          </button>
+
+          <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">
+            Já paguei, verificar
+          </button>
+        </div>
+
+        <p class="pix-aviso">
+          Após o pagamento, seu Plano Básico será liberado automaticamente quando a Efí confirmar o Pix.
+        </p>
+      </div>
+
+      <div id="pix-erro" class="pix-erro" style="display:none;"></div>
+    </div>
   </div>
-</div>
-
-
-
-
-
-
-
 
   <div id="modal-editar-perfil" class="modal-overlay-painel">
     <div class="modal-painel">
@@ -930,6 +922,9 @@
 let perfilAtual = null;
 let painelJaCarregado = false;
 let responsaveisCache = [];
+let pagamentoPixAtualId = null;
+
+const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const session = await obterSessaoPainel();
@@ -953,8 +948,43 @@ if (window._supabase) {
 
     if (!session) {
       painelJaCarregado = false;
+      perfilAtual = null;
+      atualizarPainelAssinaturaBasico(null);
     }
   });
+}
+
+function normalizarPlanoPainel(valor) {
+  return String(valor || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+function usuarioJaTemPlanoPago(perfil) {
+  const plano = normalizarPlanoPainel(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis');
+  const status = normalizarPlanoPainel(perfil?.plano_status || localStorage.getItem('usuario_plano_status') || 'ativo');
+
+  if (plano === 'premium') return true;
+
+  if (plano === 'basico' && status !== 'cancelado' && status !== 'expirado') {
+    return true;
+  }
+
+  return false;
+}
+
+function atualizarPainelAssinaturaBasico(perfil) {
+  const painel = document.getElementById('painel-assinatura-basico');
+
+  if (!painel) return;
+
+  if (usuarioJaTemPlanoPago(perfil)) {
+    painel.style.display = 'none';
+  } else {
+    painel.style.display = 'block';
+  }
 }
 
 function valorOuTraco(valor) {
@@ -962,7 +992,7 @@ function valorOuTraco(valor) {
 }
 
 function planoLabel(plano) {
-  const p = String(plano || 'gratis').toLowerCase();
+  const p = normalizarPlanoPainel(plano);
 
   if (p === 'premium') return 'Plano Premium';
   if (p === 'basico') return 'Plano Básico';
@@ -1041,6 +1071,14 @@ function preencherCamposEstaticos(data, session) {
 
   localStorage.setItem('usuario_nome', nomeLocal);
   localStorage.setItem('usuario_plano', data?.plano || 'gratis');
+
+  if (data?.plano_status) {
+    localStorage.setItem('usuario_plano_status', data.plano_status);
+  }
+
+  if (data?.plano_expira_em) {
+    localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+  }
 }
 
 function preencherFormularioEdicao(data) {
@@ -1070,13 +1108,14 @@ async function carregarPerfil() {
 
   const { data, error } = await _supabase
     .from('perfis')
-    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
+    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano, plano_status, plano_expira_em')
     .eq('id', session.user.id)
     .maybeSingle();
 
   if (error) {
     console.error('Erro ao carregar perfil:', error);
     mostrarStatus('status-perfil', 'Erro ao carregar os dados do perfil.', 'erro');
+    atualizarPainelAssinaturaBasico({ plano: 'gratis' });
     return;
   }
 
@@ -1087,11 +1126,14 @@ async function carregarPerfil() {
     endereco_empresa: '',
     cnpj_empresa: '',
     foto_url: '',
-    plano: 'gratis'
+    plano: 'gratis',
+    plano_status: 'ativo',
+    plano_expira_em: null
   };
 
   preencherCamposEstaticos(perfilAtual, session);
   preencherFormularioEdicao(perfilAtual);
+  atualizarPainelAssinaturaBasico(perfilAtual);
 }
 
 async function carregarResponsaveis() {
@@ -1283,6 +1325,7 @@ async function salvarPerfil(event) {
   preencherCamposEstaticos(perfilAtual, session);
   preencherSelectResponsaveis();
   renderizarListaResponsaveis();
+  atualizarPainelAssinaturaBasico(perfilAtual);
 
   localStorage.setItem('usuario_nome', payload.nome || payload.nome_empresa);
   localStorage.setItem('nome_empresa', payload.nome_empresa);
@@ -1495,10 +1538,11 @@ async function alterarSenhaSegura() {
 }
 
 function limiteResponsaveisPorPlano() {
-  const plano =
+  const plano = normalizarPlanoPainel(
     perfilAtual?.plano ||
     localStorage.getItem('usuario_plano') ||
-    'gratis';
+    'gratis'
+  );
 
   if (plano === 'premium') return 10;
   if (plano === 'basico') return 2;
@@ -1637,6 +1681,7 @@ document.addEventListener('click', event => {
   const modalPerfil = document.getElementById('modal-editar-perfil');
   const modalSenha = document.getElementById('modal-senha');
   const modalResponsavel = document.getElementById('modal-responsavel-interno');
+  const modalPix = document.getElementById('modal-pix-basico');
 
   if (event.target === modalPerfil) {
     fecharModalEditarPerfil();
@@ -1649,6 +1694,10 @@ document.addEventListener('click', event => {
   if (event.target === modalResponsavel) {
     fecharModalResponsavelInterno();
   }
+
+  if (event.target === modalPix) {
+    fecharModalPixBasico();
+  }
 });
 
 document.addEventListener('keydown', event => {
@@ -1656,12 +1705,9 @@ document.addEventListener('keydown', event => {
     fecharModalResponsavelInterno();
     fecharModalEditarPerfil();
     fecharModalSenha();
+    fecharModalPixBasico();
   }
 });
-
-let pagamentoPixAtualId = null;
-
-const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
 
 function formatarMoedaPix(valor) {
   return Number(valor || 0).toLocaleString('pt-BR', {
@@ -1855,27 +1901,15 @@ async function verificarPagamentoPixAtual() {
   if (data.status === 'pago') {
     alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
     fecharModalPixBasico();
-    window.location.reload();
+
+    await carregarPerfil();
+    atualizarPainelAssinaturaBasico(perfilAtual);
+
     return;
   }
 
   alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
 }
-
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    fecharModalPixBasico();
-  }
-});
-
-document.addEventListener('click', function(event) {
-  const modal = document.getElementById('modal-pix-basico');
-
-  if (event.target === modal) {
-    fecharModalPixBasico();
-  }
-});
-
 </script>
 
 </body>
