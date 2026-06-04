@@ -414,6 +414,69 @@
         padding: 10px;
       }
     }
+    
+    /* ==================== BOTÕES PRINCIPAIS DO GERADOR ==================== */
+
+.acoes-gerador-principal {
+  margin: 30px auto 18px;
+  max-width: 820px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.btn-previa-profissional,
+.btn-novo-profissional {
+  width: 100%;
+  border-radius: 18px;
+  padding: 22px 18px;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: .2s ease;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+}
+
+.btn-previa-profissional {
+  background: #ffc400;
+  color: #3e2723;
+  border: 3px solid #ffc400;
+}
+
+.btn-previa-profissional:hover {
+  background: #ffd633;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.24);
+}
+
+.btn-novo-profissional {
+  background: #ffffff;
+  color: #3e2723;
+  border: 3px solid #d7ccc8;
+}
+
+.btn-novo-profissional:hover {
+  border-color: #ffc400;
+  background: #fff8d6;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+
+@media (max-width: 650px) {
+  .btn-previa-profissional,
+  .btn-novo-profissional {
+    font-size: 18px;
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+}
+    
   </style>
 </head>
 
@@ -1137,17 +1200,15 @@
           <input type="hidden" id="selected-theme" value="original">
         </div>
 
-        <div style="text-align: center; margin-top: 30px;">
-          <button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">
-            👁️ GERAR PRÉ-VISUALIZAÇÃO
-          </button>
+  <div class="acoes-gerador-principal">
+  <button type="button" class="btn-previa-profissional" id="btn-previa" onclick="gerarPrevia()">
+    👁️ Pré-visualização
+  </button>
 
-          <div style="margin-top: 15px;"></div>
-
-          <button type="button" class="btn-limpar" onclick="limparFormulario()">
-            ➕ NOVO ORÇAMENTO
-          </button>
-        </div>
+  <button type="button" class="btn-novo-profissional" onclick="limparFormulario()">
+    ➕ Novo orçamento
+  </button>
+</div>
 
         <div id="area-previa">
           <p style="text-align:center; font-size:12px; color:#64748b; font-weight: bold;">PRÉVIA DO DOCUMENTO:</p>
