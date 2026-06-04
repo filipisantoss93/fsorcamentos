@@ -250,9 +250,13 @@
     🧾 Gerar Orçamento Agora
   </button>
 
-  <a href="sobre.html" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor">
-    Conhecer os planos
-  </a>
+<a
+  href="#painel-plano-basico-home"
+  id="btn-conhecer-planos-home"
+  class="btn-secundario-home btn-planos-menor"
+  onclick="rolarParaPlanosHome(event)">
+  Conhecer os planos
+</a>
 </div>
 
   </section>
@@ -305,28 +309,9 @@
       <p>Baixe o orçamento pronto ou envie para o cliente conforme seu plano.</p>
     </div>
   </div>
+<center><a href="exemplos.html" class="btn-secundario-home">
+VER MAIS</a></center>
 
-    <div class="galeria-demo">
-  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/dados-orcamento.png', 'Dados do orçamento')">
-    <img src="exemplos/dados-orcamento.png" alt="Tela de dados do orçamento">
-    <span>Dados do orçamento</span>
-  </button>
-
-  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/tabela-preenchimento.png', 'Itens e serviços')">
-    <img src="exemplos/tabela-preenchimento.png" alt="Tabela para preencher orçamento">
-    <span>Itens e serviços</span>
-  </button>
-
-  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/termos-condicoes.png', 'Termos e condições rápidas')">
-    <img src="exemplos/termos-condicoes.png" alt="Termos e condições rápidas">
-    <span>Termos rápidos</span>
-  </button>
-
-  <button type="button" class="demo-img-card" onclick="abrirImagemDemo('exemplos/azul.png', 'Modelo azul do PDF')">
-    <img src="exemplos/azul.png" alt="PDF azul gerado pelo FS Orçamentos">
-    <span>Modelo azul</span>
-  </button>
-</div>
   </div>
   <section class="whatsapp-preview-home">
   <div class="whatsapp-preview-texto">
@@ -492,6 +477,7 @@
     </div>
   </div>
 </section>
+
 <section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
   <div class="planos-pix-topo">
     <span class="tag-plano-pix">Plano Básico</span>
@@ -603,8 +589,7 @@
   </div>
 </div>
 
-<center><a href="exemplos.html" class="btn-secundario-home">
-VER MAIS EXEMPLOS</a></center>
+
 
 </section>
 
@@ -1909,6 +1894,26 @@ if (window._supabase) {
   _supabase.auth.onAuthStateChange(() => {
     setTimeout(atualizarPainelPlanoBasicoHome, 300);
     setTimeout(atualizarPainelPlanoBasicoHome, 1200);
+  });
+}
+
+function rolarParaPlanosHome(event) {
+  if (event) event.preventDefault();
+
+  const secaoPlanos = document.getElementById('painel-plano-basico-home');
+
+  if (!secaoPlanos) {
+    return;
+  }
+
+  if (secaoPlanos.style.display === 'none') {
+    alert('Os planos aparecem aqui quando você está logado em uma conta grátis.');
+    return;
+  }
+
+  secaoPlanos.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
   });
 }
 
