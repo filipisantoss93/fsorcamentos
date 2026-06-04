@@ -2,19 +2,59 @@
 
 let currentSlide = 0;
 let dadosEmpresaLogada = null;
-let orcamentoAtualSalvoId = null;
+let orcamentoAtualSalvoId = window.orcamentoAtualSalvoId || null;
 let linkOrcamentoAtual = null;
+
+// ==================== HELPERS DE CONTROLE DO ORÇAMENTO SALVO ====================
+
+function definirOrcamentoAtualSalvo(id) {
+    if (!id) return;
+
+    orcamentoAtualSalvoId = id;
+    window.orcamentoAtualSalvoId = id;
+
+    /*
+      Compatibilidade com scripts antigos do index.html,
+      caso ainda exista alguma rotina usando outro nome.
+    */
+    window.orcamentoSalvoAtualId = id;
+
+    linkOrcamentoAtual = montarLinkOrcamento(id);
+    window.linkOrcamentoAtual = linkOrcamentoAtual;
+}
+
+function limparReferenciaOrcamentoAtual() {
+    orcamentoAtualSalvoId = null;
+    linkOrcamentoAtual = null;
+
+    window.orcamentoAtualSalvoId = null;
+    window.orcamentoSalvoAtualId = null;
+    window.linkOrcamentoAtual = null;
+}
+
+function sincronizarReferenciaOrcamentoSalvo() {
+    if (!orcamentoAtualSalvoId && window.orcamentoAtualSalvoId) {
+        orcamentoAtualSalvoId = window.orcamentoAtualSalvoId;
+    }
+
+    if (!orcamentoAtualSalvoId && window.orcamentoSalvoAtualId) {
+        orcamentoAtualSalvoId = window.orcamentoSalvoAtualId;
+    }
+
+    if (orcamentoAtualSalvoId) {
+        linkOrcamentoAtual = montarLinkOrcamento(orcamentoAtualSalvoId);
+        window.linkOrcamentoAtual = linkOrcamentoAtual;
+    }
+}
 
 // ==================== INICIALIZAÇÃO DA INTERFACE ====================
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Splash Screen
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if (splash) splash.classList.add('hide-splash');
     }, 1500);
 
-    // 2. Iniciar Carousel, se existir na página
     setInterval(() => {
         const carousel = document.getElementById('carousel');
         if (!carousel) return;
@@ -27,7 +67,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }, 5000);
 
-    // 3. Fecha o menu mobile automaticamente ao clicar em um link
     document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', () => {
             const menu = document.querySelector('.nav-menu');
@@ -35,7 +74,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // 4. Se estiver na página do gerador, carrega dados salvos e dados da empresa
     if (document.getElementById('itens-lista')) {
         await carregarDadosEmpresaLogada();
         carregarEstadoSalvo();
@@ -113,25 +151,11 @@ async function carregarDadosEmpresaLogada() {
     localStorage.setItem('usuario_plano', dadosEmpresaLogada.plano);
     localStorage.setItem('usuario_nome', dadosEmpresaLogada.nome || dadosEmpresaLogada.nome_empresa || session.user.email.split('@')[0]);
 
-    if (dadosEmpresaLogada.nome_empresa) {
-        localStorage.setItem('nome_empresa', dadosEmpresaLogada.nome_empresa);
-    }
-
-    if (dadosEmpresaLogada.telefone_empresa) {
-        localStorage.setItem('telefone_empresa', dadosEmpresaLogada.telefone_empresa);
-    }
-
-    if (dadosEmpresaLogada.endereco_empresa) {
-        localStorage.setItem('endereco_empresa', dadosEmpresaLogada.endereco_empresa);
-    }
-
-    if (dadosEmpresaLogada.cnpj_empresa) {
-        localStorage.setItem('cnpj_empresa', dadosEmpresaLogada.cnpj_empresa);
-    }
-
-    if (dadosEmpresaLogada.foto_url) {
-        localStorage.setItem('foto_url', dadosEmpresaLogada.foto_url);
-    }
+    localStorage.setItem('nome_empresa', dadosEmpresaLogada.nome_empresa || '');
+    localStorage.setItem('telefone_empresa', dadosEmpresaLogada.telefone_empresa || '');
+    localStorage.setItem('endereco_empresa', dadosEmpresaLogada.endereco_empresa || '');
+    localStorage.setItem('cnpj_empresa', dadosEmpresaLogada.cnpj_empresa || '');
+    localStorage.setItem('foto_url', dadosEmpresaLogada.foto_url || '');
 
     return dadosEmpresaLogada;
 }
@@ -149,7 +173,11 @@ function usuarioPodeSalvarOrcamentoLocal() {
         return usuarioPodeSalvarOrcamento();
     }
 
-    const plano = localStorage.getItem('usuario_plano') || 'gratis';
+    const plano = String(localStorage.getItem('usuario_plano') || 'gratis')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
     return plano === 'basico' || plano === 'premium';
 }
 
@@ -180,14 +208,6 @@ function valorMonetarioParaNumero(valor) {
 
     if (!texto) return 0;
 
-    /*
-      Aceita formatos:
-      - 100
-      - 100.50
-      - 100,50
-      - 1.000,50
-      - R$ 1.000,50
-    */
     if (texto.includes(',')) {
         texto = texto
             .replace(/\./g, '')
@@ -238,11 +258,6 @@ function aplicarValorMoedaNoCampo(campo, valor) {
 function formatarCampoMoedaEmTempoReal(campo) {
     if (!campo) return;
 
-    /*
-      Máscara de moeda em tempo real:
-      digite 1990 para virar R$ 19,90
-      digite 10000 para virar R$ 100,00
-    */
     const somenteDigitos = String(campo.value || '').replace(/\D/g, '');
     const numero = somenteDigitos ? Number(somenteDigitos) / 100 : 0;
 
@@ -277,7 +292,18 @@ function limparTelefone(telefone) {
 }
 
 function montarLinkOrcamento(id) {
-    return `https://fsorcamentos.com.br/ver/${id}`;
+    return `${window.location.origin}/ver.html?id=${id}`;
+}
+
+function obterConsultorSelecionado(empresa) {
+    return (
+        localStorage.getItem('responsavel_selecionado_nome') ||
+        localStorage.getItem('consultor_selecionado_nome') ||
+        localStorage.getItem('usuario_nome') ||
+        empresa?.nome ||
+        empresa?.nome_empresa ||
+        'Consultor'
+    );
 }
 
 // ==================== CAMPOS EXTRAS E ITENS ====================
@@ -464,6 +490,8 @@ async function gerarPrevia() {
             `;
         });
 
+        const consultorSelecionado = obterConsultorSelecionado(empresa);
+
         const logoHtml = empresa.foto_url
             ? `<img src="${escaparHtml(empresa.foto_url)}" style="max-height:55px; max-width:130px; object-fit:contain;">`
             : `<b style="font-size:20px;">FS</b>`;
@@ -471,7 +499,7 @@ async function gerarPrevia() {
         const dadosEmpresaHtml = `
             <div style="font-size:12px; line-height:1.5;">
                 <b>${escaparHtml(empresa.nome_empresa || empresa.nome || 'Empresa')}</b><br>
-                ${empresa.nome ? `Responsável: ${escaparHtml(empresa.nome)}<br>` : ''}
+                ${consultorSelecionado ? `Responsável: ${escaparHtml(consultorSelecionado)}<br>` : ''}
                 ${empresa.telefone_empresa ? `WhatsApp: ${escaparHtml(empresa.telefone_empresa)}<br>` : ''}
                 ${empresa.endereco_empresa ? `Endereço: ${escaparHtml(empresa.endereco_empresa)}<br>` : ''}
                 ${empresa.cnpj_empresa ? `CNPJ/CPF: ${escaparHtml(empresa.cnpj_empresa)}` : ''}
@@ -555,14 +583,11 @@ async function gerarPrevia() {
         const btnFloatBaixar = document.getElementById('btn-float-baixar');
         if (btnFloatBaixar) btnFloatBaixar.style.display = 'flex';
 
-        if (usuarioPodeSalvarOrcamentoLocal() && !orcamentoAtualSalvoId) {
-            const salvo = await salvarOrcamentoNoBanco();
-
-            if (salvo?.id) {
-                orcamentoAtualSalvoId = salvo.id;
-                linkOrcamentoAtual = montarLinkOrcamento(salvo.id);
-            }
-        }
+        /*
+          IMPORTANTE:
+          Pré-visualização NÃO salva na nuvem.
+          O orçamento só será salvo ao baixar PDF ou enviar por WhatsApp.
+        */
 
         if (areaPrevia) {
             window.scrollTo({
@@ -617,6 +642,15 @@ async function baixarPDF() {
         await gerarPrevia();
     }
 
+    if (!element.innerHTML.trim()) {
+        alert('Gere a pré-visualização antes de baixar o PDF.');
+        return;
+    }
+
+    if (usuarioPodeSalvarOrcamentoLocal()) {
+        await salvarOrcamentoNoBanco('download_pdf');
+    }
+
     element.style.display = 'block';
 
     const titulo =
@@ -649,7 +683,9 @@ async function baixarPDF() {
 
 // ==================== SALVAMENTO E ENVIO (WPP / BANCO) ====================
 
-async function salvarOrcamentoNoBanco() {
+async function salvarOrcamentoNoBanco(origem = 'manual') {
+    sincronizarReferenciaOrcamentoSalvo();
+
     if (!usuarioPodeSalvarOrcamentoLocal()) {
         console.log('Plano grátis: orçamento não será salvo no Supabase.');
         return null;
@@ -683,51 +719,102 @@ async function salvarOrcamentoNoBanco() {
     const clienteWhatsapp =
         document.getElementById('tel-cliente')?.value?.trim() || '';
 
-    const total =
-        valorMonetarioParaNumero(
-            document.getElementById('total-geral')?.innerText || '0'
-        );
-
     const itens = coletarItensDoOrcamento();
+
+    const total = itens.reduce((soma, item) => {
+        return soma + Number(item.subtotal || 0);
+    }, 0);
 
     if (!clienteNome) {
         alert('Informe o nome do cliente.');
         return null;
     }
 
-    const payload = {
+    if (!itens.length) {
+        alert('Adicione pelo menos um item ao orçamento.');
+        return null;
+    }
+
+    const consultorSelecionado = obterConsultorSelecionado(empresa);
+
+    const payloadBase = {
         usuario_id: session.user.id,
-        assunto: assunto,
+        assunto,
         cliente_nome: clienteNome,
         cliente_whatsapp: clienteWhatsapp,
-        total: total,
-        itens: itens,
+        total,
+        itens,
         status: 'pendente',
-        consultor: empresa.nome_empresa || empresa.nome || 'Consultor'
+        consultor: consultorSelecionado
     };
 
-    console.log('Payload orçamento:', payload);
+    const payloadCompleto = {
+        ...payloadBase,
+        origem_salvamento: origem
+    };
 
-    const { data, error } = await _supabase
-        .from('orcamentos')
-        .insert([payload])
-        .select()
-        .single();
+    console.log('Payload orçamento:', payloadCompleto);
 
-    if (error) {
+    let resposta;
+
+    if (orcamentoAtualSalvoId) {
+        resposta = await _supabase
+            .from('orcamentos')
+            .update(payloadCompleto)
+            .eq('id', orcamentoAtualSalvoId)
+            .eq('usuario_id', session.user.id)
+            .select()
+            .single();
+    } else {
+        resposta = await _supabase
+            .from('orcamentos')
+            .insert([payloadCompleto])
+            .select()
+            .single();
+    }
+
+    if (resposta.error) {
+        const mensagemErro = String(resposta.error.message || '');
+
+        /*
+          Fallback para bancos que não tenham a coluna origem_salvamento.
+        */
+        if (mensagemErro.includes('origem_salvamento')) {
+            if (orcamentoAtualSalvoId) {
+                resposta = await _supabase
+                    .from('orcamentos')
+                    .update(payloadBase)
+                    .eq('id', orcamentoAtualSalvoId)
+                    .eq('usuario_id', session.user.id)
+                    .select()
+                    .single();
+            } else {
+                resposta = await _supabase
+                    .from('orcamentos')
+                    .insert([payloadBase])
+                    .select()
+                    .single();
+            }
+        }
+    }
+
+    if (resposta.error) {
         console.error('Erro ao salvar orçamento:', {
-            code: error.code,
-            message: error.message,
-            details: error.details,
-            hint: error.hint
+            code: resposta.error.code,
+            message: resposta.error.message,
+            details: resposta.error.details,
+            hint: resposta.error.hint
         });
 
         alert('Erro ao salvar orçamento no Supabase.');
         return null;
     }
 
-    console.log('Orçamento salvo no Supabase:', data);
-    return data;
+    definirOrcamentoAtualSalvo(resposta.data.id);
+
+    console.log(`Orçamento salvo/atualizado no Supabase via ${origem}:`, resposta.data);
+
+    return resposta.data;
 }
 
 async function enviarPorWhatsApp() {
@@ -742,45 +829,67 @@ async function enviarPorWhatsApp() {
     const whatsCliente =
         limparTelefone(document.getElementById('tel-cliente')?.value || '');
 
+    if (!nomeCliente) {
+        alert('Informe o nome do cliente.');
+        return;
+    }
+
     if (!whatsCliente) {
         alert('Por favor, informe o WhatsApp do cliente.');
         return;
     }
 
-    const novaAba = window.open('', '_blank');
+    const itens = coletarItensDoOrcamento();
 
-    if (novaAba) {
-        novaAba.document.write('<p style="text-align:center; margin-top:40px; font-family:sans-serif;">Gerando link...</p>');
-    }
-
-    if (!orcamentoAtualSalvoId) {
-        const salvo = await salvarOrcamentoNoBanco();
-
-        if (salvo?.id) {
-            orcamentoAtualSalvoId = salvo.id;
-            linkOrcamentoAtual = montarLinkOrcamento(salvo.id);
-        }
-    }
-
-    if (!linkOrcamentoAtual) {
-        if (novaAba) novaAba.close();
-        alert('Não foi possível gerar o link do orçamento.');
+    if (!itens.length) {
+        alert('Adicione pelo menos um item ao orçamento.');
         return;
     }
 
-    const numeroComPais =
-        whatsCliente.startsWith('55') ? whatsCliente : '55' + whatsCliente;
+    const botaoWhatsapp = document.querySelector('.btn-whatsapp');
 
-    const mensagem =
-        `Olá${nomeCliente ? ` ${nomeCliente}` : ''}! Segue o link do seu orçamento:\n\n${linkOrcamentoAtual}\n\nQualquer dúvida é só chamar!`;
+    if (botaoWhatsapp) {
+        botaoWhatsapp.disabled = true;
+        botaoWhatsapp.innerText = 'AGUARDE...';
+    }
 
-    const urlWhatsapp =
-        `https://api.whatsapp.com/send?phone=${numeroComPais}&text=${encodeURIComponent(mensagem)}`;
+    try {
+        const salvo = await salvarOrcamentoNoBanco('whatsapp_manual');
 
-    if (novaAba) {
-        novaAba.location.href = urlWhatsapp;
-    } else {
-        window.open(urlWhatsapp, '_blank');
+        if (!salvo?.id) {
+            alert('Não foi possível gerar o link do orçamento.');
+            return;
+        }
+
+        definirOrcamentoAtualSalvo(salvo.id);
+
+        const numeroComPais =
+            whatsCliente.startsWith('55') ? whatsCliente : '55' + whatsCliente;
+
+        const mensagem =
+`Olá${nomeCliente ? `, ${nomeCliente}` : ''}! Tudo bem?
+
+Seu orçamento está pronto para visualização.
+
+Acesse o link abaixo para conferir os detalhes e aprovar ou recusar a proposta:
+
+${linkOrcamentoAtual}
+
+Qualquer dúvida, estou à disposição.`;
+
+        const urlWhatsapp =
+            `https://wa.me/${numeroComPais}?text=${encodeURIComponent(mensagem)}`;
+
+        window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
+
+    } catch (error) {
+        console.error('Erro ao enviar por WhatsApp:', error);
+        alert('Não foi possível abrir o WhatsApp.');
+    } finally {
+        if (botaoWhatsapp) {
+            botaoWhatsapp.disabled = false;
+            botaoWhatsapp.innerText = 'ENVIAR POR WHATSAPP';
+        }
     }
 }
 
@@ -980,15 +1089,11 @@ function limparFormulario() {
         btnFloatBaixar.style.display = 'none';
     }
 
-    orcamentoAtualSalvoId = null;
-    linkOrcamentoAtual = null;
-
+    limparReferenciaOrcamentoAtual();
     salvarEstadoCompleto();
 }
 
 // ==================== FUNÇÕES LEGADAS DE LOGO ====================
-// A logo agora vem do Painel de Controle / tabela perfis.
-// Mantidas apenas para evitar erro caso algum HTML antigo ainda chame essas funções.
 
 function processarLogo() {
     console.warn('processarLogo() não é mais usada. A logo agora vem do Painel de Controle.');
