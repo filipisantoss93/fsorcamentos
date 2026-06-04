@@ -133,6 +133,8 @@ function criarBotaoFlutuanteGeradorGlobal() {
   botao.onclick = abrirGeradorGlobal;
 
   document.body.appendChild(botao);
+
+  observarEstadoModalGeradorGlobal();
 }
 
 function abrirGeradorGlobal() {
@@ -144,6 +146,7 @@ function abrirGeradorGlobal() {
   if (estaNaHome) {
     if (typeof abrirModalGerador === 'function') {
       abrirModalGerador();
+      document.body.classList.add('gerador-aberto');
       return;
     }
 
@@ -154,6 +157,7 @@ function abrirGeradorGlobal() {
       modal.style.display = 'flex';
       modal.classList.add('ativo');
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('gerador-aberto');
     }
 
     if (formulario) {
@@ -174,6 +178,7 @@ function abrirGeradorAutomaticamenteSeSolicitado() {
   setTimeout(function() {
     if (typeof abrirModalGerador === 'function') {
       abrirModalGerador();
+      document.body.classList.add('gerador-aberto');
     } else {
       const modal = document.getElementById('modal-gerador-orcamento');
       const formulario = document.getElementById('formulario-orcamento');
@@ -182,6 +187,7 @@ function abrirGeradorAutomaticamenteSeSolicitado() {
         modal.style.display = 'flex';
         modal.classList.add('ativo');
         document.body.style.overflow = 'hidden';
+        document.body.classList.add('gerador-aberto');
       }
 
       if (formulario) {
@@ -192,6 +198,34 @@ function abrirGeradorAutomaticamenteSeSolicitado() {
     const novaUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, novaUrl);
   }, 700);
+}
+
+function observarEstadoModalGeradorGlobal() {
+  const modal = document.getElementById('modal-gerador-orcamento');
+
+  if (!modal) return;
+
+  const atualizarEstado = () => {
+    const aberto =
+      modal.style.display === 'flex' ||
+      modal.classList.contains('ativo') ||
+      modal.classList.contains('active');
+
+    if (aberto) {
+      document.body.classList.add('gerador-aberto');
+    } else {
+      document.body.classList.remove('gerador-aberto');
+    }
+  };
+
+  atualizarEstado();
+
+  const observer = new MutationObserver(atualizarEstado);
+
+  observer.observe(modal, {
+    attributes: true,
+    attributeFilter: ['style', 'class']
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
