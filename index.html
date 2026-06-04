@@ -1,240 +1,224 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="stylesheet" href="style.css">
-	<link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-<link rel="shortcut icon" href="/favicon.png">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "FS Orçamentos",
-  "url": "https://fsorcamentos.com.br/"
-}
-</script>
-	
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-<meta name="google-site-verification" content="AUNalSg35UWE0CFzVlqgXE57TMekeSRBmlmvdMhNT9M" />
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
-     crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="ca-pub-5628949951885077">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FS Orçamentos - Gerador de Orçamento PDF Grátis</title>
-<meta name="description" content="Crie orçamentos profissionais em PDF de forma rápida e gratuita. Ideal para MEI, oficinas mecânicas e prestadores de serviços.">
-<meta name="keywords" content="gerador de orçamento, orçamento pdf grátis, fsorçamentos, orçamento mecânica, orçamento prestador de serviço">
-<meta name="author" content="Filipi Aparecido dos Santos">
-
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://fsorcamentos.com.br/">
-<meta property="og:title" content="FS Orçamentos - Profissionalize suas propostas">
-<meta property="og:description" content="Gere orçamentos profissionais em PDF gratuitamente em segundos.">
-<meta property="og:image" content="https://fsorcamentos.com.br/favicon.png"> <meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://fsorcamentos.com.br/">
-<meta property="twitter:title" content="FS Orçamentos - Gerador de Orçamento PDF">
-<meta property="twitter:description" content="A ferramenta ideal para o profissional autônomo gerar orçamentos em PDF.">
-<meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
-	
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-
-<style>
-.emissor-readonly-card {
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid #e0d6c8;
-  border-left: 7px solid #ffc400;
-  padding: 14px;
-  margin: 0 0 12px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  color: #3e2723;
-}
-
-.emissor-readonly-topo {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 14px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.emissor-logo-mini {
-  width: 90px;
-  height: 72px;
-  border: 1px dashed #d7ccc8;
-  border-radius: 10px;
-  background: #fafafa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: #8d6e63;
-  font-size: 12px;
-  text-align: center;
-}
-
-.emissor-logo-mini img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: none;
-}
-
-.emissor-info-principal span,
-.emissor-readonly-grid span {
-  display: block;
-  font-size: 11px;
-  font-weight: 800;
-  color: #6d4c41;
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  margin-bottom: 4px;
-}
-
-.emissor-info-principal strong {
-  display: block;
-  font-size: 18px;
-  color: #3e2723;
-  word-break: break-word;
-}
-
-.emissor-readonly-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.emissor-readonly-grid div {
-  background: #f7f2ea;
-  border-radius: 10px;
-  padding: 10px;
-  border-left: 4px solid #ffc400;
-}
-
-.emissor-readonly-grid strong {
-  display: block;
-  font-size: 14px;
-  color: #3e2723;
-  word-break: break-word;
-}
-
-@media (max-width: 650px) {
-  .emissor-readonly-topo,
-  .emissor-readonly-grid {
-    grid-template-columns: 1fr;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FS Orçamentos",
+    "url": "https://fsorcamentos.com.br/"
   }
+  </script>
 
-  .emissor-logo-mini {
-    width: 100%;
-    height: 90px;
-  }
-}
+  <meta name="google-site-verification" content="AUNalSg35UWE0CFzVlqgXE57TMekeSRBmlmvdMhNT9M">
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
 
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
+    crossorigin="anonymous"></script>
 
-/* Botão Conhecer os Planos - CTA secundário personalizado */
-.btn-planos-menor {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 4px;
-  padding: 10px 18px !important;
-  border-radius: 999px !important;
-  background: rgba(255, 196, 0, 0.14) !important;
-  color: #3e2723 !important;
-  border: 1px solid rgba(62, 39, 35, 0.28) !important;
-  box-shadow: none !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  letter-spacing: .2px;
-  text-decoration: none !important;
-  transition: .2s ease;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-.btn-planos-menor::before {
-  content: '⭐';
-  font-size: 14px;
-}
+  <title>FS Orçamentos - Gerador de Orçamento PDF Grátis</title>
+  <meta name="description" content="Crie orçamentos profissionais em PDF de forma rápida e gratuita. Ideal para MEI, oficinas mecânicas e prestadores de serviços.">
+  <meta name="keywords" content="gerador de orçamento, orçamento pdf grátis, fsorçamentos, orçamento mecânica, orçamento prestador de serviço">
+  <meta name="author" content="Filipi Aparecido dos Santos">
 
-.btn-planos-menor:hover {
-  transform: translateY(-1px);
-  background: #fff8d6 !important;
-  border-color: #ffc400 !important;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fsorcamentos.com.br/">
+  <meta property="og:title" content="FS Orçamentos - Profissionalize suas propostas">
+  <meta property="og:description" content="Gere orçamentos profissionais em PDF gratuitamente em segundos.">
+  <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
 
-#painel-plano-basico-home {
-  scroll-margin-top: 110px;
-}
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://fsorcamentos.com.br/">
+  <meta property="twitter:title" content="FS Orçamentos - Gerador de Orçamento PDF">
+  <meta property="twitter:description" content="A ferramenta ideal para o profissional autônomo gerar orçamentos em PDF.">
+  <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+  <style>
+    .emissor-readonly-card {
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #e0d6c8;
+      border-left: 7px solid #ffc400;
+      padding: 14px;
+      margin: 0 0 12px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      color: #3e2723;
+    }
 
-/* ==================== ADSENSE / ANÚNCIOS PLANO GRÁTIS ==================== */
-.bloco-anuncio.fs-adsense-zone {
-  display: none;
-  max-width: 970px;
-  min-height: 110px;
-  margin: 22px auto;
-  padding: 14px;
-  background: #fffaf0;
-  border: 1px dashed rgba(62, 39, 35, 0.28);
-  border-radius: 14px;
-  text-align: center;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+    .emissor-readonly-topo {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
 
-.bloco-anuncio.fs-adsense-zone .adsense-label {
-  display: block;
-  margin-bottom: 8px;
-  color: #8d6e63;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .4px;
-}
+    .emissor-logo-mini {
+      width: 90px;
+      height: 72px;
+      border: 1px dashed #d7ccc8;
+      border-radius: 10px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #8d6e63;
+      font-size: 12px;
+      text-align: center;
+    }
 
-.bloco-anuncio.fs-adsense-zone .adsense-fallback {
-  display: block;
-  color: #8d6e63;
-  font-size: 12px;
-  line-height: 1.35;
-  margin: 8px 0 0 0;
-}
+    .emissor-logo-mini img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
 
-.bloco-anuncio.fs-adsense-zone.adsense-slot-pendente .adsense-fallback {
-  display: block;
-}
+    .emissor-info-principal span,
+    .emissor-readonly-grid span {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #6d4c41;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      margin-bottom: 4px;
+    }
 
-.bloco-anuncio.fs-adsense-zone .adsbygoogle {
-  min-height: 90px;
-}
+    .emissor-info-principal strong {
+      display: block;
+      font-size: 18px;
+      color: #3e2723;
+      word-break: break-word;
+    }
 
-@media (max-width: 620px) {
-  .bloco-anuncio.fs-adsense-zone {
-    min-height: 100px;
-    margin: 18px auto;
-    padding: 10px;
-  }
-}
-</style>
+    .emissor-readonly-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
 
+    .emissor-readonly-grid div {
+      background: #f7f2ea;
+      border-radius: 10px;
+      padding: 10px;
+      border-left: 4px solid #ffc400;
+    }
+
+    .emissor-readonly-grid strong {
+      display: block;
+      font-size: 14px;
+      color: #3e2723;
+      word-break: break-word;
+    }
+
+    .btn-planos-menor {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      padding: 10px 18px !important;
+      border-radius: 999px !important;
+      background: rgba(255, 196, 0, 0.14) !important;
+      color: #3e2723 !important;
+      border: 1px solid rgba(62, 39, 35, 0.28) !important;
+      box-shadow: none !important;
+      font-size: 13px !important;
+      font-weight: 900 !important;
+      letter-spacing: .2px;
+      text-decoration: none !important;
+      transition: .2s ease;
+    }
+
+    .btn-planos-menor::before {
+      content: '⭐';
+      font-size: 14px;
+    }
+
+    .btn-planos-menor:hover {
+      transform: translateY(-1px);
+      background: #fff8d6 !important;
+      border-color: #ffc400 !important;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+    }
+
+    #painel-plano-basico-home {
+      scroll-margin-top: 110px;
+    }
+
+    .bloco-anuncio.fs-adsense-zone {
+      display: none;
+      max-width: 970px;
+      min-height: 110px;
+      margin: 22px auto;
+      padding: 14px;
+      background: #fffaf0;
+      border: 1px dashed rgba(62, 39, 35, 0.28);
+      border-radius: 14px;
+      text-align: center;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .bloco-anuncio.fs-adsense-zone .adsense-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #8d6e63;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .bloco-anuncio.fs-adsense-zone .adsbygoogle {
+      min-height: 90px;
+    }
+
+    body.gerador-aberto #btn-flutuante-gerador-global {
+      display: none !important;
+    }
+
+    @media (max-width: 650px) {
+      .emissor-readonly-topo,
+      .emissor-readonly-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .emissor-logo-mini {
+        width: 100%;
+        height: 90px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .bloco-anuncio.fs-adsense-zone {
+        min-height: 100px;
+        margin: 18px auto;
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-
 <div id="header-container"></div>
+
 <div id="modal-login" class="modal-login-overlay">
   <div class="modal-login-box">
-
-    <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">
-      ×
-    </button>
+    <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button>
 
     <div class="auth-logo-box">
       <div class="auth-logo-text">
@@ -245,9 +229,7 @@
 
     <div id="auth-area" style="display:block;">
       <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
-
         <form id="form-autenticacao" onsubmit="return false;">
-
           <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
             Acesse sua Conta
           </h3>
@@ -285,7 +267,6 @@
           <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">
             Entrar
           </button>
-
         </form>
 
         <div style="text-align: center; margin-top: 15px;">
@@ -293,10 +274,8 @@
             Não tem cadastro? Clique aqui.
           </a>
         </div>
-
       </div>
     </div>
-
   </div>
 </div>
 
@@ -307,19 +286,19 @@
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 
-    <div id="splash-screen">
-    <div class="splash-content">
-        <div class="splash-logo">
-            <span class="fs-box">FS</span>
-            <span class="fs-text">Orçamentos</span>
-        </div>
-        <div class="loader-bar"></div>
-        <p>Iniciando ferramenta...</p>
+<div id="splash-screen">
+  <div class="splash-content">
+    <div class="splash-logo">
+      <span class="fs-box">FS</span>
+      <span class="fs-text">Orçamentos</span>
     </div>
+    <div class="loader-bar"></div>
+    <p>Iniciando ferramenta...</p>
+  </div>
 </div>
 
-
 <main id="home-publica" class="home-publica">
+
   <section class="hero-publico">
     <div class="hero-marca">
       <strong>FS</strong><span>Orçamentos</span>
@@ -333,16 +312,15 @@
       acompanhar clientes com mais controle.
     </p>
 
-<div class="hero-acoes hero-acoes-principal">
-  <button type="button" class="btn-gerar-orcamento-home btn-gerar-destaque" onclick="abrirModalGerador()">
-    🧾 Gerar Orçamento Agora
-  </button>
+    <div class="hero-acoes hero-acoes-principal">
+      <button type="button" class="btn-gerar-orcamento-home btn-gerar-destaque" onclick="abrirModalGerador()">
+        🧾 Gerar Orçamento Agora
+      </button>
 
-  <a href="#painel-plano-basico-home" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor" onclick="rolarParaPlanosHome(event)">
-    Conhecer os planos
-  </a>
-</div>
-
+      <a href="#painel-plano-basico-home" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor" onclick="rolarParaPlanosHome(event)">
+        Conhecer os planos
+      </a>
+    </div>
   </section>
 
   <section class="cards-explicativos">
@@ -365,288 +343,356 @@
     </div>
   </section>
 
-<div id="adsense-gratis-topo" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis adsense-slot-pendente" data-ad-slot-pendente="true" aria-label="Publicidade">
-  <span class="adsense-label">Publicidade</span>
-
-  <!--
-    AdSense: depois que sua conta estiver pronta, crie um bloco de anúncio responsivo
-    e substitua COLE_SEU_SLOT_ADSENSE_1 pelo data-ad-slot real do AdSense.
-  -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5628949951885077"
-     data-ad-slot="1739813454"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-</div>
-
-<section class="secao-como-funciona">
-  <div class="como-funciona-topo">
-    <span class="tag-demo">Demonstração</span>
-    <h2>Veja como funciona na prática</h2>
-    <p>
-      Confira telas reais do FS Orçamentos e veja exemplos de PDFs profissionais gerados pela plataforma.
-    </p>
+  <div id="adsense-gratis-topo" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+    <span class="adsense-label">Publicidade</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5628949951885077"
+      data-ad-slot="1739813454"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
   </div>
 
-  <div class="passos-funciona">
-    <div class="passo-card">
-      <strong>1</strong>
-      <h3>Preencha os dados</h3>
-      <p>Informe cliente, itens, valores, observações e condições do orçamento.</p>
-    </div>
-
-    <div class="passo-card">
-      <strong>2</strong>
-      <h3>Escolha o visual</h3>
-      <p>Selecione uma cor para deixar o PDF com a identidade do seu serviço.</p>
-    </div>
-
-    <div class="passo-card">
-      <strong>3</strong>
-      <h3>Gere o PDF</h3>
-      <p>Baixe o orçamento pronto ou envie para o cliente conforme seu plano.</p>
-    </div>
-  </div>
-
-<center><a href="exemplos.html" class="btn-secundario-home">
-VER MAIS</a></center>
-</div>
-  </div>
-  <section class="whatsapp-preview-home">
-  <div class="whatsapp-preview-texto">
-    <span class="tag-whatsapp">Envio pelo WhatsApp</span>
-
-    <h2>Veja como o cliente recebe o orçamento</h2>
-
-    <p>
-      No plano Premium, o FS Orçamentos pode enviar automaticamente o orçamento
-      para o WhatsApp do cliente, sem precisar abrir o aplicativo manualmente.
-    </p>
-
-    <ul>
-      <li>Mensagem profissional pronta para o cliente.</li>
-      <li>Link do orçamento para visualizar online.</li>
-      <li>Acompanhamento de orçamentos pendentes.</li>
-    </ul>
-  </div>
-
-  <div class="whatsapp-mockup">
-    <div class="whatsapp-topo">
-      <div class="whatsapp-avatar">FS</div>
-      <div>
-        <strong>FS Orçamentos</strong>
-        <span>online</span>
-      </div>
-    </div>
-
-    <div class="whatsapp-conversa">
-      <div class="msg-whatsapp recebida">
-        Olá, João! Tudo bem?
-      </div>
-
-      <div class="msg-whatsapp recebida">
-        Segue o orçamento solicitado:
-      </div>
-
-      <div class="orcamento-whatsapp-card">
-        <div class="orcamento-whatsapp-header">
-          🧾 Orçamento #1024
-        </div>
-
-        <div class="orcamento-whatsapp-body">
-          <strong>Manutenção de Suspensão</strong>
-          <span>Cliente: João Silva</span>
-          <span>Total: R$ 850,00</span>
-        </div>
-
-        <button type="button">
-          Visualizar orçamento
-        </button>
-      </div>
-
-      <div class="msg-whatsapp recebida">
-        Qualquer dúvida, estou à disposição. ✅
-      </div>
-
-      <div class="whatsapp-hora">
-        enviado automaticamente pelo FS Orçamentos
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="cliente-aprovacao-home">
-  <div class="cliente-aprovacao-topo">
-    <span class="tag-aprovacao">Aprovação online</span>
-
-    <h2>O cliente visualiza e responde o orçamento pelo link</h2>
-
-    <p>
-      Depois de receber o orçamento, o cliente pode abrir o link, conferir os dados,
-      visualizar os itens e escolher entre aprovar ou recusar a proposta.
-    </p>
-  </div>
-
-  <div class="fluxo-aprovacao-grid">
-    <div class="fluxo-card">
-      <div class="fluxo-numero">1</div>
-      <h3>Recebe no WhatsApp</h3>
-      <p>O cliente recebe uma mensagem com o resumo e o botão para visualizar o orçamento.</p>
-    </div>
-
-    <div class="fluxo-card">
-      <div class="fluxo-numero">2</div>
-      <h3>Abre o orçamento</h3>
-      <p>O link leva para uma página limpa, com dados do emissor, cliente, itens e valor total.</p>
-    </div>
-
-    <div class="fluxo-card">
-      <div class="fluxo-numero">3</div>
-      <h3>Aprova ou recusa</h3>
-      <p>Com um clique, o cliente informa a decisão e o status é atualizado na plataforma.</p>
-    </div>
-  </div>
-
-  <div class="cliente-tela-preview">
-    <div class="cliente-tela-topo">
-      <div>
-        <strong>Orçamento recebido</strong>
-        <span>Visualização do cliente</span>
-      </div>
-      <div class="cliente-status pendente">Pendente</div>
-    </div>
-
-    <div class="cliente-orcamento-card">
-      <div class="cliente-empresa-linha">
-        <div class="cliente-logo-demo">FS</div>
-
-        <div>
-          <strong>FS Orçamentos</strong>
-          <span>Responsável: Consultor selecionado</span>
-          <span>WhatsApp: (18) 99999-9999</span>
-        </div>
-      </div>
-
-      <div class="cliente-info-grid">
-        <div>
-          <small>Cliente</small>
-          <strong>João Silva</strong>
-        </div>
-
-        <div>
-          <small>Orçamento</small>
-          <strong>Manutenção de Suspensão</strong>
-        </div>
-      </div>
-
-      <div class="cliente-itens-demo">
-        <div>
-          <span>Troca de amortecedores</span>
-          <strong>R$ 520,00</strong>
-        </div>
-
-        <div>
-          <span>Alinhamento e balanceamento</span>
-          <strong>R$ 180,00</strong>
-        </div>
-
-        <div>
-          <span>Mão de obra</span>
-          <strong>R$ 150,00</strong>
-        </div>
-      </div>
-
-      <div class="cliente-total-demo">
-        Total: R$ 850,00
-      </div>
-
-      <div class="cliente-acoes-demo">
-        <button type="button" class="btn-cliente-aprovar">
-          ✅ Aprovar orçamento
-        </button>
-
-        <button type="button" class="btn-cliente-recusar">
-          ❌ Recusar orçamento
-        </button>
-      </div>
-
-      <p class="cliente-aviso-demo">
-        Ao aprovar ou recusar, o responsável é avisado e o status muda automaticamente.
+  <section class="secao-como-funciona">
+    <div class="como-funciona-topo">
+      <span class="tag-demo">Demonstração</span>
+      <h2>Veja como funciona na prática</h2>
+      <p>
+        Confira telas reais do FS Orçamentos e veja exemplos de PDFs profissionais gerados pela plataforma.
       </p>
     </div>
-  </div>
-</section>
-<div id="adsense-gratis-rodape" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis adsense-slot-pendente" data-ad-slot-pendente="true" aria-label="Publicidade">
-  <span class="adsense-label">Publicidade</span>
 
-  <!--
-    AdSense: depois que sua conta estiver pronta, crie um segundo bloco de anúncio responsivo
-    e substitua COLE_SEU_SLOT_ADSENSE_2 pelo data-ad-slot real do AdSense.
-  -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5628949951885077"
-     data-ad-slot="5487486770"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-</div>
+    <div class="passos-funciona">
+      <div class="passo-card">
+        <strong>1</strong>
+        <h3>Preencha os dados</h3>
+        <p>Informe cliente, itens, valores, observações e condições do orçamento.</p>
+      </div>
 
-<section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
-  <div class="planos-pix-topo">
-    <span class="tag-plano-pix">Plano Básico</span>
+      <div class="passo-card">
+        <strong>2</strong>
+        <h3>Escolha o visual</h3>
+        <p>Selecione uma cor para deixar o PDF com a identidade do seu serviço.</p>
+      </div>
 
-    <h2>Escolha o período do seu Plano Básico</h2>
-
-    <p>
-      Pague via Pix e libere os recursos do Plano Básico pelo período escolhido.
-      A confirmação será feita automaticamente assim que o pagamento for identificado.
-    </p>
-  </div>
-
-  <div class="planos-pix-grid">
-    <div class="plano-pix-card">
-      <div class="plano-pix-periodo">1 mês</div>
-      <div class="plano-pix-preco">R$ 19,90</div>
-      <p>Ideal para testar os recursos pagos por 30 dias.</p>
-
-      <button type="button" onclick="gerarPixPlanoBasico('mensal')">
-        Gerar Pix
-      </button>
+      <div class="passo-card">
+        <strong>3</strong>
+        <h3>Gere o PDF</h3>
+        <p>Baixe o orçamento pronto ou envie para o cliente conforme seu plano.</p>
+      </div>
     </div>
 
-    <div class="plano-pix-card destaque">
-      <div class="plano-pix-selo">Mais escolhido</div>
-      <div class="plano-pix-periodo">6 meses</div>
-      <div class="plano-pix-preco">R$ 109,90</div>
-      <p>Economize em relação ao pagamento mensal.</p>
+    <center>
+      <a href="exemplos.html" class="btn-secundario-home">VER MAIS</a>
+    </center>
+  </section>
 
-      <button type="button" onclick="gerarPixPlanoBasico('semestral')">
-        Gerar Pix
-      </button>
+  <section class="whatsapp-preview-home">
+    <div class="whatsapp-preview-texto">
+      <span class="tag-whatsapp">Envio pelo WhatsApp</span>
+
+      <h2>Veja como o cliente recebe o orçamento</h2>
+
+      <p>
+        No plano Premium, o FS Orçamentos pode enviar automaticamente o orçamento
+        para o WhatsApp do cliente, sem precisar abrir o aplicativo manualmente.
+      </p>
+
+      <ul>
+        <li>Mensagem profissional pronta para o cliente.</li>
+        <li>Link do orçamento para visualizar online.</li>
+        <li>Acompanhamento de orçamentos pendentes.</li>
+      </ul>
     </div>
 
-    <div class="plano-pix-card">
-      <div class="plano-pix-periodo">12 meses</div>
-      <div class="plano-pix-preco">R$ 209,90</div>
-      <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
+    <div class="whatsapp-mockup">
+      <div class="whatsapp-topo">
+        <div class="whatsapp-avatar">FS</div>
+        <div>
+          <strong>FS Orçamentos</strong>
+          <span>online</span>
+        </div>
+      </div>
 
-      <button type="button" onclick="gerarPixPlanoBasico('anual')">
-        Gerar Pix
-      </button>
+      <div class="whatsapp-conversa">
+        <div class="msg-whatsapp recebida">Olá, João! Tudo bem?</div>
+        <div class="msg-whatsapp recebida">Segue o orçamento solicitado:</div>
+
+        <div class="orcamento-whatsapp-card">
+          <div class="orcamento-whatsapp-header">🧾 Orçamento #1024</div>
+
+          <div class="orcamento-whatsapp-body">
+            <strong>Manutenção de Suspensão</strong>
+            <span>Cliente: João Silva</span>
+            <span>Total: R$ 850,00</span>
+          </div>
+
+          <button type="button">Visualizar orçamento</button>
+        </div>
+
+        <div class="msg-whatsapp recebida">Qualquer dúvida, estou à disposição. ✅</div>
+
+        <div class="whatsapp-hora">
+          enviado automaticamente pelo FS Orçamentos
+        </div>
+      </div>
     </div>
+  </section>
+
+  <section class="cliente-aprovacao-home">
+    <div class="cliente-aprovacao-topo">
+      <span class="tag-aprovacao">Aprovação online</span>
+
+      <h2>O cliente visualiza e responde o orçamento pelo link</h2>
+
+      <p>
+        Depois de receber o orçamento, o cliente pode abrir o link, conferir os dados,
+        visualizar os itens e escolher entre aprovar ou recusar a proposta.
+      </p>
+    </div>
+
+    <div class="fluxo-aprovacao-grid">
+      <div class="fluxo-card">
+        <div class="fluxo-numero">1</div>
+        <h3>Recebe no WhatsApp</h3>
+        <p>O cliente recebe uma mensagem com o resumo e o botão para visualizar o orçamento.</p>
+      </div>
+
+      <div class="fluxo-card">
+        <div class="fluxo-numero">2</div>
+        <h3>Abre o orçamento</h3>
+        <p>O link leva para uma página limpa, com dados do emissor, cliente, itens e valor total.</p>
+      </div>
+
+      <div class="fluxo-card">
+        <div class="fluxo-numero">3</div>
+        <h3>Aprova ou recusa</h3>
+        <p>Com um clique, o cliente informa a decisão e o status é atualizado na plataforma.</p>
+      </div>
+    </div>
+
+    <div class="cliente-tela-preview">
+      <div class="cliente-tela-topo">
+        <div>
+          <strong>Orçamento recebido</strong>
+          <span>Visualização do cliente</span>
+        </div>
+        <div class="cliente-status pendente">Pendente</div>
+      </div>
+
+      <div class="cliente-orcamento-card">
+        <div class="cliente-empresa-linha">
+          <div class="cliente-logo-demo">FS</div>
+
+          <div>
+            <strong>FS Orçamentos</strong>
+            <span>Responsável: Consultor selecionado</span>
+            <span>WhatsApp: (18) 99999-9999</span>
+          </div>
+        </div>
+
+        <div class="cliente-info-grid">
+          <div>
+            <small>Cliente</small>
+            <strong>João Silva</strong>
+          </div>
+
+          <div>
+            <small>Orçamento</small>
+            <strong>Manutenção de Suspensão</strong>
+          </div>
+        </div>
+
+        <div class="cliente-itens-demo">
+          <div>
+            <span>Troca de amortecedores</span>
+            <strong>R$ 520,00</strong>
+          </div>
+
+          <div>
+            <span>Alinhamento e balanceamento</span>
+            <strong>R$ 180,00</strong>
+          </div>
+
+          <div>
+            <span>Mão de obra</span>
+            <strong>R$ 150,00</strong>
+          </div>
+        </div>
+
+        <div class="cliente-total-demo">
+          Total: R$ 850,00
+        </div>
+
+        <div class="cliente-acoes-demo">
+          <button type="button" class="btn-cliente-aprovar">✅ Aprovar orçamento</button>
+          <button type="button" class="btn-cliente-recusar">❌ Recusar orçamento</button>
+        </div>
+
+        <p class="cliente-aviso-demo">
+          Ao aprovar ou recusar, o responsável é avisado e o status muda automaticamente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div id="adsense-gratis-rodape" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+    <span class="adsense-label">Publicidade</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5628949951885077"
+      data-ad-slot="5487486770"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
   </div>
 
-  <div class="plano-pix-beneficios">
-    <strong>O Plano Básico inclui:</strong>
-    <span>Salvar orçamentos na nuvem</span>
-    <span>Histórico de orçamentos</span>
-    <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
-    <span>Até 2 responsáveis</span>
-    <span>Envio manual pelo WhatsApp com link</span>
-    <span>Resumo financeiro</span>
-  </div>
-</section>
+  <section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
+    <div class="planos-pix-topo">
+      <span class="tag-plano-pix">Plano Básico</span>
+
+      <h2>Escolha o período do seu Plano Básico</h2>
+
+      <p>
+        Pague via Pix e libere os recursos do Plano Básico pelo período escolhido.
+        A confirmação será feita automaticamente assim que o pagamento for identificado.
+      </p>
+    </div>
+
+    <div class="planos-pix-grid">
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">1 mês</div>
+        <div class="plano-pix-preco">R$ 19,90</div>
+        <p>Ideal para testar os recursos pagos por 30 dias.</p>
+
+        <button type="button" onclick="gerarPixPlanoBasico('mensal')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card destaque">
+        <div class="plano-pix-selo">Mais escolhido</div>
+        <div class="plano-pix-periodo">6 meses</div>
+        <div class="plano-pix-preco">R$ 109,90</div>
+        <p>Economize em relação ao pagamento mensal.</p>
+
+        <button type="button" onclick="gerarPixPlanoBasico('semestral')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">12 meses</div>
+        <div class="plano-pix-preco">R$ 209,90</div>
+        <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
+
+        <button type="button" onclick="gerarPixPlanoBasico('anual')">
+          Gerar Pix
+        </button>
+      </div>
+    </div>
+
+    <div class="plano-pix-beneficios">
+      <strong>O Plano Básico inclui:</strong>
+      <span>Salvar orçamentos na nuvem</span>
+      <span>Histórico de orçamentos</span>
+      <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
+      <span>Até 2 responsáveis</span>
+      <span>Envio manual pelo WhatsApp com link</span>
+      <span>Resumo financeiro</span>
+    </div>
+  </section>
+
+  <section class="status-orcamentos-home">
+    <div class="status-home-texto">
+      <span class="tag-status-home">Controle por status</span>
+
+      <h2>Acompanhe cada orçamento sem se perder</h2>
+
+      <p>
+        Nos planos pagos, seus orçamentos ficam salvos na nuvem e podem ser organizados
+        por status. Assim você sabe rapidamente quais clientes ainda estão analisando,
+        quais aprovaram, quais recusaram e quais serviços já estão em andamento.
+      </p>
+    </div>
+
+    <div class="status-home-grid">
+      <div class="status-explicacao-card status-pendente">
+        <div class="status-explicacao-topo">
+          <span class="bolinha-status"></span>
+          <strong>Pendente</strong>
+        </div>
+        <p>
+          Orçamentos enviados ou salvos que ainda aguardam resposta do cliente.
+          Ideal para acompanhar propostas em aberto.
+        </p>
+        <small>Exemplo: cliente recebeu, mas ainda não decidiu.</small>
+      </div>
+
+      <div class="status-explicacao-card status-aprovado">
+        <div class="status-explicacao-topo">
+          <span class="bolinha-status"></span>
+          <strong>Aprovado</strong>
+        </div>
+        <p>
+          Propostas aceitas pelo cliente. Ajuda você a saber quais vendas ou serviços
+          foram confirmados.
+        </p>
+        <small>Exemplo: cliente clicou em aprovar ou você marcou manualmente.</small>
+      </div>
+
+      <div class="status-explicacao-card status-recusado">
+        <div class="status-explicacao-topo">
+          <span class="bolinha-status"></span>
+          <strong>Recusado</strong>
+        </div>
+        <p>
+          Orçamentos que o cliente não aceitou. Mantém o histórico organizado sem
+          misturar com oportunidades em aberto.
+        </p>
+        <small>Exemplo: proposta recusada por valor, prazo ou outro motivo.</small>
+      </div>
+
+      <div class="status-explicacao-card status-servico">
+        <div class="status-explicacao-topo">
+          <span class="bolinha-status"></span>
+          <strong>Em serviço</strong>
+        </div>
+        <p>
+          Orçamentos aprovados que já viraram trabalho em execução. Ajuda a acompanhar
+          o andamento dos serviços.
+        </p>
+        <small>Exemplo: serviço iniciado, mas ainda não finalizado.</small>
+      </div>
+
+      <div class="status-explicacao-card status-finalizado">
+        <div class="status-explicacao-topo">
+          <span class="bolinha-status"></span>
+          <strong>Finalizado</strong>
+        </div>
+        <p>
+          Serviços concluídos. Facilita a conferência dos trabalhos realizados e dos
+          valores já fechados.
+        </p>
+        <small>Exemplo: orçamento aprovado, executado e concluído.</small>
+      </div>
+    </div>
+
+    <div class="status-home-resumo">
+      <div>
+        <strong>Resumo financeiro por período</strong>
+        <p>
+          Na página de orçamentos, você pode filtrar por 15, 30, 60 dias ou total
+          e visualizar a soma dos valores por status.
+        </p>
+      </div>
+
+      <a href="/exemplos.html" class="btn-status-home">
+        Ver exemplos da plataforma
+      </a>
+    </div>
+  </section>
+
+</main>
 
 <div id="modal-pix-basico" class="modal-pix-overlay">
   <div class="modal-pix-card">
@@ -703,99 +749,6 @@ VER MAIS</a></center>
   </div>
 </div>
 
-</section>
-
-  <section class="status-orcamentos-home">
-  <div class="status-home-texto">
-    <span class="tag-status-home">Controle por status</span>
-
-    <h2>Acompanhe cada orçamento sem se perder</h2>
-
-    <p>
-      Nos planos pagos, seus orçamentos ficam salvos na nuvem e podem ser organizados
-      por status. Assim você sabe rapidamente quais clientes ainda estão analisando,
-      quais aprovaram, quais recusaram e quais serviços já estão em andamento.
-    </p>
-  </div>
-
-  <div class="status-home-grid">
-    <div class="status-explicacao-card status-pendente">
-      <div class="status-explicacao-topo">
-        <span class="bolinha-status"></span>
-        <strong>Pendente</strong>
-      </div>
-      <p>
-        Orçamentos enviados ou salvos que ainda aguardam resposta do cliente.
-        Ideal para acompanhar propostas em aberto.
-      </p>
-      <small>Exemplo: cliente recebeu, mas ainda não decidiu.</small>
-    </div>
-
-    <div class="status-explicacao-card status-aprovado">
-      <div class="status-explicacao-topo">
-        <span class="bolinha-status"></span>
-        <strong>Aprovado</strong>
-      </div>
-      <p>
-        Propostas aceitas pelo cliente. Ajuda você a saber quais vendas ou serviços
-        foram confirmados.
-      </p>
-      <small>Exemplo: cliente clicou em aprovar ou você marcou manualmente.</small>
-    </div>
-
-    <div class="status-explicacao-card status-recusado">
-      <div class="status-explicacao-topo">
-        <span class="bolinha-status"></span>
-        <strong>Recusado</strong>
-      </div>
-      <p>
-        Orçamentos que o cliente não aceitou. Mantém o histórico organizado sem
-        misturar com oportunidades em aberto.
-      </p>
-      <small>Exemplo: proposta recusada por valor, prazo ou outro motivo.</small>
-    </div>
-
-    <div class="status-explicacao-card status-servico">
-      <div class="status-explicacao-topo">
-        <span class="bolinha-status"></span>
-        <strong>Em serviço</strong>
-      </div>
-      <p>
-        Orçamentos aprovados que já viraram trabalho em execução. Ajuda a acompanhar
-        o andamento dos serviços.
-      </p>
-      <small>Exemplo: serviço iniciado, mas ainda não finalizado.</small>
-    </div>
-
-    <div class="status-explicacao-card status-finalizado">
-      <div class="status-explicacao-topo">
-        <span class="bolinha-status"></span>
-        <strong>Finalizado</strong>
-      </div>
-      <p>
-        Serviços concluídos. Facilita a conferência dos trabalhos realizados e dos
-        valores já fechados.
-      </p>
-      <small>Exemplo: orçamento aprovado, executado e concluído.</small>
-    </div>
-  </div>
-
-  <div class="status-home-resumo">
-    <div>
-      <strong>Resumo financeiro por período</strong>
-      <p>
-        Na página de orçamentos, você pode filtrar por 15, 30, 60 dias ou total
-        e visualizar a soma dos valores por status.
-      </p>
-    </div>
-
-    <a href="/exemplos.html" class="btn-status-home">
-      Ver exemplos da plataforma
-    </a>
-  </div>
-</section>
-</main>
-
 <div id="modal-gerador-orcamento" class="modal-gerador-overlay">
   <div class="modal-gerador-box">
     <div class="modal-gerador-topo">
@@ -803,262 +756,315 @@ VER MAIS</a></center>
       <button type="button" class="btn-fechar-gerador" onclick="fecharModalGerador()">×</button>
     </div>
 
-<div id="formulario-orcamento" style="display:none;">
+    <div id="formulario-orcamento" style="display:none;">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 25px;">
+          <div style="font-size: 40px; display: inline-flex; align-items: center; gap: 5px;">
+            <span style="font-weight: 800; color: #3e2723; background: var(--accent-yellow); padding: 2px 12px; border-radius: 6px;">FS</span>
+            <span style="font-weight: 300; color: #5d4037; text-transform: uppercase;">Orçamentos</span>
+            <span style="font-size: 30px; margin-left: -10px; margin-bottom: 55px;">🖊️</span>
+          </div>
+          <p style="color: #9e9e9e; margin-bottom: 0px; margin-top: -20px; font-size: 16px;">Gerador de Orçamento Profissional</p>
+        </div>
 
+        <div class="carousel-container" style="display: none;">
+          <div class="carousel-slide" id="carousel">
+            <a href="mailto:filipiasantos93@gmail.com" target="_blank">
+              <img src="anuncio1.png" alt="Anuncie Aqui - FS Orçamentos">
+            </a>
 
-    <div class="container">
-		<div style="text-align: center; margin-bottom: 25px;">
-    <div style="font-size: 40px; display: inline-flex; align-items: center; gap: 5px;">
-        <span style="font-weight: 800; color: #3e2723; background: var(--accent-yellow); padding: 2px 12px; border-radius: 6px;">FS</span>
-        <span style="font-weight: 300; color: #5d4037; text-transform: uppercase;">Orçamentos</span>
-      <span style="font-size: 30px; margin-left: -10px; margin-bottom: 55px;">🖊️</span>
-    </div>
-    <p style="color: #9e9e9e; margin-bottom: 0px; margin-top: -20px; font-size: 16px;">Gerador de Orçamento Profissional</p>
-</div>
-<div class="carousel-container" style="display: none;">
-    <div class="carousel-slide" id="carousel">
-        <a href="mailto:filipiasantos93@gmail.com" target="_blank">
-    <img src="anuncio1.png" alt="Anuncie Aqui - FS Orçamentos">
-</a>
+            <a href="mailto:filipiasantos93@gmail.com" target="_blank">
+              <img src="anuncio2.png" alt="Anuncie Aqui - FS Orçamentos">
+            </a>
 
-        <a href="mailto:filipiasantos93@gmail.com" target="_blank">
-    <img src="anuncio2.png" alt="Anuncie Aqui - FS Orçamentos">
-</a>
-
-        <a href="mailto:filipiasantos93@gmail.com" target="_blank">
-    <img src="anuncio3.png" alt="Anuncie Aqui - FS Orçamentos">
-</a>
-
-    </div>
-</div>
-
+            <a href="mailto:filipiasantos93@gmail.com" target="_blank">
+              <img src="anuncio3.png" alt="Anuncie Aqui - FS Orçamentos">
+            </a>
+          </div>
+        </div>
 
         <div style="max-width: 100%; margin: 0 auto; padding: 0 15px; text-align: center; background: #f1f3f3; border-radius: 10px; margin-bottom: 10px; margin-top: 0px;">
-           
-        <p style="color: #3f4957; line-height: 1.2; font-size: 18px; margin-top: 0; padding-bottom: 20px; padding-top: 20px;">
-    📝 Preencha os dados abaixo <br>
-			para gerar seu orçamento em PDF.
+          <p style="color: #3f4957; line-height: 1.2; font-size: 18px; margin-top: 0; padding-bottom: 20px; padding-top: 20px;">
+            📝 Preencha os dados abaixo <br>
+            para gerar seu orçamento em PDF.
+          </p>
+        </div>
 
-</p>
-</div>
-<div class="dadositens">🧾 ORÇAMENTO</div>
-  <div style="display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
- <div>
-        <label>Título do Orçamento</label>
-        <input type="text" id="titulo" maxlength="50" placeholder="Ex: Manutenção de Suspensão / Pintura Residencial" oninput="salvarEstadoCompleto()">
-    </div>
-</div>
+        <div class="dadositens">🧾 ORÇAMENTO</div>
 
-<div class="dadositens">🏢 EMISSOR</div>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
+          <div>
+            <label>Título do Orçamento</label>
+            <input type="text" id="titulo" maxlength="50" placeholder="Ex: Manutenção de Suspensão / Pintura Residencial" oninput="salvarEstadoCompleto()">
+          </div>
+        </div>
 
-<div class="emissor-readonly-card">
-  <div class="emissor-readonly-topo">
-    <div class="emissor-logo-mini">
-      <span id="emissor-logo-placeholder">Logo</span>
-      <img id="emissor-logo-visual" src="" alt="Logo da empresa">
-    </div>
+        <div class="dadositens">🏢 EMISSOR</div>
 
-    <div class="emissor-info-principal">
-      <span>Consultor</span>
-      <strong id="emissor-consultor-visual">-</strong>
-    </div>
-  </div>
+        <div class="emissor-readonly-card">
+          <div class="emissor-readonly-topo">
+            <div class="emissor-logo-mini">
+              <span id="emissor-logo-placeholder">Logo</span>
+              <img id="emissor-logo-visual" src="" alt="Logo da empresa">
+            </div>
 
-  <div class="emissor-readonly-grid">
-    <div>
-      <span>Empresa</span>
-      <strong id="emissor-empresa-visual">-</strong>
-    </div>
+            <div class="emissor-info-principal">
+              <span>Consultor</span>
+              <strong id="emissor-consultor-visual">-</strong>
+            </div>
+          </div>
 
-    <div>
-      <span>WhatsApp / Telefone</span>
-      <strong id="emissor-whatsapp-visual">-</strong>
-    </div>
+          <div class="emissor-readonly-grid">
+            <div>
+              <span>Empresa</span>
+              <strong id="emissor-empresa-visual">-</strong>
+            </div>
 
-    <div>
-      <span>CNPJ / CPF</span>
-      <strong id="emissor-cnpj-visual">-</strong>
-    </div>
+            <div>
+              <span>WhatsApp / Telefone</span>
+              <strong id="emissor-whatsapp-visual">-</strong>
+            </div>
 
-    <div>
-      <span>Endereço</span>
-      <strong id="emissor-endereco-visual">-</strong>
-    </div>
-  </div>
-</div>
+            <div>
+              <span>CNPJ / CPF</span>
+              <strong id="emissor-cnpj-visual">-</strong>
+            </div>
 
-<div style="max-width: 100%; margin: 0 auto 15px auto; padding: 12px 15px; text-align: center; background: #fff3cd; border-radius: 10px; color: #5d4037; font-size: 14px;">
-    Edite os dados do Emissor no
-    <a href="/painel.html" style="font-weight: bold; color: #3e2723;">Painel de Controle</a>.
-</div>
+            <div>
+              <span>Endereço</span>
+              <strong id="emissor-endereco-visual">-</strong>
+            </div>
+          </div>
+        </div>
 
-<div class="dadositens">👤 CLIENTE</div>
+        <div style="max-width: 100%; margin: 0 auto 15px auto; padding: 12px 15px; text-align: center; background: #fff3cd; border-radius: 10px; color: #5d4037; font-size: 14px;">
+          Edite os dados do Emissor no
+          <a href="/painel.html" style="font-weight: bold; color: #3e2723;">Painel de Controle</a>.
+        </div>
 
+        <div class="dadositens">👤 CLIENTE</div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
-    <div>
-        <label>Nome</label>
-        <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
-    </div>
-    <div>
-        <label>Telefone(Whatsapp)</label>
-        <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
-    </div>
-<div id="extra-cliente-container" style="grid-column: span 2;"></div>
-<button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-cliente-container')" style="display: block; margin-left: auto; margin-right: 0; grid-column: span 2;">
-    <span style="font-size: 16px; margin-right: 4px;">+</span>Informações
-</button>
+          <div>
+            <label>Nome</label>
+            <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
+          </div>
 
+          <div>
+            <label>Telefone (WhatsApp)</label>
+            <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
+          </div>
 
-</div>
- 
-<div class="dadositens">🛠️ ITENS/SERVIÇOS</div>
-        <div id="itens-lista">
-            <div class="item-row header-labels">
-                <span>Descrição</span><span>Qtd</span><span>V. Unit</span><span>Subtotal</span><span></span>
-            </div>
+          <div id="extra-cliente-container" style="grid-column: span 2;"></div>
+
+          <button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-cliente-container')" style="display: block; margin-left: auto; margin-right: 0; grid-column: span 2;">
+            <span style="font-size: 16px; margin-right: 4px;">+</span>Informações
+          </button>
         </div>
 
-<div style="display: flex; gap: 10px; margin-bottom: 15px;">
-    <button type="button" class="btn-add" onclick="adicionarLinha()"> <span style="font-size: 16px; margin-right: 4px;">+</span> Item</button>
-    
+        <div class="dadositens">🛠️ ITENS/SERVIÇOS</div>
 
-</div>
+        <div id="itens-lista">
+          <div class="item-row header-labels">
+            <span>Descrição</span><span>Qtd</span><span>V. Unit</span><span>Subtotal</span><span></span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+          <button type="button" class="btn-add" onclick="adicionarLinha()">
+            <span style="font-size: 16px; margin-right: 4px;">+</span> Item
+          </button>
+        </div>
 
         <div class="total-container" style="margin-bottom: 20px;">
-            TOTAL: R$ <span id="total-geral">0,00</span>
-        </div>
-<div style="margin-bottom: 20px;">
-         
-     <label>Observações:</label>
-    <textarea id="observacoes" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; font-family: inherit; resize: vertical;" placeholder="Ex: Telefone, Prazo de entrega, condições de pagamento, validade da proposta..."></textarea>
-    <div class="calc-expansivel">
-    <div class="calc-header" onclick="toggleFrases()">
-        <span>📝 Termos e Condições Rápidas</span>
-        <span id="seta-frases">▼</span>
-    </div>
-    <div id="frases-corpo" class="calc-content">
-        <div style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Clique nas frases para adicioná-las automaticamente às observações.</div>
-        
-        <div class="calc-secao-titulo">Validade e Prazos</div>
-        <div class="checklist-container">
-            <button class="btn-frase" onclick="addFrase('• Orçamento válido por 7 dias.')">Validade 7 dias</button>
-            <button class="btn-frase" onclick="addFrase('• Orçamento válido por 15 dias.')">Validade 15 dias</button>
-            <button class="btn-frase" onclick="addFrase('• Prazo de entrega: ___ dias úteis após aprovação.')">Prazo de Entrega</button>
+          TOTAL: R$ <span id="total-geral">0,00</span>
         </div>
 
-        <div class="calc-secao-titulo">Pagamento</div>
-        <div class="checklist-container">
-            <button class="btn-frase" onclick="addFrase('• Forma de pagamento: 50% de entrada e 50% na entrega.')">50% Entrada / 50% Entrega</button>
-            <button class="btn-frase" onclick="addFrase('• Pagamento à vista com 5% de desconto.')">Desconto à Vista</button>
-            <button class="btn-frase" onclick="addFrase('• Parcelamos em até 3x sem juros no cartão.')">3x sem Juros</button>
+        <div style="margin-bottom: 20px;">
+          <label>Observações:</label>
+          <textarea id="observacoes" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; font-family: inherit; resize: vertical;" placeholder="Ex: Telefone, Prazo de entrega, condições de pagamento, validade da proposta..."></textarea>
+
+          <div class="calc-expansivel">
+            <div class="calc-header" onclick="toggleFrases()">
+              <span>📝 Termos e Condições Rápidas</span>
+              <span id="seta-frases">▼</span>
+            </div>
+
+            <div id="frases-corpo" class="calc-content">
+              <div style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Clique nas frases para adicioná-las automaticamente às observações.</div>
+
+              <div class="calc-secao-titulo">Validade e Prazos</div>
+              <div class="checklist-container">
+                <button class="btn-frase" onclick="addFrase('• Orçamento válido por 7 dias.')">Validade 7 dias</button>
+                <button class="btn-frase" onclick="addFrase('• Orçamento válido por 15 dias.')">Validade 15 dias</button>
+                <button class="btn-frase" onclick="addFrase('• Prazo de entrega: ___ dias úteis após aprovação.')">Prazo de Entrega</button>
+              </div>
+
+              <div class="calc-secao-titulo">Pagamento</div>
+              <div class="checklist-container">
+                <button class="btn-frase" onclick="addFrase('• Forma de pagamento: 50% de entrada e 50% na entrega.')">50% Entrada / 50% Entrega</button>
+                <button class="btn-frase" onclick="addFrase('• Pagamento à vista com 5% de desconto.')">Desconto à Vista</button>
+                <button class="btn-frase" onclick="addFrase('• Parcelamos em até 3x sem juros no cartão.')">3x sem Juros</button>
+              </div>
+
+              <div class="calc-secao-titulo">Materiais e Serviços</div>
+              <div class="checklist-container">
+                <button class="btn-frase" onclick="addFrase('• Não incluso material de acabamento.')">Sem Acabamento</button>
+                <button class="btn-frase" onclick="addFrase('• Frete incluso para a região.')">Frete Incluso</button>
+                <button class="btn-frase" onclick="addFrase('• Responsabilidade por entulhos e limpeza por conta do contratante.')">Limpeza/Entulho</button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="calc-secao-titulo">Materiais e Serviços</div>
-        <div class="checklist-container">
-            <button class="btn-frase" onclick="addFrase('• Não incluso material de acabamento.')">Sem Acabamento</button>
-            <button class="btn-frase" onclick="addFrase('• Frete incluso para a região.')">Frete Incluso</button>
-            <button class="btn-frase" onclick="addFrase('• Responsabilidade por entulhos e limpeza por conta do contratante.')">Limpeza/Entulho</button>
+        <hr color="#c3c3c3" size="1px">
+
+        <div class="color-selector">
+          <label>Escolha a cor do PDF:</label>
+          <div class="theme-options">
+            <div class="theme-dot original" onclick="setTheme('original')" title="Marrom (Padrão)"></div>
+            <div class="theme-dot bw" onclick="setTheme('bw')" title="Preto e Branco"></div>
+            <div class="theme-dot blue" onclick="setTheme('blue')" title="Azul e Branco"></div>
+            <div class="theme-dot green" onclick="setTheme('green')" title="Verde e Branco"></div>
+            <div class="theme-dot yellow" onclick="setTheme('yellow')" title="Amarelo e Branco"></div>
+            <div class="theme-dot red" onclick="setTheme('red')" title="Vermelho e Branco"></div>
+          </div>
+          <input type="hidden" id="selected-theme" value="original">
         </div>
-    </div>
-</div>
 
-</div>
-        <hr color="#c3c3c3" size="1px"></hr>		
-       <div class="color-selector">
-    <label>Escolha a cor do PDF:</label>
-    <div class="theme-options">
-        <div class="theme-dot original" onclick="setTheme('original')" title="Marrom (Padrão)"></div>
-        <div class="theme-dot bw" onclick="setTheme('bw')" title="Preto e Branco"></div>
-        <div class="theme-dot blue" onclick="setTheme('blue')" title="Azul e Branco"></div>
-        <div class="theme-dot green" onclick="setTheme('green')" title="Verde e Branco"></div>
-        <div class="theme-dot yellow" onclick="setTheme('yellow')" title="Amarelo e Branco"></div>
-        <div class="theme-dot red" onclick="setTheme('red')" title="Vermelho e Branco"></div>
-    </div>
-    <input type="hidden" id="selected-theme" value="original">
-</div>
- <div style="text-align: center; margin-top: 30px;">
-    <button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">
-        👁️ PRÉ-VISUALIZAÇÃO
-    </button>
-    
-    <div style="margin-top: 15px;"></div>
-    
-    <button type="button" class="btn-limpar" onclick="limparFormulario()">
-        ➕ NOVO ORÇAMENTO
-    </button>
-</div>
+        <div style="text-align: center; margin-top: 30px;">
+          <button class="btn-generate" id="btn-previa" onclick="gerarPrevia()">
+            👁️ PRÉ-VISUALIZAÇÃO
+          </button>
 
-    
+          <div style="margin-top: 15px;"></div>
+
+          <button type="button" class="btn-limpar" onclick="limparFormulario()">
+            ➕ NOVO ORÇAMENTO
+          </button>
+        </div>
 
         <div id="area-previa">
-            <p style="text-align:center; font-size:12px; color:#64748b; font-weight: bold;">PRÉVIA DO DOCUMENTO:</p>
-            <div id="conteudo-pdf" class="pdf-folha">
-                </div>
-<div id="botoes-acao" style="display: none;">
-    <center>
-        <button class="btn-generate btn-download" id="btn-baixar" onclick="baixarPDF()">💾 BAIXAR PDF</button>
-    </center>
-    <center>
-        <button type="button" onclick="enviarPorWhatsApp()" class="btn-whatsapp">
-            ENVIAR POR WHATSAPP
-        </button>
-    </center>
-</div>
+          <p style="text-align:center; font-size:12px; color:#64748b; font-weight: bold;">PRÉVIA DO DOCUMENTO:</p>
+          <div id="conteudo-pdf" class="pdf-folha"></div>
 
-<div id="msg-aviso" style="display: none; color: #d32f2f; font-size: 0.9em; margin-top: 10px; text-align: center;">
-  * Preencha os dados da empresa no <a href="/painel">Painel</a> para liberar o envio.
-</div>
+          <div id="botoes-acao" style="display: none;">
+            <center>
+              <button class="btn-generate btn-download" id="btn-baixar" onclick="baixarPDF()">💾 BAIXAR PDF</button>
+            </center>
 
-</div>
-<a href="manual.html" class="btn-help-link" title="Manual de Instruções">
-    <button type="button" class="btn-help-trigger">?</button>
-</a>
+            <center>
+              <button type="button" onclick="enviarPorWhatsApp()" class="btn-whatsapp">
+                ENVIAR POR WHATSAPP
+              </button>
+            </center>
+          </div>
 
-<div id="modal-ajuda" class="modal-overlay">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Dicas Rápidas 💡</h3>
-            <button onclick="toggleAjuda()" class="close-modal">&times;</button>
+          <div id="msg-aviso" style="display: none; color: #d32f2f; font-size: 0.9em; margin-top: 10px; text-align: center;">
+            * Preencha os dados da empresa no <a href="/painel">Painel</a> para liberar o envio.
+          </div>
         </div>
-        <div class="modal-body">
-            <div class="help-item">
-            <strong>📸 Sua Marca:</strong> Cadastre sua logo e dados da empresa no Painel de Controle.
+
+        <a href="manual.html" class="btn-help-link" title="Manual de Instruções">
+          <button type="button" class="btn-help-trigger">?</button>
+        </a>
+
+        <div id="modal-ajuda" class="modal-overlay">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Dicas Rápidas 💡</h3>
+              <button onclick="toggleAjuda()" class="close-modal">&times;</button>
             </div>
-            <div class="help-item">
+
+            <div class="modal-body">
+              <div class="help-item">
+                <strong>📸 Sua Marca:</strong> Cadastre sua logo e dados da empresa no Painel de Controle.
+              </div>
+
+              <div class="help-item">
                 <strong>➕ Campos Extras:</strong> Use o botão "+ Informações" para adicionar CPF, CNPJ, Placa ou Endereço.
-            </div>
-            <div class="help-item">
+              </div>
+
+              <div class="help-item">
                 <strong>📝 Termos Rápidos:</strong> Clique em "Termos e Condições" para adicionar prazos e garantias com um clique.
-            </div>
-            <div class="help-item">
+              </div>
+
+              <div class="help-item">
                 <strong>📥 Baixar:</strong> Após preencher tudo, clique em "Pré-visualização (👁️)" e depois no ícone de salvar (💾).
+              </div>
             </div>
+
+            <button class="btn-entendi" onclick="toggleAjuda()">Entendi!</button>
+          </div>
         </div>
-        <button class="btn-entendi" onclick="toggleAjuda()">Entendi!</button>
+
+        <div class="floating-actions">
+          <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Visualizar">
+            👁️
+          </button>
+
+          <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display: none;" title="Baixar PDF">
+            💾
+          </button>
+
+          <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo Orçamento">
+            ➕
+          </button>
+        </div>
+      </div>
     </div>
-</div>
-
-<div class="floating-actions">
-    <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Visualizar">
-        👁️
-    </button>
-    
-    <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display: none;" title="Baixar PDF">
-        💾
-    </button>
-    
-    <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo Orçamento">
-        ➕
-    </button>
-</div>
-
-</div>
-
   </div>
 </div>
 
-</div>
+<center>
+  <p></p><p></p>
+  <footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer>
+</center>
+<p></p>
+
+<script>
+function abrirModalGerador() {
+  const modal = document.getElementById('modal-gerador-orcamento');
+  const formulario = document.getElementById('formulario-orcamento');
+
+  if (modal) {
+    modal.style.display = 'flex';
+    modal.classList.add('ativo');
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+  }
+
+  if (formulario) {
+    formulario.style.display = 'block';
+  }
+
+  document.body.style.overflow = 'hidden';
+  document.body.classList.add('gerador-aberto');
+
+  if (typeof carregarDadosEmissorNoModal === 'function') {
+    carregarDadosEmissorNoModal();
+  }
+}
+
+function fecharModalGerador() {
+  const modal = document.getElementById('modal-gerador-orcamento');
+  const formulario = document.getElementById('formulario-orcamento');
+
+  if (modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('ativo');
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+  }
+
+  if (formulario) {
+    formulario.style.display = 'none';
+  }
+
+  document.body.style.overflow = '';
+  document.body.classList.remove('gerador-aberto');
+}
+</script>
 
 <script>
 function valorEmissorOuTraco(valor) {
@@ -1139,29 +1145,6 @@ async function carregarDadosEmissorNoModal() {
 document.addEventListener('DOMContentLoaded', function() {
   carregarDadosEmissorNoModal();
 
-  const tentarIntegrarModal = setInterval(function() {
-    if (typeof window.abrirModalGerador === 'function' && !window.abrirModalGeradorComEmissor) {
-      const abrirModalGeradorOriginal = window.abrirModalGerador;
-
-      window.abrirModalGerador = async function() {
-        const resultado = await abrirModalGeradorOriginal.apply(this, arguments);
-        await carregarDadosEmissorNoModal();
-        return resultado;
-      };
-
-      window.abrirModalGeradorComEmissor = true;
-      clearInterval(tentarIntegrarModal);
-    }
-  }, 100);
-
-  setTimeout(function() {
-    clearInterval(tentarIntegrarModal);
-  }, 3000);
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
   const modal = document.getElementById('modal-gerador-orcamento');
 
   if (modal) {
@@ -1172,69 +1155,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-
-function abrirImagemDemo(src, titulo) {
-  const modal = document.getElementById('modal-imagem-demo');
-  const img = document.getElementById('modal-imagem-img');
-  const tituloEl = document.getElementById('modal-imagem-titulo');
-
-  if (!modal || !img || !tituloEl) return;
-
-  img.src = src;
-  tituloEl.innerText = titulo || 'Exemplo';
-
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function fecharImagemDemo() {
-  const modal = document.getElementById('modal-imagem-demo');
-  const img = document.getElementById('modal-imagem-img');
-
-  if (!modal || !img) return;
-
-  modal.style.display = 'none';
-  img.src = '';
-
-  document.body.style.overflow = '';
-}
-
-function fecharImagemDemoAoClicarFora(event) {
-  const modal = document.getElementById('modal-imagem-demo');
-
-  if (event.target === modal) {
-    fecharImagemDemo();
-  }
-}
-
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    fecharImagemDemo();
-  }
-});
 </script>
-<center><p></p><p></p>
-<footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer></center><p></p>
-<div id="modal-imagem-demo" class="modal-imagem-demo" onclick="fecharImagemDemoAoClicarFora(event)">
-  <div class="modal-imagem-card">
-    <div class="modal-imagem-topo">
-      <strong id="modal-imagem-titulo">Exemplo</strong>
-      <button type="button" onclick="fecharImagemDemo()">×</button>
-    </div>
-
-    <img id="modal-imagem-img" src="" alt="Imagem demonstrativa do FS Orçamentos">
-  </div>
-</div>
 
 <script>
-/* =========================================================
-   SALVAMENTO CONTROLADO + WHATSAPP CORRIGIDO
-   - Pré-visualização não salva no Supabase.
-   - Baixar PDF salva somente para plano básico/premium.
-   - Enviar por WhatsApp salva somente para plano básico/premium.
-   - Plano grátis continua podendo baixar PDF, mas não salva na nuvem.
-   ========================================================= */
-
 let orcamentoSalvoAtualId = null;
 let baixarPDFOriginalFS = null;
 let whatsappJanelaFS = null;
@@ -1299,9 +1222,6 @@ function fsColetarItensParaSalvar() {
       inputs[0]?.value?.trim() ||
       '';
 
-    let qtd = 1;
-    let valor = 0;
-
     const inputQtd =
       row.querySelector('.qtd-cell input') ||
       row.querySelector('.qtd') ||
@@ -1322,8 +1242,8 @@ function fsColetarItensParaSalvar() {
       row.querySelector('input[name="subtotal"]') ||
       inputs[3];
 
-    qtd = fsValorNumerico(inputQtd?.value ?? 1);
-    valor = fsValorNumerico(inputValor?.value ?? 0);
+    const qtd = fsValorNumerico(inputQtd?.value ?? 1);
+    const valor = fsValorNumerico(inputValor?.value ?? 0);
 
     let subtotal = fsValorNumerico(inputSubtotal?.value);
 
@@ -1406,11 +1326,6 @@ async function fsSalvarOrcamentoSePlanoPermitido(origem = 'acao') {
     status: 'pendente'
   };
 
-  /*
-    As colunas origem_salvamento e tema_pdf são opcionais.
-    Se existirem na tabela, serão salvas.
-    Se não existirem, o código tenta novamente sem elas.
-  */
   const payloadCompleto = {
     ...payloadBase,
     origem_salvamento: origem,
@@ -1438,8 +1353,6 @@ async function fsSalvarOrcamentoSePlanoPermitido(origem = 'acao') {
   if (resposta.error) {
     const mensagemErro = String(resposta.error.message || '');
 
-    // Fallback para bancos que ainda não possuem as colunas opcionais.
-    // Mantém o salvamento funcionando e permite gerar o link do orçamento.
     if (
       mensagemErro.includes('origem_salvamento') ||
       mensagemErro.includes('tema_pdf') ||
@@ -1535,9 +1448,7 @@ Qualquer dúvida, estou à disposição.`;
 }
 
 async function enviarPorWhatsApp() {
-  if (enviandoWhatsappFS) {
-    return;
-  }
+  if (enviandoWhatsappFS) return;
 
   enviandoWhatsappFS = true;
 
@@ -1574,18 +1485,13 @@ async function enviarPorWhatsApp() {
       : '';
 
     if (!linkOrcamento) {
-      alert('Não foi possível gerar o link do orçamento. Para enviar pelo WhatsApp com link, o orçamento precisa ser salvo na nuvem. Verifique se o plano é Básico/Premium e se as colunas do Supabase estão corretas.');
+      alert('Não foi possível gerar o link do orçamento. Para enviar pelo WhatsApp com link, o orçamento precisa ser salvo na nuvem.');
       return;
     }
 
     const mensagem = montarMensagemWhatsappCliente(dados.clienteNome, linkOrcamento);
     const urlWhatsapp = `https://wa.me/${telefoneLimpo}?text=${encodeURIComponent(mensagem)}`;
 
-    /*
-      Usa sempre o mesmo nome de janela.
-      Assim o navegador reaproveita a aba do WhatsApp em vez de abrir várias.
-      Também evita abrir aba em branco antes do salvamento terminar.
-    */
     whatsappJanelaFS = window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
 
     if (!whatsappJanelaFS) {
@@ -1594,11 +1500,6 @@ async function enviarPorWhatsApp() {
     }
 
     whatsappJanelaFS.focus();
-
-    /*
-      Fecha o modal do gerador depois que o WhatsApp foi aberto.
-      Isso evita que o overlay invisível continue bloqueando a home.
-    */
     fsFecharModalGeradorSeguro();
 
   } catch (error) {
@@ -1615,7 +1516,6 @@ async function enviarPorWhatsApp() {
     fsLiberarTelaAposModal();
   }
 }
-
 
 function fsFecharModalGeradorSeguro() {
   const modal = document.getElementById('modal-gerador-orcamento');
@@ -1651,6 +1551,7 @@ function fsLiberarTelaAposModal() {
   document.body.classList.remove('modal-aberto');
   document.body.classList.remove('login-modal-aberto');
   document.body.classList.remove('modal-open');
+  document.body.classList.remove('gerador-aberto');
 
   const overlays = document.querySelectorAll('.modal-gerador-overlay, .modal-overlay, .modal-login-overlay');
 
@@ -1682,6 +1583,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.limparFormularioComResetOrcamento = true;
   }
 });
+</script>
+
+<script>
 function fsNormalizarPlanoBotao(valor) {
   return String(valor || 'gratis')
     .toLowerCase()
@@ -1695,7 +1599,6 @@ async function atualizarBotaoPlanosHome() {
 
   if (!botaoPlanos) return;
 
-  // Deslogado vê o botão. Logado grátis também. Básico/Premium não vê.
   botaoPlanos.style.display = 'inline-flex';
 
   try {
@@ -1972,23 +1875,15 @@ document.addEventListener('keydown', function(event) {
 });
 
 document.addEventListener('click', function(event) {
-  const modal = document.getElementById('modal-pix-basico');
+  const modalPix = document.getElementById('modal-pix-basico');
 
-  if (event.target === modal) {
+  if (event.target === modalPix) {
     fecharModalPixBasico();
   }
 });
 </script>
 
-
-
 <script>
-/* =========================================================
-   EXIBIR PLANO BÁSICO NA HOME
-   - Visitante/deslogado: exibe
-   - Logado grátis: exibe
-   - Logado básico/premium: oculta
-   ========================================================= */
 function fsNormalizarPlanoHome(valor) {
   return String(valor || 'gratis')
     .toLowerCase()
@@ -2002,7 +1897,6 @@ async function atualizarPainelPlanoBasicoHome() {
 
   if (!painel) return;
 
-  // Por padrão, exibe para visitantes.
   painel.style.display = 'block';
 
   try {
@@ -2010,7 +1904,6 @@ async function atualizarPainelPlanoBasicoHome() {
 
     const { data: { session } } = await _supabase.auth.getSession();
 
-    // Deslogado/visitante continua vendo o painel.
     if (!session?.user?.id) {
       painel.style.display = 'block';
       return;
@@ -2062,17 +1955,10 @@ if (window._supabase) {
   });
 }
 
-window.atualizarPainelPlanoBasicoHome = atualizarPainelPlanoBasicoHome;</script>
-
-
+window.atualizarPainelPlanoBasicoHome = atualizarPainelPlanoBasicoHome;
+</script>
 
 <script>
-/* =========================================================
-   ADSENSE CONDICIONAL
-   - Visitante/deslogado: exibe blocos de anúncio
-   - Logado plano grátis: exibe blocos de anúncio
-   - Logado básico/premium: oculta blocos de anúncio
-   ========================================================= */
 function fsNormalizarPlanoAdsense(valor) {
   return String(valor || 'gratis')
     .toLowerCase()
@@ -2083,7 +1969,6 @@ function fsNormalizarPlanoAdsense(valor) {
 
 function fsSlotAdsenseValido(slot) {
   const valor = String(slot || '').trim();
-
   return /^\d{6,}$/.test(valor);
 }
 
@@ -2098,22 +1983,12 @@ function fsInicializarAdsenseVisivel() {
 
     const slot = ins.getAttribute('data-ad-slot');
 
-    if (!fsSlotAdsenseValido(slot)) {
-      bloco.classList.add('adsense-slot-pendente');
-      bloco.dataset.adSlotPendente = 'true';
-      return;
-    }
-
-    bloco.classList.remove('adsense-slot-pendente');
-    bloco.dataset.adSlotPendente = 'false';
-
+    if (!fsSlotAdsenseValido(slot)) return;
     if (ins.dataset.adsenseInicializado === 'true') return;
 
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       ins.dataset.adsenseInicializado = 'true';
-      const fallback = bloco.querySelector('.adsense-fallback');
-      if (fallback) fallback.style.display = 'none';
     } catch (error) {
       console.warn('AdSense ainda não inicializado:', error);
     }
