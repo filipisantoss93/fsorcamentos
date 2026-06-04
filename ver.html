@@ -10,12 +10,21 @@
   <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
+    :root {
+      --ver-cor-primaria: #3e2723;
+      --ver-cor-destaque: #ffc400;
+      --ver-cor-fundo: #efebe9;
+      --ver-cor-texto-topo: #ffffff;
+      --ver-cor-pagina: #f1f3f6;
+    }
+
     body {
       margin: 0;
       padding: 18px;
-      background: #f1f3f6;
+      background: var(--ver-cor-pagina);
       font-family: Arial, Helvetica, sans-serif;
       color: #222;
+      transition: background .25s ease;
     }
 
     .pagina-ver {
@@ -32,9 +41,9 @@
       grid-template-columns: 120px 1fr;
       gap: 18px;
       align-items: center;
-      background: linear-gradient(135deg, #3e2723, #2c1b17);
-      color: #ffffff;
-      border-bottom: 5px solid #ffc400;
+      background: linear-gradient(135deg, var(--ver-cor-primaria), #2c1b17);
+      color: var(--ver-cor-texto-topo);
+      border-bottom: 5px solid var(--ver-cor-destaque);
       border-radius: 18px;
       padding: 20px;
       margin-bottom: 22px;
@@ -46,7 +55,7 @@
       height: 96px;
       background: #ffffff;
       border-radius: 15px;
-      border: 2px solid #ffc400;
+      border: 2px solid var(--ver-cor-destaque);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -64,15 +73,15 @@
     #ver-logo-placeholder {
       font-size: 32px;
       font-weight: 900;
-      color: #3e2723;
-      background: #ffc400;
+      color: var(--ver-cor-primaria);
+      background: var(--ver-cor-destaque);
       padding: 8px 12px;
       border-radius: 10px;
     }
 
     .ver-emissor-info .ver-label {
       display: block;
-      color: #f7e6a1;
+      color: var(--ver-cor-destaque);
       font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
@@ -82,7 +91,7 @@
 
     .ver-emissor-info h1 {
       margin: 0;
-      color: #ffc400;
+      color: var(--ver-cor-destaque);
       font-size: 30px;
       line-height: 1.12;
       word-break: break-word;
@@ -91,7 +100,7 @@
 
     .ver-emissor-info p {
       margin: 8px 0 12px;
-      color: #ffffff;
+      color: var(--ver-cor-texto-topo);
       font-size: 15px;
       font-weight: 700;
     }
@@ -105,8 +114,8 @@
     .ver-emissor-dados span {
       display: none;
       background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,196,0,0.35);
-      color: #f4ece1;
+      border: 1px solid var(--ver-cor-destaque);
+      color: var(--ver-cor-texto-topo);
       border-radius: 999px;
       padding: 6px 10px;
       font-size: 12px;
@@ -117,20 +126,21 @@
       text-align: center;
       font-size: 30px;
       margin: 18px 0 18px;
-      color: #222;
+      color: var(--ver-cor-primaria);
     }
 
     .linha-divisoria {
       height: 3px;
-      background: #eeeeee;
+      background: var(--ver-cor-destaque);
       margin: 0 0 24px;
       border-radius: 20px;
+      opacity: .75;
     }
 
     .box-info {
-      background: #fafafa;
+      background: var(--ver-cor-fundo);
       border: 1px solid #e5e5e5;
-      border-left: 6px solid #ffc400;
+      border-left: 6px solid var(--ver-cor-destaque);
       border-radius: 12px;
       padding: 18px;
       margin-bottom: 22px;
@@ -139,7 +149,7 @@
     }
 
     .box-info strong {
-      color: #2b2b2b;
+      color: var(--ver-cor-primaria);
     }
 
     .status {
@@ -180,6 +190,8 @@
       width: 100%;
       overflow-x: auto;
       margin-top: 16px;
+      border-radius: 12px;
+      border: 1px solid #e5e5e5;
     }
 
     table {
@@ -190,11 +202,16 @@
     }
 
     th {
-      background: #3e2723;
-      color: #ffc400;
+      background: var(--ver-cor-primaria);
+      color: var(--ver-cor-texto-topo);
       text-align: left;
       padding: 14px;
       font-size: 15px;
+    }
+
+    th:last-child,
+    td:last-child {
+      text-align: right;
     }
 
     td {
@@ -203,14 +220,20 @@
       font-size: 16px;
     }
 
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
     .total-box {
       text-align: right;
       font-size: 28px;
       font-weight: 900;
       margin-top: 26px;
-      padding-top: 20px;
-      border-top: 3px solid #eeeeee;
-      color: #3e2723;
+      padding: 20px;
+      border-top: 4px solid var(--ver-cor-destaque);
+      background: var(--ver-cor-fundo);
+      color: var(--ver-cor-primaria);
+      border-radius: 12px;
     }
 
     .botoes-status {
@@ -222,7 +245,7 @@
 
     .btn-status {
       border: none;
-      border-radius: 10px;
+      border-radius: 14px;
       padding: 18px 12px;
       font-size: 18px;
       font-weight: 900;
@@ -230,6 +253,13 @@
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 1px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+      transition: .2s ease;
+    }
+
+    .btn-status:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.24);
     }
 
     .btn-recusar {
@@ -243,6 +273,7 @@
     .btn-status:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      transform: none;
     }
 
     .msg {
@@ -278,7 +309,7 @@
     }
 
     .rodape strong {
-      color: #3e2723;
+      color: var(--ver-cor-primaria);
     }
 
     @media (max-width: 650px) {
@@ -324,6 +355,7 @@
 
       .total-box {
         font-size: 24px;
+        text-align: center;
       }
     }
   </style>
@@ -360,7 +392,7 @@
   </div>
 
   <div class="rodape">
-    Orçamento gerado por <strong>FS Orçamentos</strong>
+    Orçamento gerado por <strong id="rodape-nome-empresa">FS Orçamentos</strong>
   </div>
 </div>
 
@@ -424,6 +456,14 @@ function valorOuVazio(valor) {
   return valor && String(valor).trim() ? String(valor).trim() : '';
 }
 
+function normalizarTexto(valor) {
+  return String(valor || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
 function normalizarItem(item) {
   const descricao =
     item.descricao ||
@@ -465,6 +505,132 @@ function normalizarItem(item) {
   };
 }
 
+/* ==================== TEMA DO ORÇAMENTO ==================== */
+
+function obterTemaDoOrcamento(orcamento) {
+  return normalizarTexto(
+    orcamento?.tema_pdf ||
+    orcamento?.tema ||
+    orcamento?.theme ||
+    'original'
+  );
+}
+
+function coresDoTema(tema) {
+  const temas = {
+    original: {
+      primaria: '#3e2723',
+      destaque: '#ffc400',
+      fundo: '#efebe9',
+      textoTopo: '#ffffff',
+      fundoPagina: '#f1f3f6'
+    },
+    bw: {
+      primaria: '#111111',
+      destaque: '#000000',
+      fundo: '#f5f5f5',
+      textoTopo: '#ffffff',
+      fundoPagina: '#eeeeee'
+    },
+    preto: {
+      primaria: '#111111',
+      destaque: '#000000',
+      fundo: '#f5f5f5',
+      textoTopo: '#ffffff',
+      fundoPagina: '#eeeeee'
+    },
+    blue: {
+      primaria: '#0056b3',
+      destaque: '#00aaff',
+      fundo: '#e3f2fd',
+      textoTopo: '#ffffff',
+      fundoPagina: '#eef6ff'
+    },
+    azul: {
+      primaria: '#0056b3',
+      destaque: '#00aaff',
+      fundo: '#e3f2fd',
+      textoTopo: '#ffffff',
+      fundoPagina: '#eef6ff'
+    },
+    green: {
+      primaria: '#2e7d32',
+      destaque: '#81c784',
+      fundo: '#e8f5e9',
+      textoTopo: '#ffffff',
+      fundoPagina: '#f0faf1'
+    },
+    verde: {
+      primaria: '#2e7d32',
+      destaque: '#81c784',
+      fundo: '#e8f5e9',
+      textoTopo: '#ffffff',
+      fundoPagina: '#f0faf1'
+    },
+    yellow: {
+      primaria: '#f9a825',
+      destaque: '#ffc400',
+      fundo: '#fff8e1',
+      textoTopo: '#3e2723',
+      fundoPagina: '#fffaf0'
+    },
+    amarelo: {
+      primaria: '#f9a825',
+      destaque: '#ffc400',
+      fundo: '#fff8e1',
+      textoTopo: '#3e2723',
+      fundoPagina: '#fffaf0'
+    },
+    red: {
+      primaria: '#8b0000',
+      destaque: '#ff1717',
+      fundo: '#ffebee',
+      textoTopo: '#ffffff',
+      fundoPagina: '#fff1f1'
+    },
+    vermelho: {
+      primaria: '#8b0000',
+      destaque: '#ff1717',
+      fundo: '#ffebee',
+      textoTopo: '#ffffff',
+      fundoPagina: '#fff1f1'
+    }
+  };
+
+  return temas[tema] || temas.original;
+}
+
+function aplicarTemaVerHtml(orcamento) {
+  const tema = obterTemaDoOrcamento(orcamento);
+  const cor = coresDoTema(tema);
+
+  document.documentElement.style.setProperty('--ver-cor-primaria', cor.primaria);
+  document.documentElement.style.setProperty('--ver-cor-destaque', cor.destaque);
+  document.documentElement.style.setProperty('--ver-cor-fundo', cor.fundo);
+  document.documentElement.style.setProperty('--ver-cor-texto-topo', cor.textoTopo);
+  document.documentElement.style.setProperty('--ver-cor-pagina', cor.fundoPagina);
+
+  return cor;
+}
+
+/* ==================== CARREGAMENTO ==================== */
+
+function obterIdOrcamentoDoLink() {
+  const params = new URLSearchParams(window.location.search);
+  const idQuery = params.get('id');
+
+  if (idQuery) return idQuery;
+
+  const partes = window.location.pathname.split('/').filter(Boolean);
+  const ultimo = partes[partes.length - 1];
+
+  if (ultimo && ultimo !== 'ver.html' && ultimo !== 'ver') {
+    return ultimo;
+  }
+
+  return null;
+}
+
 async function carregarPerfilEmissor(usuarioId) {
   if (!usuarioId) return null;
 
@@ -487,6 +653,18 @@ async function carregarPerfilEmissor(usuarioId) {
   }
 }
 
+function preencherChipEmissor(elemento, texto) {
+  if (!elemento) return;
+
+  if (texto) {
+    elemento.innerText = texto;
+    elemento.style.display = 'inline-flex';
+  } else {
+    elemento.innerText = '';
+    elemento.style.display = 'none';
+  }
+}
+
 function preencherTopoEmpresaVer(orcamento, perfil) {
   const logoImg = document.getElementById('ver-logo-empresa');
   const logoPlaceholder = document.getElementById('ver-logo-placeholder');
@@ -496,6 +674,7 @@ function preencherTopoEmpresaVer(orcamento, perfil) {
   const whatsappEl = document.getElementById('ver-whatsapp-empresa');
   const cnpjEl = document.getElementById('ver-cnpj-empresa');
   const enderecoEl = document.getElementById('ver-endereco-empresa');
+  const rodapeEmpresa = document.getElementById('rodape-nome-empresa');
 
   const nomeEmpresa =
     valorOuVazio(perfil?.nome_empresa) ||
@@ -535,6 +714,10 @@ function preencherTopoEmpresaVer(orcamento, perfil) {
     consultorEl.innerText = `Responsável: ${consultor}`;
   }
 
+  if (rodapeEmpresa) {
+    rodapeEmpresa.innerText = nomeEmpresa;
+  }
+
   preencherChipEmissor(whatsappEl, telefone ? `WhatsApp: ${telefone}` : '');
   preencherChipEmissor(cnpjEl, cnpj ? `CNPJ/CPF: ${cnpj}` : '');
   preencherChipEmissor(enderecoEl, endereco ? `Endereço: ${endereco}` : '');
@@ -555,24 +738,11 @@ function preencherTopoEmpresaVer(orcamento, perfil) {
   document.title = `${nomeEmpresa} - ${orcamento?.assunto || 'Orçamento'}`;
 }
 
-function preencherChipEmissor(elemento, texto) {
-  if (!elemento) return;
-
-  if (texto) {
-    elemento.innerText = texto;
-    elemento.style.display = 'inline-flex';
-  } else {
-    elemento.innerText = '';
-    elemento.style.display = 'none';
-  }
-}
-
 async function carregarOrcamento() {
   const container = document.getElementById('conteudo-orcamento');
   const titulo = document.getElementById('titulo-orcamento');
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
+  const id = obterIdOrcamentoDoLink();
 
   if (!id) {
     titulo.innerText = 'Aviso';
@@ -624,6 +794,7 @@ async function carregarOrcamento() {
   }
 
   orcamentoAtual = data;
+  aplicarTemaVerHtml(data);
 
   perfilEmissorAtual = await carregarPerfilEmissor(data.usuario_id);
 
@@ -631,11 +802,16 @@ async function carregarOrcamento() {
   renderizarOrcamento(data);
 }
 
+/* ==================== RENDERIZAÇÃO ==================== */
+
 function renderizarOrcamento(orcamento) {
   const container = document.getElementById('conteudo-orcamento');
   const titulo = document.getElementById('titulo-orcamento');
 
+  aplicarTemaVerHtml(orcamento);
+
   const assunto = orcamento.assunto || 'Orçamento';
+
   const emissor =
     orcamento.consultor ||
     orcamento.responsavel ||
@@ -734,6 +910,8 @@ function renderizarOrcamento(orcamento) {
   `;
 }
 
+/* ==================== RESPOSTA DO CLIENTE ==================== */
+
 async function responderOrcamento(novoStatus) {
   if (!orcamentoAtual?.id) {
     alert('Orçamento não carregado.');
@@ -764,7 +942,11 @@ async function responderOrcamento(novoStatus) {
   if (error) {
     console.error('Erro ao atualizar status:', error);
     alert('Não foi possível atualizar o status do orçamento.');
-    botoes.forEach(btn => btn.disabled = false);
+
+    botoes.forEach(btn => {
+      btn.disabled = false;
+    });
+
     return;
   }
 
