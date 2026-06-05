@@ -1090,6 +1090,98 @@ async function alterarSenhaSegura() {
   alert('Senha alterada com sucesso.');
 }
 
+
+// ==================== EXCLUSÃO DE CONTA ====================
+
+function abrirModalExcluirConta() {
+  const input = document.getElementById('confirmar_excluir_conta');
+  const status = document.getElementById('status-excluir-conta');
+  const modal = document.getElementById('modal-excluir-conta');
+
+  if (input) input.value = '';
+
+  if (status) {
+    status.className = 'status-msg';
+    status.innerText = '';
+  }
+
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+function fecharModalExcluirConta() {
+  const modal = document.getElementById('modal-excluir-conta');
+
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+async function excluirMinhaConta() {
+  try {
+    const confirmacao = document.getElementById('confirmar_excluir_conta')?.value?.trim();
+
+    if (confirmacao !== 'EXCLUIR') {
+      mostrarStatus('status-excluir-conta', 'Digite EXCLUIR para confirmar.', 'erro');
+      return;
+    }
+
+    const confirmar = confirm(
+      'Tem certeza que deseja excluir sua conta definitivamente? Esta ação não poderá ser desfeita.'
+    );
+
+    if (!confirmar) return;
+
+    const session = await obterSessaoPainel();
+
+    if (!session) {
+      mostrarStatus('status-excluir-conta', 'Sessão expirada. Faça login novamente.', 'erro');
+      return;
+    }
+
+    mostrarStatus('status-excluir-conta', 'Excluindo conta, aguarde...', 'sucesso');
+
+    const { data, error } = await _supabase.functions.invoke('excluir-conta', {
+      body: {
+        confirmar: 'EXCLUIR'
+      }
+    });
+
+    if (error) {
+      console.error('Erro ao chamar função excluir-conta:', error);
+      mostrarStatus('status-excluir-conta', error.message || 'Erro ao excluir conta.', 'erro');
+      return;
+    }
+
+    if (!data?.ok) {
+      mostrarStatus('status-excluir-conta', data?.error || 'Não foi possível excluir a conta.', 'erro');
+      return;
+    }
+
+    localStorage.clear();
+
+    try {
+      await _supabase.auth.signOut();
+    } catch (errorSignOut) {
+      console.warn('Conta excluída, mas houve erro ao encerrar sessão:', errorSignOut);
+    }
+
+    alert('Conta excluída com sucesso.');
+
+    window.location.href = '/index.html';
+
+  } catch (error) {
+    console.error('Erro inesperado ao excluir conta:', error);
+    mostrarStatus('status-excluir-conta', 'Erro inesperado ao excluir conta.', 'erro');
+  }
+}
+
+window.abrirModalExcluirConta = abrirModalExcluirConta;
+window.fecharModalExcluirConta = fecharModalExcluirConta;
+window.excluirMinhaConta = excluirMinhaConta;
+
+
 // ==================== DASHBOARD ====================
 
 async function carregarDashboardPainel() {
@@ -1238,10 +1330,12 @@ document.addEventListener('click', event => {
   const modalPerfil = document.getElementById('modal-editar-perfil');
   const modalSenha = document.getElementById('modal-senha');
   const modalResponsavel = document.getElementById('modal-responsavel-interno');
+  const modalExcluirConta = document.getElementById('modal-excluir-conta');
 
   if (event.target === modalPerfil) fecharModalEditarPerfil();
   if (event.target === modalSenha) fecharModalSenha();
   if (event.target === modalResponsavel) fecharModalResponsavelInterno();
+  if (event.target === modalExcluirConta) fecharModalExcluirConta();
 });
 
 document.addEventListener('keydown', event => {
@@ -1249,6 +1343,7 @@ document.addEventListener('keydown', event => {
     fecharModalResponsavelInterno();
     fecharModalEditarPerfil();
     fecharModalSenha();
+    fecharModalExcluirConta();
   }
 });
 
@@ -1266,6 +1361,10 @@ window.fecharModalEditarPerfil = fecharModalEditarPerfil;
 window.abrirModalSenha = abrirModalSenha;
 window.fecharModalSenha = fecharModalSenha;
 window.alterarSenhaSegura = alterarSenhaSegura;
+
+window.abrirModalExcluirConta = abrirModalExcluirConta;
+window.fecharModalExcluirConta = fecharModalExcluirConta;
+window.excluirMinhaConta = excluirMinhaConta;
 
 window.abrirModalResponsavelInterno = abrirModalResponsavelInterno;
 window.fecharModalResponsavelInterno = fecharModalResponsavelInterno;

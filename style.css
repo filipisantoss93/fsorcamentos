@@ -1053,17 +1053,55 @@ body.gerador-aberto #btn-flutuante-gerador-global {
   inset: 0;
   background: rgba(0,0,0,0.78);
   display: none;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  z-index: 12000;
+  z-index: 20000;
   padding: 18px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
 }
 
 .modal-login-box {
-  width: 100%;
-  max-width: 410px;
+  width: min(100%, 430px);
+  max-height: none;
+  min-height: auto;
+  margin: 24px auto;
+  background: #f4ece1;
+  color: var(--fs-marrom);
+  border-radius: 18px;
+  border-top: 6px solid var(--fs-amarelo);
+  padding: 22px;
+  padding-bottom: 28px;
+  box-shadow: 0 22px 60px rgba(0,0,0,0.55);
   position: relative;
-  animation: loginSlideUp 0.25s ease;
+  box-sizing: border-box;
+}
+
+@media (max-width: 520px) {
+  .modal-login-overlay {
+    padding: 10px;
+    align-items: flex-start;
+  }
+
+  .modal-login-box {
+    width: 100%;
+    margin: 12px auto 28px auto;
+    padding: 18px 14px 24px;
+    border-radius: 16px;
+  }
+
+  .auth-aviso-gerador {
+    padding-top: 26px;
+  }
+
+  #auth-container {
+    padding: 16px !important;
+  }
+
+  #box-confirmacao-email {
+    margin-bottom: 12px;
+  }
 }
 
 .btn-fechar-login {
@@ -2819,4 +2857,61 @@ body:has(.painel-card) .container {
   background: #312e81 !important;
   color: #c7d2fe !important;
   border-color: #818cf8 !important;
+}
+
+/* Oculta login com Facebook temporariamente */
+#btn-login-facebook,
+.btn-login-facebook,
+[data-provider="facebook"],
+button[onclick*="facebook"],
+a[onclick*="facebook"] {
+  display: none !important;
+}
+
+/* ==================== HEADER INTELIGENTE FIXO ==================== */
+/*
+  Mantém o header disponível em qualquer ponto da página.
+  O JS do carregar-menu.js alterna entre .header-visivel e .header-oculto.
+*/
+#header-container {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 12000;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+  will-change: transform;
+}
+
+#header-container.header-visivel {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#header-container.header-oculto {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Evita que o conteúdo fique escondido atrás do header fixo */
+body {
+  padding-top: 118px;
+}
+
+body.gerando-pdf {
+  padding-top: 0 !important;
+}
+
+@media (max-width: 900px) {
+  body {
+    padding-top: 96px;
+  }
+}
+
+@media (max-width: 520px) {
+  body {
+    padding-top: 88px;
+  }
 }

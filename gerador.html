@@ -99,24 +99,34 @@
       inset: 0;
       background: rgba(0,0,0,0.78);
       display: none;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       z-index: 20000;
       padding: 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
     }
 
     .modal-login-box {
       width: min(100%, 430px);
-      max-height: 92vh;
-      overflow-y: auto;
+      max-height: none;
+      min-height: auto;
+      margin: 24px auto;
+      overflow: visible;
       background: #f4ece1;
       color: var(--fs-marrom);
       border-radius: 18px;
       border-top: 6px solid var(--fs-amarelo);
       padding: 22px;
+      padding-bottom: 28px;
       box-shadow: 0 22px 60px rgba(0,0,0,0.55);
       position: relative;
       box-sizing: border-box;
+    }
+
+    body.login-modal-aberto {
+      overflow-x: hidden;
     }
 
     .btn-fechar-login {
@@ -1072,6 +1082,33 @@
       text-decoration: none;
     }
 
+
+    @media (max-width: 520px) {
+      .modal-login-overlay {
+        padding: 10px;
+        align-items: flex-start;
+      }
+
+      .modal-login-box {
+        width: 100%;
+        margin: 12px auto 28px auto;
+        padding: 18px 14px 24px;
+        border-radius: 16px;
+      }
+
+      .auth-aviso-gerador {
+        padding-top: 26px;
+      }
+
+      #auth-container {
+        padding: 16px !important;
+      }
+
+      #box-confirmacao-email {
+        margin-bottom: 12px;
+      }
+    }
+
     @media (max-width: 1020px) {
       .gerador-layout {
         grid-template-columns: 1fr;
@@ -1268,7 +1305,7 @@
     <ins class="adsbygoogle"
       style="display:block"
       data-ad-client="ca-pub-5628949951885077"
-      data-ad-slot="1739813454"
+      data-ad-slot="3921369643"
       data-ad-format="auto"
       data-full-width-responsive="true"></ins>
   </div>
@@ -1455,7 +1492,7 @@
           <ins class="adsbygoogle"
             style="display:block"
             data-ad-client="ca-pub-5628949951885077"
-            data-ad-slot="5487486770"
+            data-ad-slot="9255107287"
             data-ad-format="auto"
             data-full-width-responsive="true"></ins>
         </div>
@@ -1603,7 +1640,7 @@
         <ins class="adsbygoogle"
           style="display:block"
           data-ad-client="ca-pub-5628949951885077"
-          data-ad-slot="1739813454"
+          data-ad-slot="1351046624"
           data-ad-format="auto"
           data-full-width-responsive="true"></ins>
       </div>
@@ -1613,7 +1650,8 @@
 
 <footer>
   &copy; 2026 FS Orçamentos |
-  <a href="privacidade.html">Privacidade</a>
+  <a href="/privacidade.html">Privacidade</a> |
+  <a href="/termos.html">Termos</a>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1655,11 +1693,17 @@ function abrirModalLoginGerador() {
   if (!modal) return;
 
   modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  document.body.classList.add('login-modal-aberto');
+
+  // Não travar o scroll do body aqui.
+  // Em celular, o modal precisa rolar para mostrar o botão inferior
+  // e o botão de reenviar e-mail de confirmação.
+  document.body.style.overflow = '';
 
   setTimeout(() => {
+    modal.scrollTop = 0;
     const email = document.getElementById('auth-email');
-    if (email) email.focus();
+    if (email) email.focus({ preventScroll: true });
   }, 250);
 }
 
@@ -1669,6 +1713,7 @@ function fecharModalLoginGerador() {
   if (!modal) return;
 
   modal.style.display = 'none';
+  document.body.classList.remove('login-modal-aberto');
   document.body.style.overflow = '';
 }
 

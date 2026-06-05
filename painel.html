@@ -224,6 +224,7 @@
 
     .btn-editar-perfil,
     .btn-senha,
+    .btn-excluir-conta,
     .btn-salvar,
     .btn-cancelar,
     .btn-confirmar,
@@ -252,6 +253,17 @@
     .btn-senha {
       background: var(--fs-azul);
       color: #fff;
+    }
+
+    .btn-excluir-conta {
+      background: var(--fs-vermelho);
+      color: #fff;
+      border: 1px solid #b91c1c;
+    }
+
+    .btn-excluir-conta:hover {
+      background: #b91c1c;
+      transform: translateY(-1px);
     }
 
     .btn-salvar,
@@ -618,6 +630,7 @@
 
       .btn-editar-perfil,
       .btn-senha,
+      .btn-excluir-conta,
       .btn-salvar,
       .btn-cancelar,
       .btn-confirmar,
@@ -777,6 +790,10 @@
 
             <button type="button" class="btn-senha" onclick="abrirModalSenha()">
               🔐 Alterar senha
+            </button>
+
+            <button type="button" class="btn-excluir-conta" onclick="abrirModalExcluirConta()">
+              🗑️ Excluir conta
             </button>
           </div>
         </div>
@@ -1005,13 +1022,42 @@
         </button>
       </div>
     </div>
-  </div>
 
+  </div>
+<div id="modal-excluir-conta" class="modal-overlay-painel">
+  <div class="modal-painel pequeno">
+    <h2>Excluir conta</h2>
+
+    <div class="dica-seguranca" style="background:#f8d7da;color:#721c24;">
+      Esta ação é permanente. Sua conta, perfil, orçamentos, notificações, responsáveis e logo serão removidos.
+    </div>
+
+    <div class="campo-painel">
+      <label>Digite EXCLUIR para confirmar</label>
+      <input type="text" id="confirmar_excluir_conta" placeholder="EXCLUIR">
+    </div>
+
+    <div id="status-excluir-conta" class="status-msg"></div>
+
+    <div class="botoes-modal-painel">
+      <button type="button" class="btn-cancelar" onclick="fecharModalExcluirConta()">
+        Cancelar
+      </button>
+
+      <button type="button" class="btn-confirmar" style="background:#dc2626;" onclick="excluirMinhaConta()">
+        Excluir definitivamente
+      </button>
+    </div>
+  </div>
 </div>
+</div>
+
+
 
 <footer>
   &copy; 2026 FS Orçamentos |
-  <a href="privacidade.html">Privacidade</a>
+  <a href="/privacidade.html">Privacidade</a> |
+  <a href="/termos.html">Termos</a>
 </footer>
 
 <button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">

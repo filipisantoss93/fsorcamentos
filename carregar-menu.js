@@ -91,6 +91,10 @@ async function carregarMenu(sessionRecebida = undefined) {
 
       configurarLinksDoHeader();
       marcarLinkAtivoHeader();
+
+      setTimeout(() => {
+        configurarHeaderInteligente();
+      }, 150);
     }
 
     let session = sessionRecebida;
@@ -101,6 +105,10 @@ async function carregarMenu(sessionRecebida = undefined) {
 
     await atualizarHeaderUsuario(session || null);
     await controlarBotaoFlutuanteGeradorGlobal(session || null);
+
+    setTimeout(() => {
+      configurarHeaderInteligente();
+    }, 150);
 
   } catch (error) {
     console.error('Erro ao carregar menu:', error);
@@ -162,6 +170,8 @@ async function atualizarHeaderUsuario(session) {
   let nomeFinal =
     localStorage.getItem('usuario_nome') ||
     session.user.user_metadata?.nome ||
+    session.user.user_metadata?.full_name ||
+    session.user.user_metadata?.name ||
     session.user.email?.split('@')[0] ||
     'Usuário';
 
@@ -169,7 +179,7 @@ async function atualizarHeaderUsuario(session) {
     if (window._supabase) {
       const { data: perfil, error } = await _supabase
         .from('perfis')
-        .select('nome, nome_empresa, plano')
+        .select('nome, nome_empresa, plano, plano_status, plano_expira_em')
         .eq('id', session.user.id)
         .maybeSingle();
 
@@ -182,6 +192,18 @@ async function atualizarHeaderUsuario(session) {
         localStorage.setItem('usuario_nome', nomeFinal);
         localStorage.setItem('usuario_email', session.user.email || '');
         localStorage.setItem('usuario_plano', perfil.plano || 'gratis');
+
+        if (perfil.plano_status) {
+          localStorage.setItem('usuario_plano_status', perfil.plano_status);
+        } else {
+          localStorage.removeItem('usuario_plano_status');
+        }
+
+        if (perfil.plano_expira_em) {
+          localStorage.setItem('usuario_plano_expira_em', perfil.plano_expira_em);
+        } else {
+          localStorage.removeItem('usuario_plano_expira_em');
+        }
       } else {
         localStorage.setItem('usuario_nome', nomeFinal);
         localStorage.setItem('usuario_email', session.user.email || '');
@@ -231,6 +253,11 @@ async function deslogar() {
     localStorage.removeItem('usuario_plano');
     localStorage.removeItem('usuario_plano_status');
     localStorage.removeItem('usuario_plano_expira_em');
+    localStorage.removeItem('nome_empresa');
+    localStorage.removeItem('telefone_empresa');
+    localStorage.removeItem('endereco_empresa');
+    localStorage.removeItem('cnpj_empresa');
+    localStorage.removeItem('foto_url');
 
     removerBotaoFlutuanteGeradorGlobal();
 
@@ -394,6 +421,82 @@ async function abrirGeradorAutomaticamenteSeSolicitado() {
 }
 
 /* =========================
+   HEADER INTELIGENTE AO ROLAR
+========================= */
+/*
+  Regra:
+  - Header fixo pelo CSS.
+  - Mostra quando rola para baixo.
+  - Oculta quando rola para cima.
+  - Sempre mostra no topo.
+*/
+
+let fsUltimaPosicaoScroll = window.scrollY || 0;
+let fsHeaderScrollConfigurado = false;
+let fsHeaderTick = false;
+
+function configurarHeaderInteligente() {
+  const headerContainer = document.getElementById('header-container');
+
+  if (!headerContainer) return;
+
+  headerContainer.classList.add('header-visivel');
+  headerContainer.classList.remove('header-oculto');
+
+  if (fsHeaderScrollConfigurado) return;
+
+  fsHeaderScrollConfigurado = true;
+  fsUltimaPosicaoScroll = window.scrollY || 0;
+
+  window.addEventListener('scroll', () => {
+    if (fsHeaderTick) return;
+
+    fsHeaderTick = true;
+
+    window.requestAnimationFrame(() => {
+      controlarHeaderInteligente();
+      fsHeaderTick = false;
+    });
+  }, { passive: true });
+}
+
+function controlarHeaderInteligente() {
+  const headerContainer = document.getElementById('header-container');
+
+  if (!headerContainer) return;
+
+  const posicaoAtual =
+    window.scrollY ||
+    document.documentElement.scrollTop ||
+    0;
+
+  const diferenca = posicaoAtual - fsUltimaPosicaoScroll;
+
+  if (posicaoAtual <= 10) {
+    headerContainer.classList.add('header-visivel');
+    headerContainer.classList.remove('header-oculto');
+    fsUltimaPosicaoScroll = posicaoAtual;
+    return;
+  }
+
+  if (Math.abs(diferenca) < 6) {
+    return;
+  }
+
+  if (diferenca > 0) {
+    // Rolando para baixo: mostra header
+    headerContainer.classList.add('header-oculto');
+    headerContainer.classList.remove('header-visivel');
+  } else {
+    // Rolando para cima: oculta header
+    headerContainer.classList.add('header-visivel');
+    headerContainer.classList.remove('header-oculto');
+  }
+
+  fsUltimaPosicaoScroll = posicaoAtual;
+}
+
+/* =========================
    INICIALIZAÇÃO
 ========================= */
 
@@ -403,6 +506,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
 
+  setTimeout(() => {
+    configurarHeaderInteligente();
+  }, 500);
+
   if (window._supabase) {
     _supabase.auth.onAuthStateChange(async (event, session) => {
       await atualizarHeaderUsuario(session || null);
@@ -411,6 +518,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!session) {
         removerBotaoFlutuanteGeradorGlobal();
       }
+
+      setTimeout(() => {
+        configurarHeaderInteligente();
+      }, 150);
     });
   }
 });
@@ -426,3 +537,5 @@ window.toggleMenuMobile = toggleMenuMobile;
 window.deslogar = deslogar;
 window.abrirGeradorGlobal = abrirGeradorGlobal;
 window.controlarBotaoFlutuanteGeradorGlobal = controlarBotaoFlutuanteGeradorGlobal;
+window.configurarHeaderInteligente = configurarHeaderInteligente;
+window.controlarHeaderInteligente = controlarHeaderInteligente;
