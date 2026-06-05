@@ -4,6 +4,7 @@ let currentSlide = 0;
 let dadosEmpresaLogada = null;
 let orcamentoAtualSalvoId = window.orcamentoAtualSalvoId || null;
 let linkOrcamentoAtual = null;
+let gerandoPdfAgora = false;
 
 // ==================== HELPERS DE CONTROLE DO ORÇAMENTO SALVO ====================
 
@@ -73,13 +74,122 @@ document.addEventListener('DOMContentLoaded', async () => {
         await carregarDadosEmpresaLogada();
         carregarEstadoSalvo();
     }
+
+    abrirGeradorAutomaticamenteSeSolicitado();
 });
+
+// ==================== GERADOR INLINE ====================
+
+async function usuarioTemSessaoAtiva() {
+    if (!window._supabase) return false;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    return !!session?.user?.id;
+}
+
+async function abrirModalGerador() {
+    const temSessao = await usuarioTemSessaoAtiva();
+
+    if (!temSessao) {
+        if (typeof abrirModalLogin === 'function') {
+            abrirModalLogin();
+        } else {
+            window.location.href = '/painel.html';
+        }
+
+        return;
+    }
+
+    const secao = document.getElementById('secao-gerador-orcamento');
+    const modalAntigo = document.getElementById('modal-gerador-orcamento');
+    const formulario = document.getElementById('formulario-orcamento');
+
+    if (secao) {
+        secao.classList.add('ativo');
+        secao.style.display = 'block';
+    }
+
+    if (modalAntigo) {
+        modalAntigo.style.display = 'flex';
+        modalAntigo.classList.add('ativo');
+    }
+
+    if (formulario) {
+        formulario.style.display = 'block';
+    }
+
+    document.body.classList.add('gerador-aberto');
+    document.body.classList.remove('modal-aberto');
+    document.body.style.overflow = '';
+
+    await carregarDadosEmpresaLogada();
+
+    if (typeof carregarDadosEmissorNoModal === 'function') {
+        await carregarDadosEmissorNoModal();
+    }
+
+    setTimeout(() => {
+        const alvo = secao || modalAntigo || formulario;
+
+        if (alvo) {
+            alvo.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, 100);
+}
+
+function fecharModalGerador() {
+    const secao = document.getElementById('secao-gerador-orcamento');
+    const modalAntigo = document.getElementById('modal-gerador-orcamento');
+    const formulario = document.getElementById('formulario-orcamento');
+
+    if (secao) {
+        secao.classList.remove('ativo');
+        secao.style.display = 'none';
+    }
+
+    if (modalAntigo) {
+        modalAntigo.style.display = 'none';
+        modalAntigo.classList.remove('ativo');
+        modalAntigo.classList.remove('active');
+        modalAntigo.setAttribute('aria-hidden', 'true');
+    }
+
+    if (formulario) {
+        formulario.style.display = 'none';
+    }
+
+    document.body.classList.remove('gerador-aberto');
+    document.body.classList.remove('modal-aberto');
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+}
+
+function abrirGeradorAutomaticamenteSeSolicitado() {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('abrirGerador') !== '1') return;
+
+    setTimeout(async () => {
+        await abrirModalGerador();
+
+        const novaUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, novaUrl);
+    }, 700);
+}
 
 // ==================== MENU E SCROLL ====================
 
 function toggleMenuMobile() {
     const menu = document.querySelector('.nav-menu');
+    const menuLinha = document.querySelector('.header-menu-linha');
+
     if (menu) menu.classList.toggle('active');
+    if (menuLinha) menuLinha.classList.toggle('menu-aberto');
 }
 
 window.addEventListener('scroll', () => {
@@ -432,18 +542,48 @@ function setTheme(tema) {
 
 function obterCoresTema(temaAtivo) {
     const coresTema = {
-        original: { primaria: '#3e2723', destaque: '#ffc400', fundo: '#efebe9', textoHeader: '#ffffff' },
-        yellow: { primaria: '#f9a825', destaque: '#ffc400', fundo: '#fff8e1', textoHeader: '#ffffff' },
-        red: { primaria: '#4a0000', destaque: '#ff0000', fundo: '#ffebee', textoHeader: '#ffffff' },
-        bw: { primaria: '#ffffff', destaque: '#000000', fundo: '#f9f9f9', textoHeader: '#000000' },
-        blue: { primaria: '#0056b3', destaque: '#00aaff', fundo: '#e3f2fd', textoHeader: '#ffffff' },
-        green: { primaria: '#2e7d32', destaque: '#81c784', fundo: '#e8f5e9', textoHeader: '#ffffff' }
+        original: {
+            primaria: '#3e2723',
+            destaque: '#ffc400',
+            fundo: '#efebe9',
+            textoHeader: '#ffffff'
+        },
+        yellow: {
+            primaria: '#f9a825',
+            destaque: '#ffc400',
+            fundo: '#fff8e1',
+            textoHeader: '#ffffff'
+        },
+        red: {
+            primaria: '#4a0000',
+            destaque: '#ff0000',
+            fundo: '#ffebee',
+            textoHeader: '#ffffff'
+        },
+        bw: {
+            primaria: '#ffffff',
+            destaque: '#000000',
+            fundo: '#f9f9f9',
+            textoHeader: '#000000'
+        },
+        blue: {
+            primaria: '#0056b3',
+            destaque: '#00aaff',
+            fundo: '#e3f2fd',
+            textoHeader: '#ffffff'
+        },
+        green: {
+            primaria: '#2e7d32',
+            destaque: '#81c784',
+            fundo: '#e8f5e9',
+            textoHeader: '#ffffff'
+        }
     };
 
     return coresTema[temaAtivo] || coresTema.original;
 }
 
-// ==================== GERAÇÃO DO PDF ====================
+// ==================== GERAÇÃO DA PRÉVIA ====================
 
 async function gerarPrevia() {
     const btn = document.getElementById('btn-previa');
@@ -480,31 +620,28 @@ async function gerarPrevia() {
             return;
         }
 
+        const itens = coletarItensDoOrcamento();
+
+        if (!itens.length) {
+            alert('Adicione pelo menos um item ao orçamento.');
+            return;
+        }
+
         const temaAtivo = obterTemaAtual();
         const cor = obterCoresTema(temaAtivo);
 
         let linhasHtml = '';
 
-        document.querySelectorAll('.item-row:not(.header-labels)').forEach((row, i) => {
-            const d = row.querySelector('.desc-cell')?.value || '-';
-            const q = row.querySelector('.qtd')?.value || '0';
-            const v = obterValorCampoMoeda(row.querySelector('.valor')) || 0;
-            const s = row.querySelector('.subtotal')?.value || 'R$ 0,00';
-
+        itens.forEach((item, i) => {
             linhasHtml += `
                 <tr style="background:${i % 2 === 0 ? '#fff' : '#fafafa'}; border-bottom:1px solid #eee;">
-                    <td style="padding:10px; font-size:12px;">${escaparHtml(d)}</td>
-                    <td style="padding:10px; text-align:center; font-size:12px;">${escaparHtml(q)}</td>
-                    <td style="padding:10px; font-size:12px;">R$ ${formatarMoeda(v)}</td>
-                    <td style="padding:10px; text-align:right; font-weight:bold; font-size:12px;">${escaparHtml(s)}</td>
+                    <td style="padding:10px; font-size:12px;">${escaparHtml(item.descricao)}</td>
+                    <td style="padding:10px; text-align:center; font-size:12px;">${escaparHtml(item.qtd)}</td>
+                    <td style="padding:10px; font-size:12px;">R$ ${formatarMoeda(item.valor)}</td>
+                    <td style="padding:10px; text-align:right; font-weight:bold; font-size:12px;">R$ ${formatarMoeda(item.subtotal)}</td>
                 </tr>
             `;
         });
-
-        if (!linhasHtml) {
-            alert('Adicione pelo menos um item ao orçamento.');
-            return;
-        }
 
         const consultorSelecionado = obterConsultorSelecionado(empresa);
 
@@ -523,9 +660,10 @@ async function gerarPrevia() {
         `;
 
         const extrasClienteHtml = montarExtrasClienteHtml();
+        const totalTexto = document.getElementById('total-geral')?.innerText || '0,00';
 
         const template = `
-            <div style="width:794px; min-height:1123px; box-sizing:border-box; padding:30px; background:#ffffff; font-family:Arial, sans-serif; color:#333; display:flex; flex-direction:column;">
+            <div class="pdf-documento-a4" style="width:794px; min-height:1123px; box-sizing:border-box; padding:30px; background:#ffffff; font-family:Arial, sans-serif; color:#333; display:flex; flex-direction:column;">
                 
                 <div style="border-bottom:3px solid ${cor.destaque}; background:${cor.primaria}; padding:20px; margin:-30px -30px 20px -30px; color:${cor.textoHeader}; display:flex; justify-content:space-between; align-items:center; border:${temaAtivo === 'bw' ? '1px solid #ddd' : 'none'}">
                     <div>
@@ -568,7 +706,7 @@ async function gerarPrevia() {
                         <div style="display:inline-block; background:${cor.fundo}; padding:15px; border:1px solid #ddd; border-radius:4px;">
                             <span style="font-size:10px; color:#666;">VALOR TOTAL</span><br>
                             <strong style="font-size:18px; color:${cor.destaque === '#000000' ? '#000' : cor.primaria}">
-                                R$ ${escaparHtml(document.getElementById('total-geral')?.innerText || '0,00')}
+                                R$ ${escaparHtml(totalTexto)}
                             </strong>
                         </div>
                     </div>
@@ -650,6 +788,8 @@ function montarExtrasClienteHtml() {
 }
 
 function autoUpdatePreview() {
+    if (gerandoPdfAgora) return;
+
     const area = document.getElementById('area-previa');
 
     if (area && area.style.display === 'block') {
@@ -657,120 +797,178 @@ function autoUpdatePreview() {
     }
 }
 
+// ==================== BAIXAR PDF CORRIGIDO ====================
+
 function aguardarRenderizacaoPDF(container) {
-  return new Promise(resolve => {
-    const imagens = Array.from(container.querySelectorAll('img'));
+    return new Promise(resolve => {
+        const imagens = Array.from(container.querySelectorAll('img'));
 
-    if (!imagens.length) {
-      requestAnimationFrame(() => {
-        setTimeout(resolve, 600);
-      });
-      return;
-    }
+        if (!imagens.length) {
+            requestAnimationFrame(() => {
+                setTimeout(resolve, 500);
+            });
+            return;
+        }
 
-    let finalizadas = 0;
+        let finalizadas = 0;
 
-    function finalizar() {
-      finalizadas++;
+        function finalizar() {
+            finalizadas++;
 
-      if (finalizadas >= imagens.length) {
-        requestAnimationFrame(() => {
-          setTimeout(resolve, 600);
+            if (finalizadas >= imagens.length) {
+                requestAnimationFrame(() => {
+                    setTimeout(resolve, 500);
+                });
+            }
+        }
+
+        imagens.forEach(img => {
+            if (img.complete) {
+                finalizar();
+            } else {
+                img.onload = finalizar;
+                img.onerror = finalizar;
+            }
         });
-      }
-    }
-
-    imagens.forEach(img => {
-      if (img.complete) {
-        finalizar();
-      } else {
-        img.onload = finalizar;
-        img.onerror = finalizar;
-      }
     });
-  });
+}
+
+function criarCloneParaPdf(elementoOriginal) {
+    const wrapper = document.createElement('div');
+
+    wrapper.id = 'fs-pdf-render-area';
+    wrapper.style.position = 'fixed';
+    wrapper.style.left = '0';
+    wrapper.style.top = '0';
+    wrapper.style.width = '794px';
+    wrapper.style.minHeight = '1123px';
+    wrapper.style.background = '#ffffff';
+    wrapper.style.zIndex = '-1';
+    wrapper.style.pointerEvents = 'none';
+    wrapper.style.overflow = 'visible';
+
+    const clone = elementoOriginal.cloneNode(true);
+
+    clone.style.width = '794px';
+    clone.style.maxWidth = '794px';
+    clone.style.minHeight = '1123px';
+    clone.style.margin = '0';
+    clone.style.boxShadow = 'none';
+    clone.style.transform = 'none';
+    clone.style.background = '#ffffff';
+
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
+    return {
+        wrapper,
+        clone
+    };
 }
 
 async function baixarPDF() {
-  const conteudoPdf = document.getElementById('conteudo-pdf');
-  const areaPrevia = document.getElementById('area-previa');
+    if (gerandoPdfAgora) return;
 
-  if (!conteudoPdf) {
-    alert('Área do PDF não encontrada.');
-    return;
-  }
+    const conteudoPdf = document.getElementById('conteudo-pdf');
+    const areaPrevia = document.getElementById('area-previa');
 
-  if (!conteudoPdf.innerHTML.trim()) {
-    await gerarPrevia();
-  }
-
-  if (!conteudoPdf.innerHTML.trim()) {
-    alert('Gere a pré-visualização antes de baixar o PDF.');
-    return;
-  }
-
-  if (usuarioPodeSalvarOrcamentoLocal()) {
-    await salvarOrcamentoNoBanco('download_pdf');
-  }
-
-  const titulo = document.getElementById('titulo')?.value || 'orcamento';
-
-  const nomeArquivo = titulo
-    .trim()
-    .replace(/[^\wÀ-ÿ\s-]/g, '')
-    .replace(/\s+/g, '_')
-    .toLowerCase() || 'orcamento';
-
-  const elementoPdf = conteudoPdf.firstElementChild || conteudoPdf;
-
-  if (areaPrevia) {
-    areaPrevia.style.display = 'block';
-  }
-
-  conteudoPdf.style.display = 'block';
-
-  document.body.classList.add('gerando-pdf');
-
-  await aguardarRenderizacaoPDF(elementoPdf);
-
-  const opt = {
-    margin: 0,
-    filename: `${nomeArquivo}.pdf`,
-    image: {
-      type: 'jpeg',
-      quality: 0.98
-    },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: 794,
-      windowHeight: 1123
-    },
-    jsPDF: {
-      unit: 'px',
-      format: [794, 1123],
-      orientation: 'portrait'
-    },
-    pagebreak: {
-      mode: ['avoid-all', 'css', 'legacy']
+    if (!conteudoPdf) {
+        alert('Área do PDF não encontrada.');
+        return;
     }
-  };
 
-  try {
-    await html2pdf()
-      .set(opt)
-      .from(elementoPdf)
-      .save();
-  } catch (error) {
-    console.error('Erro ao gerar PDF:', error);
-    alert('Não foi possível gerar o PDF.');
-  } finally {
-    document.body.classList.remove('gerando-pdf');
-  }
+    if (!conteudoPdf.innerHTML.trim()) {
+        await gerarPrevia();
+    }
+
+    if (!conteudoPdf.innerHTML.trim()) {
+        alert('Gere a pré-visualização antes de baixar o PDF.');
+        return;
+    }
+
+    const elementoOriginal = conteudoPdf.firstElementChild || conteudoPdf;
+
+    if (!elementoOriginal) {
+        alert('Conteúdo do PDF não encontrado.');
+        return;
+    }
+
+    if (usuarioPodeSalvarOrcamentoLocal()) {
+        await salvarOrcamentoNoBanco('download_pdf');
+    }
+
+    const titulo = document.getElementById('titulo')?.value || 'orcamento';
+
+    const nomeArquivo = titulo
+        .trim()
+        .replace(/[^\wÀ-ÿ\s-]/g, '')
+        .replace(/\s+/g, '_')
+        .toLowerCase() || 'orcamento';
+
+    if (areaPrevia) {
+        areaPrevia.style.display = 'block';
+    }
+
+    conteudoPdf.style.display = 'block';
+
+    gerandoPdfAgora = true;
+    document.body.classList.add('gerando-pdf');
+
+    let areaTemporaria = null;
+
+    try {
+        areaTemporaria = criarCloneParaPdf(elementoOriginal);
+
+        await aguardarRenderizacaoPDF(areaTemporaria.clone);
+
+        const alturaConteudo = Math.max(
+            1123,
+            areaTemporaria.clone.scrollHeight,
+            areaTemporaria.clone.offsetHeight
+        );
+
+        const opt = {
+            margin: 0,
+            filename: `${nomeArquivo}.pdf`,
+            image: {
+                type: 'jpeg',
+                quality: 0.98
+            },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                scrollX: 0,
+                scrollY: 0,
+                width: 794,
+                height: alturaConteudo,
+                windowWidth: 794,
+                windowHeight: alturaConteudo
+            },
+            jsPDF: {
+                unit: 'px',
+                format: [794, 1123],
+                orientation: 'portrait'
+            }
+        };
+
+        await html2pdf()
+            .set(opt)
+            .from(areaTemporaria.clone)
+            .save();
+
+    } catch (error) {
+        console.error('Erro ao gerar PDF:', error);
+        alert('Não foi possível gerar o PDF.');
+    } finally {
+        if (areaTemporaria?.wrapper) {
+            areaTemporaria.wrapper.remove();
+        }
+
+        gerandoPdfAgora = false;
+        document.body.classList.remove('gerando-pdf');
+    }
 }
 
 // ==================== SALVAMENTO E ENVIO (WPP / BANCO) ====================
