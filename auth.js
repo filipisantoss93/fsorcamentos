@@ -1238,9 +1238,7 @@ function inserirBotoesSociaisLogin() {
 -->
 
 <div class="divisor-login">
-
-  <span>RECOMENDADO</span>
-
+  <span>ou entre fom E-mail</span>
 </div>
   `;
 
