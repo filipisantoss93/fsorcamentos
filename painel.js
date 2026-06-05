@@ -25,13 +25,14 @@ if (window._supabase) {
   _supabase.auth.onAuthStateChange(async (event, session) => {
     if (session) {
       await inicializarPainel(session);
-    } else {
-      painelJaCarregado = false;
-      perfilAtual = null;
-      responsaveisCache = [];
-      atualizarPainelAssinaturaBasico(null);
-      mostrarAreaLoginPainel();
+      return;
     }
+
+    painelJaCarregado = false;
+    perfilAtual = null;
+    responsaveisCache = [];
+    atualizarPainelAssinaturaBasico(null);
+    mostrarAreaLoginPainel();
   });
 }
 
@@ -41,6 +42,9 @@ async function inicializarPainel(session) {
   await carregarPerfil();
   await carregarResponsaveis();
   configurarUploadLogo();
+
+  garantirDashboardNoHtml();
+  atualizarCardPlano(perfilAtual);
 
   await carregarDashboardPainel();
   await carregarUltimosOrcamentosPainel();
@@ -179,6 +183,11 @@ function mostrarStatus(id, mensagem, tipo = 'sucesso') {
   }
 }
 
+function atualizarTexto(id, valor) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = valor;
+}
+
 // ==================== CONTROLE DE TELA ====================
 
 function mostrarAreaLoginPainel() {
@@ -215,13 +224,25 @@ async function obterSessaoPainel() {
 // ==================== PLANO / ASSINATURA ====================
 
 function usuarioJaTemPlanoPago(perfil) {
-  const plano = normalizarPlanoPainel(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis');
-  const status = normalizarPlanoPainel(perfil?.plano_status || localStorage.getItem('usuario_plano_status') || 'ativo');
+  const plano = normalizarPlanoPainel(
+    perfil?.plano ||
+    localStorage.getItem('usuario_plano') ||
+    'gratis'
+  );
+
+  const status = normalizarPlanoPainel(
+    perfil?.plano_status ||
+    localStorage.getItem('usuario_plano_status') ||
+    'ativo'
+  );
 
   if (plano === 'premium') return true;
 
   if (plano === 'basico' && status !== 'cancelado' && status !== 'expirado') {
-    const dias = diasAteExpirar(perfil?.plano_expira_em || localStorage.getItem('usuario_plano_expira_em'));
+    const dias = diasAteExpirar(
+      perfil?.plano_expira_em ||
+      localStorage.getItem('usuario_plano_expira_em')
+    );
 
     if (dias === null) return true;
 
@@ -287,7 +308,7 @@ function montarAvisoPlano(perfil) {
   if (dias !== null && dias <= 7) {
     return {
       tipo: 'alerta',
-      texto: `Seu plano vence em ${dias === 0 ? 'hoje' : `${dias} dia(s)`}. Renove para evitar bloqueio dos recursos pagos.`
+      texto: `Seu plano vence ${dias === 0 ? 'hoje' : `em ${dias} dia(s)`}. Renove para evitar bloqueio dos recursos pagos.`
     };
   }
 
@@ -329,6 +350,7 @@ function atualizarCardPlano(perfil) {
 
 async function carregarPerfil() {
   const session = await obterSessaoPainel();
+
   if (!session) {
     mostrarAreaLoginPainel();
     return;
@@ -401,6 +423,8 @@ function preencherCamposEstaticos(data, session) {
 
   if (data?.plano_status) {
     localStorage.setItem('usuario_plano_status', data.plano_status);
+  } else {
+    localStorage.removeItem('usuario_plano_status');
   }
 
   if (data?.plano_expira_em) {
@@ -875,13 +899,6 @@ async function salvarResponsavel() {
 
   fecharModalResponsavelInterno();
 
-  if (!perfilAtual?.nome) {
-    perfilAtual = {
-      ...perfilAtual,
-      nome
-    };
-  }
-
   preencherSelectResponsaveis();
 
   const select = document.getElementById('responsavel_selecionado');
@@ -1008,6 +1025,48 @@ function garantirDashboardNoHtml() {
   const container = document.querySelector('.painel-container');
   if (!container) return;
 
+  const estilo = document.createElement('style');
+  estilo.innerHTML = `
+    .painel-plano-aviso {
+      display: none;
+      margin-bottom: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .painel-plano-aviso.plano-gratis {
+      display: block;
+      background: #fff3cd;
+      color: #5d4037;
+      border-left: 6px solid #ffc400;
+    }
+
+    .painel-plano-aviso.plano-alerta {
+      display: block;
+      background: #fff7ed;
+      color: #9a3412;
+      border-left: 6px solid #f97316;
+    }
+
+    .painel-plano-aviso.plano-erro {
+      display: block;
+      background: #fff1f1;
+      color: #991b1b;
+      border-left: 6px solid #dc2626;
+    }
+
+    .painel-plano-aviso.plano-ok {
+      display: block;
+      background: #eaf7ed;
+      color: #14532d;
+      border-left: 6px solid #22c55e;
+    }
+  `;
+  document.head.appendChild(estilo);
+
   const painelAviso = document.querySelector('.painel-aviso');
 
   const dashboard = document.createElement('section');
@@ -1016,7 +1075,7 @@ function garantirDashboardNoHtml() {
   dashboard.innerHTML = `
     <h2>Resumo da Conta</h2>
 
-    <div id="painel-plano-aviso" class="painel-plano-aviso" style="display:none;"></div>
+    <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
 
     <div class="perfil-dados-grid" style="margin-bottom:18px;">
       <div class="info-card">
@@ -1079,18 +1138,14 @@ function garantirDashboardNoHtml() {
     </div>
   `;
 
-  const primeiroCardDados = container.querySelector('.painel-card');
-  if (primeiroCardDados) {
-    primeiroCardDados.insertAdjacentElement('afterend', ultimos);
-  } else {
-    container.appendChild(ultimos);
-  }
+  dashboard.insertAdjacentElement('afterend', ultimos);
 
   dashboardJaCriado = true;
 }
 
 async function carregarDashboardPainel() {
   garantirDashboardNoHtml();
+  atualizarCardPlano(perfilAtual);
 
   const session = await obterSessaoPainel();
   if (!session) return;
@@ -1129,11 +1184,6 @@ async function carregarDashboardPainel() {
   atualizarTexto('dash-valor-aprovado-mes', formatarMoedaPainel(valorAprovadoMes));
   atualizarTexto('dash-taxa-aprovacao', `${taxaAprovacao}%`);
   atualizarTexto('dash-atualizado-em', formatarDataHoraPainel(new Date().toISOString()));
-}
-
-function atualizarTexto(id, valor) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = valor;
 }
 
 async function carregarUltimosOrcamentosPainel() {
@@ -1184,18 +1234,23 @@ async function carregarUltimosOrcamentosPainel() {
               <td style="padding:10px; border-bottom:1px solid #eee;">
                 ${o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-'}
               </td>
+
               <td style="padding:10px; border-bottom:1px solid #eee;">
                 ${escaparHtmlPainel(o.cliente_nome || '-')}
               </td>
+
               <td style="padding:10px; border-bottom:1px solid #eee;">
                 ${escaparHtmlPainel(o.assunto || '-')}
               </td>
+
               <td style="padding:10px; border-bottom:1px solid #eee;">
                 ${escaparHtmlPainel(statusOrcamentoLabel(o.status))}
               </td>
+
               <td style="padding:10px; border-bottom:1px solid #eee;">
                 ${escaparHtmlPainel(o.forma_pagamento || '-')}
               </td>
+
               <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">
                 ${formatarMoedaPainel(o.total)}
               </td>
