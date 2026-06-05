@@ -8,17 +8,14 @@
 
   <meta name="description" content="Gere orçamentos profissionais em PDF com dados da empresa, logo, itens, total, observações e envio por WhatsApp.">
   <meta name="robots" content="index, follow">
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
-    crossorigin="anonymous"></script>
-
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
@@ -31,8 +28,12 @@
       --fs-verde: #25d366;
       --fs-azul: #2563eb;
       --fs-vermelho: #dc2626;
-      --fs-texto: #3e2723;
       --fs-borda: #e0d6c8;
+      --fs-texto: #3e2723;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -40,6 +41,11 @@
         radial-gradient(circle at top left, rgba(255,196,0,0.16), transparent 30%),
         linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #btn-flutuante-gerador-global {
+      display: none !important;
     }
 
     body.gerando-pdf {
@@ -48,12 +54,30 @@
 
     body.gerando-pdf #header-container,
     body.gerando-pdf .gerador-hero,
-    body.gerando-pdf .gerador-layout,
+    body.gerando-pdf .gerador-sidebar,
     body.gerando-pdf .floating-actions,
     body.gerando-pdf footer,
     body.gerando-pdf .fs-adsense-zone,
-    body.gerando-pdf .btn-help-link {
+    body.gerando-pdf .btn-help-link,
+    body.gerando-pdf .acoes-profissionais-orcamento,
+    body.gerando-pdf .previa-label {
       display: none !important;
+    }
+
+    body.gerando-pdf .pagina-gerador,
+    body.gerando-pdf .gerador-layout,
+    body.gerando-pdf .gerador-card-principal,
+    body.gerando-pdf #formulario-orcamento,
+    body.gerando-pdf #area-previa {
+      display: block !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #ffffff !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      max-width: none !important;
+      width: auto !important;
     }
 
     body.gerando-pdf #conteudo-pdf,
@@ -65,10 +89,8 @@
       overflow: visible !important;
       box-shadow: none !important;
       margin: 0 !important;
-    }
-
-    #btn-flutuante-gerador-global {
-      display: none !important;
+      transform: none !important;
+      background: #ffffff !important;
     }
 
     .pagina-gerador {
@@ -270,7 +292,8 @@
       font-size: 14px;
     }
 
-    .status-sessao-card {
+    .status-sessao-card,
+    .aviso-perfil-incompleto {
       display: none;
       background: #fff8e1;
       border-left: 6px solid var(--fs-amarelo);
@@ -280,6 +303,11 @@
       margin-bottom: 16px;
       font-weight: 800;
       line-height: 1.4;
+    }
+
+    .aviso-perfil-incompleto a {
+      color: var(--fs-marrom);
+      font-weight: 900;
     }
 
     .emissor-readonly-card {
@@ -369,23 +397,6 @@
       font-size: 14px;
       color: var(--fs-marrom);
       word-break: break-word;
-    }
-
-    .aviso-perfil-incompleto {
-      display: none;
-      background: #fff3cd;
-      color: #5d4037;
-      border-left: 6px solid var(--fs-amarelo);
-      border-radius: 14px;
-      padding: 14px;
-      margin: 0 0 16px 0;
-      line-height: 1.45;
-      font-weight: 800;
-    }
-
-    .aviso-perfil-incompleto a {
-      color: var(--fs-marrom);
-      font-weight: 900;
     }
 
     .dadositens {
@@ -1691,16 +1702,20 @@ async function fsVerificarSessaoGerador() {
         : 'Complete os dados da empresa no Painel de Controle para deixar o PDF profissional.';
     }
 
+    if (typeof carregarEstadoSalvo === 'function') {
+      carregarEstadoSalvo();
+    }
+
+    setTimeout(() => {
+      const linhas = document.querySelectorAll('#itens-lista .item-row:not(.header-labels)');
+
+      if (!linhas.length && typeof adicionarLinha === 'function') {
+        adicionarLinha();
+      }
+    }, 400);
+
     fsAtualizarAnunciosGratisGerador();
 
-    if (typeof carregarEstadoSalvo === 'function') {
-      setTimeout(() => {
-        const linhas = document.querySelectorAll('#itens-lista .item-row:not(.header-labels)');
-        if (!linhas.length && typeof adicionarLinha === 'function') {
-          adicionarLinha();
-        }
-      }, 400);
-    }
   } catch (error) {
     console.error('Erro ao verificar sessão:', error);
 
@@ -2145,6 +2160,7 @@ function fsInicializarAdsenseVisivel() {
     if (bloco.style.display === 'none') return;
 
     const ins = bloco.querySelector('ins.adsbygoogle');
+
     if (!ins) return;
 
     const slot = ins.getAttribute('data-ad-slot');
@@ -2230,10 +2246,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const botoesAcao = document.getElementById('botoes-acao');
       const btnFloatBaixar = document.getElementById('btn-float-baixar');
       const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
+      const floatingActions = document.querySelector('.floating-actions');
 
       if (botoesAcao) botoesAcao.style.display = 'none';
       if (btnFloatBaixar) btnFloatBaixar.style.display = 'none';
       if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'none';
+      if (floatingActions) floatingActions.classList.remove('show');
 
       return retorno;
     };
