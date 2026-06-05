@@ -26,6 +26,7 @@ if (window._supabase) {
 
     painelJaCarregado = false;
     perfilAtual = null;
+    window.perfilAtual = null;
     responsaveisCache = [];
 
     mostrarAreaLoginPainel();
@@ -35,7 +36,7 @@ if (window._supabase) {
 async function inicializarPainel(session) {
   mostrarConteudoProtegidoPainel();
 
-  garantirEstruturaPainel();
+  limparCardsPlanoDuplicados();
 
   await carregarPerfil();
   await carregarResponsaveis();
@@ -218,130 +219,28 @@ async function obterSessaoPainel() {
   }
 }
 
-// ==================== ESTRUTURA DO PAINEL ====================
+// ==================== LIMPEZA DE DUPLICAÇÕES ====================
 
-function garantirEstruturaPainel() {
-  const container = document.querySelector('.painel-container');
+function limparCardsPlanoDuplicados() {
+  const cardsPorId = document.querySelectorAll('#card-plano-painel');
 
-  if (!container) return;
+  cardsPorId.forEach(card => {
+    card.remove();
+  });
 
-  const aviso = document.querySelector('.painel-aviso');
+  const cardsPainel = document.querySelectorAll('.painel-card');
 
-  if (!document.getElementById('card-plano-painel')) {
-    const cardPlano = document.createElement('section');
-    cardPlano.id = 'card-plano-painel';
-    cardPlano.className = 'painel-card';
-    cardPlano.innerHTML = `
-      <h2>Dados do Plano</h2>
+  cardsPainel.forEach(card => {
+    const titulo = card.querySelector('h2');
 
-      <div id="perfil-plano-aviso" class="painel-plano-aviso" style="display:none;"></div>
-
-      <div class="perfil-dados-grid">
-        <div class="info-card">
-          <strong>Plano atual</strong>
-          <span id="perfil-plano-texto">Plano Grátis</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Status do plano</strong>
-          <span id="perfil-plano-status">-</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Expira em</strong>
-          <span id="perfil-plano-expira">-</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Responsáveis permitidos</strong>
-          <span id="perfil-limite-responsaveis">-</span>
-        </div>
-      </div>
-
-      <div class="acoes-painel">
-        <a href="/planos.html" class="btn-plano-painel">
-          ⭐ Ver planos e assinatura
-        </a>
-      </div>
-    `;
-
-    if (aviso) {
-      aviso.insertAdjacentElement('afterend', cardPlano);
-    } else {
-      container.prepend(cardPlano);
+    if (
+      titulo &&
+      titulo.innerText &&
+      titulo.innerText.trim().toLowerCase() === 'dados do plano'
+    ) {
+      card.remove();
     }
-  }
-
-  if (!document.getElementById('dashboard-painel')) {
-    const dashboard = document.createElement('section');
-    dashboard.id = 'dashboard-painel';
-    dashboard.className = 'painel-card';
-    dashboard.innerHTML = `
-      <h2>Resumo dos Orçamentos</h2>
-
-      <div class="perfil-dados-grid">
-        <div class="info-card">
-          <strong>Total de orçamentos</strong>
-          <span id="dash-total-orcamentos">0</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Pendentes</strong>
-          <span id="dash-pendentes">0</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Aprovados no mês</strong>
-          <span id="dash-aprovados-mes">0</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Valor aprovado no mês</strong>
-          <span id="dash-valor-aprovado-mes">R$ 0,00</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Taxa de aprovação</strong>
-          <span id="dash-taxa-aprovacao">0%</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Última atualização</strong>
-          <span id="dash-atualizado-em">-</span>
-        </div>
-      </div>
-    `;
-
-    const cardPlano = document.getElementById('card-plano-painel');
-
-    if (cardPlano) {
-      cardPlano.insertAdjacentElement('afterend', dashboard);
-    } else if (aviso) {
-      aviso.insertAdjacentElement('afterend', dashboard);
-    } else {
-      container.prepend(dashboard);
-    }
-  }
-
-  if (!document.getElementById('ultimos-orcamentos-painel')) {
-    const ultimos = document.createElement('section');
-    ultimos.id = 'ultimos-orcamentos-painel';
-    ultimos.className = 'painel-card';
-    ultimos.innerHTML = `
-      <h2>Últimos Orçamentos</h2>
-      <div id="lista-ultimos-orcamentos-painel">
-        <div class="painel-aviso">Carregando últimos orçamentos...</div>
-      </div>
-    `;
-
-    const dashboard = document.getElementById('dashboard-painel');
-
-    if (dashboard) {
-      dashboard.insertAdjacentElement('afterend', ultimos);
-    } else {
-      container.appendChild(ultimos);
-    }
-  }
+  });
 }
 
 // ==================== PLANO / ASSINATURA ====================
@@ -437,13 +336,29 @@ function atualizarCardPlano(perfil) {
   const planoAtual = perfil?.plano || 'gratis';
 
   const badge = document.getElementById('perfil-plano');
+
+  if (badge) {
+    badge.innerText = planoLabel(planoAtual);
+
+    const planoNormalizado = normalizarPlanoPainel(planoAtual);
+
+    badge.classList.remove('plano-gratis', 'plano-basico', 'plano-premium');
+
+    if (planoNormalizado === 'basico') {
+      badge.classList.add('plano-basico');
+    } else if (planoNormalizado === 'premium') {
+      badge.classList.add('plano-premium');
+    } else {
+      badge.classList.add('plano-gratis');
+    }
+  }
+
   const planoTexto = document.getElementById('perfil-plano-texto');
   const statusEl = document.getElementById('perfil-plano-status');
   const expiraEl = document.getElementById('perfil-plano-expira');
   const avisoEl = document.getElementById('perfil-plano-aviso');
   const limiteEl = document.getElementById('perfil-limite-responsaveis');
 
-  if (badge) badge.innerText = planoLabel(planoAtual);
   if (planoTexto) planoTexto.innerText = planoLabel(planoAtual);
   if (statusEl) statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
   if (expiraEl) expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
@@ -491,6 +406,8 @@ async function carregarPerfil() {
     plano_status: 'ativo',
     plano_expira_em: null
   };
+
+  window.perfilAtual = perfilAtual;
 
   preencherCamposEstaticos(perfilAtual, session);
   preencherFormularioEdicao(perfilAtual);
@@ -593,6 +510,8 @@ async function salvarPerfil(event) {
     ...perfilAtual,
     ...payload
   };
+
+  window.perfilAtual = perfilAtual;
 
   preencherCamposEstaticos(perfilAtual, session);
   preencherSelectResponsaveis();
@@ -726,6 +645,8 @@ async function enviarLogoPerfil(file) {
     foto_url: logoUrl
   };
 
+  window.perfilAtual = perfilAtual;
+
   localStorage.setItem('foto_url', logoUrl);
 
   mostrarStatus('status-logo', 'Logo salva com sucesso.', 'sucesso');
@@ -770,6 +691,8 @@ async function removerLogoPerfil() {
     ...perfilAtual,
     foto_url: ''
   };
+
+  window.perfilAtual = perfilAtual;
 
   localStorage.removeItem('foto_url');
 
@@ -1134,7 +1057,6 @@ async function alterarSenhaSegura() {
 // ==================== DASHBOARD ====================
 
 async function carregarDashboardPainel() {
-  garantirEstruturaPainel();
   atualizarCardPlano(perfilAtual);
 
   const session = await obterSessaoPainel();
@@ -1177,8 +1099,6 @@ async function carregarDashboardPainel() {
 }
 
 async function carregarUltimosOrcamentosPainel() {
-  garantirEstruturaPainel();
-
   const container = document.getElementById('lista-ultimos-orcamentos-painel');
   if (!container) return;
 
@@ -1187,7 +1107,7 @@ async function carregarUltimosOrcamentosPainel() {
 
   const { data, error } = await _supabase
     .from('orcamentos')
-    .select('id, numero_orcamento, assunto, cliente_nome, total, status, forma_pagamento, criado_em')
+    .select('id, numero_orcamento, assunto, cliente_nome, total, status, forma_pagamento_cliente, forma_pagamento, criado_em')
     .eq('usuario_id', session.user.id)
     .order('criado_em', { ascending: false })
     .limit(6);
@@ -1220,33 +1140,40 @@ async function carregarUltimosOrcamentosPainel() {
         </thead>
 
         <tbody>
-          ${orcamentos.map(o => `
-            <tr>
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-'}
-              </td>
+          ${orcamentos.map(o => {
+            const pagamento =
+              o.forma_pagamento_cliente ||
+              o.forma_pagamento ||
+              '-';
 
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(o.cliente_nome || '-')}
-              </td>
+            return `
+              <tr>
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                  ${o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-'}
+                </td>
 
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(o.assunto || '-')}
-              </td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                  ${escaparHtmlPainel(o.cliente_nome || '-')}
+                </td>
 
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(statusOrcamentoLabel(o.status))}
-              </td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                  ${escaparHtmlPainel(o.assunto || '-')}
+                </td>
 
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(o.forma_pagamento || '-')}
-              </td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                  ${escaparHtmlPainel(statusOrcamentoLabel(o.status))}
+                </td>
 
-              <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">
-                ${formatarMoedaPainel(o.total)}
-              </td>
-            </tr>
-          `).join('')}
+                <td style="padding:10px; border-bottom:1px solid #eee;">
+                  ${escaparHtmlPainel(pagamento)}
+                </td>
+
+                <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">
+                  ${formatarMoedaPainel(o.total)}
+                </td>
+              </tr>
+            `;
+          }).join('')}
         </tbody>
       </table>
     </div>
