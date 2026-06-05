@@ -2775,3 +2775,48 @@ body:has(.painel-card) .container {
     background: rgba(255, 196, 0, 0.12);
   }
 }
+
+/* Correção visual do texto do Plano Atual */
+#perfil-plano-texto {
+  display: block !important;
+  background: transparent !important;
+  color: #3e2723 !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: 1.25 !important;
+  text-transform: none !important;
+}
+
+/* Selo pequeno que fica junto da logo */
+#perfil-plano.plano-badge {
+  display: inline-block !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  font-weight: 900 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  background: #3e2723 !important;
+  color: #ffc400 !important;
+  border: 1px solid #ffc400 !important;
+}
+
+#perfil-plano.plano-gratis {
+  background: #3e2723 !important;
+  color: #ffc400 !important;
+}
+
+#perfil-plano.plano-basico {
+  background: #14532d !important;
+  color: #bbf7d0 !important;
+  border-color: #22c55e !important;
+}
+
+#perfil-plano.plano-premium {
+  background: #312e81 !important;
+  color: #c7d2fe !important;
+  border-color: #818cf8 !important;
+}
