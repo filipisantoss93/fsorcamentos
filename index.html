@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FS Orçamentos - Gerador de Orçamento Profissional</title>
+
+  <meta name="description" content="Crie orçamentos profissionais em PDF de forma rápida e gratuita. Ideal para MEI, oficinas mecânicas e prestadores de serviços.">
+  <meta name="keywords" content="gerador de orçamento, orçamento pdf grátis, fsorçamentos, orçamento mecânica, orçamento prestador de serviço">
+  <meta name="author" content="Filipi Aparecido dos Santos">
+
+  <meta name="google-site-verification" content="AUNalSg35UWE0CFzVlqgXE57TMekeSRBmlmvdMhNT9M">
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fsorcamentos.com.br/">
+  <meta property="og:title" content="FS Orçamentos - Profissionalize suas propostas">
+  <meta property="og:description" content="Gere orçamentos profissionais em PDF gratuitamente em segundos.">
+  <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://fsorcamentos.com.br/">
+  <meta property="twitter:title" content="FS Orçamentos - Gerador de Orçamento PDF">
+  <meta property="twitter:description" content="A ferramenta ideal para o profissional autônomo gerar orçamentos em PDF.">
+  <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
+
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
@@ -15,112 +39,36 @@
   }
   </script>
 
-  <meta name="google-site-verification" content="AUNalSg35UWE0CFzVlqgXE57TMekeSRBmlmvdMhNT9M">
-  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
     crossorigin="anonymous"></script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>FS Orçamentos - Gerador de Orçamento Profissional</title>
-  <meta name="description" content="Crie orçamentos profissionais em PDF de forma rápida e gratuita. Ideal para MEI, oficinas mecânicas e prestadores de serviços.">
-  <meta name="keywords" content="gerador de orçamento, orçamento pdf grátis, fsorçamentos, orçamento mecânica, orçamento prestador de serviço">
-  <meta name="author" content="Filipi Aparecido dos Santos">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://fsorcamentos.com.br/">
-  <meta property="og:title" content="FS Orçamentos - Profissionalize suas propostas">
-  <meta property="og:description" content="Gere orçamentos profissionais em PDF gratuitamente em segundos.">
-  <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
-
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://fsorcamentos.com.br/">
-  <meta property="twitter:title" content="FS Orçamentos - Gerador de Orçamento PDF">
-  <meta property="twitter:description" content="A ferramenta ideal para o profissional autônomo gerar orçamentos em PDF.">
-  <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <style>
-    .emissor-readonly-card {
-      background: #ffffff;
-      border-radius: 14px;
-      border: 1px solid #e0d6c8;
-      border-left: 7px solid #ffc400;
-      padding: 14px;
-      margin: 0 0 12px 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      color: #3e2723;
-    }
-
-    .emissor-readonly-topo {
-      display: grid;
-      grid-template-columns: 90px 1fr;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .emissor-logo-mini {
-      width: 90px;
-      height: 72px;
-      border: 1px dashed #d7ccc8;
-      border-radius: 10px;
-      background: #fafafa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      color: #8d6e63;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    .emissor-logo-mini img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+    .bloco-anuncio.fs-adsense-zone {
       display: none;
+      max-width: 970px;
+      min-height: 110px;
+      margin: 22px auto;
+      padding: 14px;
+      background: #fffaf0;
+      border: 1px dashed rgba(62, 39, 35, 0.28);
+      border-radius: 14px;
+      text-align: center;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
-    .emissor-info-principal span,
-    .emissor-readonly-grid span {
+    .bloco-anuncio.fs-adsense-zone .adsense-label {
       display: block;
+      margin-bottom: 8px;
+      color: #8d6e63;
       font-size: 11px;
       font-weight: 800;
-      color: #6d4c41;
       text-transform: uppercase;
-      letter-spacing: .3px;
-      margin-bottom: 4px;
+      letter-spacing: .4px;
     }
 
-    .emissor-info-principal strong {
-      display: block;
-      font-size: 18px;
-      color: #3e2723;
-      word-break: break-word;
-    }
-
-    .emissor-readonly-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .emissor-readonly-grid div {
-      background: #f7f2ea;
-      border-radius: 10px;
-      padding: 10px;
-      border-left: 4px solid #ffc400;
-    }
-
-    .emissor-readonly-grid strong {
-      display: block;
-      font-size: 14px;
-      color: #3e2723;
-      word-break: break-word;
+    .bloco-anuncio.fs-adsense-zone .adsbygoogle {
+      min-height: 90px;
     }
 
     .btn-planos-menor {
@@ -158,294 +106,18 @@
       scroll-margin-top: 110px;
     }
 
-    .bloco-anuncio.fs-adsense-zone {
+    .index-aviso-login {
       display: none;
-      max-width: 970px;
-      min-height: 110px;
-      margin: 22px auto;
-      padding: 14px;
-      background: #fffaf0;
-      border: 1px dashed rgba(62, 39, 35, 0.28);
-      border-radius: 14px;
-      text-align: center;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .bloco-anuncio.fs-adsense-zone .adsense-label {
-      display: block;
-      margin-bottom: 8px;
-      color: #8d6e63;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-    }
-
-    .bloco-anuncio.fs-adsense-zone .adsbygoogle {
-      min-height: 90px;
-    }
-
-    #secao-gerador-orcamento {
-      display: none;
-      max-width: 980px;
-      margin: 34px auto;
-      padding: 18px;
-      background: #f4ece1;
-      color: #3e2723;
-      border-radius: 22px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
-      border-top: 6px solid #ffc400;
-      box-sizing: border-box;
-    }
-
-    #secao-gerador-orcamento.ativo {
-      display: block;
-    }
-
-    .gerador-inline-topo {
-      background: #3e2723;
-      color: #ffc400;
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-radius: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.18);
-    }
-
-    .gerador-inline-topo strong {
-      font-size: 18px;
-    }
-
-    .btn-fechar-gerador {
-      background: #dc2626;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      width: 38px;
-      height: 38px;
-      font-size: 26px;
-      font-weight: 900;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    body.gerador-aberto #btn-flutuante-gerador-global {
-      display: none !important;
-    }
-
-    .acoes-profissionais-orcamento {
-      margin: 22px auto 12px;
-      background: linear-gradient(135deg, #3e2723, #251714);
-      border: 2px solid #ffc400;
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.22);
-      color: #fff;
-      display: none;
-    }
-
-    .acoes-profissionais-orcamento-topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .acoes-profissionais-orcamento-topo strong {
-      color: #ffc400;
-      display: block;
-      font-size: 18px;
-      margin-bottom: 3px;
-    }
-
-    .acoes-profissionais-orcamento-topo span {
-      color: #f4ece1;
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .acoes-profissionais-botoes {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .btn-acao-orcamento {
-      border: none;
-      border-radius: 14px;
-      padding: 15px 16px;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 54px;
-      text-transform: uppercase;
-      letter-spacing: .3px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
-      transition: .2s ease;
-    }
-
-    .btn-acao-orcamento:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-    }
-
-    .btn-acao-pdf {
-      background: #ffc400;
-      color: #3e2723;
-      border: 2px solid #f5b800;
-    }
-
-    .btn-acao-whatsapp {
-      background: #25d366;
-      color: #073b1d;
-      border: 2px solid #1fb957;
-    }
-
-    .floating-actions {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 15050;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .floating-actions.show {
-      display: flex;
-    }
-
-    .btn-float {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      border: 2px solid #3e2723;
-      background: #ffc400;
-      color: #3e2723;
-      font-size: 22px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.30);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-float-download {
-      background: #3e2723;
-      color: #ffc400;
-      border-color: #ffc400;
-    }
-
-    .btn-float-whatsapp {
-      background: #25d366;
-      color: #073b1d;
-      border-color: #0b6b31;
-    }
-
-    .btn-float-novo {
-      background: #ffffff;
-      color: #3e2723;
-      border-color: #ffc400;
-    }
-
-    .acoes-gerador-principal {
-      margin: 30px auto 18px;
       max-width: 820px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    .btn-previa-profissional,
-    .btn-novo-profissional {
-      width: 100%;
-      border-radius: 18px;
-      padding: 22px 18px;
-      font-size: 24px;
-      font-weight: 900;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      transition: .2s ease;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.18);
-    }
-
-    .btn-previa-profissional {
-      background: #ffc400;
-      color: #3e2723;
-      border: 3px solid #ffc400;
-    }
-
-    .btn-previa-profissional:hover {
-      background: #ffd633;
-      transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(0,0,0,0.24);
-    }
-
-    .btn-novo-profissional {
-      background: #ffffff;
-      color: #3e2723;
-      border: 3px solid #d7ccc8;
-    }
-
-    .btn-novo-profissional:hover {
-      border-color: #ffc400;
-      background: #fff8d6;
-      transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(0,0,0,0.18);
-    }
-
-    @media (max-width: 650px) {
-      .emissor-readonly-topo,
-      .emissor-readonly-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .emissor-logo-mini {
-        width: 100%;
-        height: 90px;
-      }
-
-      .acoes-profissionais-botoes {
-        grid-template-columns: 1fr;
-      }
-
-      .floating-actions {
-        right: 12px;
-        bottom: 12px;
-      }
-
-      .btn-float {
-        width: 54px;
-        height: 54px;
-        font-size: 20px;
-      }
-
-      .btn-previa-profissional,
-      .btn-novo-profissional {
-        font-size: 18px;
-        padding: 18px 14px;
-        border-radius: 14px;
-      }
-
-      #secao-gerador-orcamento {
-        padding: 10px;
-        border-radius: 16px;
-      }
+      margin: 18px auto 0;
+      background: #fff3cd;
+      color: #5d4037;
+      border-left: 6px solid #ffc400;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: center;
     }
 
     @media (max-width: 620px) {
@@ -528,7 +200,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
-<script src="ui.js"></script>
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 
@@ -567,6 +238,10 @@
         Conhecer o Plano Básico
       </a>
     </div>
+
+    <div id="index-aviso-login" class="index-aviso-login">
+      Faça login ou crie sua conta para acessar o gerador de orçamento.
+    </div>
   </section>
 
   <section class="cards-explicativos">
@@ -602,7 +277,9 @@
   <section class="secao-como-funciona">
     <div class="como-funciona-topo">
       <span class="tag-demo">Demonstração</span>
+
       <h2>Veja como funciona na prática</h2>
+
       <p>
         Confira telas reais do FS Orçamentos e veja exemplos de PDFs profissionais gerados pela plataforma.
       </p>
@@ -631,264 +308,6 @@
     <center>
       <a href="exemplos.html" class="btn-secundario-home">VER MAIS</a>
     </center>
-  </section>
-
-  <section id="secao-gerador-orcamento">
-    <div class="gerador-inline-topo">
-      <strong>Gerador de Orçamento</strong>
-      <button type="button" class="btn-fechar-gerador" onclick="fecharModalGerador()">×</button>
-    </div>
-
-    <div id="formulario-orcamento">
-      <div class="container">
-        <div style="text-align: center; margin-bottom: 25px;">
-          <div style="font-size: 40px; display: inline-flex; align-items: center; gap: 5px;">
-            <span style="font-weight: 800; color: #3e2723; background: var(--accent-yellow); padding: 2px 12px; border-radius: 6px;">FS</span>
-            <span style="font-weight: 300; color: #5d4037; text-transform: uppercase;">Orçamentos</span>
-            <span style="font-size: 30px; margin-left: -10px; margin-bottom: 55px;">🖊️</span>
-          </div>
-          <p style="color: #9e9e9e; margin-bottom: 0px; margin-top: -20px; font-size: 16px;">Gerador de Orçamento Profissional</p>
-        </div>
-
-        <div style="max-width: 100%; margin: 0 auto; padding: 0 15px; text-align: center; background: #f1f3f3; border-radius: 10px; margin-bottom: 10px; margin-top: 0px;">
-          <p style="color: #3f4957; line-height: 1.2; font-size: 18px; margin-top: 0; padding-bottom: 20px; padding-top: 20px;">
-            📝 Preencha os dados abaixo <br>
-            para gerar seu orçamento em PDF.
-          </p>
-        </div>
-
-        <div class="dadositens">🧾 ORÇAMENTO</div>
-
-        <div style="display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 0px; margin-top: 0px;">
-          <div>
-            <label>Título do Orçamento</label>
-            <input type="text" id="titulo" maxlength="50" placeholder="Ex: Manutenção de Suspensão / Pintura Residencial" oninput="salvarEstadoCompleto()">
-          </div>
-        </div>
-
-        <div class="dadositens">🏢 EMISSOR</div>
-
-        <div class="emissor-readonly-card">
-          <div class="emissor-readonly-topo">
-            <div class="emissor-logo-mini">
-              <span id="emissor-logo-placeholder">Logo</span>
-              <img id="emissor-logo-visual" src="" alt="Logo da empresa">
-            </div>
-
-            <div class="emissor-info-principal">
-              <span>Consultor</span>
-              <strong id="emissor-consultor-visual">-</strong>
-            </div>
-          </div>
-
-          <div class="emissor-readonly-grid">
-            <div>
-              <span>Empresa</span>
-              <strong id="emissor-empresa-visual">-</strong>
-            </div>
-
-            <div>
-              <span>WhatsApp / Telefone</span>
-              <strong id="emissor-whatsapp-visual">-</strong>
-            </div>
-
-            <div>
-              <span>CNPJ / CPF</span>
-              <strong id="emissor-cnpj-visual">-</strong>
-            </div>
-
-            <div>
-              <span>Endereço</span>
-              <strong id="emissor-endereco-visual">-</strong>
-            </div>
-          </div>
-        </div>
-
-        <div style="max-width: 100%; margin: 0 auto 15px auto; padding: 12px 15px; text-align: center; background: #fff3cd; border-radius: 10px; color: #5d4037; font-size: 14px;">
-          Edite os dados do Emissor no
-          <a href="/painel.html" style="font-weight: bold; color: #3e2723;">Painel de Controle</a>.
-        </div>
-
-        <div class="dadositens">👤 CLIENTE</div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 0px;">
-          <div>
-            <label>Nome</label>
-            <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
-          </div>
-
-          <div>
-            <label>Telefone (WhatsApp)</label>
-            <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
-          </div>
-
-          <div id="extra-cliente-container" style="grid-column: span 2;"></div>
-
-          <button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-cliente-container')" style="display: block; margin-left: auto; margin-right: 0; grid-column: span 2;">
-            <span style="font-size: 16px; margin-right: 4px;">+</span>Informações
-          </button>
-        </div>
-
-        <div class="dadositens">🛠️ ITENS/SERVIÇOS</div>
-
-        <div id="itens-lista">
-          <div class="item-row header-labels">
-            <span>Descrição</span><span>Qtd</span><span>V. Unit</span><span>Subtotal</span><span></span>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-          <button type="button" class="btn-add" onclick="adicionarLinha()">
-            <span style="font-size: 16px; margin-right: 4px;">+</span> Item
-          </button>
-        </div>
-
-        <div class="total-container" style="margin-bottom: 20px;">
-          TOTAL: R$ <span id="total-geral">0,00</span>
-        </div>
-
-        <div style="margin-bottom: 20px;">
-          <label>Observações:</label>
-          <textarea id="observacoes" rows="4" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; font-family: inherit; resize: vertical;" placeholder="Ex: Telefone, Prazo de entrega, condições de pagamento, validade da proposta..."></textarea>
-
-          <div class="calc-expansivel">
-            <div class="calc-header" onclick="toggleFrases()">
-              <span>📝 Termos e Condições Rápidas</span>
-              <span id="seta-frases">▼</span>
-            </div>
-
-            <div id="frases-corpo" class="calc-content">
-              <div style="font-size: 12px; color: #64748b; margin-bottom: 15px;">Clique nas frases para adicioná-las automaticamente às observações.</div>
-
-              <div class="calc-secao-titulo">Validade e Prazos</div>
-              <div class="checklist-container">
-                <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 7 dias.')">Validade 7 dias</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 15 dias.')">Validade 15 dias</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Prazo de entrega: ___ dias úteis após aprovação.')">Prazo de Entrega</button>
-              </div>
-
-              <div class="calc-secao-titulo">Pagamento</div>
-              <div class="checklist-container">
-                <button type="button" class="btn-frase" onclick="addFrase('• Forma de pagamento: 50% de entrada e 50% na entrega.')">50% Entrada / 50% Entrega</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Pagamento à vista com 5% de desconto.')">Desconto à Vista</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Parcelamos em até 3x sem juros no cartão.')">3x sem Juros</button>
-              </div>
-
-              <div class="calc-secao-titulo">Materiais e Serviços</div>
-              <div class="checklist-container">
-                <button type="button" class="btn-frase" onclick="addFrase('• Não incluso material de acabamento.')">Sem Acabamento</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Frete incluso para a região.')">Frete Incluso</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Responsabilidade por entulhos e limpeza por conta do contratante.')">Limpeza/Entulho</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr color="#c3c3c3" size="1px">
-
-        <div class="color-selector">
-          <label>Escolha a cor do PDF:</label>
-          <div class="theme-options">
-            <div class="theme-dot original" onclick="setTheme('original')" title="Marrom (Padrão)"></div>
-            <div class="theme-dot bw" onclick="setTheme('bw')" title="Preto e Branco"></div>
-            <div class="theme-dot blue" onclick="setTheme('blue')" title="Azul e Branco"></div>
-            <div class="theme-dot green" onclick="setTheme('green')" title="Verde e Branco"></div>
-            <div class="theme-dot yellow" onclick="setTheme('yellow')" title="Amarelo e Branco"></div>
-            <div class="theme-dot red" onclick="setTheme('red')" title="Vermelho e Branco"></div>
-          </div>
-          <input type="hidden" id="selected-theme" value="original">
-        </div>
-
-        <div class="acoes-gerador-principal">
-          <button type="button" class="btn-previa-profissional" id="btn-previa" onclick="gerarPrevia()">
-            👁️ Pré-visualização
-          </button>
-
-          <button type="button" class="btn-novo-profissional" onclick="limparFormulario()">
-            ➕ Novo orçamento
-          </button>
-        </div>
-
-        <div id="area-previa">
-          <p style="text-align:center; font-size:12px; color:#64748b; font-weight: bold;">PRÉVIA DO DOCUMENTO:</p>
-          <div id="conteudo-pdf" class="pdf-folha"></div>
-
-          <div id="botoes-acao" class="acoes-profissionais-orcamento">
-            <div class="acoes-profissionais-orcamento-topo">
-              <div>
-                <strong>Orçamento pronto</strong>
-                <span>Baixe o PDF ou envie o link para o cliente pelo WhatsApp.</span>
-              </div>
-            </div>
-
-            <div class="acoes-profissionais-botoes">
-              <button type="button" class="btn-acao-orcamento btn-acao-pdf" id="btn-baixar" onclick="baixarPDF()">
-                💾 Baixar PDF
-              </button>
-
-              <button type="button" class="btn-acao-orcamento btn-acao-whatsapp" onclick="enviarPorWhatsApp()">
-                🟢 Enviar por WhatsApp
-              </button>
-            </div>
-          </div>
-
-          <div id="msg-aviso" style="display: none; color: #d32f2f; font-size: 0.9em; margin-top: 10px; text-align: center;">
-            * Preencha os dados da empresa no <a href="/painel.html">Painel</a> para liberar o envio.
-          </div>
-        </div>
-
-        <a href="manual.html" class="btn-help-link" title="Manual de Instruções">
-          <button type="button" class="btn-help-trigger">?</button>
-        </a>
-
-        <div id="modal-ajuda" class="modal-overlay">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3>Dicas Rápidas 💡</h3>
-              <button type="button" onclick="toggleAjuda()" class="close-modal">&times;</button>
-            </div>
-
-            <div class="modal-body">
-              <div class="help-item">
-                <strong>📸 Sua Marca:</strong> Cadastre sua logo e dados da empresa no Painel de Controle.
-              </div>
-
-              <div class="help-item">
-                <strong>➕ Campos Extras:</strong> Use o botão "+ Informações" para adicionar CPF, CNPJ, Placa ou Endereço.
-              </div>
-
-              <div class="help-item">
-                <strong>📝 Termos Rápidos:</strong> Clique em "Termos e Condições" para adicionar prazos e garantias com um clique.
-              </div>
-
-              <div class="help-item">
-                <strong>📥 Baixar:</strong> Após preencher tudo, clique em "Pré-visualização" e depois em "Baixar PDF".
-              </div>
-            </div>
-
-            <button type="button" class="btn-entendi" onclick="toggleAjuda()">Entendi!</button>
-          </div>
-        </div>
-
-        <div class="floating-actions">
-          <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Gerar prévia">
-            👁️
-          </button>
-
-          <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display: none;" title="Baixar PDF">
-            💾
-          </button>
-
-          <button type="button" class="btn-float btn-float-whatsapp" id="btn-float-whatsapp" onclick="enviarPorWhatsApp()" style="display: none;" title="Enviar por WhatsApp">
-            🟢
-          </button>
-
-          <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo orçamento">
-            ➕
-          </button>
-        </div>
-      </div>
-    </div>
   </section>
 
   <section class="whatsapp-preview-home">
@@ -1261,594 +680,130 @@
 <p></p>
 
 <script>
-function abrirModalGerador() {
-  const secao = document.getElementById('secao-gerador-orcamento');
-  const formulario = document.getElementById('formulario-orcamento');
-
-  if (secao) {
-    secao.style.display = 'block';
-    secao.classList.add('ativo');
-  }
-
-  if (formulario) {
-    formulario.style.display = 'block';
-  }
-
-  document.body.classList.add('gerador-aberto');
-  document.body.style.overflow = '';
-  document.documentElement.style.overflow = '';
-
-  if (typeof carregarDadosEmissorNoModal === 'function') {
-    carregarDadosEmissorNoModal();
-  }
-
-  setTimeout(function() {
-    secao?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }, 120);
+function esconderSplashIndex() {
+  setTimeout(() => {
+    const splash = document.getElementById('splash-screen');
+    if (splash) splash.classList.add('hide-splash');
+  }, 900);
 }
 
-function fecharModalGerador() {
-  const secao = document.getElementById('secao-gerador-orcamento');
-
-  if (secao) {
-    secao.style.display = 'none';
-    secao.classList.remove('ativo');
-  }
-
-  liberarTelaTravadaGerador();
-
-  setTimeout(function() {
-    document.getElementById('home-publica')?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }, 100);
-}
-
-function liberarTelaTravadaGerador() {
-  document.body.style.overflow = '';
-  document.body.style.pointerEvents = '';
-  document.documentElement.style.overflow = '';
-
-  document.body.classList.remove('gerador-aberto');
-  document.body.classList.remove('modal-aberto');
-  document.body.classList.remove('modal-open');
-}
-
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    fecharModalGerador();
-    fecharModalPixBasico();
-  }
-});
+document.addEventListener('DOMContentLoaded', esconderSplashIndex);
 </script>
 
 <script>
-function valorEmissorOuTraco(valor) {
-  return valor && String(valor).trim() ? valor : '-';
-}
-
-function atualizarCampoEmissorVisual(id, valor) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = valorEmissorOuTraco(valor);
-}
-
-function atualizarLogoEmissorVisual(url) {
-  const img = document.getElementById('emissor-logo-visual');
-  const placeholder = document.getElementById('emissor-logo-placeholder');
-
-  if (!img || !placeholder) return;
-
-  if (url) {
-    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-    img.style.display = 'block';
-    placeholder.style.display = 'none';
-  } else {
-    img.src = '';
-    img.style.display = 'none';
-    placeholder.style.display = 'flex';
-  }
-}
-
-async function carregarDadosEmissorNoModal() {
-  let perfil = {
-    nome: localStorage.getItem('usuario_nome') || '',
-    nome_empresa: localStorage.getItem('nome_empresa') || '',
-    telefone_empresa: localStorage.getItem('telefone_empresa') || '',
-    endereco_empresa: localStorage.getItem('endereco_empresa') || '',
-    cnpj_empresa: localStorage.getItem('cnpj_empresa') || '',
-    foto_url: localStorage.getItem('foto_url') || ''
-  };
-
+async function usuarioTemSessaoAtivaFS() {
   try {
-    if (window._supabase) {
-      const { data: { session } } = await _supabase.auth.getSession();
+    if (!window._supabase) return false;
 
-      if (session?.user?.id) {
-        const { data, error } = await _supabase
-          .from('perfis')
-          .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
-          .eq('id', session.user.id)
-          .maybeSingle();
+    const { data: { session } } = await _supabase.auth.getSession();
 
-        if (!error && data) {
-          perfil = {
-            ...perfil,
-            ...data
-          };
-
-          localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email?.split('@')[0] || 'Usuário');
-          localStorage.setItem('usuario_plano', data.plano || 'gratis');
-          localStorage.setItem('nome_empresa', data.nome_empresa || '');
-          localStorage.setItem('telefone_empresa', data.telefone_empresa || '');
-          localStorage.setItem('endereco_empresa', data.endereco_empresa || '');
-          localStorage.setItem('cnpj_empresa', data.cnpj_empresa || '');
-          localStorage.setItem('foto_url', data.foto_url || '');
-        }
-      }
-    }
+    return !!session?.user?.id;
   } catch (error) {
-    console.warn('Não foi possível carregar os dados do emissor:', error);
+    console.warn('Erro ao verificar sessão:', error);
+    return false;
   }
-
-  atualizarCampoEmissorVisual('emissor-consultor-visual', perfil.nome);
-  atualizarCampoEmissorVisual('emissor-empresa-visual', perfil.nome_empresa);
-  atualizarCampoEmissorVisual('emissor-whatsapp-visual', perfil.telefone_empresa);
-  atualizarCampoEmissorVisual('emissor-cnpj-visual', perfil.cnpj_empresa);
-  atualizarCampoEmissorVisual('emissor-endereco-visual', perfil.endereco_empresa);
-  atualizarLogoEmissorVisual(perfil.foto_url);
 }
 
-document.addEventListener('DOMContentLoaded', carregarDadosEmissorNoModal);
-</script>
+function mostrarAvisoLoginIndex() {
+  const aviso = document.getElementById('index-aviso-login');
 
-<script>
-let orcamentoSalvoAtualId = null;
-let whatsappJanelaFS = null;
-let enviandoWhatsappFS = false;
+  if (!aviso) return;
 
-function fsPlanoAtualNormalizado() {
-  return String(localStorage.getItem('usuario_plano') || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  aviso.style.display = 'block';
+
+  setTimeout(() => {
+    aviso.style.display = 'none';
+  }, 5500);
 }
 
-function fsPlanoPermiteSalvarOrcamento() {
-  const plano = fsPlanoAtualNormalizado();
-  return plano === 'basico' || plano === 'premium';
-}
-
-function fsLimparTelefoneWhatsapp(valor) {
-  let telefone = String(valor || '').replace(/\D/g, '');
-
-  if (!telefone) return '';
-
-  if (telefone.startsWith('00')) {
-    telefone = telefone.substring(2);
-  }
-
-  if (telefone.length === 10 || telefone.length === 11) {
-    telefone = '55' + telefone;
-  }
-
-  return telefone;
-}
-
-function fsValorNumerico(valor) {
-  if (typeof valor === 'number') return valor;
-
-  let texto = String(valor || '').trim();
-
-  if (!texto) return 0;
-
-  texto = texto
-    .replace(/[^\d,.-]/g, '')
-    .replace(/\./g, '')
-    .replace(',', '.');
-
-  const numero = Number(texto);
-
-  return Number.isFinite(numero) ? numero : 0;
-}
-
-function fsColetarItensParaSalvar() {
-  const itens = [];
-
-  document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach(row => {
-    const inputs = Array.from(row.querySelectorAll('input'));
-
-    if (!inputs.length) return;
-
-    const descricao =
-      row.querySelector('.desc-cell')?.value?.trim() ||
-      inputs[0]?.value?.trim() ||
-      '';
-
-    const inputQtd =
-      row.querySelector('.qtd') ||
-      inputs[1];
-
-    const inputValor =
-      row.querySelector('.valor') ||
-      inputs[2];
-
-    const inputSubtotal =
-      row.querySelector('.subtotal') ||
-      inputs[3];
-
-    const qtd = fsValorNumerico(inputQtd?.value ?? 1);
-    const valor = fsValorNumerico(inputValor?.value ?? 0);
-
-    let subtotal = fsValorNumerico(inputSubtotal?.value);
-
-    if (!subtotal) {
-      subtotal = qtd * valor;
+async function abrirGeradorHomeProtegido() {
+  try {
+    if (!window._supabase) {
+      alert('Sistema ainda carregando. Aguarde alguns segundos e tente novamente.');
+      return;
     }
 
-    if (descricao) {
-      itens.push({
-        descricao,
-        qtd,
-        valor,
-        subtotal
-      });
-    }
-  });
+    const logado = await usuarioTemSessaoAtivaFS();
 
-  return itens;
-}
+    if (!logado) {
+      mostrarAvisoLoginIndex();
 
-function fsColetarDadosOrcamentoAtual() {
-  const titulo = document.getElementById('titulo')?.value?.trim() || 'Sem título';
-  const clienteNome = document.getElementById('cliente')?.value?.trim() || '';
-  const clienteWhatsapp = document.getElementById('tel-cliente')?.value?.trim() || '';
-  const observacoes = document.getElementById('observacoes')?.value?.trim() || '';
-  const tema = document.getElementById('selected-theme')?.value || 'original';
-
-  const itens = fsColetarItensParaSalvar();
-  const total = itens.reduce((soma, item) => soma + Number(item.subtotal || 0), 0);
-
-  return {
-    titulo,
-    clienteNome,
-    clienteWhatsapp,
-    observacoes,
-    tema,
-    itens,
-    total
-  };
-}
-
-async function fsSalvarOrcamentoSePlanoPermitido(origem = 'acao') {
-  if (!fsPlanoPermiteSalvarOrcamento()) {
-    console.log('Plano grátis: orçamento não salvo na nuvem.');
-    return null;
-  }
-
-  if (!window._supabase) {
-    console.warn('Supabase não disponível. Orçamento não salvo.');
-    return null;
-  }
-
-  const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
-
-  if (sessionError || !session?.user?.id) {
-    console.warn('Usuário não logado. Orçamento não salvo.');
-    return null;
-  }
-
-  const dados = fsColetarDadosOrcamentoAtual();
-
-  if (!dados.clienteNome) {
-    console.warn('Cliente não informado. Orçamento não salvo.');
-    return null;
-  }
-
-  if (!dados.itens.length) {
-    console.warn('Nenhum item informado. Orçamento não salvo.');
-    return null;
-  }
-
-  const payloadBase = {
-    usuario_id: session.user.id,
-    assunto: dados.titulo,
-    cliente_nome: dados.clienteNome,
-    cliente_whatsapp: dados.clienteWhatsapp,
-    observacoes: dados.observacoes,
-    itens: dados.itens,
-    total: dados.total,
-    status: 'pendente'
-  };
-
-  const payloadCompleto = {
-    ...payloadBase,
-    origem_salvamento: origem,
-    tema_pdf: dados.tema
-  };
-
-  let resposta;
-
-  if (orcamentoSalvoAtualId) {
-    resposta = await _supabase
-      .from('orcamentos')
-      .update(payloadCompleto)
-      .eq('id', orcamentoSalvoAtualId)
-      .eq('usuario_id', session.user.id)
-      .select()
-      .single();
-  } else {
-    resposta = await _supabase
-      .from('orcamentos')
-      .insert(payloadCompleto)
-      .select()
-      .single();
-  }
-
-  if (resposta.error) {
-    const mensagemErro = String(resposta.error.message || '');
-
-    if (
-      mensagemErro.includes('origem_salvamento') ||
-      mensagemErro.includes('tema_pdf') ||
-      mensagemErro.includes('observacoes')
-    ) {
-      const payloadMinimo = {
-        usuario_id: session.user.id,
-        assunto: dados.titulo,
-        cliente_nome: dados.clienteNome,
-        cliente_whatsapp: dados.clienteWhatsapp,
-        itens: dados.itens,
-        total: dados.total,
-        status: 'pendente'
-      };
-
-      if (orcamentoSalvoAtualId) {
-        resposta = await _supabase
-          .from('orcamentos')
-          .update(payloadMinimo)
-          .eq('id', orcamentoSalvoAtualId)
-          .eq('usuario_id', session.user.id)
-          .select()
-          .single();
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
       } else {
-        resposta = await _supabase
-          .from('orcamentos')
-          .insert(payloadMinimo)
-          .select()
-          .single();
+        window.location.href = '/index.html?login=1';
       }
+
+      return;
     }
+
+    window.location.href = '/gerador.html';
+
+  } catch (error) {
+    console.error('Erro ao abrir gerador:', error);
+    alert('Não foi possível verificar seu login. Atualize a página e tente novamente.');
   }
-
-  if (resposta.error) {
-    console.error('Erro ao salvar orçamento:', resposta.error);
-    alert('Não foi possível salvar o orçamento na nuvem. O PDF/WhatsApp continuará funcionando.');
-    return null;
-  }
-
-  orcamentoSalvoAtualId = resposta.data.id;
-  window.orcamentoAtualSalvoId = resposta.data.id;
-  window.orcamentoSalvoAtualId = resposta.data.id;
-
-  return resposta.data;
 }
 
-async function fsBaixarPDFCorrigido() {
-  const elemento = document.getElementById('conteudo-pdf');
+async function abrirGeradorGlobal() {
+  const logado = await usuarioTemSessaoAtivaFS();
 
-  if (!elemento) return;
+  if (!logado) {
+    mostrarAvisoLoginIndex();
 
-  if (!elemento.innerHTML.trim()) {
-    if (typeof gerarPrevia === 'function') {
-      await gerarPrevia();
+    if (typeof abrirModalLogin === 'function') {
+      abrirModalLogin();
+    } else {
+      window.location.href = '/index.html?login=1';
     }
-  }
 
-  if (!elemento.innerHTML.trim()) {
-    alert('Gere a pré-visualização antes de baixar o PDF.');
     return;
   }
 
-  await fsSalvarOrcamentoSePlanoPermitido('download_pdf');
+  window.location.href = '/gerador.html';
+}
 
-  const nomeArquivo = (document.getElementById('titulo')?.value || 'orcamento')
-    .trim()
-    .replace(/[^\wÀ-ÿ\-]+/g, '_')
-    .toLowerCase();
+async function atualizarBotaoFlutuanteGlobalPorSessao() {
+  const botao = document.getElementById('btn-flutuante-gerador-global');
 
-  const folha = elemento.firstElementChild || elemento;
+  if (!botao) return;
 
-  document.body.classList.add('gerando-pdf');
+  const logado = await usuarioTemSessaoAtivaFS();
 
-  const opt = {
-    margin: 0,
-    filename: `${nomeArquivo || 'orcamento'}.pdf`,
-    image: {
-      type: 'jpeg',
-      quality: 0.98
-    },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: 794,
-      windowHeight: 1123
-    },
-    jsPDF: {
-      unit: 'px',
-      format: [794, 1123],
-      orientation: 'portrait'
-    },
-    pagebreak: {
-      mode: ['avoid-all', 'css', 'legacy']
-    }
-  };
+  botao.style.display = logado ? 'inline-flex' : 'none';
+}
 
-  try {
-    await html2pdf().set(opt).from(folha).save();
-  } catch (error) {
-    console.error('Erro ao gerar PDF:', error);
-    alert('Não foi possível gerar o PDF.');
-  } finally {
-    document.body.classList.remove('gerando-pdf');
+document.addEventListener('DOMContentLoaded', function() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('login') === '1') {
+    setTimeout(() => {
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
+      }
+    }, 600);
   }
-}
 
-function montarMensagemWhatsappCliente(clienteNome, linkOrcamento) {
-  const nome = clienteNome && String(clienteNome).trim()
-    ? String(clienteNome).trim()
-    : 'cliente';
+  if (params.get('abrirGerador') === '1') {
+    setTimeout(() => {
+      abrirGeradorGlobal();
+    }, 700);
+  }
 
-  return `Olá, ${nome}! Tudo bem?
+  setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 600);
+  setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 1600);
+});
 
-Seu orçamento está pronto para visualização.
-
-Acesse o link abaixo para conferir os detalhes e aprovar ou recusar a proposta:
-
-${linkOrcamento}
-
-Qualquer dúvida, estou à disposição.`;
-}
-
-async function enviarPorWhatsApp() {
-  if (enviandoWhatsappFS) return;
-
-  enviandoWhatsappFS = true;
-
-  const botoesWhatsapp = document.querySelectorAll('.btn-whatsapp, .btn-acao-whatsapp, .btn-float-whatsapp');
-
-  botoesWhatsapp.forEach(btn => {
-    btn.disabled = true;
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(() => {
+    setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 400);
+    setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 1200);
   });
-
-  try {
-    const dados = fsColetarDadosOrcamentoAtual();
-    const telefoneLimpo = fsLimparTelefoneWhatsapp(dados.clienteWhatsapp);
-
-    if (!telefoneLimpo) {
-      alert('Informe o WhatsApp do cliente.');
-      return;
-    }
-
-    if (!dados.clienteNome) {
-      alert('Informe o nome do cliente.');
-      return;
-    }
-
-    if (!dados.itens.length) {
-      alert('Adicione pelo menos um item ao orçamento.');
-      return;
-    }
-
-    const orcamentoSalvo = await fsSalvarOrcamentoSePlanoPermitido('whatsapp_manual');
-
-    const linkOrcamento = orcamentoSalvo?.id
-      ? `${window.location.origin}/ver.html?id=${orcamentoSalvo.id}`
-      : '';
-
-    if (!linkOrcamento) {
-      alert('Não foi possível gerar o link do orçamento. Para enviar pelo WhatsApp com link, o orçamento precisa ser salvo na nuvem.');
-      return;
-    }
-
-    const mensagem = montarMensagemWhatsappCliente(dados.clienteNome, linkOrcamento);
-    const urlWhatsapp = `https://wa.me/${telefoneLimpo}?text=${encodeURIComponent(mensagem)}`;
-
-    whatsappJanelaFS = window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
-
-    if (!whatsappJanelaFS) {
-      alert('O navegador bloqueou a abertura do WhatsApp. Permita pop-ups para este site ou tente novamente.');
-      return;
-    }
-
-    whatsappJanelaFS.focus();
-
-  } catch (error) {
-    console.error('Erro ao enviar por WhatsApp:', error);
-    alert('Não foi possível abrir o WhatsApp.');
-  } finally {
-    enviandoWhatsappFS = false;
-
-    botoesWhatsapp.forEach(btn => {
-      btn.disabled = false;
-    });
-
-    liberarTelaTravadaGerador();
-  }
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  window.baixarPDF = fsBaixarPDFCorrigido;
-
-  const limparOriginal = window.limparFormulario;
-
-  if (typeof limparOriginal === 'function' && !window.limparFormularioComResetOrcamento) {
-    window.limparFormulario = function() {
-      orcamentoSalvoAtualId = null;
-      return limparOriginal.apply(this, arguments);
-    };
-
-    window.limparFormularioComResetOrcamento = true;
-  }
-});
 </script>
 
 <script>
-function exibirAcoesProfissionaisOrcamento() {
-  const botoesAcao = document.getElementById('botoes-acao');
-  const btnFloatBaixar = document.getElementById('btn-float-baixar');
-  const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
-  const floatingActions = document.querySelector('.floating-actions');
-
-  if (botoesAcao) {
-    botoesAcao.style.display = 'block';
-  }
-
-  if (btnFloatBaixar) {
-    btnFloatBaixar.style.display = 'flex';
-  }
-
-  if (btnFloatWhatsapp) {
-    btnFloatWhatsapp.style.display = 'flex';
-  }
-
-  if (floatingActions) {
-    floatingActions.classList.add('show');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  const previaOriginal = window.gerarPrevia;
-
-  if (typeof previaOriginal === 'function' && !window.gerarPreviaComAcoesProfissionais) {
-    window.gerarPrevia = async function() {
-      const resultado = await previaOriginal.apply(this, arguments);
-
-      setTimeout(() => {
-        const conteudo = document.getElementById('conteudo-pdf');
-
-        if (conteudo && conteudo.innerHTML.trim()) {
-          exibirAcoesProfissionaisOrcamento();
-        }
-      }, 250);
-
-      return resultado;
-    };
-
-    window.gerarPreviaComAcoesProfissionais = true;
-  }
-});
-</script>
-
-<script>
-function fsNormalizarPlanoBotao(valor) {
+function fsNormalizarPlano(valor) {
   return String(valor || 'gratis')
     .toLowerCase()
     .normalize('NFD')
@@ -1856,46 +811,69 @@ function fsNormalizarPlanoBotao(valor) {
     .trim();
 }
 
+async function buscarPlanoAtualIndex() {
+  let plano = localStorage.getItem('usuario_plano') || 'gratis';
+
+  try {
+    if (!window._supabase) return fsNormalizarPlano(plano);
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      return 'gratis';
+    }
+
+    const { data, error } = await _supabase
+      .from('perfis')
+      .select('plano, plano_status, plano_expira_em')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    if (!error && data) {
+      plano = data.plano || 'gratis';
+
+      localStorage.setItem('usuario_plano', plano);
+
+      if (data.plano_status) {
+        localStorage.setItem('usuario_plano_status', data.plano_status);
+      }
+
+      if (data.plano_expira_em) {
+        localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+      }
+    }
+
+    return fsNormalizarPlano(plano);
+  } catch (error) {
+    console.warn('Não foi possível buscar plano:', error);
+    return fsNormalizarPlano(plano);
+  }
+}
+
 async function atualizarBotaoPlanosHome() {
   const botaoPlanos = document.getElementById('btn-conhecer-planos-home');
 
   if (!botaoPlanos) return;
 
-  botaoPlanos.style.display = 'inline-flex';
+  const plano = await buscarPlanoAtualIndex();
 
-  try {
-    if (!window._supabase) return;
+  botaoPlanos.style.display =
+    plano === 'basico' || plano === 'premium'
+      ? 'none'
+      : 'inline-flex';
+}
 
-    const { data: { session } } = await _supabase.auth.getSession();
+async function atualizarPainelPlanoBasicoHome() {
+  const painel = document.getElementById('painel-plano-basico-home');
 
-    if (!session?.user?.id) {
-      botaoPlanos.style.display = 'inline-flex';
-      return;
-    }
+  if (!painel) return;
 
-    let plano = localStorage.getItem('usuario_plano') || 'gratis';
+  const plano = await buscarPlanoAtualIndex();
 
-    const { data, error } = await _supabase
-      .from('perfis')
-      .select('plano')
-      .eq('id', session.user.id)
-      .maybeSingle();
-
-    if (!error && data?.plano) {
-      plano = data.plano;
-      localStorage.setItem('usuario_plano', plano);
-    }
-
-    const planoNormalizado = fsNormalizarPlanoBotao(plano);
-
-    botaoPlanos.style.display =
-      planoNormalizado === 'basico' || planoNormalizado === 'premium'
-        ? 'none'
-        : 'inline-flex';
-  } catch (error) {
-    console.warn('Não foi possível atualizar o botão de planos:', error);
-    botaoPlanos.style.display = 'inline-flex';
-  }
+  painel.style.display =
+    plano === 'basico' || plano === 'premium'
+      ? 'none'
+      : 'block';
 }
 
 function rolarParaPlanosHome(event) {
@@ -1915,15 +893,94 @@ function rolarParaPlanosHome(event) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', atualizarBotaoPlanosHome);
+document.addEventListener('DOMContentLoaded', function() {
+  atualizarBotaoPlanosHome();
+  atualizarPainelPlanoBasicoHome();
+
+  setTimeout(atualizarBotaoPlanosHome, 800);
+  setTimeout(atualizarPainelPlanoBasicoHome, 900);
+
+  setTimeout(atualizarBotaoPlanosHome, 1700);
+  setTimeout(atualizarPainelPlanoBasicoHome, 1800);
+});
 
 if (window._supabase) {
   _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarBotaoPlanosHome, 500);
+    setTimeout(atualizarBotaoPlanosHome, 400);
+    setTimeout(atualizarPainelPlanoBasicoHome, 500);
+    setTimeout(atualizarBotaoPlanosHome, 1300);
+    setTimeout(atualizarPainelPlanoBasicoHome, 1400);
+  });
+}
+</script>
+
+<script>
+function fsSlotAdsenseValido(slot) {
+  const valor = String(slot || '').trim();
+  return /^\d{6,}$/.test(valor);
+}
+
+function fsInicializarAdsenseVisivel() {
+  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
+
+  blocos.forEach(bloco => {
+    if (bloco.style.display === 'none') return;
+
+    const ins = bloco.querySelector('ins.adsbygoogle');
+    if (!ins) return;
+
+    const slot = ins.getAttribute('data-ad-slot');
+
+    if (!fsSlotAdsenseValido(slot)) return;
+    if (ins.dataset.adsenseInicializado === 'true') return;
+
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      ins.dataset.adsenseInicializado = 'true';
+    } catch (error) {
+      console.warn('AdSense ainda não inicializado:', error);
+    }
   });
 }
 
-setTimeout(atualizarBotaoPlanosHome, 1200);
+async function atualizarAnunciosGratisHome() {
+  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
+
+  if (!blocos.length) return;
+
+  let deveExibir = true;
+
+  try {
+    const plano = await buscarPlanoAtualIndex();
+
+    deveExibir = !(plano === 'basico' || plano === 'premium');
+  } catch (error) {
+    console.warn('Não foi possível verificar plano para anúncios:', error);
+    deveExibir = true;
+  }
+
+  blocos.forEach(bloco => {
+    bloco.style.display = deveExibir ? 'block' : 'none';
+  });
+
+  if (deveExibir) {
+    setTimeout(fsInicializarAdsenseVisivel, 250);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  atualizarAnunciosGratisHome();
+
+  setTimeout(atualizarAnunciosGratisHome, 900);
+  setTimeout(atualizarAnunciosGratisHome, 1800);
+});
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(() => {
+    setTimeout(atualizarAnunciosGratisHome, 400);
+    setTimeout(atualizarAnunciosGratisHome, 1400);
+  });
+}
 </script>
 
 <script>
@@ -1965,6 +1022,7 @@ function setEstadoModalPixCarregando() {
 
   if (loading) loading.style.display = 'block';
   if (conteudo) conteudo.style.display = 'none';
+
   if (erro) {
     erro.style.display = 'none';
     erro.innerText = '';
@@ -1978,6 +1036,7 @@ function setEstadoModalPixErro(mensagem) {
 
   if (loading) loading.style.display = 'none';
   if (conteudo) conteudo.style.display = 'none';
+
   if (erro) {
     erro.style.display = 'block';
     erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
@@ -2130,6 +1189,12 @@ async function verificarPagamentoPixAtual() {
   alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
 }
 
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    fecharModalPixBasico();
+  }
+});
+
 document.addEventListener('click', function(event) {
   const modalPix = document.getElementById('modal-pix-basico');
 
@@ -2137,273 +1202,6 @@ document.addEventListener('click', function(event) {
     fecharModalPixBasico();
   }
 });
-</script>
-
-<script>
-function fsNormalizarPlanoHome(valor) {
-  return String(valor || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
-}
-
-async function atualizarPainelPlanoBasicoHome() {
-  const painel = document.getElementById('painel-plano-basico-home');
-
-  if (!painel) return;
-
-  painel.style.display = 'block';
-
-  try {
-    if (!window._supabase) return;
-
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    if (!session?.user?.id) {
-      painel.style.display = 'block';
-      return;
-    }
-
-    let plano = localStorage.getItem('usuario_plano') || 'gratis';
-
-    const { data, error } = await _supabase
-      .from('perfis')
-      .select('plano, plano_status, plano_expira_em')
-      .eq('id', session.user.id)
-      .maybeSingle();
-
-    if (!error && data) {
-      plano = data.plano || 'gratis';
-      localStorage.setItem('usuario_plano', plano);
-
-      if (data.plano_status) {
-        localStorage.setItem('usuario_plano_status', data.plano_status);
-      }
-
-      if (data.plano_expira_em) {
-        localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
-      }
-    }
-
-    const planoNormalizado = fsNormalizarPlanoHome(plano);
-
-    painel.style.display =
-      planoNormalizado === 'basico' || planoNormalizado === 'premium'
-        ? 'none'
-        : 'block';
-  } catch (error) {
-    console.warn('Não foi possível verificar o plano para exibir o painel Básico:', error);
-    painel.style.display = 'block';
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  atualizarPainelPlanoBasicoHome();
-  setTimeout(atualizarPainelPlanoBasicoHome, 700);
-  setTimeout(atualizarPainelPlanoBasicoHome, 1600);
-});
-
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarPainelPlanoBasicoHome, 300);
-    setTimeout(atualizarPainelPlanoBasicoHome, 1200);
-  });
-}
-
-window.atualizarPainelPlanoBasicoHome = atualizarPainelPlanoBasicoHome;
-</script>
-
-<script>
-function fsNormalizarPlanoAdsense(valor) {
-  return String(valor || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
-}
-
-function fsSlotAdsenseValido(slot) {
-  const valor = String(slot || '').trim();
-  return /^\d{6,}$/.test(valor);
-}
-
-function fsInicializarAdsenseVisivel() {
-  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
-
-  blocos.forEach(bloco => {
-    if (bloco.style.display === 'none') return;
-
-    const ins = bloco.querySelector('ins.adsbygoogle');
-    if (!ins) return;
-
-    const slot = ins.getAttribute('data-ad-slot');
-
-    if (!fsSlotAdsenseValido(slot)) return;
-    if (ins.dataset.adsenseInicializado === 'true') return;
-
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      ins.dataset.adsenseInicializado = 'true';
-    } catch (error) {
-      console.warn('AdSense ainda não inicializado:', error);
-    }
-  });
-}
-
-async function atualizarAnunciosGratisHome() {
-  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
-
-  if (!blocos.length) return;
-
-  let deveExibir = true;
-
-  try {
-    if (window._supabase) {
-      const { data: { session } } = await _supabase.auth.getSession();
-
-      if (session?.user?.id) {
-        let plano = localStorage.getItem('usuario_plano') || 'gratis';
-
-        const { data, error } = await _supabase
-          .from('perfis')
-          .select('plano')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (!error && data?.plano) {
-          plano = data.plano;
-          localStorage.setItem('usuario_plano', plano);
-        }
-
-        const planoNormalizado = fsNormalizarPlanoAdsense(plano);
-        deveExibir = !(planoNormalizado === 'basico' || planoNormalizado === 'premium');
-      }
-    }
-  } catch (error) {
-    console.warn('Não foi possível verificar plano para anúncios:', error);
-    deveExibir = true;
-  }
-
-  blocos.forEach(bloco => {
-    bloco.style.display = deveExibir ? 'block' : 'none';
-  });
-
-  if (deveExibir) {
-    setTimeout(fsInicializarAdsenseVisivel, 250);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  atualizarAnunciosGratisHome();
-  setTimeout(atualizarAnunciosGratisHome, 900);
-  setTimeout(atualizarAnunciosGratisHome, 1800);
-});
-
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarAnunciosGratisHome, 400);
-    setTimeout(atualizarAnunciosGratisHome, 1400);
-  });
-}
-
-window.atualizarAnunciosGratisHome = atualizarAnunciosGratisHome;
-</script>
-
-<script>
-async function usuarioTemSessaoAtivaFS() {
-  try {
-    if (!window._supabase) return false;
-
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    return !!session?.user?.id;
-  } catch (error) {
-    console.warn('Erro ao verificar sessão:', error);
-    return false;
-  }
-}
-
-async function abrirGeradorGlobal() {
-  const logado = await usuarioTemSessaoAtivaFS();
-
-  if (!logado) {
-    if (typeof abrirModalLogin === 'function') {
-      abrirModalLogin();
-    } else {
-      window.location.href = '/index.html?login=1';
-    }
-
-    return;
-  }
-
-  abrirModalGerador();
-}
-
-async function abrirGeradorHomeProtegido() {
-  try {
-    if (!window._supabase) {
-      alert('Sistema ainda carregando. Aguarde alguns segundos e tente novamente.');
-      return;
-    }
-
-    const logado = await usuarioTemSessaoAtivaFS();
-
-    if (!logado) {
-      if (typeof abrirModalLogin === 'function') {
-        abrirModalLogin();
-      } else {
-        window.location.href = '/index.html?login=1';
-      }
-
-      return;
-    }
-
-    abrirModalGerador();
-
-  } catch (error) {
-    console.error('Erro ao abrir gerador protegido:', error);
-    alert('Não foi possível verificar o login. Atualize a página e tente novamente.');
-  }
-}
-
-async function atualizarBotaoFlutuanteGlobalPorSessao() {
-  const botao = document.getElementById('btn-flutuante-gerador-global');
-
-  if (!botao) return;
-
-  const logado = await usuarioTemSessaoAtivaFS();
-
-  botao.style.display = logado ? 'inline-flex' : 'none';
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  const params = new URLSearchParams(window.location.search);
-
-  if (params.get('login') === '1') {
-    setTimeout(() => {
-      if (typeof abrirModalLogin === 'function') {
-        abrirModalLogin();
-      }
-    }, 600);
-  }
-
-  if (params.get('abrirGerador') === '1') {
-    setTimeout(() => {
-      abrirGeradorGlobal();
-    }, 700);
-  }
-
-  setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 600);
-  setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 1600);
-});
-
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 400);
-    setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 1200);
-  });
-}
 </script>
 
 </body>
