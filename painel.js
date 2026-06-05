@@ -3,10 +3,6 @@
 let perfilAtual = null;
 let painelJaCarregado = false;
 let responsaveisCache = [];
-let pagamentoPixAtualId = null;
-let dashboardJaCriado = false;
-
-const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
 
 // ==================== INICIALIZAÇÃO ====================
 
@@ -31,7 +27,7 @@ if (window._supabase) {
     painelJaCarregado = false;
     perfilAtual = null;
     responsaveisCache = [];
-    atualizarPainelAssinaturaBasico(null);
+
     mostrarAreaLoginPainel();
   });
 }
@@ -39,11 +35,12 @@ if (window._supabase) {
 async function inicializarPainel(session) {
   mostrarConteudoProtegidoPainel();
 
+  garantirEstruturaPainel();
+
   await carregarPerfil();
   await carregarResponsaveis();
   configurarUploadLogo();
 
-  garantirDashboardNoHtml();
   atualizarCardPlano(perfilAtual);
 
   await carregarDashboardPainel();
@@ -221,6 +218,132 @@ async function obterSessaoPainel() {
   }
 }
 
+// ==================== ESTRUTURA DO PAINEL ====================
+
+function garantirEstruturaPainel() {
+  const container = document.querySelector('.painel-container');
+
+  if (!container) return;
+
+  const aviso = document.querySelector('.painel-aviso');
+
+  if (!document.getElementById('card-plano-painel')) {
+    const cardPlano = document.createElement('section');
+    cardPlano.id = 'card-plano-painel';
+    cardPlano.className = 'painel-card';
+    cardPlano.innerHTML = `
+      <h2>Dados do Plano</h2>
+
+      <div id="perfil-plano-aviso" class="painel-plano-aviso" style="display:none;"></div>
+
+      <div class="perfil-dados-grid">
+        <div class="info-card">
+          <strong>Plano atual</strong>
+          <span id="perfil-plano-texto">Plano Grátis</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Status do plano</strong>
+          <span id="perfil-plano-status">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Expira em</strong>
+          <span id="perfil-plano-expira">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Responsáveis permitidos</strong>
+          <span id="perfil-limite-responsaveis">-</span>
+        </div>
+      </div>
+
+      <div class="acoes-painel">
+        <a href="/planos.html" class="btn-plano-painel">
+          ⭐ Ver planos e assinatura
+        </a>
+      </div>
+    `;
+
+    if (aviso) {
+      aviso.insertAdjacentElement('afterend', cardPlano);
+    } else {
+      container.prepend(cardPlano);
+    }
+  }
+
+  if (!document.getElementById('dashboard-painel')) {
+    const dashboard = document.createElement('section');
+    dashboard.id = 'dashboard-painel';
+    dashboard.className = 'painel-card';
+    dashboard.innerHTML = `
+      <h2>Resumo dos Orçamentos</h2>
+
+      <div class="perfil-dados-grid">
+        <div class="info-card">
+          <strong>Total de orçamentos</strong>
+          <span id="dash-total-orcamentos">0</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Pendentes</strong>
+          <span id="dash-pendentes">0</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Aprovados no mês</strong>
+          <span id="dash-aprovados-mes">0</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Valor aprovado no mês</strong>
+          <span id="dash-valor-aprovado-mes">R$ 0,00</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Taxa de aprovação</strong>
+          <span id="dash-taxa-aprovacao">0%</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Última atualização</strong>
+          <span id="dash-atualizado-em">-</span>
+        </div>
+      </div>
+    `;
+
+    const cardPlano = document.getElementById('card-plano-painel');
+
+    if (cardPlano) {
+      cardPlano.insertAdjacentElement('afterend', dashboard);
+    } else if (aviso) {
+      aviso.insertAdjacentElement('afterend', dashboard);
+    } else {
+      container.prepend(dashboard);
+    }
+  }
+
+  if (!document.getElementById('ultimos-orcamentos-painel')) {
+    const ultimos = document.createElement('section');
+    ultimos.id = 'ultimos-orcamentos-painel';
+    ultimos.className = 'painel-card';
+    ultimos.innerHTML = `
+      <h2>Últimos Orçamentos</h2>
+      <div id="lista-ultimos-orcamentos-painel">
+        <div class="painel-aviso">Carregando últimos orçamentos...</div>
+      </div>
+    `;
+
+    const dashboard = document.getElementById('dashboard-painel');
+
+    if (dashboard) {
+      dashboard.insertAdjacentElement('afterend', ultimos);
+    } else {
+      container.appendChild(ultimos);
+    }
+  }
+}
+
 // ==================== PLANO / ASSINATURA ====================
 
 function usuarioJaTemPlanoPago(perfil) {
@@ -250,14 +373,6 @@ function usuarioJaTemPlanoPago(perfil) {
   }
 
   return false;
-}
-
-function atualizarPainelAssinaturaBasico(perfil) {
-  const painel = document.getElementById('painel-assinatura-basico');
-
-  if (!painel) return;
-
-  painel.style.display = usuarioJaTemPlanoPago(perfil) ? 'none' : 'block';
 }
 
 function montarTextoExpiracaoPlano(perfil) {
@@ -319,23 +434,20 @@ function montarAvisoPlano(perfil) {
 }
 
 function atualizarCardPlano(perfil) {
+  const planoAtual = perfil?.plano || 'gratis';
+
   const badge = document.getElementById('perfil-plano');
-
-  if (badge) {
-    badge.innerText = planoLabel(perfil?.plano);
-  }
-
+  const planoTexto = document.getElementById('perfil-plano-texto');
   const statusEl = document.getElementById('perfil-plano-status');
   const expiraEl = document.getElementById('perfil-plano-expira');
   const avisoEl = document.getElementById('perfil-plano-aviso');
+  const limiteEl = document.getElementById('perfil-limite-responsaveis');
 
-  if (statusEl) {
-    statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
-  }
-
-  if (expiraEl) {
-    expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
-  }
+  if (badge) badge.innerText = planoLabel(planoAtual);
+  if (planoTexto) planoTexto.innerText = planoLabel(planoAtual);
+  if (statusEl) statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
+  if (expiraEl) expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
+  if (limiteEl) limiteEl.innerText = String(limiteResponsaveisPorPlano());
 
   if (avisoEl) {
     const aviso = montarAvisoPlano(perfil);
@@ -365,7 +477,6 @@ async function carregarPerfil() {
   if (error) {
     console.error('Erro ao carregar perfil:', error);
     mostrarStatus('status-perfil', 'Erro ao carregar os dados do perfil.', 'erro');
-    atualizarPainelAssinaturaBasico({ plano: 'gratis' });
     return;
   }
 
@@ -383,7 +494,6 @@ async function carregarPerfil() {
 
   preencherCamposEstaticos(perfilAtual, session);
   preencherFormularioEdicao(perfilAtual);
-  atualizarPainelAssinaturaBasico(perfilAtual);
   atualizarCardPlano(perfilAtual);
 }
 
@@ -487,7 +597,6 @@ async function salvarPerfil(event) {
   preencherCamposEstaticos(perfilAtual, session);
   preencherSelectResponsaveis();
   renderizarListaResponsaveis();
-  atualizarPainelAssinaturaBasico(perfilAtual);
   atualizarCardPlano(perfilAtual);
 
   if (typeof carregarMenu === 'function') {
@@ -711,6 +820,7 @@ async function carregarResponsaveis() {
 
   preencherSelectResponsaveis();
   renderizarListaResponsaveis();
+  atualizarCardPlano(perfilAtual);
 }
 
 async function garantirResponsavelSelecionadoNaLista(session) {
@@ -831,12 +941,14 @@ function abrirModalResponsavelInterno() {
   if (input) input.value = '';
 
   const status = document.getElementById('status-responsavel');
+
   if (status) {
     status.className = 'status-msg';
     status.innerText = '';
   }
 
   const modal = document.getElementById('modal-responsavel-interno');
+
   if (modal) modal.style.display = 'flex';
 
   setTimeout(() => {
@@ -905,6 +1017,7 @@ async function salvarResponsavel() {
   if (select) select.value = nome;
 
   renderizarListaResponsaveis();
+  atualizarCardPlano(perfilAtual);
 }
 
 async function excluirResponsavel(id) {
@@ -937,6 +1050,7 @@ async function excluirResponsavel(id) {
   responsaveisCache = responsaveisCache.filter(resp => resp.id !== id);
   preencherSelectResponsaveis();
   renderizarListaResponsaveis();
+  atualizarCardPlano(perfilAtual);
 }
 
 // ==================== MODAIS PERFIL / SENHA ====================
@@ -1019,132 +1133,8 @@ async function alterarSenhaSegura() {
 
 // ==================== DASHBOARD ====================
 
-function garantirDashboardNoHtml() {
-  if (dashboardJaCriado) return;
-
-  const container = document.querySelector('.painel-container');
-  if (!container) return;
-
-  const estilo = document.createElement('style');
-  estilo.innerHTML = `
-    .painel-plano-aviso {
-      display: none;
-      margin-bottom: 18px;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 800;
-      line-height: 1.45;
-    }
-
-    .painel-plano-aviso.plano-gratis {
-      display: block;
-      background: #fff3cd;
-      color: #5d4037;
-      border-left: 6px solid #ffc400;
-    }
-
-    .painel-plano-aviso.plano-alerta {
-      display: block;
-      background: #fff7ed;
-      color: #9a3412;
-      border-left: 6px solid #f97316;
-    }
-
-    .painel-plano-aviso.plano-erro {
-      display: block;
-      background: #fff1f1;
-      color: #991b1b;
-      border-left: 6px solid #dc2626;
-    }
-
-    .painel-plano-aviso.plano-ok {
-      display: block;
-      background: #eaf7ed;
-      color: #14532d;
-      border-left: 6px solid #22c55e;
-    }
-  `;
-  document.head.appendChild(estilo);
-
-  const painelAviso = document.querySelector('.painel-aviso');
-
-  const dashboard = document.createElement('section');
-  dashboard.id = 'dashboard-painel';
-  dashboard.className = 'painel-card';
-  dashboard.innerHTML = `
-    <h2>Resumo da Conta</h2>
-
-    <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
-
-    <div class="perfil-dados-grid" style="margin-bottom:18px;">
-      <div class="info-card">
-        <strong>Status do plano</strong>
-        <span id="perfil-plano-status">-</span>
-      </div>
-
-      <div class="info-card">
-        <strong>Expira em</strong>
-        <span id="perfil-plano-expira">-</span>
-      </div>
-    </div>
-
-    <div class="perfil-dados-grid">
-      <div class="info-card">
-        <strong>Total de orçamentos</strong>
-        <span id="dash-total-orcamentos">0</span>
-      </div>
-
-      <div class="info-card">
-        <strong>Pendentes</strong>
-        <span id="dash-pendentes">0</span>
-      </div>
-
-      <div class="info-card">
-        <strong>Aprovados no mês</strong>
-        <span id="dash-aprovados-mes">0</span>
-      </div>
-
-      <div class="info-card">
-        <strong>Valor aprovado no mês</strong>
-        <span id="dash-valor-aprovado-mes">R$ 0,00</span>
-      </div>
-
-      <div class="info-card">
-        <strong>Taxa de aprovação</strong>
-        <span id="dash-taxa-aprovacao">0%</span>
-      </div>
-
-      <div class="info-card">
-        <strong>Última atualização</strong>
-        <span id="dash-atualizado-em">-</span>
-      </div>
-    </div>
-  `;
-
-  if (painelAviso) {
-    painelAviso.insertAdjacentElement('afterend', dashboard);
-  } else {
-    container.prepend(dashboard);
-  }
-
-  const ultimos = document.createElement('section');
-  ultimos.id = 'ultimos-orcamentos-painel';
-  ultimos.className = 'painel-card';
-  ultimos.innerHTML = `
-    <h2>Últimos Orçamentos</h2>
-    <div id="lista-ultimos-orcamentos-painel">
-      <div class="painel-aviso">Carregando últimos orçamentos...</div>
-    </div>
-  `;
-
-  dashboard.insertAdjacentElement('afterend', ultimos);
-
-  dashboardJaCriado = true;
-}
-
 async function carregarDashboardPainel() {
-  garantirDashboardNoHtml();
+  garantirEstruturaPainel();
   atualizarCardPlano(perfilAtual);
 
   const session = await obterSessaoPainel();
@@ -1187,7 +1177,7 @@ async function carregarDashboardPainel() {
 }
 
 async function carregarUltimosOrcamentosPainel() {
-  garantirDashboardNoHtml();
+  garantirEstruturaPainel();
 
   const container = document.getElementById('lista-ultimos-orcamentos-painel');
   if (!container) return;
@@ -1228,6 +1218,7 @@ async function carregarUltimosOrcamentosPainel() {
             <th style="padding:10px; text-align:right;">Total</th>
           </tr>
         </thead>
+
         <tbody>
           ${orcamentos.map(o => `
             <tr>
@@ -1262,206 +1253,6 @@ async function carregarUltimosOrcamentosPainel() {
   `;
 }
 
-// ==================== PIX PLANO BÁSICO ====================
-
-function formatarMoedaPix(valor) {
-  return Number(valor || 0).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
-}
-
-function abrirModalPixBasico() {
-  const modal = document.getElementById('modal-pix-basico');
-
-  if (modal) {
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-}
-
-function fecharModalPixBasico() {
-  const modal = document.getElementById('modal-pix-basico');
-
-  if (modal) {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-}
-
-function setEstadoModalPixCarregando() {
-  abrirModalPixBasico();
-
-  const loading = document.getElementById('pix-loading');
-  const conteudo = document.getElementById('pix-conteudo');
-  const erro = document.getElementById('pix-erro');
-
-  if (loading) loading.style.display = 'block';
-  if (conteudo) conteudo.style.display = 'none';
-
-  if (erro) {
-    erro.style.display = 'none';
-    erro.innerText = '';
-  }
-}
-
-function setEstadoModalPixErro(mensagem) {
-  const loading = document.getElementById('pix-loading');
-  const conteudo = document.getElementById('pix-conteudo');
-  const erro = document.getElementById('pix-erro');
-
-  if (loading) loading.style.display = 'none';
-  if (conteudo) conteudo.style.display = 'none';
-
-  if (erro) {
-    erro.style.display = 'block';
-    erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
-  }
-}
-
-function setEstadoModalPixConteudo(dados) {
-  const loading = document.getElementById('pix-loading');
-  const conteudo = document.getElementById('pix-conteudo');
-  const erro = document.getElementById('pix-erro');
-
-  const subtitulo = document.getElementById('pix-modal-subtitulo');
-  const planoLabelEl = document.getElementById('pix-plano-label');
-  const pixValor = document.getElementById('pix-valor');
-  const qrImg = document.getElementById('pix-qrcode-img');
-  const copiaCola = document.getElementById('pix-copia-cola');
-
-  pagamentoPixAtualId = dados.pagamento_id || null;
-
-  if (loading) loading.style.display = 'none';
-  if (conteudo) conteudo.style.display = 'block';
-  if (erro) erro.style.display = 'none';
-
-  if (subtitulo) subtitulo.innerText = `${dados.label || 'Plano Básico'} - ${formatarMoedaPix(dados.valor)}`;
-  if (planoLabelEl) planoLabelEl.innerText = dados.label || 'Plano Básico';
-  if (pixValor) pixValor.innerText = formatarMoedaPix(dados.valor);
-
-  if (qrImg) {
-    if (dados.qr_code) {
-      qrImg.src = dados.qr_code;
-      qrImg.style.display = 'inline-block';
-    } else {
-      qrImg.src = '';
-      qrImg.style.display = 'none';
-    }
-  }
-
-  if (copiaCola) {
-    copiaCola.value = dados.pix_copia_cola || '';
-  }
-}
-
-async function gerarPixPlanoBasico(periodo) {
-  try {
-    if (!window._supabase) {
-      alert('Supabase não carregou. Atualize a página e tente novamente.');
-      return;
-    }
-
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    if (!session) {
-      alert('Faça login para assinar o Plano Básico.');
-      return;
-    }
-
-    setEstadoModalPixCarregando();
-
-    const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`
-      },
-      body: JSON.stringify({ periodo })
-    });
-
-    const dados = await resposta.json().catch(() => ({}));
-
-    if (!resposta.ok) {
-      setEstadoModalPixErro(dados.erro || 'Erro ao gerar Pix.');
-      return;
-    }
-
-    setEstadoModalPixConteudo(dados);
-
-  } catch (error) {
-    console.error('Erro ao gerar Pix:', error);
-    setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
-  }
-}
-
-async function copiarPixCopiaCola() {
-  const campo = document.getElementById('pix-copia-cola');
-
-  if (!campo || !campo.value) {
-    alert('Pix copia e cola não disponível.');
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(campo.value);
-    alert('Pix copia e cola copiado!');
-  } catch (error) {
-    campo.select();
-    document.execCommand('copy');
-    alert('Pix copia e cola copiado!');
-  }
-}
-
-async function verificarPagamentoPixAtual() {
-  if (!pagamentoPixAtualId) {
-    alert('Nenhum pagamento Pix foi gerado nesta tela.');
-    return;
-  }
-
-  if (!window._supabase) {
-    alert('Supabase não carregou. Atualize a página.');
-    return;
-  }
-
-  const { data: { session } } = await _supabase.auth.getSession();
-
-  if (!session) {
-    alert('Faça login novamente para verificar o pagamento.');
-    return;
-  }
-
-  const { data, error } = await _supabase
-    .from('pagamentos_pix')
-    .select('status, pago_em')
-    .eq('id', pagamentoPixAtualId)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Erro ao verificar pagamento:', error);
-    alert('Não foi possível verificar o pagamento agora.');
-    return;
-  }
-
-  if (!data) {
-    alert('Pagamento não encontrado.');
-    return;
-  }
-
-  if (data.status === 'pago') {
-    alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
-    fecharModalPixBasico();
-
-    await carregarPerfil();
-    await carregarDashboardPainel();
-    await carregarUltimosOrcamentosPainel();
-
-    return;
-  }
-
-  alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
-}
-
 // ==================== GERADOR GLOBAL ====================
 
 function abrirGeradorGlobal() {
@@ -1474,12 +1265,10 @@ document.addEventListener('click', event => {
   const modalPerfil = document.getElementById('modal-editar-perfil');
   const modalSenha = document.getElementById('modal-senha');
   const modalResponsavel = document.getElementById('modal-responsavel-interno');
-  const modalPix = document.getElementById('modal-pix-basico');
 
   if (event.target === modalPerfil) fecharModalEditarPerfil();
   if (event.target === modalSenha) fecharModalSenha();
   if (event.target === modalResponsavel) fecharModalResponsavelInterno();
-  if (event.target === modalPix) fecharModalPixBasico();
 });
 
 document.addEventListener('keydown', event => {
@@ -1487,7 +1276,6 @@ document.addEventListener('keydown', event => {
     fecharModalResponsavelInterno();
     fecharModalEditarPerfil();
     fecharModalSenha();
-    fecharModalPixBasico();
   }
 });
 
@@ -1510,10 +1298,5 @@ window.abrirModalResponsavelInterno = abrirModalResponsavelInterno;
 window.fecharModalResponsavelInterno = fecharModalResponsavelInterno;
 window.salvarResponsavel = salvarResponsavel;
 window.excluirResponsavel = excluirResponsavel;
-
-window.gerarPixPlanoBasico = gerarPixPlanoBasico;
-window.copiarPixCopiaCola = copiarPixCopiaCola;
-window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
-window.fecharModalPixBasico = fecharModalPixBasico;
 
 window.abrirGeradorGlobal = abrirGeradorGlobal;
