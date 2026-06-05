@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Planos - FS Orçamentos</title>
+
+  <meta name="description" content="Conheça os planos do FS Orçamentos. Gere orçamentos grátis ou assine o Plano Básico com Pix para salvar na nuvem, usar histórico, WhatsApp com link e aprovação online.">
+  <meta name="keywords" content="planos fs orçamentos, plano básico, orçamento pdf, orçamento online, pix assinatura">
+  <meta name="author" content="Filipi Aparecido dos Santos">
+
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <style>
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #241512;
+      --fs-creme: #f4ece1;
+      --fs-creme-2: #fffaf0;
+      --fs-amarelo: #ffc400;
+      --fs-verde: #16a34a;
+      --fs-vermelho: #dc2626;
+      --fs-azul: #2563eb;
+      --fs-borda: #e0d6c8;
+      --fs-texto: #3e2723;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255,196,0,0.16), transparent 28%),
+        linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+      color: var(--fs-texto);
+      min-height: 100vh;
+    }
+
+    .pagina-planos {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 14px 48px;
+    }
+
+    .planos-hero {
+      background: linear-gradient(135deg, #fff8df, var(--fs-creme));
+      border-radius: 28px;
+      padding: 34px 26px;
+      border-top: 7px solid var(--fs-amarelo);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.28);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .planos-hero::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255,196,0,0.18);
+      top: -120px;
+      right: -90px;
+    }
+
+    .planos-hero-conteudo {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.4fr .8fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .tag-planos {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 8px 15px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .35px;
+      margin-bottom: 14px;
+    }
+
+    .planos-hero h1 {
+      margin: 0 0 12px;
+      color: var(--fs-marrom);
+      font-size: 38px;
+      line-height: 1.12;
+    }
+
+    .planos-hero p {
+      margin: 0;
+      color: #5d4037;
+      font-size: 16px;
+      line-height: 1.58;
+      max-width: 760px;
+    }
+
+    .plano-atual-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 18px;
+      border-left: 7px solid var(--fs-amarelo);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+    }
+
+    .plano-atual-card small {
+      display: block;
+      color: #6d4c41;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 6px;
+    }
+
+    .plano-atual-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .plano-atual-card span {
+      display: block;
+      color: #6d4c41;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .plano-atual-aviso {
+      margin-top: 12px;
+      padding: 11px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .plano-atual-aviso.ok {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 5px solid #16a34a;
+    }
+
+    .plano-atual-aviso.alerta {
+      background: #fff7d6;
+      color: #7c4a03;
+      border-left: 5px solid #ffc400;
+    }
+
+    .plano-atual-aviso.erro {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 5px solid #dc2626;
+    }
+
+    .plano-atual-aviso.gratis {
+      background: #fff8e1;
+      color: #5d4037;
+      border-left: 5px solid #ffc400;
+    }
+
+    .planos-acoes-hero {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-planos-primario,
+    .btn-planos-secundario {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .2s ease;
+      border: 2px solid var(--fs-marrom);
+      font-size: 14px;
+    }
+
+    .btn-planos-primario {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+    }
+
+    .btn-planos-secundario {
+      background: #ffffff;
+      color: var(--fs-marrom);
+    }
+
+    .btn-planos-primario:hover,
+    .btn-planos-secundario:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    }
+
+    .secao-planos {
+      background: linear-gradient(135deg, #fffaf0, var(--fs-creme));
+      border-radius: 24px;
+      padding: 28px 22px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+      margin-bottom: 22px;
+    }
+
+    .secao-topo {
+      text-align: center;
+      max-width: 830px;
+      margin: 0 auto 24px;
+    }
+
+    .secao-topo span {
+      display: inline-block;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 7px 15px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .secao-topo h2 {
+      margin: 0 0 10px;
+      color: var(--fs-marrom);
+      font-size: 31px;
+      line-height: 1.18;
+    }
+
+    .secao-topo p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .cards-planos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .card-plano {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #eadfce;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+      position: relative;
+    }
+
+    .card-plano.basico {
+      border: 2px solid var(--fs-amarelo);
+      transform: scale(1.015);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.18);
+    }
+
+    .selo-plano {
+      display: inline-flex;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .card-plano h3 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      font-size: 27px;
+    }
+
+    .preco-plano {
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--fs-marrom);
+      margin-bottom: 8px;
+    }
+
+    .preco-plano small {
+      font-size: 13px;
+      color: #6d4c41;
+      font-weight: 800;
+    }
+
+    .card-plano p {
+      margin: 0 0 16px;
+      color: #6d4c41;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .lista-beneficios {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 9px;
+    }
+
+    .lista-beneficios li {
+      background: #f7f2ea;
+      border-radius: 11px;
+      padding: 10px;
+      border-left: 4px solid var(--fs-amarelo);
+      color: #5d4037;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .lista-beneficios li.nao {
+      opacity: .72;
+      border-left-color: #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .comparativo-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid #eadfce;
+      background: #ffffff;
+      margin-top: 18px;
+    }
+
+    .tabela-comparativo {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+
+    .tabela-comparativo th {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 14px;
+      text-align: left;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .tabela-comparativo td {
+      padding: 13px 14px;
+      border-bottom: 1px solid #eee;
+      color: var(--fs-marrom);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .tabela-comparativo tr:nth-child(even) td {
+      background: #fffaf0;
+    }
+
+    .check {
+      color: #15803d;
+      font-weight: 900;
+    }
+
+    .x {
+      color: #dc2626;
+      font-weight: 900;
+    }
+
+    .planos-pix-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .plano-pix-card {
+      position: relative;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #eadfce;
+      border-top: 5px solid var(--fs-amarelo);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+      text-align: center;
+      transition: .2s ease;
+    }
+
+    .plano-pix-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 34px rgba(0,0,0,0.18);
+    }
+
+    .plano-pix-card.destaque {
+      border: 2px solid var(--fs-amarelo);
+      transform: scale(1.035);
+      box-shadow: 0 16px 38px rgba(0,0,0,0.22);
+    }
+
+    .plano-pix-card.destaque:hover {
+      transform: scale(1.035) translateY(-3px);
+    }
+
+    .plano-pix-selo {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .plano-pix-periodo {
+      font-size: 23px;
+      font-weight: 900;
+      color: var(--fs-marrom);
+      margin-bottom: 8px;
+    }
+
+    .plano-pix-preco {
+      font-size: 34px;
+      font-weight: 900;
+      color: var(--fs-marrom);
+      margin-bottom: 10px;
+    }
+
+    .plano-pix-card p {
+      color: #6d4c41;
+      font-size: 14px;
+      line-height: 1.45;
+      min-height: 42px;
+      margin: 0 0 18px;
+    }
+
+    .plano-pix-card button {
+      width: 100%;
+      border: 2px solid var(--fs-marrom);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border-radius: 13px;
+      padding: 13px 16px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+      transition: .2s ease;
+    }
+
+    .plano-pix-card button:hover {
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .plano-pix-card button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .plano-pix-beneficios {
+      margin-top: 26px;
+      background: var(--fs-marrom);
+      color: #ffffff;
+      border-radius: 18px;
+      border: 2px solid var(--fs-amarelo);
+      padding: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .plano-pix-beneficios strong {
+      width: 100%;
+      color: var(--fs-amarelo);
+      font-size: 18px;
+    }
+
+    .plano-pix-beneficios span {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,196,0,0.35);
+      color: var(--fs-creme);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .faq-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 17px;
+      border-left: 6px solid var(--fs-amarelo);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+    }
+
+    .faq-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .faq-card p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .modal-login-overlay,
+    .modal-pix-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.76);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 19000;
+      padding: 16px;
+    }
+
+    .modal-login-box {
+      width: min(100%, 430px);
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
+      border-radius: 18px;
+      border-top: 5px solid var(--fs-amarelo);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+      padding: 22px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .btn-fechar-login {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--fs-vermelho);
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .modal-pix-card {
+      width: min(100%, 520px);
+      max-height: 92vh;
+      overflow-y: auto;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
+      border-radius: 18px;
+      border-top: 5px solid var(--fs-amarelo);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+    }
+
+    .modal-pix-topo {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-pix-topo strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .modal-pix-topo span {
+      display: block;
+      color: var(--fs-creme);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .modal-pix-topo button {
+      background: var(--fs-vermelho);
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .pix-loading,
+    .pix-erro {
+      margin: 18px;
+      padding: 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .pix-loading {
+      background: #fff8e1;
+      border-left: 5px solid var(--fs-amarelo);
+      color: #5d4037;
+    }
+
+    .pix-erro {
+      background: #fff1f1;
+      border-left: 5px solid var(--fs-vermelho);
+      color: #991b1b;
+    }
+
+    .pix-conteudo {
+      padding: 18px;
+    }
+
+    .pix-resumo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .pix-resumo div {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px;
+      border-left: 5px solid var(--fs-amarelo);
+    }
+
+    .pix-resumo small {
+      display: block;
+      color: #6d4c41;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .pix-resumo strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+    }
+
+    .pix-qrcode-box {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid #eadfce;
+      margin-bottom: 14px;
+    }
+
+    .pix-qrcode-box img {
+      max-width: 260px;
+      width: 100%;
+      height: auto;
+    }
+
+    .pix-label {
+      display: block;
+      font-weight: 900;
+      color: var(--fs-marrom);
+      margin-bottom: 7px;
+    }
+
+    #pix-copia-cola {
+      width: 100%;
+      min-height: 105px;
+      resize: vertical;
+      border-radius: 12px;
+      border: 1px solid #d7ccc8;
+      padding: 12px;
+      box-sizing: border-box;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--fs-marrom);
+    }
+
+    .pix-acoes {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .pix-acoes button {
+      flex: 1;
+      border-radius: 10px;
+      padding: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      border: 2px solid var(--fs-amarelo);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+    }
+
+    .pix-acoes button.secundario {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+    }
+
+    .pix-aviso {
+      margin: 14px 0 0;
+      color: #6d4c41;
+      font-size: 13px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      color: #bdbdbd;
+      padding: 25px 10px;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--fs-amarelo);
+      text-decoration: none;
+    }
+
+    @media (max-width: 920px) {
+      .planos-hero-conteudo,
+      .cards-planos-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-plano.basico {
+        transform: none;
+      }
+
+      .planos-pix-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plano-pix-card.destaque,
+      .plano-pix-card.destaque:hover {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .pagina-planos {
+        padding: 18px 10px 36px;
+      }
+
+      .planos-hero,
+      .secao-planos {
+        border-radius: 20px;
+        padding: 22px 15px;
+      }
+
+      .planos-hero h1 {
+        font-size: 28px;
+      }
+
+      .secao-topo h2 {
+        font-size: 24px;
+      }
+
+      .pix-resumo,
+      .pix-acoes {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+
+      .planos-acoes-hero {
+        flex-direction: column;
+      }
+
+      .btn-planos-primario,
+      .btn-planos-secundario {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<div id="modal-login" class="modal-login-overlay">
+  <div class="modal-login-box">
+    <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button>
+
+    <div class="auth-logo-box">
+      <div class="auth-logo-text">
+        <strong>FS</strong><span>Orçamentos</span>
+      </div>
+      <p>Acesse sua conta para assinar ou gerenciar seu plano</p>
+    </div>
+
+    <div id="auth-area" style="display:block;">
+      <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
+        <form id="form-autenticacao" onsubmit="return false;">
+          <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
+            Acesse sua Conta
+          </h3>
+
+          <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome</label>
+            <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">E-mail</label>
+            <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome da Empresa</label>
+            <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">WhatsApp da Empresa</label>
+            <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Senha</label>
+            <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Confirmar Senha</label>
+            <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">
+            Entrar
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 15px;">
+          <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #007bff; text-decoration: none;">
+            Não tem cadastro? Clique aqui.
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="pagina-planos">
+
+  <section class="planos-hero">
+    <div class="planos-hero-conteudo">
+      <div>
+        <span class="tag-planos">⭐ Planos FS Orçamentos</span>
+
+        <h1>Escolha o plano ideal para organizar seus orçamentos.</h1>
+
+        <p>
+          Comece grátis gerando PDFs profissionais. Quando quiser salvar na nuvem,
+          acompanhar status, enviar link pelo WhatsApp e receber aprovação online,
+          ative o Plano Básico com Pix.
+        </p>
+
+        <div class="planos-acoes-hero">
+          <a href="/gerador.html" class="btn-planos-primario">
+            🧾 Gerar orçamento
+          </a>
+
+          <a href="#assinar-plano-basico" class="btn-planos-secundario">
+            💳 Ver Plano Básico
+          </a>
+        </div>
+      </div>
+
+      <div class="plano-atual-card">
+        <small>Seu plano atual</small>
+        <strong id="plano-atual-label">Verificando...</strong>
+        <span id="plano-atual-expira">Aguarde enquanto consultamos sua conta.</span>
+
+        <div id="plano-atual-aviso" class="plano-atual-aviso alerta">
+          Carregando informações do plano...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao-planos">
+    <div class="secao-topo">
+      <span>Comparativo</span>
+      <h2>Plano Grátis x Plano Básico</h2>
+      <p>
+        O Plano Grátis é ideal para gerar PDFs. O Plano Básico transforma a ferramenta em um sistema completo de acompanhamento.
+      </p>
+    </div>
+
+    <div class="cards-planos-grid">
+      <div class="card-plano">
+        <span class="selo-plano">Para começar</span>
+        <h3>Plano Grátis</h3>
+
+        <div class="preco-plano">
+          R$ 0,00 <small>/ grátis</small>
+        </div>
+
+        <p>
+          Ideal para quem precisa criar orçamentos em PDF de forma rápida, com anúncios na plataforma.
+        </p>
+
+        <ul class="lista-beneficios">
+          <li>✅ Gerar orçamento</li>
+          <li>✅ Pré-visualizar PDF</li>
+          <li>✅ Baixar PDF</li>
+          <li>✅ Usar dados da empresa no PDF</li>
+          <li class="nao">❌ Salvar na nuvem</li>
+          <li class="nao">❌ Histórico e status</li>
+          <li class="nao">❌ WhatsApp com link</li>
+          <li class="nao">❌ Aprovação online do cliente</li>
+        </ul>
+      </div>
+
+      <div class="card-plano basico">
+        <span class="selo-plano">Mais profissional</span>
+        <h3>Plano Básico</h3>
+
+        <div class="preco-plano">
+          R$ 19,90 <small>/ a partir de 1 mês</small>
+        </div>
+
+        <p>
+          Para quem quer controlar orçamentos, status, histórico, aprovação do cliente e enviar links pelo WhatsApp.
+        </p>
+
+        <ul class="lista-beneficios">
+          <li>✅ Tudo do Plano Grátis</li>
+          <li>✅ Sem anúncios na plataforma</li>
+          <li>✅ Salvar orçamentos na nuvem</li>
+          <li>✅ Histórico de orçamentos</li>
+          <li>✅ Status: pendente, aprovado, recusado, em serviço e finalizado</li>
+          <li>✅ WhatsApp com link do orçamento</li>
+          <li>✅ Cliente aprova ou recusa online</li>
+          <li>✅ Resumo financeiro</li>
+          <li>✅ Até 2 responsáveis</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="comparativo-wrapper">
+      <table class="tabela-comparativo">
+        <thead>
+          <tr>
+            <th>Recurso</th>
+            <th>Plano Grátis</th>
+            <th>Plano Básico</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Gerar orçamento em PDF</td>
+            <td><span class="check">Sim</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+
+          <tr>
+            <td>Pré-visualização</td>
+            <td><span class="check">Sim</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+
+          <tr>
+            <td>Baixar PDF</td>
+            <td><span class="check">Sim</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+
+          <tr>
+            <td>Anúncios</td>
+            <td><span class="check">Sim</span></td>
+            <td><span class="x">Não</span></td>
+          </tr>
+
+          <tr>
+            <td>Salvar na nuvem</td>
+            <td><span class="x">Não</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+
+          <tr>
+            <td>Histórico de orçamentos</td>
+            <td><span class="x">Não</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+
+          <tr>
+            <td>WhatsApp com link</td>
+            <td><span class="x">Não</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+
+          <tr>
+            <td>Aprovação ou recusa pelo cliente</td>
+            <td><span class="x">Não</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+
+          <tr>
+            <td>Resumo financeiro</td>
+            <td><span class="x">Não</span></td>
+            <td><span class="check">Sim</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="assinar-plano-basico" class="secao-planos">
+    <div class="secao-topo">
+      <span>Pagamento via Pix</span>
+      <h2>Ative o Plano Básico</h2>
+      <p>
+        Escolha o período, gere o Pix e aguarde a confirmação automática. Assim que o pagamento for identificado, os recursos pagos serão liberados na sua conta.
+      </p>
+    </div>
+
+    <div class="planos-pix-grid">
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">1 mês</div>
+        <div class="plano-pix-preco">R$ 19,90</div>
+        <p>Ideal para testar os recursos pagos por 30 dias.</p>
+
+        <button type="button" class="btn-gerar-pix-plano" onclick="gerarPixPlanoBasico('mensal')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card destaque">
+        <div class="plano-pix-selo">Mais escolhido</div>
+        <div class="plano-pix-periodo">6 meses</div>
+        <div class="plano-pix-preco">R$ 109,90</div>
+        <p>Economize em relação ao pagamento mensal.</p>
+
+        <button type="button" class="btn-gerar-pix-plano" onclick="gerarPixPlanoBasico('semestral')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">12 meses</div>
+        <div class="plano-pix-preco">R$ 209,90</div>
+        <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
+
+        <button type="button" class="btn-gerar-pix-plano" onclick="gerarPixPlanoBasico('anual')">
+          Gerar Pix
+        </button>
+      </div>
+    </div>
+
+    <div class="plano-pix-beneficios">
+      <strong>O Plano Básico inclui:</strong>
+      <span>Salvar orçamentos na nuvem</span>
+      <span>Histórico de orçamentos</span>
+      <span>Status automático</span>
+      <span>WhatsApp com link</span>
+      <span>Aprovação online</span>
+      <span>Resumo financeiro</span>
+      <span>Até 2 responsáveis</span>
+      <span>Sem anúncios</span>
+    </div>
+  </section>
+
+  <section class="secao-planos">
+    <div class="secao-topo">
+      <span>Dúvidas frequentes</span>
+      <h2>Perguntas frequentes</h2>
+      <p>
+        Algumas respostas rápidas sobre o funcionamento da assinatura.
+      </p>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-card">
+        <strong>A ativação é automática?</strong>
+        <p>
+          Sim. Após o Pix ser confirmado pela Efí/Supabase Function, o Plano Básico é liberado automaticamente na sua conta.
+        </p>
+      </div>
+
+      <div class="faq-card">
+        <strong>Preciso estar logado para pagar?</strong>
+        <p>
+          Sim. O Pix precisa ser vinculado à sua conta para liberar corretamente o Plano Básico.
+        </p>
+      </div>
+
+      <div class="faq-card">
+        <strong>O Plano Grátis continua funcionando?</strong>
+        <p>
+          Sim. Você pode continuar gerando e baixando PDFs grátis, mas sem histórico, nuvem e aprovação online.
+        </p>
+      </div>
+
+      <div class="faq-card">
+        <strong>O que acontece quando o plano expira?</strong>
+        <p>
+          Os recursos pagos ficam bloqueados até a renovação. Seus dados salvos permanecem no sistema para quando reativar.
+        </p>
+      </div>
+
+      <div class="faq-card">
+        <strong>Posso renovar antes de vencer?</strong>
+        <p>
+          Sim. Ao gerar um novo Pix e confirmar o pagamento, a assinatura pode ser renovada conforme a regra configurada no backend.
+        </p>
+      </div>
+
+      <div class="faq-card">
+        <strong>Qual plano devo usar?</strong>
+        <p>
+          Use o Grátis para gerar PDF simples. Use o Básico se quiser histórico, status, WhatsApp com link e controle profissional.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="modal-pix-basico" class="modal-pix-overlay">
+  <div class="modal-pix-card">
+    <div class="modal-pix-topo">
+      <div>
+        <strong>Pagamento via Pix</strong>
+        <span id="pix-modal-subtitulo">Plano Básico</span>
+      </div>
+
+      <button type="button" onclick="fecharModalPixBasico()">×</button>
+    </div>
+
+    <div id="pix-loading" class="pix-loading">
+      Gerando Pix, aguarde...
+    </div>
+
+    <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
+      <div class="pix-resumo">
+        <div>
+          <small>Plano</small>
+          <strong id="pix-plano-label">Plano Básico</strong>
+        </div>
+
+        <div>
+          <small>Valor</small>
+          <strong id="pix-valor">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <div class="pix-qrcode-box">
+        <img id="pix-qrcode-img" src="" alt="QR Code Pix">
+      </div>
+
+      <label class="pix-label">Pix copia e cola</label>
+
+      <textarea id="pix-copia-cola" readonly></textarea>
+
+      <div class="pix-acoes">
+        <button type="button" onclick="copiarPixCopiaCola()">
+          Copiar Pix
+        </button>
+
+        <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">
+          Já paguei, verificar
+        </button>
+      </div>
+
+      <p class="pix-aviso">
+        Após o pagamento, seu Plano Básico será liberado automaticamente quando a Efí confirmar o Pix.
+      </p>
+    </div>
+
+    <div id="pix-erro" class="pix-erro" style="display:none;"></div>
+  </div>
+</div>
+
+<footer>
+  &copy; 2026 FS Orçamentos |
+  <a href="privacidade.html">Privacidade</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="carregar-menu.js"></script>
+<script src="notificacoes.js"></script>
+
+<script>
+let perfilPlanoAtual = null;
+let pagamentoPixAtualId = null;
+
+const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await carregarPlanoAtual();
+
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('login') === '1') {
+    setTimeout(() => {
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
+      }
+    }, 500);
+  }
+});
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(async (event, session) => {
+    await carregarPlanoAtual();
+
+    if (session && typeof fecharModalLogin === 'function') {
+      fecharModalLogin();
+    }
+  });
+}
+
+function normalizarPlano(valor) {
+  return String(valor || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+function planoLabel(plano) {
+  const p = normalizarPlano(plano);
+
+  if (p === 'premium') return 'Plano Premium';
+  if (p === 'basico') return 'Plano Básico';
+
+  return 'Plano Grátis';
+}
+
+function statusPlanoLabel(status) {
+  const s = normalizarPlano(status || 'ativo');
+
+  if (s === 'ativo') return 'Ativo';
+  if (s === 'pago') return 'Ativo';
+  if (s === 'cancelado') return 'Cancelado';
+  if (s === 'expirado') return 'Expirado';
+  if (s === 'pendente') return 'Pendente';
+
+  return status || 'Ativo';
+}
+
+function formatarData(dataValor) {
+  if (!dataValor) return '';
+
+  const data = new Date(dataValor);
+
+  if (isNaN(data.getTime())) return '';
+
+  return data.toLocaleDateString('pt-BR');
+}
+
+function diasAteExpirar(dataValor) {
+  if (!dataValor) return null;
+
+  const hoje = new Date();
+  const expira = new Date(dataValor);
+
+  if (isNaN(expira.getTime())) return null;
+
+  hoje.setHours(0, 0, 0, 0);
+  expira.setHours(0, 0, 0, 0);
+
+  const diff = expira.getTime() - hoje.getTime();
+
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function usuarioJaTemPlanoPago(perfil) {
+  const plano = normalizarPlano(perfil?.plano || 'gratis');
+  const status = normalizarPlano(perfil?.plano_status || 'ativo');
+
+  if (plano === 'premium') return true;
+
+  if (plano === 'basico' && status !== 'cancelado' && status !== 'expirado') {
+    const dias = diasAteExpirar(perfil?.plano_expira_em);
+
+    if (dias === null) return true;
+
+    return dias >= 0;
+  }
+
+  return false;
+}
+
+function montarTextoExpiracao(perfil) {
+  const plano = normalizarPlano(perfil?.plano || 'gratis');
+  const expiraEm = perfil?.plano_expira_em;
+
+  if (plano === 'gratis') {
+    return 'Sem data de expiração.';
+  }
+
+  if (!expiraEm) {
+    return `Status: ${statusPlanoLabel(perfil?.plano_status)} · Expiração não informada.`;
+  }
+
+  const dataFormatada = formatarData(expiraEm);
+  const dias = diasAteExpirar(expiraEm);
+
+  if (dias === null) {
+    return `Expira em: ${dataFormatada}`;
+  }
+
+  if (dias < 0) {
+    return `Expirou em ${dataFormatada}.`;
+  }
+
+  if (dias === 0) {
+    return `Expira hoje: ${dataFormatada}.`;
+  }
+
+  if (dias === 1) {
+    return `Expira amanhã: ${dataFormatada}.`;
+  }
+
+  return `Expira em ${dataFormatada} · faltam ${dias} dias.`;
+}
+
+function montarAvisoPlano(perfil) {
+  const plano = normalizarPlano(perfil?.plano || 'gratis');
+  const status = normalizarPlano(perfil?.plano_status || 'ativo');
+  const dias = diasAteExpirar(perfil?.plano_expira_em);
+
+  if (plano === 'gratis') {
+    return {
+      classe: 'gratis',
+      texto: 'Você está no Plano Grátis. Para liberar histórico, nuvem, WhatsApp com link e aprovação online, ative o Plano Básico.'
+    };
+  }
+
+  if (status === 'cancelado') {
+    return {
+      classe: 'erro',
+      texto: 'Seu plano está cancelado. Gere um novo Pix para reativar os recursos pagos.'
+    };
+  }
+
+  if (status === 'expirado' || (dias !== null && dias < 0)) {
+    return {
+      classe: 'erro',
+      texto: 'Seu plano expirou. Renove para continuar usando os recursos pagos.'
+    };
+  }
+
+  if (dias !== null && dias <= 7) {
+    return {
+      classe: 'alerta',
+      texto: `Atenção: seu plano vence ${dias === 0 ? 'hoje' : `em ${dias} dia(s)`}. Você pode renovar para evitar bloqueio.`
+    };
+  }
+
+  return {
+    classe: 'ok',
+    texto: 'Seu plano está ativo. Os recursos pagos estão liberados.'
+  };
+}
+
+function atualizarInterfacePlano(perfil, logado) {
+  const label = document.getElementById('plano-atual-label');
+  const expira = document.getElementById('plano-atual-expira');
+  const aviso = document.getElementById('plano-atual-aviso');
+  const botoesPix = document.querySelectorAll('.btn-gerar-pix-plano');
+
+  if (!logado) {
+    if (label) label.innerText = 'Visitante';
+    if (expira) expira.innerText = 'Entre na sua conta para consultar seu plano atual.';
+    if (aviso) {
+      aviso.innerText = 'Você pode conhecer os planos, mas precisa fazer login para gerar o Pix.';
+      aviso.className = 'plano-atual-aviso alerta';
+    }
+
+    botoesPix.forEach(btn => {
+      btn.disabled = false;
+      btn.innerText = 'Entrar e gerar Pix';
+    });
+
+    return;
+  }
+
+  if (label) label.innerText = planoLabel(perfil?.plano);
+  if (expira) expira.innerText = montarTextoExpiracao(perfil);
+
+  if (aviso) {
+    const dadosAviso = montarAvisoPlano(perfil);
+
+    aviso.innerText = dadosAviso.texto;
+    aviso.className = `plano-atual-aviso ${dadosAviso.classe}`;
+  }
+
+  const jaTemPlano = usuarioJaTemPlanoPago(perfil);
+
+  botoesPix.forEach(btn => {
+    if (jaTemPlano) {
+      btn.disabled = false;
+      btn.innerText = 'Renovar plano';
+    } else {
+      btn.disabled = false;
+      btn.innerText = 'Gerar Pix';
+    }
+  });
+}
+
+async function carregarPlanoAtual() {
+  try {
+    if (!window._supabase) {
+      atualizarInterfacePlano(null, false);
+      return;
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      perfilPlanoAtual = null;
+      atualizarInterfacePlano(null, false);
+      return;
+    }
+
+    const { data, error } = await _supabase
+      .from('perfis')
+      .select('plano, plano_status, plano_expira_em, nome, nome_empresa')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Erro ao carregar plano:', error);
+      perfilPlanoAtual = {
+        plano: localStorage.getItem('usuario_plano') || 'gratis',
+        plano_status: localStorage.getItem('usuario_plano_status') || 'ativo',
+        plano_expira_em: localStorage.getItem('usuario_plano_expira_em') || null
+      };
+
+      atualizarInterfacePlano(perfilPlanoAtual, true);
+      return;
+    }
+
+    perfilPlanoAtual = data || {
+      plano: 'gratis',
+      plano_status: 'ativo',
+      plano_expira_em: null
+    };
+
+    localStorage.setItem('usuario_plano', perfilPlanoAtual.plano || 'gratis');
+
+    if (perfilPlanoAtual.plano_status) {
+      localStorage.setItem('usuario_plano_status', perfilPlanoAtual.plano_status);
+    }
+
+    if (perfilPlanoAtual.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', perfilPlanoAtual.plano_expira_em);
+    } else {
+      localStorage.removeItem('usuario_plano_expira_em');
+    }
+
+    atualizarInterfacePlano(perfilPlanoAtual, true);
+
+  } catch (error) {
+    console.error('Erro inesperado ao carregar plano:', error);
+    atualizarInterfacePlano(null, false);
+  }
+}
+
+function formatarMoedaPix(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+}
+
+function abrirModalPixBasico() {
+  const modal = document.getElementById('modal-pix-basico');
+
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function fecharModalPixBasico() {
+  const modal = document.getElementById('modal-pix-basico');
+
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function setEstadoModalPixCarregando() {
+  abrirModalPixBasico();
+
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  if (loading) loading.style.display = 'block';
+  if (conteudo) conteudo.style.display = 'none';
+
+  if (erro) {
+    erro.style.display = 'none';
+    erro.innerText = '';
+  }
+}
+
+function setEstadoModalPixErro(mensagem) {
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  if (loading) loading.style.display = 'none';
+  if (conteudo) conteudo.style.display = 'none';
+
+  if (erro) {
+    erro.style.display = 'block';
+    erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
+  }
+}
+
+function setEstadoModalPixConteudo(dados) {
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  const subtitulo = document.getElementById('pix-modal-subtitulo');
+  const planoLabelEl = document.getElementById('pix-plano-label');
+  const pixValor = document.getElementById('pix-valor');
+  const qrImg = document.getElementById('pix-qrcode-img');
+  const copiaCola = document.getElementById('pix-copia-cola');
+
+  pagamentoPixAtualId = dados.pagamento_id || null;
+
+  if (loading) loading.style.display = 'none';
+  if (conteudo) conteudo.style.display = 'block';
+  if (erro) erro.style.display = 'none';
+
+  if (subtitulo) subtitulo.innerText = `${dados.label || 'Plano Básico'} - ${formatarMoedaPix(dados.valor)}`;
+  if (planoLabelEl) planoLabelEl.innerText = dados.label || 'Plano Básico';
+  if (pixValor) pixValor.innerText = formatarMoedaPix(dados.valor);
+
+  if (qrImg) {
+    if (dados.qr_code) {
+      qrImg.src = dados.qr_code;
+      qrImg.style.display = 'inline-block';
+    } else {
+      qrImg.src = '';
+      qrImg.style.display = 'none';
+    }
+  }
+
+  if (copiaCola) {
+    copiaCola.value = dados.pix_copia_cola || '';
+  }
+}
+
+async function gerarPixPlanoBasico(periodo) {
+  try {
+    if (!window._supabase) {
+      alert('Supabase não carregou. Atualize a página e tente novamente.');
+      return;
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session) {
+      if (typeof abrirModalLogin === 'function') {
+        abrirModalLogin();
+      } else {
+        window.location.href = '/planos.html?login=1';
+      }
+
+      return;
+    }
+
+    setEstadoModalPixCarregando();
+
+    const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        periodo
+      })
+    });
+
+    const dados = await resposta.json().catch(() => ({}));
+
+    if (!resposta.ok) {
+      setEstadoModalPixErro(dados.erro || 'Erro ao gerar Pix.');
+      return;
+    }
+
+    setEstadoModalPixConteudo(dados);
+
+  } catch (error) {
+    console.error('Erro ao gerar Pix:', error);
+    setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
+  }
+}
+
+async function copiarPixCopiaCola() {
+  const campo = document.getElementById('pix-copia-cola');
+
+  if (!campo || !campo.value) {
+    alert('Pix copia e cola não disponível.');
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(campo.value);
+    alert('Pix copia e cola copiado!');
+  } catch (error) {
+    campo.select();
+    document.execCommand('copy');
+    alert('Pix copia e cola copiado!');
+  }
+}
+
+async function verificarPagamentoPixAtual() {
+  if (!pagamentoPixAtualId) {
+    alert('Nenhum pagamento Pix foi gerado nesta tela.');
+    return;
+  }
+
+  if (!window._supabase) {
+    alert('Supabase não carregou. Atualize a página.');
+    return;
+  }
+
+  const { data: { session } } = await _supabase.auth.getSession();
+
+  if (!session) {
+    alert('Faça login novamente para verificar o pagamento.');
+    return;
+  }
+
+  const { data, error } = await _supabase
+    .from('pagamentos_pix')
+    .select('status, pago_em')
+    .eq('id', pagamentoPixAtualId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Erro ao verificar pagamento:', error);
+    alert('Não foi possível verificar o pagamento agora.');
+    return;
+  }
+
+  if (!data) {
+    alert('Pagamento não encontrado.');
+    return;
+  }
+
+  if (data.status === 'pago') {
+    alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
+    fecharModalPixBasico();
+
+    await carregarPlanoAtual();
+
+    return;
+  }
+
+  alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
+}
+
+function abrirModalLogin() {
+  const modal = document.getElementById('modal-login');
+
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function fecharModalLogin() {
+  const modal = document.getElementById('modal-login');
+
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+document.addEventListener('click', event => {
+  const modalPix = document.getElementById('modal-pix-basico');
+  const modalLogin = document.getElementById('modal-login');
+
+  if (event.target === modalPix) {
+    fecharModalPixBasico();
+  }
+
+  if (event.target === modalLogin) {
+    fecharModalLogin();
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    fecharModalPixBasico();
+    fecharModalLogin();
+  }
+});
+
+window.gerarPixPlanoBasico = gerarPixPlanoBasico;
+window.copiarPixCopiaCola = copiarPixCopiaCola;
+window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
+window.fecharModalPixBasico = fecharModalPixBasico;
+window.abrirModalLogin = abrirModalLogin;
+window.fecharModalLogin = fecharModalLogin;
+</script>
+
+</body>
+</html>
