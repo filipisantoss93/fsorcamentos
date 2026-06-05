@@ -2,18 +2,26 @@
 
 let currentSlide = 0;
 let dadosEmpresaLogada = null;
+
 let orcamentoAtualSalvoId = window.orcamentoAtualSalvoId || null;
+let numeroOrcamentoAtual = window.numeroOrcamentoAtual || null;
 let linkOrcamentoAtual = null;
+
 let gerandoPdfAgora = false;
 
 // ==================== HELPERS DE CONTROLE DO ORÇAMENTO SALVO ====================
 
-function definirOrcamentoAtualSalvo(id) {
+function definirOrcamentoAtualSalvo(id, numero = null) {
     if (!id) return;
 
     orcamentoAtualSalvoId = id;
     window.orcamentoAtualSalvoId = id;
     window.orcamentoSalvoAtualId = id;
+
+    if (numero) {
+        numeroOrcamentoAtual = numero;
+        window.numeroOrcamentoAtual = numero;
+    }
 
     linkOrcamentoAtual = montarLinkOrcamento(id);
     window.linkOrcamentoAtual = linkOrcamentoAtual;
@@ -21,10 +29,12 @@ function definirOrcamentoAtualSalvo(id) {
 
 function limparReferenciaOrcamentoAtual() {
     orcamentoAtualSalvoId = null;
+    numeroOrcamentoAtual = null;
     linkOrcamentoAtual = null;
 
     window.orcamentoAtualSalvoId = null;
     window.orcamentoSalvoAtualId = null;
+    window.numeroOrcamentoAtual = null;
     window.linkOrcamentoAtual = null;
 }
 
@@ -37,10 +47,20 @@ function sincronizarReferenciaOrcamentoSalvo() {
         orcamentoAtualSalvoId = window.orcamentoSalvoAtualId;
     }
 
+    if (!numeroOrcamentoAtual && window.numeroOrcamentoAtual) {
+        numeroOrcamentoAtual = window.numeroOrcamentoAtual;
+    }
+
     if (orcamentoAtualSalvoId) {
         linkOrcamentoAtual = montarLinkOrcamento(orcamentoAtualSalvoId);
         window.linkOrcamentoAtual = linkOrcamentoAtual;
     }
+}
+
+function formatarNumeroOrcamento(numero) {
+    if (!numero) return 'PRÉVIA';
+
+    return String(numero).padStart(6, '0');
 }
 
 // ==================== INICIALIZAÇÃO DA INTERFACE ====================
@@ -49,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if (splash) splash.classList.add('hide-splash');
-    }, 1500);
+    }, 1200);
 
     setInterval(() => {
         const carousel = document.getElementById('carousel');
@@ -66,7 +86,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', () => {
             const menu = document.querySelector('.nav-menu');
+            const menuLinha = document.querySelector('.header-menu-linha');
+
             if (menu) menu.classList.remove('active');
+            if (menuLinha) menuLinha.classList.remove('menu-aberto');
         });
     });
 
@@ -78,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     abrirGeradorAutomaticamenteSeSolicitado();
 });
 
-// ==================== GERADOR INLINE ====================
+// ==================== GERADOR INLINE / COMPATIBILIDADE ====================
 
 async function usuarioTemSessaoAtiva() {
     if (!window._supabase) return false;
@@ -95,7 +118,7 @@ async function abrirModalGerador() {
         if (typeof abrirModalLogin === 'function') {
             abrirModalLogin();
         } else {
-            window.location.href = '/painel.html';
+            window.location.href = '/index.html?login=1';
         }
 
         return;
@@ -113,6 +136,7 @@ async function abrirModalGerador() {
     if (modalAntigo) {
         modalAntigo.style.display = 'flex';
         modalAntigo.classList.add('ativo');
+        modalAntigo.setAttribute('aria-hidden', 'false');
     }
 
     if (formulario) {
@@ -121,7 +145,9 @@ async function abrirModalGerador() {
 
     document.body.classList.add('gerador-aberto');
     document.body.classList.remove('modal-aberto');
+    document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 
     await carregarDadosEmpresaLogada();
 
@@ -158,7 +184,7 @@ function fecharModalGerador() {
         modalAntigo.setAttribute('aria-hidden', 'true');
     }
 
-    if (formulario) {
+    if (formulario && secao) {
         formulario.style.display = 'none';
     }
 
@@ -266,6 +292,10 @@ async function carregarDadosEmpresaLogada() {
     localStorage.setItem('endereco_empresa', dadosEmpresaLogada.endereco_empresa || '');
     localStorage.setItem('cnpj_empresa', dadosEmpresaLogada.cnpj_empresa || '');
     localStorage.setItem('foto_url', dadosEmpresaLogada.foto_url || '');
+
+    if (typeof fsPreencherTopoEmpresa === 'function') {
+        fsPreencherTopoEmpresa(dadosEmpresaLogada);
+    }
 
     return dadosEmpresaLogada;
 }
@@ -424,6 +454,10 @@ function obterTemaAtual() {
     return document.getElementById('selected-theme')?.value || 'original';
 }
 
+function obterValorCampoTexto(id) {
+    return document.getElementById(id)?.value?.trim() || '';
+}
+
 // ==================== CAMPOS EXTRAS E ITENS ====================
 
 function adicionarCampoExtra(containerId, label = '', valor = '') {
@@ -500,7 +534,11 @@ function coletarItensDoOrcamento() {
     const itens = [];
 
     linhas.forEach(row => {
-        const descricao = row.querySelector('.desc-cell')?.value || '';
+        const descricao =
+            row.querySelector('.desc-cell')?.value ||
+            row.querySelector('.desc')?.value ||
+            '';
+
         const qtd = Number(row.querySelector('.qtd')?.value) || 0;
         const valor = obterValorCampoMoeda(row.querySelector('.valor'));
         const subtotal = qtd * valor;
@@ -583,6 +621,29 @@ function obterCoresTema(temaAtivo) {
     return coresTema[temaAtivo] || coresTema.original;
 }
 
+// ==================== EXTRAS DO CLIENTE ====================
+
+function montarExtrasClienteHtml() {
+    const extraClienteContainer = document.getElementById('extra-cliente-container');
+
+    if (!extraClienteContainer) return '';
+
+    const extras = Array.from(extraClienteContainer.querySelectorAll('.extra-field')).map(f => {
+        const inputs = f.querySelectorAll('input');
+
+        return {
+            label: inputs[0]?.value || '',
+            valor: inputs[1]?.value || ''
+        };
+    }).filter(extra => extra.label || extra.valor);
+
+    if (!extras.length) return '';
+
+    return extras.map(extra => {
+        return `<br>${escaparHtml(extra.label)}: ${escaparHtml(extra.valor)}`;
+    }).join('');
+}
+
 // ==================== GERAÇÃO DA PRÉVIA ====================
 
 async function gerarPrevia() {
@@ -615,6 +676,16 @@ async function gerarPrevia() {
         const observacoes =
             document.getElementById('observacoes')?.value || '';
 
+        const validade =
+            obterValorCampoTexto('validade-orcamento') ||
+            obterValorCampoTexto('validade') ||
+            '';
+
+        const formaPagamento =
+            obterValorCampoTexto('forma-pagamento') ||
+            obterValorCampoTexto('pagamento') ||
+            '';
+
         if (!cliente.trim()) {
             alert('Informe o nome do cliente.');
             return;
@@ -644,9 +715,10 @@ async function gerarPrevia() {
         });
 
         const consultorSelecionado = obterConsultorSelecionado(empresa);
+        const numeroFormatado = formatarNumeroOrcamento(numeroOrcamentoAtual || window.numeroOrcamentoAtual);
 
         const logoHtml = empresa.foto_url
-            ? `<img src="${escaparHtml(empresa.foto_url)}" crossorigin="anonymous" style="max-height:55px; max-width:130px; object-fit:contain;">`
+            ? `<img src="${escaparHtml(empresa.foto_url)}" crossorigin="anonymous" style="max-height:58px; max-width:135px; object-fit:contain;">`
             : `<b style="font-size:20px;">FS</b>`;
 
         const dadosEmpresaHtml = `
@@ -662,13 +734,26 @@ async function gerarPrevia() {
         const extrasClienteHtml = montarExtrasClienteHtml();
         const totalTexto = document.getElementById('total-geral')?.innerText || '0,00';
 
+        const validadeHtml = validade
+            ? `<div style="background:#fff; border-left:4px solid ${cor.destaque}; padding:10px; border-radius:6px; font-size:11px;">
+                    <b>VALIDADE:</b><br>${escaparHtml(validade)}
+               </div>`
+            : '';
+
+        const pagamentoHtml = formaPagamento
+            ? `<div style="background:#fff; border-left:4px solid ${cor.destaque}; padding:10px; border-radius:6px; font-size:11px;">
+                    <b>FORMA DE PAGAMENTO:</b><br>${escaparHtml(formaPagamento)}
+               </div>`
+            : '';
+
         const template = `
             <div class="pdf-documento-a4" style="width:794px; min-height:1123px; box-sizing:border-box; padding:30px; background:#ffffff; font-family:Arial, sans-serif; color:#333; display:flex; flex-direction:column;">
                 
                 <div style="border-bottom:3px solid ${cor.destaque}; background:${cor.primaria}; padding:20px; margin:-30px -30px 20px -30px; color:${cor.textoHeader}; display:flex; justify-content:space-between; align-items:center; border:${temaAtivo === 'bw' ? '1px solid #ddd' : 'none'}">
                     <div>
                         <h1 style="margin:0; font-size:22px;">${escaparHtml(titulo)}</h1>
-                        <span style="font-size:11px; opacity:0.8;">Gerado em: ${new Date().toLocaleDateString('pt-BR')}</span>
+                        <span style="font-size:11px; opacity:0.85;">Gerado em: ${new Date().toLocaleDateString('pt-BR')}</span><br>
+                        <span style="font-size:11px; opacity:0.95;">Orçamento Nº ${escaparHtml(numeroFormatado)}</span>
                     </div>
                     ${logoHtml}
                 </div>
@@ -703,13 +788,22 @@ async function gerarPrevia() {
                     </table>
 
                     <div style="margin-top:20px; text-align:right;">
-                        <div style="display:inline-block; background:${cor.fundo}; padding:15px; border:1px solid #ddd; border-radius:4px;">
+                        <div style="display:inline-block; background:${cor.fundo}; padding:15px; border:1px solid #ddd; border-radius:6px;">
                             <span style="font-size:10px; color:#666;">VALOR TOTAL</span><br>
-                            <strong style="font-size:18px; color:${cor.destaque === '#000000' ? '#000' : cor.primaria}">
+                            <strong style="font-size:20px; color:${cor.destaque === '#000000' ? '#000' : cor.primaria}">
                                 R$ ${escaparHtml(totalTexto)}
                             </strong>
                         </div>
                     </div>
+
+                    ${
+                        validadeHtml || pagamentoHtml
+                            ? `<div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px;">
+                                ${validadeHtml}
+                                ${pagamentoHtml}
+                               </div>`
+                            : ''
+                    }
 
                     ${
                         observacoes
@@ -720,7 +814,21 @@ async function gerarPrevia() {
                     }
                 </div>
 
-                <div style="text-align:center; font-size:10px; color:#999; margin-top:30px; border-top:1px dashed #ccc; padding-top:10px;">
+                <div style="margin-top:45px; padding-top:14px; border-top:1px dashed #ccc; display:flex; justify-content:space-between; align-items:flex-end; gap:20px;">
+                    <div style="font-size:10px; color:#777; line-height:1.4;">
+                        <b>${escaparHtml(empresa.nome_empresa || 'Empresa')}</b><br>
+                        ${empresa.telefone_empresa ? `Contato: ${escaparHtml(empresa.telefone_empresa)}<br>` : ''}
+                        Orçamento Nº ${escaparHtml(numeroFormatado)}
+                    </div>
+
+                    <div style="width:240px; text-align:center; font-size:10px; color:#777;">
+                        <div style="border-top:1px solid #999; padding-top:6px;">
+                            Assinatura / Aprovação
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; font-size:10px; color:#999; margin-top:18px;">
                     Orçamento gerado por <strong>fsorcamentos.com.br</strong>
                 </div>
             </div>
@@ -746,10 +854,12 @@ async function gerarPrevia() {
         }
 
         const btnFloatBaixar = document.getElementById('btn-float-baixar');
+        const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
+        const floatingActions = document.querySelector('.floating-actions');
 
-        if (btnFloatBaixar) {
-            btnFloatBaixar.style.display = 'flex';
-        }
+        if (btnFloatBaixar) btnFloatBaixar.style.display = 'flex';
+        if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'flex';
+        if (floatingActions) floatingActions.classList.add('show');
 
         if (areaPrevia) {
             window.scrollTo({
@@ -764,27 +874,6 @@ async function gerarPrevia() {
             btn.disabled = false;
         }
     }
-}
-
-function montarExtrasClienteHtml() {
-    const extraClienteContainer = document.getElementById('extra-cliente-container');
-
-    if (!extraClienteContainer) return '';
-
-    const extras = Array.from(extraClienteContainer.querySelectorAll('.extra-field')).map(f => {
-        const inputs = f.querySelectorAll('input');
-
-        return {
-            label: inputs[0]?.value || '',
-            valor: inputs[1]?.value || ''
-        };
-    }).filter(extra => extra.label || extra.valor);
-
-    if (!extras.length) return '';
-
-    return extras.map(extra => {
-        return `<br>${escaparHtml(extra.label)}: ${escaparHtml(extra.valor)}`;
-    }).join('');
 }
 
 function autoUpdatePreview() {
@@ -834,6 +923,12 @@ function aguardarRenderizacaoPDF(container) {
 }
 
 function criarCloneParaPdf(elementoOriginal) {
+    const wrapperExistente = document.getElementById('fs-pdf-render-area');
+
+    if (wrapperExistente) {
+        wrapperExistente.remove();
+    }
+
     const wrapper = document.createElement('div');
 
     wrapper.id = 'fs-pdf-render-area';
@@ -846,6 +941,7 @@ function criarCloneParaPdf(elementoOriginal) {
     wrapper.style.zIndex = '-1';
     wrapper.style.pointerEvents = 'none';
     wrapper.style.overflow = 'visible';
+    wrapper.style.opacity = '0';
 
     const clone = elementoOriginal.cloneNode(true);
 
@@ -856,6 +952,7 @@ function criarCloneParaPdf(elementoOriginal) {
     clone.style.boxShadow = 'none';
     clone.style.transform = 'none';
     clone.style.background = '#ffffff';
+    clone.style.overflow = 'visible';
 
     wrapper.appendChild(clone);
     document.body.appendChild(wrapper);
@@ -877,97 +974,108 @@ async function baixarPDF() {
         return;
     }
 
-    if (!conteudoPdf.innerHTML.trim()) {
-        await gerarPrevia();
-    }
-
-    if (!conteudoPdf.innerHTML.trim()) {
-        alert('Gere a pré-visualização antes de baixar o PDF.');
-        return;
-    }
-
-    const elementoOriginal = conteudoPdf.firstElementChild || conteudoPdf;
-
-    if (!elementoOriginal) {
-        alert('Conteúdo do PDF não encontrado.');
-        return;
-    }
-
-    if (usuarioPodeSalvarOrcamentoLocal()) {
-        await salvarOrcamentoNoBanco('download_pdf');
-    }
-
-    const titulo = document.getElementById('titulo')?.value || 'orcamento';
-
-    const nomeArquivo = titulo
-        .trim()
-        .replace(/[^\wÀ-ÿ\s-]/g, '')
-        .replace(/\s+/g, '_')
-        .toLowerCase() || 'orcamento';
-
-    if (areaPrevia) {
-        areaPrevia.style.display = 'block';
-    }
-
-    conteudoPdf.style.display = 'block';
-
     gerandoPdfAgora = true;
-    document.body.classList.add('gerando-pdf');
-
-    let areaTemporaria = null;
 
     try {
-        areaTemporaria = criarCloneParaPdf(elementoOriginal);
+        if (usuarioPodeSalvarOrcamentoLocal()) {
+            const salvo = await salvarOrcamentoNoBanco('download_pdf');
 
-        await aguardarRenderizacaoPDF(areaTemporaria.clone);
-
-        const alturaConteudo = Math.max(
-            1123,
-            areaTemporaria.clone.scrollHeight,
-            areaTemporaria.clone.offsetHeight
-        );
-
-        const opt = {
-            margin: 0,
-            filename: `${nomeArquivo}.pdf`,
-            image: {
-                type: 'jpeg',
-                quality: 0.98
-            },
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: '#ffffff',
-                scrollX: 0,
-                scrollY: 0,
-                width: 794,
-                height: alturaConteudo,
-                windowWidth: 794,
-                windowHeight: alturaConteudo
-            },
-            jsPDF: {
-                unit: 'px',
-                format: [794, 1123],
-                orientation: 'portrait'
+            if (salvo?.numero_orcamento) {
+                numeroOrcamentoAtual = salvo.numero_orcamento;
+                window.numeroOrcamentoAtual = salvo.numero_orcamento;
             }
-        };
-
-        await html2pdf()
-            .set(opt)
-            .from(areaTemporaria.clone)
-            .save();
-
-    } catch (error) {
-        console.error('Erro ao gerar PDF:', error);
-        alert('Não foi possível gerar o PDF.');
-    } finally {
-        if (areaTemporaria?.wrapper) {
-            areaTemporaria.wrapper.remove();
         }
 
+        await gerarPrevia();
+
+        if (!conteudoPdf.innerHTML.trim()) {
+            alert('Gere a pré-visualização antes de baixar o PDF.');
+            return;
+        }
+
+        const elementoOriginal = conteudoPdf.firstElementChild || conteudoPdf;
+
+        if (!elementoOriginal) {
+            alert('Conteúdo do PDF não encontrado.');
+            return;
+        }
+
+        const titulo = document.getElementById('titulo')?.value || 'orcamento';
+
+        const nomeArquivo = titulo
+            .trim()
+            .replace(/[^\wÀ-ÿ\s-]/g, '')
+            .replace(/\s+/g, '_')
+            .toLowerCase() || 'orcamento';
+
+        if (areaPrevia) {
+            areaPrevia.style.display = 'block';
+        }
+
+        conteudoPdf.style.display = 'block';
+
+        document.body.classList.add('gerando-pdf');
+
+        let areaTemporaria = null;
+
+        try {
+            areaTemporaria = criarCloneParaPdf(elementoOriginal);
+
+            await aguardarRenderizacaoPDF(areaTemporaria.clone);
+
+            const alturaConteudo = Math.max(
+                1123,
+                areaTemporaria.clone.scrollHeight,
+                areaTemporaria.clone.offsetHeight
+            );
+
+            const opt = {
+                margin: 0,
+                filename: `${nomeArquivo}.pdf`,
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: 794,
+                    height: alturaConteudo,
+                    windowWidth: 794,
+                    windowHeight: alturaConteudo
+                },
+                jsPDF: {
+                    unit: 'px',
+                    format: [794, 1123],
+                    orientation: 'portrait'
+                },
+                pagebreak: {
+                    mode: ['avoid-all', 'css', 'legacy']
+                }
+            };
+
+            await html2pdf()
+                .set(opt)
+                .from(areaTemporaria.clone)
+                .save();
+
+        } catch (error) {
+            console.error('Erro ao gerar PDF:', error);
+            alert('Não foi possível gerar o PDF.');
+        } finally {
+            if (areaTemporaria?.wrapper) {
+                areaTemporaria.wrapper.remove();
+            }
+
+            document.body.classList.remove('gerando-pdf');
+        }
+
+    } finally {
         gerandoPdfAgora = false;
-        document.body.classList.remove('gerando-pdf');
     }
 }
 
@@ -978,6 +1086,11 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
 
     if (!usuarioPodeSalvarOrcamentoLocal()) {
         console.log('Plano grátis: orçamento não será salvo no Supabase.');
+        return null;
+    }
+
+    if (!window._supabase) {
+        alert('Supabase não carregou. Atualize a página.');
         return null;
     }
 
@@ -1009,6 +1122,9 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
     const clienteWhatsapp =
         document.getElementById('tel-cliente')?.value?.trim() || '';
 
+    const observacoes =
+        document.getElementById('observacoes')?.value?.trim() || '';
+
     const itens = coletarItensDoOrcamento();
 
     const total = itens.reduce((soma, item) => {
@@ -1036,16 +1152,15 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
         total,
         itens,
         status: 'pendente',
-        consultor: consultorSelecionado,
-        tema_pdf: temaPdf
+        consultor: consultorSelecionado
     };
 
     const payloadCompleto = {
         ...payloadBase,
+        observacoes,
+        tema_pdf: temaPdf,
         origem_salvamento: origem
     };
-
-    console.log('Payload orçamento:', payloadCompleto);
 
     let resposta;
 
@@ -1055,13 +1170,13 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
             .update(payloadCompleto)
             .eq('id', orcamentoAtualSalvoId)
             .eq('usuario_id', session.user.id)
-            .select()
+            .select('*')
             .single();
     } else {
         resposta = await _supabase
             .from('orcamentos')
             .insert([payloadCompleto])
-            .select()
+            .select('*')
             .single();
     }
 
@@ -1070,7 +1185,9 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
 
         if (
             mensagemErro.includes('origem_salvamento') ||
-            mensagemErro.includes('tema_pdf')
+            mensagemErro.includes('tema_pdf') ||
+            mensagemErro.includes('observacoes') ||
+            mensagemErro.includes('consultor')
         ) {
             const payloadMinimo = {
                 usuario_id: session.user.id,
@@ -1079,8 +1196,7 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
                 cliente_whatsapp: clienteWhatsapp,
                 total,
                 itens,
-                status: 'pendente',
-                consultor: consultorSelecionado
+                status: 'pendente'
             };
 
             if (orcamentoAtualSalvoId) {
@@ -1089,13 +1205,13 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
                     .update(payloadMinimo)
                     .eq('id', orcamentoAtualSalvoId)
                     .eq('usuario_id', session.user.id)
-                    .select()
+                    .select('*')
                     .single();
             } else {
                 resposta = await _supabase
                     .from('orcamentos')
                     .insert([payloadMinimo])
-                    .select()
+                    .select('*')
                     .single();
             }
         }
@@ -1113,7 +1229,15 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
         return null;
     }
 
-    definirOrcamentoAtualSalvo(resposta.data.id);
+    definirOrcamentoAtualSalvo(
+        resposta.data.id,
+        resposta.data.numero_orcamento || null
+    );
+
+    if (resposta.data.numero_orcamento) {
+        numeroOrcamentoAtual = resposta.data.numero_orcamento;
+        window.numeroOrcamentoAtual = resposta.data.numero_orcamento;
+    }
 
     console.log(`Orçamento salvo/atualizado no Supabase via ${origem}:`, resposta.data);
 
@@ -1149,12 +1273,13 @@ async function enviarPorWhatsApp() {
         return;
     }
 
-    const botaoWhatsapp = document.querySelector('.btn-whatsapp');
+    const botoesWhatsapp = document.querySelectorAll('.btn-whatsapp, .btn-acao-whatsapp, .btn-float-whatsapp');
 
-    if (botaoWhatsapp) {
-        botaoWhatsapp.disabled = true;
-        botaoWhatsapp.innerText = 'AGUARDE...';
-    }
+    botoesWhatsapp.forEach(btn => {
+        btn.disabled = true;
+        if (btn.innerText) btn.dataset.textoOriginal = btn.innerText;
+        if (btn.innerText) btn.innerText = 'AGUARDE...';
+    });
 
     try {
         const salvo = await salvarOrcamentoNoBanco('whatsapp_manual');
@@ -1164,15 +1289,27 @@ async function enviarPorWhatsApp() {
             return;
         }
 
-        definirOrcamentoAtualSalvo(salvo.id);
+        definirOrcamentoAtualSalvo(
+            salvo.id,
+            salvo.numero_orcamento || null
+        );
+
+        if (salvo.numero_orcamento) {
+            numeroOrcamentoAtual = salvo.numero_orcamento;
+            window.numeroOrcamentoAtual = salvo.numero_orcamento;
+        }
+
+        await gerarPrevia();
 
         const numeroComPais =
             whatsCliente.startsWith('55') ? whatsCliente : '55' + whatsCliente;
 
+        const numeroFormatado = formatarNumeroOrcamento(salvo.numero_orcamento || numeroOrcamentoAtual);
+
         const mensagem =
 `Olá${nomeCliente ? `, ${nomeCliente}` : ''}! Tudo bem?
 
-Seu orçamento está pronto para visualização.
+Seu orçamento Nº ${numeroFormatado} está pronto para visualização.
 
 Acesse o link abaixo para conferir os detalhes e aprovar ou recusar a proposta:
 
@@ -1183,16 +1320,27 @@ Qualquer dúvida, estou à disposição.`;
         const urlWhatsapp =
             `https://wa.me/${numeroComPais}?text=${encodeURIComponent(mensagem)}`;
 
-        window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
+        const janela = window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
+
+        if (!janela) {
+            alert('O navegador bloqueou a abertura do WhatsApp. Permita pop-ups para este site.');
+            return;
+        }
+
+        janela.focus();
 
     } catch (error) {
         console.error('Erro ao enviar por WhatsApp:', error);
         alert('Não foi possível abrir o WhatsApp.');
     } finally {
-        if (botaoWhatsapp) {
-            botaoWhatsapp.disabled = false;
-            botaoWhatsapp.innerText = 'ENVIAR POR WHATSAPP';
-        }
+        botoesWhatsapp.forEach(btn => {
+            btn.disabled = false;
+
+            if (btn.dataset.textoOriginal) {
+                btn.innerText = btn.dataset.textoOriginal;
+                delete btn.dataset.textoOriginal;
+            }
+        });
     }
 }
 
@@ -1214,6 +1362,8 @@ function salvarEstadoCompleto() {
         telCliente: document.getElementById('tel-cliente')?.value || '',
         extraCliente,
         observacoes: document.getElementById('observacoes')?.value || '',
+        validade: document.getElementById('validade-orcamento')?.value || '',
+        formaPagamento: document.getElementById('forma-pagamento')?.value || '',
         theme: document.getElementById('selected-theme')?.value || 'original',
         itens: Array.from(document.querySelectorAll('.item-row:not(.header-labels)')).map(row => ({
             desc: row.querySelector('.desc-cell')?.value || '',
@@ -1258,6 +1408,14 @@ function carregarEstadoSalvo() {
 
     if (document.getElementById('observacoes')) {
         document.getElementById('observacoes').value = d.observacoes || '';
+    }
+
+    if (document.getElementById('validade-orcamento')) {
+        document.getElementById('validade-orcamento').value = d.validade || '';
+    }
+
+    if (document.getElementById('forma-pagamento')) {
+        document.getElementById('forma-pagamento').value = d.formaPagamento || '';
     }
 
     const extraClienteContainer = document.getElementById('extra-cliente-container');
@@ -1347,7 +1505,7 @@ function toggleAjuda() {
 function limparFormulario() {
     if (!confirm('Isso apagará os dados do cliente e itens. Continuar?')) return;
 
-    ['titulo', 'cliente', 'tel-cliente', 'observacoes'].forEach(id => {
+    ['titulo', 'cliente', 'tel-cliente', 'observacoes', 'validade-orcamento', 'forma-pagamento'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
     });
@@ -1387,9 +1545,14 @@ function limparFormulario() {
     }
 
     const btnFloatBaixar = document.getElementById('btn-float-baixar');
+    const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
 
     if (btnFloatBaixar) {
         btnFloatBaixar.style.display = 'none';
+    }
+
+    if (btnFloatWhatsapp) {
+        btnFloatWhatsapp.style.display = 'none';
     }
 
     limparReferenciaOrcamentoAtual();
@@ -1405,3 +1568,35 @@ function processarLogo() {
 function removerLogo() {
     console.warn('removerLogo() não é mais usada. A logo agora vem do Painel de Controle.');
 }
+
+// ==================== EXPORTS GLOBAIS ====================
+
+window.definirOrcamentoAtualSalvo = definirOrcamentoAtualSalvo;
+window.limparReferenciaOrcamentoAtual = limparReferenciaOrcamentoAtual;
+window.sincronizarReferenciaOrcamentoSalvo = sincronizarReferenciaOrcamentoSalvo;
+
+window.abrirModalGerador = abrirModalGerador;
+window.fecharModalGerador = fecharModalGerador;
+
+window.carregarDadosEmpresaLogada = carregarDadosEmpresaLogada;
+window.empresaEstaCompleta = empresaEstaCompleta;
+window.usuarioPodeSalvarOrcamentoLocal = usuarioPodeSalvarOrcamentoLocal;
+
+window.adicionarCampoExtra = adicionarCampoExtra;
+window.adicionarLinha = adicionarLinha;
+window.calcular = calcular;
+
+window.setTheme = setTheme;
+window.gerarPrevia = gerarPrevia;
+window.baixarPDF = baixarPDF;
+window.salvarOrcamentoNoBanco = salvarOrcamentoNoBanco;
+window.enviarPorWhatsApp = enviarPorWhatsApp;
+
+window.salvarEstadoCompleto = salvarEstadoCompleto;
+window.carregarEstadoSalvo = carregarEstadoSalvo;
+
+window.addFrase = addFrase;
+window.toggleFrases = toggleFrases;
+window.mascaraTelefone = mascaraTelefone;
+window.toggleAjuda = toggleAjuda;
+window.limparFormulario = limparFormulario;
