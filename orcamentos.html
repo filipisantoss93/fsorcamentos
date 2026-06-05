@@ -1167,6 +1167,7 @@ let orcamentosCacheOriginal = [];
 let orcamentoVisualizadoId = null;
 let orcamentosJaCarregados = false;
 let usuarioPodeUsarNuvemOrcamentos = false;
+let aberturaOrcamentoUrlJaTentada = false;
 
 let canalOrcamentosTempoReal = null;
 let atualizacaoAutomaticaTimer = null;
@@ -1188,6 +1189,7 @@ if (window._supabase) {
     if (!session) {
       orcamentosJaCarregados = false;
       usuarioPodeUsarNuvemOrcamentos = false;
+      aberturaOrcamentoUrlJaTentada = false;
       pararAtualizacaoAutomaticaOrcamentos();
     }
   });
@@ -1300,8 +1302,12 @@ async function verificarPlanoEControlarPaginaOrcamentos(session) {
       restaurarEstadoResumoFinanceiro();
       iniciarAtualizacaoAutomaticaOrcamentos(session.user.id);
       orcamentosJaCarregados = true;
+
+      await abrirOrcamentoDaUrlSeExistir();
     } else {
       iniciarAtualizacaoAutomaticaOrcamentos(session.user.id);
+
+      await abrirOrcamentoDaUrlSeExistir();
     }
   } else {
     area.style.display = 'none';
@@ -1309,6 +1315,63 @@ async function verificarPlanoEControlarPaginaOrcamentos(session) {
     orcamentosJaCarregados = false;
     pararAtualizacaoAutomaticaOrcamentos();
   }
+}
+
+/* ==================== ABRIR ORÇAMENTO VINDO DA NOTIFICAÇÃO ==================== */
+
+function obterOrcamentoDaUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('orcamento');
+}
+
+function limparParametroOrcamentoUrl() {
+  const url = new URL(window.location.href);
+
+  url.searchParams.delete('orcamento');
+
+  const novaUrl =
+    url.pathname +
+    (url.searchParams.toString() ? `?${url.searchParams.toString()}` : '') +
+    url.hash;
+
+  window.history.replaceState({}, document.title, novaUrl);
+}
+
+async function abrirOrcamentoDaUrlSeExistir() {
+  const idOrcamento = obterOrcamentoDaUrl();
+
+  if (!idOrcamento) return;
+  if (aberturaOrcamentoUrlJaTentada) return;
+
+  aberturaOrcamentoUrlJaTentada = true;
+
+  const tentarAbrir = () => {
+    const existeNaLista = orcamentosCacheOriginal.some(o => String(o.id) === String(idOrcamento));
+
+    if (existeNaLista) {
+      abrirModalVisualizar(idOrcamento);
+      limparParametroOrcamentoUrl();
+      return true;
+    }
+
+    return false;
+  };
+
+  if (tentarAbrir()) return;
+
+  statusAtual = 'todos';
+
+  const filtroStatus = document.getElementById('filtro-status');
+  if (filtroStatus) filtroStatus.value = 'todos';
+
+  await carregarOrcamentos();
+
+  setTimeout(() => {
+    if (!tentarAbrir()) {
+      alert('Não foi possível abrir este orçamento. Ele pode ter sido excluído ou você não tem acesso.');
+      limparParametroOrcamentoUrl();
+    }
+  }, 350);
 }
 
 function iniciarAtualizacaoAutomaticaOrcamentos(usuarioId) {
@@ -1767,7 +1830,7 @@ function normalizarItem(item) {
 }
 
 function abrirModalVisualizar(id) {
-  const orcamento = orcamentosCacheOriginal.find(o => o.id === id);
+  const orcamento = orcamentosCacheOriginal.find(o => String(o.id) === String(id));
 
   if (!orcamento) {
     alert('Orçamento não encontrado.');
@@ -1818,7 +1881,7 @@ function abrirLinkClienteVisualizado() {
 }
 
 function enviarLinkWhatsapp(id) {
-  const orcamento = orcamentosCacheOriginal.find(o => o.id === id);
+  const orcamento = orcamentosCacheOriginal.find(o => String(o.id) === String(id));
 
   if (!orcamento) {
     alert('Orçamento não encontrado.');
@@ -1926,7 +1989,7 @@ function editarOrcamentoVisualizado() {
 }
 
 function abrirModalEditar(id) {
-  const orcamento = orcamentosCacheOriginal.find(o => o.id === id);
+  const orcamento = orcamentosCacheOriginal.find(o => String(o.id) === String(id));
 
   if (!orcamento) {
     alert('Orçamento não encontrado.');
