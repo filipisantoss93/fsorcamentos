@@ -1227,7 +1227,7 @@ function inserirBotoesSociaisLogin() {
 
 <button type="button" class="btn-google" onclick="loginComGoogle()">
   <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-  <span>Continuar com Google</span>
+  <span>Entrar com Google</span>
 </button>
 
 <!-- Facebook oculto temporariamente
@@ -1237,9 +1237,11 @@ function inserirBotoesSociaisLogin() {
     </button>
 -->
 
-    <div class="separador-login">
-      <span>ou entre com e-mail</span>
-    </div>
+<div class="divisor-login">
+
+  <span>RECOMENDADO</span>
+
+</div>
   `;
 
   authContainer.insertAdjacentElement('afterbegin', box);
