@@ -1,6 +1,6 @@
 <header class="main-header">
   <div class="header-topo">
-    <a href="/index.html" class="logo-nav">
+    <a href="/index.html" class="logo-nav" title="FS Orçamentos">
       FS<span>Orçamentos</span>
     </a>
 
@@ -8,15 +8,20 @@
       <span id="usuario-saudacao">Olá, Convidado</span>
 
       <button
-  type="button"
-  id="btn-notificacoes"
-  class="btn-notificacoes-header"
-  onclick="abrirModalNotificacoes()"
-  style="display:none;"
-  title="Notificações">
-  🔔
-  <span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span>
-</button>
+        type="button"
+        id="btn-notificacoes"
+        class="btn-notificacoes-header"
+        onclick="abrirModalNotificacoes()"
+        style="display:none;"
+        title="Notificações">
+        🔔
+        <span
+          id="contador-notificacoes"
+          class="contador-notificacoes"
+          style="display:none;">
+          0
+        </span>
+      </button>
 
       <button
         type="button"
@@ -39,7 +44,8 @@
       <button
         type="button"
         class="menu-mobile-btn"
-        onclick="toggleMenuMobile()">
+        onclick="toggleMenuMobile()"
+        aria-label="Abrir menu">
         ☰
       </button>
     </div>
@@ -47,11 +53,31 @@
 
   <nav class="header-menu-linha">
     <ul class="nav-menu">
-      <li><a href="/index.html">Início</a></li>
-      <li><a href="/orcamentos.html">Orçamentos</a></li>
-      <li><a href="/painel.html">Painel de Controle</a></li>
-      <li><a href="/sobre.html">Sobre</a></li>
-      <li><a href="/contato.html">Contato</a></li>
+      <li>
+        <a href="/index.html">Início</a>
+      </li>
+
+      <li>
+        <a href="/gerador.html" class="link-destaque-gerador">
+          Gerar Orçamento
+        </a>
+      </li>
+
+      <li>
+        <a href="/orcamentos.html">Orçamentos</a>
+      </li>
+
+      <li>
+        <a href="/painel.html">Painel de Controle</a>
+      </li>
+
+      <li>
+        <a href="/sobre.html">Sobre</a>
+      </li>
+
+      <li>
+        <a href="/contato.html">Contato</a>
+      </li>
 
       <li class="menu-mobile-auth">
         <button
