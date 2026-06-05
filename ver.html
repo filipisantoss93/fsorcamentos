@@ -306,7 +306,9 @@
       background: #2e7d32;
     }
 
-    .btn-status:disabled {
+    .btn-status:disabled,
+    .formas-pagamento-grid button:disabled,
+    .btn-cancelar-pagamento:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       transform: none;
@@ -562,10 +564,12 @@
 <script src="config.js"></script>
 
 <script>
-window._supabase = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+if (!window._supabase) {
+  window._supabase = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+}
 
 const STATUS_CONFIG = {
   pendente: 'Pendente',
@@ -704,8 +708,6 @@ function formatarNumeroOrcamento(numero) {
   return String(numero);
 }
 
-/* ==================== TEMA DO ORÇAMENTO ==================== */
-
 function obterTemaDoOrcamento(orcamento) {
   return normalizarTexto(
     orcamento?.tema_pdf ||
@@ -811,8 +813,6 @@ function aplicarTemaVerHtml(orcamento) {
 
   return cor;
 }
-
-/* ==================== CARREGAMENTO ==================== */
 
 function obterIdOrcamentoDoLink() {
   const params = new URLSearchParams(window.location.search);
@@ -1046,8 +1046,6 @@ async function carregarOrcamento() {
   renderizarOrcamento(data);
 }
 
-/* ==================== RENDERIZAÇÃO ==================== */
-
 function renderizarOrcamento(orcamento) {
   const container = document.getElementById('conteudo-orcamento');
   const titulo = document.getElementById('titulo-orcamento');
@@ -1193,8 +1191,6 @@ function renderizarOrcamento(orcamento) {
   `;
 }
 
-/* ==================== MODAL FORMA DE PAGAMENTO ==================== */
-
 function abrirModalFormaPagamento() {
   const modal = document.getElementById('modal-forma-pagamento');
 
@@ -1211,11 +1207,19 @@ function fecharModalFormaPagamento() {
   }
 }
 
-/* ==================== RESPOSTA DO CLIENTE ==================== */
-
 function orcamentoJaRespondido() {
   const status = orcamentoAtual?.status || 'pendente';
   return status !== 'pendente';
+}
+
+function setBotoesRespostaDesabilitados(desabilitado) {
+  const botoes = document.querySelectorAll(
+    '.btn-status, .formas-pagamento-grid button, .btn-cancelar-pagamento'
+  );
+
+  botoes.forEach(btn => {
+    btn.disabled = desabilitado;
+  });
 }
 
 async function aprovarOrcamento() {
@@ -1252,11 +1256,7 @@ async function selecionarFormaPagamento(formaPagamento) {
 
   if (!confirmar) return;
 
-  const botoes = document.querySelectorAll('.btn-status, .formas-pagamento-grid button, .btn-cancelar-pagamento');
-
-  botoes.forEach(btn => {
-    btn.disabled = true;
-  });
+  setBotoesRespostaDesabilitados(true);
 
   const payload = {
     status: 'aprovado',
@@ -1270,19 +1270,16 @@ async function selecionarFormaPagamento(formaPagamento) {
     .eq('id', orcamentoAtual.id)
     .eq('status', 'pendente')
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error('Erro ao aprovar orçamento:', error);
 
     alert(
-      'Não foi possível aprovar o orçamento. Se o erro for de permissão, verifique a policy de UPDATE da tabela orcamentos.'
+      'Não foi possível aprovar o orçamento. Verifique se a permissão pública de atualização está configurada no Supabase.'
     );
 
-    botoes.forEach(btn => {
-      btn.disabled = false;
-    });
-
+    setBotoesRespostaDesabilitados(false);
     return;
   }
 
@@ -1316,11 +1313,7 @@ async function recusarOrcamento() {
 
   if (!confirmar) return;
 
-  const botoes = document.querySelectorAll('.btn-status');
-
-  botoes.forEach(btn => {
-    btn.disabled = true;
-  });
+  setBotoesRespostaDesabilitados(true);
 
   const payload = {
     status: 'recusado',
@@ -1334,19 +1327,16 @@ async function recusarOrcamento() {
     .eq('id', orcamentoAtual.id)
     .eq('status', 'pendente')
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error('Erro ao recusar orçamento:', error);
 
     alert(
-      'Não foi possível recusar o orçamento. Se o erro for de permissão, verifique a policy de UPDATE da tabela orcamentos.'
+      'Não foi possível recusar o orçamento. Verifique se a permissão pública de atualização está configurada no Supabase.'
     );
 
-    botoes.forEach(btn => {
-      btn.disabled = false;
-    });
-
+    setBotoesRespostaDesabilitados(false);
     return;
   }
 
