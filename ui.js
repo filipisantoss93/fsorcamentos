@@ -658,157 +658,119 @@ function autoUpdatePreview() {
 }
 
 function aguardarRenderizacaoPDF(container) {
-    return new Promise(resolve => {
-        const imagens = Array.from(container.querySelectorAll('img'));
+  return new Promise(resolve => {
+    const imagens = Array.from(container.querySelectorAll('img'));
 
-        if (!imagens.length) {
-            requestAnimationFrame(() => {
-                setTimeout(resolve, 500);
-            });
-            return;
-        }
+    if (!imagens.length) {
+      requestAnimationFrame(() => {
+        setTimeout(resolve, 600);
+      });
+      return;
+    }
 
-        let finalizadas = 0;
+    let finalizadas = 0;
 
-        function finalizar() {
-            finalizadas++;
+    function finalizar() {
+      finalizadas++;
 
-            if (finalizadas >= imagens.length) {
-                requestAnimationFrame(() => {
-                    setTimeout(resolve, 500);
-                });
-            }
-        }
-
-        imagens.forEach(img => {
-            if (img.complete) {
-                finalizar();
-            } else {
-                img.onload = finalizar;
-                img.onerror = finalizar;
-            }
+      if (finalizadas >= imagens.length) {
+        requestAnimationFrame(() => {
+          setTimeout(resolve, 600);
         });
+      }
+    }
+
+    imagens.forEach(img => {
+      if (img.complete) {
+        finalizar();
+      } else {
+        img.onload = finalizar;
+        img.onerror = finalizar;
+      }
     });
+  });
 }
 
 async function baixarPDF() {
-    const conteudoPdf = document.getElementById('conteudo-pdf');
-    const areaPrevia = document.getElementById('area-previa');
+  const conteudoPdf = document.getElementById('conteudo-pdf');
+  const areaPrevia = document.getElementById('area-previa');
 
-    if (!conteudoPdf) {
-        alert('Área do PDF não encontrada.');
-        return;
+  if (!conteudoPdf) {
+    alert('Área do PDF não encontrada.');
+    return;
+  }
+
+  if (!conteudoPdf.innerHTML.trim()) {
+    await gerarPrevia();
+  }
+
+  if (!conteudoPdf.innerHTML.trim()) {
+    alert('Gere a pré-visualização antes de baixar o PDF.');
+    return;
+  }
+
+  if (usuarioPodeSalvarOrcamentoLocal()) {
+    await salvarOrcamentoNoBanco('download_pdf');
+  }
+
+  const titulo = document.getElementById('titulo')?.value || 'orcamento';
+
+  const nomeArquivo = titulo
+    .trim()
+    .replace(/[^\wÀ-ÿ\s-]/g, '')
+    .replace(/\s+/g, '_')
+    .toLowerCase() || 'orcamento';
+
+  const elementoPdf = conteudoPdf.firstElementChild || conteudoPdf;
+
+  if (areaPrevia) {
+    areaPrevia.style.display = 'block';
+  }
+
+  conteudoPdf.style.display = 'block';
+
+  document.body.classList.add('gerando-pdf');
+
+  await aguardarRenderizacaoPDF(elementoPdf);
+
+  const opt = {
+    margin: 0,
+    filename: `${nomeArquivo}.pdf`,
+    image: {
+      type: 'jpeg',
+      quality: 0.98
+    },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: 794,
+      windowHeight: 1123
+    },
+    jsPDF: {
+      unit: 'px',
+      format: [794, 1123],
+      orientation: 'portrait'
+    },
+    pagebreak: {
+      mode: ['avoid-all', 'css', 'legacy']
     }
+  };
 
-    if (!conteudoPdf.innerHTML.trim()) {
-        await gerarPrevia();
-    }
-
-    if (!conteudoPdf.innerHTML.trim()) {
-        alert('Gere a pré-visualização antes de baixar o PDF.');
-        return;
-    }
-
-    if (usuarioPodeSalvarOrcamentoLocal()) {
-        await salvarOrcamentoNoBanco('download_pdf');
-    }
-
-    const titulo = document.getElementById('titulo')?.value || 'orcamento';
-
-    const nomeArquivo = titulo
-        .trim()
-        .replace(/[^\wÀ-ÿ\s-]/g, '')
-        .replace(/\s+/g, '_')
-        .toLowerCase() || 'orcamento';
-
-    const elementoPdf = conteudoPdf.firstElementChild || conteudoPdf;
-
-    const estilosOriginais = {
-        areaDisplay: areaPrevia ? areaPrevia.style.display : '',
-        conteudoDisplay: conteudoPdf.style.display,
-        conteudoWidth: conteudoPdf.style.width,
-        conteudoMaxWidth: conteudoPdf.style.maxWidth,
-        conteudoMargin: conteudoPdf.style.margin,
-        conteudoBackground: conteudoPdf.style.background,
-        conteudoBoxShadow: conteudoPdf.style.boxShadow,
-        elementoWidth: elementoPdf.style.width,
-        elementoMinHeight: elementoPdf.style.minHeight,
-        elementoBackground: elementoPdf.style.background,
-        bodyOverflow: document.body.style.overflow
-    };
-
-    if (areaPrevia) {
-        areaPrevia.style.display = 'block';
-    }
-
-    conteudoPdf.style.display = 'block';
-    conteudoPdf.style.width = '794px';
-    conteudoPdf.style.maxWidth = '794px';
-    conteudoPdf.style.margin = '0 auto';
-    conteudoPdf.style.background = '#ffffff';
-    conteudoPdf.style.boxShadow = 'none';
-
-    elementoPdf.style.width = '794px';
-    elementoPdf.style.minHeight = '1123px';
-    elementoPdf.style.background = '#ffffff';
-
-    document.body.style.overflow = 'visible';
-
-    await aguardarRenderizacaoPDF(elementoPdf);
-
-    const opt = {
-        margin: 0,
-        filename: `${nomeArquivo}.pdf`,
-        image: {
-            type: 'jpeg',
-            quality: 0.98
-        },
-        html2canvas: {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: '#ffffff',
-            scrollX: 0,
-            scrollY: 0,
-            windowWidth: 794,
-            windowHeight: 1123
-        },
-        jsPDF: {
-            unit: 'px',
-            format: [794, 1123],
-            orientation: 'portrait'
-        },
-        pagebreak: {
-            mode: ['css', 'legacy']
-        }
-    };
-
-    try {
-        await html2pdf()
-            .set(opt)
-            .from(elementoPdf)
-            .save();
-    } catch (error) {
-        console.error('Erro ao gerar PDF:', error);
-        alert('Não foi possível gerar o PDF.');
-    } finally {
-        if (areaPrevia) {
-            areaPrevia.style.display = estilosOriginais.areaDisplay;
-        }
-
-        conteudoPdf.style.display = estilosOriginais.conteudoDisplay;
-        conteudoPdf.style.width = estilosOriginais.conteudoWidth;
-        conteudoPdf.style.maxWidth = estilosOriginais.conteudoMaxWidth;
-        conteudoPdf.style.margin = estilosOriginais.conteudoMargin;
-        conteudoPdf.style.background = estilosOriginais.conteudoBackground;
-        conteudoPdf.style.boxShadow = estilosOriginais.conteudoBoxShadow;
-
-        elementoPdf.style.width = estilosOriginais.elementoWidth;
-        elementoPdf.style.minHeight = estilosOriginais.elementoMinHeight;
-        elementoPdf.style.background = estilosOriginais.elementoBackground;
-
-        document.body.style.overflow = estilosOriginais.bodyOverflow;
-    }
+  try {
+    await html2pdf()
+      .set(opt)
+      .from(elementoPdf)
+      .save();
+  } catch (error) {
+    console.error('Erro ao gerar PDF:', error);
+    alert('Não foi possível gerar o PDF.');
+  } finally {
+    document.body.classList.remove('gerando-pdf');
+  }
 }
 
 // ==================== SALVAMENTO E ENVIO (WPP / BANCO) ====================
