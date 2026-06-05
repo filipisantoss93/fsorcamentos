@@ -3165,7 +3165,7 @@ button.google:active {
 .google-login-btn::after,
 #btn-google::after,
 button.google::after {
-  content: "Mais rápido";
+  content: "RECOMENDADO";
   position: absolute;
   top: 8px;
   right: 12px;
@@ -3173,7 +3173,7 @@ button.google::after {
   color: #2b2b2b;
   font-size: 0.68rem;
   font-weight: 900;
-  padding: 4px 8px;
+  padding: 8px 8px;
   border-radius: 999px;
   box-shadow: 0 3px 8px rgba(255, 196, 0, 0.35);
 }
