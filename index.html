@@ -43,6 +43,20 @@
     crossorigin="anonymous"></script>
 
   <style>
+    .index-aviso-login {
+      display: none;
+      max-width: 820px;
+      margin: 18px auto 0;
+      background: #fff3cd;
+      color: #5d4037;
+      border-left: 6px solid #ffc400;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: center;
+    }
+
     .bloco-anuncio.fs-adsense-zone {
       display: none;
       max-width: 970px;
@@ -106,18 +120,92 @@
       scroll-margin-top: 110px;
     }
 
-    .index-aviso-login {
-      display: none;
-      max-width: 820px;
-      margin: 18px auto 0;
-      background: #fff3cd;
-      color: #5d4037;
-      border-left: 6px solid #ffc400;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 14px;
-      font-weight: 800;
+    .comparativo-home {
+      max-width: 1150px;
+      margin: 34px auto 0 auto;
+      padding: 34px 24px;
+      background: linear-gradient(135deg, #fffaf0, #f4ece1);
+      border-radius: 24px;
+      border-top: 6px solid #ffc400;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.14);
+      color: #3e2723;
+    }
+
+    .comparativo-home-topo {
       text-align: center;
+      max-width: 780px;
+      margin: 0 auto 24px auto;
+    }
+
+    .comparativo-home-topo h2 {
+      margin: 0 0 10px 0;
+      font-size: 30px;
+      color: #3e2723;
+    }
+
+    .comparativo-home-topo p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .tabela-comparativo {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+    }
+
+    .tabela-comparativo th,
+    .tabela-comparativo td {
+      padding: 14px;
+      border-bottom: 1px solid #eadfce;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .tabela-comparativo th {
+      background: #3e2723;
+      color: #ffc400;
+      font-size: 15px;
+    }
+
+    .tabela-comparativo td:first-child {
+      text-align: left;
+      color: #3e2723;
+    }
+
+    .ok-recurso {
+      color: #16803a;
+      font-weight: 900;
+    }
+
+    .nao-recurso {
+      color: #c62828;
+      font-weight: 900;
+    }
+
+    @media (max-width: 720px) {
+      .tabela-comparativo {
+        font-size: 13px;
+      }
+
+      .tabela-comparativo th,
+      .tabela-comparativo td {
+        padding: 10px 8px;
+      }
+
+      .comparativo-home {
+        padding: 26px 12px;
+        border-radius: 18px;
+      }
+
+      .comparativo-home-topo h2 {
+        font-size: 24px;
+      }
     }
 
     @media (max-width: 620px) {
@@ -469,6 +557,63 @@
       data-full-width-responsive="true"></ins>
   </div>
 
+  <section class="comparativo-home">
+    <div class="comparativo-home-topo">
+      <h2>Compare o Plano Grátis com o Plano Básico</h2>
+      <p>
+        Comece grátis para gerar PDFs. Quando quiser controlar clientes, histórico e status,
+        assine o Plano Básico.
+      </p>
+    </div>
+
+    <table class="tabela-comparativo">
+      <thead>
+        <tr>
+          <th>Recurso</th>
+          <th>Grátis</th>
+          <th>Básico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gerar orçamento em PDF</td>
+          <td class="ok-recurso">Sim</td>
+          <td class="ok-recurso">Sim</td>
+        </tr>
+        <tr>
+          <td>Anúncios</td>
+          <td class="ok-recurso">Sim</td>
+          <td class="nao-recurso">Não</td>
+        </tr>
+        <tr>
+          <td>Salvar na nuvem</td>
+          <td class="nao-recurso">Não</td>
+          <td class="ok-recurso">Sim</td>
+        </tr>
+        <tr>
+          <td>Histórico de orçamentos</td>
+          <td class="nao-recurso">Não</td>
+          <td class="ok-recurso">Sim</td>
+        </tr>
+        <tr>
+          <td>WhatsApp com link</td>
+          <td class="nao-recurso">Não</td>
+          <td class="ok-recurso">Sim</td>
+        </tr>
+        <tr>
+          <td>Cliente aprova/recusa</td>
+          <td class="nao-recurso">Não</td>
+          <td class="ok-recurso">Sim</td>
+        </tr>
+        <tr>
+          <td>Resumo financeiro</td>
+          <td class="nao-recurso">Não</td>
+          <td class="ok-recurso">Sim</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
   <section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
     <div class="planos-pix-topo">
       <span class="tag-plano-pix">Plano Básico</span>
@@ -683,7 +828,10 @@
 function esconderSplashIndex() {
   setTimeout(() => {
     const splash = document.getElementById('splash-screen');
-    if (splash) splash.classList.add('hide-splash');
+
+    if (splash) {
+      splash.classList.add('hide-splash');
+    }
   }, 900);
 }
 
@@ -716,6 +864,10 @@ function mostrarAvisoLoginIndex() {
   }, 5500);
 }
 
+function salvarDestinoAposLoginFS(destino) {
+  localStorage.setItem('fs_destino_apos_login', destino || '/gerador.html');
+}
+
 async function abrirGeradorHomeProtegido() {
   try {
     if (!window._supabase) {
@@ -726,6 +878,7 @@ async function abrirGeradorHomeProtegido() {
     const logado = await usuarioTemSessaoAtivaFS();
 
     if (!logado) {
+      salvarDestinoAposLoginFS('/gerador.html');
       mostrarAvisoLoginIndex();
 
       if (typeof abrirModalLogin === 'function') {
@@ -749,6 +902,7 @@ async function abrirGeradorGlobal() {
   const logado = await usuarioTemSessaoAtivaFS();
 
   if (!logado) {
+    salvarDestinoAposLoginFS('/gerador.html');
     mostrarAvisoLoginIndex();
 
     if (typeof abrirModalLogin === 'function') {
@@ -761,6 +915,18 @@ async function abrirGeradorGlobal() {
   }
 
   window.location.href = '/gerador.html';
+}
+
+function redirecionarDestinoAposLoginSeExistir() {
+  const destino = localStorage.getItem('fs_destino_apos_login');
+
+  if (!destino) return;
+
+  localStorage.removeItem('fs_destino_apos_login');
+
+  if (window.location.pathname !== destino) {
+    window.location.href = destino;
+  }
 }
 
 async function atualizarBotaoFlutuanteGlobalPorSessao() {
@@ -795,11 +961,22 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
+  _supabase.auth.onAuthStateChange((event, session) => {
     setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 400);
     setTimeout(atualizarBotaoFlutuanteGlobalPorSessao, 1200);
+
+    if (session?.user?.id) {
+      const destino = localStorage.getItem('fs_destino_apos_login');
+
+      if (destino) {
+        setTimeout(redirecionarDestinoAposLoginSeExistir, 700);
+      }
+    }
   });
 }
+
+window.abrirGeradorGlobal = abrirGeradorGlobal;
+window.abrirGeradorHomeProtegido = abrirGeradorHomeProtegido;
 </script>
 
 <script>
@@ -858,7 +1035,7 @@ async function atualizarBotaoPlanosHome() {
   const plano = await buscarPlanoAtualIndex();
 
   botaoPlanos.style.display =
-    plano === 'basico' || plano === 'premium'
+    plano === 'basico'
       ? 'none'
       : 'inline-flex';
 }
@@ -871,7 +1048,7 @@ async function atualizarPainelPlanoBasicoHome() {
   const plano = await buscarPlanoAtualIndex();
 
   painel.style.display =
-    plano === 'basico' || plano === 'premium'
+    plano === 'basico'
       ? 'none'
       : 'block';
 }
@@ -927,6 +1104,7 @@ function fsInicializarAdsenseVisivel() {
     if (bloco.style.display === 'none') return;
 
     const ins = bloco.querySelector('ins.adsbygoogle');
+
     if (!ins) return;
 
     const slot = ins.getAttribute('data-ad-slot');
@@ -953,7 +1131,7 @@ async function atualizarAnunciosGratisHome() {
   try {
     const plano = await buscarPlanoAtualIndex();
 
-    deveExibir = !(plano === 'basico' || plano === 'premium');
+    deveExibir = plano !== 'basico';
   } catch (error) {
     console.warn('Não foi possível verificar plano para anúncios:', error);
     deveExibir = true;
