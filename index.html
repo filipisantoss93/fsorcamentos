@@ -85,41 +85,6 @@
       min-height: 90px;
     }
 
-    .btn-planos-menor {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 4px;
-      padding: 10px 18px !important;
-      border-radius: 999px !important;
-      background: rgba(255, 196, 0, 0.14) !important;
-      color: #3e2723 !important;
-      border: 1px solid rgba(62, 39, 35, 0.28) !important;
-      box-shadow: none !important;
-      font-size: 13px !important;
-      font-weight: 900 !important;
-      letter-spacing: .2px;
-      text-decoration: none !important;
-      transition: .2s ease;
-    }
-
-    .btn-planos-menor::before {
-      content: '⭐';
-      font-size: 14px;
-    }
-
-    .btn-planos-menor:hover {
-      transform: translateY(-1px);
-      background: #fff8d6 !important;
-      border-color: #ffc400 !important;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
-    }
-
-    #painel-plano-basico-home {
-      scroll-margin-top: 110px;
-    }
-
     .comparativo-home {
       max-width: 1150px;
       margin: 34px auto 0 auto;
@@ -150,6 +115,12 @@
       line-height: 1.55;
     }
 
+    .tabela-comparativo-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 16px;
+    }
+
     .tabela-comparativo {
       width: 100%;
       border-collapse: collapse;
@@ -157,6 +128,7 @@
       border-radius: 16px;
       background: #ffffff;
       box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+      min-width: 560px;
     }
 
     .tabela-comparativo th,
@@ -188,6 +160,34 @@
       font-weight: 900;
     }
 
+    .comparativo-cta {
+      text-align: center;
+      margin-top: 26px;
+    }
+
+    .btn-ir-planos-home {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      background: #ffc400;
+      color: #3e2723;
+      border: 2px solid #3e2723;
+      border-radius: 999px;
+      padding: 15px 24px;
+      font-size: 16px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+      transition: .2s ease;
+    }
+
+    .btn-ir-planos-home:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.24);
+    }
+
     @media (max-width: 720px) {
       .tabela-comparativo {
         font-size: 13px;
@@ -205,6 +205,11 @@
 
       .comparativo-home-topo h2 {
         font-size: 24px;
+      }
+
+      .btn-ir-planos-home {
+        width: 100%;
+        box-sizing: border-box;
       }
     }
 
@@ -321,10 +326,6 @@
       <button type="button" class="btn-gerar-orcamento-home btn-gerar-destaque" onclick="abrirGeradorHomeProtegido()">
         🧾 Gerar Orçamento Agora
       </button>
-
-      <a href="#painel-plano-basico-home" id="btn-conhecer-planos-home" class="btn-secundario-home btn-planos-menor" onclick="rolarParaPlanosHome(event)">
-        Conhecer o Plano Básico
-      </a>
     </div>
 
     <div id="index-aviso-login" class="index-aviso-login">
@@ -566,108 +567,64 @@
       </p>
     </div>
 
-    <table class="tabela-comparativo">
-      <thead>
-        <tr>
-          <th>Recurso</th>
-          <th>Grátis</th>
-          <th>Básico</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Gerar orçamento em PDF</td>
-          <td class="ok-recurso">Sim</td>
-          <td class="ok-recurso">Sim</td>
-        </tr>
-        <tr>
-          <td>Anúncios</td>
-          <td class="ok-recurso">Sim</td>
-          <td class="nao-recurso">Não</td>
-        </tr>
-        <tr>
-          <td>Salvar na nuvem</td>
-          <td class="nao-recurso">Não</td>
-          <td class="ok-recurso">Sim</td>
-        </tr>
-        <tr>
-          <td>Histórico de orçamentos</td>
-          <td class="nao-recurso">Não</td>
-          <td class="ok-recurso">Sim</td>
-        </tr>
-        <tr>
-          <td>WhatsApp com link</td>
-          <td class="nao-recurso">Não</td>
-          <td class="ok-recurso">Sim</td>
-        </tr>
-        <tr>
-          <td>Cliente aprova/recusa</td>
-          <td class="nao-recurso">Não</td>
-          <td class="ok-recurso">Sim</td>
-        </tr>
-        <tr>
-          <td>Resumo financeiro</td>
-          <td class="nao-recurso">Não</td>
-          <td class="ok-recurso">Sim</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section id="painel-plano-basico-home" class="planos-pix-section" style="display:none;">
-    <div class="planos-pix-topo">
-      <span class="tag-plano-pix">Plano Básico</span>
-
-      <h2>Escolha o período do seu Plano Básico</h2>
-
-      <p>
-        Pague via Pix e libere os recursos do Plano Básico pelo período escolhido.
-        A confirmação será feita automaticamente assim que o pagamento for identificado.
-      </p>
+    <div class="tabela-comparativo-wrapper">
+      <table class="tabela-comparativo">
+        <thead>
+          <tr>
+            <th>Recurso</th>
+            <th>Grátis</th>
+            <th>Básico</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gerar orçamento em PDF</td>
+            <td class="ok-recurso">Sim</td>
+            <td class="ok-recurso">Sim</td>
+          </tr>
+          <tr>
+            <td>Anúncios</td>
+            <td class="ok-recurso">Sim</td>
+            <td class="nao-recurso">Não</td>
+          </tr>
+          <tr>
+            <td>Salvar na nuvem</td>
+            <td class="nao-recurso">Não</td>
+            <td class="ok-recurso">Sim</td>
+          </tr>
+          <tr>
+            <td>Histórico de orçamentos</td>
+            <td class="nao-recurso">Não</td>
+            <td class="ok-recurso">Sim</td>
+          </tr>
+          <tr>
+            <td>WhatsApp com link</td>
+            <td class="nao-recurso">Não</td>
+            <td class="ok-recurso">Sim</td>
+          </tr>
+          <tr>
+            <td>Cliente aprova/recusa</td>
+            <td class="nao-recurso">Não</td>
+            <td class="ok-recurso">Sim</td>
+          </tr>
+          <tr>
+            <td>Resumo financeiro</td>
+            <td class="nao-recurso">Não</td>
+            <td class="ok-recurso">Sim</td>
+          </tr>
+          <tr>
+            <td>Responsáveis da empresa</td>
+            <td class="nao-recurso">1</td>
+            <td class="ok-recurso">Até 2</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="planos-pix-grid">
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">1 mês</div>
-        <div class="plano-pix-preco">R$ 19,90</div>
-        <p>Ideal para testar os recursos pagos por 30 dias.</p>
-
-        <button type="button" onclick="gerarPixPlanoBasico('mensal')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card destaque">
-        <div class="plano-pix-selo">Mais escolhido</div>
-        <div class="plano-pix-periodo">6 meses</div>
-        <div class="plano-pix-preco">R$ 109,90</div>
-        <p>Economize em relação ao pagamento mensal.</p>
-
-        <button type="button" onclick="gerarPixPlanoBasico('semestral')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">12 meses</div>
-        <div class="plano-pix-preco">R$ 209,90</div>
-        <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
-
-        <button type="button" onclick="gerarPixPlanoBasico('anual')">
-          Gerar Pix
-        </button>
-      </div>
-    </div>
-
-    <div class="plano-pix-beneficios">
-      <strong>O Plano Básico inclui:</strong>
-      <span>Salvar orçamentos na nuvem</span>
-      <span>Histórico de orçamentos</span>
-      <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
-      <span>Até 2 responsáveis</span>
-      <span>Envio manual pelo WhatsApp com link</span>
-      <span>Resumo financeiro</span>
-      <span>Sem anúncios na plataforma</span>
+    <div class="comparativo-cta">
+      <a href="/planos.html" class="btn-ir-planos-home">
+        ⭐ Conhecer planos e assinar
+      </a>
     </div>
   </section>
 
@@ -763,61 +720,6 @@
 
 </main>
 
-<div id="modal-pix-basico" class="modal-pix-overlay">
-  <div class="modal-pix-card">
-    <div class="modal-pix-topo">
-      <div>
-        <strong>Pagamento via Pix</strong>
-        <span id="pix-modal-subtitulo">Plano Básico</span>
-      </div>
-
-      <button type="button" onclick="fecharModalPixBasico()">×</button>
-    </div>
-
-    <div id="pix-loading" class="pix-loading">
-      Gerando Pix, aguarde...
-    </div>
-
-    <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
-      <div class="pix-resumo">
-        <div>
-          <small>Plano</small>
-          <strong id="pix-plano-label">Plano Básico</strong>
-        </div>
-
-        <div>
-          <small>Valor</small>
-          <strong id="pix-valor">R$ 0,00</strong>
-        </div>
-      </div>
-
-      <div class="pix-qrcode-box">
-        <img id="pix-qrcode-img" src="" alt="QR Code Pix">
-      </div>
-
-      <label class="pix-label">Pix copia e cola</label>
-
-      <textarea id="pix-copia-cola" readonly></textarea>
-
-      <div class="pix-acoes">
-        <button type="button" onclick="copiarPixCopiaCola()">
-          Copiar Pix
-        </button>
-
-        <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">
-          Já paguei, verificar
-        </button>
-      </div>
-
-      <p class="pix-aviso">
-        Após o pagamento, seu Plano Básico será liberado automaticamente quando a Efí confirmar o Pix.
-      </p>
-    </div>
-
-    <div id="pix-erro" class="pix-erro" style="display:none;"></div>
-  </div>
-</div>
-
 <center>
   <p></p><p></p>
   <footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer>
@@ -865,7 +767,11 @@ function mostrarAvisoLoginIndex() {
 }
 
 function salvarDestinoAposLoginFS(destino) {
-  localStorage.setItem('fs_destino_apos_login', destino || '/gerador.html');
+  try {
+    localStorage.setItem('fs_destino_apos_login', destino || '/gerador.html');
+  } catch (error) {
+    console.warn('Não foi possível salvar destino após login:', error);
+  }
 }
 
 async function abrirGeradorHomeProtegido() {
@@ -1017,6 +923,8 @@ async function buscarPlanoAtualIndex() {
 
       if (data.plano_expira_em) {
         localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+      } else {
+        localStorage.removeItem('usuario_plano_expira_em');
       }
     }
 
@@ -1025,69 +933,6 @@ async function buscarPlanoAtualIndex() {
     console.warn('Não foi possível buscar plano:', error);
     return fsNormalizarPlano(plano);
   }
-}
-
-async function atualizarBotaoPlanosHome() {
-  const botaoPlanos = document.getElementById('btn-conhecer-planos-home');
-
-  if (!botaoPlanos) return;
-
-  const plano = await buscarPlanoAtualIndex();
-
-  botaoPlanos.style.display =
-    plano === 'basico'
-      ? 'none'
-      : 'inline-flex';
-}
-
-async function atualizarPainelPlanoBasicoHome() {
-  const painel = document.getElementById('painel-plano-basico-home');
-
-  if (!painel) return;
-
-  const plano = await buscarPlanoAtualIndex();
-
-  painel.style.display =
-    plano === 'basico'
-      ? 'none'
-      : 'block';
-}
-
-function rolarParaPlanosHome(event) {
-  if (event) event.preventDefault();
-
-  const painel = document.getElementById('painel-plano-basico-home');
-
-  if (!painel) return;
-
-  if (getComputedStyle(painel).display === 'none') {
-    painel.style.display = 'block';
-  }
-
-  painel.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  atualizarBotaoPlanosHome();
-  atualizarPainelPlanoBasicoHome();
-
-  setTimeout(atualizarBotaoPlanosHome, 800);
-  setTimeout(atualizarPainelPlanoBasicoHome, 900);
-
-  setTimeout(atualizarBotaoPlanosHome, 1700);
-  setTimeout(atualizarPainelPlanoBasicoHome, 1800);
-});
-
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarBotaoPlanosHome, 400);
-    setTimeout(atualizarPainelPlanoBasicoHome, 500);
-    setTimeout(atualizarBotaoPlanosHome, 1300);
-    setTimeout(atualizarPainelPlanoBasicoHome, 1400);
-  });
 }
 </script>
 
@@ -1131,7 +976,7 @@ async function atualizarAnunciosGratisHome() {
   try {
     const plano = await buscarPlanoAtualIndex();
 
-    deveExibir = plano !== 'basico';
+    deveExibir = !(plano === 'basico' || plano === 'premium');
   } catch (error) {
     console.warn('Não foi possível verificar plano para anúncios:', error);
     deveExibir = true;
@@ -1159,227 +1004,6 @@ if (window._supabase) {
     setTimeout(atualizarAnunciosGratisHome, 1400);
   });
 }
-</script>
-
-<script>
-let pagamentoPixAtualId = null;
-
-const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
-
-function formatarMoedaPix(valor) {
-  return Number(valor || 0).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
-}
-
-function abrirModalPixBasico() {
-  const modal = document.getElementById('modal-pix-basico');
-
-  if (modal) {
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-}
-
-function fecharModalPixBasico() {
-  const modal = document.getElementById('modal-pix-basico');
-
-  if (modal) {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }
-}
-
-function setEstadoModalPixCarregando() {
-  abrirModalPixBasico();
-
-  const loading = document.getElementById('pix-loading');
-  const conteudo = document.getElementById('pix-conteudo');
-  const erro = document.getElementById('pix-erro');
-
-  if (loading) loading.style.display = 'block';
-  if (conteudo) conteudo.style.display = 'none';
-
-  if (erro) {
-    erro.style.display = 'none';
-    erro.innerText = '';
-  }
-}
-
-function setEstadoModalPixErro(mensagem) {
-  const loading = document.getElementById('pix-loading');
-  const conteudo = document.getElementById('pix-conteudo');
-  const erro = document.getElementById('pix-erro');
-
-  if (loading) loading.style.display = 'none';
-  if (conteudo) conteudo.style.display = 'none';
-
-  if (erro) {
-    erro.style.display = 'block';
-    erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
-  }
-}
-
-function setEstadoModalPixConteudo(dados) {
-  const loading = document.getElementById('pix-loading');
-  const conteudo = document.getElementById('pix-conteudo');
-  const erro = document.getElementById('pix-erro');
-
-  const subtitulo = document.getElementById('pix-modal-subtitulo');
-  const planoLabel = document.getElementById('pix-plano-label');
-  const pixValor = document.getElementById('pix-valor');
-  const qrImg = document.getElementById('pix-qrcode-img');
-  const copiaCola = document.getElementById('pix-copia-cola');
-
-  pagamentoPixAtualId = dados.pagamento_id || null;
-
-  if (loading) loading.style.display = 'none';
-  if (conteudo) conteudo.style.display = 'block';
-  if (erro) erro.style.display = 'none';
-
-  if (subtitulo) subtitulo.innerText = `${dados.label || 'Plano Básico'} - ${formatarMoedaPix(dados.valor)}`;
-  if (planoLabel) planoLabel.innerText = dados.label || 'Plano Básico';
-  if (pixValor) pixValor.innerText = formatarMoedaPix(dados.valor);
-
-  if (qrImg) {
-    if (dados.qr_code) {
-      qrImg.src = dados.qr_code;
-      qrImg.style.display = 'inline-block';
-    } else {
-      qrImg.src = '';
-      qrImg.style.display = 'none';
-    }
-  }
-
-  if (copiaCola) {
-    copiaCola.value = dados.pix_copia_cola || '';
-  }
-}
-
-async function gerarPixPlanoBasico(periodo) {
-  try {
-    if (!window._supabase) {
-      alert('Supabase não carregou. Atualize a página e tente novamente.');
-      return;
-    }
-
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    if (!session) {
-      if (typeof abrirModalLogin === 'function') {
-        abrirModalLogin();
-      } else {
-        alert('Faça login para assinar o Plano Básico.');
-      }
-
-      return;
-    }
-
-    setEstadoModalPixCarregando();
-
-    const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`
-      },
-      body: JSON.stringify({
-        periodo
-      })
-    });
-
-    const dados = await resposta.json().catch(() => ({}));
-
-    if (!resposta.ok) {
-      setEstadoModalPixErro(dados.erro || 'Erro ao gerar Pix.');
-      return;
-    }
-
-    setEstadoModalPixConteudo(dados);
-
-  } catch (error) {
-    console.error('Erro ao gerar Pix:', error);
-    setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
-  }
-}
-
-async function copiarPixCopiaCola() {
-  const campo = document.getElementById('pix-copia-cola');
-
-  if (!campo || !campo.value) {
-    alert('Pix copia e cola não disponível.');
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(campo.value);
-    alert('Pix copia e cola copiado!');
-  } catch (error) {
-    campo.select();
-    document.execCommand('copy');
-    alert('Pix copia e cola copiado!');
-  }
-}
-
-async function verificarPagamentoPixAtual() {
-  if (!pagamentoPixAtualId) {
-    alert('Nenhum pagamento Pix foi gerado nesta tela.');
-    return;
-  }
-
-  if (!window._supabase) {
-    alert('Supabase não carregou. Atualize a página.');
-    return;
-  }
-
-  const { data: { session } } = await _supabase.auth.getSession();
-
-  if (!session) {
-    alert('Faça login novamente para verificar o pagamento.');
-    return;
-  }
-
-  const { data, error } = await _supabase
-    .from('pagamentos_pix')
-    .select('status, pago_em')
-    .eq('id', pagamentoPixAtualId)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Erro ao verificar pagamento:', error);
-    alert('Não foi possível verificar o pagamento agora.');
-    return;
-  }
-
-  if (!data) {
-    alert('Pagamento não encontrado.');
-    return;
-  }
-
-  if (data.status === 'pago') {
-    alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
-    fecharModalPixBasico();
-    window.location.reload();
-    return;
-  }
-
-  alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
-}
-
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    fecharModalPixBasico();
-  }
-});
-
-document.addEventListener('click', function(event) {
-  const modalPix = document.getElementById('modal-pix-basico');
-
-  if (event.target === modalPix) {
-    fecharModalPixBasico();
-  }
-});
 </script>
 
 </body>
