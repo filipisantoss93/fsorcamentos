@@ -1,37 +1,59 @@
+// ==================== NOTIFICACOES.JS ====================
+// FS Orçamentos - Notificações em tempo real
+// Usa o sininho já existente no header.html:
+//
+// <button id="btn-notificacoes" onclick="abrirModalNotificacoes()">
+//   🔔
+//   <span id="contador-notificacoes">0</span>
+// </button>
+//
+// Dependências:
+// - Supabase carregado em config.js
+// - window._supabase disponível
+// - Tabela public.notificacoes
+// - header.html contendo btn-notificacoes e contador-notificacoes
+
 const LIMITE_NOTIFICACOES = 10;
 
 let canalNotificacoes = null;
 let notificacoesIniciadas = false;
 let notificacoesCache = [];
 
+// ==================== INICIALIZAÇÃO ====================
+
 document.addEventListener('DOMContentLoaded', async () => {
-  if (!window._supabase) return;
+  if (!window._supabase) {
+    console.warn('Supabase não carregado. Notificações desativadas.');
+    return;
+  }
 
   criarModalNotificacoes();
+  garantirEstiloNotificacoes();
 
   const { data: { session } } = await _supabase.auth.getSession();
 
-  if (session) {
-    iniciarNotificacoes(session);
+  if (session?.user?.id) {
+    await iniciarNotificacoes(session);
+  } else {
+    pararNotificacoes();
   }
 
-  _supabase.auth.onAuthStateChange((event, session) => {
-    if (session) {
-      iniciarNotificacoes(session);
-    } else {
-      pararNotificacoes();
-      atualizarSininhoNotificacoes(0);
+  _supabase.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user?.id) {
+      await iniciarNotificacoes(session);
+      return;
     }
+
+    pararNotificacoes();
   });
 });
+
+// ==================== CONTROLE PRINCIPAL ====================
 
 async function iniciarNotificacoes(session) {
   if (!session?.user?.id) return;
 
-  setTimeout(() => {
-    mostrarSininhoNotificacoes(true);
-  }, 300);
-
+  mostrarSininhoNotificacoes(true);
   criarBotaoAtivarNotificacoes();
 
   await carregarNotificacoesRecentes(session.user.id);
@@ -41,7 +63,7 @@ async function iniciarNotificacoes(session) {
   notificacoesIniciadas = true;
 
   canalNotificacoes = _supabase
-    .channel('notificacoes-orcamentos')
+    .channel(`notificacoes-orcamentos-${session.user.id}`)
     .on(
       'postgres_changes',
       {
@@ -57,7 +79,6 @@ async function iniciarNotificacoes(session) {
         notificacoesCache = notificacoesCache.slice(0, LIMITE_NOTIFICACOES);
 
         atualizarContadorNaoLidasPeloCache();
-
         renderizarListaNotificacoes();
 
         mostrarToastNotificacao(notificacao);
@@ -71,7 +92,9 @@ async function iniciarNotificacoes(session) {
 
 function pararNotificacoes() {
   notificacoesIniciadas = false;
+
   mostrarSininhoNotificacoes(false);
+  atualizarSininhoNotificacoes(0);
 
   if (canalNotificacoes && window._supabase) {
     _supabase.removeChannel(canalNotificacoes);
@@ -81,13 +104,48 @@ function pararNotificacoes() {
   notificacoesCache = [];
 }
 
+// ==================== SININHO DO HEADER ====================
+
 function mostrarSininhoNotificacoes(exibir) {
   const btn = document.getElementById('btn-notificacoes');
 
-  if (btn) {
-    btn.style.display = exibir ? 'inline-flex' : 'none';
+  if (!btn) {
+    console.warn('Botão #btn-notificacoes não encontrado no header.');
+    return;
+  }
+
+  btn.style.display = exibir ? 'inline-flex' : 'none';
+}
+
+function atualizarSininhoNotificacoes(qtd) {
+  const contador = document.getElementById('contador-notificacoes');
+
+  if (!contador) {
+    console.warn('Contador #contador-notificacoes não encontrado no header.');
+    return;
+  }
+
+  const numero = Math.min(Number(qtd || 0), 99);
+
+  if (numero > 0) {
+    contador.innerText = numero >= 99 ? '99+' : String(numero);
+    contador.style.display = 'inline-flex';
+  } else {
+    contador.innerText = '0';
+    contador.style.display = 'none';
   }
 }
+
+function atualizarContadorNaoLidasPeloCache() {
+  const qtdNaoLidas = notificacoesCache
+    .slice(0, LIMITE_NOTIFICACOES)
+    .filter(n => !n.lida)
+    .length;
+
+  atualizarSininhoNotificacoes(qtdNaoLidas);
+}
+
+// ==================== BUSCAR NOTIFICAÇÕES ====================
 
 async function carregarNotificacoesRecentes(usuarioId) {
   if (!window._supabase || !usuarioId) return;
@@ -104,7 +162,7 @@ async function carregarNotificacoesRecentes(usuarioId) {
     return;
   }
 
-  notificacoesCache = (data || []).slice(0, LIMITE_NOTIFICACOES);
+  notificacoesCache = data || [];
 
   atualizarContadorNaoLidasPeloCache();
   renderizarListaNotificacoes();
@@ -130,30 +188,7 @@ async function atualizarContadorNaoLidas(usuarioId) {
   atualizarSininhoNotificacoes(qtdNaoLidas);
 }
 
-function atualizarContadorNaoLidasPeloCache() {
-  const qtdNaoLidas = notificacoesCache
-    .slice(0, LIMITE_NOTIFICACOES)
-    .filter(n => !n.lida)
-    .length;
-
-  atualizarSininhoNotificacoes(qtdNaoLidas);
-}
-
-function atualizarSininhoNotificacoes(qtd) {
-  const contador = document.getElementById('contador-notificacoes');
-
-  if (!contador) return;
-
-  const numero = Math.min(Number(qtd || 0), LIMITE_NOTIFICACOES);
-
-  if (numero > 0) {
-    contador.innerText = String(numero);
-    contador.style.display = 'inline-flex';
-  } else {
-    contador.innerText = '0';
-    contador.style.display = 'none';
-  }
-}
+// ==================== MODAL DE NOTIFICAÇÕES ====================
 
 function criarModalNotificacoes() {
   if (document.getElementById('modal-notificacoes')) return;
@@ -167,7 +202,7 @@ function criarModalNotificacoes() {
       <div class="modal-notificacoes-topo">
         <div>
           <strong>Notificações</strong>
-          <span>Acompanhe aprovações e recusas dos seus orçamentos.</span>
+          <span>Acompanhe aprovações, recusas e avisos importantes.</span>
         </div>
 
         <button type="button" onclick="fecharModalNotificacoes()">×</button>
@@ -208,6 +243,8 @@ async function abrirModalNotificacoes() {
     document.body.style.overflow = 'hidden';
   }
 
+  if (!window._supabase) return;
+
   const { data: { session } } = await _supabase.auth.getSession();
 
   if (session?.user?.id) {
@@ -243,22 +280,9 @@ function renderizarListaNotificacoes() {
   }
 
   lista.innerHTML = notificacoesLimitadas.map(notificacao => {
-    const tipo = notificacao.tipo || 'info';
-
-    const classeTipo =
-      tipo === 'aprovado'
-        ? 'notificacao-aprovado'
-        : tipo === 'recusado'
-          ? 'notificacao-recusado'
-          : 'notificacao-info';
-
-    const icone =
-      tipo === 'aprovado'
-        ? '✅'
-        : tipo === 'recusado'
-          ? '❌'
-          : '🔔';
-
+    const tipo = normalizarTipoNotificacao(notificacao.tipo);
+    const classeTipo = obterClasseNotificacao(tipo);
+    const icone = obterIconeNotificacao(tipo);
     const classeLida = notificacao.lida ? 'lida' : 'nao-lida';
 
     return `
@@ -266,14 +290,18 @@ function renderizarListaNotificacoes() {
         <div class="notificacao-icone">${icone}</div>
 
         <div class="notificacao-conteudo">
-          <strong>${escaparHtmlNotificacao(notificacao.titulo)}</strong>
-          <p>${escaparHtmlNotificacao(notificacao.mensagem)}</p>
+          <strong>${escaparHtmlNotificacao(notificacao.titulo || 'Notificação')}</strong>
+          <p>${escaparHtmlNotificacao(notificacao.mensagem || '')}</p>
           <small>${formatarDataNotificacao(notificacao.criado_em)}</small>
         </div>
 
         ${
           notificacao.orcamento_id
-            ? `<button type="button" onclick="abrirOrcamentoDaNotificacao('${notificacao.orcamento_id}')">Abrir</button>`
+            ? `
+              <button type="button" onclick="abrirOrcamentoDaNotificacao('${notificacao.orcamento_id}')">
+                Abrir
+              </button>
+            `
             : ''
         }
       </div>
@@ -281,7 +309,11 @@ function renderizarListaNotificacoes() {
   }).join('');
 }
 
+// ==================== MARCAR COMO LIDA ====================
+
 async function marcarTodasNotificacoesComoLidas() {
+  if (!window._supabase) return;
+
   const { data: { session } } = await _supabase.auth.getSession();
 
   if (!session?.user?.id) return;
@@ -310,12 +342,10 @@ async function marcarTodasNotificacoesComoLidas() {
     return;
   }
 
-  notificacoesCache = notificacoesCache
-    .slice(0, LIMITE_NOTIFICACOES)
-    .map(n => ({
-      ...n,
-      lida: true
-    }));
+  notificacoesCache = notificacoesCache.map(n => ({
+    ...n,
+    lida: true
+  }));
 
   atualizarSininhoNotificacoes(0);
   renderizarListaNotificacoes();
@@ -328,13 +358,15 @@ async function abrirOrcamentoDaNotificacao(orcamentoId) {
 }
 
 async function marcarNotificacaoComoLidaPorOrcamento(orcamentoId) {
+  if (!window._supabase || !orcamentoId) return;
+
   const { data: { session } } = await _supabase.auth.getSession();
 
-  if (!session?.user?.id || !orcamentoId) return;
+  if (!session?.user?.id) return;
 
   const idsVisiveisDoOrcamento = notificacoesCache
     .slice(0, LIMITE_NOTIFICACOES)
-    .filter(n => n.orcamento_id === orcamentoId)
+    .filter(n => n.orcamento_id === orcamentoId && !n.lida)
     .map(n => n.id)
     .filter(Boolean);
 
@@ -346,21 +378,21 @@ async function marcarNotificacaoComoLidaPorOrcamento(orcamentoId) {
     .eq('usuario_id', session.user.id)
     .in('id', idsVisiveisDoOrcamento);
 
-  notificacoesCache = notificacoesCache
-    .slice(0, LIMITE_NOTIFICACOES)
-    .map(n => {
-      if (n.orcamento_id === orcamentoId) {
-        return {
-          ...n,
-          lida: true
-        };
-      }
+  notificacoesCache = notificacoesCache.map(n => {
+    if (n.orcamento_id === orcamentoId) {
+      return {
+        ...n,
+        lida: true
+      };
+    }
 
-      return n;
-    });
+    return n;
+  });
 
   atualizarContadorNaoLidasPeloCache();
 }
+
+// ==================== NOTIFICAÇÃO DO NAVEGADOR ====================
 
 function criarBotaoAtivarNotificacoes() {
   if (!('Notification' in window)) return;
@@ -376,7 +408,7 @@ function criarBotaoAtivarNotificacoes() {
 
   botao.style.position = 'fixed';
   botao.style.right = '18px';
-  botao.style.bottom = '18px';
+  botao.style.bottom = '90px';
   botao.style.zIndex = '16000';
   botao.style.background = '#ffc400';
   botao.style.color = '#3e2723';
@@ -411,10 +443,36 @@ async function solicitarPermissaoNotificacoes() {
       body: 'Notificações ativadas com sucesso.',
       icon: '/favicon.png'
     });
-  } else {
-    alert('As notificações não foram ativadas. Você pode permitir depois nas configurações do navegador.');
+
+    return;
   }
+
+  alert('As notificações não foram ativadas. Você pode permitir depois nas configurações do navegador.');
 }
+
+function mostrarNotificacaoNavegador(notificacao) {
+  if (!('Notification' in window)) return;
+
+  if (Notification.permission !== 'granted') return;
+
+  const n = new Notification(notificacao.titulo || 'FS Orçamentos', {
+    body: notificacao.mensagem || 'Houve uma atualização em um orçamento.',
+    icon: '/favicon.png',
+    badge: '/favicon.png'
+  });
+
+  n.onclick = () => {
+    window.focus();
+
+    if (notificacao.orcamento_id) {
+      window.location.href = `/orcamentos.html?orcamento=${encodeURIComponent(notificacao.orcamento_id)}`;
+    } else {
+      window.location.href = '/orcamentos.html';
+    }
+  };
+}
+
+// ==================== TOAST ====================
 
 function mostrarToastNotificacao(notificacao) {
   const antigo = document.getElementById('toast-notificacao-orcamento');
@@ -423,15 +481,28 @@ function mostrarToastNotificacao(notificacao) {
     antigo.remove();
   }
 
-  const toast = document.createElement('div');
-  toast.id = 'toast-notificacao-orcamento';
+  const tipo = normalizarTipoNotificacao(notificacao.tipo);
 
   const cor =
-    notificacao.tipo === 'aprovado'
+    tipo === 'aprovado'
       ? '#28a745'
-      : notificacao.tipo === 'recusado'
+      : tipo === 'recusado'
         ? '#dc2626'
-        : '#3e2723';
+        : tipo === 'pix'
+          ? '#2563eb'
+          : '#3e2723';
+
+  const icone =
+    tipo === 'aprovado'
+      ? '✓'
+      : tipo === 'recusado'
+        ? '×'
+        : tipo === 'pix'
+          ? 'P'
+          : '!';
+
+  const toast = document.createElement('div');
+  toast.id = 'toast-notificacao-orcamento';
 
   toast.innerHTML = `
     <div style="display:flex; gap:12px; align-items:flex-start;">
@@ -447,30 +518,49 @@ function mostrarToastNotificacao(notificacao) {
         font-weight:900;
         flex-shrink:0;
       ">
-        ${notificacao.tipo === 'aprovado' ? '✓' : notificacao.tipo === 'recusado' ? '×' : '!'}
+        ${icone}
       </div>
 
       <div style="flex:1;">
         <strong style="display:block; margin-bottom:4px; color:#3e2723;">
-          ${escaparHtmlNotificacao(notificacao.titulo)}
+          ${escaparHtmlNotificacao(notificacao.titulo || 'Notificação')}
         </strong>
 
         <span style="display:block; color:#5d4037; font-size:14px; line-height:1.35;">
-          ${escaparHtmlNotificacao(notificacao.mensagem)}
+          ${escaparHtmlNotificacao(notificacao.mensagem || '')}
         </span>
 
-        <button type="button" onclick="abrirOrcamentosDaNotificacao()" style="
-          margin-top:10px;
-          background:#3e2723;
-          color:#ffc400;
-          border:1px solid #ffc400;
-          padding:7px 11px;
-          border-radius:8px;
-          font-weight:800;
-          cursor:pointer;
-        ">
-          Ver orçamentos
-        </button>
+        ${
+          notificacao.orcamento_id
+            ? `
+              <button type="button" onclick="abrirOrcamentoDaNotificacao('${notificacao.orcamento_id}')" style="
+                margin-top:10px;
+                background:#3e2723;
+                color:#ffc400;
+                border:1px solid #ffc400;
+                padding:7px 11px;
+                border-radius:8px;
+                font-weight:800;
+                cursor:pointer;
+              ">
+                Abrir orçamento
+              </button>
+            `
+            : `
+              <button type="button" onclick="abrirOrcamentosDaNotificacao()" style="
+                margin-top:10px;
+                background:#3e2723;
+                color:#ffc400;
+                border:1px solid #ffc400;
+                padding:7px 11px;
+                border-radius:8px;
+                font-weight:800;
+                cursor:pointer;
+              ">
+                Ver orçamentos
+              </button>
+            `
+        }
       </div>
 
       <button type="button" onclick="fecharToastNotificacao()" style="
@@ -518,21 +608,30 @@ function abrirOrcamentosDaNotificacao() {
   window.location.href = '/orcamentos.html';
 }
 
-function mostrarNotificacaoNavegador(notificacao) {
-  if (!('Notification' in window)) return;
+// ==================== HELPERS ====================
 
-  if (Notification.permission !== 'granted') return;
+function normalizarTipoNotificacao(tipo) {
+  return String(tipo || 'info')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
 
-  const n = new Notification(notificacao.titulo || 'FS Orçamentos', {
-    body: notificacao.mensagem || 'Houve uma alteração em um orçamento.',
-    icon: '/favicon.png',
-    badge: '/favicon.png'
-  });
+function obterClasseNotificacao(tipo) {
+  if (tipo === 'aprovado') return 'notificacao-aprovado';
+  if (tipo === 'recusado') return 'notificacao-recusado';
+  if (tipo === 'pix') return 'notificacao-pix';
 
-  n.onclick = () => {
-    window.focus();
-    window.location.href = '/orcamentos.html';
-  };
+  return 'notificacao-info';
+}
+
+function obterIconeNotificacao(tipo) {
+  if (tipo === 'aprovado') return '✅';
+  if (tipo === 'recusado') return '❌';
+  if (tipo === 'pix') return '💠';
+
+  return '🔔';
 }
 
 function formatarDataNotificacao(dataValor) {
@@ -560,11 +659,273 @@ function escaparHtmlNotificacao(valor) {
     .replace(/'/g, '&#039;');
 }
 
+// ==================== CSS DO MODAL ====================
+
+function garantirEstiloNotificacoes() {
+  if (document.getElementById('style-notificacoes-fs')) return;
+
+  const style = document.createElement('style');
+  style.id = 'style-notificacoes-fs';
+
+  style.innerHTML = `
+    .btn-notificacoes-header {
+      position: relative;
+      border: 1px solid rgba(255, 196, 0, 0.55);
+      background: rgba(255, 196, 0, 0.12);
+      color: #ffc400;
+      border-radius: 999px;
+      width: 38px;
+      height: 38px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: .2s ease;
+    }
+
+    .btn-notificacoes-header:hover {
+      background: rgba(255, 196, 0, 0.24);
+      transform: translateY(-1px);
+    }
+
+    .contador-notificacoes {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      min-width: 19px;
+      height: 19px;
+      padding: 0 5px;
+      background: #dc2626;
+      color: #ffffff;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #3e2723;
+      line-height: 1;
+    }
+
+    .modal-notificacoes-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20000;
+      padding: 18px;
+    }
+
+    .modal-notificacoes-card {
+      width: min(100%, 560px);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #f4ece1;
+      color: #3e2723;
+      border-radius: 18px;
+      border-top: 6px solid #ffc400;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+    }
+
+    .modal-notificacoes-topo {
+      background: #3e2723;
+      color: #ffc400;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-notificacoes-topo strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .modal-notificacoes-topo span {
+      display: block;
+      color: #f4ece1;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .modal-notificacoes-topo button {
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .lista-notificacoes {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .notificacao-vazia {
+      background: #fff8e1;
+      color: #5d4037;
+      border-left: 5px solid #ffc400;
+      border-radius: 12px;
+      padding: 14px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .notificacao-item {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 12px;
+      align-items: start;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 13px;
+      border-left: 6px solid #3e2723;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+    }
+
+    .notificacao-item.nao-lida {
+      background: #fffaf0;
+      border-color: #ffc400;
+    }
+
+    .notificacao-item.lida {
+      opacity: .75;
+    }
+
+    .notificacao-aprovado {
+      border-left-color: #28a745;
+    }
+
+    .notificacao-recusado {
+      border-left-color: #dc2626;
+    }
+
+    .notificacao-pix {
+      border-left-color: #2563eb;
+    }
+
+    .notificacao-info {
+      border-left-color: #3e2723;
+    }
+
+    .notificacao-icone {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #f4ece1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .notificacao-conteudo strong {
+      display: block;
+      color: #3e2723;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .notificacao-conteudo p {
+      margin: 0 0 5px;
+      color: #5d4037;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .notificacao-conteudo small {
+      color: #8d6e63;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .notificacao-item button {
+      background: #3e2723;
+      color: #ffc400;
+      border: 1px solid #ffc400;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .notificacoes-acoes {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px;
+      border-top: 1px solid #e0d6c8;
+      background: #fffaf0;
+      flex-wrap: wrap;
+    }
+
+    .notificacoes-acoes button,
+    .notificacoes-acoes a {
+      flex: 1;
+      text-align: center;
+      background: #ffc400;
+      color: #3e2723;
+      border: 2px solid #3e2723;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .notificacoes-acoes a {
+      background: #3e2723;
+      color: #ffc400;
+      border-color: #ffc400;
+    }
+
+    @media (max-width: 560px) {
+      .notificacao-item {
+        grid-template-columns: 36px 1fr;
+      }
+
+      .notificacao-item button {
+        grid-column: 1 / -1;
+        width: 100%;
+      }
+
+      .notificacoes-acoes {
+        flex-direction: column;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+}
+
+// ==================== EVENTOS GLOBAIS ====================
+
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
     fecharModalNotificacoes();
   }
 });
 
+// ==================== EXPORTAÇÕES GLOBAIS ====================
+
 window.abrirModalNotificacoes = abrirModalNotificacoes;
 window.fecharModalNotificacoes = fecharModalNotificacoes;
+window.marcarTodasNotificacoesComoLidas = marcarTodasNotificacoesComoLidas;
+window.abrirOrcamentoDaNotificacao = abrirOrcamentoDaNotificacao;
+window.fecharToastNotificacao = fecharToastNotificacao;
+window.abrirOrcamentosDaNotificacao = abrirOrcamentosDaNotificacao;
+window.solicitarPermissaoNotificacoes = solicitarPermissaoNotificacoes;
