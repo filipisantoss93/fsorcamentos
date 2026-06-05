@@ -3105,3 +3105,103 @@ body.gerando-pdf {
   }
 }
 
+/* BOTÃO GOOGLE - DESTAQUE */
+.btn-google,
+.google-login-btn,
+#btn-google,
+button.google {
+  width: 100%;
+  min-height: 62px;
+  border: 2px solid #1a73e8;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffffff 0%, #f3f8ff 100%);
+  color: #1f2937;
+  font-size: 1.15rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(26, 115, 232, 0.22);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ícone Google */
+.btn-google img,
+.google-login-btn img,
+#btn-google img,
+button.google img {
+  width: 28px;
+  height: 28px;
+  background: #ffffff;
+  padding: 5px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+/* Efeito ao passar/tocar */
+.btn-google:hover,
+.google-login-btn:hover,
+#btn-google:hover,
+button.google:hover {
+  background: linear-gradient(135deg, #eaf3ff 0%, #ffffff 100%);
+  border-color: #0b63d1;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(26, 115, 232, 0.32);
+}
+
+.btn-google:active,
+.google-login-btn:active,
+#btn-google:active,
+button.google:active {
+  transform: scale(0.98);
+}
+
+/* Selo chamando atenção */
+.btn-google::after,
+.google-login-btn::after,
+#btn-google::after,
+button.google::after {
+  content: "Mais rápido";
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #ffc400;
+  color: #2b2b2b;
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 4px 8px;
+  border-radius: 999px;
+  box-shadow: 0 3px 8px rgba(255, 196, 0, 0.35);
+}
+
+.divisor-login {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0 22px;
+  color: #8a6f68;
+  font-weight: 900;
+  font-size: 0.88rem;
+  letter-spacing: 1px;
+}
+
+.divisor-login::before,
+.divisor-login::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ddd5cd;
+}
+
+.divisor-login span {
+  background: #fff8e8;
+  color: #5f4b42;
+  border: 1px solid #ffd45a;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
