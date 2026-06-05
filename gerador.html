@@ -6,8 +6,8 @@
 
   <title>Gerador de Orçamento - FS Orçamentos</title>
 
-  <meta name="description" content="Crie orçamentos profissionais em PDF com o FS Orçamentos. Gere, baixe e envie propostas para clientes.">
-  <meta name="author" content="Filipi Aparecido dos Santos">
+  <meta name="description" content="Gere orçamentos profissionais em PDF com dados da empresa, logo, itens, total, observações e envio por WhatsApp.">
+  <meta name="robots" content="index, follow">
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
@@ -22,128 +22,290 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
-    body {
-      background: #2c2c2c;
-      color: #3e2723;
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #2c1b17;
+      --fs-creme: #f4ece1;
+      --fs-creme-2: #fffaf0;
+      --fs-amarelo: #ffc400;
+      --fs-verde: #25d366;
+      --fs-azul: #2563eb;
+      --fs-vermelho: #dc2626;
+      --fs-texto: #3e2723;
+      --fs-borda: #e0d6c8;
     }
 
-    .gerador-page {
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255,196,0,0.16), transparent 30%),
+        linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+      min-height: 100vh;
+    }
+
+    body.gerando-pdf {
+      background: #ffffff !important;
+    }
+
+    body.gerando-pdf #header-container,
+    body.gerando-pdf .gerador-hero,
+    body.gerando-pdf .gerador-layout,
+    body.gerando-pdf .floating-actions,
+    body.gerando-pdf footer,
+    body.gerando-pdf .fs-adsense-zone,
+    body.gerando-pdf .btn-help-link {
+      display: none !important;
+    }
+
+    body.gerando-pdf #conteudo-pdf,
+    body.gerando-pdf #conteudo-pdf > div {
+      display: block !important;
+      width: 794px !important;
+      max-width: none !important;
+      min-height: 1123px !important;
+      overflow: visible !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+    }
+
+    #btn-flutuante-gerador-global {
+      display: none !important;
+    }
+
+    .pagina-gerador {
       max-width: 1180px;
       margin: 0 auto;
-      padding: 28px 14px 70px;
+      padding: 26px 14px 45px;
+      color: var(--fs-texto);
     }
 
     .gerador-hero {
-      background: linear-gradient(135deg, #fffaf0, #f4ece1);
-      border-radius: 24px;
-      border-top: 6px solid #ffc400;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.22);
-      padding: 28px 22px;
+      background: linear-gradient(135deg, #fff7df, var(--fs-creme));
+      border-radius: 26px;
+      padding: 28px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 18px 46px rgba(0,0,0,0.24);
       margin-bottom: 22px;
-      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    .gerador-hero-marca {
+    .gerador-hero::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,196,0,0.18);
+      top: -90px;
+      right: -80px;
+    }
+
+    .gerador-hero-conteudo {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .gerador-tag {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 32px;
-      line-height: 1;
+      gap: 7px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
       margin-bottom: 12px;
     }
 
-    .gerador-hero-marca strong {
-      background: #ffc400;
-      color: #3e2723;
-      padding: 6px 14px;
-      border-radius: 9px;
-      font-weight: 900;
-    }
-
-    .gerador-hero-marca span {
-      color: #3e2723;
-      font-weight: 300;
-      text-transform: uppercase;
-    }
-
     .gerador-hero h1 {
-      margin: 0 0 8px;
-      color: #3e2723;
-      font-size: 30px;
-      line-height: 1.2;
+      margin: 0 0 10px;
+      color: var(--fs-marrom);
+      font-size: 34px;
+      line-height: 1.15;
     }
 
     .gerador-hero p {
-      margin: 0 auto;
-      max-width: 780px;
-      color: #6d4c41;
+      margin: 0;
+      color: #5d4037;
       font-size: 16px;
-      line-height: 1.5;
+      line-height: 1.55;
+      max-width: 760px;
+    }
+
+    .gerador-hero-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 18px;
+      border-left: 7px solid var(--fs-amarelo);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+    }
+
+    .gerador-hero-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .gerador-hero-card span {
+      display: block;
+      color: #6d4c41;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+
+    .gerador-hero-card a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
     }
 
     .gerador-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) 330px;
       gap: 22px;
+      align-items: start;
     }
 
-    .gerador-box {
-      background: #f4ece1;
-      border-radius: 22px;
-      border-top: 6px solid #ffc400;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.28);
+    .gerador-card-principal {
+      background: var(--fs-creme);
+      border-radius: 24px;
       padding: 22px;
-      color: #3e2723;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      min-width: 0;
     }
 
-    .gerador-box .container {
-      max-width: 880px;
-      box-shadow: none;
-      border-top: none;
-      padding: 0;
-      background: transparent;
+    .gerador-sidebar {
+      position: sticky;
+      top: 92px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
     }
 
-    .gerador-card-info {
-      max-width: 100%;
-      margin: 0 auto 14px;
-      padding: 15px;
-      text-align: center;
-      background: #fff8e1;
-      border: 1px solid #eadfce;
-      border-left: 6px solid #ffc400;
-      border-radius: 14px;
-      color: #5d4037;
-      font-size: 15px;
+    .sidebar-card {
+      background: var(--fs-creme-2);
+      border-radius: 18px;
+      padding: 17px;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+      color: var(--fs-marrom);
+    }
+
+    .sidebar-card h3 {
+      margin: 0 0 9px;
+      color: var(--fs-marrom);
+      font-size: 18px;
+    }
+
+    .sidebar-card p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 13px;
       line-height: 1.45;
+    }
+
+    .sidebar-lista {
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar-lista li {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 9px;
+      color: #5d4037;
+      font-size: 13px;
       font-weight: 700;
+      border-left: 4px solid var(--fs-amarelo);
+    }
+
+    .auth-card-gerador {
+      display: none;
+      max-width: 430px;
+      margin: 34px auto;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.28);
+      border-top: 5px solid var(--fs-amarelo);
+    }
+
+    .auth-aviso-gerador {
+      text-align: center;
+      margin-bottom: 16px;
+      color: var(--fs-marrom);
+    }
+
+    .auth-aviso-gerador h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .auth-aviso-gerador p {
+      margin: 0;
+      color: #6d4c41;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .status-sessao-card {
+      display: none;
+      background: #fff8e1;
+      border-left: 6px solid var(--fs-amarelo);
+      color: #5d4037;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+      font-weight: 800;
+      line-height: 1.4;
     }
 
     .emissor-readonly-card {
       background: #ffffff;
-      border-radius: 14px;
-      border: 1px solid #e0d6c8;
-      border-left: 7px solid #ffc400;
-      padding: 14px;
-      margin: 0 0 12px 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      color: #3e2723;
+      border-radius: 18px;
+      border: 1px solid var(--fs-borda);
+      border-left: 7px solid var(--fs-amarelo);
+      padding: 16px;
+      margin: 0 0 14px 0;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      color: var(--fs-marrom);
     }
 
     .emissor-readonly-topo {
       display: grid;
-      grid-template-columns: 90px 1fr;
-      gap: 14px;
+      grid-template-columns: 110px 1fr;
+      gap: 16px;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .emissor-logo-mini {
-      width: 90px;
-      height: 72px;
+      width: 110px;
+      height: 88px;
       border: 1px dashed #d7ccc8;
-      border-radius: 10px;
+      border-radius: 14px;
       background: #fafafa;
       display: flex;
       align-items: center;
@@ -165,18 +327,27 @@
     .emissor-readonly-grid span {
       display: block;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 900;
       color: #6d4c41;
       text-transform: uppercase;
-      letter-spacing: .3px;
+      letter-spacing: .4px;
       margin-bottom: 4px;
     }
 
     .emissor-info-principal strong {
       display: block;
-      font-size: 18px;
-      color: #3e2723;
+      font-size: 22px;
+      color: var(--fs-marrom);
       word-break: break-word;
+      line-height: 1.15;
+    }
+
+    .emissor-info-principal small {
+      display: block;
+      margin-top: 6px;
+      color: #8d6e63;
+      font-weight: 700;
+      font-size: 12px;
     }
 
     .emissor-readonly-grid {
@@ -187,32 +358,322 @@
 
     .emissor-readonly-grid div {
       background: #f7f2ea;
-      border-radius: 10px;
-      padding: 10px;
-      border-left: 4px solid #ffc400;
+      border-radius: 12px;
+      padding: 11px;
+      border-left: 4px solid var(--fs-amarelo);
+      min-width: 0;
     }
 
     .emissor-readonly-grid strong {
       display: block;
       font-size: 14px;
-      color: #3e2723;
+      color: var(--fs-marrom);
       word-break: break-word;
     }
 
-    .acoes-gerador-principal {
-      margin: 30px auto 18px;
-      max-width: 820px;
+    .aviso-perfil-incompleto {
+      display: none;
+      background: #fff3cd;
+      color: #5d4037;
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 0 0 16px 0;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .aviso-perfil-incompleto a {
+      color: var(--fs-marrom);
+      font-weight: 900;
+    }
+
+    .dadositens {
+      background: linear-gradient(135deg, #fff8e1, #f3eeee);
+      color: #5d4037;
+      font-weight: 900;
+      font-size: 18px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 15px 14px;
+      margin: 22px 0 14px;
+      border-radius: 16px;
+      border-left: 8px solid var(--fs-amarelo);
+      border-bottom: 2px solid #e0d6d6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .intro-form-gerador {
+      max-width: 100%;
+      margin: 0 auto 12px;
+      padding: 16px;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid var(--fs-borda);
+    }
+
+    .intro-form-gerador p {
+      color: #3f4957;
+      line-height: 1.35;
+      font-size: 17px;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .grid-duplo-gerador {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+
+    .campo-form label {
+      display: block;
+      font-size: 13px;
+      color: #5d4037;
+      font-weight: 900;
+      margin-bottom: 5px;
+    }
+
+    .campo-form input,
+    .campo-form textarea,
+    .campo-form select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d7ccc8;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--fs-marrom);
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+
+    .campo-form textarea {
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    #itens-lista {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid var(--fs-borda);
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 2.2fr 0.65fr 1fr 1fr auto;
+      gap: 8px;
+      margin-bottom: 10px;
+      align-items: end;
+    }
+
+    .header-labels {
+      color: #6d4c41;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .item-row input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d7ccc8;
+      border-radius: 9px;
+      background: #ffffff;
+      box-sizing: border-box;
+      color: var(--fs-marrom);
+    }
+
+    .btn-add,
+    .btn-extra {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: #4e342e;
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: .2s ease;
+    }
+
+    .btn-add:hover,
+    .btn-extra:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      transform: translateY(-1px);
+    }
+
+    .btn-remove {
+      background: #fff1f1;
+      color: var(--fs-vermelho);
+      border: 1px solid #fecaca;
+      padding: 10px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 900;
+      transition: .2s;
+    }
+
+    .btn-remove:hover {
+      background: var(--fs-vermelho);
+      color: #ffffff;
+    }
+
+    .extra-field {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .extra-field input:first-child {
+      width: 34%;
+    }
+
+    .extra-field input:nth-child(2) {
+      width: 56%;
+    }
+
+    .extra-field button {
+      width: 10%;
+      min-width: 44px;
+    }
+
+    .total-container {
+      text-align: right;
+      font-size: 24px;
+      font-weight: 900;
+      margin-top: 16px;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--fs-marrom), var(--fs-marrom-2));
+      border-radius: 14px;
+      color: var(--fs-amarelo);
+      border: 1px solid rgba(255,196,0,0.45);
+    }
+
+    .calc-expansivel {
+      margin: 16px 0 0;
+      border: 1px solid var(--fs-borda);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .calc-header {
+      background: #fff8e1;
+      padding: 13px 15px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 900;
+      color: #5d4037;
+      border-bottom: 1px solid var(--fs-borda);
+    }
+
+    .calc-content {
+      display: none;
+      padding: 15px;
+    }
+
+    .calc-secao-titulo {
+      margin: 15px 0 10px;
+      font-size: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+      color: #475569;
+      font-weight: 900;
+    }
+
+    .checklist-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-frase {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #475569;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .btn-frase:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .color-selector {
+      margin: 20px 0;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--fs-borda);
+    }
+
+    .color-selector label {
+      display: block;
+      font-size: 13px;
+      color: #5d4037;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .theme-options {
+      display: flex;
+      gap: 13px;
+      flex-wrap: wrap;
+    }
+
+    .theme-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid #ffffff;
+      transition: .2s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    }
+
+    .theme-dot:hover {
+      transform: scale(1.12);
+    }
+
+    .original { background: #3e2723; }
+    .bw { background: #000000; }
+    .blue { background: #0056b3; }
+    .green { background: #2e7d32; }
+    .yellow { background: #f9a825; }
+    .red { background: #ff0000; }
+
+    .acoes-gerador-principal {
+      margin: 28px auto 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
     }
 
     .btn-previa-profissional,
     .btn-novo-profissional {
       width: 100%;
       border-radius: 18px;
-      padding: 22px 18px;
-      font-size: 24px;
+      padding: 18px;
+      font-size: 19px;
       font-weight: 900;
       cursor: pointer;
       text-transform: uppercase;
@@ -220,98 +681,80 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       transition: .2s ease;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+      box-shadow: 0 9px 22px rgba(0,0,0,0.18);
     }
 
     .btn-previa-profissional {
-      background: #ffc400;
-      color: #3e2723;
-      border: 3px solid #ffc400;
-    }
-
-    .btn-previa-profissional:hover {
-      background: #ffd633;
-      transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(0,0,0,0.24);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 3px solid var(--fs-amarelo);
     }
 
     .btn-novo-profissional {
       background: #ffffff;
-      color: #3e2723;
+      color: var(--fs-marrom);
       border: 3px solid #d7ccc8;
     }
 
+    .btn-previa-profissional:hover,
     .btn-novo-profissional:hover {
-      border-color: #ffc400;
-      background: #fff8d6;
       transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.24);
+    }
+
+    .btn-novo-profissional:hover {
+      border-color: var(--fs-amarelo);
+      background: #fff8d6;
     }
 
     #area-previa {
       display: none;
-      margin-top: 30px;
-      border: 2px dashed #ffc400;
-      background: #fffaf0;
-      width: 100%;
-      border-radius: 18px;
+      margin-top: 28px;
       padding: 16px;
+      background: #f1f5f9;
+      border: 2px dashed var(--fs-azul);
+      border-radius: 18px;
+      width: 100%;
       box-sizing: border-box;
-      overflow: hidden;
+      overflow-x: auto;
     }
 
-    .previa-titulo {
+    .previa-label {
       text-align: center;
-      font-size: 13px;
-      color: #6d4c41;
+      font-size: 12px;
+      color: #64748b;
       font-weight: 900;
+      margin: 0 0 12px;
       text-transform: uppercase;
       letter-spacing: .4px;
-      margin: 0 0 14px;
-    }
-
-    .pdf-preview-wrapper {
-      width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      background: #e7e1d6;
-      border-radius: 14px;
-      padding: 14px;
-      box-sizing: border-box;
     }
 
     #conteudo-pdf {
       width: 794px;
-      min-width: 794px;
+      max-width: 100%;
       margin: 0 auto;
       background: #ffffff;
       color: #000000;
-      box-shadow: 0 0 16px rgba(0,0,0,0.24);
-      transform-origin: top center;
+      box-shadow: 0 0 18px rgba(0,0,0,0.18);
+      overflow: visible;
     }
 
-    #pdf-render-source {
-      position: fixed;
-      left: -99999px;
-      top: 0;
-      width: 794px;
-      min-height: 1123px;
-      background: #ffffff;
-      z-index: -1;
-      opacity: 1;
-      pointer-events: none;
+    #conteudo-pdf > div {
+      max-width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
     }
 
     .acoes-profissionais-orcamento {
-      margin: 22px auto 12px;
-      background: linear-gradient(135deg, #3e2723, #251714);
-      border: 2px solid #ffc400;
+      margin: 22px auto 0;
+      background: linear-gradient(135deg, var(--fs-marrom), #251714);
+      border: 2px solid var(--fs-amarelo);
       border-radius: 18px;
       padding: 18px;
       box-shadow: 0 10px 28px rgba(0,0,0,0.22);
-      color: #fff;
+      color: #ffffff;
       display: none;
     }
 
@@ -325,14 +768,14 @@
     }
 
     .acoes-profissionais-orcamento-topo strong {
-      color: #ffc400;
+      color: var(--fs-amarelo);
       display: block;
       font-size: 18px;
       margin-bottom: 3px;
     }
 
     .acoes-profissionais-orcamento-topo span {
-      color: #f4ece1;
+      color: var(--fs-creme);
       font-size: 13px;
       line-height: 1.35;
     }
@@ -367,13 +810,13 @@
     }
 
     .btn-acao-pdf {
-      background: #ffc400;
-      color: #3e2723;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
       border: 2px solid #f5b800;
     }
 
     .btn-acao-whatsapp {
-      background: #25d366;
+      background: var(--fs-verde);
       color: #073b1d;
       border: 2px solid #1fb957;
     }
@@ -386,13 +829,6 @@
       display: none;
       flex-direction: column;
       gap: 10px;
-      background: rgba(62, 39, 35, 0.72);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 196, 0, 0.35);
-      border-radius: 999px;
-      padding: 9px;
-      box-shadow: 0 14px 32px rgba(0,0,0,0.35);
     }
 
     .floating-actions.show {
@@ -403,9 +839,9 @@
       width: 58px;
       height: 58px;
       border-radius: 50%;
-      border: 2px solid #3e2723;
-      background: #ffc400;
-      color: #3e2723;
+      border: 2px solid var(--fs-marrom);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
       font-size: 22px;
       font-weight: 900;
       cursor: pointer;
@@ -413,232 +849,260 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: .2s ease;
+    }
+
+    .btn-float:hover {
+      transform: translateY(-2px) scale(1.04);
     }
 
     .btn-float-download {
-      background: #3e2723;
-      color: #ffc400;
-      border-color: #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border-color: var(--fs-amarelo);
     }
 
     .btn-float-whatsapp {
-      background: #25d366;
+      background: var(--fs-verde);
       color: #073b1d;
       border-color: #0b6b31;
     }
 
     .btn-float-novo {
       background: #ffffff;
-      color: #3e2723;
-      border-color: #ffc400;
+      color: var(--fs-marrom);
+      border-color: var(--fs-amarelo);
     }
 
-    .ads-gerador-gratis {
+    .btn-help-link {
+      text-decoration: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 9998;
+    }
+
+    .btn-help-trigger {
+      background-color: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-help-trigger:hover {
+      background-color: #ffffff;
+      transform: scale(1.08);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(5px);
       display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 17000;
+      padding: 16px;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      width: min(100%, 430px);
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-top: 5px solid var(--fs-amarelo);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--fs-amarelo);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+    }
+
+    .close-modal {
+      background: var(--fs-vermelho);
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .help-item {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      border-left: 4px solid var(--fs-amarelo);
+      line-height: 1.4;
+    }
+
+    .btn-entendi {
       width: 100%;
-      max-width: 970px;
-      margin: 22px auto;
-      padding: 14px;
-      background: linear-gradient(135deg, #fffaf0, #f4ece1);
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .fs-adsense-zone {
+      display: none;
+      max-width: 100%;
+      min-height: 100px;
+      margin: 18px auto;
+      padding: 13px;
+      background: #fffaf0;
       border: 1px dashed rgba(62, 39, 35, 0.28);
-      border-radius: 16px;
+      border-radius: 14px;
       text-align: center;
       box-sizing: border-box;
       overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.10);
     }
 
-    .ads-gerador-gratis .ads-label {
+    .fs-adsense-zone .adsense-label {
       display: block;
       margin-bottom: 8px;
       color: #8d6e63;
       font-size: 11px;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: .5px;
+      letter-spacing: .4px;
     }
 
-    .ads-gerador-gratis ins.adsbygoogle {
+    .fs-adsense-zone .adsbygoogle {
       min-height: 90px;
     }
 
-    .ads-gerador-card {
-      display: none;
-      margin: 22px auto;
-      background: linear-gradient(135deg, #3e2723, #251714);
-      color: #ffffff;
-      border: 2px solid #ffc400;
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.22);
-    }
-
-    .ads-gerador-card strong {
-      display: block;
-      color: #ffc400;
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
-
-    .ads-gerador-card p {
-      margin: 0;
-      color: #f4ece1;
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .ads-gerador-card a {
-      display: inline-flex;
-      margin-top: 12px;
-      background: #ffc400;
-      color: #3e2723;
-      text-decoration: none;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-weight: 900;
+    footer {
+      text-align: center;
+      color: #bdbdbd;
+      padding: 25px 10px;
       font-size: 13px;
     }
 
-    .ads-gerador-card a:hover {
-      background: #ffffff;
+    footer a {
+      color: #ffc400;
+      text-decoration: none;
     }
 
-    .bloqueio-login-gerador {
-      display: none;
-      max-width: 520px;
-      margin: 42px auto;
-      background: #f4ece1;
-      color: #3e2723;
-      border-radius: 22px;
-      padding: 24px;
-      border-top: 6px solid #ffc400;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.28);
-      text-align: center;
-    }
-
-    .bloqueio-login-gerador h1 {
-      margin: 0 0 10px;
-      font-size: 26px;
-      color: #3e2723;
-    }
-
-    .bloqueio-login-gerador p {
-      margin: 0 0 18px;
-      color: #6d4c41;
-      line-height: 1.5;
-    }
-
-    .btn-login-gerador {
-      background: #ffc400;
-      color: #3e2723;
-      border: 2px solid #3e2723;
-      border-radius: 14px;
-      padding: 14px 20px;
-      font-weight: 900;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 900px) {
-      .gerador-hero h1 {
-        font-size: 25px;
+    @media (max-width: 1020px) {
+      .gerador-hero-conteudo,
+      .gerador-layout {
+        grid-template-columns: 1fr;
       }
 
-      .gerador-box {
-        padding: 16px;
-      }
-
-      #area-previa {
-        padding: 10px;
-      }
-
-      .pdf-preview-wrapper {
-        padding: 10px;
-      }
-
-      #conteudo-pdf {
-        transform: scale(0.72);
-        margin-bottom: -315px;
+      .gerador-sidebar {
+        position: static;
       }
     }
 
-    @media (max-width: 650px) {
-      .gerador-page {
-        padding: 18px 8px 70px;
+    @media (max-width: 760px) {
+      .pagina-gerador {
+        padding: 18px 10px 35px;
       }
 
       .gerador-hero {
-        padding: 24px 16px;
-        border-radius: 18px;
-      }
-
-      .gerador-hero-marca {
-        font-size: 25px;
+        padding: 22px 16px;
+        border-radius: 20px;
       }
 
       .gerador-hero h1 {
-        font-size: 22px;
+        font-size: 26px;
+      }
+
+      .gerador-card-principal {
+        padding: 14px;
+        border-radius: 18px;
       }
 
       .emissor-readonly-topo,
-      .emissor-readonly-grid {
+      .emissor-readonly-grid,
+      .grid-duplo-gerador,
+      .acoes-gerador-principal,
+      .acoes-profissionais-botoes {
         grid-template-columns: 1fr;
       }
 
       .emissor-logo-mini {
         width: 100%;
-        height: 90px;
+        height: 95px;
       }
 
-      .acoes-profissionais-botoes {
-        grid-template-columns: 1fr;
+      .item-row {
+        grid-template-columns: 1fr 1fr;
+        background: #fafafa;
+        border: 1px solid #eee;
+        padding: 10px;
+        border-radius: 12px;
+      }
+
+      .item-row .desc-cell,
+      .item-row .desc {
+        grid-column: span 2;
+      }
+
+      .header-labels {
+        display: none;
+      }
+
+      .extra-field {
+        flex-direction: column;
+      }
+
+      .extra-field input:first-child,
+      .extra-field input:nth-child(2),
+      .extra-field button {
+        width: 100%;
       }
 
       .btn-previa-profissional,
       .btn-novo-profissional {
-        font-size: 18px;
-        padding: 18px 14px;
+        font-size: 17px;
+        padding: 16px 12px;
         border-radius: 14px;
       }
 
-      #conteudo-pdf {
-        transform: scale(0.43);
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: -640px;
-      }
-
-      .pdf-preview-wrapper {
-        overflow-x: hidden;
-      }
-
       .floating-actions {
-        right: 10px;
-        bottom: 10px;
+        right: 12px;
+        bottom: 12px;
       }
 
       .btn-float {
-        width: 52px;
-        height: 52px;
+        width: 54px;
+        height: 54px;
         font-size: 20px;
       }
 
-      .ads-gerador-gratis {
-        margin: 18px auto;
+      #area-previa {
         padding: 10px;
-        min-height: 100px;
-      }
-
-      .ads-gerador-card {
-        padding: 16px;
-        border-radius: 15px;
-      }
-    }
-
-    @media (max-width: 420px) {
-      #conteudo-pdf {
-        transform: scale(0.38);
-        margin-bottom: -700px;
       }
     }
   </style>
@@ -648,54 +1112,95 @@
 
 <div id="header-container"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script src="auth.js"></script>
-<script src="ui.js"></script>
-<script src="carregar-menu.js"></script>
-<script src="notificacoes.js"></script>
+<div id="auth-area" class="auth-card-gerador">
+  <div class="auth-aviso-gerador">
+    <h2>Entre para gerar seu orçamento</h2>
+    <p>
+      O gerador usa os dados cadastrados no seu Painel de Controle para montar o PDF com sua empresa e logo.
+    </p>
+  </div>
 
-<div id="splash-screen">
-  <div class="splash-content">
-    <div class="splash-logo">
-      <span class="fs-box">FS</span>
-      <span class="fs-text">Orçamentos</span>
+  <div class="auth-logo-box">
+    <div class="auth-logo-text">
+      <strong>FS</strong><span>Orçamentos</span>
     </div>
-    <div class="loader-bar"></div>
-    <p>Iniciando ferramenta...</p>
+    <p>Acesse sua conta para continuar</p>
+  </div>
+
+  <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
+    <form id="form-autenticacao" onsubmit="return false;">
+      <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
+        Acesse sua Conta
+      </h3>
+
+      <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome</label>
+        <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">E-mail</label>
+        <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome da Empresa</label>
+        <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">WhatsApp da Empresa</label>
+        <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Senha</label>
+        <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
+        <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Confirmar Senha</label>
+        <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+
+      <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">
+        Entrar
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 15px;">
+      <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #007bff; text-decoration: none;">
+        Não tem cadastro? Clique aqui.
+      </a>
+    </div>
   </div>
 </div>
 
-<section id="login-necessario-gerador" class="bloqueio-login-gerador">
-  <h1>Entre para gerar seu orçamento</h1>
-  <p>
-    Para usar o gerador profissional, acesse sua conta.
-    Assim seus dados de emissor, logo e informações da empresa serão carregados corretamente.
-  </p>
-
-  <button type="button" class="btn-login-gerador" onclick="irParaLoginGerador()">
-    Entrar ou criar conta
-  </button>
-</section>
-
-<main id="gerador-conteudo" class="gerador-page" style="display:none;">
+<main id="conteudo-gerador" class="pagina-gerador" style="display:none;">
 
   <section class="gerador-hero">
-    <div class="gerador-hero-marca">
-      <strong>FS</strong><span>Orçamentos</span>
+    <div class="gerador-hero-conteudo">
+      <div>
+        <span class="gerador-tag">🧾 Gerador profissional</span>
+        <h1>Crie um orçamento bonito, organizado e pronto para enviar.</h1>
+        <p>
+          Preencha os dados do cliente, adicione serviços ou produtos, escolha a cor do PDF
+          e gere uma proposta com a identidade da sua empresa.
+        </p>
+      </div>
+
+      <div class="gerador-hero-card">
+        <strong>Dados da empresa no topo</strong>
+        <span>
+          Sua logo, empresa, responsável, WhatsApp, CNPJ/CPF e endereço aparecem no gerador e no PDF.
+        </span>
+        <a href="/painel.html">Editar dados no painel</a>
+      </div>
     </div>
-
-    <h1>Gerador profissional de orçamento em PDF</h1>
-
-    <p>
-      Preencha os dados do cliente, adicione serviços ou produtos, escolha a cor do PDF
-      e gere uma proposta pronta para baixar ou enviar pelo WhatsApp.
-    </p>
   </section>
 
-  <div id="ads-gerador-topo" class="ads-gerador-gratis fs-anuncio-gerador-gratis">
-    <span class="ads-label">Publicidade</span>
-
+  <div id="adsense-gerador-topo" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+    <span class="adsense-label">Publicidade</span>
     <ins class="adsbygoogle"
       style="display:block"
       data-ad-client="ca-pub-5628949951885077"
@@ -704,36 +1209,20 @@
       data-full-width-responsive="true"></ins>
   </div>
 
-  <div id="upgrade-card-gerador" class="ads-gerador-card fs-anuncio-gerador-gratis">
-    <strong>Plano Básico remove anúncios e libera recursos profissionais</strong>
-    <p>
-      No Plano Básico você salva orçamentos na nuvem, envia pelo WhatsApp com link,
-      acompanha status e usa a plataforma sem anúncios.
-    </p>
-
-    <a href="/index.html#painel-plano-basico-home">
-      Conhecer Plano Básico
-    </a>
-  </div>
-
   <section class="gerador-layout">
-    <div class="gerador-box">
-      <div class="container">
+    <div class="gerador-card-principal">
+      <div id="status-sessao-card" class="status-sessao-card">
+        Carregando seus dados...
+      </div>
 
-        <div class="gerador-card-info">
-          📝 Preencha os dados abaixo para gerar seu orçamento profissional em PDF.
+      <div id="formulario-orcamento">
+        <div class="intro-form-gerador">
+          <p>
+            📝 Preencha os campos abaixo para gerar seu orçamento em PDF.
+          </p>
         </div>
 
-        <div class="dadositens">🧾 ORÇAMENTO</div>
-
-        <div style="display:grid; grid-template-columns:1fr; gap:8px;">
-          <div>
-            <label>Título do Orçamento</label>
-            <input type="text" id="titulo" maxlength="50" placeholder="Ex: Manutenção de Suspensão / Pintura Residencial" oninput="salvarEstadoCompleto()">
-          </div>
-        </div>
-
-        <div class="dadositens">🏢 EMISSOR</div>
+        <div class="dadositens">🏢 Dados da empresa</div>
 
         <div class="emissor-readonly-card">
           <div class="emissor-readonly-topo">
@@ -743,17 +1232,13 @@
             </div>
 
             <div class="emissor-info-principal">
-              <span>Consultor</span>
-              <strong id="emissor-consultor-visual">-</strong>
+              <span>Empresa emissora</span>
+              <strong id="emissor-empresa-visual">-</strong>
+              <small>Responsável: <b id="emissor-consultor-visual">-</b></small>
             </div>
           </div>
 
           <div class="emissor-readonly-grid">
-            <div>
-              <span>Empresa</span>
-              <strong id="emissor-empresa-visual">-</strong>
-            </div>
-
             <div>
               <span>WhatsApp / Telefone</span>
               <strong id="emissor-whatsapp-visual">-</strong>
@@ -768,39 +1253,111 @@
               <span>Endereço</span>
               <strong id="emissor-endereco-visual">-</strong>
             </div>
+
+            <div>
+              <span>Plano atual</span>
+              <strong id="emissor-plano-visual">-</strong>
+            </div>
           </div>
         </div>
 
-        <div style="max-width:100%; margin:0 auto 15px auto; padding:12px 15px; text-align:center; background:#fff3cd; border-radius:10px; color:#5d4037; font-size:14px;">
-          Edite os dados do Emissor no
-          <a href="/painel.html" style="font-weight:bold; color:#3e2723;">Painel de Controle</a>.
+        <div id="aviso-perfil-incompleto" class="aviso-perfil-incompleto">
+          ⚠️ Para gerar um orçamento profissional, complete pelo menos o <b>nome da empresa</b> e o <b>WhatsApp da empresa</b> no
+          <a href="/painel.html">Painel de Controle</a>.
         </div>
 
-        <div class="dadositens">👤 CLIENTE</div>
+        <div class="dadositens">🧾 Orçamento</div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:0;">
-          <div>
-            <label>Nome</label>
+        <div class="campo-form">
+          <label for="titulo">Título do Orçamento</label>
+          <input type="text" id="titulo" maxlength="50" placeholder="Ex: Manutenção de Suspensão / Pintura Residencial" oninput="salvarEstadoCompleto()">
+        </div>
+
+        <div class="dadositens">👤 Cliente</div>
+
+        <div class="grid-duplo-gerador">
+          <div class="campo-form">
+            <label for="cliente">Nome do cliente</label>
             <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
           </div>
 
-          <div>
-            <label>Telefone (WhatsApp)</label>
+          <div class="campo-form">
+            <label for="tel-cliente">Telefone / WhatsApp do cliente</label>
             <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
           </div>
 
-          <div id="extra-cliente-container" style="grid-column:span 2;"></div>
-        </div>
+          <div id="extra-cliente-container" style="grid-column: 1 / -1;"></div>
 
-        <div style="text-align:right; margin-top:8px;">
-          <button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-cliente-container')">
-            + Informações
+          <button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-cliente-container')" style="justify-self:end; grid-column: 1 / -1;">
+            + Informações do cliente
           </button>
         </div>
 
-        <div id="ads-gerador-meio" class="ads-gerador-gratis fs-anuncio-gerador-gratis">
-          <span class="ads-label">Publicidade</span>
+        <div class="dadositens">🛠️ Itens / Serviços</div>
 
+        <div id="itens-lista">
+          <div class="item-row header-labels">
+            <span>Descrição</span>
+            <span>Qtd</span>
+            <span>V. Unit</span>
+            <span>Subtotal</span>
+            <span></span>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+          <button type="button" class="btn-add" onclick="adicionarLinha()">
+            + Item
+          </button>
+        </div>
+
+        <div class="total-container">
+          TOTAL: R$ <span id="total-geral">0,00</span>
+        </div>
+
+        <div class="dadositens">📝 Observações</div>
+
+        <div class="campo-form">
+          <label for="observacoes">Observações, prazos e condições</label>
+          <textarea id="observacoes" rows="4" placeholder="Ex: Prazo de entrega, condições de pagamento, validade da proposta..." oninput="salvarEstadoCompleto(); autoUpdatePreview()"></textarea>
+        </div>
+
+        <div class="calc-expansivel">
+          <div class="calc-header" onclick="toggleFrases()">
+            <span>📝 Termos e Condições Rápidas</span>
+            <span id="seta-frases">▼</span>
+          </div>
+
+          <div id="frases-corpo" class="calc-content">
+            <div style="font-size: 12px; color: #64748b; margin-bottom: 15px;">
+              Clique nas frases para adicioná-las automaticamente às observações.
+            </div>
+
+            <div class="calc-secao-titulo">Validade e Prazos</div>
+            <div class="checklist-container">
+              <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 7 dias.')">Validade 7 dias</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 15 dias.')">Validade 15 dias</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Prazo de entrega: ___ dias úteis após aprovação.')">Prazo de entrega</button>
+            </div>
+
+            <div class="calc-secao-titulo">Pagamento</div>
+            <div class="checklist-container">
+              <button type="button" class="btn-frase" onclick="addFrase('• Forma de pagamento: 50% de entrada e 50% na entrega.')">50% entrada / 50% entrega</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Pagamento à vista com 5% de desconto.')">Desconto à vista</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Parcelamos em até 3x sem juros no cartão.')">3x sem juros</button>
+            </div>
+
+            <div class="calc-secao-titulo">Materiais e Serviços</div>
+            <div class="checklist-container">
+              <button type="button" class="btn-frase" onclick="addFrase('• Não incluso material de acabamento.')">Sem acabamento</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Frete incluso para a região.')">Frete incluso</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Responsabilidade por entulhos e limpeza por conta do contratante.')">Limpeza/entulho</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="adsense-gerador-meio" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+          <span class="adsense-label">Publicidade</span>
           <ins class="adsbygoogle"
             style="display:block"
             data-ad-client="ca-pub-5628949951885077"
@@ -809,64 +1366,7 @@
             data-full-width-responsive="true"></ins>
         </div>
 
-        <div class="dadositens">🛠️ ITENS/SERVIÇOS</div>
-
-        <div id="itens-lista">
-          <div class="item-row header-labels">
-            <span>Descrição</span><span>Qtd</span><span>V. Unit</span><span>Subtotal</span><span></span>
-          </div>
-        </div>
-
-        <div style="display:flex; gap:10px; margin-bottom:15px;">
-          <button type="button" class="btn-add" onclick="adicionarLinha()">
-            + Item
-          </button>
-        </div>
-
-        <div class="total-container" style="margin-bottom:20px;">
-          TOTAL: R$ <span id="total-geral">0,00</span>
-        </div>
-
-        <div style="margin-bottom:20px;">
-          <label>Observações:</label>
-          <textarea id="observacoes" rows="4" placeholder="Ex: prazo de entrega, condições de pagamento, validade da proposta..." oninput="salvarEstadoCompleto(); autoUpdatePreview()"></textarea>
-
-          <div class="calc-expansivel">
-            <div class="calc-header" onclick="toggleFrases()">
-              <span>📝 Termos e Condições Rápidas</span>
-              <span id="seta-frases">▼</span>
-            </div>
-
-            <div id="frases-corpo" class="calc-content">
-              <div style="font-size:12px; color:#64748b; margin-bottom:15px;">
-                Clique nas frases para adicioná-las automaticamente às observações.
-              </div>
-
-              <div class="calc-secao-titulo">Validade e Prazos</div>
-              <div class="checklist-container">
-                <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 7 dias.')">Validade 7 dias</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 15 dias.')">Validade 15 dias</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Prazo de entrega: ___ dias úteis após aprovação.')">Prazo de Entrega</button>
-              </div>
-
-              <div class="calc-secao-titulo">Pagamento</div>
-              <div class="checklist-container">
-                <button type="button" class="btn-frase" onclick="addFrase('• Forma de pagamento: 50% de entrada e 50% na entrega.')">50% Entrada / 50% Entrega</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Pagamento à vista com 5% de desconto.')">Desconto à Vista</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Parcelamos em até 3x sem juros no cartão.')">3x sem Juros</button>
-              </div>
-
-              <div class="calc-secao-titulo">Materiais e Serviços</div>
-              <div class="checklist-container">
-                <button type="button" class="btn-frase" onclick="addFrase('• Não incluso material de acabamento.')">Sem Acabamento</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Frete incluso para a região.')">Frete Incluso</button>
-                <button type="button" class="btn-frase" onclick="addFrase('• Responsabilidade por entulhos e limpeza por conta do contratante.')">Limpeza/Entulho</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr color="#c3c3c3" size="1px">
+        <div class="dadositens">🎨 Visual do PDF</div>
 
         <div class="color-selector">
           <label>Escolha a cor do PDF:</label>
@@ -884,7 +1384,7 @@
         </div>
 
         <div class="acoes-gerador-principal">
-          <button type="button" class="btn-previa-profissional" id="btn-previa" onclick="gerarPreviaGeradorPage()">
+          <button type="button" class="btn-previa-profissional" id="btn-previa" onclick="gerarPrevia()">
             👁️ Pré-visualização
           </button>
 
@@ -894,11 +1394,9 @@
         </div>
 
         <div id="area-previa">
-          <p class="previa-titulo">Prévia do documento</p>
+          <p class="previa-label">Prévia do documento</p>
 
-          <div class="pdf-preview-wrapper">
-            <div id="conteudo-pdf" class="pdf-folha"></div>
-          </div>
+          <div id="conteudo-pdf" class="pdf-folha"></div>
 
           <div id="botoes-acao" class="acoes-profissionais-orcamento">
             <div class="acoes-profissionais-orcamento-topo">
@@ -909,7 +1407,7 @@
             </div>
 
             <div class="acoes-profissionais-botoes">
-              <button type="button" class="btn-acao-orcamento btn-acao-pdf" id="btn-baixar" onclick="baixarPDFGeradorPage()">
+              <button type="button" class="btn-acao-orcamento btn-acao-pdf" id="btn-baixar" onclick="baixarPDF()">
                 💾 Baixar PDF
               </button>
 
@@ -918,61 +1416,160 @@
               </button>
             </div>
           </div>
+
+          <div id="msg-aviso" style="display:none; color:#d32f2f; font-size:0.9em; margin-top:10px; text-align:center;">
+            * Preencha os dados da empresa no <a href="/painel.html">Painel</a> para liberar o envio.
+          </div>
         </div>
 
-        <div id="ads-gerador-rodape" class="ads-gerador-gratis fs-anuncio-gerador-gratis">
-          <span class="ads-label">Publicidade</span>
+        <a href="manual.html" class="btn-help-link" title="Manual de Instruções">
+          <button type="button" class="btn-help-trigger">?</button>
+        </a>
 
-          <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-5628949951885077"
-            data-ad-slot="1739813454"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
+        <div id="modal-ajuda" class="modal-overlay">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Dicas rápidas 💡</h3>
+              <button type="button" onclick="toggleAjuda()" class="close-modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+              <div class="help-item">
+                <strong>📸 Sua marca:</strong> cadastre sua logo e dados da empresa no Painel de Controle.
+              </div>
+
+              <div class="help-item">
+                <strong>➕ Campos extras:</strong> use o botão "+ Informações" para adicionar CPF, CNPJ, placa ou endereço.
+              </div>
+
+              <div class="help-item">
+                <strong>📝 Termos rápidos:</strong> clique nas frases prontas para adicionar prazos e condições.
+              </div>
+
+              <div class="help-item">
+                <strong>📥 Baixar:</strong> clique em "Pré-visualização" e depois em "Baixar PDF".
+              </div>
+            </div>
+
+            <button type="button" class="btn-entendi" onclick="toggleAjuda()">Entendi!</button>
+          </div>
         </div>
 
+        <div class="floating-actions">
+          <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Gerar prévia">
+            👁️
+          </button>
+
+          <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display:none;" title="Baixar PDF">
+            💾
+          </button>
+
+          <button type="button" class="btn-float btn-float-whatsapp" id="btn-float-whatsapp" onclick="enviarPorWhatsApp()" style="display:none;" title="Enviar por WhatsApp">
+            🟢
+          </button>
+
+          <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo orçamento">
+            ➕
+          </button>
+        </div>
       </div>
     </div>
+
+    <aside class="gerador-sidebar">
+      <div class="sidebar-card">
+        <h3>Antes de gerar</h3>
+        <p>
+          Confira se os dados da empresa estão completos. Eles aparecem no topo do PDF e dão mais confiança ao cliente.
+        </p>
+
+        <ul class="sidebar-lista">
+          <li>Logo cadastrada no painel</li>
+          <li>Nome da empresa</li>
+          <li>WhatsApp da empresa</li>
+          <li>CNPJ/CPF e endereço, se houver</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Plano Básico</h3>
+        <p>
+          No Plano Básico, você salva orçamentos na nuvem, envia link pelo WhatsApp e acompanha status.
+        </p>
+
+        <ul class="sidebar-lista">
+          <li>Histórico de orçamentos</li>
+          <li>Aprovação ou recusa pelo cliente</li>
+          <li>Resumo financeiro</li>
+          <li>Sem anúncios na plataforma</li>
+        </ul>
+      </div>
+
+      <div id="adsense-gerador-lateral" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+        <span class="adsense-label">Publicidade</span>
+        <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-5628949951885077"
+          data-ad-slot="1739813454"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+    </aside>
   </section>
 </main>
 
-<div id="pdf-render-source"></div>
+<footer>
+  &copy; 2026 FS Orçamentos |
+  <a href="privacidade.html">Privacidade</a>
+</footer>
 
-<div class="floating-actions">
-  <button type="button" class="btn-float btn-float-previa" onclick="gerarPreviaGeradorPage()" title="Gerar prévia">
-    👁️
-  </button>
-
-  <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDFGeradorPage()" style="display:none;" title="Baixar PDF">
-    💾
-  </button>
-
-  <button type="button" class="btn-float btn-float-whatsapp" id="btn-float-whatsapp" onclick="enviarPorWhatsApp()" style="display:none;" title="Enviar por WhatsApp">
-    🟢
-  </button>
-
-  <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo orçamento">
-    ➕
-  </button>
-</div>
-
-<center>
-  <p></p>
-  <footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer>
-  <p></p>
-</center>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+<script src="carregar-menu.js"></script>
+<script src="notificacoes.js"></script>
 
 <script>
-function valorEmissorOuTraco(valor) {
-  return valor && String(valor).trim() ? valor : '-';
+let perfilGeradorAtual = null;
+let orcamentoSalvoAtualId = window.orcamentoAtualSalvoId || window.orcamentoSalvoAtualId || null;
+let enviandoWhatsappFS = false;
+
+function fsNormalizarTexto(valor) {
+  return String(valor || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
 }
 
-function atualizarCampoEmissorVisual(id, valor) {
+function fsPlanoAtualNormalizado() {
+  return fsNormalizarTexto(localStorage.getItem('usuario_plano') || perfilGeradorAtual?.plano || 'gratis');
+}
+
+function fsPlanoPermiteSalvarOrcamento() {
+  const plano = fsPlanoAtualNormalizado();
+  return plano === 'basico' || plano === 'premium';
+}
+
+function fsPlanoLabel(plano) {
+  const p = fsNormalizarTexto(plano);
+
+  if (p === 'basico') return 'Plano Básico';
+  if (p === 'premium') return 'Plano Premium';
+
+  return 'Plano Grátis';
+}
+
+function fsValorOuTraco(valor) {
+  return valor && String(valor).trim() ? String(valor).trim() : '-';
+}
+
+function fsAtualizarTexto(id, valor) {
   const el = document.getElementById(id);
-  if (el) el.innerText = valorEmissorOuTraco(valor);
+  if (el) el.innerText = fsValorOuTraco(valor);
 }
 
-function atualizarLogoEmissorVisual(url) {
+function fsAtualizarLogo(url) {
   const img = document.getElementById('emissor-logo-visual');
   const placeholder = document.getElementById('emissor-logo-placeholder');
 
@@ -989,224 +1586,359 @@ function atualizarLogoEmissorVisual(url) {
   }
 }
 
-async function carregarDadosEmissorNoGerador() {
-  let perfil = {
+function fsPerfilCompleto(perfil) {
+  return !!(perfil?.nome_empresa && perfil?.telefone_empresa);
+}
+
+function fsAtualizarAvisoPerfil(perfil) {
+  const aviso = document.getElementById('aviso-perfil-incompleto');
+
+  if (!aviso) return;
+
+  aviso.style.display = fsPerfilCompleto(perfil) ? 'none' : 'block';
+}
+
+function fsPreencherTopoEmpresa(perfil) {
+  perfilGeradorAtual = perfil || {};
+
+  fsAtualizarTexto('emissor-consultor-visual', perfilGeradorAtual.nome);
+  fsAtualizarTexto('emissor-empresa-visual', perfilGeradorAtual.nome_empresa);
+  fsAtualizarTexto('emissor-whatsapp-visual', perfilGeradorAtual.telefone_empresa);
+  fsAtualizarTexto('emissor-cnpj-visual', perfilGeradorAtual.cnpj_empresa);
+  fsAtualizarTexto('emissor-endereco-visual', perfilGeradorAtual.endereco_empresa);
+  fsAtualizarTexto('emissor-plano-visual', fsPlanoLabel(perfilGeradorAtual.plano));
+  fsAtualizarLogo(perfilGeradorAtual.foto_url);
+
+  fsAtualizarAvisoPerfil(perfilGeradorAtual);
+}
+
+async function fsBuscarPerfilUsuario(session) {
+  if (!window._supabase || !session?.user?.id) return null;
+
+  const { data, error } = await _supabase
+    .from('perfis')
+    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
+    .eq('id', session.user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Erro ao buscar perfil:', error);
+    return null;
+  }
+
+  if (data) {
+    localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email?.split('@')[0] || 'Usuário');
+    localStorage.setItem('usuario_plano', data.plano || 'gratis');
+    localStorage.setItem('nome_empresa', data.nome_empresa || '');
+    localStorage.setItem('telefone_empresa', data.telefone_empresa || '');
+    localStorage.setItem('endereco_empresa', data.endereco_empresa || '');
+    localStorage.setItem('cnpj_empresa', data.cnpj_empresa || '');
+    localStorage.setItem('foto_url', data.foto_url || '');
+  }
+
+  return data;
+}
+
+function fsPerfilLocalFallback() {
+  return {
     nome: localStorage.getItem('usuario_nome') || '',
     nome_empresa: localStorage.getItem('nome_empresa') || '',
     telefone_empresa: localStorage.getItem('telefone_empresa') || '',
     endereco_empresa: localStorage.getItem('endereco_empresa') || '',
     cnpj_empresa: localStorage.getItem('cnpj_empresa') || '',
-    foto_url: localStorage.getItem('foto_url') || ''
+    foto_url: localStorage.getItem('foto_url') || '',
+    plano: localStorage.getItem('usuario_plano') || 'gratis'
   };
+}
 
-  try {
-    if (window._supabase) {
-      const { data: { session } } = await _supabase.auth.getSession();
+async function fsVerificarSessaoGerador() {
+  const authArea = document.getElementById('auth-area');
+  const conteudo = document.getElementById('conteudo-gerador');
+  const statusCard = document.getElementById('status-sessao-card');
 
-      if (session?.user?.id) {
-        const { data, error } = await _supabase
-          .from('perfis')
-          .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (!error && data) {
-          perfil = {
-            ...perfil,
-            ...data
-          };
-
-          localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email?.split('@')[0] || 'Usuário');
-          localStorage.setItem('usuario_plano', data.plano || 'gratis');
-          localStorage.setItem('nome_empresa', data.nome_empresa || '');
-          localStorage.setItem('telefone_empresa', data.telefone_empresa || '');
-          localStorage.setItem('endereco_empresa', data.endereco_empresa || '');
-          localStorage.setItem('cnpj_empresa', data.cnpj_empresa || '');
-          localStorage.setItem('foto_url', data.foto_url || '');
-        }
-      }
-    }
-  } catch (error) {
-    console.warn('Não foi possível carregar os dados do emissor:', error);
+  if (statusCard) {
+    statusCard.style.display = 'block';
+    statusCard.innerText = 'Carregando seus dados...';
   }
 
-  atualizarCampoEmissorVisual('emissor-consultor-visual', perfil.nome);
-  atualizarCampoEmissorVisual('emissor-empresa-visual', perfil.nome_empresa);
-  atualizarCampoEmissorVisual('emissor-whatsapp-visual', perfil.telefone_empresa);
-  atualizarCampoEmissorVisual('emissor-cnpj-visual', perfil.cnpj_empresa);
-  atualizarCampoEmissorVisual('emissor-endereco-visual', perfil.endereco_empresa);
-  atualizarLogoEmissorVisual(perfil.foto_url);
-}
-</script>
+  try {
+    if (!window._supabase) {
+      if (authArea) authArea.style.display = 'block';
+      if (conteudo) conteudo.style.display = 'none';
+      return;
+    }
 
-<script>
-function normalizarPlanoGerador(valor) {
-  return String(valor || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      if (authArea) authArea.style.display = 'block';
+      if (conteudo) conteudo.style.display = 'none';
+      return;
+    }
+
+    if (authArea) authArea.style.display = 'none';
+    if (conteudo) conteudo.style.display = 'block';
+
+    const perfilBanco = await fsBuscarPerfilUsuario(session);
+    const perfil = perfilBanco || fsPerfilLocalFallback();
+
+    fsPreencherTopoEmpresa(perfil);
+
+    if (statusCard) {
+      statusCard.style.display = fsPerfilCompleto(perfil) ? 'none' : 'block';
+      statusCard.innerHTML = fsPerfilCompleto(perfil)
+        ? ''
+        : 'Complete os dados da empresa no Painel de Controle para deixar o PDF profissional.';
+    }
+
+    fsAtualizarAnunciosGratisGerador();
+
+    if (typeof carregarEstadoSalvo === 'function') {
+      setTimeout(() => {
+        const linhas = document.querySelectorAll('#itens-lista .item-row:not(.header-labels)');
+        if (!linhas.length && typeof adicionarLinha === 'function') {
+          adicionarLinha();
+        }
+      }, 400);
+    }
+  } catch (error) {
+    console.error('Erro ao verificar sessão:', error);
+
+    if (authArea) authArea.style.display = 'block';
+    if (conteudo) conteudo.style.display = 'none';
+  }
 }
 
-async function verificarAcessoGerador() {
-  const areaLogin = document.getElementById('login-necessario-gerador');
-  const conteudo = document.getElementById('gerador-conteudo');
+function fsLimparTelefoneWhatsapp(valor) {
+  let telefone = String(valor || '').replace(/\D/g, '');
+
+  if (!telefone) return '';
+
+  if (telefone.startsWith('00')) {
+    telefone = telefone.substring(2);
+  }
+
+  if (telefone.length === 10 || telefone.length === 11) {
+    telefone = '55' + telefone;
+  }
+
+  return telefone;
+}
+
+function fsValorNumerico(valor) {
+  if (typeof valor === 'number') return valor;
+
+  let texto = String(valor || '').trim();
+
+  if (!texto) return 0;
+
+  texto = texto
+    .replace(/[^\d,.-]/g, '')
+    .replace(/\./g, '')
+    .replace(',', '.');
+
+  const numero = Number(texto);
+
+  return Number.isFinite(numero) ? numero : 0;
+}
+
+function fsColetarItensParaSalvar() {
+  const itens = [];
+
+  document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach(row => {
+    const inputs = Array.from(row.querySelectorAll('input'));
+
+    if (!inputs.length) return;
+
+    const descricao =
+      row.querySelector('.desc-cell')?.value?.trim() ||
+      row.querySelector('.desc')?.value?.trim() ||
+      inputs[0]?.value?.trim() ||
+      '';
+
+    const inputQtd = row.querySelector('.qtd') || inputs[1];
+    const inputValor = row.querySelector('.valor') || inputs[2];
+    const inputSubtotal = row.querySelector('.subtotal') || inputs[3];
+
+    const qtd = fsValorNumerico(inputQtd?.value ?? 1);
+    const valor = fsValorNumerico(inputValor?.value ?? 0);
+
+    let subtotal = fsValorNumerico(inputSubtotal?.value);
+
+    if (!subtotal) {
+      subtotal = qtd * valor;
+    }
+
+    if (descricao) {
+      itens.push({
+        descricao,
+        qtd,
+        valor,
+        subtotal
+      });
+    }
+  });
+
+  return itens;
+}
+
+function fsColetarDadosOrcamentoAtual() {
+  const titulo = document.getElementById('titulo')?.value?.trim() || 'Sem título';
+  const clienteNome = document.getElementById('cliente')?.value?.trim() || '';
+  const clienteWhatsapp = document.getElementById('tel-cliente')?.value?.trim() || '';
+  const observacoes = document.getElementById('observacoes')?.value?.trim() || '';
+  const tema = document.getElementById('selected-theme')?.value || 'original';
+
+  const itens = fsColetarItensParaSalvar();
+  const total = itens.reduce((soma, item) => soma + Number(item.subtotal || 0), 0);
+
+  return {
+    titulo,
+    clienteNome,
+    clienteWhatsapp,
+    observacoes,
+    tema,
+    itens,
+    total
+  };
+}
+
+async function fsSalvarOrcamentoSePlanoPermitido(origem = 'acao') {
+  if (!fsPlanoPermiteSalvarOrcamento()) {
+    console.log('Plano grátis: orçamento não salvo na nuvem.');
+    return null;
+  }
 
   if (!window._supabase) {
-    if (areaLogin) areaLogin.style.display = 'block';
-    if (conteudo) conteudo.style.display = 'none';
-    return;
+    console.warn('Supabase não disponível. Orçamento não salvo.');
+    return null;
   }
 
-  const { data: { session } } = await _supabase.auth.getSession();
+  const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
 
-  if (!session?.user?.id) {
-    if (areaLogin) areaLogin.style.display = 'block';
-    if (conteudo) conteudo.style.display = 'none';
-    return;
+  if (sessionError || !session?.user?.id) {
+    console.warn('Usuário não logado. Orçamento não salvo.');
+    return null;
   }
 
-  if (areaLogin) areaLogin.style.display = 'none';
-  if (conteudo) conteudo.style.display = 'block';
+  const dados = fsColetarDadosOrcamentoAtual();
 
-  await carregarDadosEmissorNoGerador();
-
-  if (typeof carregarDadosEmpresaLogada === 'function') {
-    await carregarDadosEmpresaLogada();
+  if (!dados.clienteNome) {
+    console.warn('Cliente não informado. Orçamento não salvo.');
+    return null;
   }
 
-  if (typeof carregarEstadoSalvo === 'function') {
-    carregarEstadoSalvo();
+  if (!dados.itens.length) {
+    console.warn('Nenhum item informado. Orçamento não salvo.');
+    return null;
   }
 
-  atualizarAnunciosGeradorGratis();
-}
+  const consultor =
+    localStorage.getItem('responsavel_selecionado_nome') ||
+    localStorage.getItem('consultor_selecionado_nome') ||
+    perfilGeradorAtual?.nome ||
+    localStorage.getItem('usuario_nome') ||
+    'Consultor';
 
-function irParaLoginGerador() {
-  window.location.href = '/index.html?login=1';
-}
+  const payloadBase = {
+    usuario_id: session.user.id,
+    assunto: dados.titulo,
+    cliente_nome: dados.clienteNome,
+    cliente_whatsapp: dados.clienteWhatsapp,
+    observacoes: dados.observacoes,
+    itens: dados.itens,
+    total: dados.total,
+    status: 'pendente',
+    consultor
+  };
 
-document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(verificarAcessoGerador, 350);
-});
+  const payloadCompleto = {
+    ...payloadBase,
+    origem_salvamento: origem,
+    tema_pdf: dados.tema
+  };
 
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
-    setTimeout(verificarAcessoGerador, 350);
-  });
-}
-</script>
+  let resposta;
 
-<script>
-function normalizarPlanoAdsGerador(valor) {
-  return String(valor || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
-}
+  if (orcamentoSalvoAtualId) {
+    resposta = await _supabase
+      .from('orcamentos')
+      .update(payloadCompleto)
+      .eq('id', orcamentoSalvoAtualId)
+      .eq('usuario_id', session.user.id)
+      .select()
+      .single();
+  } else {
+    resposta = await _supabase
+      .from('orcamentos')
+      .insert(payloadCompleto)
+      .select()
+      .single();
+  }
 
-function slotAdsGeradorValido(slot) {
-  return /^\d{6,}$/.test(String(slot || '').trim());
-}
+  if (resposta.error) {
+    const mensagemErro = String(resposta.error.message || '');
 
-function inicializarAdsGeradorVisivel() {
-  const blocos = document.querySelectorAll('.fs-anuncio-gerador-gratis');
+    if (
+      mensagemErro.includes('origem_salvamento') ||
+      mensagemErro.includes('tema_pdf') ||
+      mensagemErro.includes('observacoes') ||
+      mensagemErro.includes('consultor')
+    ) {
+      const payloadMinimo = {
+        usuario_id: session.user.id,
+        assunto: dados.titulo,
+        cliente_nome: dados.clienteNome,
+        cliente_whatsapp: dados.clienteWhatsapp,
+        itens: dados.itens,
+        total: dados.total,
+        status: 'pendente'
+      };
 
-  blocos.forEach(bloco => {
-    if (bloco.style.display === 'none') return;
-
-    const ins = bloco.querySelector('ins.adsbygoogle');
-    if (!ins) return;
-
-    const slot = ins.getAttribute('data-ad-slot');
-    if (!slotAdsGeradorValido(slot)) return;
-
-    if (ins.dataset.adsenseInicializado === 'true') return;
-
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      ins.dataset.adsenseInicializado = 'true';
-    } catch (error) {
-      console.warn('AdSense ainda não inicializado:', error);
-    }
-  });
-}
-
-async function atualizarAnunciosGeradorGratis() {
-  const blocos = document.querySelectorAll('.fs-anuncio-gerador-gratis');
-  if (!blocos.length) return;
-
-  let deveExibir = true;
-
-  try {
-    if (window._supabase) {
-      const { data: { session } } = await _supabase.auth.getSession();
-
-      if (session?.user?.id) {
-        let plano = localStorage.getItem('usuario_plano') || 'gratis';
-
-        const { data, error } = await _supabase
-          .from('perfis')
-          .select('plano')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (!error && data?.plano) {
-          plano = data.plano;
-          localStorage.setItem('usuario_plano', plano);
-        }
-
-        const planoNormalizado = normalizarPlanoAdsGerador(plano);
-        deveExibir = planoNormalizado !== 'basico' && planoNormalizado !== 'premium';
+      if (orcamentoSalvoAtualId) {
+        resposta = await _supabase
+          .from('orcamentos')
+          .update(payloadMinimo)
+          .eq('id', orcamentoSalvoAtualId)
+          .eq('usuario_id', session.user.id)
+          .select()
+          .single();
+      } else {
+        resposta = await _supabase
+          .from('orcamentos')
+          .insert(payloadMinimo)
+          .select()
+          .single();
       }
     }
-  } catch (error) {
-    console.warn('Não foi possível verificar plano para anúncios:', error);
-    deveExibir = true;
   }
 
-  blocos.forEach(bloco => {
-    bloco.style.display = deveExibir ? 'block' : 'none';
-  });
-
-  if (deveExibir) {
-    setTimeout(inicializarAdsGeradorVisivel, 250);
+  if (resposta.error) {
+    console.error('Erro ao salvar orçamento:', resposta.error);
+    alert('Não foi possível salvar o orçamento na nuvem. O PDF continuará funcionando.');
+    return null;
   }
-}
-</script>
 
-<script>
-function exibirAcoesGeradorPage() {
-  const botoesAcao = document.getElementById('botoes-acao');
-  const btnFloatBaixar = document.getElementById('btn-float-baixar');
-  const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
-  const floatingActions = document.querySelector('.floating-actions');
+  orcamentoSalvoAtualId = resposta.data.id;
+  window.orcamentoAtualSalvoId = resposta.data.id;
+  window.orcamentoSalvoAtualId = resposta.data.id;
 
-  if (botoesAcao) botoesAcao.style.display = 'block';
-  if (btnFloatBaixar) btnFloatBaixar.style.display = 'flex';
-  if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'flex';
-  if (floatingActions) floatingActions.classList.add('show');
+  if (typeof definirOrcamentoAtualSalvo === 'function') {
+    definirOrcamentoAtualSalvo(resposta.data.id);
+  }
+
+  return resposta.data;
 }
 
-async function gerarPreviaGeradorPage() {
-  if (typeof gerarPrevia !== 'function') {
-    alert('Função gerarPrevia não encontrada. Verifique se ui.js foi carregado.');
-    return;
-  }
-
-  await gerarPrevia();
-
-  const conteudoPdf = document.getElementById('conteudo-pdf');
-  const renderSource = document.getElementById('pdf-render-source');
-
-  if (conteudoPdf && renderSource && conteudoPdf.innerHTML.trim()) {
-    renderSource.innerHTML = conteudoPdf.innerHTML;
-    exibirAcoesGeradorPage();
-  }
+function fsNomeArquivoSeguro(valor) {
+  return String(valor || 'orcamento')
+    .trim()
+    .replace(/[^\wÀ-ÿ\s-]/g, '')
+    .replace(/\s+/g, '_')
+    .toLowerCase() || 'orcamento';
 }
 
-function aguardarRenderizacaoGerador(container) {
+async function fsAguardarRenderizacaoPDF(container) {
   return new Promise(resolve => {
     const imagens = Array.from(container.querySelectorAll('img'));
 
@@ -1218,7 +1950,7 @@ function aguardarRenderizacaoGerador(container) {
     let finalizadas = 0;
 
     function finalizar() {
-      finalizadas++;
+      finalizadas += 1;
 
       if (finalizadas >= imagens.length) {
         requestAnimationFrame(() => setTimeout(resolve, 500));
@@ -1236,17 +1968,18 @@ function aguardarRenderizacaoGerador(container) {
   });
 }
 
-async function baixarPDFGeradorPage() {
+async function fsBaixarPDFCorrigido() {
   const conteudoPdf = document.getElementById('conteudo-pdf');
-  const renderSource = document.getElementById('pdf-render-source');
 
-  if (!conteudoPdf || !renderSource) {
+  if (!conteudoPdf) {
     alert('Área do PDF não encontrada.');
     return;
   }
 
   if (!conteudoPdf.innerHTML.trim()) {
-    await gerarPreviaGeradorPage();
+    if (typeof gerarPrevia === 'function') {
+      await gerarPrevia();
+    }
   }
 
   if (!conteudoPdf.innerHTML.trim()) {
@@ -1254,30 +1987,14 @@ async function baixarPDFGeradorPage() {
     return;
   }
 
-  renderSource.innerHTML = conteudoPdf.innerHTML;
+  await fsSalvarOrcamentoSePlanoPermitido('download_pdf');
 
-  const elementoPdf = renderSource.firstElementChild || renderSource;
+  const folha = conteudoPdf.firstElementChild || conteudoPdf;
+  const nomeArquivo = fsNomeArquivoSeguro(document.getElementById('titulo')?.value || 'orcamento');
 
-  if (!elementoPdf) {
-    alert('Não foi possível preparar o PDF.');
-    return;
-  }
+  document.body.classList.add('gerando-pdf');
 
-  if (typeof usuarioPodeSalvarOrcamentoLocal === 'function' && usuarioPodeSalvarOrcamentoLocal()) {
-    if (typeof salvarOrcamentoNoBanco === 'function') {
-      await salvarOrcamentoNoBanco('download_pdf');
-    }
-  }
-
-  await aguardarRenderizacaoGerador(elementoPdf);
-
-  const titulo = document.getElementById('titulo')?.value || 'orcamento';
-
-  const nomeArquivo = titulo
-    .trim()
-    .replace(/[^\wÀ-ÿ\s-]/g, '')
-    .replace(/\s+/g, '_')
-    .toLowerCase() || 'orcamento';
+  await fsAguardarRenderizacaoPDF(folha);
 
   const opt = {
     margin: 0,
@@ -1302,31 +2019,254 @@ async function baixarPDFGeradorPage() {
       orientation: 'portrait'
     },
     pagebreak: {
-      mode: ['css', 'legacy']
+      mode: ['avoid-all', 'css', 'legacy']
     }
   };
 
   try {
     await html2pdf()
       .set(opt)
-      .from(elementoPdf)
+      .from(folha)
       .save();
   } catch (error) {
     console.error('Erro ao gerar PDF:', error);
     alert('Não foi possível gerar o PDF.');
+  } finally {
+    document.body.classList.remove('gerando-pdf');
   }
 }
 
-window.addEventListener('scroll', () => {
-  const btnContainer = document.querySelector('.floating-actions');
-  const areaPrevia = document.getElementById('area-previa');
+function montarMensagemWhatsappCliente(clienteNome, linkOrcamento) {
+  const nome = clienteNome && String(clienteNome).trim()
+    ? String(clienteNome).trim()
+    : 'cliente';
 
-  if (!btnContainer || !areaPrevia) return;
+  return `Olá, ${nome}! Tudo bem?
 
-  if (window.scrollY > 300 || areaPrevia.style.display === 'block') {
-    btnContainer.classList.add('show');
-  } else {
-    btnContainer.classList.remove('show');
+Seu orçamento está pronto para visualização.
+
+Acesse o link abaixo para conferir os detalhes e aprovar ou recusar a proposta:
+
+${linkOrcamento}
+
+Qualquer dúvida, estou à disposição.`;
+}
+
+async function enviarPorWhatsApp() {
+  if (enviandoWhatsappFS) return;
+
+  enviandoWhatsappFS = true;
+
+  const botoesWhatsapp = document.querySelectorAll('.btn-whatsapp, .btn-acao-whatsapp, .btn-float-whatsapp');
+
+  botoesWhatsapp.forEach(btn => {
+    btn.disabled = true;
+  });
+
+  try {
+    if (!fsPlanoPermiteSalvarOrcamento()) {
+      alert('O envio por WhatsApp com link está disponível no Plano Básico.');
+      return;
+    }
+
+    const dados = fsColetarDadosOrcamentoAtual();
+    const telefoneLimpo = fsLimparTelefoneWhatsapp(dados.clienteWhatsapp);
+
+    if (!dados.clienteNome) {
+      alert('Informe o nome do cliente.');
+      return;
+    }
+
+    if (!telefoneLimpo) {
+      alert('Informe o WhatsApp do cliente.');
+      return;
+    }
+
+    if (!dados.itens.length) {
+      alert('Adicione pelo menos um item ao orçamento.');
+      return;
+    }
+
+    const orcamentoSalvo = await fsSalvarOrcamentoSePlanoPermitido('whatsapp_manual');
+
+    const linkOrcamento = orcamentoSalvo?.id
+      ? `${window.location.origin}/ver.html?id=${orcamentoSalvo.id}`
+      : '';
+
+    if (!linkOrcamento) {
+      alert('Não foi possível gerar o link do orçamento. O orçamento precisa ser salvo na nuvem.');
+      return;
+    }
+
+    const mensagem = montarMensagemWhatsappCliente(dados.clienteNome, linkOrcamento);
+    const urlWhatsapp = `https://wa.me/${telefoneLimpo}?text=${encodeURIComponent(mensagem)}`;
+
+    const janela = window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
+
+    if (!janela) {
+      alert('O navegador bloqueou a abertura do WhatsApp. Permita pop-ups para este site.');
+      return;
+    }
+
+    janela.focus();
+  } catch (error) {
+    console.error('Erro ao enviar por WhatsApp:', error);
+    alert('Não foi possível abrir o WhatsApp.');
+  } finally {
+    enviandoWhatsappFS = false;
+
+    botoesWhatsapp.forEach(btn => {
+      btn.disabled = false;
+    });
+  }
+}
+
+function exibirAcoesProfissionaisOrcamento() {
+  const botoesAcao = document.getElementById('botoes-acao');
+  const btnFloatBaixar = document.getElementById('btn-float-baixar');
+  const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
+  const floatingActions = document.querySelector('.floating-actions');
+
+  if (botoesAcao) botoesAcao.style.display = 'block';
+  if (btnFloatBaixar) btnFloatBaixar.style.display = 'flex';
+  if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'flex';
+  if (floatingActions) floatingActions.classList.add('show');
+}
+
+function fsSlotAdsenseValido(slot) {
+  const valor = String(slot || '').trim();
+  return /^\d{6,}$/.test(valor);
+}
+
+function fsInicializarAdsenseVisivel() {
+  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
+
+  blocos.forEach(bloco => {
+    if (bloco.style.display === 'none') return;
+
+    const ins = bloco.querySelector('ins.adsbygoogle');
+    if (!ins) return;
+
+    const slot = ins.getAttribute('data-ad-slot');
+
+    if (!fsSlotAdsenseValido(slot)) return;
+    if (ins.dataset.adsenseInicializado === 'true') return;
+
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      ins.dataset.adsenseInicializado = 'true';
+    } catch (error) {
+      console.warn('AdSense ainda não inicializado:', error);
+    }
+  });
+}
+
+async function fsAtualizarAnunciosGratisGerador() {
+  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
+
+  if (!blocos.length) return;
+
+  let deveExibir = true;
+
+  try {
+    const plano = fsPlanoAtualNormalizado();
+    deveExibir = !(plano === 'basico' || plano === 'premium');
+  } catch (error) {
+    deveExibir = true;
+  }
+
+  blocos.forEach(bloco => {
+    bloco.style.display = deveExibir ? 'block' : 'none';
+  });
+
+  if (deveExibir) {
+    setTimeout(fsInicializarAdsenseVisivel, 300);
+  }
+}
+
+function toggleAjuda() {
+  const modal = document.getElementById('modal-ajuda');
+
+  if (modal) {
+    modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  fsVerificarSessaoGerador();
+
+  window.baixarPDF = fsBaixarPDFCorrigido;
+
+  const previaOriginal = window.gerarPrevia;
+
+  if (typeof previaOriginal === 'function' && !window.gerarPreviaComAcoesProfissionais) {
+    window.gerarPrevia = async function() {
+      const resultado = await previaOriginal.apply(this, arguments);
+
+      setTimeout(() => {
+        const conteudo = document.getElementById('conteudo-pdf');
+
+        if (conteudo && conteudo.innerHTML.trim()) {
+          exibirAcoesProfissionaisOrcamento();
+        }
+      }, 250);
+
+      return resultado;
+    };
+
+    window.gerarPreviaComAcoesProfissionais = true;
+  }
+
+  const limparOriginal = window.limparFormulario;
+
+  if (typeof limparOriginal === 'function' && !window.limparFormularioComResetOrcamento) {
+    window.limparFormulario = function() {
+      orcamentoSalvoAtualId = null;
+      window.orcamentoAtualSalvoId = null;
+      window.orcamentoSalvoAtualId = null;
+
+      const retorno = limparOriginal.apply(this, arguments);
+
+      const botoesAcao = document.getElementById('botoes-acao');
+      const btnFloatBaixar = document.getElementById('btn-float-baixar');
+      const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
+
+      if (botoesAcao) botoesAcao.style.display = 'none';
+      if (btnFloatBaixar) btnFloatBaixar.style.display = 'none';
+      if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'none';
+
+      return retorno;
+    };
+
+    window.limparFormularioComResetOrcamento = true;
+  }
+
+  setTimeout(fsAtualizarAnunciosGratisGerador, 1000);
+  setTimeout(fsAtualizarAnunciosGratisGerador, 2000);
+});
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(() => {
+    setTimeout(fsVerificarSessaoGerador, 500);
+    setTimeout(fsAtualizarAnunciosGratisGerador, 1200);
+  });
+}
+
+document.addEventListener('click', function(event) {
+  const modalAjuda = document.getElementById('modal-ajuda');
+
+  if (event.target === modalAjuda) {
+    toggleAjuda();
+  }
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const modalAjuda = document.getElementById('modal-ajuda');
+
+    if (modalAjuda && modalAjuda.style.display === 'flex') {
+      toggleAjuda();
+    }
   }
 });
 </script>
