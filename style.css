@@ -418,7 +418,7 @@ body.gerando-pdf .pdf-documento-a4 {
   color: #083b2f !important;
   border: 2px solid #128c4a !important;
 }
-
+  
 .btn-whatsapp:hover {
   background: #20ba5a !important;
   color: #ffffff !important;
@@ -2751,5 +2751,27 @@ body:has(.painel-card) .container {
 
   #area-previa {
     padding: 10px;
+  }
+}
+
+.link-destaque-gerador {
+  color: #ffc400 !important;
+  background: rgba(255, 196, 0, 0.10);
+  border: 1px solid rgba(255, 196, 0, 0.35);
+  border-radius: 999px;
+  padding: 7px 13px !important;
+}
+
+.link-destaque-gerador:hover {
+  background: #ffc400 !important;
+  color: #3e2723 !important;
+}
+
+@media (max-width: 900px) {
+  .link-destaque-gerador {
+    text-align: right;
+    border-radius: 8px;
+    padding: 12px 10px !important;
+    background: rgba(255, 196, 0, 0.12);
   }
 }
