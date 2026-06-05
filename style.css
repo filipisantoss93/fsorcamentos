@@ -112,7 +112,15 @@
 
         #area-previa { display: none; margin-right: 0px; margin-top: 30px; border: 2px dashed #2563eb; background: #f1f5f9; width: 100%;}
 
-        .pdf-folha { width: 100%; max-width: 185mm; margin: 0 auto; background: white; color: black; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+.pdf-folha {
+  width: 100%;
+  max-width: 794px;
+  margin: 0 auto;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  overflow: visible;
+}
 
 
 #extra-emissor-container, #extra-cliente-container {
