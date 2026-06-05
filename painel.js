@@ -334,13 +334,17 @@ function montarAvisoPlano(perfil) {
 
 function atualizarCardPlano(perfil) {
   const planoAtual = perfil?.plano || 'gratis';
+  const planoNormalizado = normalizarPlanoPainel(planoAtual);
 
   const badge = document.getElementById('perfil-plano');
+  const planoTexto = document.getElementById('perfil-plano-texto');
+  const statusEl = document.getElementById('perfil-plano-status');
+  const expiraEl = document.getElementById('perfil-plano-expira');
+  const avisoEl = document.getElementById('perfil-plano-aviso');
+  const limiteEl = document.getElementById('perfil-limite-responsaveis');
 
   if (badge) {
     badge.innerText = planoLabel(planoAtual);
-
-    const planoNormalizado = normalizarPlanoPainel(planoAtual);
 
     badge.classList.remove('plano-gratis', 'plano-basico', 'plano-premium');
 
@@ -353,16 +357,32 @@ function atualizarCardPlano(perfil) {
     }
   }
 
-  const planoTexto = document.getElementById('perfil-plano-texto');
-  const statusEl = document.getElementById('perfil-plano-status');
-  const expiraEl = document.getElementById('perfil-plano-expira');
-  const avisoEl = document.getElementById('perfil-plano-aviso');
-  const limiteEl = document.getElementById('perfil-limite-responsaveis');
+  if (planoTexto) {
+    planoTexto.innerText = planoLabel(planoAtual);
 
-  if (planoTexto) planoTexto.innerText = planoLabel(planoAtual);
-  if (statusEl) statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
-  if (expiraEl) expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
-  if (limiteEl) limiteEl.innerText = String(limiteResponsaveisPorPlano());
+    planoTexto.removeAttribute('class');
+    planoTexto.style.background = 'transparent';
+    planoTexto.style.color = '#3e2723';
+    planoTexto.style.border = 'none';
+    planoTexto.style.boxShadow = 'none';
+    planoTexto.style.padding = '0';
+    planoTexto.style.borderRadius = '0';
+    planoTexto.style.fontSize = '24px';
+    planoTexto.style.fontWeight = '900';
+    planoTexto.style.lineHeight = '1.25';
+  }
+
+  if (statusEl) {
+    statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
+  }
+
+  if (expiraEl) {
+    expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
+  }
+
+  if (limiteEl) {
+    limiteEl.innerText = String(limiteResponsaveisPorPlano());
+  }
 
   if (avisoEl) {
     const aviso = montarAvisoPlano(perfil);
