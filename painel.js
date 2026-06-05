@@ -1,539 +1,660 @@
+// ==================== VARIÁVEIS GLOBAIS ====================
+
+let perfilAtual = null;
+let painelJaCarregado = false;
+let responsaveisCache = [];
+let pagamentoPixAtualId = null;
+let dashboardJaCriado = false;
+
+const FS_SUPABASE_FUNCTIONS_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
+
 // ==================== INICIALIZAÇÃO ====================
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const formPerfil = document.getElementById('form-cadastro-perfil');
+  const session = await obterSessaoPainel();
 
-    if (formPerfil) {
-        await carregarPerfil();
-        await carregarResponsaveis();
-        configurarUploadLogo();
-        configurarModalSenha();
-    }
+  if (!session) {
+    mostrarAreaLoginPainel();
+    return;
+  }
 
-    const listaPainel = document.getElementById('lista-painel');
-
-    if (listaPainel) {
-        carregarOrcamentos();
-    }
+  await inicializarPainel(session);
 });
 
-// ==================== HELPERS ====================
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(async (event, session) => {
+    if (session) {
+      await inicializarPainel(session);
+    } else {
+      painelJaCarregado = false;
+      perfilAtual = null;
+      responsaveisCache = [];
+      atualizarPainelAssinaturaBasico(null);
+      mostrarAreaLoginPainel();
+    }
+  });
+}
+
+async function inicializarPainel(session) {
+  mostrarConteudoProtegidoPainel();
+
+  await carregarPerfil();
+  await carregarResponsaveis();
+  configurarUploadLogo();
+
+  await carregarDashboardPainel();
+  await carregarUltimosOrcamentosPainel();
+
+  painelJaCarregado = true;
+}
+
+// ==================== HELPERS BÁSICOS ====================
 
 function pegarElemento(id) {
-    return document.getElementById(id);
+  return document.getElementById(id);
 }
 
 function setValor(id, valor) {
-    const el = pegarElemento(id);
-    if (el) el.value = valor || '';
+  const el = pegarElemento(id);
+  if (el) el.value = valor || '';
 }
 
 function getValor(id) {
-    const el = pegarElemento(id);
-    return el ? el.value.trim() : '';
+  const el = pegarElemento(id);
+  return el ? el.value.trim() : '';
 }
 
-function mostrarPreviewLogo(url) {
-    const preview = pegarElemento('preview-logo');
-    const previewVazio = pegarElemento('logo-preview-empty');
-    const logoAtual = pegarElemento('logo-atual');
-
-    if (preview && url) {
-        preview.src = url + '?v=' + Date.now();
-        preview.style.display = 'block';
-    }
-
-    if (logoAtual && url) {
-        logoAtual.src = url + '?v=' + Date.now();
-        logoAtual.style.display = 'block';
-    }
-
-    if (previewVazio) {
-        previewVazio.style.display = url ? 'none' : 'flex';
-    }
+function valorOuTraco(valor) {
+  return valor && String(valor).trim() ? String(valor).trim() : '-';
 }
 
-function limparPreviewLogo() {
-    const preview = pegarElemento('preview-logo');
-    const previewVazio = pegarElemento('logo-preview-empty');
-    const logoAtual = pegarElemento('logo-atual');
-
-    if (preview) {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
-
-    if (logoAtual) {
-        logoAtual.src = '';
-        logoAtual.style.display = 'none';
-    }
-
-    if (previewVazio) {
-        previewVazio.style.display = 'flex';
-    }
+function escaparHtmlPainel(valor) {
+  return String(valor || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
-function normalizarTelefone(telefone) {
-    return String(telefone || '').replace(/\D/g, '');
+function normalizarPlanoPainel(valor) {
+  return String(valor || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+function formatarMoedaPainel(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+}
+
+function formatarDataPainel(dataValor) {
+  if (!dataValor) return '-';
+
+  const data = new Date(dataValor);
+
+  if (isNaN(data.getTime())) return '-';
+
+  return data.toLocaleDateString('pt-BR');
+}
+
+function formatarDataHoraPainel(dataValor) {
+  if (!dataValor) return '-';
+
+  const data = new Date(dataValor);
+
+  if (isNaN(data.getTime())) return '-';
+
+  return data.toLocaleString('pt-BR', {
+    dateStyle: 'short',
+    timeStyle: 'short'
+  });
+}
+
+function diasAteExpirar(dataValor) {
+  if (!dataValor) return null;
+
+  const hoje = new Date();
+  const expira = new Date(dataValor);
+
+  if (isNaN(expira.getTime())) return null;
+
+  hoje.setHours(0, 0, 0, 0);
+  expira.setHours(0, 0, 0, 0);
+
+  const diff = expira.getTime() - hoje.getTime();
+
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function planoLabel(plano) {
+  const p = normalizarPlanoPainel(plano);
+
+  if (p === 'premium') return 'Plano Premium';
+  if (p === 'basico') return 'Plano Básico';
+
+  return 'Plano Grátis';
+}
+
+function statusPlanoLabel(status) {
+  const s = normalizarPlanoPainel(status || 'ativo');
+
+  if (s === 'ativo') return 'Ativo';
+  if (s === 'pago') return 'Ativo';
+  if (s === 'cancelado') return 'Cancelado';
+  if (s === 'expirado') return 'Expirado';
+  if (s === 'pendente') return 'Pendente';
+
+  return status || 'Ativo';
+}
+
+function statusOrcamentoLabel(status) {
+  const mapa = {
+    pendente: 'Pendente',
+    aprovado: 'Aprovado',
+    recusado: 'Recusado',
+    em_servico: 'Em serviço',
+    finalizado: 'Finalizado'
+  };
+
+  return mapa[status] || status || 'Pendente';
+}
+
+function mostrarStatus(id, mensagem, tipo = 'sucesso') {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.className = `status-msg ${tipo}`;
+  el.innerText = mensagem;
+
+  if (mensagem) {
+    setTimeout(() => {
+      el.className = 'status-msg';
+      el.innerText = '';
+    }, 4500);
+  }
+}
+
+// ==================== CONTROLE DE TELA ====================
+
+function mostrarAreaLoginPainel() {
+  const authArea = document.getElementById('auth-area');
+  const conteudo = document.getElementById('conteudo-protegido');
+
+  if (authArea) authArea.style.display = 'block';
+  if (conteudo) conteudo.style.display = 'none';
+}
+
+function mostrarConteudoProtegidoPainel() {
+  const authArea = document.getElementById('auth-area');
+  const conteudo = document.getElementById('conteudo-protegido');
+
+  if (authArea) authArea.style.display = 'none';
+  if (conteudo) conteudo.style.display = 'block';
+}
+
+async function obterSessaoPainel() {
+  try {
+    if (!window._supabase) return null;
+
+    const { data: { session }, error } = await _supabase.auth.getSession();
+
+    if (error || !session) return null;
+
+    return session;
+  } catch (error) {
+    console.error('Erro ao obter sessão:', error);
+    return null;
+  }
+}
+
+// ==================== PLANO / ASSINATURA ====================
+
+function usuarioJaTemPlanoPago(perfil) {
+  const plano = normalizarPlanoPainel(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis');
+  const status = normalizarPlanoPainel(perfil?.plano_status || localStorage.getItem('usuario_plano_status') || 'ativo');
+
+  if (plano === 'premium') return true;
+
+  if (plano === 'basico' && status !== 'cancelado' && status !== 'expirado') {
+    const dias = diasAteExpirar(perfil?.plano_expira_em || localStorage.getItem('usuario_plano_expira_em'));
+
+    if (dias === null) return true;
+
+    return dias >= 0;
+  }
+
+  return false;
+}
+
+function atualizarPainelAssinaturaBasico(perfil) {
+  const painel = document.getElementById('painel-assinatura-basico');
+
+  if (!painel) return;
+
+  painel.style.display = usuarioJaTemPlanoPago(perfil) ? 'none' : 'block';
+}
+
+function montarTextoExpiracaoPlano(perfil) {
+  const plano = normalizarPlanoPainel(perfil?.plano);
+  const expiraEm = perfil?.plano_expira_em;
+
+  if (plano === 'gratis') return 'Sem expiração';
+  if (!expiraEm) return 'Não informado';
+
+  const dias = diasAteExpirar(expiraEm);
+  const dataFormatada = formatarDataPainel(expiraEm);
+
+  if (dias === null) return dataFormatada;
+
+  if (dias < 0) return `${dataFormatada} · expirado`;
+  if (dias === 0) return `${dataFormatada} · vence hoje`;
+  if (dias === 1) return `${dataFormatada} · vence amanhã`;
+
+  return `${dataFormatada} · faltam ${dias} dias`;
+}
+
+function montarAvisoPlano(perfil) {
+  const plano = normalizarPlanoPainel(perfil?.plano);
+  const status = normalizarPlanoPainel(perfil?.plano_status || 'ativo');
+  const dias = diasAteExpirar(perfil?.plano_expira_em);
+
+  if (plano === 'gratis') {
+    return {
+      tipo: 'gratis',
+      texto: 'Você está no Plano Grátis. Ative o Plano Básico para salvar orçamentos na nuvem, usar histórico, WhatsApp com link, aprovação online e resumo financeiro.'
+    };
+  }
+
+  if (status === 'cancelado') {
+    return {
+      tipo: 'erro',
+      texto: 'Seu plano está cancelado. Renove para continuar usando os recursos pagos.'
+    };
+  }
+
+  if (status === 'expirado' || (dias !== null && dias < 0)) {
+    return {
+      tipo: 'erro',
+      texto: 'Seu plano expirou. Renove o Plano Básico para continuar usando os recursos pagos.'
+    };
+  }
+
+  if (dias !== null && dias <= 7) {
+    return {
+      tipo: 'alerta',
+      texto: `Seu plano vence em ${dias === 0 ? 'hoje' : `${dias} dia(s)`}. Renove para evitar bloqueio dos recursos pagos.`
+    };
+  }
+
+  return {
+    tipo: 'ok',
+    texto: 'Seu plano está ativo.'
+  };
+}
+
+function atualizarCardPlano(perfil) {
+  const badge = document.getElementById('perfil-plano');
+
+  if (badge) {
+    badge.innerText = planoLabel(perfil?.plano);
+  }
+
+  const statusEl = document.getElementById('perfil-plano-status');
+  const expiraEl = document.getElementById('perfil-plano-expira');
+  const avisoEl = document.getElementById('perfil-plano-aviso');
+
+  if (statusEl) {
+    statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
+  }
+
+  if (expiraEl) {
+    expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
+  }
+
+  if (avisoEl) {
+    const aviso = montarAvisoPlano(perfil);
+
+    avisoEl.innerText = aviso.texto;
+    avisoEl.className = `painel-plano-aviso plano-${aviso.tipo}`;
+    avisoEl.style.display = 'block';
+  }
 }
 
 // ==================== PERFIL ====================
 
 async function carregarPerfil() {
-    try {
-        const { data: { session }, error: sessionError } =
-            await _supabase.auth.getSession();
+  const session = await obterSessaoPainel();
+  if (!session) {
+    mostrarAreaLoginPainel();
+    return;
+  }
 
-        if (sessionError || !session) {
-            window.location.href = '/index.html';
-            return;
-        }
+  const { data, error } = await _supabase
+    .from('perfis')
+    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano, plano_status, plano_expira_em')
+    .eq('id', session.user.id)
+    .maybeSingle();
 
-        const { data, error } = await _supabase
-            .from('perfis')
-            .select('*')
-            .eq('id', session.user.id)
-            .maybeSingle();
+  if (error) {
+    console.error('Erro ao carregar perfil:', error);
+    mostrarStatus('status-perfil', 'Erro ao carregar os dados do perfil.', 'erro');
+    atualizarPainelAssinaturaBasico({ plano: 'gratis' });
+    return;
+  }
 
-        if (error) {
-            console.error('Erro ao carregar perfil:', error);
-            alert('Erro ao carregar perfil.');
-            return;
-        }
+  perfilAtual = data || {
+    nome: '',
+    nome_empresa: '',
+    telefone_empresa: '',
+    endereco_empresa: '',
+    cnpj_empresa: '',
+    foto_url: '',
+    plano: 'gratis',
+    plano_status: 'ativo',
+    plano_expira_em: null
+  };
 
-        if (!data) {
-            alert('Perfil não encontrado. Faça login novamente.');
-            return;
-        }
+  preencherCamposEstaticos(perfilAtual, session);
+  preencherFormularioEdicao(perfilAtual);
+  atualizarPainelAssinaturaBasico(perfilAtual);
+  atualizarCardPlano(perfilAtual);
+}
 
-        setValor('nome', data.nome);
-        setValor('nome_empresa', data.nome_empresa);
-        setValor('telefone_empresa', data.telefone_empresa);
-        setValor('endereco_empresa', data.endereco_empresa);
-        setValor('cnpj_empresa', data.cnpj_empresa);
-        setValor('foto_url', data.foto_url);
+function preencherCamposEstaticos(data, session) {
+  const responsavelEl = document.getElementById('perfil-responsavel-selecionado');
+  const empresaEl = document.getElementById('perfil-empresa');
+  const telefoneEl = document.getElementById('perfil-telefone');
+  const cnpjEl = document.getElementById('perfil-cnpj');
+  const enderecoEl = document.getElementById('perfil-endereco');
 
-        mostrarPreviewLogo(data.foto_url);
+  if (responsavelEl) responsavelEl.innerText = valorOuTraco(data?.nome);
+  if (empresaEl) empresaEl.innerText = valorOuTraco(data?.nome_empresa);
+  if (telefoneEl) telefoneEl.innerText = valorOuTraco(data?.telefone_empresa);
+  if (cnpjEl) cnpjEl.innerText = valorOuTraco(data?.cnpj_empresa);
+  if (enderecoEl) enderecoEl.innerText = valorOuTraco(data?.endereco_empresa);
 
-        localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email.split('@')[0]);
-        localStorage.setItem('usuario_plano', data.plano || 'gratis');
+  atualizarLogoEstatica(data?.foto_url || '');
 
-        if (data.foto_url) {
-            localStorage.setItem('foto_url', data.foto_url);
-        }
+  const nomeLocal =
+    data?.nome ||
+    data?.nome_empresa ||
+    session?.user?.email?.split('@')[0] ||
+    'Usuário';
 
-    } catch (err) {
-        console.error('Erro inesperado ao carregar perfil:', err);
-        alert('Erro inesperado ao carregar perfil.');
-    }
+  localStorage.setItem('usuario_nome', nomeLocal);
+  localStorage.setItem('usuario_plano', data?.plano || 'gratis');
+  localStorage.setItem('nome_empresa', data?.nome_empresa || '');
+  localStorage.setItem('telefone_empresa', data?.telefone_empresa || '');
+  localStorage.setItem('endereco_empresa', data?.endereco_empresa || '');
+  localStorage.setItem('cnpj_empresa', data?.cnpj_empresa || '');
+
+  if (data?.foto_url) {
+    localStorage.setItem('foto_url', data.foto_url);
+  } else {
+    localStorage.removeItem('foto_url');
+  }
+
+  if (data?.plano_status) {
+    localStorage.setItem('usuario_plano_status', data.plano_status);
+  }
+
+  if (data?.plano_expira_em) {
+    localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+  } else {
+    localStorage.removeItem('usuario_plano_expira_em');
+  }
+}
+
+function preencherFormularioEdicao(data) {
+  setValor('nome_empresa', data?.nome_empresa);
+  setValor('telefone_empresa', data?.telefone_empresa);
+  setValor('endereco_empresa', data?.endereco_empresa);
+  setValor('cnpj_empresa', data?.cnpj_empresa);
+  setValor('foto_url', data?.foto_url);
+
+  atualizarPreviewLogo(data?.foto_url || '');
+  preencherSelectResponsaveis();
 }
 
 async function salvarPerfil(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    try {
-        const { data: { session }, error: sessionError } =
-            await _supabase.auth.getSession();
+  const session = await obterSessaoPainel();
+  if (!session) return;
 
-        if (sessionError || !session) {
-            alert('Sessão expirada. Faça login novamente.');
-            window.location.href = '/index.html';
-            return;
-        }
+  const responsavelSelecionado = getValor('responsavel_selecionado');
 
-        const nome = getValor('nome');
-        const nomeEmpresa = getValor('nome_empresa');
-        const telefoneEmpresa = getValor('telefone_empresa');
+  const payload = {
+    id: session.user.id,
+    nome: responsavelSelecionado,
+    nome_empresa: getValor('nome_empresa'),
+    telefone_empresa: getValor('telefone_empresa'),
+    endereco_empresa: getValor('endereco_empresa'),
+    cnpj_empresa: getValor('cnpj_empresa'),
+    foto_url: getValor('foto_url'),
+    atualizado_em: new Date().toISOString()
+  };
 
-        if (!nome) {
-            alert('Informe seu nome.');
-            return;
-        }
+  if (!payload.nome || !payload.nome_empresa || !payload.telefone_empresa) {
+    mostrarStatus('status-perfil', 'Selecione um responsável e preencha empresa e WhatsApp.', 'erro');
+    return;
+  }
 
-        if (!nomeEmpresa) {
-            alert('Informe o nome da empresa.');
-            return;
-        }
+  const { error } = await _supabase
+    .from('perfis')
+    .upsert([payload]);
 
-        if (!telefoneEmpresa) {
-            alert('Informe o WhatsApp da empresa.');
-            return;
-        }
+  if (error) {
+    console.error('Erro ao salvar perfil:', error);
+    mostrarStatus('status-perfil', 'Erro ao salvar perfil.', 'erro');
+    return;
+  }
 
-        const payload = {
-            nome: nome,
-            nome_empresa: nomeEmpresa,
-            telefone_empresa: telefoneEmpresa,
-            endereco_empresa: getValor('endereco_empresa'),
-            cnpj_empresa: getValor('cnpj_empresa'),
-            foto_url: getValor('foto_url'),
-            atualizado_em: new Date().toISOString()
-        };
+  perfilAtual = {
+    ...perfilAtual,
+    ...payload
+  };
 
-        const { error } = await _supabase
-            .from('perfis')
-            .update(payload)
-            .eq('id', session.user.id);
+  preencherCamposEstaticos(perfilAtual, session);
+  preencherSelectResponsaveis();
+  renderizarListaResponsaveis();
+  atualizarPainelAssinaturaBasico(perfilAtual);
+  atualizarCardPlano(perfilAtual);
 
-        if (error) {
-            console.error('Erro ao salvar perfil:', error);
-            alert('Erro ao salvar perfil: ' + error.message);
-            return;
-        }
+  if (typeof carregarMenu === 'function') {
+    await carregarMenu(session);
+  }
 
-        localStorage.setItem('usuario_nome', payload.nome || payload.nome_empresa);
-        localStorage.setItem('nome_empresa', payload.nome_empresa);
-        localStorage.setItem('telefone_empresa', payload.telefone_empresa);
-        localStorage.setItem('endereco_empresa', payload.endereco_empresa);
-        localStorage.setItem('cnpj_empresa', payload.cnpj_empresa);
+  mostrarStatus('status-perfil', 'Perfil atualizado com sucesso.', 'sucesso');
 
-        if (payload.foto_url) {
-            localStorage.setItem('foto_url', payload.foto_url);
-        }
-
-        if (typeof carregarMenu === 'function') {
-            await carregarMenu(session);
-        }
-
-        alert('Perfil atualizado com sucesso!');
-
-    } catch (err) {
-        console.error('Erro inesperado ao salvar perfil:', err);
-        alert('Erro inesperado ao salvar perfil.');
-    }
+  setTimeout(() => {
+    fecharModalEditarPerfil();
+  }, 700);
 }
 
-// ==================== UPLOAD DA LOGO ====================
+// ==================== LOGO ====================
+
+function atualizarPreviewLogo(url) {
+  const img = document.getElementById('preview-logo');
+  const placeholder = document.getElementById('logo-placeholder');
+
+  if (!img || !placeholder) return;
+
+  if (url) {
+    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+    placeholder.style.display = 'block';
+  }
+}
+
+function atualizarLogoEstatica(url) {
+  const img = document.getElementById('perfil-logo-img');
+  const placeholder = document.getElementById('perfil-logo-placeholder');
+
+  if (!img || !placeholder) return;
+
+  if (url) {
+    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    img.src = '';
+    img.style.display = 'none';
+    placeholder.style.display = 'block';
+  }
+}
 
 function configurarUploadLogo() {
-    const logoInput = pegarElemento('logo_file');
+  const input = document.getElementById('logo_file');
 
-    if (!logoInput) return;
+  if (!input || input.dataset.configurado === 'sim') return;
 
-    logoInput.addEventListener('change', async (event) => {
-        const file = event.target.files[0];
+  input.dataset.configurado = 'sim';
 
-        if (!file) return;
+  input.addEventListener('change', async event => {
+    const file = event.target.files[0];
 
-        await enviarLogoEmpresa(file);
+    if (!file) return;
 
-        event.target.value = '';
+    await enviarLogoPerfil(file);
+
+    event.target.value = '';
+  });
+}
+
+async function enviarLogoPerfil(file) {
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const tiposPermitidos = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+
+  if (!tiposPermitidos.includes(file.type)) {
+    mostrarStatus('status-logo', 'Formato inválido. Use PNG, JPG, JPEG ou WEBP.', 'erro');
+    return;
+  }
+
+  if (file.size > 700 * 1024) {
+    mostrarStatus('status-logo', 'A imagem deve ter no máximo 700KB.', 'erro');
+    return;
+  }
+
+  const extensao = file.name.split('.').pop().toLowerCase();
+  const caminhoArquivo = `${session.user.id}/logo.${extensao}`;
+
+  const { error: uploadError } = await _supabase.storage
+    .from('logos')
+    .upload(caminhoArquivo, file, {
+      upsert: true,
+      contentType: file.type,
+      cacheControl: '3600'
     });
+
+  if (uploadError) {
+    console.error('Erro ao enviar logo:', uploadError);
+    mostrarStatus('status-logo', 'Erro ao enviar logo: ' + uploadError.message, 'erro');
+    return;
+  }
+
+  const { data: publicUrlData } = _supabase.storage
+    .from('logos')
+    .getPublicUrl(caminhoArquivo);
+
+  const logoUrl = publicUrlData.publicUrl;
+
+  setValor('foto_url', logoUrl);
+  atualizarPreviewLogo(logoUrl);
+  atualizarLogoEstatica(logoUrl);
+
+  const { error: perfilError } = await _supabase
+    .from('perfis')
+    .update({
+      foto_url: logoUrl,
+      atualizado_em: new Date().toISOString()
+    })
+    .eq('id', session.user.id);
+
+  if (perfilError) {
+    console.error('Erro ao salvar URL da logo:', perfilError);
+    mostrarStatus('status-logo', 'Logo enviada, mas não foi possível salvar no perfil.', 'erro');
+    return;
+  }
+
+  perfilAtual = {
+    ...perfilAtual,
+    foto_url: logoUrl
+  };
+
+  localStorage.setItem('foto_url', logoUrl);
+
+  mostrarStatus('status-logo', 'Logo salva com sucesso.', 'sucesso');
 }
 
-async function enviarLogoEmpresa(file) {
-    try {
-        const { data: { session }, error: sessionError } =
-            await _supabase.auth.getSession();
+async function removerLogoPerfil() {
+  const confirmar = confirm('Deseja remover a logo da empresa?');
 
-        if (sessionError || !session) {
-            alert('Sessão expirada. Faça login novamente.');
-            return null;
-        }
+  if (!confirmar) return;
 
-        const tiposPermitidos = ['image/png', 'image/jpeg', 'image/jpg'];
+  const session = await obterSessaoPainel();
+  if (!session) return;
 
-        if (!tiposPermitidos.includes(file.type)) {
-            alert('Formato inválido. Use PNG, JPG ou JPEG.');
-            return null;
-        }
+  await _supabase.storage
+    .from('logos')
+    .remove([
+      `${session.user.id}/logo.png`,
+      `${session.user.id}/logo.jpg`,
+      `${session.user.id}/logo.jpeg`,
+      `${session.user.id}/logo.webp`
+    ]);
 
-        if (file.size > 500 * 1024) {
-            alert('A imagem deve ter no máximo 500KB.');
-            return null;
-        }
+  const { error } = await _supabase
+    .from('perfis')
+    .update({
+      foto_url: '',
+      atualizado_em: new Date().toISOString()
+    })
+    .eq('id', session.user.id);
 
-        const extensao = file.name.split('.').pop().toLowerCase();
+  if (error) {
+    console.error('Erro ao remover logo:', error);
+    mostrarStatus('status-logo', 'Erro ao remover logo.', 'erro');
+    return;
+  }
 
-        // IMPORTANTE:
-        // A policy do Storage espera a pasta com o ID do usuário.
-        // Exemplo: logos/USER_ID/logo.png
-        const caminhoArquivo = `${session.user.id}/logo.${extensao}`;
+  setValor('foto_url', '');
+  atualizarPreviewLogo('');
+  atualizarLogoEstatica('');
 
-        const { error: uploadError } = await _supabase.storage
-            .from('logos')
-            .upload(caminhoArquivo, file, {
-                upsert: true,
-                contentType: file.type,
-                cacheControl: '3600'
-            });
+  perfilAtual = {
+    ...perfilAtual,
+    foto_url: ''
+  };
 
-        if (uploadError) {
-            console.error('Erro ao enviar logo:', uploadError);
-            alert('Erro ao enviar logo: ' + uploadError.message);
-            return null;
-        }
+  localStorage.removeItem('foto_url');
 
-        const { data: publicUrlData } = _supabase.storage
-            .from('logos')
-            .getPublicUrl(caminhoArquivo);
-
-        const logoUrl = publicUrlData.publicUrl;
-
-        const { error: perfilError } = await _supabase
-            .from('perfis')
-            .update({
-                foto_url: logoUrl,
-                atualizado_em: new Date().toISOString()
-            })
-            .eq('id', session.user.id);
-
-        if (perfilError) {
-            console.error('Erro ao salvar URL da logo no perfil:', perfilError);
-            alert('A logo foi enviada, mas houve erro ao salvar no perfil.');
-            return null;
-        }
-
-        setValor('foto_url', logoUrl);
-        mostrarPreviewLogo(logoUrl);
-
-        localStorage.setItem('foto_url', logoUrl);
-
-        if (typeof carregarMenu === 'function') {
-            await carregarMenu(session);
-        }
-
-        alert('Logo salva com sucesso!');
-        return logoUrl;
-
-    } catch (err) {
-        console.error('Erro inesperado ao enviar logo:', err);
-        alert('Erro inesperado ao enviar logo.');
-        return null;
-    }
+  mostrarStatus('status-logo', 'Logo removida com sucesso.', 'sucesso');
 }
 
-async function removerLogoEmpresa() {
-    const confirmar = confirm('Deseja remover a logo da empresa?');
+// ==================== RESPONSÁVEIS ====================
 
-    if (!confirmar) return;
-
-    try {
-        const { data: { session }, error: sessionError } =
-            await _supabase.auth.getSession();
-
-        if (sessionError || !session) {
-            alert('Sessão expirada.');
-            return;
-        }
-
-        const fotoUrlAtual = getValor('foto_url');
-
-        // Remove do perfil primeiro.
-        const { error: perfilError } = await _supabase
-            .from('perfis')
-            .update({
-                foto_url: '',
-                atualizado_em: new Date().toISOString()
-            })
-            .eq('id', session.user.id);
-
-        if (perfilError) {
-            console.error('Erro ao remover logo do perfil:', perfilError);
-            alert('Erro ao remover logo.');
-            return;
-        }
-
-        // Tenta remover arquivos comuns da pasta do usuário.
-        // Se não existir, não tem problema.
-        await _supabase.storage
-            .from('logos')
-            .remove([
-                `${session.user.id}/logo.png`,
-                `${session.user.id}/logo.jpg`,
-                `${session.user.id}/logo.jpeg`
-            ]);
-
-        setValor('foto_url', '');
-        limparPreviewLogo();
-
-        localStorage.removeItem('foto_url');
-
-        if (typeof carregarMenu === 'function') {
-            await carregarMenu(session);
-        }
-
-        alert('Logo removida com sucesso.');
-
-    } catch (err) {
-        console.error('Erro inesperado ao remover logo:', err);
-        alert('Erro inesperado ao remover logo.');
-    }
-}
-
-// Mantém compatibilidade com botões HTML antigos, se existirem.
-window.removerLogoEmpresa = removerLogoEmpresa;
-
-// ==================== MODAL DE SENHA ====================
-
-function configurarModalSenha() {
-    const modal = pegarElemento('modal-senha');
-
-    if (!modal) return;
-
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            fecharModalSenha();
-        }
-    });
-}
-
-function abrirModalSenha() {
-    const modal = pegarElemento('modal-senha');
-
-    if (!modal) {
-        alert('Modal de senha não encontrado no HTML.');
-        return;
-    }
-
-    setValor('senha_atual', '');
-    setValor('nova_senha', '');
-    setValor('confirmar_senha', '');
-
-    modal.style.display = 'flex';
-}
-
-function fecharModalSenha() {
-    const modal = pegarElemento('modal-senha');
-
-    if (modal) {
-        modal.style.display = 'none';
-    }
-
-    setValor('senha_atual', '');
-    setValor('nova_senha', '');
-    setValor('confirmar_senha', '');
-}
-
-async function alterarSenha() {
-    const senhaAtual = getValor('senha_atual');
-    const novaSenha = getValor('nova_senha');
-    const confirmarSenha = getValor('confirmar_senha');
-
-    if (!senhaAtual) {
-        alert('Digite sua senha atual.');
-        return;
-    }
-
-    if (!novaSenha) {
-        alert('Digite a nova senha.');
-        return;
-    }
-
-    if (novaSenha.length < 6) {
-        alert('A nova senha deve ter pelo menos 6 caracteres.');
-        return;
-    }
-
-    if (novaSenha !== confirmarSenha) {
-        alert('As senhas não coincidem.');
-        return;
-    }
-
-    try {
-        const { data: { session }, error: sessionError } =
-            await _supabase.auth.getSession();
-
-        if (sessionError || !session) {
-            alert('Sessão expirada. Faça login novamente.');
-            window.location.href = '/index.html';
-            return;
-        }
-
-        const email = session.user.email;
-
-        // Reautentica com a senha atual antes de permitir alterar.
-        const { error: loginError } =
-            await _supabase.auth.signInWithPassword({
-                email: email,
-                password: senhaAtual
-            });
-
-        if (loginError) {
-            console.error('Senha atual inválida:', loginError);
-            alert('Senha atual incorreta.');
-            return;
-        }
-
-        const { error: updateError } =
-            await _supabase.auth.updateUser({
-                password: novaSenha
-            });
-
-        if (updateError) {
-            console.error('Erro ao atualizar senha:', updateError);
-            alert(updateError.message);
-            return;
-        }
-
-        fecharModalSenha();
-        alert('Senha alterada com sucesso!');
-
-    } catch (err) {
-        console.error('Erro inesperado ao alterar senha:', err);
-        alert('Erro inesperado ao alterar senha.');
-    }
-}
-
-// Disponibiliza funções para onclick do HTML.
-window.abrirModalSenha = abrirModalSenha;
-window.fecharModalSenha = fecharModalSenha;
-window.alterarSenha = alterarSenha;
-
-// ==================== ORÇAMENTOS NO PAINEL, SE EXISTIR ====================
-
-let abaAtualPainel = 'pendentes';
-
-async function carregarOrcamentos() {
-    const lista = pegarElemento('lista-painel');
-
-    if (!lista) return;
-
-    lista.innerHTML = '<tr><td colspan="5">Carregando...</td></tr>';
-
-    try {
-        const response = await fetch(`/admin/orcamentos/${abaAtualPainel}`);
-
-        if (!response.ok) {
-            throw new Error('Erro ao buscar orçamentos.');
-        }
-
-        const orcamentos = await response.json();
-
-        lista.innerHTML = '';
-
-        if (!orcamentos.length) {
-            lista.innerHTML =
-                '<tr><td colspan="5">Nenhum orçamento encontrado.</td></tr>';
-            return;
-        }
-
-        orcamentos.forEach(orc => {
-            lista.innerHTML += `
-                <tr>
-                    <td><strong>${orc.cliente_nome || 'Não informado'}</strong></td>
-                    <td>${orc.cliente_whatsapp || 'Não informado'}</td>
-                    <td>${orc.consultor || 'Sistema'}</td>
-                    <td>R$ ${Number(orc.total || 0).toFixed(2)}</td>
-                    <td>
-                        <span class="status status-${orc.status || 'pendente'}">
-                            ${orc.status || 'pendente'}
-                        </span>
-                    </td>
-                </tr>
-            `;
-        });
-
-    } catch (err) {
-        console.error('Erro ao carregar orçamentos no painel:', err);
-
-        lista.innerHTML =
-            '<tr><td colspan="5" style="color:red">Erro ao carregar dados.</td></tr>';
-    }
+function obterResponsavelSelecionadoNome() {
+  return perfilAtual?.nome || '';
 }
 
 function limiteResponsaveisPorPlano() {
-  const plano = localStorage.getItem('usuario_plano') || 'gratis';
+  const plano = normalizarPlanoPainel(
+    perfilAtual?.plano ||
+    localStorage.getItem('usuario_plano') ||
+    'gratis'
+  );
 
   if (plano === 'premium') return 10;
   if (plano === 'basico') return 2;
@@ -541,12 +662,803 @@ function limiteResponsaveisPorPlano() {
   return 1;
 }
 
+async function carregarResponsaveis() {
+  const session = await obterSessaoPainel();
+  if (!session) return;
 
+  const container = document.getElementById('lista-responsaveis');
 
-// ==================== COMPATIBILIDADE GLOBAL ====================
+  const { data, error } = await _supabase
+    .from('responsaveis_orcamento')
+    .select('*')
+    .eq('usuario_id', session.user.id)
+    .eq('ativo', true)
+    .order('criado_em', { ascending: true });
+
+  if (error) {
+    console.error('Erro ao carregar responsáveis:', error);
+    if (container) container.innerHTML = 'Erro ao carregar responsáveis.';
+    return;
+  }
+
+  responsaveisCache = data || [];
+
+  await garantirResponsavelSelecionadoNaLista(session);
+
+  preencherSelectResponsaveis();
+  renderizarListaResponsaveis();
+}
+
+async function garantirResponsavelSelecionadoNaLista(session) {
+  const nomeSelecionado = perfilAtual?.nome?.trim();
+
+  if (!nomeSelecionado) return;
+
+  const jaExiste = responsaveisCache.some(resp =>
+    String(resp.nome || '').trim().toLowerCase() === nomeSelecionado.toLowerCase()
+  );
+
+  if (jaExiste) return;
+
+  if (responsaveisCache.length >= limiteResponsaveisPorPlano()) return;
+
+  const { data, error } = await _supabase
+    .from('responsaveis_orcamento')
+    .insert({
+      usuario_id: session.user.id,
+      nome: nomeSelecionado,
+      ativo: true
+    })
+    .select()
+    .single();
+
+  if (!error && data) {
+    responsaveisCache.push(data);
+  }
+}
+
+function preencherSelectResponsaveis() {
+  const select = document.getElementById('responsavel_selecionado');
+
+  if (!select) return;
+
+  const selecionado = obterResponsavelSelecionadoNome();
+
+  select.innerHTML = '';
+
+  if (!responsaveisCache.length && selecionado) {
+    const option = document.createElement('option');
+    option.value = selecionado;
+    option.textContent = selecionado;
+    select.appendChild(option);
+    return;
+  }
+
+  if (!responsaveisCache.length) {
+    const option = document.createElement('option');
+    option.value = '';
+    option.textContent = 'Cadastre um responsável';
+    select.appendChild(option);
+    return;
+  }
+
+  responsaveisCache.forEach(resp => {
+    const option = document.createElement('option');
+    option.value = resp.nome;
+    option.textContent = resp.nome;
+    select.appendChild(option);
+  });
+
+  if (selecionado) {
+    select.value = selecionado;
+  }
+
+  if (!select.value && responsaveisCache[0]) {
+    select.value = responsaveisCache[0].nome;
+  }
+}
+
+function renderizarListaResponsaveis() {
+  const container = document.getElementById('lista-responsaveis');
+
+  if (!container) return;
+
+  const selecionado = obterResponsavelSelecionadoNome();
+
+  if (!responsaveisCache.length) {
+    container.innerHTML = `
+      <div class="responsavel-item">
+        <div>
+          <span>Nenhum responsável cadastrado</span>
+          <small>Cadastre um responsável para selecionar no perfil.</small>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = responsaveisCache.map(resp => {
+    const ativo = String(resp.nome || '') === String(selecionado || '');
+
+    return `
+      <div class="responsavel-item ${ativo ? 'selecionado' : ''}">
+        <div>
+          <span>${escaparHtmlPainel(resp.nome)}</span>
+          <small>${ativo ? 'Responsável selecionado' : 'Responsável cadastrado'}</small>
+        </div>
+
+        <button type="button" onclick="excluirResponsavel('${resp.id}')">
+          Excluir
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function abrirModalResponsavelInterno() {
+  const limite = limiteResponsaveisPorPlano();
+
+  if (responsaveisCache.length >= limite) {
+    alert(`Seu plano permite no máximo ${limite} responsável(is).`);
+    return;
+  }
+
+  const input = document.getElementById('novo-responsavel-nome');
+  if (input) input.value = '';
+
+  const status = document.getElementById('status-responsavel');
+  if (status) {
+    status.className = 'status-msg';
+    status.innerText = '';
+  }
+
+  const modal = document.getElementById('modal-responsavel-interno');
+  if (modal) modal.style.display = 'flex';
+
+  setTimeout(() => {
+    if (input) input.focus();
+  }, 100);
+}
+
+function fecharModalResponsavelInterno() {
+  const modal = document.getElementById('modal-responsavel-interno');
+  if (modal) modal.style.display = 'none';
+}
+
+async function salvarResponsavel() {
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const input = document.getElementById('novo-responsavel-nome');
+  const nome = input?.value?.trim() || '';
+
+  if (!nome) {
+    mostrarStatus('status-responsavel', 'Informe o nome do responsável.', 'erro');
+    return;
+  }
+
+  const limite = limiteResponsaveisPorPlano();
+
+  if (responsaveisCache.length >= limite) {
+    mostrarStatus('status-responsavel', `Seu plano permite no máximo ${limite} responsável(is).`, 'erro');
+    return;
+  }
+
+  const jaExiste = responsaveisCache.some(resp =>
+    String(resp.nome || '').trim().toLowerCase() === nome.toLowerCase()
+  );
+
+  if (jaExiste) {
+    mostrarStatus('status-responsavel', 'Este responsável já está cadastrado.', 'erro');
+    return;
+  }
+
+  const { data, error } = await _supabase
+    .from('responsaveis_orcamento')
+    .insert({
+      usuario_id: session.user.id,
+      nome,
+      ativo: true
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Erro ao salvar responsável:', error);
+    mostrarStatus('status-responsavel', 'Erro ao salvar responsável.', 'erro');
+    return;
+  }
+
+  if (data) {
+    responsaveisCache.push(data);
+  }
+
+  fecharModalResponsavelInterno();
+
+  if (!perfilAtual?.nome) {
+    perfilAtual = {
+      ...perfilAtual,
+      nome
+    };
+  }
+
+  preencherSelectResponsaveis();
+
+  const select = document.getElementById('responsavel_selecionado');
+  if (select) select.value = nome;
+
+  renderizarListaResponsaveis();
+}
+
+async function excluirResponsavel(id) {
+  const responsavel = responsaveisCache.find(resp => resp.id === id);
+
+  if (responsavel && responsavel.nome === perfilAtual?.nome) {
+    alert('Este responsável está selecionado. Selecione outro responsável antes de excluir.');
+    return;
+  }
+
+  const confirmar = confirm('Deseja excluir este responsável?');
+
+  if (!confirmar) return;
+
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const { error } = await _supabase
+    .from('responsaveis_orcamento')
+    .delete()
+    .eq('id', id)
+    .eq('usuario_id', session.user.id);
+
+  if (error) {
+    console.error('Erro ao excluir responsável:', error);
+    alert('Erro ao excluir responsável.');
+    return;
+  }
+
+  responsaveisCache = responsaveisCache.filter(resp => resp.id !== id);
+  preencherSelectResponsaveis();
+  renderizarListaResponsaveis();
+}
+
+// ==================== MODAIS PERFIL / SENHA ====================
+
+function abrirModalEditarPerfil() {
+  preencherFormularioEdicao(perfilAtual || {});
+  preencherSelectResponsaveis();
+  renderizarListaResponsaveis();
+
+  const modal = document.getElementById('modal-editar-perfil');
+  if (modal) modal.style.display = 'flex';
+}
+
+function fecharModalEditarPerfil() {
+  const modal = document.getElementById('modal-editar-perfil');
+  if (modal) modal.style.display = 'none';
+}
+
+function abrirModalSenha() {
+  setValor('senha_atual', '');
+  setValor('nova_senha', '');
+  setValor('confirmar_senha', '');
+
+  const modal = document.getElementById('modal-senha');
+  if (modal) modal.style.display = 'flex';
+}
+
+function fecharModalSenha() {
+  const modal = document.getElementById('modal-senha');
+  if (modal) modal.style.display = 'none';
+}
+
+async function alterarSenhaSegura() {
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const senhaAtual = getValor('senha_atual');
+  const novaSenha = getValor('nova_senha');
+  const confirmarSenha = getValor('confirmar_senha');
+
+  if (!senhaAtual) {
+    mostrarStatus('status-senha', 'Informe sua senha atual.', 'erro');
+    return;
+  }
+
+  if (!novaSenha || novaSenha.length < 6) {
+    mostrarStatus('status-senha', 'A nova senha deve ter pelo menos 6 caracteres.', 'erro');
+    return;
+  }
+
+  if (novaSenha !== confirmarSenha) {
+    mostrarStatus('status-senha', 'As senhas não coincidem.', 'erro');
+    return;
+  }
+
+  const { error: loginError } = await _supabase.auth.signInWithPassword({
+    email: session.user.email,
+    password: senhaAtual
+  });
+
+  if (loginError) {
+    console.error('Senha atual incorreta:', loginError);
+    mostrarStatus('status-senha', 'Senha atual incorreta.', 'erro');
+    return;
+  }
+
+  const { error: updateError } = await _supabase.auth.updateUser({
+    password: novaSenha
+  });
+
+  if (updateError) {
+    console.error('Erro ao alterar senha:', updateError);
+    mostrarStatus('status-senha', 'Erro ao alterar senha.', 'erro');
+    return;
+  }
+
+  fecharModalSenha();
+  alert('Senha alterada com sucesso.');
+}
+
+// ==================== DASHBOARD ====================
+
+function garantirDashboardNoHtml() {
+  if (dashboardJaCriado) return;
+
+  const container = document.querySelector('.painel-container');
+  if (!container) return;
+
+  const painelAviso = document.querySelector('.painel-aviso');
+
+  const dashboard = document.createElement('section');
+  dashboard.id = 'dashboard-painel';
+  dashboard.className = 'painel-card';
+  dashboard.innerHTML = `
+    <h2>Resumo da Conta</h2>
+
+    <div id="painel-plano-aviso" class="painel-plano-aviso" style="display:none;"></div>
+
+    <div class="perfil-dados-grid" style="margin-bottom:18px;">
+      <div class="info-card">
+        <strong>Status do plano</strong>
+        <span id="perfil-plano-status">-</span>
+      </div>
+
+      <div class="info-card">
+        <strong>Expira em</strong>
+        <span id="perfil-plano-expira">-</span>
+      </div>
+    </div>
+
+    <div class="perfil-dados-grid">
+      <div class="info-card">
+        <strong>Total de orçamentos</strong>
+        <span id="dash-total-orcamentos">0</span>
+      </div>
+
+      <div class="info-card">
+        <strong>Pendentes</strong>
+        <span id="dash-pendentes">0</span>
+      </div>
+
+      <div class="info-card">
+        <strong>Aprovados no mês</strong>
+        <span id="dash-aprovados-mes">0</span>
+      </div>
+
+      <div class="info-card">
+        <strong>Valor aprovado no mês</strong>
+        <span id="dash-valor-aprovado-mes">R$ 0,00</span>
+      </div>
+
+      <div class="info-card">
+        <strong>Taxa de aprovação</strong>
+        <span id="dash-taxa-aprovacao">0%</span>
+      </div>
+
+      <div class="info-card">
+        <strong>Última atualização</strong>
+        <span id="dash-atualizado-em">-</span>
+      </div>
+    </div>
+  `;
+
+  if (painelAviso) {
+    painelAviso.insertAdjacentElement('afterend', dashboard);
+  } else {
+    container.prepend(dashboard);
+  }
+
+  const ultimos = document.createElement('section');
+  ultimos.id = 'ultimos-orcamentos-painel';
+  ultimos.className = 'painel-card';
+  ultimos.innerHTML = `
+    <h2>Últimos Orçamentos</h2>
+    <div id="lista-ultimos-orcamentos-painel">
+      <div class="painel-aviso">Carregando últimos orçamentos...</div>
+    </div>
+  `;
+
+  const primeiroCardDados = container.querySelector('.painel-card');
+  if (primeiroCardDados) {
+    primeiroCardDados.insertAdjacentElement('afterend', ultimos);
+  } else {
+    container.appendChild(ultimos);
+  }
+
+  dashboardJaCriado = true;
+}
+
+async function carregarDashboardPainel() {
+  garantirDashboardNoHtml();
+
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const { data, error } = await _supabase
+    .from('orcamentos')
+    .select('id, status, total, criado_em')
+    .eq('usuario_id', session.user.id);
+
+  if (error) {
+    console.warn('Não foi possível carregar dashboard:', error);
+    return;
+  }
+
+  const orcamentos = data || [];
+
+  const agora = new Date();
+  const mesAtual = agora.getMonth();
+  const anoAtual = agora.getFullYear();
+
+  const total = orcamentos.length;
+  const pendentes = orcamentos.filter(o => (o.status || 'pendente') === 'pendente').length;
+  const aprovados = orcamentos.filter(o => (o.status || '') === 'aprovado');
+
+  const aprovadosMes = aprovados.filter(o => {
+    const d = new Date(o.criado_em);
+    return !isNaN(d.getTime()) && d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
+  });
+
+  const valorAprovadoMes = aprovadosMes.reduce((soma, o) => soma + Number(o.total || 0), 0);
+  const taxaAprovacao = total > 0 ? Math.round((aprovados.length / total) * 100) : 0;
+
+  atualizarTexto('dash-total-orcamentos', total);
+  atualizarTexto('dash-pendentes', pendentes);
+  atualizarTexto('dash-aprovados-mes', aprovadosMes.length);
+  atualizarTexto('dash-valor-aprovado-mes', formatarMoedaPainel(valorAprovadoMes));
+  atualizarTexto('dash-taxa-aprovacao', `${taxaAprovacao}%`);
+  atualizarTexto('dash-atualizado-em', formatarDataHoraPainel(new Date().toISOString()));
+}
+
+function atualizarTexto(id, valor) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = valor;
+}
+
+async function carregarUltimosOrcamentosPainel() {
+  garantirDashboardNoHtml();
+
+  const container = document.getElementById('lista-ultimos-orcamentos-painel');
+  if (!container) return;
+
+  const session = await obterSessaoPainel();
+  if (!session) return;
+
+  const { data, error } = await _supabase
+    .from('orcamentos')
+    .select('id, numero_orcamento, assunto, cliente_nome, total, status, forma_pagamento, criado_em')
+    .eq('usuario_id', session.user.id)
+    .order('criado_em', { ascending: false })
+    .limit(6);
+
+  if (error) {
+    console.warn('Erro ao buscar últimos orçamentos:', error);
+    container.innerHTML = `<div class="painel-aviso">Não foi possível carregar os últimos orçamentos.</div>`;
+    return;
+  }
+
+  const orcamentos = data || [];
+
+  if (!orcamentos.length) {
+    container.innerHTML = `<div class="painel-aviso">Nenhum orçamento criado ainda.</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="width:100%; overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; min-width:720px; background:#fff; border-radius:12px; overflow:hidden;">
+        <thead>
+          <tr style="background:#3e2723; color:#ffc400;">
+            <th style="padding:10px; text-align:left;">Nº</th>
+            <th style="padding:10px; text-align:left;">Cliente</th>
+            <th style="padding:10px; text-align:left;">Assunto</th>
+            <th style="padding:10px; text-align:left;">Status</th>
+            <th style="padding:10px; text-align:left;">Pagamento</th>
+            <th style="padding:10px; text-align:right;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orcamentos.map(o => `
+            <tr>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-'}
+              </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(o.cliente_nome || '-')}
+              </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(o.assunto || '-')}
+              </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(statusOrcamentoLabel(o.status))}
+              </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(o.forma_pagamento || '-')}
+              </td>
+              <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">
+                ${formatarMoedaPainel(o.total)}
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+// ==================== PIX PLANO BÁSICO ====================
+
+function formatarMoedaPix(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+}
+
+function abrirModalPixBasico() {
+  const modal = document.getElementById('modal-pix-basico');
+
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function fecharModalPixBasico() {
+  const modal = document.getElementById('modal-pix-basico');
+
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function setEstadoModalPixCarregando() {
+  abrirModalPixBasico();
+
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  if (loading) loading.style.display = 'block';
+  if (conteudo) conteudo.style.display = 'none';
+
+  if (erro) {
+    erro.style.display = 'none';
+    erro.innerText = '';
+  }
+}
+
+function setEstadoModalPixErro(mensagem) {
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  if (loading) loading.style.display = 'none';
+  if (conteudo) conteudo.style.display = 'none';
+
+  if (erro) {
+    erro.style.display = 'block';
+    erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
+  }
+}
+
+function setEstadoModalPixConteudo(dados) {
+  const loading = document.getElementById('pix-loading');
+  const conteudo = document.getElementById('pix-conteudo');
+  const erro = document.getElementById('pix-erro');
+
+  const subtitulo = document.getElementById('pix-modal-subtitulo');
+  const planoLabelEl = document.getElementById('pix-plano-label');
+  const pixValor = document.getElementById('pix-valor');
+  const qrImg = document.getElementById('pix-qrcode-img');
+  const copiaCola = document.getElementById('pix-copia-cola');
+
+  pagamentoPixAtualId = dados.pagamento_id || null;
+
+  if (loading) loading.style.display = 'none';
+  if (conteudo) conteudo.style.display = 'block';
+  if (erro) erro.style.display = 'none';
+
+  if (subtitulo) subtitulo.innerText = `${dados.label || 'Plano Básico'} - ${formatarMoedaPix(dados.valor)}`;
+  if (planoLabelEl) planoLabelEl.innerText = dados.label || 'Plano Básico';
+  if (pixValor) pixValor.innerText = formatarMoedaPix(dados.valor);
+
+  if (qrImg) {
+    if (dados.qr_code) {
+      qrImg.src = dados.qr_code;
+      qrImg.style.display = 'inline-block';
+    } else {
+      qrImg.src = '';
+      qrImg.style.display = 'none';
+    }
+  }
+
+  if (copiaCola) {
+    copiaCola.value = dados.pix_copia_cola || '';
+  }
+}
+
+async function gerarPixPlanoBasico(periodo) {
+  try {
+    if (!window._supabase) {
+      alert('Supabase não carregou. Atualize a página e tente novamente.');
+      return;
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session) {
+      alert('Faça login para assinar o Plano Básico.');
+      return;
+    }
+
+    setEstadoModalPixCarregando();
+
+    const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({ periodo })
+    });
+
+    const dados = await resposta.json().catch(() => ({}));
+
+    if (!resposta.ok) {
+      setEstadoModalPixErro(dados.erro || 'Erro ao gerar Pix.');
+      return;
+    }
+
+    setEstadoModalPixConteudo(dados);
+
+  } catch (error) {
+    console.error('Erro ao gerar Pix:', error);
+    setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
+  }
+}
+
+async function copiarPixCopiaCola() {
+  const campo = document.getElementById('pix-copia-cola');
+
+  if (!campo || !campo.value) {
+    alert('Pix copia e cola não disponível.');
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(campo.value);
+    alert('Pix copia e cola copiado!');
+  } catch (error) {
+    campo.select();
+    document.execCommand('copy');
+    alert('Pix copia e cola copiado!');
+  }
+}
+
+async function verificarPagamentoPixAtual() {
+  if (!pagamentoPixAtualId) {
+    alert('Nenhum pagamento Pix foi gerado nesta tela.');
+    return;
+  }
+
+  if (!window._supabase) {
+    alert('Supabase não carregou. Atualize a página.');
+    return;
+  }
+
+  const { data: { session } } = await _supabase.auth.getSession();
+
+  if (!session) {
+    alert('Faça login novamente para verificar o pagamento.');
+    return;
+  }
+
+  const { data, error } = await _supabase
+    .from('pagamentos_pix')
+    .select('status, pago_em')
+    .eq('id', pagamentoPixAtualId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Erro ao verificar pagamento:', error);
+    alert('Não foi possível verificar o pagamento agora.');
+    return;
+  }
+
+  if (!data) {
+    alert('Pagamento não encontrado.');
+    return;
+  }
+
+  if (data.status === 'pago') {
+    alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
+    fecharModalPixBasico();
+
+    await carregarPerfil();
+    await carregarDashboardPainel();
+    await carregarUltimosOrcamentosPainel();
+
+    return;
+  }
+
+  alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
+}
+
+// ==================== GERADOR GLOBAL ====================
+
+function abrirGeradorGlobal() {
+  window.location.href = '/gerador.html';
+}
+
+// ==================== EVENTOS GLOBAIS ====================
+
+document.addEventListener('click', event => {
+  const modalPerfil = document.getElementById('modal-editar-perfil');
+  const modalSenha = document.getElementById('modal-senha');
+  const modalResponsavel = document.getElementById('modal-responsavel-interno');
+  const modalPix = document.getElementById('modal-pix-basico');
+
+  if (event.target === modalPerfil) fecharModalEditarPerfil();
+  if (event.target === modalSenha) fecharModalSenha();
+  if (event.target === modalResponsavel) fecharModalResponsavelInterno();
+  if (event.target === modalPix) fecharModalPixBasico();
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    fecharModalResponsavelInterno();
+    fecharModalEditarPerfil();
+    fecharModalSenha();
+    fecharModalPixBasico();
+  }
+});
+
+// ==================== EXPORTAÇÕES GLOBAIS ====================
 
 window.carregarPerfil = carregarPerfil;
 window.salvarPerfil = salvarPerfil;
 window.configurarUploadLogo = configurarUploadLogo;
-window.enviarLogoEmpresa = enviarLogoEmpresa;
-window.carregarOrcamentos = carregarOrcamentos;
+window.enviarLogoPerfil = enviarLogoPerfil;
+window.removerLogoPerfil = removerLogoPerfil;
+
+window.abrirModalEditarPerfil = abrirModalEditarPerfil;
+window.fecharModalEditarPerfil = fecharModalEditarPerfil;
+
+window.abrirModalSenha = abrirModalSenha;
+window.fecharModalSenha = fecharModalSenha;
+window.alterarSenhaSegura = alterarSenhaSegura;
+
+window.abrirModalResponsavelInterno = abrirModalResponsavelInterno;
+window.fecharModalResponsavelInterno = fecharModalResponsavelInterno;
+window.salvarResponsavel = salvarResponsavel;
+window.excluirResponsavel = excluirResponsavel;
+
+window.gerarPixPlanoBasico = gerarPixPlanoBasico;
+window.copiarPixCopiaCola = copiarPixCopiaCola;
+window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
+window.fecharModalPixBasico = fecharModalPixBasico;
+
+window.abrirGeradorGlobal = abrirGeradorGlobal;
