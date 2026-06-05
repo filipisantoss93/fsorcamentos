@@ -11,6 +11,18 @@
   <link rel="shortcut icon" href="/favicon.png">
 
   <style>
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #2c1b17;
+      --fs-creme: #f4ece1;
+      --fs-creme-2: #fffaf0;
+      --fs-amarelo: #ffc400;
+      --fs-verde: #25d366;
+      --fs-vermelho: #dc2626;
+      --fs-azul: #2563eb;
+      --fs-borda: #e0d6c8;
+    }
+
     .orcamentos-header {
       display: flex;
       justify-content: space-between;
@@ -20,14 +32,37 @@
       margin-bottom: 16px;
     }
 
+    .orcamentos-header h1 {
+      margin: 0;
+    }
+
+    .btn-novo-orcamento-topo {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-weight: 900;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+    }
+
+    .btn-novo-orcamento-topo:hover {
+      background: #fff;
+    }
+
     .filtro-flutuante {
       position: sticky;
       top: 76px;
       z-index: 850;
       background: rgba(244, 236, 225, 0.96);
       backdrop-filter: blur(8px);
-      border: 1px solid #e0d6c8;
-      border-left: 5px solid #ffc400;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
       border-radius: 14px;
       padding: 12px;
       margin: 0 0 18px 0;
@@ -49,21 +84,105 @@
 
     .filtro-grupo label {
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       color: #5d4037;
       text-transform: uppercase;
       letter-spacing: .3px;
     }
 
-    .filtro-grupo select {
+    .filtro-grupo select,
+    .filtro-grupo input {
       width: 100%;
       padding: 10px;
       border: 1px solid #d7ccc8;
       border-radius: 10px;
       background: #fff;
-      color: #3e2723;
+      color: var(--fs-marrom);
       font-weight: 700;
       box-sizing: border-box;
+    }
+
+    .cards-resumo {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .card-resumo {
+      border-radius: 12px;
+      padding: 14px;
+      background: #f9f9f9;
+      border-left: 5px solid #d7ccc8;
+    }
+
+    .card-resumo strong {
+      display: block;
+      font-size: 12px;
+      color: #5d4037;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .card-resumo .valor-resumo {
+      display: block;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--fs-marrom);
+    }
+
+    .card-resumo small {
+      color: #777;
+    }
+
+    .card-pendente { border-left-color: #ffc107; background: #fff8e1; }
+    .card-aprovado { border-left-color: #28a745; background: #eaf7ed; }
+    .card-recusado { border-left-color: #dc3545; background: #fdecee; }
+    .card-em-servico { border-left-color: #2563eb; background: #eff6ff; }
+    .card-finalizado { border-left-color: #7c3aed; background: #f3e8ff; }
+    .card-total { border-left-color: var(--fs-marrom); background: #efebe9; }
+
+    .resumo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 12px 16px;
+      border-radius: 12px 12px 0 0;
+      cursor: pointer;
+      margin-top: 18px;
+    }
+
+    .resumo-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--fs-amarelo);
+      border: none;
+      padding: 0;
+    }
+
+    .btn-toggle-resumo {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: none;
+      border-radius: 20px;
+      padding: 7px 12px;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .resumo-financeiro.minimizado .resumo-conteudo {
+      display: none;
+    }
+
+    .resumo-conteudo {
+      background: var(--fs-creme);
+      border: 1px solid #d7ccc8;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 15px;
     }
 
     .tabela-wrapper {
@@ -75,9 +194,9 @@
       width: 100%;
       border-collapse: collapse;
       background: #fff;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
-      min-width: 850px;
+      min-width: 1100px;
     }
 
     .tabela-orcamentos th,
@@ -90,10 +209,11 @@
     }
 
     .tabela-orcamentos th {
-      background: #3e2723;
-      color: #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
       text-transform: uppercase;
       font-size: 12px;
+      white-space: nowrap;
     }
 
     .linha-orcamento {
@@ -121,16 +241,16 @@
     .status {
       display: inline-block;
       padding: 4px 10px;
-      border-radius: 12px;
+      border-radius: 999px;
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 900;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
     .linha-orcamento .status {
-      background: rgba(255, 255, 255, 0.68) !important;
-      color: #3e2723 !important;
+      background: rgba(255, 255, 255, 0.72) !important;
+      color: var(--fs-marrom) !important;
       border: 1px solid rgba(0,0,0,0.08);
     }
 
@@ -140,18 +260,59 @@
     .status-em_servico { background: #dbeafe; color: #1e40af; }
     .status-finalizado { background: #ede9fe; color: #5b21b6; }
 
-    .btn-pequeno {
-      border: none;
-      padding: 7px 10px;
-      border-radius: 6px;
-      cursor: pointer;
+    .tag-pagamento {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid #d7ccc8;
+      border-radius: 999px;
+      padding: 4px 9px;
       font-size: 12px;
-      font-weight: bold;
+      font-weight: 900;
+      color: #5d4037;
+      white-space: nowrap;
     }
 
-    .btn-editar { background: #2563eb; color: #fff; }
-    .btn-excluir { background: #dc2626; color: #fff; }
-    .btn-whatsapp-orcamento { background: #25d366; color: #123b20; }
+    .tag-pagamento.vazio {
+      opacity: .65;
+      font-weight: 700;
+    }
+
+    .btn-pequeno {
+      border: none;
+      padding: 8px 11px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 900;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .btn-editar { background: var(--fs-azul); color: #fff; }
+    .btn-excluir { background: var(--fs-vermelho); color: #fff; }
+    .btn-whatsapp-orcamento { background: var(--fs-verde); color: #123b20; }
+    .btn-ver-link { background: var(--fs-marrom); color: var(--fs-amarelo); }
+    .btn-cancelar { background: #777; color: #fff; }
+    .btn-salvar-modal { background: #2e7d32; color: #fff; }
+    .btn-add-item {
+      background: #4e342e;
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      padding: 9px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 900;
+      margin-top: 10px;
+    }
+
+    .acoes-tabela {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
 
     .msg-vazia {
       padding: 20px;
@@ -159,7 +320,7 @@
       color: #5d4037;
       border-radius: 8px;
       text-align: center;
-      font-weight: bold;
+      font-weight: 900;
     }
 
     .modal-overlay-orcamento {
@@ -176,21 +337,21 @@
     .modal-orcamento,
     .modal-visualizacao {
       width: 100%;
-      max-width: 850px;
+      max-width: 900px;
       max-height: 90vh;
       overflow-y: auto;
-      background: #f4ece1;
-      color: #3e2723;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
       border-radius: 16px;
       padding: 22px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-      border-top: 5px solid #ffc400;
+      border-top: 5px solid var(--fs-amarelo);
     }
 
     .modal-orcamento h2,
     .modal-visualizacao h2 {
       margin-top: 0;
-      border-bottom: 2px solid #ffc400;
+      border-bottom: 2px solid var(--fs-amarelo);
       padding-bottom: 10px;
     }
 
@@ -205,7 +366,7 @@
     .campo-modal label {
       display: block;
       font-size: 13px;
-      font-weight: bold;
+      font-weight: 900;
       color: #5d4037;
       margin-bottom: 4px;
     }
@@ -215,7 +376,7 @@
       width: 100%;
       padding: 10px;
       border: 1px solid #d7ccc8;
-      border-radius: 6px;
+      border-radius: 8px;
       box-sizing: border-box;
       font-size: 14px;
       background: #fff;
@@ -225,13 +386,20 @@
       background: #fff;
       border-radius: 10px;
       padding: 14px;
-      border-left: 5px solid #ffc400;
+      border-left: 5px solid var(--fs-amarelo);
+      min-width: 0;
     }
 
     .visual-card strong {
       display: block;
-      color: #3e2723;
+      color: var(--fs-marrom);
       margin-bottom: 4px;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .visual-card span {
+      word-break: break-word;
     }
 
     .editor-itens {
@@ -274,8 +442,8 @@
     }
 
     .tabela-itens-visual th {
-      background: #3e2723;
-      color: #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
       text-align: left;
     }
 
@@ -284,8 +452,8 @@
       text-align: right;
       margin-top: 14px;
       font-size: 22px;
-      font-weight: bold;
-      color: #3e2723;
+      font-weight: 900;
+      color: var(--fs-marrom);
     }
 
     .botoes-modal {
@@ -296,98 +464,6 @@
       margin-top: 20px;
     }
 
-    .btn-cancelar { background: #777; color: #fff; }
-    .btn-salvar-modal { background: #2e7d32; color: #fff; }
-
-    .btn-add-item {
-      background: #4e342e;
-      color: #ffc400;
-      border: 1px solid #ffc400;
-      padding: 9px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .cards-resumo {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 12px;
-    }
-
-    .card-resumo {
-      border-radius: 12px;
-      padding: 14px;
-      background: #f9f9f9;
-      border-left: 5px solid #d7ccc8;
-    }
-
-    .card-resumo strong {
-      display: block;
-      font-size: 12px;
-      color: #5d4037;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-    }
-
-    .card-resumo .valor-resumo {
-      display: block;
-      font-size: 18px;
-      font-weight: 800;
-      color: #3e2723;
-    }
-
-    .card-resumo small { color: #777; }
-    .card-pendente { border-left-color: #ffc107; background: #fff8e1; }
-    .card-aprovado { border-left-color: #28a745; background: #eaf7ed; }
-    .card-recusado { border-left-color: #dc3545; background: #fdecee; }
-    .card-em-servico { border-left-color: #2563eb; background: #eff6ff; }
-    .card-finalizado { border-left-color: #7c3aed; background: #f3e8ff; }
-    .card-total { border-left-color: #3e2723; background: #efebe9; }
-
-    .resumo-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      background: #3e2723;
-      color: #ffc400;
-      padding: 12px 16px;
-      border-radius: 12px 12px 0 0;
-      cursor: pointer;
-      margin-top: 18px;
-    }
-
-    .resumo-header h2 {
-      margin: 0;
-      font-size: 18px;
-      color: #ffc400;
-      border: none;
-      padding: 0;
-    }
-
-    .btn-toggle-resumo {
-      background: #ffc400;
-      color: #3e2723;
-      border: none;
-      border-radius: 20px;
-      padding: 7px 12px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .resumo-financeiro.minimizado .resumo-conteudo { display: none; }
-
-    .resumo-conteudo {
-      background: #f4ece1;
-      border: 1px solid #d7ccc8;
-      border-top: none;
-      border-radius: 0 0 12px 12px;
-      padding: 15px;
-    }
-
     .upgrade-orcamentos-box {
       max-width: 1120px;
       margin: 32px auto;
@@ -396,58 +472,43 @@
     }
 
     .upgrade-hero {
-      background: linear-gradient(135deg, #3e2723, #241512);
+      background: linear-gradient(135deg, var(--fs-marrom), #241512);
       color: #fff;
       border-radius: 24px;
       padding: 34px 24px;
-      border: 2px solid #ffc400;
+      border: 2px solid var(--fs-amarelo);
       box-shadow: 0 18px 46px rgba(0,0,0,0.30);
       text-align: center;
       margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .upgrade-hero::before {
-      content: "";
-      position: absolute;
-      inset: -80px auto auto -80px;
-      width: 180px;
-      height: 180px;
-      background: rgba(255,196,0,0.16);
-      border-radius: 50%;
     }
 
     .upgrade-tag {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #ffc400;
-      color: #3e2723;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
       border-radius: 999px;
       padding: 7px 14px;
       font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
       margin-bottom: 12px;
-      position: relative;
     }
 
     .upgrade-hero h1 {
       margin: 0 0 10px 0;
-      color: #ffc400;
+      color: var(--fs-amarelo);
       font-size: 30px;
       line-height: 1.15;
-      position: relative;
     }
 
     .upgrade-hero p {
       max-width: 780px;
       margin: 0 auto;
-      color: #f4ece1;
+      color: var(--fs-creme);
       font-size: 16px;
       line-height: 1.55;
-      position: relative;
     }
 
     .upgrade-beneficios-grid {
@@ -459,10 +520,10 @@
 
     .upgrade-beneficio {
       background: #fff;
-      color: #3e2723;
+      color: var(--fs-marrom);
       border-radius: 16px;
       padding: 16px;
-      border-left: 6px solid #ffc400;
+      border-left: 6px solid var(--fs-amarelo);
       box-shadow: 0 8px 22px rgba(0,0,0,0.12);
     }
 
@@ -483,11 +544,11 @@
       max-width: 1150px;
       margin: 22px auto 34px;
       padding: 34px 24px;
-      background: linear-gradient(135deg, #fffaf0, #f4ece1);
+      background: linear-gradient(135deg, #fffaf0, var(--fs-creme));
       border-radius: 24px;
-      border-top: 6px solid #ffc400;
+      border-top: 6px solid var(--fs-amarelo);
       box-shadow: 0 12px 35px rgba(0,0,0,0.14);
-      color: #3e2723;
+      color: var(--fs-marrom);
     }
 
     .planos-pix-topo {
@@ -498,28 +559,15 @@
 
     .tag-plano-pix {
       display: inline-block;
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
       border-radius: 999px;
       padding: 7px 15px;
       font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
       margin-bottom: 12px;
-    }
-
-    .planos-pix-topo h2 {
-      margin: 0 0 10px 0;
-      font-size: 30px;
-      color: #3e2723;
-    }
-
-    .planos-pix-topo p {
-      margin: 0;
-      color: #6d4c41;
-      font-size: 16px;
-      line-height: 1.55;
     }
 
     .planos-pix-grid {
@@ -534,14 +582,14 @@
       border-radius: 18px;
       padding: 24px;
       border: 1px solid #eadfce;
-      border-top: 5px solid #ffc400;
+      border-top: 5px solid var(--fs-amarelo);
       box-shadow: 0 8px 22px rgba(0,0,0,0.12);
       text-align: center;
     }
 
     .plano-pix-card.destaque {
       transform: scale(1.03);
-      border: 2px solid #ffc400;
+      border: 2px solid var(--fs-amarelo);
       box-shadow: 0 14px 34px rgba(0,0,0,0.20);
     }
 
@@ -550,9 +598,9 @@
       top: -14px;
       left: 50%;
       transform: translateX(-50%);
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
       border-radius: 999px;
       padding: 6px 12px;
       font-size: 11px;
@@ -563,14 +611,14 @@
     .plano-pix-periodo {
       font-size: 22px;
       font-weight: 900;
-      color: #3e2723;
+      color: var(--fs-marrom);
       margin-bottom: 8px;
     }
 
     .plano-pix-preco {
       font-size: 32px;
       font-weight: 900;
-      color: #3e2723;
+      color: var(--fs-marrom);
       margin-bottom: 12px;
     }
 
@@ -585,24 +633,22 @@
     .plano-pix-card button {
       width: 100%;
       border: none;
-      background: #ffc400;
-      color: #3e2723;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
       border-radius: 12px;
       padding: 13px 16px;
       font-weight: 900;
       cursor: pointer;
-      border: 2px solid #3e2723;
+      border: 2px solid var(--fs-marrom);
       box-shadow: 0 8px 18px rgba(0,0,0,0.16);
     }
 
-    .plano-pix-card button:hover { background: #ffffff; }
-
     .plano-pix-beneficios {
       margin-top: 26px;
-      background: #3e2723;
+      background: var(--fs-marrom);
       color: #ffffff;
       border-radius: 18px;
-      border: 2px solid #ffc400;
+      border: 2px solid var(--fs-amarelo);
       padding: 18px;
       display: flex;
       flex-wrap: wrap;
@@ -611,14 +657,14 @@
 
     .plano-pix-beneficios strong {
       width: 100%;
-      color: #ffc400;
+      color: var(--fs-amarelo);
       font-size: 18px;
     }
 
     .plano-pix-beneficios span {
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,196,0,0.35);
-      color: #f4ece1;
+      color: var(--fs-creme);
       border-radius: 999px;
       padding: 8px 12px;
       font-size: 13px;
@@ -640,16 +686,16 @@
       width: min(100%, 520px);
       max-height: 92vh;
       overflow-y: auto;
-      background: #f4ece1;
-      color: #3e2723;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
       border-radius: 18px;
-      border-top: 5px solid #ffc400;
+      border-top: 5px solid var(--fs-amarelo);
       box-shadow: 0 24px 70px rgba(0,0,0,0.55);
     }
 
     .modal-pix-topo {
-      background: #3e2723;
-      color: #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
       padding: 15px;
       display: flex;
       justify-content: space-between;
@@ -658,17 +704,17 @@
     }
 
     .modal-pix-topo strong { display: block; font-size: 18px; }
-    .modal-pix-topo span { display: block; color: #f4ece1; font-size: 12px; margin-top: 3px; }
+    .modal-pix-topo span { display: block; color: var(--fs-creme); font-size: 12px; margin-top: 3px; }
 
     .modal-pix-topo button {
-      background: #dc2626;
+      background: var(--fs-vermelho);
       color: #ffffff;
       border: none;
       border-radius: 9px;
       width: 34px;
       height: 34px;
       font-size: 22px;
-      font-weight: bold;
+      font-weight: 900;
       cursor: pointer;
       flex-shrink: 0;
     }
@@ -678,13 +724,12 @@
       margin: 18px;
       padding: 16px;
       border-radius: 12px;
-      font-weight: 800;
+      font-weight: 900;
       text-align: center;
     }
 
-    .pix-loading { background: #fff8e1; border-left: 5px solid #ffc400; color: #5d4037; }
-    .pix-erro { background: #fff1f1; border-left: 5px solid #dc2626; color: #991b1b; }
-
+    .pix-loading { background: #fff8e1; border-left: 5px solid var(--fs-amarelo); color: #5d4037; }
+    .pix-erro { background: #fff1f1; border-left: 5px solid var(--fs-vermelho); color: #991b1b; }
     .pix-conteudo { padding: 18px; }
 
     .pix-resumo {
@@ -698,7 +743,7 @@
       background: #ffffff;
       border-radius: 12px;
       padding: 12px;
-      border-left: 5px solid #ffc400;
+      border-left: 5px solid var(--fs-amarelo);
     }
 
     .pix-resumo small {
@@ -712,7 +757,7 @@
 
     .pix-resumo strong {
       display: block;
-      color: #3e2723;
+      color: var(--fs-marrom);
       font-size: 18px;
     }
 
@@ -734,7 +779,7 @@
     .pix-label {
       display: block;
       font-weight: 900;
-      color: #3e2723;
+      color: var(--fs-marrom);
       margin-bottom: 7px;
     }
 
@@ -748,7 +793,7 @@
       box-sizing: border-box;
       font-family: monospace;
       font-size: 12px;
-      color: #3e2723;
+      color: var(--fs-marrom);
     }
 
     .pix-acoes {
@@ -763,14 +808,14 @@
       padding: 12px;
       font-weight: 900;
       cursor: pointer;
-      border: 2px solid #ffc400;
-      background: #ffc400;
-      color: #3e2723;
+      border: 2px solid var(--fs-amarelo);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
     }
 
     .pix-acoes button.secundario {
-      background: #3e2723;
-      color: #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
     }
 
     .pix-aviso {
@@ -786,9 +831,9 @@
       right: 18px;
       bottom: 18px;
       z-index: 18000;
-      border: 2px solid #3e2723;
-      background: #ffc400;
-      color: #3e2723;
+      border: 2px solid var(--fs-marrom);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
       border-radius: 999px;
       padding: 12px 16px;
       display: inline-flex;
@@ -845,11 +890,10 @@
 
     @media (max-width: 520px) {
       .cards-resumo { grid-template-columns: 1fr; }
-      .tabela-orcamentos { min-width: 760px; }
+      .tabela-orcamentos { min-width: 1050px; }
       .upgrade-beneficios-grid { grid-template-columns: 1fr; }
       .upgrade-hero h1 { font-size: 24px; }
       .planos-pix-section { padding: 26px 14px; border-radius: 18px; }
-      .planos-pix-topo h2 { font-size: 24px; }
       .pix-resumo,
       .pix-acoes {
         grid-template-columns: 1fr;
@@ -939,8 +983,8 @@
       <span class="upgrade-tag">☁️ Função do Plano Básico</span>
       <h1>Ative o Plano Básico para acessar seus orçamentos na nuvem</h1>
       <p>
-        A página de orçamentos usa salvamento em nuvem, histórico, status e resumo financeiro.
-        Esses recursos ficam disponíveis para usuários do Plano Básico ou Premium.
+        A página de orçamentos usa salvamento em nuvem, histórico, status,
+        forma de pagamento escolhida pelo cliente e resumo financeiro.
       </p>
     </div>
 
@@ -956,25 +1000,22 @@
       </div>
 
       <div class="upgrade-beneficio">
-        <strong>Resumo financeiro</strong>
-        <span>Veja totais por período e acompanhe valores de propostas abertas e fechadas.</span>
+        <strong>Forma de pagamento</strong>
+        <span>Veja se o cliente aprovou com Pix, dinheiro, crédito ou débito.</span>
       </div>
 
       <div class="upgrade-beneficio">
         <strong>WhatsApp com link</strong>
-        <span>Envie o orçamento salvo para o cliente visualizar, aprovar ou recusar.</span>
+        <span>Envie o orçamento para o cliente visualizar, aprovar ou recusar.</span>
       </div>
     </div>
 
     <section class="planos-pix-section">
       <div class="planos-pix-topo">
         <span class="tag-plano-pix">Plano Básico</span>
-
         <h2>Atualize seu plano para ativar esta função</h2>
-
         <p>
-          Pague via Pix e libere a página de orçamentos, salvamento na nuvem,
-          histórico, status e resumo financeiro pelo período escolhido.
+          Pague via Pix e libere histórico, status, resumo financeiro e envio com link.
         </p>
       </div>
 
@@ -983,10 +1024,7 @@
           <div class="plano-pix-periodo">1 mês</div>
           <div class="plano-pix-preco">R$ 19,90</div>
           <p>Ideal para testar os recursos pagos por 30 dias.</p>
-
-          <button type="button" onclick="gerarPixPlanoBasico('mensal')">
-            Gerar Pix
-          </button>
+          <button type="button" onclick="gerarPixPlanoBasico('mensal')">Gerar Pix</button>
         </div>
 
         <div class="plano-pix-card destaque">
@@ -994,20 +1032,14 @@
           <div class="plano-pix-periodo">6 meses</div>
           <div class="plano-pix-preco">R$ 109,90</div>
           <p>Economize em relação ao pagamento mensal.</p>
-
-          <button type="button" onclick="gerarPixPlanoBasico('semestral')">
-            Gerar Pix
-          </button>
+          <button type="button" onclick="gerarPixPlanoBasico('semestral')">Gerar Pix</button>
         </div>
 
         <div class="plano-pix-card">
           <div class="plano-pix-periodo">12 meses</div>
           <div class="plano-pix-preco">R$ 209,90</div>
           <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
-
-          <button type="button" onclick="gerarPixPlanoBasico('anual')">
-            Gerar Pix
-          </button>
+          <button type="button" onclick="gerarPixPlanoBasico('anual')">Gerar Pix</button>
         </div>
       </div>
 
@@ -1015,8 +1047,8 @@
         <strong>O Plano Básico inclui:</strong>
         <span>Salvar orçamentos na nuvem</span>
         <span>Histórico de orçamentos</span>
-        <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
-        <span>Até 2 responsáveis</span>
+        <span>Status automático</span>
+        <span>Forma de pagamento do cliente</span>
         <span>Envio manual pelo WhatsApp com link</span>
         <span>Resumo financeiro</span>
         <span>Sem anúncios na plataforma</span>
@@ -1028,6 +1060,10 @@
     <div class="container">
       <div class="orcamentos-header">
         <h1>Meus Orçamentos</h1>
+
+        <a href="/gerador.html" class="btn-novo-orcamento-topo">
+          🧾 Novo orçamento
+        </a>
       </div>
 
       <div class="filtro-flutuante">
@@ -1051,6 +1087,11 @@
             <option value="60">Últimos 60 dias</option>
             <option value="total" selected>Total</option>
           </select>
+        </div>
+
+        <div class="filtro-grupo">
+          <label for="filtro-busca">Buscar</label>
+          <input type="search" id="filtro-busca" placeholder="Cliente, assunto, número..." oninput="filtrarTabelaLocal()">
         </div>
       </div>
 
@@ -1119,6 +1160,11 @@
 
       <div class="visual-grid">
         <div class="visual-card">
+          <strong>Número</strong>
+          <span id="visual-numero">-</span>
+        </div>
+
+        <div class="visual-card">
           <strong>Cliente</strong>
           <span id="visual-cliente">-</span>
         </div>
@@ -1134,8 +1180,23 @@
         </div>
 
         <div class="visual-card">
-          <strong>Data</strong>
+          <strong>Forma de pagamento</strong>
+          <span id="visual-forma-pagamento">-</span>
+        </div>
+
+        <div class="visual-card">
+          <strong>Resposta do cliente</strong>
+          <span id="visual-resposta-em">-</span>
+        </div>
+
+        <div class="visual-card">
+          <strong>Data de criação</strong>
           <span id="visual-data">-</span>
+        </div>
+
+        <div class="visual-card">
+          <strong>Link do cliente</strong>
+          <span id="visual-link">-</span>
         </div>
       </div>
 
@@ -1149,13 +1210,21 @@
       <div class="botoes-modal">
         <button type="button" class="btn-pequeno btn-cancelar" onclick="fecharModalVisualizar()">Fechar</button>
 
-        <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="abrirConversaWhatsappVisualizado()">
-          Abrir conversa
+        <button type="button" class="btn-pequeno btn-ver-link" onclick="abrirLinkClienteVisualizado()">
+          Ver link
         </button>
 
-        <button type="button" class="btn-pequeno btn-editar" onclick="editarOrcamentoVisualizado()">Editar</button>
+        <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="abrirConversaWhatsappVisualizado()">
+          WhatsApp
+        </button>
 
-        <button type="button" class="btn-pequeno btn-excluir" onclick="excluirOrcamentoVisualizado()">Excluir</button>
+        <button type="button" class="btn-pequeno btn-editar" onclick="editarOrcamentoVisualizado()">
+          Editar
+        </button>
+
+        <button type="button" class="btn-pequeno btn-excluir" onclick="excluirOrcamentoVisualizado()">
+          Excluir
+        </button>
       </div>
     </div>
   </div>
@@ -1192,6 +1261,17 @@
         <div class="campo-modal">
           <label>WhatsApp do Cliente</label>
           <input type="text" id="edit-cliente-whatsapp">
+        </div>
+
+        <div class="campo-modal">
+          <label>Forma de pagamento</label>
+          <select id="edit-forma-pagamento">
+            <option value="">Não informado</option>
+            <option value="pix">Pix</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="credito">Cartão de crédito</option>
+            <option value="debito">Cartão de débito</option>
+          </select>
         </div>
       </div>
 
@@ -1279,9 +1359,17 @@ const STATUS_CONFIG = {
   finalizado: 'Finalizado'
 };
 
+const FORMA_PAGAMENTO_CONFIG = {
+  pix: 'Pix',
+  dinheiro: 'Dinheiro',
+  credito: 'Cartão de crédito',
+  debito: 'Cartão de débito'
+};
+
 let statusAtual = 'todos';
 let periodoResumoAtual = 'total';
 let orcamentosCache = [];
+let orcamentosCacheOriginal = [];
 let orcamentoVisualizadoId = null;
 let orcamentosJaCarregados = false;
 let usuarioPodeUsarNuvemOrcamentos = false;
@@ -1322,6 +1410,14 @@ function normalizarPlano(valor) {
     .trim();
 }
 
+function normalizarTexto(valor) {
+  return String(valor || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
 async function buscarPlanoUsuario(session) {
   try {
     const { data: perfil, error } = await _supabase
@@ -1336,7 +1432,16 @@ async function buscarPlanoUsuario(session) {
     }
 
     const plano = normalizarPlano(perfil?.plano || 'gratis');
+
     localStorage.setItem('usuario_plano', plano);
+
+    if (perfil?.plano_status) {
+      localStorage.setItem('usuario_plano_status', perfil.plano_status);
+    }
+
+    if (perfil?.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', perfil.plano_expira_em);
+    }
 
     return plano;
   } catch (error) {
@@ -1348,10 +1453,13 @@ async function buscarPlanoUsuario(session) {
 async function verificarPlanoEControlarPaginaOrcamentos(session) {
   const bloqueio = document.getElementById('bloqueio-plano-gratis');
   const area = document.getElementById('area-orcamentos-funcoes');
+  const protegido = document.getElementById('conteudo-protegido');
 
+  if (protegido) protegido.style.display = 'block';
   if (!bloqueio || !area) return;
 
   const plano = await buscarPlanoUsuario(session);
+
   usuarioPodeUsarNuvemOrcamentos = plano === 'basico' || plano === 'premium';
 
   if (usuarioPodeUsarNuvemOrcamentos) {
@@ -1452,8 +1560,35 @@ function formatarData(dataValor) {
   return data.toLocaleDateString('pt-BR');
 }
 
+function formatarDataHora(dataValor) {
+  if (!dataValor) return '-';
+
+  const data = new Date(dataValor);
+
+  if (isNaN(data.getTime())) return '-';
+
+  return data.toLocaleString('pt-BR');
+}
+
 function statusLabel(status) {
   return STATUS_CONFIG[status] || status || 'Pendente';
+}
+
+function formaPagamentoLabel(valor) {
+  const forma = normalizarTexto(valor);
+
+  return FORMA_PAGAMENTO_CONFIG[forma] || (valor ? String(valor) : 'Não informado');
+}
+
+function numeroOrcamentoFormatado(orcamento) {
+  const numero =
+    orcamento?.numero_orcamento ||
+    orcamento?.numero ||
+    '';
+
+  if (!numero) return '-';
+
+  return `Nº ${String(numero).padStart(6, '0')}`;
 }
 
 function classeStatus(status) {
@@ -1477,6 +1612,10 @@ function classeLinhaPorStatus(status) {
   return 'status-pendente';
 }
 
+function montarLinkVerOrcamento(id) {
+  return `${window.location.origin}/ver.html?id=${id}`;
+}
+
 function trocarAbaOrcamentos(status) {
   if (!usuarioPodeUsarNuvemOrcamentos) return;
 
@@ -1489,11 +1628,19 @@ function trocarAbaOrcamentos(status) {
 }
 
 async function obterSessaoObrigatoria() {
+  const authArea = document.getElementById('auth-area');
+  const protegido = document.getElementById('conteudo-protegido');
+
   const { data: { session }, error } = await _supabase.auth.getSession();
 
   if (error || !session) {
+    if (authArea) authArea.style.display = 'block';
+    if (protegido) protegido.style.display = 'none';
     return null;
   }
+
+  if (authArea) authArea.style.display = 'none';
+  if (protegido) protegido.style.display = 'block';
 
   return session;
 }
@@ -1527,9 +1674,36 @@ async function carregarOrcamentos() {
     return;
   }
 
-  orcamentosCache = orcamentos || [];
-  renderizarTabelaOrcamentos(orcamentosCache);
+  orcamentosCacheOriginal = orcamentos || [];
+  orcamentosCache = [...orcamentosCacheOriginal];
+
+  filtrarTabelaLocal();
   await carregarResumoFinanceiro();
+}
+
+function filtrarTabelaLocal() {
+  const busca = normalizarTexto(document.getElementById('filtro-busca')?.value || '');
+
+  if (!busca) {
+    orcamentosCache = [...orcamentosCacheOriginal];
+    renderizarTabelaOrcamentos(orcamentosCache);
+    return;
+  }
+
+  orcamentosCache = orcamentosCacheOriginal.filter(orcamento => {
+    const texto = normalizarTexto([
+      numeroOrcamentoFormatado(orcamento),
+      orcamento.assunto,
+      orcamento.cliente_nome,
+      orcamento.cliente_whatsapp,
+      statusLabel(orcamento.status),
+      formaPagamentoLabel(orcamento.forma_pagamento_cliente)
+    ].join(' '));
+
+    return texto.includes(busca);
+  });
+
+  renderizarTabelaOrcamentos(orcamentosCache);
 }
 
 function trocarPeriodoResumo(periodo) {
@@ -1676,33 +1850,52 @@ function renderizarTabelaOrcamentos(orcamentos) {
       <table class="tabela-orcamentos">
         <thead>
           <tr>
+            <th>Número</th>
             <th>Assunto</th>
             <th>Cliente</th>
-            <th>WhatsApp</th>
             <th>Total</th>
             <th>Status</th>
-            <th>Data</th>
+            <th>Pagamento</th>
+            <th>Resposta</th>
+            <th>Criado em</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
   `;
 
   orcamentos.forEach(orcamento => {
+    const id = orcamento.id;
     const assunto = orcamento.assunto || 'Sem título';
     const clienteNome = orcamento.cliente_nome || 'Não informado';
-    const clienteWhatsapp = orcamento.cliente_whatsapp || 'Não informado';
     const total = orcamento.total || 0;
     const status = orcamento.status || 'pendente';
+    const pagamento = orcamento.forma_pagamento_cliente || '';
+    const respostaEm = orcamento.resposta_cliente_em || '';
     const dataCriacao = orcamento.criado_em || '';
+    const numero = numeroOrcamentoFormatado(orcamento);
 
     html += `
-      <tr class="linha-orcamento ${classeLinhaPorStatus(status)}" onclick="abrirModalVisualizar('${orcamento.id}')">
+      <tr class="linha-orcamento ${classeLinhaPorStatus(status)}" onclick="abrirModalVisualizar('${id}')">
+        <td><strong>${escaparHtml(numero)}</strong></td>
         <td><strong>${escaparHtml(assunto)}</strong></td>
         <td>${escaparHtml(clienteNome)}</td>
-        <td>${escaparHtml(clienteWhatsapp)}</td>
         <td>${formatarMoeda(total)}</td>
         <td><span class="status status-${classeStatus(status)}">${escaparHtml(statusLabel(status))}</span></td>
+        <td>
+          <span class="tag-pagamento ${pagamento ? '' : 'vazio'}">
+            ${escaparHtml(formaPagamentoLabel(pagamento))}
+          </span>
+        </td>
+        <td>${formatarDataHora(respostaEm)}</td>
         <td>${formatarData(dataCriacao)}</td>
+        <td onclick="event.stopPropagation();">
+          <div class="acoes-tabela">
+            <button type="button" class="btn-pequeno btn-ver-link" onclick="abrirLinkCliente('${id}')">Ver</button>
+            <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="enviarLinkWhatsapp('${id}')">WhatsApp</button>
+            <button type="button" class="btn-pequeno btn-editar" onclick="abrirModalEditar('${id}')">Editar</button>
+          </div>
+        </td>
       </tr>
     `;
   });
@@ -1745,7 +1938,7 @@ function normalizarItem(item) {
 }
 
 function abrirModalVisualizar(id) {
-  const orcamento = orcamentosCache.find(o => o.id === id);
+  const orcamento = orcamentosCacheOriginal.find(o => o.id === id);
 
   if (!orcamento) {
     alert('Orçamento não encontrado.');
@@ -1760,15 +1953,24 @@ function abrirModalVisualizar(id) {
   const status = orcamento.status || 'pendente';
   const dataCriacao = orcamento.criado_em || '';
   const total = orcamento.total || 0;
+  const pagamento = orcamento.forma_pagamento_cliente || '';
+  const respostaEm = orcamento.resposta_cliente_em || '';
+
+  const linkCliente = montarLinkVerOrcamento(id);
 
   document.getElementById('visual-assunto').innerText = assunto;
+  document.getElementById('visual-numero').innerText = numeroOrcamentoFormatado(orcamento);
   document.getElementById('visual-cliente').innerText = clienteNome;
   document.getElementById('visual-whatsapp').innerText = clienteWhatsapp;
   document.getElementById('visual-status').innerHTML = `<span class="status status-${classeStatus(status)}">${escaparHtml(statusLabel(status))}</span>`;
+  document.getElementById('visual-forma-pagamento').innerText = formaPagamentoLabel(pagamento);
+  document.getElementById('visual-resposta-em').innerText = formatarDataHora(respostaEm);
   document.getElementById('visual-data').innerText = formatarData(dataCriacao);
   document.getElementById('visual-total').innerText = formatarMoeda(total);
+  document.getElementById('visual-link').innerHTML = `<a href="${escaparHtml(linkCliente)}" target="_blank">${escaparHtml(linkCliente)}</a>`;
 
   renderizarItensVisualizacao(orcamento.itens);
+
   document.getElementById('modal-visualizar-orcamento').style.display = 'flex';
 }
 
@@ -1777,13 +1979,17 @@ function fecharModalVisualizar() {
   if (modal) modal.style.display = 'none';
 }
 
-function abrirConversaWhatsappVisualizado() {
-  if (!orcamentoVisualizadoId) {
-    alert('Nenhum orçamento selecionado.');
-    return;
-  }
+function abrirLinkCliente(id) {
+  window.open(montarLinkVerOrcamento(id), '_blank');
+}
 
-  const orcamento = orcamentosCache.find(o => o.id === orcamentoVisualizadoId);
+function abrirLinkClienteVisualizado() {
+  if (!orcamentoVisualizadoId) return;
+  abrirLinkCliente(orcamentoVisualizadoId);
+}
+
+function enviarLinkWhatsapp(id) {
+  const orcamento = orcamentosCacheOriginal.find(o => o.id === id);
 
   if (!orcamento) {
     alert('Orçamento não encontrado.');
@@ -1798,20 +2004,43 @@ function abrirConversaWhatsappVisualizado() {
     return;
   }
 
-  const assunto = orcamento.assunto || 'orçamento';
   const cliente = orcamento.cliente_nome || 'cliente';
+  const assunto = orcamento.assunto || 'orçamento';
+  const linkCliente = montarLinkVerOrcamento(orcamento.id);
 
-  const mensagem = `Olá, ${cliente}! Estou entrando em contato sobre o orçamento "${assunto}".`;
+  const mensagem =
+`Olá, ${cliente}! Tudo bem?
+
+Segue o orçamento "${assunto}" para visualização:
+
+${linkCliente}
+
+Você pode abrir o link para conferir, aprovar ou recusar a proposta.
+
+Qualquer dúvida, estou à disposição.`;
 
   const url = `https://wa.me/${telefoneLimpo}?text=${encodeURIComponent(mensagem)}`;
 
   window.open(url, '_blank');
 }
 
+function abrirConversaWhatsappVisualizado() {
+  if (!orcamentoVisualizadoId) {
+    alert('Nenhum orçamento selecionado.');
+    return;
+  }
+
+  enviarLinkWhatsapp(orcamentoVisualizadoId);
+}
+
 function limparTelefoneWhatsapp(valor) {
   let telefone = String(valor || '').replace(/\D/g, '');
 
   if (!telefone) return '';
+
+  if (telefone.startsWith('00')) {
+    telefone = telefone.substring(2);
+  }
 
   if (telefone.length === 10 || telefone.length === 11) {
     telefone = '55' + telefone;
@@ -1868,7 +2097,7 @@ function editarOrcamentoVisualizado() {
 }
 
 function abrirModalEditar(id) {
-  const orcamento = orcamentosCache.find(o => o.id === id);
+  const orcamento = orcamentosCacheOriginal.find(o => o.id === id);
 
   if (!orcamento) {
     alert('Orçamento não encontrado.');
@@ -1883,6 +2112,7 @@ function abrirModalEditar(id) {
   document.getElementById('edit-status').value = statusAtualOrcamento;
   document.getElementById('edit-cliente-nome').value = orcamento.cliente_nome || '';
   document.getElementById('edit-cliente-whatsapp').value = orcamento.cliente_whatsapp || '';
+  document.getElementById('edit-forma-pagamento').value = normalizarTexto(orcamento.forma_pagamento_cliente || '');
 
   const lista = document.getElementById('edit-itens-lista');
   lista.innerHTML = '';
@@ -1973,6 +2203,7 @@ async function salvarEdicaoOrcamento() {
   const status = document.getElementById('edit-status').value;
   const clienteNome = document.getElementById('edit-cliente-nome').value.trim();
   const clienteWhatsapp = document.getElementById('edit-cliente-whatsapp').value.trim();
+  const formaPagamento = document.getElementById('edit-forma-pagamento').value || null;
   const itens = coletarItensModal();
   const total = itens.reduce((soma, item) => soma + Number(item.subtotal || 0), 0);
 
@@ -2002,9 +2233,14 @@ async function salvarEdicaoOrcamento() {
     status,
     cliente_nome: clienteNome,
     cliente_whatsapp: clienteWhatsapp,
+    forma_pagamento_cliente: formaPagamento,
     itens,
     total
   };
+
+  if ((status === 'aprovado' || status === 'recusado') && status !== statusOriginal) {
+    payload.resposta_cliente_em = new Date().toISOString();
+  }
 
   const { error } = await _supabase
     .from('orcamentos')
@@ -2251,13 +2487,7 @@ async function verificarPagamentoPixAtual() {
 }
 
 function abrirGeradorGlobal() {
-  try {
-    localStorage.setItem('fs_abrir_gerador_automatico', 'sim');
-  } catch (error) {
-    console.warn('Não foi possível salvar intenção de abrir gerador:', error);
-  }
-
-  window.location.href = '/index.html?abrirGerador=1';
+  window.location.href = '/gerador.html';
 }
 
 document.addEventListener('keydown', function(event) {
@@ -2281,8 +2511,11 @@ document.addEventListener('click', function(event) {
 window.addEventListener('beforeunload', pararAtualizacaoAutomaticaOrcamentos);
 </script>
 
-<center><p></p><p></p>
-<footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer></center><p></p>
+<center>
+  <p></p><p></p>
+  <footer>&copy; 2026 FS Orçamentos | <a href="privacidade.html" style="color:#aaa">Privacidade</a></footer>
+</center>
+<p></p>
 
 <button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">
   🧾
