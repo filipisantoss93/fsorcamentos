@@ -124,10 +124,8 @@
 
     .gerador-hero-conteudo {
       position: relative;
-      display: grid;
-      grid-template-columns: 1.4fr 0.8fr;
-      gap: 22px;
-      align-items: center;
+      display: block;
+      max-width: 880px;
     }
 
     .gerador-tag {
@@ -158,43 +156,6 @@
       font-size: 16px;
       line-height: 1.55;
       max-width: 760px;
-    }
-
-    .gerador-hero-card {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 18px;
-      border-left: 7px solid var(--fs-amarelo);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.12);
-    }
-
-    .gerador-hero-card strong {
-      display: block;
-      color: var(--fs-marrom);
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-
-    .gerador-hero-card span {
-      display: block;
-      color: #6d4c41;
-      font-size: 13px;
-      line-height: 1.45;
-      margin-bottom: 10px;
-    }
-
-    .gerador-hero-card a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--fs-amarelo);
-      color: var(--fs-marrom);
-      border: 2px solid var(--fs-marrom);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 13px;
-      font-weight: 900;
-      text-decoration: none;
     }
 
     .gerador-layout {
@@ -397,6 +358,37 @@
       font-size: 14px;
       color: var(--fs-marrom);
       word-break: break-word;
+    }
+
+    .emissor-readonly-acoes {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-editar-dados-empresa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+      transition: .2s ease;
+    }
+
+    .btn-editar-dados-empresa:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      transform: translateY(-1px);
     }
 
     .dadositens {
@@ -1025,7 +1017,6 @@
     }
 
     @media (max-width: 1020px) {
-      .gerador-hero-conteudo,
       .gerador-layout {
         grid-template-columns: 1fr;
       }
@@ -1060,6 +1051,14 @@
       .acoes-gerador-principal,
       .acoes-profissionais-botoes {
         grid-template-columns: 1fr;
+      }
+
+      .emissor-readonly-acoes {
+        justify-content: stretch;
+      }
+
+      .btn-editar-dados-empresa {
+        width: 100%;
       }
 
       .emissor-logo-mini {
@@ -1199,14 +1198,6 @@
           e gere uma proposta com a identidade da sua empresa.
         </p>
       </div>
-
-      <div class="gerador-hero-card">
-        <strong>Dados da empresa</strong>
-        <span>
-          Sua logo, empresa, responsável, WhatsApp, CNPJ/CPF e endereço aparecem no gerador e no PDF.
-        </span>
-        <a href="/painel.html">Editar dados no painel</a>
-      </div>
     </div>
   </section>
 
@@ -1270,6 +1261,12 @@
               <strong id="emissor-plano-visual">-</strong>
             </div>
           </div>
+
+          <div class="emissor-readonly-acoes">
+            <a href="/painel.html" class="btn-editar-dados-empresa">
+              ✏️ Editar dados no painel
+            </a>
+          </div>
         </div>
 
         <div id="aviso-perfil-incompleto" class="aviso-perfil-incompleto">
@@ -1326,29 +1323,29 @@
           TOTAL: R$ <span id="total-geral">0,00</span>
         </div>
 
-<div class="dadositens">📌 Condições do orçamento</div>
+        <div class="dadositens">📌 Condições do orçamento</div>
 
-<div class="grid-duplo-gerador">
-  <div class="campo-form">
-    <label for="validade-orcamento">Validade do orçamento</label>
-    <input
-      type="text"
-      id="validade-orcamento"
-      placeholder="Ex: Orçamento válido por 7 dias"
-      oninput="salvarEstadoCompleto(); autoUpdatePreview()"
-    >
-  </div>
+        <div class="grid-duplo-gerador">
+          <div class="campo-form">
+            <label for="validade-orcamento">Validade do orçamento</label>
+            <input
+              type="text"
+              id="validade-orcamento"
+              placeholder="Ex: Orçamento válido por 7 dias"
+              oninput="salvarEstadoCompleto(); autoUpdatePreview()"
+            >
+          </div>
 
-  <div class="campo-form">
-    <label for="forma-pagamento">Forma de pagamento</label>
-    <input
-      type="text"
-      id="forma-pagamento"
-      placeholder="Ex: 50% de entrada e 50% na entrega"
-      oninput="salvarEstadoCompleto(); autoUpdatePreview()"
-    >
-  </div>
-</div>
+          <div class="campo-form">
+            <label for="forma-pagamento">Forma de pagamento</label>
+            <input
+              type="text"
+              id="forma-pagamento"
+              placeholder="Ex: 50% de entrada e 50% na entrega"
+              oninput="salvarEstadoCompleto(); autoUpdatePreview()"
+            >
+          </div>
+        </div>
 
         <div class="dadositens">📝 Observações</div>
 
