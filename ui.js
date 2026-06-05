@@ -12,11 +12,6 @@ function definirOrcamentoAtualSalvo(id) {
 
     orcamentoAtualSalvoId = id;
     window.orcamentoAtualSalvoId = id;
-
-    /*
-      Compatibilidade com scripts antigos do index.html,
-      caso ainda exista alguma rotina usando outro nome.
-    */
     window.orcamentoSalvoAtualId = id;
 
     linkOrcamentoAtual = montarLinkOrcamento(id);
@@ -149,7 +144,12 @@ async function carregarDadosEmpresaLogada() {
     };
 
     localStorage.setItem('usuario_plano', dadosEmpresaLogada.plano);
-    localStorage.setItem('usuario_nome', dadosEmpresaLogada.nome || dadosEmpresaLogada.nome_empresa || session.user.email.split('@')[0]);
+    localStorage.setItem(
+        'usuario_nome',
+        dadosEmpresaLogada.nome ||
+        dadosEmpresaLogada.nome_empresa ||
+        session.user.email.split('@')[0]
+    );
 
     localStorage.setItem('nome_empresa', dadosEmpresaLogada.nome_empresa || '');
     localStorage.setItem('telefone_empresa', dadosEmpresaLogada.telefone_empresa || '');
@@ -239,7 +239,11 @@ function formatarMoedaComSimbolo(valor) {
 function obterValorCampoMoeda(campo) {
     if (!campo) return 0;
 
-    if (campo.dataset && campo.dataset.valorNumerico !== undefined && campo.dataset.valorNumerico !== '') {
+    if (
+        campo.dataset &&
+        campo.dataset.valorNumerico !== undefined &&
+        campo.dataset.valorNumerico !== ''
+    ) {
         return Number(campo.dataset.valorNumerico) || 0;
     }
 
@@ -304,6 +308,10 @@ function obterConsultorSelecionado(empresa) {
         empresa?.nome_empresa ||
         'Consultor'
     );
+}
+
+function obterTemaAtual() {
+    return document.getElementById('selected-theme')?.value || 'original';
 }
 
 // ==================== CAMPOS EXTRAS E ITENS ====================
@@ -422,6 +430,19 @@ function setTheme(tema) {
     autoUpdatePreview();
 }
 
+function obterCoresTema(temaAtivo) {
+    const coresTema = {
+        original: { primaria: '#3e2723', destaque: '#ffc400', fundo: '#efebe9', textoHeader: '#ffffff' },
+        yellow: { primaria: '#f9a825', destaque: '#ffc400', fundo: '#fff8e1', textoHeader: '#ffffff' },
+        red: { primaria: '#4a0000', destaque: '#ff0000', fundo: '#ffebee', textoHeader: '#ffffff' },
+        bw: { primaria: '#ffffff', destaque: '#000000', fundo: '#f9f9f9', textoHeader: '#000000' },
+        blue: { primaria: '#0056b3', destaque: '#00aaff', fundo: '#e3f2fd', textoHeader: '#ffffff' },
+        green: { primaria: '#2e7d32', destaque: '#81c784', fundo: '#e8f5e9', textoHeader: '#ffffff' }
+    };
+
+    return coresTema[temaAtivo] || coresTema.original;
+}
+
 // ==================== GERAÇÃO DO PDF ====================
 
 async function gerarPrevia() {
@@ -459,18 +480,8 @@ async function gerarPrevia() {
             return;
         }
 
-        const temaAtivo = document.getElementById('selected-theme')?.value || 'original';
-
-        const coresTema = {
-            original: { primaria: '#3e2723', destaque: '#ffc400', fundo: '#efebe9', textoHeader: 'white' },
-            yellow: { primaria: '#f9a825', destaque: '#ffc400', fundo: '#efebe9', textoHeader: 'white' },
-            red: { primaria: '#4a0000', destaque: '#ff0000', fundo: '#ffebee', textoHeader: 'white' },
-            bw: { primaria: '#ffffff', destaque: '#000000', fundo: '#f9f9f9', textoHeader: 'black' },
-            blue: { primaria: '#0056b3', destaque: '#00aaff', fundo: '#e3f2fd', textoHeader: 'white' },
-            green: { primaria: '#2e7d32', destaque: '#81c784', fundo: '#e8f5e9', textoHeader: 'white' }
-        };
-
-        const cor = coresTema[temaAtivo] || coresTema.original;
+        const temaAtivo = obterTemaAtual();
+        const cor = obterCoresTema(temaAtivo);
 
         let linhasHtml = '';
 
@@ -478,7 +489,7 @@ async function gerarPrevia() {
             const d = row.querySelector('.desc-cell')?.value || '-';
             const q = row.querySelector('.qtd')?.value || '0';
             const v = obterValorCampoMoeda(row.querySelector('.valor')) || 0;
-            const s = row.querySelector('.subtotal')?.value || '0,00';
+            const s = row.querySelector('.subtotal')?.value || 'R$ 0,00';
 
             linhasHtml += `
                 <tr style="background:${i % 2 === 0 ? '#fff' : '#fafafa'}; border-bottom:1px solid #eee;">
@@ -490,10 +501,15 @@ async function gerarPrevia() {
             `;
         });
 
+        if (!linhasHtml) {
+            alert('Adicione pelo menos um item ao orçamento.');
+            return;
+        }
+
         const consultorSelecionado = obterConsultorSelecionado(empresa);
 
         const logoHtml = empresa.foto_url
-            ? `<img src="${escaparHtml(empresa.foto_url)}" style="max-height:55px; max-width:130px; object-fit:contain;">`
+            ? `<img src="${escaparHtml(empresa.foto_url)}" crossorigin="anonymous" style="max-height:55px; max-width:130px; object-fit:contain;">`
             : `<b style="font-size:20px;">FS</b>`;
 
         const dadosEmpresaHtml = `
@@ -509,7 +525,7 @@ async function gerarPrevia() {
         const extrasClienteHtml = montarExtrasClienteHtml();
 
         const template = `
-            <div style="padding:30px; background:white; font-family:Arial, sans-serif; color:#333; min-height:800px; display:flex; flex-direction:column;">
+            <div style="width:794px; min-height:1123px; box-sizing:border-box; padding:30px; background:#ffffff; font-family:Arial, sans-serif; color:#333; display:flex; flex-direction:column;">
                 
                 <div style="border-bottom:3px solid ${cor.destaque}; background:${cor.primaria}; padding:20px; margin:-30px -30px 20px -30px; color:${cor.textoHeader}; display:flex; justify-content:space-between; align-items:center; border:${temaAtivo === 'bw' ? '1px solid #ddd' : 'none'}">
                     <div>
@@ -536,7 +552,7 @@ async function gerarPrevia() {
 
                     <table style="width:100%; border-collapse:collapse;">
                         <thead>
-                            <tr style="background:${temaAtivo === 'bw' ? '#eee' : cor.primaria}; color:${temaAtivo === 'bw' ? 'black' : 'white'};">
+                            <tr style="background:${temaAtivo === 'bw' ? '#eee' : cor.primaria}; color:${temaAtivo === 'bw' ? '#000' : '#fff'};">
                                 <th style="padding:10px; text-align:left; font-size:12px;">Item</th>
                                 <th style="padding:10px; font-size:12px;">Qtd</th>
                                 <th style="padding:10px; text-align:left; font-size:12px;">Unit.</th>
@@ -576,18 +592,26 @@ async function gerarPrevia() {
         const areaPrevia = document.getElementById('area-previa');
         const botoesAcao = document.getElementById('botoes-acao');
 
-        if (conteudoPdf) conteudoPdf.innerHTML = template;
-        if (areaPrevia) areaPrevia.style.display = 'block';
-        if (botoesAcao) botoesAcao.style.display = 'block';
+        if (conteudoPdf) {
+            conteudoPdf.innerHTML = template;
+            conteudoPdf.style.display = 'block';
+            conteudoPdf.style.background = '#ffffff';
+            conteudoPdf.style.overflow = 'visible';
+        }
+
+        if (areaPrevia) {
+            areaPrevia.style.display = 'block';
+        }
+
+        if (botoesAcao) {
+            botoesAcao.style.display = 'block';
+        }
 
         const btnFloatBaixar = document.getElementById('btn-float-baixar');
-        if (btnFloatBaixar) btnFloatBaixar.style.display = 'flex';
 
-        /*
-          IMPORTANTE:
-          Pré-visualização NÃO salva na nuvem.
-          O orçamento só será salvo ao baixar PDF ou enviar por WhatsApp.
-        */
+        if (btnFloatBaixar) {
+            btnFloatBaixar.style.display = 'flex';
+        }
 
         if (areaPrevia) {
             window.scrollTo({
@@ -633,16 +657,49 @@ function autoUpdatePreview() {
     }
 }
 
+function aguardarRenderizacaoPDF(container) {
+    return new Promise(resolve => {
+        const imagens = Array.from(container.querySelectorAll('img'));
+
+        if (!imagens.length) {
+            setTimeout(resolve, 400);
+            return;
+        }
+
+        let carregadas = 0;
+
+        function finalizarImagem() {
+            carregadas++;
+
+            if (carregadas >= imagens.length) {
+                setTimeout(resolve, 400);
+            }
+        }
+
+        imagens.forEach(img => {
+            if (img.complete) {
+                finalizarImagem();
+            } else {
+                img.onload = finalizarImagem;
+                img.onerror = finalizarImagem;
+            }
+        });
+    });
+}
+
 async function baixarPDF() {
-    const element = document.getElementById('conteudo-pdf');
+    const elementOriginal = document.getElementById('conteudo-pdf');
 
-    if (!element) return;
+    if (!elementOriginal) {
+        alert('Área do PDF não encontrada.');
+        return;
+    }
 
-    if (!element.innerHTML.trim()) {
+    if (!elementOriginal.innerHTML.trim()) {
         await gerarPrevia();
     }
 
-    if (!element.innerHTML.trim()) {
+    if (!elementOriginal.innerHTML.trim()) {
         alert('Gere a pré-visualização antes de baixar o PDF.');
         return;
     }
@@ -651,34 +708,82 @@ async function baixarPDF() {
         await salvarOrcamentoNoBanco('download_pdf');
     }
 
-    element.style.display = 'block';
+    const titulo = document.getElementById('titulo')?.value || 'orcamento';
 
-    const titulo =
-        document.getElementById('titulo')?.value || 'orcamento';
+    const nomeArquivo = titulo
+        .trim()
+        .replace(/[^\wÀ-ÿ\s-]/g, '')
+        .replace(/\s+/g, '_')
+        .toLowerCase() || 'orcamento';
+
+    const cloneWrapper = document.createElement('div');
+
+    cloneWrapper.id = 'pdf-clone-wrapper';
+    cloneWrapper.style.position = 'fixed';
+    cloneWrapper.style.left = '-9999px';
+    cloneWrapper.style.top = '0';
+    cloneWrapper.style.width = '794px';
+    cloneWrapper.style.minHeight = '1123px';
+    cloneWrapper.style.background = '#ffffff';
+    cloneWrapper.style.zIndex = '-1';
+    cloneWrapper.style.opacity = '1';
+    cloneWrapper.style.pointerEvents = 'none';
+    cloneWrapper.style.display = 'block';
+    cloneWrapper.style.overflow = 'visible';
+
+    const clone = elementOriginal.cloneNode(true);
+
+    clone.style.display = 'block';
+    clone.style.width = '794px';
+    clone.style.minHeight = '1123px';
+    clone.style.background = '#ffffff';
+    clone.style.margin = '0';
+    clone.style.padding = '0';
+    clone.style.overflow = 'visible';
+
+    cloneWrapper.appendChild(clone);
+    document.body.appendChild(cloneWrapper);
+
+    await aguardarRenderizacaoPDF(cloneWrapper);
 
     const opt = {
-        margin: [10, 10, 10, 10],
-        filename: titulo + '.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
+        margin: 0,
+        filename: `${nomeArquivo}.pdf`,
+        image: {
+            type: 'jpeg',
+            quality: 0.98
+        },
         html2canvas: {
             scale: 2,
             useCORS: true,
-            letterRendering: true,
-            scrollY: 0
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: 794,
+            windowHeight: 1123
         },
         jsPDF: {
-            unit: 'mm',
-            format: 'a4',
+            unit: 'px',
+            format: [794, 1123],
             orientation: 'portrait'
+        },
+        pagebreak: {
+            mode: ['avoid-all', 'css', 'legacy']
         }
     };
 
-    html2pdf()
-        .set(opt)
-        .from(element)
-        .toPdf()
-        .get('pdf')
-        .save();
+    try {
+        await html2pdf()
+            .set(opt)
+            .from(clone)
+            .save();
+    } catch (error) {
+        console.error('Erro ao gerar PDF:', error);
+        alert('Não foi possível gerar o PDF.');
+    } finally {
+        cloneWrapper.remove();
+    }
 }
 
 // ==================== SALVAMENTO E ENVIO (WPP / BANCO) ====================
@@ -736,6 +841,7 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
     }
 
     const consultorSelecionado = obterConsultorSelecionado(empresa);
+    const temaPdf = obterTemaAtual();
 
     const payloadBase = {
         usuario_id: session.user.id,
@@ -745,7 +851,8 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
         total,
         itens,
         status: 'pendente',
-        consultor: consultorSelecionado
+        consultor: consultorSelecionado,
+        tema_pdf: temaPdf
     };
 
     const payloadCompleto = {
@@ -776,14 +883,25 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
     if (resposta.error) {
         const mensagemErro = String(resposta.error.message || '');
 
-        /*
-          Fallback para bancos que não tenham a coluna origem_salvamento.
-        */
-        if (mensagemErro.includes('origem_salvamento')) {
+        if (
+            mensagemErro.includes('origem_salvamento') ||
+            mensagemErro.includes('tema_pdf')
+        ) {
+            const payloadMinimo = {
+                usuario_id: session.user.id,
+                assunto,
+                cliente_nome: clienteNome,
+                cliente_whatsapp: clienteWhatsapp,
+                total,
+                itens,
+                status: 'pendente',
+                consultor: consultorSelecionado
+            };
+
             if (orcamentoAtualSalvoId) {
                 resposta = await _supabase
                     .from('orcamentos')
-                    .update(payloadBase)
+                    .update(payloadMinimo)
                     .eq('id', orcamentoAtualSalvoId)
                     .eq('usuario_id', session.user.id)
                     .select()
@@ -791,7 +909,7 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
             } else {
                 resposta = await _supabase
                     .from('orcamentos')
-                    .insert([payloadBase])
+                    .insert([payloadMinimo])
                     .select()
                     .single();
             }
@@ -819,7 +937,7 @@ async function salvarOrcamentoNoBanco(origem = 'manual') {
 
 async function enviarPorWhatsApp() {
     if (!usuarioPodeSalvarOrcamentoLocal()) {
-        alert('Esta função está disponível apenas para planos Básico e Premium.');
+        alert('Esta função está disponível apenas para o Plano Básico.');
         return;
     }
 
@@ -969,10 +1087,6 @@ function carregarEstadoSalvo() {
         }
     }
 
-    if (d.theme) {
-        setTheme(d.theme);
-    }
-
     const contItens = document.getElementById('itens-lista');
 
     if (contItens) {
@@ -987,6 +1101,10 @@ function carregarEstadoSalvo() {
         } else {
             adicionarLinha();
         }
+    }
+
+    if (d.theme) {
+        setTheme(d.theme);
     }
 }
 
