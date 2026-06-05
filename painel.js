@@ -40,6 +40,7 @@ async function inicializarPainel(session) {
 
   await carregarPerfil();
   await carregarResponsaveis();
+
   configurarUploadLogo();
 
   atualizarCardPlano(perfilAtual);
@@ -164,6 +165,21 @@ function statusOrcamentoLabel(status) {
   };
 
   return mapa[status] || status || 'Pendente';
+}
+
+function formaPagamentoPainelLabel(valor) {
+  const forma = normalizarPlanoPainel(valor);
+
+  const mapa = {
+    pix: 'Pix',
+    dinheiro: 'Dinheiro',
+    credito: 'Crédito',
+    debito: 'Débito',
+    cartao_credito: 'Cartão de crédito',
+    cartao_debito: 'Cartão de débito'
+  };
+
+  return mapa[forma] || (valor ? String(valor) : '-');
 }
 
 function mostrarStatus(id, mensagem, tipo = 'sucesso') {
@@ -1119,8 +1135,6 @@ async function carregarDashboardPainel() {
 }
 
 async function carregarUltimosOrcamentosPainel() {
-  garantirEstruturaPainel();
-
   const container = document.getElementById('lista-ultimos-orcamentos-painel');
   if (!container) return;
 
@@ -1210,21 +1224,6 @@ async function carregarUltimosOrcamentosPainel() {
       </table>
     </div>
   `;
-}
-
-function formaPagamentoPainelLabel(valor) {
-  const forma = normalizarPlanoPainel(valor);
-
-  const mapa = {
-    pix: 'Pix',
-    dinheiro: 'Dinheiro',
-    credito: 'Crédito',
-    debito: 'Débito',
-    cartao_credito: 'Cartão de crédito',
-    cartao_debito: 'Cartão de débito'
-  };
-
-  return mapa[forma] || (valor ? String(valor) : '-');
 }
 
 // ==================== GERADOR GLOBAL ====================
