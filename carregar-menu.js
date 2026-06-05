@@ -1,5 +1,69 @@
 let headerJaCarregado = false;
-let observadorModalGeradorGlobal = null;
+
+/* =========================
+   HELPERS GERAIS
+========================= */
+
+function fsNormalizarTextoMenu(valor) {
+  return String(valor || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
+function fsPaginaAtual() {
+  const path = window.location.pathname || '/';
+
+  if (path === '/') return '/index.html';
+
+  return path;
+}
+
+function fsEstaNaPaginaGerador() {
+  const path = fsPaginaAtual();
+
+  return (
+    path.endsWith('/gerador.html') ||
+    path.endsWith('gerador.html')
+  );
+}
+
+function fsEstaNaHome() {
+  const path = fsPaginaAtual();
+
+  return (
+    path === '/index.html' ||
+    path.endsWith('/index.html') ||
+    path.endsWith('index.html')
+  );
+}
+
+async function obterSessaoAtualMenu() {
+  try {
+    if (!window._supabase) return null;
+
+    const { data, error } = await _supabase.auth.getSession();
+
+    if (error) {
+      console.warn('Erro ao buscar sessão no menu:', error);
+      return null;
+    }
+
+    return data?.session || null;
+  } catch (error) {
+    console.warn('Não foi possível verificar sessão no menu:', error);
+    return null;
+  }
+}
+
+function fecharMenuMobileSeAberto() {
+  const menuLinha = document.querySelector('.header-menu-linha');
+
+  if (menuLinha) {
+    menuLinha.classList.remove('menu-aberto');
+  }
+}
 
 /* =========================
    CARREGAR HEADER / MENU
@@ -24,13 +88,15 @@ async function carregarMenu(sessionRecebida = undefined) {
       headerContainer.innerHTML = html;
       headerContainer.style.display = 'block';
       headerJaCarregado = true;
+
+      configurarLinksDoHeader();
+      marcarLinkAtivoHeader();
     }
 
     let session = sessionRecebida;
 
-    if (session === undefined && window._supabase) {
-      const { data } = await _supabase.auth.getSession();
-      session = data.session;
+    if (session === undefined) {
+      session = await obterSessaoAtualMenu();
     }
 
     await atualizarHeaderUsuario(session || null);
@@ -41,6 +107,10 @@ async function carregarMenu(sessionRecebida = undefined) {
   }
 }
 
+/* =========================
+   HEADER USUÁRIO
+========================= */
+
 async function atualizarHeaderUsuario(session) {
   const saudacao = document.getElementById('usuario-saudacao');
 
@@ -49,6 +119,9 @@ async function atualizarHeaderUsuario(session) {
 
   const btnEntrarMobile = document.getElementById('btn-menu-mobile-entrar');
   const btnSairMobile = document.getElementById('btn-menu-mobile-sair');
+
+  const btnNotificacoes = document.getElementById('btn-notificacoes');
+  const contadorNotificacoes = document.getElementById('contador-notificacoes');
 
   if (!saudacao) return;
 
@@ -60,6 +133,13 @@ async function atualizarHeaderUsuario(session) {
 
     if (btnEntrarMobile) btnEntrarMobile.style.display = 'block';
     if (btnSairMobile) btnSairMobile.style.display = 'none';
+
+    if (btnNotificacoes) btnNotificacoes.style.display = 'none';
+    if (contadorNotificacoes) contadorNotificacoes.style.display = 'none';
+
+    localStorage.removeItem('usuario_nome');
+    localStorage.removeItem('usuario_email');
+    localStorage.removeItem('usuario_plano');
   }
 
   function mostrarLogado(nomeFinal) {
@@ -70,9 +150,11 @@ async function atualizarHeaderUsuario(session) {
 
     if (btnEntrarMobile) btnEntrarMobile.style.display = 'none';
     if (btnSairMobile) btnSairMobile.style.display = 'block';
+
+    if (btnNotificacoes) btnNotificacoes.style.display = 'inline-flex';
   }
 
-  if (!session) {
+  if (!session?.user?.id) {
     mostrarDeslogado();
     return;
   }
@@ -98,7 +180,11 @@ async function atualizarHeaderUsuario(session) {
           nomeFinal;
 
         localStorage.setItem('usuario_nome', nomeFinal);
+        localStorage.setItem('usuario_email', session.user.email || '');
         localStorage.setItem('usuario_plano', perfil.plano || 'gratis');
+      } else {
+        localStorage.setItem('usuario_nome', nomeFinal);
+        localStorage.setItem('usuario_email', session.user.email || '');
       }
     }
   } catch (error) {
@@ -109,10 +195,12 @@ async function atualizarHeaderUsuario(session) {
 }
 
 /* =========================
-   LOGIN / MENU MOBILE
+   LOGIN / LOGOUT / MENU MOBILE
 ========================= */
 
 function irParaLogin() {
+  fecharMenuMobileSeAberto();
+
   if (typeof abrirModalLogin === 'function') {
     abrirModalLogin();
     return;
@@ -129,41 +217,85 @@ function toggleMenuMobile() {
   }
 }
 
-/* =========================
-   BOTÃO FLUTUANTE GLOBAL
-========================= */
-
-async function obterSessaoAtualGeradorGlobal() {
+async function deslogar() {
   try {
-    if (!window._supabase) return null;
+    fecharMenuMobileSeAberto();
 
-    const { data: { session } } = await _supabase.auth.getSession();
+    if (window._supabase) {
+      await _supabase.auth.signOut();
+    }
 
-    return session || null;
+    localStorage.removeItem('id');
+    localStorage.removeItem('usuario_nome');
+    localStorage.removeItem('usuario_email');
+    localStorage.removeItem('usuario_plano');
+    localStorage.removeItem('usuario_plano_status');
+    localStorage.removeItem('usuario_plano_expira_em');
+
+    removerBotaoFlutuanteGeradorGlobal();
+
+    await atualizarHeaderUsuario(null);
+
+    window.location.href = '/index.html';
   } catch (error) {
-    console.warn('Não foi possível verificar sessão do gerador global:', error);
-    return null;
+    console.error('Erro ao sair:', error);
+    alert('Não foi possível sair da conta. Tente novamente.');
   }
 }
 
-function estaNaHomeGeradorGlobal() {
-  const path = window.location.pathname;
+/* =========================
+   LINKS DO HEADER
+========================= */
 
-  return (
-    path === '/' ||
-    path.endsWith('/index.html') ||
-    path.endsWith('index.html')
-  );
+function configurarLinksDoHeader() {
+  const links = document.querySelectorAll('.header-menu-linha a');
+
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      fecharMenuMobileSeAberto();
+    });
+  });
 }
+
+function marcarLinkAtivoHeader() {
+  const paginaAtual = fsPaginaAtual();
+  const links = document.querySelectorAll('.header-menu-linha a');
+
+  links.forEach(link => {
+    const href = link.getAttribute('href') || '';
+
+    link.classList.remove('ativo');
+
+    if (!href) return;
+
+    const hrefNormalizado = href === '/' ? '/index.html' : href;
+
+    if (
+      paginaAtual === hrefNormalizado ||
+      paginaAtual.endsWith(hrefNormalizado)
+    ) {
+      link.classList.add('ativo');
+    }
+  });
+}
+
+/* =========================
+   BOTÃO FLUTUANTE GLOBAL
+========================= */
 
 async function controlarBotaoFlutuanteGeradorGlobal(sessionRecebida = undefined) {
   let session = sessionRecebida;
 
   if (session === undefined) {
-    session = await obterSessaoAtualGeradorGlobal();
+    session = await obterSessaoAtualMenu();
   }
 
   if (!session?.user?.id) {
+    removerBotaoFlutuanteGeradorGlobal();
+    return;
+  }
+
+  if (fsEstaNaPaginaGerador()) {
     removerBotaoFlutuanteGeradorGlobal();
     return;
   }
@@ -172,20 +304,18 @@ async function controlarBotaoFlutuanteGeradorGlobal(sessionRecebida = undefined)
 }
 
 function criarBotaoFlutuanteGeradorGlobal() {
-  if (document.getElementById('btn-flutuante-gerador-global')) {
-    observarEstadoModalGeradorGlobal();
-    return;
-  }
+  if (document.getElementById('btn-flutuante-gerador-global')) return;
 
   const botao = document.createElement('button');
+
   botao.type = 'button';
   botao.id = 'btn-flutuante-gerador-global';
   botao.innerHTML = '🧾 <span>Gerar orçamento</span>';
+  botao.title = 'Gerar orçamento';
+  botao.setAttribute('aria-label', 'Gerar orçamento');
   botao.onclick = abrirGeradorGlobal;
 
   document.body.appendChild(botao);
-
-  observarEstadoModalGeradorGlobal();
 }
 
 function removerBotaoFlutuanteGeradorGlobal() {
@@ -199,12 +329,12 @@ function removerBotaoFlutuanteGeradorGlobal() {
 }
 
 async function abrirGeradorGlobal() {
-  const session = await obterSessaoAtualGeradorGlobal();
+  const session = await obterSessaoAtualMenu();
 
   if (!session?.user?.id) {
     removerBotaoFlutuanteGeradorGlobal();
 
-    if (estaNaHomeGeradorGlobal() && typeof abrirModalLogin === 'function') {
+    if (fsEstaNaHome() && typeof abrirModalLogin === 'function') {
       abrirModalLogin();
       return;
     }
@@ -213,56 +343,17 @@ async function abrirGeradorGlobal() {
     return;
   }
 
-  if (!estaNaHomeGeradorGlobal()) {
-    window.location.href = '/index.html?abrirGerador=1';
-    return;
-  }
-
-  if (typeof abrirModalGerador === 'function') {
-    abrirModalGerador();
-    document.body.classList.add('gerador-aberto');
-    return;
-  }
-
-  const modal = document.getElementById('modal-gerador-orcamento');
-  const formulario = document.getElementById('formulario-orcamento');
-
-  if (modal) {
-    modal.style.display = 'flex';
-    modal.classList.add('ativo');
-    modal.removeAttribute('aria-hidden');
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('gerador-aberto');
-  }
-
-  if (formulario) {
-    formulario.style.display = 'block';
-  }
+  window.location.href = '/gerador.html';
 }
 
-async function abrirGeradorAutomaticamenteSeSolicitado() {
-  const params = new URLSearchParams(window.location.search);
+/* =========================
+   PARÂMETROS DA URL
+========================= */
 
-  if (params.get('abrirGerador') !== '1') return;
+function removerParametrosUrlMenu() {
+  const novaUrl = window.location.origin + window.location.pathname;
 
-  const session = await obterSessaoAtualGeradorGlobal();
-
-  if (!session?.user?.id) {
-    removerParametroUrlGeradorGlobal();
-
-    if (typeof abrirModalLogin === 'function') {
-      abrirModalLogin();
-    } else {
-      window.location.href = '/index.html?login=1';
-    }
-
-    return;
-  }
-
-  setTimeout(async function() {
-    await abrirGeradorGlobal();
-    removerParametroUrlGeradorGlobal();
-  }, 700);
+  window.history.replaceState({}, document.title, novaUrl);
 }
 
 function abrirLoginAutomaticamenteSeSolicitado() {
@@ -275,47 +366,31 @@ function abrirLoginAutomaticamenteSeSolicitado() {
       abrirModalLogin();
     }
 
-    removerParametroUrlGeradorGlobal();
+    removerParametrosUrlMenu();
   }, 600);
 }
 
-function removerParametroUrlGeradorGlobal() {
-  const novaUrl = window.location.origin + window.location.pathname;
+async function abrirGeradorAutomaticamenteSeSolicitado() {
+  const params = new URLSearchParams(window.location.search);
 
-  window.history.replaceState({}, document.title, novaUrl);
-}
+  if (params.get('abrirGerador') !== '1') return;
 
-function observarEstadoModalGeradorGlobal() {
-  const modal = document.getElementById('modal-gerador-orcamento');
+  const session = await obterSessaoAtualMenu();
 
-  if (!modal) return;
+  if (!session?.user?.id) {
+    removerParametrosUrlMenu();
 
-  if (observadorModalGeradorGlobal) {
-    observadorModalGeradorGlobal.disconnect();
-    observadorModalGeradorGlobal = null;
+    if (typeof abrirModalLogin === 'function') {
+      abrirModalLogin();
+    } else {
+      window.location.href = '/index.html?login=1';
+    }
+
+    return;
   }
 
-  const atualizarEstado = () => {
-    const aberto =
-      modal.style.display === 'flex' ||
-      modal.classList.contains('ativo') ||
-      modal.classList.contains('active');
-
-    if (aberto) {
-      document.body.classList.add('gerador-aberto');
-    } else {
-      document.body.classList.remove('gerador-aberto');
-    }
-  };
-
-  atualizarEstado();
-
-  observadorModalGeradorGlobal = new MutationObserver(atualizarEstado);
-
-  observadorModalGeradorGlobal.observe(modal, {
-    attributes: true,
-    attributeFilter: ['style', 'class']
-  });
+  removerParametrosUrlMenu();
+  window.location.href = '/gerador.html';
 }
 
 /* =========================
@@ -334,7 +409,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       await controlarBotaoFlutuanteGeradorGlobal(session || null);
 
       if (!session) {
-        document.body.classList.remove('gerador-aberto');
+        removerBotaoFlutuanteGeradorGlobal();
       }
     });
   }
@@ -348,5 +423,6 @@ window.carregarMenu = carregarMenu;
 window.atualizarHeaderUsuario = atualizarHeaderUsuario;
 window.irParaLogin = irParaLogin;
 window.toggleMenuMobile = toggleMenuMobile;
+window.deslogar = deslogar;
 window.abrirGeradorGlobal = abrirGeradorGlobal;
 window.controlarBotaoFlutuanteGeradorGlobal = controlarBotaoFlutuanteGeradorGlobal;
