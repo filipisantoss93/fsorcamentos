@@ -5,12 +5,19 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cap:add:android": "npx cap add android",
+    "cap:sync": "npx cap sync android",
+    "android:debug": "cd android && ./gradlew assembleDebug",
+    "android:release": "cd android && ./gradlew bundleRelease"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
     "@supabase/supabase-js": "^2.106.2",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
