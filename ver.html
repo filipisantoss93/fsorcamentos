@@ -18,6 +18,10 @@
       --ver-cor-pagina: #f1f3f6;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 18px;
@@ -60,7 +64,6 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-sizing: border-box;
     }
 
     .ver-logo-box img {
@@ -120,6 +123,21 @@
       padding: 6px 10px;
       font-size: 12px;
       font-weight: 700;
+    }
+
+    .numero-orcamento {
+      text-align: center;
+      display: none;
+      margin: 0 auto 8px;
+      color: var(--ver-cor-primaria);
+      font-size: 14px;
+      font-weight: 900;
+      background: var(--ver-cor-fundo);
+      border: 1px solid #e5e5e5;
+      border-left: 5px solid var(--ver-cor-destaque);
+      border-radius: 999px;
+      padding: 8px 14px;
+      width: fit-content;
     }
 
     h1#titulo-orcamento {
@@ -236,6 +254,24 @@
       border-radius: 12px;
     }
 
+    .observacoes-box {
+      background: #fffaf0;
+      border-left: 6px solid var(--ver-cor-destaque);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 22px;
+      color: #5d4037;
+      line-height: 1.55;
+      font-size: 15px;
+      display: none;
+    }
+
+    .observacoes-box strong {
+      display: block;
+      color: var(--ver-cor-primaria);
+      margin-bottom: 6px;
+    }
+
     .botoes-status {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -282,6 +318,7 @@
       text-align: center;
       font-weight: bold;
       margin-top: 20px;
+      line-height: 1.5;
     }
 
     .msg-carregando {
@@ -299,6 +336,35 @@
       color: #155724;
     }
 
+    .msg-resposta {
+      background: #fff8e1;
+      color: #5d4037;
+      border-left: 6px solid var(--ver-cor-destaque);
+      text-align: left;
+    }
+
+    .whatsapp-empresa-box {
+      margin-top: 22px;
+      text-align: center;
+      display: none;
+    }
+
+    .btn-whatsapp-empresa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #25d366;
+      color: #073b1d;
+      border: 2px solid #1fb957;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-size: 15px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.16);
+    }
+
     .rodape {
       margin-top: 28px;
       text-align: center;
@@ -310,6 +376,75 @@
 
     .rodape strong {
       color: var(--ver-cor-primaria);
+    }
+
+    .modal-pagamento-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20000;
+      padding: 18px;
+    }
+
+    .modal-pagamento-card {
+      width: min(100%, 430px);
+      background: #f4ece1;
+      color: #3e2723;
+      border-radius: 18px;
+      border-top: 6px solid #ffc400;
+      padding: 22px;
+      box-shadow: 0 20px 55px rgba(0,0,0,0.45);
+      text-align: center;
+    }
+
+    .modal-pagamento-card h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      color: #3e2723;
+    }
+
+    .modal-pagamento-card p {
+      margin: 0 0 18px;
+      color: #6d4c41;
+      line-height: 1.45;
+    }
+
+    .formas-pagamento-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .formas-pagamento-grid button {
+      border: 2px solid #3e2723;
+      background: #ffc400;
+      color: #3e2723;
+      border-radius: 14px;
+      padding: 15px 12px;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .formas-pagamento-grid button:hover {
+      background: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .btn-cancelar-pagamento {
+      width: 100%;
+      margin-top: 14px;
+      background: #ffffff;
+      color: #3e2723;
+      border: 1px solid #d7ccc8;
+      border-radius: 12px;
+      padding: 12px;
+      font-weight: 900;
+      cursor: pointer;
     }
 
     @media (max-width: 650px) {
@@ -349,7 +484,8 @@
         font-size: 16px;
       }
 
-      .botoes-status {
+      .botoes-status,
+      .formas-pagamento-grid {
         grid-template-columns: 1fr;
       }
 
@@ -384,6 +520,8 @@
     </div>
   </div>
 
+  <div id="numero-orcamento" class="numero-orcamento"></div>
+
   <h1 id="titulo-orcamento">Carregando...</h1>
   <div class="linha-divisoria"></div>
 
@@ -391,8 +529,32 @@
     <div class="msg msg-carregando">Carregando orçamento...</div>
   </div>
 
+  <div id="whatsapp-empresa-box" class="whatsapp-empresa-box">
+    <a id="btn-whatsapp-empresa" class="btn-whatsapp-empresa" href="#" target="_blank" rel="noopener">
+      🟢 Falar com a empresa no WhatsApp
+    </a>
+  </div>
+
   <div class="rodape">
     Orçamento gerado por <strong id="rodape-nome-empresa">FS Orçamentos</strong>
+  </div>
+</div>
+
+<div id="modal-forma-pagamento" class="modal-pagamento-overlay">
+  <div class="modal-pagamento-card">
+    <h3>Como deseja pagar?</h3>
+    <p>Escolha a forma de pagamento para confirmar a aprovação do orçamento.</p>
+
+    <div class="formas-pagamento-grid">
+      <button type="button" onclick="selecionarFormaPagamento('credito')">💳 Crédito</button>
+      <button type="button" onclick="selecionarFormaPagamento('debito')">💳 Débito</button>
+      <button type="button" onclick="selecionarFormaPagamento('pix')">🔷 Pix</button>
+      <button type="button" onclick="selecionarFormaPagamento('dinheiro')">💵 Dinheiro</button>
+    </div>
+
+    <button type="button" class="btn-cancelar-pagamento" onclick="fecharModalFormaPagamento()">
+      Cancelar
+    </button>
   </div>
 </div>
 
@@ -413,6 +575,13 @@ const STATUS_CONFIG = {
   finalizado: 'Finalizado'
 };
 
+const FORMAS_PAGAMENTO = {
+  credito: 'Crédito',
+  debito: 'Débito',
+  pix: 'Pix',
+  dinheiro: 'Dinheiro'
+};
+
 let orcamentoAtual = null;
 let perfilEmissorAtual = null;
 
@@ -425,6 +594,10 @@ function escaparHtml(valor) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+function textoComQuebra(valor) {
+  return escaparHtml(valor).replace(/\n/g, '<br>');
 }
 
 function formatarMoeda(valor) {
@@ -444,12 +617,26 @@ function formatarData(dataValor) {
   return data.toLocaleDateString('pt-BR');
 }
 
+function formatarDataHora(dataValor) {
+  if (!dataValor) return '-';
+
+  const data = new Date(dataValor);
+
+  if (isNaN(data.getTime())) return '-';
+
+  return data.toLocaleString('pt-BR');
+}
+
 function statusLabel(status) {
   return STATUS_CONFIG[status] || status || 'Pendente';
 }
 
 function classeStatus(status) {
   return String(status || 'pendente').replace(/[^a-zA-Z0-9_\-]/g, '');
+}
+
+function textoFormaPagamento(forma) {
+  return FORMAS_PAGAMENTO[forma] || '-';
 }
 
 function valorOuVazio(valor) {
@@ -503,6 +690,18 @@ function normalizarItem(item) {
     valor,
     subtotal
   };
+}
+
+function formatarNumeroOrcamento(numero) {
+  if (!numero && numero !== 0) return '';
+
+  const somenteNumero = Number(numero);
+
+  if (Number.isFinite(somenteNumero)) {
+    return String(somenteNumero).padStart(6, '0');
+  }
+
+  return String(numero);
 }
 
 /* ==================== TEMA DO ORÇAMENTO ==================== */
@@ -665,6 +864,28 @@ function preencherChipEmissor(elemento, texto) {
   }
 }
 
+function configurarWhatsappEmpresa(telefone, nomeEmpresa) {
+  const box = document.getElementById('whatsapp-empresa-box');
+  const link = document.getElementById('btn-whatsapp-empresa');
+
+  if (!box || !link) return;
+
+  const limpo = String(telefone || '').replace(/\D/g, '');
+
+  if (!limpo) {
+    box.style.display = 'none';
+    link.href = '#';
+    return;
+  }
+
+  const numero = limpo.startsWith('55') ? limpo : '55' + limpo;
+
+  const mensagem = `Olá! Estou falando sobre o orçamento recebido de ${nomeEmpresa || 'sua empresa'}.`;
+
+  link.href = `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`;
+  box.style.display = 'block';
+}
+
 function preencherTopoEmpresaVer(orcamento, perfil) {
   const logoImg = document.getElementById('ver-logo-empresa');
   const logoPlaceholder = document.getElementById('ver-logo-placeholder');
@@ -722,6 +943,8 @@ function preencherTopoEmpresaVer(orcamento, perfil) {
   preencherChipEmissor(cnpjEl, cnpj ? `CNPJ/CPF: ${cnpj}` : '');
   preencherChipEmissor(enderecoEl, endereco ? `Endereço: ${endereco}` : '');
 
+  configurarWhatsappEmpresa(telefone, nomeEmpresa);
+
   if (logoImg && logoPlaceholder) {
     if (fotoUrl) {
       logoImg.src = fotoUrl + (fotoUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
@@ -736,6 +959,26 @@ function preencherTopoEmpresaVer(orcamento, perfil) {
   }
 
   document.title = `${nomeEmpresa} - ${orcamento?.assunto || 'Orçamento'}`;
+}
+
+function preencherNumeroOrcamento(orcamento) {
+  const el = document.getElementById('numero-orcamento');
+
+  if (!el) return;
+
+  const numero =
+    orcamento?.numero_orcamento ||
+    orcamento?.numero ||
+    '';
+
+  if (!numero && numero !== 0) {
+    el.style.display = 'none';
+    el.innerText = '';
+    return;
+  }
+
+  el.innerText = `Orçamento Nº ${formatarNumeroOrcamento(numero)}`;
+  el.style.display = 'block';
 }
 
 async function carregarOrcamento() {
@@ -799,6 +1042,7 @@ async function carregarOrcamento() {
   perfilEmissorAtual = await carregarPerfilEmissor(data.usuario_id);
 
   preencherTopoEmpresaVer(data, perfilEmissorAtual);
+  preencherNumeroOrcamento(data);
   renderizarOrcamento(data);
 }
 
@@ -809,20 +1053,17 @@ function renderizarOrcamento(orcamento) {
   const titulo = document.getElementById('titulo-orcamento');
 
   aplicarTemaVerHtml(orcamento);
+  preencherNumeroOrcamento(orcamento);
 
   const assunto = orcamento.assunto || 'Orçamento';
-
-  const emissor =
-    orcamento.consultor ||
-    orcamento.responsavel ||
-    perfilEmissorAtual?.nome ||
-    'Não informado';
-
   const cliente = orcamento.cliente_nome || 'Não informado';
   const contato = orcamento.cliente_whatsapp || 'Não informado';
   const status = orcamento.status || 'pendente';
   const total = Number(orcamento.total || 0);
-  const dataCriacao = orcamento.criado_em || '';
+  const dataCriacao = orcamento.criado_em || orcamento.created_at || '';
+  const observacoes = orcamento.observacoes || '';
+  const formaPagamento = orcamento.forma_pagamento_cliente || '';
+  const respostaClienteEm = orcamento.resposta_cliente_em || '';
 
   titulo.innerText = assunto;
 
@@ -851,8 +1092,44 @@ function renderizarOrcamento(orcamento) {
     `;
   }
 
-  const botoesVisiveis =
-    status === 'pendente' || status === 'em_servico';
+  const podeResponder = status === 'pendente';
+
+  let mensagemResposta = '';
+
+  if (status === 'aprovado') {
+    mensagemResposta = `
+      <div class="msg msg-resposta">
+        <strong>✅ Orçamento aprovado.</strong><br>
+        ${
+          formaPagamento
+            ? `<strong>Forma de pagamento escolhida:</strong> ${escaparHtml(textoFormaPagamento(formaPagamento))}<br>`
+            : ''
+        }
+        ${
+          respostaClienteEm
+            ? `<strong>Resposta enviada em:</strong> ${escaparHtml(formatarDataHora(respostaClienteEm))}`
+            : ''
+        }
+      </div>
+    `;
+  } else if (status === 'recusado') {
+    mensagemResposta = `
+      <div class="msg msg-resposta">
+        <strong>❌ Orçamento recusado.</strong><br>
+        ${
+          respostaClienteEm
+            ? `<strong>Resposta enviada em:</strong> ${escaparHtml(formatarDataHora(respostaClienteEm))}`
+            : 'Sua resposta já foi registrada.'
+        }
+      </div>
+    `;
+  } else if (!podeResponder) {
+    mensagemResposta = `
+      <div class="msg msg-sucesso">
+        Este orçamento já está com status: ${escaparHtml(statusLabel(status))}.
+      </div>
+    `;
+  }
 
   container.innerHTML = `
     <div class="box-info">
@@ -888,40 +1165,154 @@ function renderizarOrcamento(orcamento) {
     </div>
 
     ${
-      botoesVisiveis
+      observacoes
+        ? `
+          <div class="observacoes-box" style="display:block;">
+            <strong>Observações:</strong>
+            ${textoComQuebra(observacoes)}
+          </div>
+        `
+        : ''
+    }
+
+    ${
+      podeResponder
         ? `
           <div class="botoes-status">
-            <button type="button" class="btn-status btn-recusar" onclick="responderOrcamento('recusado')">
+            <button type="button" class="btn-status btn-recusar" onclick="recusarOrcamento()">
               Recusar orçamento
             </button>
 
-            <button type="button" class="btn-status btn-aprovar" onclick="responderOrcamento('aprovado')">
+            <button type="button" class="btn-status btn-aprovar" onclick="aprovarOrcamento()">
               Aprovar orçamento
             </button>
           </div>
         `
-        : `
-          <div class="msg msg-sucesso">
-            Este orçamento já está com status: ${escaparHtml(statusLabel(status))}.
-          </div>
-        `
+        : mensagemResposta
     }
   `;
 }
 
+/* ==================== MODAL FORMA DE PAGAMENTO ==================== */
+
+function abrirModalFormaPagamento() {
+  const modal = document.getElementById('modal-forma-pagamento');
+
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+function fecharModalFormaPagamento() {
+  const modal = document.getElementById('modal-forma-pagamento');
+
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
 /* ==================== RESPOSTA DO CLIENTE ==================== */
 
-async function responderOrcamento(novoStatus) {
+function orcamentoJaRespondido() {
+  const status = orcamentoAtual?.status || 'pendente';
+  return status !== 'pendente';
+}
+
+async function aprovarOrcamento() {
   if (!orcamentoAtual?.id) {
     alert('Orçamento não carregado.');
     return;
   }
 
-  const textoStatus = statusLabel(novoStatus);
+  if (orcamentoJaRespondido()) {
+    alert('Este orçamento já foi respondido.');
+    return;
+  }
+
+  abrirModalFormaPagamento();
+}
+
+async function selecionarFormaPagamento(formaPagamento) {
+  if (!orcamentoAtual?.id) {
+    alert('Orçamento não carregado.');
+    return;
+  }
+
+  if (orcamentoJaRespondido()) {
+    fecharModalFormaPagamento();
+    alert('Este orçamento já foi respondido.');
+    return;
+  }
+
+  const labelForma = textoFormaPagamento(formaPagamento);
 
   const confirmar = confirm(
-    `Deseja realmente marcar este orçamento como "${textoStatus}"?`
+    `Confirmar aprovação do orçamento com pagamento em ${labelForma}?`
   );
+
+  if (!confirmar) return;
+
+  const botoes = document.querySelectorAll('.btn-status, .formas-pagamento-grid button, .btn-cancelar-pagamento');
+
+  botoes.forEach(btn => {
+    btn.disabled = true;
+  });
+
+  const payload = {
+    status: 'aprovado',
+    forma_pagamento_cliente: formaPagamento,
+    resposta_cliente_em: new Date().toISOString()
+  };
+
+  const { data, error } = await _supabase
+    .from('orcamentos')
+    .update(payload)
+    .eq('id', orcamentoAtual.id)
+    .eq('status', 'pendente')
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Erro ao aprovar orçamento:', error);
+
+    alert(
+      'Não foi possível aprovar o orçamento. Se o erro for de permissão, verifique a policy de UPDATE da tabela orcamentos.'
+    );
+
+    botoes.forEach(btn => {
+      btn.disabled = false;
+    });
+
+    return;
+  }
+
+  if (!data) {
+    alert('Este orçamento já foi respondido ou não está mais pendente.');
+    window.location.reload();
+    return;
+  }
+
+  orcamentoAtual = data;
+
+  fecharModalFormaPagamento();
+  preencherNumeroOrcamento(data);
+  renderizarOrcamento(data);
+
+  alert('Orçamento aprovado com sucesso!');
+}
+
+async function recusarOrcamento() {
+  if (!orcamentoAtual?.id) {
+    alert('Orçamento não carregado.');
+    return;
+  }
+
+  if (orcamentoJaRespondido()) {
+    alert('Este orçamento já foi respondido.');
+    return;
+  }
+
+  const confirmar = confirm('Deseja realmente recusar este orçamento?');
 
   if (!confirmar) return;
 
@@ -931,16 +1322,26 @@ async function responderOrcamento(novoStatus) {
     btn.disabled = true;
   });
 
-  const { error } = await _supabase
+  const payload = {
+    status: 'recusado',
+    forma_pagamento_cliente: null,
+    resposta_cliente_em: new Date().toISOString()
+  };
+
+  const { data, error } = await _supabase
     .from('orcamentos')
-    .update({
-      status: novoStatus
-    })
-    .eq('id', orcamentoAtual.id);
+    .update(payload)
+    .eq('id', orcamentoAtual.id)
+    .eq('status', 'pendente')
+    .select()
+    .single();
 
   if (error) {
-    console.error('Erro ao atualizar status:', error);
-    alert('Não foi possível atualizar o status do orçamento.');
+    console.error('Erro ao recusar orçamento:', error);
+
+    alert(
+      'Não foi possível recusar o orçamento. Se o erro for de permissão, verifique a policy de UPDATE da tabela orcamentos.'
+    );
 
     botoes.forEach(btn => {
       btn.disabled = false;
@@ -949,11 +1350,33 @@ async function responderOrcamento(novoStatus) {
     return;
   }
 
-  orcamentoAtual.status = novoStatus;
-  renderizarOrcamento(orcamentoAtual);
+  if (!data) {
+    alert('Este orçamento já foi respondido ou não está mais pendente.');
+    window.location.reload();
+    return;
+  }
 
-  alert(`Orçamento marcado como "${textoStatus}".`);
+  orcamentoAtual = data;
+
+  preencherNumeroOrcamento(data);
+  renderizarOrcamento(data);
+
+  alert('Resposta enviada com sucesso.');
 }
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    fecharModalFormaPagamento();
+  }
+});
+
+document.addEventListener('click', function(event) {
+  const modal = document.getElementById('modal-forma-pagamento');
+
+  if (event.target === modal) {
+    fecharModalFormaPagamento();
+  }
+});
 </script>
 
 </body>
