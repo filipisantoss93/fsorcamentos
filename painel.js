@@ -1119,35 +1119,54 @@ async function carregarDashboardPainel() {
 }
 
 async function carregarUltimosOrcamentosPainel() {
+  garantirEstruturaPainel();
+
   const container = document.getElementById('lista-ultimos-orcamentos-painel');
   if (!container) return;
 
   const session = await obterSessaoPainel();
   if (!session) return;
 
+  container.innerHTML = `
+    <div class="painel-aviso">
+      Carregando últimos orçamentos...
+    </div>
+  `;
+
   const { data, error } = await _supabase
     .from('orcamentos')
-    .select('id, numero_orcamento, assunto, cliente_nome, total, status, forma_pagamento_cliente, forma_pagamento, criado_em')
+    .select('id, numero_orcamento, assunto, cliente_nome, total, status, forma_pagamento_cliente, criado_em')
     .eq('usuario_id', session.user.id)
     .order('criado_em', { ascending: false })
     .limit(6);
 
   if (error) {
     console.warn('Erro ao buscar últimos orçamentos:', error);
-    container.innerHTML = `<div class="painel-aviso">Não foi possível carregar os últimos orçamentos.</div>`;
+
+    container.innerHTML = `
+      <div class="painel-aviso">
+        Não foi possível carregar os últimos orçamentos.
+        <br>
+        <small>${escaparHtmlPainel(error.message || '')}</small>
+      </div>
+    `;
     return;
   }
 
   const orcamentos = data || [];
 
   if (!orcamentos.length) {
-    container.innerHTML = `<div class="painel-aviso">Nenhum orçamento criado ainda.</div>`;
+    container.innerHTML = `
+      <div class="painel-aviso">
+        Nenhum orçamento criado ainda.
+      </div>
+    `;
     return;
   }
 
   container.innerHTML = `
     <div style="width:100%; overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; min-width:720px; background:#fff; border-radius:12px; overflow:hidden;">
+      <table style="width:100%; border-collapse:collapse; min-width:760px; background:#fff; border-radius:12px; overflow:hidden;">
         <thead>
           <tr style="background:#3e2723; color:#ffc400;">
             <th style="padding:10px; text-align:left;">Nº</th>
@@ -1160,44 +1179,52 @@ async function carregarUltimosOrcamentosPainel() {
         </thead>
 
         <tbody>
-          ${orcamentos.map(o => {
-            const pagamento =
-              o.forma_pagamento_cliente ||
-              o.forma_pagamento ||
-              '-';
+          ${orcamentos.map(o => `
+            <tr onclick="window.location.href='/orcamentos.html?orcamento=${encodeURIComponent(o.id)}'" style="cursor:pointer;">
+              <td style="padding:10px; border-bottom:1px solid #eee; font-weight:800;">
+                ${o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-'}
+              </td>
 
-            return `
-              <tr>
-                <td style="padding:10px; border-bottom:1px solid #eee;">
-                  ${o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-'}
-                </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(o.cliente_nome || '-')}
+              </td>
 
-                <td style="padding:10px; border-bottom:1px solid #eee;">
-                  ${escaparHtmlPainel(o.cliente_nome || '-')}
-                </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(o.assunto || '-')}
+              </td>
 
-                <td style="padding:10px; border-bottom:1px solid #eee;">
-                  ${escaparHtmlPainel(o.assunto || '-')}
-                </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(statusOrcamentoLabel(o.status))}
+              </td>
 
-                <td style="padding:10px; border-bottom:1px solid #eee;">
-                  ${escaparHtmlPainel(statusOrcamentoLabel(o.status))}
-                </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                ${escaparHtmlPainel(formaPagamentoPainelLabel(o.forma_pagamento_cliente))}
+              </td>
 
-                <td style="padding:10px; border-bottom:1px solid #eee;">
-                  ${escaparHtmlPainel(pagamento)}
-                </td>
-
-                <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">
-                  ${formatarMoedaPainel(o.total)}
-                </td>
-              </tr>
-            `;
-          }).join('')}
+              <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">
+                ${formatarMoedaPainel(o.total)}
+              </td>
+            </tr>
+          `).join('')}
         </tbody>
       </table>
     </div>
   `;
+}
+
+function formaPagamentoPainelLabel(valor) {
+  const forma = normalizarPlanoPainel(valor);
+
+  const mapa = {
+    pix: 'Pix',
+    dinheiro: 'Dinheiro',
+    credito: 'Crédito',
+    debito: 'Débito',
+    cartao_credito: 'Cartão de crédito',
+    cartao_debito: 'Cartão de débito'
+  };
+
+  return mapa[forma] || (valor ? String(valor) : '-');
 }
 
 // ==================== GERADOR GLOBAL ====================
