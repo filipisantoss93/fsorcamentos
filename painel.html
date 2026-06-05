@@ -199,13 +199,19 @@
     .btn-cancelar,
     .btn-confirmar,
     .btn-upload-logo,
-    .btn-remover-logo {
+    .btn-remover-logo,
+    .btn-plano-painel {
       border: none;
       border-radius: 8px;
       padding: 11px 15px;
       cursor: pointer;
       font-weight: bold;
       font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
     }
 
     .btn-editar-perfil {
@@ -240,6 +246,17 @@
     .btn-remover-logo {
       background: #dc2626;
       color: #fff;
+    }
+
+    .btn-plano-painel {
+      background: #ffc400;
+      color: #3e2723;
+      border: 2px solid #3e2723;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+    }
+
+    .btn-plano-painel:hover {
+      background: #ffffff;
     }
 
     .modal-overlay-painel {
@@ -514,335 +531,6 @@
       padding-bottom: 10px;
     }
 
-    #painel-assinatura-basico {
-      display: none;
-    }
-
-    .planos-pix-section {
-      max-width: 1150px;
-      margin: 22px auto 34px;
-      padding: 34px 24px;
-      background: linear-gradient(135deg, #fffaf0, #f4ece1);
-      border-radius: 24px;
-      border-top: 6px solid #ffc400;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.14);
-      color: #3e2723;
-      box-sizing: border-box;
-    }
-
-    .planos-pix-topo {
-      text-align: center;
-      max-width: 820px;
-      margin: 0 auto 28px auto;
-    }
-
-    .tag-plano-pix {
-      display: inline-block;
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
-      border-radius: 999px;
-      padding: 7px 15px;
-      font-size: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .planos-pix-topo h2 {
-      margin: 0 0 10px 0;
-      font-size: 30px;
-      color: #3e2723;
-    }
-
-    .planos-pix-topo p {
-      margin: 0;
-      color: #6d4c41;
-      font-size: 16px;
-      line-height: 1.55;
-    }
-
-    .planos-pix-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .plano-pix-card {
-      position: relative;
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 24px;
-      border: 1px solid #eadfce;
-      border-top: 5px solid #ffc400;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.12);
-      text-align: center;
-    }
-
-    .plano-pix-card.destaque {
-      transform: scale(1.03);
-      border: 2px solid #ffc400;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.20);
-    }
-
-    .plano-pix-selo {
-      position: absolute;
-      top: -14px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 11px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .plano-pix-periodo {
-      font-size: 22px;
-      font-weight: 900;
-      color: #3e2723;
-      margin-bottom: 8px;
-    }
-
-    .plano-pix-preco {
-      font-size: 32px;
-      font-weight: 900;
-      color: #3e2723;
-      margin-bottom: 12px;
-    }
-
-    .plano-pix-card p {
-      color: #6d4c41;
-      font-size: 14px;
-      line-height: 1.45;
-      min-height: 42px;
-      margin-bottom: 18px;
-    }
-
-    .plano-pix-card button {
-      width: 100%;
-      border: none;
-      background: #ffc400;
-      color: #3e2723;
-      border-radius: 12px;
-      padding: 13px 16px;
-      font-weight: 900;
-      cursor: pointer;
-      border: 2px solid #3e2723;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
-    }
-
-    .plano-pix-card button:hover {
-      background: #ffffff;
-    }
-
-    .plano-pix-beneficios {
-      margin-top: 26px;
-      background: #3e2723;
-      color: #ffffff;
-      border-radius: 18px;
-      border: 2px solid #ffc400;
-      padding: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .plano-pix-beneficios strong {
-      width: 100%;
-      color: #ffc400;
-      font-size: 18px;
-    }
-
-    .plano-pix-beneficios span {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,196,0,0.35);
-      color: #f4ece1;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .modal-pix-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.76);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 19000;
-      padding: 16px;
-    }
-
-    .modal-pix-card {
-      width: min(100%, 520px);
-      max-height: 92vh;
-      overflow-y: auto;
-      background: #f4ece1;
-      color: #3e2723;
-      border-radius: 18px;
-      border-top: 5px solid #ffc400;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.55);
-    }
-
-    .modal-pix-topo {
-      background: #3e2723;
-      color: #ffc400;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .modal-pix-topo strong {
-      display: block;
-      font-size: 18px;
-    }
-
-    .modal-pix-topo span {
-      display: block;
-      color: #f4ece1;
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    .modal-pix-topo button {
-      background: #dc2626;
-      color: #ffffff;
-      border: none;
-      border-radius: 9px;
-      width: 34px;
-      height: 34px;
-      font-size: 22px;
-      font-weight: bold;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .pix-loading,
-    .pix-erro {
-      margin: 18px;
-      padding: 16px;
-      border-radius: 12px;
-      font-weight: 800;
-      text-align: center;
-    }
-
-    .pix-loading {
-      background: #fff8e1;
-      border-left: 5px solid #ffc400;
-      color: #5d4037;
-    }
-
-    .pix-erro {
-      background: #fff1f1;
-      border-left: 5px solid #dc2626;
-      color: #991b1b;
-    }
-
-    .pix-conteudo {
-      padding: 18px;
-    }
-
-    .pix-resumo {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .pix-resumo div {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 12px;
-      border-left: 5px solid #ffc400;
-    }
-
-    .pix-resumo small {
-      display: block;
-      color: #6d4c41;
-      font-size: 11px;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .pix-resumo strong {
-      display: block;
-      color: #3e2723;
-      font-size: 18px;
-    }
-
-    .pix-qrcode-box {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      border: 1px solid #eadfce;
-      margin-bottom: 14px;
-    }
-
-    .pix-qrcode-box img {
-      max-width: 260px;
-      width: 100%;
-      height: auto;
-    }
-
-    .pix-label {
-      display: block;
-      font-weight: 900;
-      color: #3e2723;
-      margin-bottom: 7px;
-    }
-
-    #pix-copia-cola {
-      width: 100%;
-      min-height: 105px;
-      resize: vertical;
-      border-radius: 12px;
-      border: 1px solid #d7ccc8;
-      padding: 12px;
-      box-sizing: border-box;
-      font-family: monospace;
-      font-size: 12px;
-      color: #3e2723;
-    }
-
-    .pix-acoes {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .pix-acoes button {
-      flex: 1;
-      border-radius: 10px;
-      padding: 12px;
-      font-weight: 900;
-      cursor: pointer;
-      border: 2px solid #ffc400;
-      background: #ffc400;
-      color: #3e2723;
-    }
-
-    .pix-acoes button.secundario {
-      background: #3e2723;
-      color: #ffc400;
-    }
-
-    .pix-aviso {
-      margin: 14px 0 0 0;
-      color: #6d4c41;
-      font-size: 13px;
-      line-height: 1.4;
-      text-align: center;
-    }
-
     #btn-flutuante-gerador-global {
       position: fixed;
       right: 18px;
@@ -878,16 +566,6 @@
       color: #aaa;
     }
 
-    @media (max-width: 850px) {
-      .planos-pix-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .plano-pix-card.destaque {
-        transform: none;
-      }
-    }
-
     @media (max-width: 760px) {
       .perfil-layout,
       .perfil-dados-grid,
@@ -904,8 +582,7 @@
 
       .acoes-painel,
       .botoes-modal-painel,
-      .responsaveis-topo,
-      .pix-acoes {
+      .responsaveis-topo {
         flex-direction: column;
         align-items: stretch;
       }
@@ -915,6 +592,7 @@
       .btn-salvar,
       .btn-cancelar,
       .btn-confirmar,
+      .btn-plano-painel,
       .responsaveis-topo button {
         width: 100%;
       }
@@ -927,22 +605,9 @@
       .responsavel-item button {
         width: 100%;
       }
-
-      .pix-resumo {
-        grid-template-columns: 1fr;
-      }
     }
 
     @media (max-width: 520px) {
-      .planos-pix-section {
-        padding: 26px 14px;
-        border-radius: 18px;
-      }
-
-      .planos-pix-topo h2 {
-        font-size: 24px;
-      }
-
       #btn-flutuante-gerador-global span {
         display: none;
       }
@@ -1026,7 +691,7 @@
       <div>
         <h1>Painel de Controle</h1>
         <p class="painel-subtitulo">
-          Visualize os dados da sua empresa, plano, responsáveis e resumo da sua conta.
+          Visualize os dados da empresa, plano, responsáveis e resumo dos orçamentos.
         </p>
       </div>
     </div>
@@ -1034,6 +699,84 @@
     <div class="painel-aviso">
       Mantenha seus dados atualizados para que os orçamentos sejam gerados com informações corretas da sua empresa.
     </div>
+
+    <section class="painel-card">
+      <h2>Dados do Plano</h2>
+
+      <div id="perfil-plano-aviso" class="painel-plano-aviso" style="display:none;"></div>
+
+      <div class="perfil-dados-grid">
+        <div class="info-card">
+          <strong>Plano atual</strong>
+          <span id="perfil-plano-texto">Plano Grátis</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Status do plano</strong>
+          <span id="perfil-plano-status">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Expira em</strong>
+          <span id="perfil-plano-expira">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Responsáveis permitidos</strong>
+          <span id="perfil-limite-responsaveis">-</span>
+        </div>
+      </div>
+
+      <div class="acoes-painel">
+        <a href="/planos.html" class="btn-plano-painel">
+          ⭐ Ver planos e assinatura
+        </a>
+      </div>
+    </section>
+
+    <section id="dashboard-painel" class="painel-card">
+      <h2>Resumo dos Orçamentos</h2>
+
+      <div class="perfil-dados-grid">
+        <div class="info-card">
+          <strong>Total de orçamentos</strong>
+          <span id="dash-total-orcamentos">0</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Pendentes</strong>
+          <span id="dash-pendentes">0</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Aprovados no mês</strong>
+          <span id="dash-aprovados-mes">0</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Valor aprovado no mês</strong>
+          <span id="dash-valor-aprovado-mes">R$ 0,00</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Taxa de aprovação</strong>
+          <span id="dash-taxa-aprovacao">0%</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Última atualização</strong>
+          <span id="dash-atualizado-em">-</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ultimos-orcamentos-painel" class="painel-card">
+      <h2>Últimos Orçamentos</h2>
+
+      <div id="lista-ultimos-orcamentos-painel">
+        <div class="painel-aviso">Carregando últimos orçamentos...</div>
+      </div>
+    </section>
 
     <section class="painel-card">
       <h2>Dados da Empresa</h2>
@@ -1051,7 +794,7 @@
         <div>
           <div class="perfil-dados-grid">
             <div class="info-card">
-              <strong>Consultor Selecionado</strong>
+              <strong>Consultor selecionado</strong>
               <span id="perfil-responsavel-selecionado">-</span>
             </div>
 
@@ -1088,118 +831,6 @@
         </div>
       </div>
     </section>
-  </div>
-
-  <section id="painel-assinatura-basico" class="planos-pix-section">
-    <div class="planos-pix-topo">
-      <span class="tag-plano-pix">Plano Básico</span>
-
-      <h2>Escolha o período do seu Plano Básico</h2>
-
-      <p>
-        Pague via Pix e libere os recursos do Plano Básico pelo período escolhido.
-        A confirmação será feita automaticamente assim que o pagamento for identificado.
-      </p>
-    </div>
-
-    <div class="planos-pix-grid">
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">1 mês</div>
-        <div class="plano-pix-preco">R$ 19,90</div>
-        <p>Ideal para testar os recursos pagos por 30 dias.</p>
-
-        <button type="button" onclick="gerarPixPlanoBasico('mensal')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card destaque">
-        <div class="plano-pix-selo">Mais escolhido</div>
-        <div class="plano-pix-periodo">6 meses</div>
-        <div class="plano-pix-preco">R$ 109,90</div>
-        <p>Economize em relação ao pagamento mensal.</p>
-
-        <button type="button" onclick="gerarPixPlanoBasico('semestral')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">12 meses</div>
-        <div class="plano-pix-preco">R$ 209,90</div>
-        <p>Melhor opção para usar o FS Orçamentos durante o ano todo.</p>
-
-        <button type="button" onclick="gerarPixPlanoBasico('anual')">
-          Gerar Pix
-        </button>
-      </div>
-    </div>
-
-    <div class="plano-pix-beneficios">
-      <strong>O Plano Básico inclui:</strong>
-      <span>Salvar orçamentos na nuvem</span>
-      <span>Histórico de orçamentos</span>
-      <span>Status: pendente, aprovado, recusado, em serviço e finalizado</span>
-      <span>Até 2 responsáveis</span>
-      <span>Envio manual pelo WhatsApp com link</span>
-      <span>Resumo financeiro</span>
-      <span>Sem anúncios na plataforma</span>
-    </div>
-  </section>
-
-  <div id="modal-pix-basico" class="modal-pix-overlay">
-    <div class="modal-pix-card">
-      <div class="modal-pix-topo">
-        <div>
-          <strong>Pagamento via Pix</strong>
-          <span id="pix-modal-subtitulo">Plano Básico</span>
-        </div>
-
-        <button type="button" onclick="fecharModalPixBasico()">×</button>
-      </div>
-
-      <div id="pix-loading" class="pix-loading">
-        Gerando Pix, aguarde...
-      </div>
-
-      <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
-        <div class="pix-resumo">
-          <div>
-            <small>Plano</small>
-            <strong id="pix-plano-label">Plano Básico</strong>
-          </div>
-
-          <div>
-            <small>Valor</small>
-            <strong id="pix-valor">R$ 0,00</strong>
-          </div>
-        </div>
-
-        <div class="pix-qrcode-box">
-          <img id="pix-qrcode-img" src="" alt="QR Code Pix">
-        </div>
-
-        <label class="pix-label">Pix copia e cola</label>
-
-        <textarea id="pix-copia-cola" readonly></textarea>
-
-        <div class="pix-acoes">
-          <button type="button" onclick="copiarPixCopiaCola()">
-            Copiar Pix
-          </button>
-
-          <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">
-            Já paguei, verificar
-          </button>
-        </div>
-
-        <p class="pix-aviso">
-          Após o pagamento, seu Plano Básico será liberado automaticamente quando a Efí confirmar o Pix.
-        </p>
-      </div>
-
-      <div id="pix-erro" class="pix-erro" style="display:none;"></div>
-    </div>
   </div>
 
   <div id="modal-editar-perfil" class="modal-overlay-painel">
