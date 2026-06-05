@@ -1,492 +1,600 @@
 // ==================== PAGAMENTOS.JS ====================
 // FS Orçamentos - Pagamento Pix Plano Básico
-// Centraliza as funções de pagamento usadas em index.html, planos.html,
-// painel.html e orcamentos.html.
+// Arquivo central do pagamento via Pix.
+// Use este arquivo principalmente na página planos.html.
+// As demais páginas devem apenas redirecionar para /planos.html.
 
-// IMPORTANTE:
-// Este arquivo depende de:
-// - Supabase carregado em config.js
-// - window._supabase disponível
-// - Modal Pix presente no HTML da página
-// - Edge Function: criar-pix-basico
+(function () {
+  'use strict';
 
-let pagamentoPixAtualId = null;
+  // ==================== CONFIGURAÇÕES ====================
 
-const FS_SUPABASE_FUNCTIONS_URL =
-  window.FS_SUPABASE_FUNCTIONS_URL ||
-  'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
+  const FS_SUPABASE_FUNCTIONS_URL =
+    window.FS_SUPABASE_FUNCTIONS_URL ||
+    'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
 
-const FS_PLANOS_PIX = {
-  mensal: {
-    label: 'Plano Básico - 1 mês',
-    valor: 19.90
-  },
-  semestral: {
-    label: 'Plano Básico - 6 meses',
-    valor: 109.90
-  },
-  anual: {
-    label: 'Plano Básico - 12 meses',
-    valor: 209.90
-  }
-};
+  const FS_PLANOS_PIX = {
+    mensal: {
+      label: 'Plano Básico - 1 mês',
+      valor: 19.90
+    },
+    semestral: {
+      label: 'Plano Básico - 6 meses',
+      valor: 109.90
+    },
+    anual: {
+      label: 'Plano Básico - 12 meses',
+      valor: 209.90
+    }
+  };
 
-// ==================== HELPERS ====================
+  let pagamentoPixAtualIdInterno = null;
 
-function fsPagamentoEl(id) {
-  return document.getElementById(id);
-}
+  // ==================== HELPERS ====================
 
-function fsFormatarMoedaPix(valor) {
-  return Number(valor || 0).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
-}
-
-function fsNormalizarPlanoPagamento(valor) {
-  return String(valor || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
-}
-
-function fsPeriodoPixValido(periodo) {
-  return Object.prototype.hasOwnProperty.call(FS_PLANOS_PIX, periodo);
-}
-
-function fsObterPlanoPix(periodo) {
-  return FS_PLANOS_PIX[periodo] || FS_PLANOS_PIX.mensal;
-}
-
-async function fsObterSessaoPagamento() {
-  try {
-    if (!window._supabase) return null;
-
-    const { data: { session }, error } = await _supabase.auth.getSession();
-
-    if (error || !session) return null;
-
-    return session;
-  } catch (error) {
-    console.error('Erro ao obter sessão para pagamento:', error);
-    return null;
-  }
-}
-
-function fsUsuarioLogadoObrigatorioPagamento() {
-  if (typeof abrirModalLogin === 'function') {
-    abrirModalLogin();
-    return;
+  function fsPagamentoEl(id) {
+    return document.getElementById(id);
   }
 
-  window.location.href = '/index.html?login=1';
-}
-
-// ==================== MODAL PIX ====================
-
-function abrirModalPixBasico() {
-  const modal = fsPagamentoEl('modal-pix-basico');
-
-  if (!modal) {
-    console.warn('Modal Pix não encontrado na página.');
-    return;
+  function fsFormatarMoedaPix(valor) {
+    return Number(valor || 0).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
   }
 
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-
-function fecharModalPixBasico() {
-  const modal = fsPagamentoEl('modal-pix-basico');
-
-  if (!modal) return;
-
-  modal.style.display = 'none';
-  document.body.style.overflow = '';
-}
-
-function setEstadoModalPixCarregando(periodo = 'mensal') {
-  abrirModalPixBasico();
-
-  const plano = fsObterPlanoPix(periodo);
-
-  const loading = fsPagamentoEl('pix-loading');
-  const conteudo = fsPagamentoEl('pix-conteudo');
-  const erro = fsPagamentoEl('pix-erro');
-
-  const subtitulo = fsPagamentoEl('pix-modal-subtitulo');
-  const planoLabel = fsPagamentoEl('pix-plano-label');
-  const pixValor = fsPagamentoEl('pix-valor');
-  const qrImg = fsPagamentoEl('pix-qrcode-img');
-  const copiaCola = fsPagamentoEl('pix-copia-cola');
-
-  pagamentoPixAtualId = null;
-  window.pagamentoPixAtualId = null;
-
-  if (loading) {
-    loading.style.display = 'block';
-    loading.innerText = 'Gerando Pix, aguarde...';
+  function fsNormalizarTextoPagamento(valor) {
+    return String(valor || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
   }
 
-  if (conteudo) {
-    conteudo.style.display = 'none';
+  function fsPeriodoPixValido(periodo) {
+    return Object.prototype.hasOwnProperty.call(FS_PLANOS_PIX, periodo);
   }
 
-  if (erro) {
-    erro.style.display = 'none';
-    erro.innerText = '';
+  function fsObterPlanoPix(periodo) {
+    return FS_PLANOS_PIX[periodo] || FS_PLANOS_PIX.mensal;
   }
 
-  if (subtitulo) {
-    subtitulo.innerText = `${plano.label} - ${fsFormatarMoedaPix(plano.valor)}`;
+  function fsExisteModalPixNaPagina() {
+    return !!fsPagamentoEl('modal-pix-basico');
   }
 
-  if (planoLabel) {
-    planoLabel.innerText = plano.label;
+  function fsSalvarDestinoAposLogin() {
+    try {
+      localStorage.setItem('fs_destino_apos_login', '/planos.html');
+    } catch (error) {
+      console.warn('Não foi possível salvar destino após login:', error);
+    }
   }
 
-  if (pixValor) {
-    pixValor.innerText = fsFormatarMoedaPix(plano.valor);
+  async function fsObterSessaoPagamento() {
+    try {
+      if (!window._supabase) return null;
+
+      const { data: { session }, error } = await _supabase.auth.getSession();
+
+      if (error || !session) return null;
+
+      return session;
+    } catch (error) {
+      console.error('Erro ao obter sessão para pagamento:', error);
+      return null;
+    }
   }
 
-  if (qrImg) {
-    qrImg.src = '';
-    qrImg.style.display = 'none';
+  function fsUsuarioLogadoObrigatorioPagamento() {
+    fsSalvarDestinoAposLogin();
+
+    if (typeof window.abrirModalLogin === 'function') {
+      window.abrirModalLogin();
+      return;
+    }
+
+    window.location.href = '/index.html?login=1';
   }
 
-  if (copiaCola) {
-    copiaCola.value = '';
-  }
-}
+  function fsMontarQrCodeSrc(valor) {
+    const qr = String(valor || '').trim();
 
-function setEstadoModalPixErro(mensagem) {
-  abrirModalPixBasico();
+    if (!qr) return '';
 
-  const loading = fsPagamentoEl('pix-loading');
-  const conteudo = fsPagamentoEl('pix-conteudo');
-  const erro = fsPagamentoEl('pix-erro');
+    if (
+      qr.startsWith('data:image') ||
+      qr.startsWith('http://') ||
+      qr.startsWith('https://')
+    ) {
+      return qr;
+    }
 
-  if (loading) {
-    loading.style.display = 'none';
-  }
-
-  if (conteudo) {
-    conteudo.style.display = 'none';
+    return `data:image/png;base64,${qr}`;
   }
 
-  if (erro) {
-    erro.style.display = 'block';
-    erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
-  }
-}
-
-function setEstadoModalPixConteudo(dados) {
-  const loading = fsPagamentoEl('pix-loading');
-  const conteudo = fsPagamentoEl('pix-conteudo');
-  const erro = fsPagamentoEl('pix-erro');
-
-  const subtitulo = fsPagamentoEl('pix-modal-subtitulo');
-  const planoLabel = fsPagamentoEl('pix-plano-label');
-  const pixValor = fsPagamentoEl('pix-valor');
-  const qrImg = fsPagamentoEl('pix-qrcode-img');
-  const copiaCola = fsPagamentoEl('pix-copia-cola');
-
-  pagamentoPixAtualId =
-    dados?.pagamento_id ||
-    dados?.id ||
-    null;
-
-  window.pagamentoPixAtualId = pagamentoPixAtualId;
-
-  if (loading) {
-    loading.style.display = 'none';
-  }
-
-  if (conteudo) {
-    conteudo.style.display = 'block';
-  }
-
-  if (erro) {
-    erro.style.display = 'none';
-    erro.innerText = '';
-  }
-
-  if (subtitulo) {
-    subtitulo.innerText = `${dados?.label || 'Plano Básico'} - ${fsFormatarMoedaPix(dados?.valor)}`;
-  }
-
-  if (planoLabel) {
-    planoLabel.innerText = dados?.label || 'Plano Básico';
-  }
-
-  if (pixValor) {
-    pixValor.innerText = fsFormatarMoedaPix(dados?.valor);
-  }
-
-  if (qrImg) {
-    const qrCode =
+  function fsExtrairQrCode(dados) {
+    return (
       dados?.qr_code ||
       dados?.qrcode ||
       dados?.qrCode ||
       dados?.imagem_qrcode ||
-      '';
-
-    if (qrCode) {
-      qrImg.src = qrCode;
-      qrImg.style.display = 'inline-block';
-    } else {
-      qrImg.src = '';
-      qrImg.style.display = 'none';
-    }
+      dados?.imagemQrcode ||
+      dados?.base64 ||
+      dados?.qrcode_base64 ||
+      ''
+    );
   }
 
-  if (copiaCola) {
-    copiaCola.value =
+  function fsExtrairPixCopiaCola(dados) {
+    return (
       dados?.pix_copia_cola ||
       dados?.copia_cola ||
       dados?.pixCopiaCola ||
       dados?.brcode ||
-      '';
+      dados?.copiaECola ||
+      dados?.pix ||
+      ''
+    );
   }
-}
 
-// ==================== GERAR PIX ====================
+  function fsExtrairPagamentoId(dados) {
+    return (
+      dados?.pagamento_id ||
+      dados?.pagamentoId ||
+      dados?.id_pagamento ||
+      dados?.id ||
+      null
+    );
+  }
 
-async function gerarPixPlanoBasico(periodo) {
-  try {
-    const periodoFinal = fsPeriodoPixValido(periodo) ? periodo : 'mensal';
+  function fsSetPagamentoAtual(id) {
+    pagamentoPixAtualIdInterno = id || null;
+    window.pagamentoPixAtualId = pagamentoPixAtualIdInterno;
+  }
 
-    if (!window._supabase) {
-      alert('Supabase não carregou. Atualize a página e tente novamente.');
+  function fsGetPagamentoAtual() {
+    return pagamentoPixAtualIdInterno || window.pagamentoPixAtualId || null;
+  }
+
+  // ==================== MODAL PIX ====================
+
+  function abrirModalPixBasico() {
+    const modal = fsPagamentoEl('modal-pix-basico');
+
+    if (!modal) {
+      console.warn('Modal Pix não encontrado nesta página.');
+      return false;
+    }
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    return true;
+  }
+
+  function fecharModalPixBasico() {
+    const modal = fsPagamentoEl('modal-pix-basico');
+
+    if (!modal) return;
+
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function setEstadoModalPixCarregando(periodo = 'mensal') {
+    const abriu = abrirModalPixBasico();
+
+    if (!abriu) return;
+
+    const plano = fsObterPlanoPix(periodo);
+
+    const loading = fsPagamentoEl('pix-loading');
+    const conteudo = fsPagamentoEl('pix-conteudo');
+    const erro = fsPagamentoEl('pix-erro');
+
+    const subtitulo = fsPagamentoEl('pix-modal-subtitulo');
+    const planoLabel = fsPagamentoEl('pix-plano-label');
+    const pixValor = fsPagamentoEl('pix-valor');
+    const qrImg = fsPagamentoEl('pix-qrcode-img');
+    const copiaCola = fsPagamentoEl('pix-copia-cola');
+
+    fsSetPagamentoAtual(null);
+
+    if (loading) {
+      loading.style.display = 'block';
+      loading.innerText = 'Gerando Pix, aguarde...';
+    }
+
+    if (conteudo) {
+      conteudo.style.display = 'none';
+    }
+
+    if (erro) {
+      erro.style.display = 'none';
+      erro.innerText = '';
+    }
+
+    if (subtitulo) {
+      subtitulo.innerText = `${plano.label} - ${fsFormatarMoedaPix(plano.valor)}`;
+    }
+
+    if (planoLabel) {
+      planoLabel.innerText = plano.label;
+    }
+
+    if (pixValor) {
+      pixValor.innerText = fsFormatarMoedaPix(plano.valor);
+    }
+
+    if (qrImg) {
+      qrImg.removeAttribute('src');
+      qrImg.style.display = 'none';
+    }
+
+    if (copiaCola) {
+      copiaCola.value = '';
+    }
+  }
+
+  function setEstadoModalPixErro(mensagem) {
+    const abriu = abrirModalPixBasico();
+
+    if (!abriu) {
+      alert(mensagem || 'Não foi possível gerar o Pix.');
       return;
     }
 
-    const session = await fsObterSessaoPagamento();
+    const loading = fsPagamentoEl('pix-loading');
+    const conteudo = fsPagamentoEl('pix-conteudo');
+    const erro = fsPagamentoEl('pix-erro');
 
-    if (!session) {
-      fsUsuarioLogadoObrigatorioPagamento();
+    if (loading) {
+      loading.style.display = 'none';
+    }
+
+    if (conteudo) {
+      conteudo.style.display = 'none';
+    }
+
+    if (erro) {
+      erro.style.display = 'block';
+      erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
+    }
+  }
+
+  function setEstadoModalPixConteudo(dados) {
+    const loading = fsPagamentoEl('pix-loading');
+    const conteudo = fsPagamentoEl('pix-conteudo');
+    const erro = fsPagamentoEl('pix-erro');
+
+    const subtitulo = fsPagamentoEl('pix-modal-subtitulo');
+    const planoLabel = fsPagamentoEl('pix-plano-label');
+    const pixValor = fsPagamentoEl('pix-valor');
+    const qrImg = fsPagamentoEl('pix-qrcode-img');
+    const copiaCola = fsPagamentoEl('pix-copia-cola');
+
+    const pagamentoId = fsExtrairPagamentoId(dados);
+    const qrCode = fsExtrairQrCode(dados);
+    const pixCopiaCola = fsExtrairPixCopiaCola(dados);
+
+    fsSetPagamentoAtual(pagamentoId);
+
+    if (loading) {
+      loading.style.display = 'none';
+    }
+
+    if (conteudo) {
+      conteudo.style.display = 'block';
+    }
+
+    if (erro) {
+      erro.style.display = 'none';
+      erro.innerText = '';
+    }
+
+    if (subtitulo) {
+      subtitulo.innerText = `${dados?.label || 'Plano Básico'} - ${fsFormatarMoedaPix(dados?.valor)}`;
+    }
+
+    if (planoLabel) {
+      planoLabel.innerText = dados?.label || 'Plano Básico';
+    }
+
+    if (pixValor) {
+      pixValor.innerText = fsFormatarMoedaPix(dados?.valor);
+    }
+
+    if (qrImg) {
+      const src = fsMontarQrCodeSrc(qrCode);
+
+      if (src) {
+        qrImg.src = src;
+        qrImg.style.display = 'inline-block';
+      } else {
+        qrImg.removeAttribute('src');
+        qrImg.style.display = 'none';
+      }
+    }
+
+    if (copiaCola) {
+      copiaCola.value = pixCopiaCola || '';
+    }
+
+    if (!pagamentoId) {
+      console.warn('A Edge Function não retornou pagamento_id/id.');
+    }
+
+    if (!pixCopiaCola) {
+      console.warn('A Edge Function não retornou Pix copia e cola.');
+    }
+  }
+
+  // ==================== GERAR PIX ====================
+
+  async function gerarPixPlanoBasico(periodo) {
+    try {
+      const periodoFinal = fsPeriodoPixValido(periodo) ? periodo : 'mensal';
+
+      if (!window._supabase) {
+        alert('Supabase não carregou. Atualize a página e tente novamente.');
+        return;
+      }
+
+      if (!fsExisteModalPixNaPagina()) {
+        window.location.href = `/planos.html?periodo=${encodeURIComponent(periodoFinal)}#assinar-plano-basico`;
+        return;
+      }
+
+      const session = await fsObterSessaoPagamento();
+
+      if (!session) {
+        fsUsuarioLogadoObrigatorioPagamento();
+        return;
+      }
+
+      setEstadoModalPixCarregando(periodoFinal);
+
+      const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          periodo: periodoFinal
+        })
+      });
+
+      const dados = await resposta.json().catch(() => ({}));
+
+      if (!resposta.ok) {
+        console.error('Erro ao gerar Pix:', dados);
+
+        setEstadoModalPixErro(
+          dados?.erro ||
+          dados?.message ||
+          'Erro ao gerar Pix. Verifique a configuração da função no Supabase.'
+        );
+
+        return;
+      }
+
+      setEstadoModalPixConteudo(dados);
+
+    } catch (error) {
+      console.error('Erro inesperado ao gerar Pix:', error);
+      setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
+    }
+  }
+
+  // ==================== COPIAR PIX ====================
+
+  async function copiarPixCopiaCola() {
+    const campo = fsPagamentoEl('pix-copia-cola');
+
+    if (!campo || !campo.value) {
+      alert('Pix copia e cola não disponível.');
       return;
     }
 
-    setEstadoModalPixCarregando(periodoFinal);
+    try {
+      await navigator.clipboard.writeText(campo.value);
+      alert('Pix copia e cola copiado!');
+    } catch (error) {
+      try {
+        campo.focus();
+        campo.select();
+        document.execCommand('copy');
+        alert('Pix copia e cola copiado!');
+      } catch (fallbackError) {
+        console.error('Erro ao copiar Pix:', fallbackError);
+        alert('Não foi possível copiar automaticamente. Selecione e copie manualmente.');
+      }
+    }
+  }
 
-    const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.access_token}`
-      },
-      body: JSON.stringify({
-        periodo: periodoFinal
-      })
+  // ==================== VERIFICAR PAGAMENTO ====================
+
+  async function verificarPagamentoPixAtual() {
+    try {
+      const idPagamento = fsGetPagamentoAtual();
+
+      if (!idPagamento) {
+        alert('Nenhum pagamento Pix foi gerado nesta tela.');
+        return;
+      }
+
+      if (!window._supabase) {
+        alert('Supabase não carregou. Atualize a página.');
+        return;
+      }
+
+      const session = await fsObterSessaoPagamento();
+
+      if (!session) {
+        alert('Faça login novamente para verificar o pagamento.');
+        return;
+      }
+
+      const { data, error } = await _supabase
+        .from('pagamentos_pix')
+        .select('id, status, pago_em, periodo, valor')
+        .eq('id', idPagamento)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Erro ao verificar pagamento:', error);
+        alert('Não foi possível verificar o pagamento agora.');
+        return;
+      }
+
+      if (!data) {
+        alert('Pagamento não encontrado.');
+        return;
+      }
+
+      const status = fsNormalizarTextoPagamento(data.status);
+
+      if (status === 'pago' || status === 'confirmado' || status === 'paid') {
+        alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
+
+        fecharModalPixBasico();
+
+        await fsAtualizarDadosAposPagamentoConfirmado();
+
+        return;
+      }
+
+      if (status === 'cancelado' || status === 'expirado' || status === 'expired' || status === 'canceled') {
+        alert('Este Pix não está mais ativo. Gere um novo Pix para continuar.');
+        return;
+      }
+
+      alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
+
+    } catch (error) {
+      console.error('Erro inesperado ao verificar pagamento:', error);
+      alert('Erro inesperado ao verificar pagamento.');
+    }
+  }
+
+  async function fsAtualizarDadosAposPagamentoConfirmado() {
+    try {
+      if (typeof window.atualizarStatusPlanoPlanos === 'function') {
+        await window.atualizarStatusPlanoPlanos();
+      }
+
+      if (typeof window.carregarPerfil === 'function') {
+        await window.carregarPerfil();
+      }
+
+      if (typeof window.atualizarPainelAssinaturaBasico === 'function') {
+        window.atualizarPainelAssinaturaBasico(window.perfilAtual || null);
+      }
+
+      if (typeof window.atualizarBotaoPlanosHome === 'function') {
+        await window.atualizarBotaoPlanosHome();
+      }
+
+      if (typeof window.atualizarPainelPlanoBasicoHome === 'function') {
+        await window.atualizarPainelPlanoBasicoHome();
+      }
+
+      if (typeof window.atualizarAnunciosGratisHome === 'function') {
+        await window.atualizarAnunciosGratisHome();
+      }
+
+      if (typeof window.fsAtualizarAnunciosGratisGerador === 'function') {
+        await window.fsAtualizarAnunciosGratisGerador();
+      }
+
+      if (typeof window.carregarDashboardPainel === 'function') {
+        await window.carregarDashboardPainel();
+      }
+
+      if (typeof window.carregarUltimosOrcamentosPainel === 'function') {
+        await window.carregarUltimosOrcamentosPainel();
+      }
+
+      if (typeof window.carregarMenu === 'function') {
+        const session = await fsObterSessaoPagamento();
+
+        if (session) {
+          await window.carregarMenu(session);
+        }
+      }
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+
+    } catch (error) {
+      console.warn('Pagamento confirmado, mas não foi possível atualizar toda a interface:', error);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+    }
+  }
+
+  // ==================== ABRIR PERÍODO PELA URL ====================
+
+  async function fsAbrirPixPorParametroUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const periodo = params.get('periodo');
+
+    if (!periodo || !fsPeriodoPixValido(periodo)) return;
+
+    if (!fsExisteModalPixNaPagina()) return;
+
+    setTimeout(() => {
+      gerarPixPlanoBasico(periodo);
+    }, 700);
+  }
+
+  // ==================== FECHAR MODAL POR CLIQUE / ESC ====================
+
+  function configurarEventosModalPix() {
+    if (window.fsEventosModalPixConfigurados === true) return;
+
+    window.fsEventosModalPixConfigurados = true;
+
+    document.addEventListener('click', function (event) {
+      const modalPix = fsPagamentoEl('modal-pix-basico');
+
+      if (event.target === modalPix) {
+        fecharModalPixBasico();
+      }
     });
 
-    const dados = await resposta.json().catch(() => ({}));
-
-    if (!resposta.ok) {
-      console.error('Erro ao gerar Pix:', dados);
-      setEstadoModalPixErro(
-        dados?.erro ||
-        dados?.message ||
-        'Erro ao gerar Pix. Verifique a configuração da função no Supabase.'
-      );
-      return;
-    }
-
-    setEstadoModalPixConteudo(dados);
-
-  } catch (error) {
-    console.error('Erro inesperado ao gerar Pix:', error);
-    setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
-  }
-}
-
-// ==================== COPIAR PIX ====================
-
-async function copiarPixCopiaCola() {
-  const campo = fsPagamentoEl('pix-copia-cola');
-
-  if (!campo || !campo.value) {
-    alert('Pix copia e cola não disponível.');
-    return;
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        fecharModalPixBasico();
+      }
+    });
   }
 
-  try {
-    await navigator.clipboard.writeText(campo.value);
-    alert('Pix copia e cola copiado!');
-  } catch (error) {
-    try {
-      campo.focus();
-      campo.select();
-      document.execCommand('copy');
-      alert('Pix copia e cola copiado!');
-    } catch (fallbackError) {
-      console.error('Erro ao copiar Pix:', fallbackError);
-      alert('Não foi possível copiar automaticamente. Selecione e copie manualmente.');
-    }
-  }
-}
-
-// ==================== VERIFICAR PAGAMENTO ====================
-
-async function verificarPagamentoPixAtual() {
-  try {
-    const idPagamento =
-      pagamentoPixAtualId ||
-      window.pagamentoPixAtualId ||
-      null;
-
-    if (!idPagamento) {
-      alert('Nenhum pagamento Pix foi gerado nesta tela.');
-      return;
-    }
-
-    if (!window._supabase) {
-      alert('Supabase não carregou. Atualize a página.');
-      return;
-    }
-
-    const session = await fsObterSessaoPagamento();
-
-    if (!session) {
-      alert('Faça login novamente para verificar o pagamento.');
-      return;
-    }
-
-    const { data, error } = await _supabase
-      .from('pagamentos_pix')
-      .select('status, pago_em, periodo, valor')
-      .eq('id', idPagamento)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Erro ao verificar pagamento:', error);
-      alert('Não foi possível verificar o pagamento agora.');
-      return;
-    }
-
-    if (!data) {
-      alert('Pagamento não encontrado.');
-      return;
-    }
-
-    const status = String(data.status || '').toLowerCase();
-
-    if (status === 'pago' || status === 'confirmado' || status === 'paid') {
-      alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
-
-      fecharModalPixBasico();
-
-      await fsAtualizarDadosAposPagamentoConfirmado();
-
-      return;
-    }
-
-    if (status === 'cancelado' || status === 'expirado') {
-      alert('Este Pix não está mais ativo. Gere um novo Pix para continuar.');
-      return;
-    }
-
-    alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
-
-  } catch (error) {
-    console.error('Erro inesperado ao verificar pagamento:', error);
-    alert('Erro inesperado ao verificar pagamento.');
-  }
-}
-
-async function fsAtualizarDadosAposPagamentoConfirmado() {
-  try {
-    if (typeof carregarPerfil === 'function') {
-      await carregarPerfil();
-    }
-
-    if (typeof atualizarPainelAssinaturaBasico === 'function') {
-      atualizarPainelAssinaturaBasico(window.perfilAtual || null);
-    }
-
-    if (typeof atualizarBotaoPlanosHome === 'function') {
-      await atualizarBotaoPlanosHome();
-    }
-
-    if (typeof atualizarPainelPlanoBasicoHome === 'function') {
-      await atualizarPainelPlanoBasicoHome();
-    }
-
-    if (typeof atualizarAnunciosGratisHome === 'function') {
-      await atualizarAnunciosGratisHome();
-    }
-
-    if (typeof fsAtualizarAnunciosGratisGerador === 'function') {
-      await fsAtualizarAnunciosGratisGerador();
-    }
-
-    if (typeof carregarDashboardPainel === 'function') {
-      await carregarDashboardPainel();
-    }
-
-    if (typeof carregarUltimosOrcamentosPainel === 'function') {
-      await carregarUltimosOrcamentosPainel();
-    }
-
-    if (typeof carregarMenu === 'function') {
-      const session = await fsObterSessaoPagamento();
-      await carregarMenu(session);
-    }
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 800);
-
-  } catch (error) {
-    console.warn('Pagamento confirmado, mas não foi possível atualizar toda a interface:', error);
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 800);
-  }
-}
-
-// ==================== FECHAR MODAL POR CLIQUE / ESC ====================
-
-function configurarEventosModalPix() {
-  if (window.fsEventosModalPixConfigurados === true) return;
-
-  window.fsEventosModalPixConfigurados = true;
-
-  document.addEventListener('click', function(event) {
-    const modalPix = fsPagamentoEl('modal-pix-basico');
-
-    if (event.target === modalPix) {
-      fecharModalPixBasico();
-    }
+  document.addEventListener('DOMContentLoaded', function () {
+    configurarEventosModalPix();
+    fsAbrirPixPorParametroUrl();
   });
 
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-      fecharModalPixBasico();
-    }
-  });
-}
+  // ==================== EXPORTAÇÕES GLOBAIS ====================
 
-document.addEventListener('DOMContentLoaded', configurarEventosModalPix);
+  window.gerarPixPlanoBasico = gerarPixPlanoBasico;
 
-// ==================== EXPORTAÇÕES GLOBAIS ====================
+  window.abrirModalPixBasico = abrirModalPixBasico;
+  window.fecharModalPixBasico = fecharModalPixBasico;
 
-window.gerarPixPlanoBasico = gerarPixPlanoBasico;
+  window.setEstadoModalPixCarregando = setEstadoModalPixCarregando;
+  window.setEstadoModalPixErro = setEstadoModalPixErro;
+  window.setEstadoModalPixConteudo = setEstadoModalPixConteudo;
 
-window.abrirModalPixBasico = abrirModalPixBasico;
-window.fecharModalPixBasico = fecharModalPixBasico;
+  window.copiarPixCopiaCola = copiarPixCopiaCola;
+  window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
 
-window.setEstadoModalPixCarregando = setEstadoModalPixCarregando;
-window.setEstadoModalPixErro = setEstadoModalPixErro;
-window.setEstadoModalPixConteudo = setEstadoModalPixConteudo;
-
-window.copiarPixCopiaCola = copiarPixCopiaCola;
-window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
-
-window.formatarMoedaPix = fsFormatarMoedaPix;
-window.fsFormatarMoedaPix = fsFormatarMoedaPix;
-window.fsAtualizarDadosAposPagamentoConfirmado = fsAtualizarDadosAposPagamentoConfirmado;
+  window.formatarMoedaPix = fsFormatarMoedaPix;
+  window.fsFormatarMoedaPix = fsFormatarMoedaPix;
+  window.fsAtualizarDadosAposPagamentoConfirmado = fsAtualizarDadosAposPagamentoConfirmado;
+})();
