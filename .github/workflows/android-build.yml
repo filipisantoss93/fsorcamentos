@@ -17,13 +17,27 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
+
+      - name: Verificar arquivos principais
+        run: |
+          echo "Arquivos na raiz:"
+          ls -la
+
+          echo "Verificando package.json..."
+          test -f package.json
+
+          echo "Verificando capacitor.config.json..."
+          test -f capacitor.config.json
+
+          echo "Verificando www/index.html..."
+          test -f www/index.html
 
       - name: Instalar dependências
         run: npm install
@@ -37,15 +51,31 @@ jobs:
       - name: Sincronizar Capacitor
         run: npx cap sync android
 
+      - name: Verificar pasta Android
+        run: |
+          echo "Conteúdo da pasta android:"
+          ls -la android
+
+          echo "Conteúdo da pasta android/app:"
+          ls -la android/app
+
       - name: Dar permissão ao Gradle
         run: chmod +x android/gradlew
 
-      - name: Gerar APK de teste
+      - name: Gerar APK de teste com log completo
         run: |
           cd android
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --stacktrace --info 2>&1 | tee ../build-android-log.txt
+
+      - name: Enviar log do build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LOG-Build-Android
+          path: build-android-log.txt
 
       - name: Enviar APK como artefato
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: FS-Orcamentos-APK-Teste
