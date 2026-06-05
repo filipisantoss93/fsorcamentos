@@ -662,44 +662,49 @@ function aguardarRenderizacaoPDF(container) {
         const imagens = Array.from(container.querySelectorAll('img'));
 
         if (!imagens.length) {
-            setTimeout(resolve, 400);
+            requestAnimationFrame(() => {
+                setTimeout(resolve, 500);
+            });
             return;
         }
 
-        let carregadas = 0;
+        let finalizadas = 0;
 
-        function finalizarImagem() {
-            carregadas++;
+        function finalizar() {
+            finalizadas++;
 
-            if (carregadas >= imagens.length) {
-                setTimeout(resolve, 400);
+            if (finalizadas >= imagens.length) {
+                requestAnimationFrame(() => {
+                    setTimeout(resolve, 500);
+                });
             }
         }
 
         imagens.forEach(img => {
             if (img.complete) {
-                finalizarImagem();
+                finalizar();
             } else {
-                img.onload = finalizarImagem;
-                img.onerror = finalizarImagem;
+                img.onload = finalizar;
+                img.onerror = finalizar;
             }
         });
     });
 }
 
 async function baixarPDF() {
-    const elementOriginal = document.getElementById('conteudo-pdf');
+    const conteudoPdf = document.getElementById('conteudo-pdf');
+    const areaPrevia = document.getElementById('area-previa');
 
-    if (!elementOriginal) {
+    if (!conteudoPdf) {
         alert('Área do PDF não encontrada.');
         return;
     }
 
-    if (!elementOriginal.innerHTML.trim()) {
+    if (!conteudoPdf.innerHTML.trim()) {
         await gerarPrevia();
     }
 
-    if (!elementOriginal.innerHTML.trim()) {
+    if (!conteudoPdf.innerHTML.trim()) {
         alert('Gere a pré-visualização antes de baixar o PDF.');
         return;
     }
@@ -716,35 +721,40 @@ async function baixarPDF() {
         .replace(/\s+/g, '_')
         .toLowerCase() || 'orcamento';
 
-    const cloneWrapper = document.createElement('div');
+    const elementoPdf = conteudoPdf.firstElementChild || conteudoPdf;
 
-    cloneWrapper.id = 'pdf-clone-wrapper';
-    cloneWrapper.style.position = 'fixed';
-    cloneWrapper.style.left = '-9999px';
-    cloneWrapper.style.top = '0';
-    cloneWrapper.style.width = '794px';
-    cloneWrapper.style.minHeight = '1123px';
-    cloneWrapper.style.background = '#ffffff';
-    cloneWrapper.style.zIndex = '-1';
-    cloneWrapper.style.opacity = '1';
-    cloneWrapper.style.pointerEvents = 'none';
-    cloneWrapper.style.display = 'block';
-    cloneWrapper.style.overflow = 'visible';
+    const estilosOriginais = {
+        areaDisplay: areaPrevia ? areaPrevia.style.display : '',
+        conteudoDisplay: conteudoPdf.style.display,
+        conteudoWidth: conteudoPdf.style.width,
+        conteudoMaxWidth: conteudoPdf.style.maxWidth,
+        conteudoMargin: conteudoPdf.style.margin,
+        conteudoBackground: conteudoPdf.style.background,
+        conteudoBoxShadow: conteudoPdf.style.boxShadow,
+        elementoWidth: elementoPdf.style.width,
+        elementoMinHeight: elementoPdf.style.minHeight,
+        elementoBackground: elementoPdf.style.background,
+        bodyOverflow: document.body.style.overflow
+    };
 
-    const clone = elementOriginal.cloneNode(true);
+    if (areaPrevia) {
+        areaPrevia.style.display = 'block';
+    }
 
-    clone.style.display = 'block';
-    clone.style.width = '794px';
-    clone.style.minHeight = '1123px';
-    clone.style.background = '#ffffff';
-    clone.style.margin = '0';
-    clone.style.padding = '0';
-    clone.style.overflow = 'visible';
+    conteudoPdf.style.display = 'block';
+    conteudoPdf.style.width = '794px';
+    conteudoPdf.style.maxWidth = '794px';
+    conteudoPdf.style.margin = '0 auto';
+    conteudoPdf.style.background = '#ffffff';
+    conteudoPdf.style.boxShadow = 'none';
 
-    cloneWrapper.appendChild(clone);
-    document.body.appendChild(cloneWrapper);
+    elementoPdf.style.width = '794px';
+    elementoPdf.style.minHeight = '1123px';
+    elementoPdf.style.background = '#ffffff';
 
-    await aguardarRenderizacaoPDF(cloneWrapper);
+    document.body.style.overflow = 'visible';
+
+    await aguardarRenderizacaoPDF(elementoPdf);
 
     const opt = {
         margin: 0,
@@ -769,20 +779,35 @@ async function baixarPDF() {
             orientation: 'portrait'
         },
         pagebreak: {
-            mode: ['avoid-all', 'css', 'legacy']
+            mode: ['css', 'legacy']
         }
     };
 
     try {
         await html2pdf()
             .set(opt)
-            .from(clone)
+            .from(elementoPdf)
             .save();
     } catch (error) {
         console.error('Erro ao gerar PDF:', error);
         alert('Não foi possível gerar o PDF.');
     } finally {
-        cloneWrapper.remove();
+        if (areaPrevia) {
+            areaPrevia.style.display = estilosOriginais.areaDisplay;
+        }
+
+        conteudoPdf.style.display = estilosOriginais.conteudoDisplay;
+        conteudoPdf.style.width = estilosOriginais.conteudoWidth;
+        conteudoPdf.style.maxWidth = estilosOriginais.conteudoMaxWidth;
+        conteudoPdf.style.margin = estilosOriginais.conteudoMargin;
+        conteudoPdf.style.background = estilosOriginais.conteudoBackground;
+        conteudoPdf.style.boxShadow = estilosOriginais.conteudoBoxShadow;
+
+        elementoPdf.style.width = estilosOriginais.elementoWidth;
+        elementoPdf.style.minHeight = estilosOriginais.elementoMinHeight;
+        elementoPdf.style.background = estilosOriginais.elementoBackground;
+
+        document.body.style.overflow = estilosOriginais.bodyOverflow;
     }
 }
 
