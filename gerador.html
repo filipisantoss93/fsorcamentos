@@ -135,6 +135,30 @@
       z-index: 2;
     }
 
+    #modal-login #auth-area,
+    #modal-login #auth-container,
+    #modal-login #form-autenticacao {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #modal-login #auth-container {
+      background: #ffffff !important;
+    }
+
+    #modal-login input {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #modal-login #btn-principal {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
     .pagina-gerador {
       max-width: 1180px;
       margin: 0 auto;
@@ -1165,15 +1189,15 @@
       </p>
     </div>
 
-    <div class="auth-logo-box">
-      <div class="auth-logo-text">
-        <strong>FS</strong><span>Orçamentos</span>
-      </div>
-      <p>Acesse sua conta para continuar</p>
-    </div>
-
     <div id="auth-area" style="display:block;">
-      <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
+      <div class="auth-logo-box">
+        <div class="auth-logo-text">
+          <strong>FS</strong><span>Orçamentos</span>
+        </div>
+        <p>Acesse sua conta para continuar</p>
+      </div>
+
+      <div id="auth-container" style="display:block; padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
         <form id="form-autenticacao" onsubmit="return false;">
           <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
             Acesse sua Conta
@@ -1606,11 +1630,37 @@ let enviandoWhatsappFS = false;
 
 function abrirModalLoginGerador() {
   const modal = document.getElementById('modal-login');
+  const authArea = document.getElementById('auth-area');
+  const authContainer = document.getElementById('auth-container');
+  const form = document.getElementById('form-autenticacao');
+
+  if (authArea) {
+    authArea.style.display = 'block';
+    authArea.style.visibility = 'visible';
+    authArea.style.opacity = '1';
+  }
+
+  if (authContainer) {
+    authContainer.style.display = 'block';
+    authContainer.style.visibility = 'visible';
+    authContainer.style.opacity = '1';
+  }
+
+  if (form) {
+    form.style.display = 'block';
+    form.style.visibility = 'visible';
+    form.style.opacity = '1';
+  }
 
   if (!modal) return;
 
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
+
+  setTimeout(() => {
+    const email = document.getElementById('auth-email');
+    if (email) email.focus();
+  }, 250);
 }
 
 function fecharModalLoginGerador() {
