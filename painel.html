@@ -11,6 +11,18 @@
   <link rel="shortcut icon" href="/favicon.png">
 
   <style>
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #2c1b17;
+      --fs-creme: #f4ece1;
+      --fs-creme-2: #fffaf0;
+      --fs-amarelo: #ffc400;
+      --fs-verde: #2e7d32;
+      --fs-vermelho: #dc2626;
+      --fs-azul: #2563eb;
+      --fs-borda: #e0d6c8;
+    }
+
     .painel-header {
       display: flex;
       justify-content: space-between;
@@ -33,26 +45,26 @@
 
     .painel-card {
       width: 100%;
-      background: #f4ece1;
-      color: #3e2723;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
       border-radius: 16px;
       padding: 22px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      border-top: 5px solid #ffc400;
+      border-top: 5px solid var(--fs-amarelo);
       box-sizing: border-box;
       margin-bottom: 22px;
     }
 
     .painel-card h2 {
       margin-top: 0;
-      border-bottom: 2px solid #ffc400;
+      border-bottom: 2px solid var(--fs-amarelo);
       padding-bottom: 10px;
-      color: #3e2723;
+      color: var(--fs-marrom);
     }
 
     .painel-aviso {
       background: #fff3cd;
-      border-left: 5px solid #ffc400;
+      border-left: 5px solid var(--fs-amarelo);
       color: #5d4037;
       padding: 14px;
       border-radius: 10px;
@@ -65,37 +77,42 @@
     .painel-plano-aviso {
       background: #fff3cd;
       color: #5d4037;
-      border-left: 6px solid #ffc400;
+      border-left: 6px solid var(--fs-amarelo);
       border-radius: 12px;
       padding: 14px;
       margin-bottom: 18px;
       font-size: 14px;
       font-weight: 800;
       line-height: 1.45;
+      display: none;
     }
 
     .painel-plano-aviso.plano-ok {
+      display: block;
       background: #d4edda;
       color: #155724;
-      border-left-color: #2e7d32;
+      border-left-color: var(--fs-verde);
     }
 
     .painel-plano-aviso.plano-alerta {
+      display: block;
       background: #fff3cd;
       color: #856404;
-      border-left-color: #ffc400;
+      border-left-color: var(--fs-amarelo);
     }
 
     .painel-plano-aviso.plano-erro {
+      display: block;
       background: #f8d7da;
       color: #721c24;
-      border-left-color: #dc2626;
+      border-left-color: var(--fs-vermelho);
     }
 
     .painel-plano-aviso.plano-gratis {
+      display: block;
       background: #fff8e1;
       color: #5d4037;
-      border-left-color: #ffc400;
+      border-left-color: var(--fs-amarelo);
     }
 
     .perfil-layout {
@@ -109,7 +126,7 @@
       background: #fff;
       border-radius: 16px;
       padding: 16px;
-      border: 1px solid #e0d6c8;
+      border: 1px solid var(--fs-borda);
       text-align: center;
     }
 
@@ -138,16 +155,28 @@
       display: none;
     }
 
-    .plano-badge {
+    .perfil-logo-label {
       display: inline-block;
       padding: 6px 12px;
       border-radius: 999px;
       font-weight: 900;
       font-size: 12px;
       text-transform: uppercase;
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+    }
+
+    .plano-badge {
+      display: inline-block;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      text-transform: uppercase;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
     }
 
     .perfil-dados-grid {
@@ -160,7 +189,7 @@
       background: #ffffff;
       border-radius: 12px;
       padding: 15px;
-      border-left: 5px solid #ffc400;
+      border-left: 5px solid var(--fs-amarelo);
       box-shadow: 0 3px 10px rgba(0,0,0,0.06);
     }
 
@@ -175,7 +204,7 @@
 
     .info-card span {
       display: block;
-      color: #3e2723;
+      color: var(--fs-marrom);
       font-size: 16px;
       font-weight: 700;
       word-break: break-word;
@@ -215,19 +244,19 @@
     }
 
     .btn-editar-perfil {
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
     }
 
     .btn-senha {
-      background: #2563eb;
+      background: var(--fs-azul);
       color: #fff;
     }
 
     .btn-salvar,
     .btn-confirmar {
-      background: #2e7d32;
+      background: var(--fs-verde);
       color: #fff;
     }
 
@@ -237,21 +266,21 @@
     }
 
     .btn-upload-logo {
-      background: #3e2723;
-      color: #ffc400;
-      border: 1px solid #ffc400;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
       display: inline-block;
     }
 
     .btn-remover-logo {
-      background: #dc2626;
+      background: var(--fs-vermelho);
       color: #fff;
     }
 
     .btn-plano-painel {
-      background: #ffc400;
-      color: #3e2723;
-      border: 2px solid #3e2723;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
       box-shadow: 0 8px 18px rgba(0,0,0,0.16);
     }
 
@@ -275,12 +304,12 @@
       max-width: 760px;
       max-height: 90vh;
       overflow-y: auto;
-      background: #f4ece1;
-      color: #3e2723;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
       border-radius: 16px;
       padding: 22px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-      border-top: 5px solid #ffc400;
+      border-top: 5px solid var(--fs-amarelo);
       box-sizing: border-box;
       position: relative;
     }
@@ -291,7 +320,7 @@
 
     .modal-painel h2 {
       margin-top: 0;
-      border-bottom: 2px solid #ffc400;
+      border-bottom: 2px solid var(--fs-amarelo);
       padding-bottom: 10px;
     }
 
@@ -311,7 +340,7 @@
     }
 
     .campo-painel label span {
-      color: #dc2626;
+      color: var(--fs-vermelho);
       margin-left: 3px;
     }
 
@@ -335,7 +364,7 @@
       background: #ffffff;
       border-radius: 14px;
       padding: 16px;
-      border: 1px solid #e0d6c8;
+      border: 1px solid var(--fs-borda);
       margin-top: 18px;
     }
 
@@ -365,7 +394,7 @@
 
     .logo-info h3 {
       margin: 0 0 6px 0;
-      color: #3e2723;
+      color: var(--fs-marrom);
     }
 
     .logo-info p {
@@ -430,8 +459,8 @@
       background: #ffffff;
       border-radius: 14px;
       padding: 16px;
-      border: 1px solid #e0d6c8;
-      border-left: 6px solid #ffc400;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
     }
 
     .responsaveis-topo {
@@ -445,7 +474,7 @@
 
     .responsaveis-topo h3 {
       margin: 0;
-      color: #3e2723;
+      color: var(--fs-marrom);
     }
 
     .responsaveis-topo p {
@@ -461,9 +490,9 @@
     }
 
     .responsavel-item {
-      background: #f4ece1;
-      border: 1px solid #e0d6c8;
-      border-left: 5px solid #ffc400;
+      background: var(--fs-creme);
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
       border-radius: 10px;
       padding: 10px 12px;
       display: flex;
@@ -474,13 +503,13 @@
 
     .responsavel-item.selecionado {
       background: #fff8d6;
-      border-color: #ffc400;
+      border-color: var(--fs-amarelo);
     }
 
     .responsavel-item span {
       display: block;
       font-weight: 800;
-      color: #3e2723;
+      color: var(--fs-marrom);
     }
 
     .responsavel-item small {
@@ -491,7 +520,7 @@
     }
 
     .responsavel-item button {
-      background: #dc2626;
+      background: var(--fs-vermelho);
       color: #fff;
       border: none;
       border-radius: 7px;
@@ -517,17 +546,17 @@
     .modal-responsavel-card {
       width: 100%;
       max-width: 420px;
-      background: #f4ece1;
-      color: #3e2723;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
       border-radius: 14px;
       padding: 20px;
-      border-top: 5px solid #ffc400;
+      border-top: 5px solid var(--fs-amarelo);
       box-shadow: 0 16px 40px rgba(0,0,0,0.45);
     }
 
     .modal-responsavel-card h3 {
       margin-top: 0;
-      border-bottom: 2px solid #ffc400;
+      border-bottom: 2px solid var(--fs-amarelo);
       padding-bottom: 10px;
     }
 
@@ -536,9 +565,9 @@
       right: 18px;
       bottom: 18px;
       z-index: 18000;
-      border: 2px solid #3e2723;
-      background: #ffc400;
-      color: #3e2723;
+      border: 2px solid var(--fs-marrom);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
       border-radius: 999px;
       padding: 12px 16px;
       display: inline-flex;
@@ -691,15 +720,100 @@
       <div>
         <h1>Painel de Controle</h1>
         <p class="painel-subtitulo">
-          Visualize os dados da empresa, plano, responsáveis e resumo dos orçamentos.
+          Gerencie os dados da empresa, plano e acompanhe o resumo dos orçamentos.
         </p>
       </div>
     </div>
 
     <div class="painel-aviso">
-      Mantenha seus dados atualizados para que os orçamentos sejam gerados com informações corretas da sua empresa.
+      Mantenha seus dados atualizados. Essas informações aparecem no gerador, no PDF e no link enviado ao cliente.
     </div>
 
+    <section class="painel-card">
+      <h2>Dados da Empresa</h2>
+
+      <div class="perfil-layout">
+        <div class="perfil-logo-card">
+          <div class="perfil-logo-box">
+            <span id="perfil-logo-placeholder">Nenhuma logo cadastrada</span>
+            <img id="perfil-logo-img" src="" alt="Logo da empresa">
+          </div>
+
+          <span class="perfil-logo-label">Identidade visual</span>
+        </div>
+
+        <div>
+          <div class="perfil-dados-grid">
+            <div class="info-card">
+              <strong>Consultor selecionado</strong>
+              <span id="perfil-responsavel-selecionado">-</span>
+            </div>
+
+            <div class="info-card">
+              <strong>Empresa</strong>
+              <span id="perfil-empresa">-</span>
+            </div>
+
+            <div class="info-card">
+              <strong>WhatsApp / Telefone</strong>
+              <span id="perfil-telefone">-</span>
+            </div>
+
+            <div class="info-card">
+              <strong>CNPJ / CPF</strong>
+              <span id="perfil-cnpj">-</span>
+            </div>
+
+            <div class="info-card full">
+              <strong>Endereço</strong>
+              <span id="perfil-endereco">-</span>
+            </div>
+          </div>
+
+          <div class="acoes-painel">
+            <button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">
+              ✏️ Editar dados
+            </button>
+
+            <button type="button" class="btn-senha" onclick="abrirModalSenha()">
+              🔐 Alterar senha
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plano-painel" class="painel-card">
+      <h2>Plano Atual</h2>
+
+      <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
+
+      <div class="perfil-dados-grid">
+        <div class="info-card">
+          <strong>Plano</strong>
+          <span id="perfil-plano" class="plano-badge">Plano Grátis</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Status do plano</strong>
+          <span id="perfil-plano-status">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Expira em</strong>
+          <span id="perfil-plano-expira">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Assinatura</strong>
+          <span>
+            <a href="/planos.html" class="btn-plano-painel">
+              ⭐ Gerenciar plano
+            </a>
+          </span>
+        </div>
+      </div>
+    </section>
 
     <section id="dashboard-painel" class="painel-card">
       <h2>Resumo dos Orçamentos</h2>
@@ -744,65 +858,11 @@
         <div class="painel-aviso">Carregando últimos orçamentos...</div>
       </div>
     </section>
-
-    <section class="painel-card">
-      <h2>Dados da Empresa</h2>
-
-      <div class="perfil-layout">
-        <div class="perfil-logo-card">
-          <div class="perfil-logo-box">
-            <span id="perfil-logo-placeholder">Nenhuma logo cadastrada</span>
-            <img id="perfil-logo-img" src="" alt="Logo da empresa">
-          </div>
-
-          <span id="perfil-plano" class="plano-badge">Plano Grátis</span>
-        </div>
-
-        <div>
-          <div class="perfil-dados-grid">
-            <div class="info-card">
-              <strong>Consultor selecionado</strong>
-              <span id="perfil-responsavel-selecionado">-</span>
-            </div>
-
-            <div class="info-card">
-              <strong>Empresa</strong>
-              <span id="perfil-empresa">-</span>
-            </div>
-
-            <div class="info-card">
-              <strong>WhatsApp / Telefone</strong>
-              <span id="perfil-telefone">-</span>
-            </div>
-
-            <div class="info-card">
-              <strong>CNPJ / CPF</strong>
-              <span id="perfil-cnpj">-</span>
-            </div>
-
-            <div class="info-card full">
-              <strong>Endereço</strong>
-              <span id="perfil-endereco">-</span>
-            </div>
-          </div>
-
-          <div class="acoes-painel">
-            <button type="button" class="btn-senha" onclick="abrirModalSenha()">
-              Alterar senha
-            </button>
-
-            <button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">
-              Editar perfil
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 
   <div id="modal-editar-perfil" class="modal-overlay-painel">
     <div class="modal-painel">
-      <h2>Editar Perfil da Empresa</h2>
+      <h2>Editar Dados da Empresa</h2>
 
       <form id="form-cadastro-perfil" onsubmit="salvarPerfil(event)">
         <div class="logo-area-modal">
@@ -966,6 +1026,21 @@
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 <script src="painel.js"></script>
+
+<script>
+  /*
+    Correção importante:
+    O painel.html já possui os blocos:
+    - Plano Atual
+    - Resumo dos Orçamentos
+    - Últimos Orçamentos
+
+    Então esta função impede que o painel.js crie outro dashboard duplicado.
+  */
+  window.garantirDashboardNoHtml = function() {
+    return;
+  };
+</script>
 
 </body>
 </html>
