@@ -1225,10 +1225,10 @@ function inserirBotoesSociaisLogin() {
       }
     </style>
 
-    <button type="button" class="btn-social-login btn-google" onclick="loginComGoogle()">
-      <span>G</span>
-      Continuar com Google
-    </button>
+<button type="button" class="btn-google" onclick="loginComGoogle()">
+  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+  <span>Continuar com Google</span>
+</button>
 
 <!-- Facebook oculto temporariamente
     <button type="button" class="btn-social-login btn-facebook" onclick="loginComFacebook()">
