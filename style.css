@@ -3167,7 +3167,7 @@ button.google:active {
 button.google::after {
   content: "RECOMENDADO";
   position: absolute;
-  top: 12px;
+  top: 1px;
   right: 12px;
   background: #ffc400;
   color: #2b2b2b;
