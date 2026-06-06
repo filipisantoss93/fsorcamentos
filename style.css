@@ -3205,3 +3205,7 @@ button.google::after {
   border-radius: 999px;
 }
 
+    footer a {
+      color: #ffc400;
+      text-decoration: none;
+    }
