@@ -231,7 +231,7 @@
         }
 
         .premium-destaque::before {
-            content: "Mais completo";
+            content: "Em desenvolvimento";
             position: absolute;
             top: -12px;
             right: 14px;
@@ -242,6 +242,24 @@
             padding: 4px 10px;
             border-radius: 20px;
             text-transform: uppercase;
+        }
+
+
+        .plano-em-desenvolvimento {
+            opacity: 0.92;
+        }
+
+        .premium-status {
+            margin: 22px 0;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            color: #3e2723;
+            font-size: 18px;
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: 1px;
+            border: 2px dashed #c8b8a8;
         }
 
         .comparativo {
@@ -357,7 +375,25 @@
                 grid-template-columns: 1fr;
             }
 
-            .comparativo {
+    
+        .plano-em-desenvolvimento {
+            opacity: 0.92;
+        }
+
+        .premium-status {
+            margin: 22px 0;
+            padding: 16px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            color: #3e2723;
+            font-size: 18px;
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: 1px;
+            border: 2px dashed #c8b8a8;
+        }
+
+        .comparativo {
                 font-size: 12px;
             }
 
@@ -561,8 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <p>
         A plataforma começou como um gerador simples de orçamento em PDF e evoluiu para uma ferramenta
         de organização comercial. Agora, além de montar o documento, o sistema também pode salvar
-        propostas na nuvem, facilitar o envio por WhatsApp e, no plano Premium, acompanhar automaticamente
-        orçamentos pendentes para ajudar você a recuperar vendas que poderiam ser esquecidas.
+        propostas na nuvem, facilitar o envio por WhatsApp e ajudar você a acompanhar melhor suas propostas.
     </p>
 
     <div class="fs-adsense-bloco fs-adsense-bloco-horizontal" data-local="sobre-topo">
@@ -587,8 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div class="card-sobre">
-            <strong>📲 WhatsApp inteligente</strong>
-            O Premium automatiza o envio e o acompanhamento de orçamentos pendentes.
+            <strong>📲 Envio por WhatsApp</strong>
+            No plano Básico, você pode enviar o orçamento ao cliente de forma prática pelo WhatsApp.
         </div>
     </div>
 
@@ -611,7 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li><strong>Criação do orçamento:</strong> na tela inicial, o usuário informa título, cliente, itens, valores e observações.</li>
         <li><strong>PDF automático:</strong> o sistema monta o documento com os dados da empresa e os itens do orçamento.</li>
         <li><strong>Salvamento por plano:</strong> no plano Grátis o orçamento apenas baixa em PDF; nos planos pagos ele também pode ser salvo na nuvem.</li>
-        <li><strong>Acompanhamento:</strong> o Básico permite acompanhar manualmente; o Premium acompanha pendências automaticamente a cada 24 horas.</li>
+        <li><strong>Acompanhamento:</strong> o plano Básico permite consultar orçamentos pendentes, aprovados e recusados.</li>
     </ul>
 
     <div class="fs-adsense-bloco" data-local="sobre-meio">
@@ -628,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <p>
         Cada plano foi criado para uma fase diferente do profissional: começar gratuitamente,
-        organizar propostas ou automatizar o acompanhamento de clientes.
+        organizar melhor as propostas ou acompanhar as novidades que estão em desenvolvimento.
     </p>
 
     <div class="plano-box">
@@ -669,23 +704,15 @@ document.addEventListener('DOMContentLoaded', () => {
             <small>Recomendado para profissionais que geram orçamentos com frequência.</small>
         </div>
 
-        <div class="plano-card premium-destaque">
-            <span class="tag-plano tag-premium">Automação</span>
+        <div class="plano-card premium-destaque plano-em-desenvolvimento">
+            <span class="tag-plano tag-premium">Em breve</span>
             <h3>Plano Premium</h3>
 
-            <p>
-                Ideal para quem quer automatizar o contato com o cliente e reduzir vendas perdidas por esquecimento.
+            <p class="premium-status">
+                EM DESENVOLVIMENTO
             </p>
 
-            <ul>
-                <li>Tudo do plano Básico.</li>
-                <li>Envia o orçamento automaticamente ao cliente via API do WhatsApp.</li>
-                <li>Acompanha orçamentos pendentes a cada 24 horas.</li>
-                <li>Envia uma mensagem de lembrete ao cliente quando o orçamento ainda estiver pendente.</li>
-                <li>Ajuda o profissional a não perder vendas esquecidas.</li>
-            </ul>
-
-            <small>Recomendado para uso profissional intenso e acompanhamento comercial.</small>
+            <small>Novos recursos serão anunciados quando estiverem disponíveis.</small>
         </div>
     </div>
 
@@ -705,43 +732,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>Gerar PDF</td>
                 <td class="sim">Sim</td>
                 <td class="sim">Sim</td>
-                <td class="sim">Sim</td>
+                <td>Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Exibição de anúncios</td>
                 <td class="sim">Sim</td>
                 <td class="nao">Não</td>
-                <td class="nao">Não</td>
+                <td>Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Salvar orçamentos na nuvem</td>
                 <td class="nao">Não</td>
                 <td class="sim">Sim</td>
-                <td class="sim">Sim</td>
+                <td>Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Enviar manualmente por WhatsApp</td>
                 <td class="nao">Não</td>
                 <td class="sim">Sim</td>
-                <td class="sim">Sim</td>
+                <td>Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Envio automático via API do WhatsApp</td>
                 <td class="nao">Não</td>
                 <td class="nao">Não</td>
-                <td class="sim">Sim</td>
+                <td>Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Acompanhamento de pendentes a cada 24h</td>
                 <td class="nao">Não</td>
                 <td class="nao">Não</td>
-                <td class="sim">Sim</td>
+                <td>Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Lembrete automático para o cliente</td>
                 <td class="nao">Não</td>
                 <td class="nao">Não</td>
-                <td class="sim">Sim</td>
+                <td>Em desenvolvimento</td>
             </tr>
         </tbody>
     </table>
@@ -753,7 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li><strong>Profissionalismo:</strong> envie propostas com aparência mais confiável.</li>
         <li><strong>Organização:</strong> mantenha os dados da empresa cadastrados no painel.</li>
         <li><strong>Controle:</strong> planos pagos permitem acompanhar o histórico e o status dos orçamentos.</li>
-        <li><strong>Mais chances de venda:</strong> o Premium ajuda a lembrar clientes que ainda não responderam.</li>
+        <li><strong>Evolução contínua:</strong> novos recursos serão adicionados conforme a plataforma crescer.</li>
     </ul>
 
     <h2>Compromisso</h2>
