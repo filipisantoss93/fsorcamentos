@@ -2,29 +2,29 @@
 <html lang="pt-br">
 <head>
     <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#3e2723">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#3e2723">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Sobre o FS Orçamentos - Gerador de Orçamentos Profissionais</title>
 
-    <meta name="description" content="Conheça o FS Orçamentos, uma plataforma para gerar orçamentos profissionais em PDF, salvar propostas, enviar por WhatsApp e acompanhar orçamentos pendentes automaticamente.">
-    <meta name="keywords" content="FS Orçamentos, gerador de orçamento, orçamento PDF, orçamento profissional, MEI, autônomo, prestador de serviço, oficina, gestão de orçamentos, WhatsApp API">
+    <meta name="description" content="Conheça o FS Orçamentos, uma plataforma para gerar orçamentos profissionais em PDF, salvar propostas, enviar por WhatsApp e receber lembretes internos de orçamentos pendentes.">
+    <meta name="keywords" content="FS Orçamentos, gerador de orçamento, orçamento PDF, orçamento profissional, MEI, autônomo, prestador de serviço, oficina, gestão de orçamentos, lembrete de orçamento pendente">
     <meta name="author" content="Filipi Aparecido dos Santos">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fsorcamentos.com.br/sobre.html">
     <meta property="og:title" content="Sobre o FS Orçamentos">
-    <meta property="og:description" content="Gere orçamentos profissionais em PDF, organize propostas, envie por WhatsApp e acompanhe clientes para não perder vendas.">
+    <meta property="og:description" content="Gere orçamentos profissionais em PDF, organize propostas, envie por WhatsApp e acompanhe pendências com lembretes internos.">
     <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
 
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://fsorcamentos.com.br/sobre.html">
     <meta property="twitter:title" content="Sobre o FS Orçamentos">
-    <meta property="twitter:description" content="Uma plataforma criada para gerar e organizar orçamentos profissionais com recursos para planos grátis, básico e premium.">
+    <meta property="twitter:description" content="Uma plataforma criada para gerar, organizar e acompanhar orçamentos profissionais.">
     <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
 
     <link rel="stylesheet" href="style.css">
@@ -45,16 +45,16 @@
         "url": "https://fsorcamentos.com.br/"
     }
     </script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'AW-17435932696');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17435932696');
+    </script>
+
     <style>
         .sobre-hero {
             max-width: 1000px;
@@ -244,7 +244,6 @@
             text-transform: uppercase;
         }
 
-
         .plano-em-desenvolvimento {
             opacity: 0.92;
         }
@@ -299,6 +298,12 @@
         .nao {
             color: #b71c1c;
             font-weight: bold;
+        }
+
+        .em-breve {
+            color: #795548;
+            font-weight: bold;
+            font-size: 13px;
         }
 
         .cta-sobre {
@@ -375,25 +380,7 @@
                 grid-template-columns: 1fr;
             }
 
-    
-        .plano-em-desenvolvimento {
-            opacity: 0.92;
-        }
-
-        .premium-status {
-            margin: 22px 0;
-            padding: 16px;
-            border-radius: 12px;
-            background: #f5f5f5;
-            color: #3e2723;
-            font-size: 18px;
-            font-weight: 900;
-            text-align: center;
-            letter-spacing: 1px;
-            border: 2px dashed #c8b8a8;
-        }
-
-        .comparativo {
+            .comparativo {
                 font-size: 12px;
             }
 
@@ -581,7 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <p>
         Gere orçamentos profissionais em PDF, organize propostas, envie pelo WhatsApp
-        e acompanhe clientes para não perder vendas esquecidas.
+        e receba lembretes internos para não esquecer orçamentos pendentes.
     </p>
 </section>
 
@@ -597,7 +584,8 @@ document.addEventListener('DOMContentLoaded', () => {
     <p>
         A plataforma começou como um gerador simples de orçamento em PDF e evoluiu para uma ferramenta
         de organização comercial. Agora, além de montar o documento, o sistema também pode salvar
-        propostas na nuvem, facilitar o envio por WhatsApp e ajudar você a acompanhar melhor suas propostas.
+        propostas na nuvem, facilitar o envio manual por WhatsApp e lembrar o usuário quando um
+        orçamento continuar pendente por mais de 24 horas.
     </p>
 
     <div class="fs-adsense-bloco fs-adsense-bloco-horizontal" data-local="sobre-topo">
@@ -622,8 +610,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div class="card-sobre">
-            <strong>📲 Envio por WhatsApp</strong>
-            No plano Básico, você pode enviar o orçamento ao cliente de forma prática pelo WhatsApp.
+            <strong>🔔 Lembrete após 24h</strong>
+            O sistema pode avisar o usuário quando um orçamento continuar pendente por mais de 24 horas.
         </div>
     </div>
 
@@ -643,20 +631,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <ul class="lista-beneficios">
         <li><strong>Dados da empresa:</strong> o emissor cadastra nome, WhatsApp, endereço, CNPJ/CPF e logo no Painel de Controle.</li>
-        <li><strong>Criação do orçamento:</strong> na tela inicial, o usuário informa título, cliente, itens, valores e observações.</li>
+        <li><strong>Criação do orçamento:</strong> o usuário informa título, cliente, itens, valores e observações.</li>
         <li><strong>PDF automático:</strong> o sistema monta o documento com os dados da empresa e os itens do orçamento.</li>
         <li><strong>Salvamento por plano:</strong> no plano Grátis o orçamento apenas baixa em PDF; nos planos pagos ele também pode ser salvo na nuvem.</li>
         <li><strong>Acompanhamento:</strong> o plano Básico permite consultar orçamentos pendentes, aprovados e recusados.</li>
+        <li><strong>Lembrete interno:</strong> quando um orçamento ficar pendente por mais de 24 horas, o sistema pode criar uma notificação para o usuário lembrar de fazer o acompanhamento.</li>
     </ul>
 
     <div class="fs-adsense-bloco" data-local="sobre-meio">
         <span class="ads-label">Publicidade</span>
-    <ins class="adsbygoogle"
-     style="display:block; text-align:center;"
-     data-ad-layout="in-article"
-     data-ad-format="fluid"
-     data-ad-client="ca-pub-5628949951885077"
-     data-ad-slot="8513105369"></ins>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-5628949951885077"
+            data-ad-slot="8513105369"></ins>
     </div>
 
     <h2>Diferença entre os planos</h2>
@@ -680,6 +669,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <li>Exibe anúncios nas páginas públicas e na plataforma.</li>
                 <li>Não salva o orçamento na nuvem.</li>
                 <li>Não envia link automático ao cliente.</li>
+                <li>Não possui lembrete interno de orçamento pendente.</li>
             </ul>
 
             <small>Recomendado para uso simples e pontual.</small>
@@ -690,7 +680,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3>Plano Básico</h3>
 
             <p>
-                Ideal para quem já precisa organizar melhor os orçamentos e consultar propostas depois.
+                Ideal para quem já precisa organizar melhor os orçamentos, consultar propostas depois
+                e lembrar de acompanhar orçamentos que continuam pendentes.
             </p>
 
             <ul>
@@ -699,6 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <li>Salva os orçamentos na nuvem.</li>
                 <li>Permite visualizar pendentes, aprovados e recusados.</li>
                 <li>Permite envio manual do orçamento por WhatsApp.</li>
+                <li>Cria lembrete interno para o usuário após 24h de orçamento pendente.</li>
             </ul>
 
             <small>Recomendado para profissionais que geram orçamentos com frequência.</small>
@@ -732,43 +724,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>Gerar PDF</td>
                 <td class="sim">Sim</td>
                 <td class="sim">Sim</td>
-                <td>Em desenvolvimento</td>
+                <td class="em-breve">Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Exibição de anúncios</td>
                 <td class="sim">Sim</td>
                 <td class="nao">Não</td>
-                <td>Em desenvolvimento</td>
+                <td class="em-breve">Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Salvar orçamentos na nuvem</td>
                 <td class="nao">Não</td>
                 <td class="sim">Sim</td>
-                <td>Em desenvolvimento</td>
+                <td class="em-breve">Em desenvolvimento</td>
             </tr>
             <tr>
                 <td>Enviar manualmente por WhatsApp</td>
                 <td class="nao">Não</td>
                 <td class="sim">Sim</td>
-                <td>Em desenvolvimento</td>
+                <td class="em-breve">Em desenvolvimento</td>
             </tr>
             <tr>
-                <td>Envio automático via API do WhatsApp</td>
+                <td>Visualizar pendentes, aprovados e recusados</td>
                 <td class="nao">Não</td>
-                <td class="nao">Não</td>
-                <td>Em desenvolvimento</td>
+                <td class="sim">Sim</td>
+                <td class="em-breve">Em desenvolvimento</td>
             </tr>
             <tr>
-                <td>Acompanhamento de pendentes a cada 24h</td>
+                <td>Lembrete interno para o usuário após 24h de orçamento pendente</td>
                 <td class="nao">Não</td>
-                <td class="nao">Não</td>
-                <td>Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Lembrete automático para o cliente</td>
-                <td class="nao">Não</td>
-                <td class="nao">Não</td>
-                <td>Em desenvolvimento</td>
+                <td class="sim">Sim</td>
+                <td class="em-breve">Em desenvolvimento</td>
             </tr>
         </tbody>
     </table>
@@ -780,6 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li><strong>Profissionalismo:</strong> envie propostas com aparência mais confiável.</li>
         <li><strong>Organização:</strong> mantenha os dados da empresa cadastrados no painel.</li>
         <li><strong>Controle:</strong> planos pagos permitem acompanhar o histórico e o status dos orçamentos.</li>
+        <li><strong>Lembrete inteligente:</strong> receba um aviso interno quando um orçamento pendente precisar de atenção depois de 24 horas.</li>
         <li><strong>Evolução contínua:</strong> novos recursos serão adicionados conforme a plataforma crescer.</li>
     </ul>
 
@@ -801,24 +788,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <div class="fs-adsense-bloco" data-local="sobre-final">
         <span class="ads-label">Publicidade</span>
-     <ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5628949951885077"
-     data-ad-slot="3260778682"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-5628949951885077"
+            data-ad-slot="3260778682"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
     </div>
 </main>
 
-<center><p></p><p></p>
-<footer>
-  &copy; 2026 FS Orçamentos |
-  <a href="/privacidade.html">Privacidade</a> |
-  <a href="/termos.html">Termos</a>
+<footer class="sobre-footer">
+    &copy; 2026 FS Orçamentos |
+    <a href="/privacidade.html">Privacidade</a> |
+    <a href="/termos.html">Termos</a>
 </footer>
+
 <button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">
-  🧾
-  <span>Gerar orçamento</span>
+    🧾
+    <span>Gerar orçamento</span>
 </button>
+
 </body>
 </html>
