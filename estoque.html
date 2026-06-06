@@ -1,0 +1,2184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Estoque - FS Orçamentos</title>
+
+  <meta name="description" content="Controle produtos, peças, materiais, entradas, saídas e estoque mínimo no FS Orçamentos." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+:root {
+  --fs-amarelo: #ffc400;
+  --fs-amarelo-claro: #fff8e1;
+
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #4e342e;
+  --fs-marrom-claro: #5d4037;
+
+  --fs-fundo-escuro: #2c2c2c;
+  --fs-bege: #f4ece1;
+  --fs-bege-2: #fffaf0;
+
+  --fs-branco: #ffffff;
+  --fs-borda: #d7ccc8;
+
+  --fs-texto: #3e2723;
+  --fs-texto-suave: #6d4c41;
+
+  --fs-perigo: #dc2626;
+  --fs-sucesso: #25D366;
+  --fs-verde-escuro: #083b2f;
+
+  --fs-radius: 16px;
+  --fs-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+
+  /* Compatibilidade com classes antigas dos módulos novos */
+  --fs-azul: #ffc400;
+  --fs-azul-escuro: #3e2723;
+  --fs-azul-claro: #fff8e1;
+  --fs-verde: #25D366;
+  --fs-vermelho: #dc2626;
+  --fs-cinza: #6d4c41;
+  --fs-fundo: #2c2c2c;
+  --fs-texto-claro: #f4ece1;
+}
+
+    body {
+      margin: 0;
+      background: var(--fs-fundo);
+      color: var(--fs-texto);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pagina-estoque {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    .estoque-hero {
+      background: linear-gradient(135deg, #0b5ed7, #063b86);
+      color: #fff;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: var(--fs-shadow);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .estoque-hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      right: -90px;
+      top: -100px;
+    }
+
+    .estoque-hero h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .estoque-hero p {
+      margin: 0;
+      max-width: 780px;
+      font-size: 15px;
+      line-height: 1.6;
+      opacity: 0.96;
+      position: relative;
+      z-index: 1;
+    }
+
+    .aviso-plano {
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    .estoque-resumo {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .card-resumo {
+      background: var(--fs-branco);
+      border: 1px solid var(--fs-borda);
+      border-radius: var(--fs-radius);
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-resumo span {
+      display: block;
+      color: var(--fs-cinza);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .card-resumo strong {
+      display: block;
+      font-size: 24px;
+      color: var(--fs-azul-escuro);
+    }
+
+    .card-resumo.alerta strong {
+      color: #b45309;
+    }
+
+    .estoque-grid {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .estoque-card {
+      background: var(--fs-branco);
+      border: 1px solid var(--fs-borda);
+      border-radius: var(--fs-radius);
+      box-shadow: var(--fs-shadow);
+      overflow: hidden;
+    }
+
+    .estoque-card-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--fs-borda);
+      background: #fbfdff;
+    }
+
+    .estoque-card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--fs-azul-escuro);
+    }
+
+    .estoque-card-header p {
+      margin: 6px 0 0;
+      color: var(--fs-cinza);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .estoque-card-body {
+      padding: 20px;
+    }
+
+    .estoque-topo-acoes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .form-estoque {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-linha {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width: 100%;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+      color: var(--fs-texto);
+      box-sizing: border-box;
+      transition: 0.2s ease;
+    }
+
+    .campo textarea {
+      min-height: 86px;
+      resize: vertical;
+    }
+
+    .campo input:focus,
+    .campo select:focus,
+    .campo textarea:focus {
+      border-color: var(--fs-azul);
+      box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.12);
+    }
+
+    .campo small {
+      color: var(--fs-cinza);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .checkbox-linha {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid var(--fs-borda);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fbfdff;
+    }
+
+    .checkbox-linha input {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--fs-azul);
+    }
+
+    .checkbox-linha strong {
+      display: block;
+      font-size: 14px;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    .checkbox-linha span {
+      display: block;
+      font-size: 12px;
+      color: var(--fs-cinza);
+      line-height: 1.4;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s ease;
+      min-height: 42px;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-primario {
+      background: var(--fs-azul);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(11, 94, 215, 0.22);
+    }
+
+    .btn-primario:hover {
+      background: var(--fs-azul-escuro);
+      transform: translateY(-1px);
+    }
+
+    .btn-secundario {
+      background: var(--fs-azul-claro);
+      color: var(--fs-azul-escuro);
+    }
+
+    .btn-secundario:hover {
+      background: #dceaff;
+    }
+
+    .btn-verde {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .btn-verde:hover {
+      background: #bbf7d0;
+    }
+
+    .btn-laranja {
+      background: #ffedd5;
+      color: #9a3412;
+    }
+
+    .btn-laranja:hover {
+      background: #fed7aa;
+    }
+
+    .btn-perigo {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .btn-perigo:hover {
+      background: #fecaca;
+    }
+
+    .btn-pequeno {
+      min-height: 36px;
+      padding: 8px 11px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .estoque-acoes-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+.estoque-filtros {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 0.7fr 0.8fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+    .lista-produtos {
+      display: grid;
+      gap: 12px;
+    }
+
+    .produto-item {
+      border: 1px solid var(--fs-borda);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+      transition: 0.2s ease;
+    }
+
+    .produto-item:hover {
+      border-color: rgba(11, 94, 215, 0.35);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    }
+
+    .produto-item.estoque-baixo {
+      border-color: #f59e0b;
+      background: #fffaf0;
+    }
+
+    .produto-linha-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .produto-info h3 {
+      margin: 0 0 4px;
+      color: #0f172a;
+      font-size: 18px;
+    }
+
+    .produto-info p {
+      margin: 0;
+      color: var(--fs-cinza);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .produto-qtd {
+      text-align: right;
+      min-width: 130px;
+    }
+
+    .produto-qtd span {
+      display: block;
+      color: var(--fs-cinza);
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .produto-qtd strong {
+      display: block;
+      color: var(--fs-azul-escuro);
+      font-size: 22px;
+    }
+
+    .produto-qtd.baixo strong {
+      color: #b45309;
+    }
+
+    .produto-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .tag.ativo {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .tag.inativo {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .tag.baixo {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .tag.sem-controle {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .produto-valores {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0 0;
+      color: #475569;
+      font-size: 13px;
+    }
+
+    .produto-acoes {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .estado-vazio {
+      text-align: center;
+      padding: 36px 20px;
+      border: 1px dashed var(--fs-borda);
+      border-radius: 16px;
+      background: #fbfdff;
+      color: var(--fs-cinza);
+    }
+
+    .estado-vazio strong {
+      display: block;
+      color: var(--fs-azul-escuro);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .mensagem-estoque {
+      display: none;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .mensagem-estoque.sucesso {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .mensagem-estoque.erro {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .mensagem-estoque.info {
+      display: block;
+      background: #eaf2ff;
+      color: var(--fs-azul-escuro);
+      border: 1px solid #bfdbfe;
+    }
+
+    .loading-estoque {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px;
+      color: var(--fs-cinza);
+      font-weight: 700;
+    }
+
+    .loading-estoque.ativo {
+      display: flex;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #dbeafe;
+      border-top-color: var(--fs-azul);
+      border-radius: 50%;
+      animation: girar 0.8s linear infinite;
+    }
+
+    @keyframes girar {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .modal-estoque {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-estoque.ativo {
+      display: flex;
+    }
+
+    .modal-conteudo {
+      width: min(520px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(15, 23, 42, 0.25);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--fs-borda);
+      background: #fbfdff;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: var(--fs-azul-escuro);
+      font-size: 20px;
+    }
+
+    .modal-body {
+      padding: 20px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .modal-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--fs-borda);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1080px) {
+      .estoque-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .estoque-resumo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .pagina-estoque {
+        padding: 18px 12px 42px;
+      }
+
+      .estoque-hero {
+        padding: 22px;
+        border-radius: 18px;
+      }
+
+      .estoque-hero h1 {
+        font-size: 24px;
+      }
+
+      .estoque-resumo {
+        grid-template-columns: 1fr;
+      }
+
+      .form-linha,
+      .estoque-filtros {
+        grid-template-columns: 1fr;
+      }
+
+      .produto-linha-topo {
+        flex-direction: column;
+      }
+
+      .produto-qtd {
+        text-align: left;
+      }
+
+      .estoque-acoes-form .btn,
+      .produto-acoes .btn,
+      .modal-footer .btn {
+        width: 100%;
+      }
+    }
+    .btn-toggle-form-mobile {
+  display: none;
+  border: 2px solid #ffc400;
+  background: #3e2723;
+  color: #ffc400;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.btn-toggle-form-mobile:hover {
+  background: #ffc400;
+  color: #3e2723;
+}
+
+.header-form-mobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+@media (max-width: 700px) {
+  .btn-toggle-form-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-form-mobile.form-fechado .corpo-form-mobile {
+    display: none;
+  }
+
+  .card-form-mobile.form-fechado .estoque-card-header {
+    border-bottom: none;
+  }
+
+  .header-form-mobile p {
+    display: none;
+  }
+}
+
+/* =========================================================
+   PADRÃO VISUAL FS ORÇAMENTOS
+   Cores oficiais: marrom escuro + amarelo + bege
+   ========================================================= */
+
+:root {
+  --fs-amarelo: #ffc400;
+  --fs-amarelo-claro: #fff8e1;
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #4e342e;
+  --fs-marrom-claro: #5d4037;
+  --fs-fundo-escuro: #2c2c2c;
+  --fs-bege: #f4ece1;
+  --fs-bege-2: #fffaf0;
+  --fs-borda: #d7ccc8;
+  --fs-branco: #ffffff;
+  --fs-texto: #3e2723;
+  --fs-texto-suave: #6d4c41;
+  --fs-perigo: #dc2626;
+  --fs-sucesso: #25D366;
+  --fs-verde-escuro: #083b2f;
+  --fs-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+}
+
+/* Fundo das páginas novas */
+body {
+  background: var(--fs-fundo-escuro) !important;
+  color: #eeeeee !important;
+}
+
+/* Containers principais */
+.pagina-clientes,
+.pagina-ordens,
+.pagina-ordem,
+.pagina-estoque {
+  color: var(--fs-texto) !important;
+}
+
+/* Hero/topo das páginas */
+.clientes-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero {
+  background: linear-gradient(135deg, #3e2723, #2c2c2c) !important;
+  color: #ffffff !important;
+  border-top: 6px solid var(--fs-amarelo) !important;
+  box-shadow: var(--fs-shadow) !important;
+}
+
+.clientes-hero::after,
+.ordens-hero::after,
+.ordem-hero::after,
+.estoque-hero::after {
+  background: rgba(255, 196, 0, 0.16) !important;
+}
+
+.clientes-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1 {
+  color: #ffffff !important;
+}
+
+.clientes-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p {
+  color: #f4ece1 !important;
+}
+
+/* Cards principais */
+.clientes-card,
+.ordens-card,
+.estoque-card,
+.card,
+.card-resumo {
+  background: var(--fs-bege) !important;
+  color: var(--fs-texto) !important;
+  border: 1px solid var(--fs-borda) !important;
+  border-top: 5px solid var(--fs-amarelo) !important;
+  box-shadow: var(--fs-shadow) !important;
+}
+
+/* Cabeçalho dos cards */
+.clientes-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.card-header {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-bottom: 2px solid var(--fs-amarelo) !important;
+}
+
+.clientes-card-header h2,
+.ordens-card-header h2,
+.estoque-card-header h2,
+.card-header h2 {
+  color: var(--fs-amarelo) !important;
+}
+
+.clientes-card-header p,
+.ordens-card-header p,
+.estoque-card-header p,
+.card-header p {
+  color: var(--fs-bege) !important;
+}
+
+/* Corpo dos cards */
+.clientes-card-body,
+.ordens-card-body,
+.estoque-card-body,
+.card-body {
+  background: var(--fs-bege) !important;
+  color: var(--fs-texto) !important;
+}
+
+/* Cards de resumo */
+.card-resumo {
+  background: linear-gradient(135deg, #fffaf0, #f4ece1) !important;
+  border-left: 6px solid var(--fs-amarelo) !important;
+  border-top: none !important;
+}
+
+.card-resumo span {
+  color: var(--fs-texto-suave) !important;
+  font-weight: 800 !important;
+}
+
+.card-resumo strong {
+  color: var(--fs-marrom) !important;
+}
+
+/* Labels e campos */
+.campo label,
+.info-item span {
+  color: var(--fs-marrom-claro) !important;
+  font-weight: 800 !important;
+}
+
+.campo input,
+.campo select,
+.campo textarea,
+.info-item input,
+.info-item select,
+.info-item textarea,
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border: 1px solid var(--fs-borda) !important;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.22) !important;
+}
+
+/* Itens/listas */
+.cliente-item,
+.ordem-item,
+.produto-item,
+.info-item,
+.texto-bloco {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border: 1px solid var(--fs-borda) !important;
+}
+
+.cliente-item:hover,
+.ordem-item:hover,
+.produto-item:hover {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 8px 22px rgba(62, 39, 35, 0.18) !important;
+}
+
+.cliente-info h3,
+.ordem-info h3,
+.produto-info h3,
+.info-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+.cliente-info p,
+.ordem-info p,
+.produto-info p,
+.texto-bloco {
+  color: var(--fs-texto-suave) !important;
+}
+
+/* Produto com estoque baixo */
+.produto-item.estoque-baixo {
+  background: #fff8e1 !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+/* Botões */
+.btn-primario {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border: 2px solid var(--fs-marrom) !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18) !important;
+}
+
+.btn-primario:hover {
+  background: #ffffff !important;
+  color: var(--fs-marrom) !important;
+  transform: translateY(-1px);
+}
+
+.btn-secundario {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border: 2px solid var(--fs-amarelo) !important;
+}
+
+.btn-secundario:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+}
+
+.btn-verde {
+  background: var(--fs-sucesso) !important;
+  color: var(--fs-verde-escuro) !important;
+  border: 2px solid #128c4a !important;
+}
+
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+.btn-laranja {
+  background: #fff8e1 !important;
+  color: var(--fs-marrom) !important;
+  border: 2px solid var(--fs-amarelo) !important;
+}
+
+.btn-laranja:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+}
+
+.btn-perigo {
+  background: #fff1f1 !important;
+  color: var(--fs-perigo) !important;
+  border: 2px solid var(--fs-perigo) !important;
+}
+
+.btn-perigo:hover {
+  background: var(--fs-perigo) !important;
+  color: #ffffff !important;
+}
+
+/* Botão abrir/fechar formulário mobile */
+.btn-toggle-form-mobile {
+  border: 2px solid var(--fs-amarelo) !important;
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+}
+
+.btn-toggle-form-mobile:hover {
+  background: #ffffff !important;
+  color: var(--fs-marrom) !important;
+}
+
+/* Tags */
+.tag {
+  background: #efebe9 !important;
+  color: var(--fs-marrom) !important;
+  border: 1px solid #d7ccc8 !important;
+}
+
+.tag.ativo,
+.tag.concluida,
+.tag.pago {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+  border-color: #bbf7d0 !important;
+}
+
+.tag.inativo,
+.tag.sem-controle {
+  background: #f1f1f1 !important;
+  color: #475569 !important;
+}
+
+.tag.preferencial,
+.tag.baixo,
+.tag.pendente,
+.tag.aberta,
+.tag.em_analise,
+.tag.aguardando_aprovacao,
+.tag.aguardando_material {
+  background: #fff8e1 !important;
+  color: #8a5a00 !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.tag.inadimplente,
+.tag.cancelada {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border-color: #fecaca !important;
+}
+
+.tag.aprovada,
+.tag.em_execucao,
+.tag.parcial {
+  background: #efebe9 !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+/* Estados vazios */
+.estado-vazio {
+  background: #fffaf0 !important;
+  border: 1px dashed var(--fs-amarelo) !important;
+  color: var(--fs-texto-suave) !important;
+}
+
+.estado-vazio strong {
+  color: var(--fs-marrom) !important;
+}
+
+/* Avisos */
+.aviso-plano {
+  background: #fff8e1 !important;
+  color: var(--fs-marrom) !important;
+  border: 1px solid var(--fs-amarelo) !important;
+  border-left: 6px solid var(--fs-amarelo) !important;
+}
+
+/* Mensagens */
+.mensagem-clientes.info,
+.mensagem-ordens.info,
+.mensagem-ordem.info,
+.mensagem-estoque.info {
+  background: #fff8e1 !important;
+  color: var(--fs-marrom) !important;
+  border: 1px solid var(--fs-amarelo) !important;
+}
+
+.mensagem-clientes.sucesso,
+.mensagem-ordens.sucesso,
+.mensagem-ordem.sucesso,
+.mensagem-estoque.sucesso {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+  border: 1px solid #bbf7d0 !important;
+}
+
+.mensagem-clientes.erro,
+.mensagem-ordens.erro,
+.mensagem-ordem.erro,
+.mensagem-estoque.erro {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+  border: 1px solid #fecaca !important;
+}
+
+/* Loading */
+.loading-clientes,
+.loading-ordens,
+.loading-ordem,
+.loading-estoque {
+  color: var(--fs-marrom-claro) !important;
+}
+
+.spinner {
+  border-color: #f4e3a1 !important;
+  border-top-color: var(--fs-amarelo) !important;
+}
+
+/* Ordem detalhe: valores */
+.valor-total {
+  background: var(--fs-marrom) !important;
+  border: 2px solid var(--fs-amarelo) !important;
+}
+
+.valor-total span,
+.valor-total strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.valor-linha {
+  border-bottom: 1px solid #eadfce !important;
+}
+
+.valor-linha span {
+  color: var(--fs-texto-suave) !important;
+}
+
+.valor-linha strong {
+  color: var(--fs-marrom) !important;
+}
+
+/* Modal estoque */
+.modal-estoque {
+  background: rgba(0, 0, 0, 0.78) !important;
+}
+
+.modal-conteudo {
+  background: var(--fs-bege) !important;
+  color: var(--fs-marrom) !important;
+  border-top: 6px solid var(--fs-amarelo) !important;
+}
+
+.modal-header {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-bottom: 2px solid var(--fs-amarelo) !important;
+}
+
+.modal-header h2 {
+  color: var(--fs-amarelo) !important;
+}
+
+.modal-body,
+.modal-footer {
+  background: var(--fs-bege) !important;
+  color: var(--fs-marrom) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--fs-borda) !important;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .clientes-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero {
+    border-radius: 18px !important;
+  }
+
+  .clientes-card,
+  .ordens-card,
+  .estoque-card,
+  .card {
+    border-radius: 16px !important;
+  }
+
+  .header-form-mobile p {
+    display: none !important;
+  }
+}
+  
+/* =========================================================
+   ESTOQUE COMPACTO - LISTA GRANDE / AGRUPAMENTO POR CATEGORIA
+   Estas classes funcionam com o estoque.js atual e também com a
+   próxima versão agrupada por categoria.
+   ========================================================= */
+
+.lista-produtos {
+  display: block !important;
+  max-height: 70vh;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.produto-item {
+  border-radius: 10px !important;
+  padding: 8px 10px !important;
+  margin-bottom: 6px !important;
+  box-shadow: none !important;
+  border-left: 4px solid var(--fs-amarelo) !important;
+}
+
+.produto-item.estoque-baixo {
+  border-left-color: #f59e0b !important;
+}
+
+.produto-linha-topo {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+  margin-bottom: 3px !important;
+}
+
+.produto-info h3 {
+  font-size: 14px !important;
+  margin: 0 0 2px !important;
+  line-height: 1.25 !important;
+}
+
+.produto-info p {
+  font-size: 11px !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.produto-qtd {
+  min-width: 74px !important;
+  text-align: right !important;
+}
+
+.produto-qtd span {
+  font-size: 10px !important;
+  margin-bottom: 0 !important;
+}
+
+.produto-qtd strong {
+  font-size: 16px !important;
+  line-height: 1.1 !important;
+}
+
+.produto-tags {
+  margin: 4px 0 !important;
+  gap: 4px !important;
+}
+
+.produto-tags .tag {
+  font-size: 10px !important;
+  padding: 3px 6px !important;
+}
+
+.produto-valores {
+  margin: 4px 0 0 !important;
+  gap: 8px !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+}
+
+.produto-acoes {
+  margin-top: 6px !important;
+  gap: 5px !important;
+}
+
+.produto-acoes .btn,
+.produto-acoes .btn-pequeno {
+  min-height: 28px !important;
+  padding: 5px 8px !important;
+  font-size: 11px !important;
+  border-radius: 8px !important;
+}
+
+/* Próxima renderização via estoque.js: grupos por categoria em tabela compacta */
+.grupo-categoria-estoque {
+  margin-bottom: 14px;
+  background: #ffffff;
+  border: 1px solid var(--fs-borda);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.grupo-categoria-titulo {
+  background: var(--fs-marrom);
+  color: var(--fs-amarelo);
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 900;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.grupo-categoria-titulo small {
+  color: var(--fs-bege);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.tabela-estoque-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabela-estoque-compacta {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  background: #ffffff;
+  color: var(--fs-texto);
+}
+
+.tabela-estoque-compacta th,
+.tabela-estoque-compacta td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #eadfce;
+  font-size: 12px;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+.tabela-estoque-compacta th {
+  background: #fff8e1;
+  color: var(--fs-marrom);
+  font-weight: 900;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabela-estoque-compacta tr:hover td {
+  background: #fffaf0;
+}
+
+.tabela-estoque-compacta .col-qtd,
+.tabela-estoque-compacta .col-min,
+.tabela-estoque-compacta .col-custo,
+.tabela-estoque-compacta .col-venda {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tabela-estoque-compacta .produto-nome-compacto {
+  font-weight: 900;
+  color: var(--fs-marrom);
+}
+
+.tabela-estoque-compacta .produto-desc-compacto {
+  display: block;
+  max-width: 260px;
+  color: var(--fs-texto-suave);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acoes-estoque-compactas {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.acoes-estoque-compactas .btn {
+  min-height: 26px !important;
+  padding: 4px 7px !important;
+  font-size: 10px !important;
+  border-radius: 7px !important;
+}
+
+.badge-estoque-compacto {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 900;
+  background: #efebe9;
+  color: var(--fs-marrom);
+  border: 1px solid #d7ccc8;
+  white-space: nowrap;
+}
+
+.badge-estoque-compacto.baixo {
+  background: #fff8e1;
+  color: #8a5a00;
+  border-color: var(--fs-amarelo);
+}
+
+.badge-estoque-compacto.ativo {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.badge-estoque-compacto.inativo {
+  background: #f1f1f1;
+  color: #475569;
+}
+
+@media (max-width: 700px) {
+  .lista-produtos {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .produto-item {
+    padding: 8px !important;
+  }
+
+  .produto-linha-topo {
+    grid-template-columns: 1fr auto !important;
+  }
+
+  .produto-info p {
+    max-width: 210px;
+  }
+
+  .produto-acoes {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .produto-acoes .btn,
+  .produto-acoes .btn-pequeno {
+    width: 100% !important;
+  }
+
+  .grupo-categoria-titulo {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .tabela-estoque-compacta {
+    min-width: 720px;
+  }
+}
+/* =========================================================
+   ESTOQUE ULTRA COMPACTO COM LINHA EXPANSÍVEL
+   ========================================================= */
+
+.lista-produtos {
+  display: grid !important;
+  gap: 10px !important;
+  max-height: 720px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.estoque-categoria-grupo {
+  background: #ffffff;
+  border: 1px solid var(--fs-borda);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.estoque-categoria-titulo {
+  background: var(--fs-marrom);
+  color: var(--fs-amarelo);
+  padding: 7px 10px;
+  font-weight: 900;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.estoque-categoria-titulo small {
+  color: var(--fs-bege);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.estoque-grade-cabecalho {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 74px 86px 26px;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 8px;
+  background: #fff8e1;
+  color: var(--fs-marrom);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--fs-borda);
+}
+
+.estoque-produto-bloco {
+  border-bottom: 1px solid #eadfce;
+  background: #ffffff;
+}
+
+.estoque-produto-bloco:last-child {
+  border-bottom: none;
+}
+
+.estoque-produto-bloco.estoque-baixo {
+  background: #fff8e1;
+}
+
+.estoque-produto-linha {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 74px 86px 26px;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 8px;
+  color: var(--fs-texto);
+  font-size: 12px;
+  min-height: 34px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.estoque-produto-linha:hover {
+  background: #fffaf0;
+}
+
+.estoque-produto-bloco.expandido .estoque-produto-linha {
+  background: #fffaf0;
+}
+
+.estoque-produto-nome {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.estoque-produto-nome strong {
+  display: block;
+  color: var(--fs-marrom);
+  font-size: 12px;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estoque-produto-nome small {
+  display: block;
+  color: var(--fs-texto-suave);
+  font-size: 10px;
+  line-height: 1.15;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.estoque-produto-qtd {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--fs-marrom);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.estoque-produto-qtd.baixo {
+  color: #b45309;
+}
+
+.estoque-produto-valor {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--fs-marrom);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.estoque-produto-seta {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--fs-marrom);
+  color: var(--fs-amarelo);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 900;
+  justify-self: end;
+  transition: 0.18s ease;
+}
+
+.estoque-produto-bloco.expandido .estoque-produto-seta {
+  transform: rotate(180deg);
+  background: var(--fs-amarelo);
+  color: var(--fs-marrom);
+}
+
+.estoque-produto-detalhes {
+  display: none;
+  padding: 8px;
+  background: #fffaf0;
+  border-top: 1px dashed var(--fs-borda);
+}
+
+.estoque-produto-bloco.expandido .estoque-produto-detalhes {
+  display: block;
+}
+
+.estoque-produto-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: var(--fs-texto-suave);
+}
+
+.estoque-produto-meta span {
+  background: #ffffff;
+  border: 1px solid var(--fs-borda);
+  border-radius: 999px;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+
+.estoque-produto-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.estoque-produto-botoes button {
+  border: none;
+  border-radius: 8px;
+  padding: 7px 9px;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  background: var(--fs-marrom);
+  color: var(--fs-amarelo);
+  border: 1px solid var(--fs-amarelo);
+}
+
+.estoque-produto-botoes button:hover {
+  background: var(--fs-amarelo);
+  color: var(--fs-marrom);
+}
+
+.estoque-produto-botoes button.verde {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.estoque-produto-botoes button.laranja {
+  background: #fff8e1;
+  color: #8a5a00;
+  border-color: var(--fs-amarelo);
+}
+
+.estoque-produto-botoes button.perigo {
+  background: #fff1f1;
+  color: var(--fs-perigo);
+  border-color: var(--fs-perigo);
+}
+
+.estoque-produto-botoes button.perigo:hover {
+  background: var(--fs-perigo);
+  color: #ffffff;
+}
+
+.estoque-status-mini {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 900;
+  border: 1px solid #d7ccc8;
+  background: #efebe9;
+  color: var(--fs-marrom);
+  white-space: nowrap;
+}
+
+.estoque-status-mini.ativo {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.estoque-status-mini.inativo {
+  background: #f1f1f1;
+  color: #475569;
+}
+
+.estoque-status-mini.baixo {
+  background: #fff8e1;
+  color: #8a5a00;
+  border-color: var(--fs-amarelo);
+}
+
+@media (max-width: 900px) {
+  .estoque-grade-cabecalho {
+    grid-template-columns: minmax(0, 1fr) 70px 26px;
+  }
+
+  .estoque-grade-cabecalho div:nth-child(3) {
+    display: none;
+  }
+
+  .estoque-produto-linha {
+    grid-template-columns: minmax(0, 1fr) 70px 26px;
+  }
+
+  .estoque-produto-valor {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .lista-produtos {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .estoque-categoria-titulo {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .estoque-produto-linha {
+    min-height: 38px;
+    padding: 6px 7px;
+  }
+
+  .estoque-produto-nome strong {
+    font-size: 12px;
+  }
+
+  .estoque-produto-nome small {
+    font-size: 9px;
+  }
+
+  .estoque-produto-botoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .estoque-produto-botoes button {
+    width: 100%;
+  }
+}
+
+.estoque-carregar-mais {
+  display: flex;
+  justify-content: center;
+  padding: 14px 20px 20px;
+  background: var(--fs-bege);
+}
+
+.estoque-carregar-mais .btn {
+  min-width: 220px;
+}
+
+#grupo-produto-categoria-outra.oculto {
+  display: none !important;
+}
+  </style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+
+  <main class="pagina-estoque">
+    <section class="estoque-hero">
+      <h1>Controle de Estoque</h1>
+      <p>
+        Cadastre produtos, peças e materiais, acompanhe quantidade disponível, estoque mínimo,
+        entradas, saídas e integre os itens usados nas Ordens de Serviço.
+      </p>
+    </section>
+
+    <div id="aviso-plano-estoque" class="aviso-plano oculto">
+      O controle de estoque faz parte do plano Premium, atualmente em desenvolvimento.
+      Durante os testes, você pode cadastrar produtos e validar o funcionamento normalmente.
+    </div>
+
+    <section class="estoque-resumo">
+      <div class="card-resumo">
+        <span>Total de produtos</span>
+        <strong id="resumo-total-produtos">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Produtos ativos</span>
+        <strong id="resumo-produtos-ativos">0</strong>
+      </div>
+
+      <div class="card-resumo alerta">
+        <span>Estoque baixo</span>
+        <strong id="resumo-produtos-baixo">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Valor em custo</span>
+        <strong id="resumo-valor-custo">R$ 0,00</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Valor em venda</span>
+        <strong id="resumo-valor-venda">R$ 0,00</strong>
+      </div>
+    </section>
+
+    <section class="estoque-grid">
+      <!-- FORMULÁRIO -->
+<aside class="estoque-card card-form-mobile" id="card-form-produto">
+  <div class="estoque-card-header header-form-mobile">
+    <div>
+      <h2 id="titulo-form-produto">Novo produto</h2>
+      <p>
+        Cadastre produtos, peças ou materiais usados em orçamentos e ordens de serviço.
+      </p>
+    </div>
+
+    <button type="button" id="btn-toggle-form-produto" class="btn-toggle-form-mobile">
+      Abrir
+    </button>
+  </div>
+
+  <div class="estoque-card-body corpo-form-mobile" id="corpo-form-produto">
+          <div id="mensagem-estoque-form" class="mensagem-estoque"></div>
+
+          <form id="form-produto-estoque" class="form-estoque">
+            <input type="hidden" id="produto-id" />
+
+            <div class="campo">
+              <label for="produto-nome">Nome do produto *</label>
+              <input
+                type="text"
+                id="produto-nome"
+                placeholder="Ex: Fonte 12V, Cabo HDMI, Filtro, Peça X"
+                required
+              />
+            </div>
+
+            <div class="campo">
+              <label for="produto-descricao">Descrição</label>
+              <textarea
+                id="produto-descricao"
+                placeholder="Descrição, aplicação, modelo, marca ou detalhes técnicos."
+              ></textarea>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo oculto" id="grupo-produto-categoria-outra">
+  <label for="produto-categoria-outra">Outra categoria</label>
+  <input
+    type="text"
+    id="produto-categoria-outra"
+    placeholder="Digite a nova categoria"
+  />
+</div>
+<div class="campo">
+  <label for="produto-categoria">Categoria</label>
+  <select id="produto-categoria">
+    <option value="">Selecione</option>
+    <option value="Peças">Peças</option>
+    <option value="Materiais">Materiais</option>
+    <option value="Produtos">Produtos</option>
+    <option value="Ferramentas">Ferramentas</option>
+    <option value="Insumos">Insumos</option>
+    <option value="Serviços">Serviços</option>
+    <option value="Outros">Outros</option>
+    <option value="__outra__">Outra categoria</option>
+  </select>
+</div>
+
+              <div class="campo">
+                <label for="produto-codigo">Código/SKU</label>
+                <input
+                  type="text"
+                  id="produto-codigo"
+                  placeholder="Ex: PÇ-001"
+                />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-unidade">Unidade</label>
+                <select id="produto-unidade">
+                  <option value="un">Unidade</option>
+                  <option value="pc">Peça</option>
+                  <option value="kg">Kg</option>
+                  <option value="g">Grama</option>
+                  <option value="m">Metro</option>
+                  <option value="cm">Centímetro</option>
+                  <option value="l">Litro</option>
+                  <option value="ml">Mililitro</option>
+                  <option value="cx">Caixa</option>
+                  <option value="pct">Pacote</option>
+                  <option value="par">Par</option>
+                  <option value="hora">Hora</option>
+                  <option value="servico">Serviço</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="produto-ativo">Status</label>
+                <select id="produto-ativo">
+                  <option value="true">Ativo</option>
+                  <option value="false">Inativo</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="checkbox-linha">
+              <input type="checkbox" id="produto-controlar-estoque" checked />
+              <label for="produto-controlar-estoque">
+                <strong>Controlar estoque deste item</strong>
+                <span>
+                  Desmarque para serviços ou itens que não precisam baixar quantidade.
+                </span>
+              </label>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-quantidade-atual">Quantidade atual</label>
+                <input
+                  type="number"
+                  id="produto-quantidade-atual"
+                  min="0"
+                  step="0.01"
+                  placeholder="0"
+                />
+              </div>
+
+              <div class="campo">
+                <label for="produto-estoque-minimo">Estoque mínimo</label>
+                <input
+                  type="number"
+                  id="produto-estoque-minimo"
+                  min="0"
+                  step="0.01"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-valor-custo">Valor de custo</label>
+                <input
+                  type="number"
+                  id="produto-valor-custo"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                />
+              </div>
+
+              <div class="campo">
+                <label for="produto-valor-venda">Valor de venda</label>
+                <input
+                  type="number"
+                  id="produto-valor-venda"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="produto-observacoes">Observações</label>
+              <textarea
+                id="produto-observacoes"
+                placeholder="Fornecedor, aplicação, local de armazenamento, observações internas..."
+              ></textarea>
+            </div>
+
+            <div class="estoque-acoes-form">
+              <button type="submit" id="btn-salvar-produto" class="btn btn-primario">
+                Salvar produto
+              </button>
+
+              <button type="button" id="btn-limpar-produto" class="btn btn-secundario">
+                Limpar
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+
+      <!-- LISTAGEM -->
+      <section class="estoque-card">
+        <div class="estoque-card-header">
+          <div class="estoque-topo-acoes">
+            <div>
+              <h2>Produtos em estoque</h2>
+              <p>Lista compacta por categoria para consultar produtos, alertas de estoque baixo e movimentações.</p>
+            </div>
+
+            <button type="button" id="btn-atualizar-estoque" class="btn btn-secundario">
+              Atualizar
+            </button>
+          </div>
+        </div>
+
+        <div class="estoque-card-body">
+          <div id="mensagem-estoque-lista" class="mensagem-estoque"></div>
+
+          <div class="estoque-filtros">
+            <div class="campo">
+              <label for="busca-produtos">Buscar</label>
+              <div class="campo">
+  <label for="filtro-categoria-produtos">Categoria</label>
+  <select id="filtro-categoria-produtos">
+    <option value="">Todas</option>
+    <option value="Peças">Peças</option>
+    <option value="Materiais">Materiais</option>
+    <option value="Produtos">Produtos</option>
+    <option value="Ferramentas">Ferramentas</option>
+    <option value="Insumos">Insumos</option>
+    <option value="Serviços">Serviços</option>
+    <option value="Outros">Outros</option>
+    <option value="Sem categoria">Sem categoria</option>
+  </select>
+</div>
+              <input
+                type="search"
+                id="busca-produtos"
+                placeholder="Buscar por nome, código, categoria ou descrição"
+              />
+            </div>
+
+            <div class="campo">
+              <label for="filtro-status-produtos">Status</label>
+              <select id="filtro-status-produtos">
+                <option value="">Todos</option>
+                <option value="ativo">Ativos</option>
+                <option value="inativo">Inativos</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="filtro-estoque-produtos">Estoque</label>
+              <select id="filtro-estoque-produtos">
+                <option value="">Todos</option>
+                <option value="baixo">Estoque baixo</option>
+                <option value="normal">Estoque normal</option>
+                <option value="sem_controle">Sem controle</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="loading-estoque" class="loading-estoque">
+            <span class="spinner"></span>
+            Carregando produtos...
+          </div>
+
+          <div id="lista-produtos-estoque" class="lista-produtos">
+            <div class="estado-vazio">
+              <strong>Nenhum produto carregado</strong>
+              <p>Os produtos cadastrados aparecerão aqui após conectar o arquivo estoque.js.</p>
+            </div>
+          </div>
+        </div>
+           <div class="estoque-carregar-mais">
+  <button type="button" id="btn-carregar-mais-produtos" class="btn btn-secundario oculto">
+    Carregar mais produtos
+  </button>
+</div>
+      </section>
+
+    </section>
+  </main>
+
+  <!-- MODAL DE MOVIMENTAÇÃO -->
+  <div id="modal-movimentacao-estoque" class="modal-estoque">
+    <div class="modal-conteudo">
+      <div class="modal-header">
+        <h2 id="titulo-modal-movimentacao">Movimentar estoque</h2>
+        <button type="button" id="btn-fechar-modal-estoque" class="btn btn-secundario btn-pequeno">
+          Fechar
+        </button>
+      </div>
+
+      <form id="form-movimentacao-estoque">
+        <div class="modal-body">
+          <input type="hidden" id="movimentacao-produto-id" />
+          <input type="hidden" id="movimentacao-tipo" />
+
+          <div class="campo">
+            <label>Produto</label>
+            <input type="text" id="movimentacao-produto-nome" readonly />
+          </div>
+
+          <div class="form-linha">
+            <div class="campo">
+              <label for="movimentacao-quantidade">Quantidade *</label>
+              <input
+                type="number"
+                id="movimentacao-quantidade"
+                min="0.01"
+                step="0.01"
+                placeholder="0"
+                required
+              />
+            </div>
+
+            <div class="campo">
+              <label for="movimentacao-valor-unitario">Valor unitário</label>
+              <input
+                type="number"
+                id="movimentacao-valor-unitario"
+                min="0"
+                step="0.01"
+                placeholder="0,00"
+              />
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="movimentacao-observacao">Observação</label>
+            <textarea
+              id="movimentacao-observacao"
+              placeholder="Ex: compra de fornecedor, saída manual, ajuste de inventário..."
+            ></textarea>
+          </div>
+
+          <div id="mensagem-estoque-modal" class="mensagem-estoque"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="btn-cancelar-modal-estoque" class="btn btn-secundario">
+            Cancelar
+          </button>
+
+          <button type="submit" id="btn-confirmar-movimentacao" class="btn btn-primario">
+            Confirmar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Arquivos do projeto -->
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="carregar-menu.js"></script>
+<script src="planos.js"></script>
+  <script>
+(async function() {
+  if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
+    const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Controle de estoque faz parte do Plano Premium.');
+    if (bloqueado) return;
+  }
+  const script = document.createElement('script');
+  script.src = 'estoque.js';
+  script.defer = false;
+  document.body.appendChild(script);
+})();
+</script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        if (!window._supabase && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+          window._supabase = window.supabase.createClient(
+            window.SUPABASE_URL,
+            window.SUPABASE_ANON_KEY
+          );
+        }
+
+        if (!window._supabase) {
+          console.warn("Supabase não foi inicializado. Verifique o config.js.");
+          return;
+        }
+
+        const { data } = await window._supabase.auth.getSession();
+        const session = data && data.session ? data.session : null;
+
+        if (!session) {
+          const destino = encodeURIComponent("estoque.html");
+          window.location.href = "index.html?redirect=" + destino;
+          return;
+        }
+      } catch (erro) {
+        console.error("Erro ao validar sessão em estoque.html:", erro);
+      }
+    });
+  </script>
+</body>
+</html>

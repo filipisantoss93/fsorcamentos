@@ -28,6 +28,54 @@
       --fs-borda: #e0d6c8;
     }
 
+    /* =========================================================
+   CORREÇÃO: HEADER FIXO NÃO SOBREPOR CONTEÚDO
+   ========================================================= */
+
+body {
+  padding-top: 118px;
+}
+
+#conteudo-protegido {
+  min-height: calc(100vh - 118px);
+}
+
+#area-orcamentos-funcoes .container {
+  padding-top: 12px;
+}
+
+#bloqueio-plano-gratis {
+  padding-top: 12px;
+}
+
+@media (max-width: 850px) {
+  body {
+    padding-top: 104px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 104px);
+  }
+
+  .filtro-flutuante {
+    top: 72px;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    padding-top: 86px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 86px);
+  }
+
+  .filtro-flutuante {
+    top: 0;
+  }
+}
+
     .orcamentos-header {
       display: flex;
       justify-content: space-between;
@@ -303,6 +351,8 @@
     .btn-ver-link { background: var(--fs-marrom); color: var(--fs-amarelo); }
     .btn-cancelar { background: #777; color: #fff; }
     .btn-salvar-modal { background: #2e7d32; color: #fff; }
+    .btn-gerar-os { background: var(--fs-amarelo); color: var(--fs-marrom); border: 2px solid var(--fs-marrom); }
+    .btn-gerar-os:hover { background: #ffffff; }
 
     .btn-add-item {
       background: #4e342e;
@@ -769,6 +819,7 @@
 <script src="auth.js"></script>
 <script src="ui.js"></script>
 <script src="carregar-menu.js"></script>
+<script src="planos.js"></script>
 <script src="notificacoes.js"></script>
 
 <div id="auth-area" style="display:none; max-width: 380px; margin: 45px auto; font-family: sans-serif;">
@@ -1029,6 +1080,11 @@
         </div>
 
         <div class="visual-card">
+          <strong>ID do cliente cadastrado</strong>
+          <span id="visual-cliente-id">-</span>
+        </div>
+
+        <div class="visual-card">
           <strong>Status</strong>
           <span id="visual-status">-</span>
         </div>
@@ -1070,6 +1126,10 @@
 
         <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="abrirConversaWhatsappVisualizado()">
           WhatsApp
+        </button>
+
+        <button type="button" id="btn-gerar-os-visualizado" class="btn-pequeno btn-gerar-os" onclick="gerarOSOrcamentoVisualizado()" style="display:none;">
+          Gerar OS
         </button>
 
         <button type="button" class="btn-pequeno btn-editar" onclick="editarOrcamentoVisualizado()">
@@ -1172,6 +1232,7 @@ let orcamentosCacheOriginal = [];
 let orcamentoVisualizadoId = null;
 let orcamentosJaCarregados = false;
 let usuarioPodeUsarNuvemOrcamentos = false;
+let usuarioPodeUsarPremiumOrcamentos = false;
 let aberturaOrcamentoUrlJaTentada = false;
 
 let canalOrcamentosTempoReal = null;
@@ -1297,6 +1358,7 @@ async function verificarPlanoEControlarPaginaOrcamentos(session) {
   const plano = await buscarPlanoUsuario(session);
 
   usuarioPodeUsarNuvemOrcamentos = plano === 'basico' || plano === 'premium';
+  usuarioPodeUsarPremiumOrcamentos = plano === 'premium';
 
   if (usuarioPodeUsarNuvemOrcamentos) {
     bloqueio.style.display = 'none';
@@ -1790,6 +1852,7 @@ function renderizarTabelaOrcamentos(orcamentos) {
           <div class="acoes-tabela">
             <button type="button" class="btn-pequeno btn-ver-link" onclick="abrirLinkCliente('${id}')">Ver</button>
             <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="enviarLinkWhatsapp('${id}')">WhatsApp</button>
+            ${status === 'aprovado' && usuarioPodeUsarPremiumOrcamentos ? `<button type="button" class="btn-pequeno btn-gerar-os" onclick="gerarOSDoOrcamento('${id}')">Gerar OS</button>` : ''}
             <button type="button" class="btn-pequeno btn-editar" onclick="abrirModalEditar('${id}')">Editar</button>
           </div>
         </td>
@@ -1847,6 +1910,7 @@ function abrirModalVisualizar(id) {
   const assunto = orcamento.assunto || 'Sem título';
   const clienteNome = orcamento.cliente_nome || 'Não informado';
   const clienteWhatsapp = orcamento.cliente_whatsapp || 'Não informado';
+  const clienteId = obterClienteIdOrcamento(orcamento) || '';
   const status = orcamento.status || 'pendente';
   const dataCriacao = orcamento.criado_em || '';
   const total = orcamento.total || 0;
@@ -1859,6 +1923,12 @@ function abrirModalVisualizar(id) {
   document.getElementById('visual-numero').innerText = numeroOrcamentoFormatado(orcamento);
   document.getElementById('visual-cliente').innerText = clienteNome;
   document.getElementById('visual-whatsapp').innerText = clienteWhatsapp;
+
+  const visualClienteId = document.getElementById('visual-cliente-id');
+  if (visualClienteId) {
+    visualClienteId.innerText = clienteId || 'Não vinculado';
+  }
+
   document.getElementById('visual-status').innerHTML = `<span class="status status-${classeStatus(status)}">${escaparHtml(statusLabel(status))}</span>`;
   document.getElementById('visual-forma-pagamento').innerText = formaPagamentoLabel(pagamento);
   document.getElementById('visual-resposta-em').innerText = formatarDataHora(respostaEm);
@@ -1867,6 +1937,7 @@ function abrirModalVisualizar(id) {
   document.getElementById('visual-link').innerHTML = `<a href="${escaparHtml(linkCliente)}" target="_blank">${escaparHtml(linkCliente)}</a>`;
 
   renderizarItensVisualizacao(orcamento.itens);
+  controlarBotaoGerarOSVisualizado(orcamento);
 
   document.getElementById('modal-visualizar-orcamento').style.display = 'flex';
 }
@@ -1984,6 +2055,140 @@ function renderizarItensVisualizacao(itensOriginais) {
 
   html += '</tbody></table>';
   container.innerHTML = html;
+}
+
+
+function obterClienteIdOrcamento(orcamento) {
+  return (
+    orcamento?.cliente_id ||
+    orcamento?.cliente_id_cadastrado ||
+    orcamento?.id_cliente ||
+    orcamento?.cliente_cadastrado_id ||
+    ''
+  );
+}
+
+function controlarBotaoGerarOSVisualizado(orcamento) {
+  const botao = document.getElementById('btn-gerar-os-visualizado');
+  if (!botao) return;
+
+  const status = normalizarTexto(orcamento?.status || 'pendente');
+
+  if (status === 'aprovado' && usuarioPodeUsarPremiumOrcamentos) {
+    botao.style.display = 'inline-flex';
+  } else {
+    botao.style.display = 'none';
+  }
+}
+
+async function buscarClienteVinculadoAoOrcamento(orcamento, usuarioId) {
+  const clienteId = obterClienteIdOrcamento(orcamento);
+
+  if (clienteId) {
+    return { id: clienteId };
+  }
+
+  const whatsapp = limparTelefoneWhatsapp(orcamento?.cliente_whatsapp || '').replace(/^55/, '');
+  const nome = String(orcamento?.cliente_nome || '').trim();
+
+  if (!whatsapp && !nome) return null;
+
+  let query = _supabase
+    .from('clientes')
+    .select('id, nome, whatsapp')
+    .eq('user_id', usuarioId)
+    .limit(10);
+
+  if (whatsapp) {
+    query = query.ilike('whatsapp', `%${whatsapp}%`);
+  } else if (nome) {
+    query = query.ilike('nome', `%${nome}%`);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Erro ao localizar cliente para gerar OS:', error);
+    return null;
+  }
+
+  if (!Array.isArray(data) || !data.length) return null;
+
+  if (data.length === 1) return data[0];
+
+  const clienteNomeNormalizado = normalizarTexto(nome);
+  const clienteMaisProvavel = data.find(cliente => {
+    const nomeBanco = normalizarTexto(cliente.nome || '');
+    const telefoneBanco = limparTelefoneWhatsapp(cliente.whatsapp || '').replace(/^55/, '');
+
+    return (
+      (clienteNomeNormalizado && nomeBanco === clienteNomeNormalizado) ||
+      (whatsapp && telefoneBanco.includes(whatsapp))
+    );
+  });
+
+  return clienteMaisProvavel || data[0];
+}
+
+function montarUrlOrdensComCliente(clienteId, orcamentoId, veiculoId = '') {
+  const origemUsaHtml = window.location.pathname.includes('.html');
+  const base = origemUsaHtml ? '/ordens.html' : '/ordens';
+  const params = new URLSearchParams();
+
+  params.set('cliente_id', clienteId);
+
+  if (orcamentoId) {
+    params.set('orcamento_id', orcamentoId);
+  }
+
+  if (veiculoId) {
+    params.set('veiculo_id', veiculoId);
+  }
+
+  return `${base}?${params.toString()}`;
+}
+
+async function gerarOSDoOrcamento(id) {
+  const session = await obterSessaoObrigatoria();
+  if (!session || !usuarioPodeUsarNuvemOrcamentos) return;
+
+  if (!usuarioPodeUsarPremiumOrcamentos) {
+    alert('O recurso Gerar OS está disponível somente no Plano Premium.');
+    window.location.href = '/planos.html#assinar-plano-premium';
+    return;
+  }
+
+  const orcamento = orcamentosCacheOriginal.find(o => String(o.id) === String(id));
+
+  if (!orcamento) {
+    alert('Orçamento não encontrado. Atualize a página e tente novamente.');
+    return;
+  }
+
+  const status = normalizarTexto(orcamento.status || 'pendente');
+
+  if (status !== 'aprovado') {
+    alert('A OS só pode ser gerada depois que o orçamento estiver aprovado.');
+    return;
+  }
+
+  const cliente = await buscarClienteVinculadoAoOrcamento(orcamento, session.user.id);
+
+  if (!cliente?.id) {
+    alert('Este orçamento foi aprovado, mas não possui cliente cadastrado vinculado. Vincule/cadastre o cliente primeiro para gerar a OS com os dados preenchidos.');
+    return;
+  }
+
+  window.location.href = montarUrlOrdensComCliente(cliente.id, orcamento.id, orcamento.veiculo_id || '');
+}
+
+function gerarOSOrcamentoVisualizado() {
+  if (!orcamentoVisualizadoId) {
+    alert('Nenhum orçamento selecionado.');
+    return;
+  }
+
+  gerarOSDoOrcamento(orcamentoVisualizadoId);
 }
 
 function editarOrcamentoVisualizado() {

@@ -449,6 +449,69 @@
       cursor: pointer;
     }
 
+
+    .veiculo-orcamento-box {
+      background: #fffaf0;
+      border: 1px solid var(--ver-cor-destaque);
+      border-left: 6px solid var(--ver-cor-destaque);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 0 0 22px;
+      color: #5d4037;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .veiculo-orcamento-box strong {
+      color: var(--ver-cor-primaria);
+    }
+
+    .veiculo-orcamento-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 14px;
+      margin-top: 8px;
+    }
+
+    .gerar-os-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 14px;
+      background: #fffaf0;
+      border: 1px solid var(--ver-cor-destaque);
+      border-left: 6px solid var(--ver-cor-destaque);
+      color: #5d4037;
+    }
+
+    .gerar-os-box strong {
+      display: block;
+      color: var(--ver-cor-primaria);
+      margin-bottom: 6px;
+    }
+
+    .btn-gerar-os {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      background: var(--ver-cor-primaria);
+      color: var(--ver-cor-destaque);
+      border: 2px solid var(--ver-cor-destaque);
+      border-radius: 999px;
+      padding: 13px 18px;
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.16);
+    }
+
+    .btn-gerar-os:hover {
+      background: var(--ver-cor-destaque);
+      color: var(--ver-cor-primaria);
+    }
+
     @media (max-width: 650px) {
       body {
         padding: 12px;
@@ -487,7 +550,8 @@
       }
 
       .botoes-status,
-      .formas-pagamento-grid {
+      .formas-pagamento-grid,
+      .veiculo-orcamento-grid {
         grid-template-columns: 1fr;
       }
 
@@ -538,7 +602,7 @@
   </div>
 
   <div class="rodape">
-    Orçamento gerado por <strong id="rodape-nome-empresa">FS Orçamentos</strong>
+    Orçamento gerado por FS Orçamentos
   </div>
 </div>
 
@@ -582,12 +646,17 @@ const STATUS_CONFIG = {
 const FORMAS_PAGAMENTO = {
   credito: 'Crédito',
   debito: 'Débito',
+  cartao_credito: 'Cartão de crédito',
+  cartao_debito: 'Cartão de débito',
   pix: 'Pix',
-  dinheiro: 'Dinheiro'
+  dinheiro: 'Dinheiro',
+  boleto: 'Boleto',
+  transferencia: 'Transferência'
 };
 
 let orcamentoAtual = null;
 let perfilEmissorAtual = null;
+let veiculoOrcamentoAtual = null;
 
 document.addEventListener('DOMContentLoaded', carregarOrcamento);
 
@@ -646,6 +715,129 @@ function textoFormaPagamento(forma) {
 function valorOuVazio(valor) {
   return valor && String(valor).trim() ? String(valor).trim() : '';
 }
+
+function obterClienteIdOrcamento(orcamento) {
+  return (
+    valorOuVazio(orcamento?.cliente_id) ||
+    valorOuVazio(orcamento?.cliente_id_cadastrado) ||
+    valorOuVazio(orcamento?.id_cliente) ||
+    ''
+  );
+}
+
+function obterVeiculoIdOrcamento(orcamento) {
+  return (
+    valorOuVazio(orcamento?.veiculo_id) ||
+    valorOuVazio(orcamento?.id_veiculo) ||
+    valorOuVazio(orcamento?.veiculo_id_cadastrado) ||
+    ''
+  );
+}
+
+function montarVeiculoAPartirDoOrcamento(orcamento) {
+  const veiculo = {
+    id: obterVeiculoIdOrcamento(orcamento),
+    placa: valorOuVazio(orcamento?.veiculo_placa) || valorOuVazio(orcamento?.placa_veiculo) || valorOuVazio(orcamento?.placa),
+    chassi: valorOuVazio(orcamento?.veiculo_chassi) || valorOuVazio(orcamento?.chassi_veiculo) || valorOuVazio(orcamento?.chassi),
+    marca: valorOuVazio(orcamento?.veiculo_marca) || valorOuVazio(orcamento?.marca_veiculo) || valorOuVazio(orcamento?.marca),
+    modelo: valorOuVazio(orcamento?.veiculo_modelo) || valorOuVazio(orcamento?.modelo_veiculo) || valorOuVazio(orcamento?.modelo),
+    cor: valorOuVazio(orcamento?.veiculo_cor) || valorOuVazio(orcamento?.cor_veiculo) || valorOuVazio(orcamento?.cor),
+    prisma: valorOuVazio(orcamento?.veiculo_prisma) || valorOuVazio(orcamento?.prisma_veiculo) || valorOuVazio(orcamento?.prisma),
+    ano: valorOuVazio(orcamento?.veiculo_ano) || valorOuVazio(orcamento?.ano_veiculo) || valorOuVazio(orcamento?.ano),
+    observacoes: valorOuVazio(orcamento?.veiculo_observacoes) || valorOuVazio(orcamento?.observacoes_veiculo)
+  };
+
+  const temDados = Object.keys(veiculo).some((chave) => chave !== 'id' && valorOuVazio(veiculo[chave]));
+  return temDados || veiculo.id ? veiculo : null;
+}
+
+async function carregarVeiculoDoOrcamento(orcamento) {
+  const veiculoLocal = montarVeiculoAPartirDoOrcamento(orcamento);
+  const veiculoId = obterVeiculoIdOrcamento(orcamento);
+
+  if (!veiculoId) {
+    return veiculoLocal;
+  }
+
+  try {
+    const { data, error } = await _supabase
+      .from('veiculos')
+      .select('id, placa, chassi, marca, modelo, cor, prisma, ano, observacoes')
+      .eq('id', veiculoId)
+      .maybeSingle();
+
+    if (error) {
+      console.warn('Não foi possível carregar o veículo vinculado:', error);
+      return veiculoLocal || { id: veiculoId };
+    }
+
+    return data || veiculoLocal || { id: veiculoId };
+  } catch (error) {
+    console.warn('Erro inesperado ao carregar veículo vinculado:', error);
+    return veiculoLocal || { id: veiculoId };
+  }
+}
+
+function montarHTMLVeiculoOrcamento(veiculo) {
+  if (!veiculo) return '';
+
+  const dados = [
+    ['Placa', veiculo.placa],
+    ['Marca', veiculo.marca],
+    ['Modelo', veiculo.modelo],
+    ['Cor', veiculo.cor],
+    ['Prisma', veiculo.prisma],
+    ['Ano', veiculo.ano],
+    ['Chassi', veiculo.chassi]
+  ].filter(([, valor]) => valorOuVazio(valor));
+
+  if (!dados.length && !veiculo.id) return '';
+
+  return `
+    <div class="veiculo-orcamento-box">
+      <strong>🚗 Veículo vinculado</strong>
+      ${
+        dados.length
+          ? `<div class="veiculo-orcamento-grid">
+              ${dados.map(([label, valor]) => `<div><strong>${escaparHtml(label)}:</strong> ${escaparHtml(valor)}</div>`).join('')}
+            </div>`
+          : '<div>Veículo vinculado ao orçamento.</div>'
+      }
+      ${veiculo.observacoes ? `<div style="margin-top:8px;"><strong>Observações:</strong> ${textoComQuebra(veiculo.observacoes)}</div>` : ''}
+    </div>
+  `;
+}
+
+function montarLinkGerarOS(orcamento) {
+  if (!orcamento?.id) return 'ordens.html';
+
+  const params = new URLSearchParams();
+  params.set('orcamento_id', orcamento.id);
+
+  const clienteId = obterClienteIdOrcamento(orcamento);
+  const veiculoId = obterVeiculoIdOrcamento(orcamento);
+
+  if (clienteId) params.set('cliente_id', clienteId);
+  if (veiculoId) params.set('veiculo_id', veiculoId);
+
+  return `ordens.html?${params.toString()}`;
+}
+
+function montarBotaoGerarOS(orcamento) {
+  if (!orcamento?.id) return '';
+
+  return `
+    <div class="gerar-os-box">
+      <strong>Orçamento aprovado</strong>
+      O prestador pode gerar uma Ordem de Serviço com cliente${obterVeiculoIdOrcamento(orcamento) ? ', veículo' : ''} e orçamento já preenchidos.
+      <br>
+      <a class="btn-gerar-os" href="${escaparHtml(montarLinkGerarOS(orcamento))}">
+        Gerar OS
+      </a>
+    </div>
+  `;
+}
+
 
 function normalizarTexto(valor) {
   return String(valor || '')
@@ -1040,6 +1232,7 @@ async function carregarOrcamento() {
   aplicarTemaVerHtml(data);
 
   perfilEmissorAtual = await carregarPerfilEmissor(data.usuario_id);
+  veiculoOrcamentoAtual = await carregarVeiculoDoOrcamento(data);
 
   preencherTopoEmpresaVer(data, perfilEmissorAtual);
   preencherNumeroOrcamento(data);
@@ -1062,6 +1255,7 @@ function renderizarOrcamento(orcamento) {
   const observacoes = orcamento.observacoes || '';
   const formaPagamento = orcamento.forma_pagamento_cliente || '';
   const respostaClienteEm = orcamento.resposta_cliente_em || '';
+  const veiculoHTML = montarHTMLVeiculoOrcamento(veiculoOrcamentoAtual || montarVeiculoAPartirDoOrcamento(orcamento));
 
   titulo.innerText = assunto;
 
@@ -1108,6 +1302,7 @@ function renderizarOrcamento(orcamento) {
             ? `<strong>Resposta enviada em:</strong> ${escaparHtml(formatarDataHora(respostaClienteEm))}`
             : ''
         }
+        ${montarBotaoGerarOS(orcamento)}
       </div>
     `;
   } else if (status === 'recusado') {
@@ -1141,6 +1336,8 @@ function renderizarOrcamento(orcamento) {
         </span>
       </div>
     </div>
+
+    ${veiculoHTML}
 
     <div class="tabela-wrapper">
       <table>
@@ -1290,6 +1487,7 @@ async function selecionarFormaPagamento(formaPagamento) {
   }
 
   orcamentoAtual = data;
+  veiculoOrcamentoAtual = await carregarVeiculoDoOrcamento(data);
 
   fecharModalFormaPagamento();
   preencherNumeroOrcamento(data);
@@ -1347,6 +1545,7 @@ async function recusarOrcamento() {
   }
 
   orcamentoAtual = data;
+  veiculoOrcamentoAtual = await carregarVeiculoDoOrcamento(data);
 
   preencherNumeroOrcamento(data);
   renderizarOrcamento(data);

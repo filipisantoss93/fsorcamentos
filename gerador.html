@@ -1087,6 +1087,333 @@
       text-decoration: none;
     }
 
+    .cliente-vinculado-card {
+      grid-column: 1 / -1;
+      display: none;
+      background: #fff8e1;
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--fs-marrom);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .cliente-vinculado-card.ativo {
+      display: block;
+    }
+
+    .cliente-vinculado-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .cliente-vinculado-card span {
+      display: block;
+      color: #6d4c41;
+      word-break: break-word;
+    }
+
+    .cliente-id-acoes {
+      display: flex;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .cliente-id-acoes .campo-form {
+      flex: 1;
+    }
+
+    .btn-buscar-cliente-id,
+    .btn-limpar-cliente-id {
+      min-height: 42px;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: .2s ease;
+    }
+
+    .btn-buscar-cliente-id {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+    }
+
+    .btn-limpar-cliente-id {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border: 2px solid #d7ccc8;
+    }
+
+    .btn-buscar-cliente-id:hover,
+    .btn-limpar-cliente-id:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    /* =========================================================
+       MODAL DE BUSCA DE CLIENTE - ORÇAMENTO
+       ========================================================= */
+    .modal-busca-cliente-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 18000;
+      padding: 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
+    }
+
+    .modal-busca-cliente-overlay.ativo {
+      display: flex;
+    }
+
+    .modal-busca-cliente-box {
+      width: min(100%, 720px);
+      margin: 24px auto;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
+      border-radius: 20px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+
+    .modal-busca-cliente-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid var(--fs-amarelo);
+    }
+
+    .modal-busca-cliente-header h3 {
+      margin: 0;
+      font-size: 19px;
+      color: var(--fs-amarelo);
+    }
+
+    .modal-busca-cliente-header p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--fs-creme);
+      line-height: 1.4;
+    }
+
+    .btn-fechar-busca-cliente {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: var(--fs-vermelho);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .modal-busca-cliente-body {
+      padding: 18px;
+      background: var(--fs-creme);
+    }
+
+    .busca-cliente-linha {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .busca-cliente-linha input {
+      width: 100%;
+      border: 1px solid #d7ccc8;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 15px;
+      color: var(--fs-marrom);
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .busca-cliente-linha input:focus {
+      outline: none;
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 0 0 4px rgba(255,196,0,0.22);
+    }
+
+    .btn-executar-busca-cliente {
+      min-height: 44px;
+      border-radius: 12px;
+      padding: 11px 16px;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .busca-cliente-ajuda {
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.45;
+      margin: 0 0 14px;
+      font-weight: 700;
+    }
+
+    .resultado-busca-clientes {
+      display: grid;
+      gap: 10px;
+      max-height: 430px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .cliente-busca-item {
+      background: #ffffff;
+      border: 1px solid #d7ccc8;
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 13px;
+      cursor: pointer;
+      transition: .2s ease;
+      color: var(--fs-marrom);
+      text-align: left;
+    }
+
+    .cliente-busca-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(62,39,35,0.18);
+      border-color: var(--fs-amarelo);
+    }
+
+    .cliente-busca-item strong {
+      display: block;
+      font-size: 15px;
+      color: var(--fs-marrom);
+      margin-bottom: 4px;
+    }
+
+    .cliente-busca-item span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .estado-busca-cliente {
+      background: #fffaf0;
+      border: 1px dashed var(--fs-amarelo);
+      color: #6d4c41;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    body.modal-busca-cliente-aberto {
+      overflow: hidden;
+    }
+
+
+    /* =========================================================
+       VEÍCULO VINCULADO AO ORÇAMENTO
+       ========================================================= */
+    .veiculo-orcamento-card {
+      grid-column: 1 / -1;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--fs-marrom);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .veiculo-orcamento-card small {
+      display: block;
+      margin-top: 6px;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .veiculo-vinculado-card {
+      grid-column: 1 / -1;
+      display: none;
+      background: #fff8e1;
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--fs-marrom);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .veiculo-vinculado-card.ativo {
+      display: block;
+    }
+
+    .veiculo-vinculado-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .veiculo-vinculado-card span {
+      display: block;
+      color: #6d4c41;
+      word-break: break-word;
+    }
+
+    @media (max-width: 640px) {
+      .modal-busca-cliente-overlay {
+        padding: 10px;
+      }
+
+      .modal-busca-cliente-box {
+        margin: 10px auto 28px;
+        border-radius: 16px;
+      }
+
+      .busca-cliente-linha {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-executar-busca-cliente {
+        width: 100%;
+      }
+    }
+
 
     @media (max-width: 520px) {
       .modal-login-overlay {
@@ -1179,6 +1506,16 @@
 
       .header-labels {
         display: none;
+      }
+
+      .cliente-id-acoes {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cliente-id-acoes .btn-buscar-cliente-id,
+      .cliente-id-acoes .btn-limpar-cliente-id {
+        width: 100%;
       }
 
       .extra-field {
@@ -1397,7 +1734,51 @@
 
         <div class="dadositens">👤 Cliente</div>
 
+        <input type="hidden" id="cliente-id-cadastrado" value="">
+
         <div class="grid-duplo-gerador">
+          <div class="cliente-id-acoes" style="grid-column: 1 / -1;">
+            <div class="campo-form">
+              <label for="orcamento-cliente-id">ID do cliente cadastrado</label>
+              <input
+                type="text"
+                id="orcamento-cliente-id"
+                placeholder="Cole o ID do cliente para preencher automaticamente"
+                oninput="salvarEstadoCompleto()"
+              >
+            </div>
+
+            <button type="button" class="btn-buscar-cliente-id" onclick="abrirModalBuscaClienteOrcamento()">
+              Buscar cliente
+            </button>
+
+            <button type="button" class="btn-limpar-cliente-id" onclick="limparClienteVinculadoNoOrcamento()">
+              Limpar
+            </button>
+          </div>
+
+          <div id="cliente-vinculado-card" class="cliente-vinculado-card">
+            <strong>Cliente vinculado</strong>
+            <span id="cliente-vinculado-texto">Nenhum cliente vinculado.</span>
+          </div>
+
+          <div class="veiculo-orcamento-card">
+            <div class="campo-form">
+              <label for="orcamento-veiculo-id">Veículo do cliente</label>
+              <select id="orcamento-veiculo-id" disabled>
+                <option value="">Selecione primeiro um cliente cadastrado</option>
+              </select>
+              <small id="aviso-veiculo-orcamento">
+                Se o cliente tiver veículo cadastrado, ele aparecerá aqui e será vinculado ao orçamento.
+              </small>
+            </div>
+          </div>
+
+          <div id="veiculo-vinculado-card" class="veiculo-vinculado-card">
+            <strong>Veículo vinculado</strong>
+            <span id="veiculo-vinculado-texto">Nenhum veículo selecionado.</span>
+          </div>
+
           <div class="campo-form">
             <label for="cliente">Nome do cliente</label>
             <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
@@ -1572,6 +1953,47 @@
           <button type="button" class="btn-help-trigger">?</button>
         </a>
 
+        <div id="modal-busca-cliente-orcamento" class="modal-busca-cliente-overlay" aria-hidden="true">
+          <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca-cliente">
+            <div class="modal-busca-cliente-header">
+              <div>
+                <h3 id="titulo-modal-busca-cliente">Buscar cliente cadastrado</h3>
+                <p>Pesquise por nome, telefone, rua, cidade ou CEP. Os clientes só aparecem depois de clicar em Buscar.</p>
+              </div>
+              <button type="button" class="btn-fechar-busca-cliente" onclick="fecharModalBuscaClienteOrcamento()">×</button>
+            </div>
+
+            <div class="modal-busca-cliente-body">
+              <div class="busca-cliente-linha">
+                <div class="campo-form">
+                  <label for="campo-busca-cliente-orcamento">Nome, telefone ou endereço do cliente</label>
+                  <input
+                    type="search"
+                    id="campo-busca-cliente-orcamento"
+                    placeholder="Ex: João, 18999999999, Rua Brasil, Assis ou 19800-000"
+                    autocomplete="off"
+                  >
+                </div>
+
+                <button type="button" class="btn-executar-busca-cliente" onclick="buscarClientesNoModalOrcamento()">
+                  Buscar
+                </button>
+              </div>
+
+              <p class="busca-cliente-ajuda">
+                Dica: digite pelo menos 2 caracteres. A busca consulta somente os seus clientes cadastrados.
+              </p>
+
+              <div id="resultado-busca-clientes-orcamento" class="resultado-busca-clientes">
+                <div class="estado-busca-cliente">
+                  Digite uma informação do cliente e clique em Buscar.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <div id="modal-ajuda" class="modal-overlay">
           <div class="modal-content">
             <div class="modal-header">
@@ -1674,838 +2096,11 @@
 <script src="auth.js"></script>
 <script src="ui.js"></script>
 <script src="carregar-menu.js"></script>
+<script src="planos.js"></script>
 <script src="notificacoes.js"></script>
 
-<script>
-let perfilGeradorAtual = null;
-let orcamentoSalvoAtualId = window.orcamentoAtualSalvoId || window.orcamentoSalvoAtualId || null;
-let enviandoWhatsappFS = false;
+<script src="gerador.js"></script>
 
-function abrirModalLoginGerador() {
-  const modal = document.getElementById('modal-login');
-  const authArea = document.getElementById('auth-area');
-  const authContainer = document.getElementById('auth-container');
-  const form = document.getElementById('form-autenticacao');
-
-  if (authArea) {
-    authArea.style.display = 'block';
-    authArea.style.visibility = 'visible';
-    authArea.style.opacity = '1';
-  }
-
-  if (authContainer) {
-    authContainer.style.display = 'block';
-    authContainer.style.visibility = 'visible';
-    authContainer.style.opacity = '1';
-  }
-
-  if (form) {
-    form.style.display = 'block';
-    form.style.visibility = 'visible';
-    form.style.opacity = '1';
-  }
-
-  if (!modal) return;
-
-  modal.style.display = 'flex';
-  document.body.classList.add('login-modal-aberto');
-
-  // Não travar o scroll do body aqui.
-  // Em celular, o modal precisa rolar para mostrar o botão inferior
-  // e o botão de reenviar e-mail de confirmação.
-  document.body.style.overflow = '';
-
-  setTimeout(() => {
-    modal.scrollTop = 0;
-    const email = document.getElementById('auth-email');
-    if (email) email.focus({ preventScroll: true });
-  }, 250);
-}
-
-function fecharModalLoginGerador() {
-  const modal = document.getElementById('modal-login');
-
-  if (!modal) return;
-
-  modal.style.display = 'none';
-  document.body.classList.remove('login-modal-aberto');
-  document.body.style.overflow = '';
-}
-
-function abrirModalLogin() {
-  abrirModalLoginGerador();
-}
-
-function fecharModalLogin() {
-  fecharModalLoginGerador();
-}
-
-function fsNormalizarTexto(valor) {
-  return String(valor || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
-}
-
-function fsPlanoAtualNormalizado() {
-  return fsNormalizarTexto(localStorage.getItem('usuario_plano') || perfilGeradorAtual?.plano || 'gratis');
-}
-
-function fsPlanoPermiteSalvarOrcamento() {
-  const plano = fsPlanoAtualNormalizado();
-  return plano === 'basico' || plano === 'premium';
-}
-
-function fsPlanoLabel(plano) {
-  const p = fsNormalizarTexto(plano);
-
-  if (p === 'basico') return 'Plano Básico';
-  if (p === 'premium') return 'Plano Premium';
-
-  return 'Plano Grátis';
-}
-
-function fsValorOuTraco(valor) {
-  return valor && String(valor).trim() ? String(valor).trim() : '-';
-}
-
-function fsAtualizarTexto(id, valor) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = fsValorOuTraco(valor);
-}
-
-function fsAtualizarLogo(url) {
-  const img = document.getElementById('emissor-logo-visual');
-  const placeholder = document.getElementById('emissor-logo-placeholder');
-
-  if (!img || !placeholder) return;
-
-  if (url) {
-    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-    img.style.display = 'block';
-    placeholder.style.display = 'none';
-  } else {
-    img.src = '';
-    img.style.display = 'none';
-    placeholder.style.display = 'flex';
-  }
-}
-
-function fsPerfilCompleto(perfil) {
-  return !!(perfil?.nome_empresa && perfil?.telefone_empresa);
-}
-
-function fsAtualizarAvisoPerfil(perfil) {
-  const aviso = document.getElementById('aviso-perfil-incompleto');
-
-  if (!aviso) return;
-
-  aviso.style.display = fsPerfilCompleto(perfil) ? 'none' : 'block';
-}
-
-function fsPreencherTopoEmpresa(perfil) {
-  perfilGeradorAtual = perfil || {};
-
-  fsAtualizarTexto('emissor-consultor-visual', perfilGeradorAtual.nome);
-  fsAtualizarTexto('emissor-empresa-visual', perfilGeradorAtual.nome_empresa);
-  fsAtualizarTexto('emissor-whatsapp-visual', perfilGeradorAtual.telefone_empresa);
-  fsAtualizarTexto('emissor-cnpj-visual', perfilGeradorAtual.cnpj_empresa);
-  fsAtualizarTexto('emissor-endereco-visual', perfilGeradorAtual.endereco_empresa);
-  fsAtualizarTexto('emissor-plano-visual', fsPlanoLabel(perfilGeradorAtual.plano));
-  fsAtualizarLogo(perfilGeradorAtual.foto_url);
-
-  fsAtualizarAvisoPerfil(perfilGeradorAtual);
-}
-
-async function fsBuscarPerfilUsuario(session) {
-  if (!window._supabase || !session?.user?.id) return null;
-
-  const { data, error } = await _supabase
-    .from('perfis')
-    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
-    .eq('id', session.user.id)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Erro ao buscar perfil:', error);
-    return null;
-  }
-
-  if (data) {
-    localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email?.split('@')[0] || 'Usuário');
-    localStorage.setItem('usuario_plano', data.plano || 'gratis');
-    localStorage.setItem('nome_empresa', data.nome_empresa || '');
-    localStorage.setItem('telefone_empresa', data.telefone_empresa || '');
-    localStorage.setItem('endereco_empresa', data.endereco_empresa || '');
-    localStorage.setItem('cnpj_empresa', data.cnpj_empresa || '');
-
-    if (data.foto_url) {
-      localStorage.setItem('foto_url', data.foto_url);
-    } else {
-      localStorage.removeItem('foto_url');
-    }
-  }
-
-  return data;
-}
-
-function fsPerfilLocalFallback() {
-  return {
-    nome: localStorage.getItem('usuario_nome') || '',
-    nome_empresa: localStorage.getItem('nome_empresa') || '',
-    telefone_empresa: localStorage.getItem('telefone_empresa') || '',
-    endereco_empresa: localStorage.getItem('endereco_empresa') || '',
-    cnpj_empresa: localStorage.getItem('cnpj_empresa') || '',
-    foto_url: localStorage.getItem('foto_url') || '',
-    plano: localStorage.getItem('usuario_plano') || 'gratis'
-  };
-}
-
-async function fsVerificarSessaoGerador() {
-  const conteudo = document.getElementById('conteudo-gerador');
-  const statusCard = document.getElementById('status-sessao-card');
-
-  if (statusCard) {
-    statusCard.style.display = 'block';
-    statusCard.innerText = 'Carregando seus dados...';
-  }
-
-  try {
-    if (!window._supabase) {
-      if (conteudo) conteudo.style.display = 'none';
-
-      setTimeout(() => {
-        abrirModalLoginGerador();
-      }, 300);
-
-      return;
-    }
-
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    if (!session?.user?.id) {
-      if (conteudo) conteudo.style.display = 'none';
-
-      setTimeout(() => {
-        abrirModalLoginGerador();
-      }, 300);
-
-      return;
-    }
-
-    fecharModalLoginGerador();
-
-    if (conteudo) conteudo.style.display = 'block';
-
-    const perfilBanco = await fsBuscarPerfilUsuario(session);
-    const perfil = perfilBanco || fsPerfilLocalFallback();
-
-    fsPreencherTopoEmpresa(perfil);
-
-    if (statusCard) {
-      statusCard.style.display = fsPerfilCompleto(perfil) ? 'none' : 'block';
-      statusCard.innerHTML = fsPerfilCompleto(perfil)
-        ? ''
-        : 'Complete os dados da empresa no Painel de Controle para deixar o PDF profissional.';
-    }
-
-    if (typeof carregarEstadoSalvo === 'function') {
-      carregarEstadoSalvo();
-    }
-
-    setTimeout(() => {
-      const linhas = document.querySelectorAll('#itens-lista .item-row:not(.header-labels)');
-
-      if (!linhas.length && typeof adicionarLinha === 'function') {
-        adicionarLinha();
-      }
-    }, 400);
-
-    fsAtualizarAnunciosGratisGerador();
-
-  } catch (error) {
-    console.error('Erro ao verificar sessão:', error);
-
-    if (conteudo) conteudo.style.display = 'none';
-
-    setTimeout(() => {
-      abrirModalLoginGerador();
-    }, 300);
-  }
-}
-
-function fsLimparTelefoneWhatsapp(valor) {
-  let telefone = String(valor || '').replace(/\D/g, '');
-
-  if (!telefone) return '';
-
-  if (telefone.startsWith('00')) {
-    telefone = telefone.substring(2);
-  }
-
-  if (telefone.length === 10 || telefone.length === 11) {
-    telefone = '55' + telefone;
-  }
-
-  return telefone;
-}
-
-function fsValorNumerico(valor) {
-  if (typeof valor === 'number') return valor;
-
-  let texto = String(valor || '').trim();
-
-  if (!texto) return 0;
-
-  texto = texto
-    .replace(/[^\d,.-]/g, '')
-    .replace(/\./g, '')
-    .replace(',', '.');
-
-  const numero = Number(texto);
-
-  return Number.isFinite(numero) ? numero : 0;
-}
-
-function fsColetarItensParaSalvar() {
-  const itens = [];
-
-  document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach(row => {
-    const inputs = Array.from(row.querySelectorAll('input'));
-
-    if (!inputs.length) return;
-
-    const descricao =
-      row.querySelector('.desc-cell')?.value?.trim() ||
-      row.querySelector('.desc')?.value?.trim() ||
-      inputs[0]?.value?.trim() ||
-      '';
-
-    const inputQtd = row.querySelector('.qtd') || inputs[1];
-    const inputValor = row.querySelector('.valor') || inputs[2];
-    const inputSubtotal = row.querySelector('.subtotal') || inputs[3];
-
-    const qtd = fsValorNumerico(inputQtd?.value ?? 1);
-    const valor = fsValorNumerico(inputValor?.value ?? 0);
-
-    let subtotal = fsValorNumerico(inputSubtotal?.value);
-
-    if (!subtotal) {
-      subtotal = qtd * valor;
-    }
-
-    if (descricao) {
-      itens.push({
-        descricao,
-        qtd,
-        valor,
-        subtotal
-      });
-    }
-  });
-
-  return itens;
-}
-
-function fsColetarDadosOrcamentoAtual() {
-  const titulo = document.getElementById('titulo')?.value?.trim() || 'Sem título';
-  const clienteNome = document.getElementById('cliente')?.value?.trim() || '';
-  const clienteWhatsapp = document.getElementById('tel-cliente')?.value?.trim() || '';
-  const observacoes = document.getElementById('observacoes')?.value?.trim() || '';
-  const tema = document.getElementById('selected-theme')?.value || 'original';
-
-  const itens = fsColetarItensParaSalvar();
-  const total = itens.reduce((soma, item) => soma + Number(item.subtotal || 0), 0);
-
-  return {
-    titulo,
-    clienteNome,
-    clienteWhatsapp,
-    observacoes,
-    tema,
-    itens,
-    total
-  };
-}
-
-async function fsSalvarOrcamentoSePlanoPermitido(origem = 'acao') {
-  if (!fsPlanoPermiteSalvarOrcamento()) {
-    console.log('Plano grátis: orçamento não salvo na nuvem.');
-    return null;
-  }
-
-  if (!window._supabase) {
-    console.warn('Supabase não disponível. Orçamento não salvo.');
-    return null;
-  }
-
-  const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
-
-  if (sessionError || !session?.user?.id) {
-    console.warn('Usuário não logado. Orçamento não salvo.');
-    return null;
-  }
-
-  const dados = fsColetarDadosOrcamentoAtual();
-
-  if (!dados.clienteNome) {
-    console.warn('Cliente não informado. Orçamento não salvo.');
-    return null;
-  }
-
-  if (!dados.itens.length) {
-    console.warn('Nenhum item informado. Orçamento não salvo.');
-    return null;
-  }
-
-  const consultor =
-    localStorage.getItem('responsavel_selecionado_nome') ||
-    localStorage.getItem('consultor_selecionado_nome') ||
-    perfilGeradorAtual?.nome ||
-    localStorage.getItem('usuario_nome') ||
-    'Consultor';
-
-  const payloadBase = {
-    usuario_id: session.user.id,
-    assunto: dados.titulo,
-    cliente_nome: dados.clienteNome,
-    cliente_whatsapp: dados.clienteWhatsapp,
-    observacoes: dados.observacoes,
-    itens: dados.itens,
-    total: dados.total,
-    status: 'pendente',
-    consultor
-  };
-
-  const payloadCompleto = {
-    ...payloadBase,
-    origem_salvamento: origem,
-    tema_pdf: dados.tema
-  };
-
-  let resposta;
-
-  if (orcamentoSalvoAtualId) {
-    resposta = await _supabase
-      .from('orcamentos')
-      .update(payloadCompleto)
-      .eq('id', orcamentoSalvoAtualId)
-      .eq('usuario_id', session.user.id)
-      .select()
-      .single();
-  } else {
-    resposta = await _supabase
-      .from('orcamentos')
-      .insert(payloadCompleto)
-      .select()
-      .single();
-  }
-
-  if (resposta.error) {
-    const mensagemErro = String(resposta.error.message || '');
-
-    if (
-      mensagemErro.includes('origem_salvamento') ||
-      mensagemErro.includes('tema_pdf') ||
-      mensagemErro.includes('observacoes') ||
-      mensagemErro.includes('consultor')
-    ) {
-      const payloadMinimo = {
-        usuario_id: session.user.id,
-        assunto: dados.titulo,
-        cliente_nome: dados.clienteNome,
-        cliente_whatsapp: dados.clienteWhatsapp,
-        itens: dados.itens,
-        total: dados.total,
-        status: 'pendente'
-      };
-
-      if (orcamentoSalvoAtualId) {
-        resposta = await _supabase
-          .from('orcamentos')
-          .update(payloadMinimo)
-          .eq('id', orcamentoSalvoAtualId)
-          .eq('usuario_id', session.user.id)
-          .select()
-          .single();
-      } else {
-        resposta = await _supabase
-          .from('orcamentos')
-          .insert(payloadMinimo)
-          .select()
-          .single();
-      }
-    }
-  }
-
-  if (resposta.error) {
-    console.error('Erro ao salvar orçamento:', resposta.error);
-    alert('Não foi possível salvar o orçamento na nuvem. O PDF continuará funcionando.');
-    return null;
-  }
-
-  orcamentoSalvoAtualId = resposta.data.id;
-  window.orcamentoAtualSalvoId = resposta.data.id;
-  window.orcamentoSalvoAtualId = resposta.data.id;
-
-  if (typeof definirOrcamentoAtualSalvo === 'function') {
-    definirOrcamentoAtualSalvo(resposta.data.id);
-  }
-
-  return resposta.data;
-}
-
-function fsNomeArquivoSeguro(valor) {
-  return String(valor || 'orcamento')
-    .trim()
-    .replace(/[^\wÀ-ÿ\s-]/g, '')
-    .replace(/\s+/g, '_')
-    .toLowerCase() || 'orcamento';
-}
-
-async function fsAguardarRenderizacaoPDF(container) {
-  return new Promise(resolve => {
-    const imagens = Array.from(container.querySelectorAll('img'));
-
-    if (!imagens.length) {
-      requestAnimationFrame(() => setTimeout(resolve, 500));
-      return;
-    }
-
-    let finalizadas = 0;
-
-    function finalizar() {
-      finalizadas += 1;
-
-      if (finalizadas >= imagens.length) {
-        requestAnimationFrame(() => setTimeout(resolve, 500));
-      }
-    }
-
-    imagens.forEach(img => {
-      if (img.complete) {
-        finalizar();
-      } else {
-        img.onload = finalizar;
-        img.onerror = finalizar;
-      }
-    });
-  });
-}
-
-async function fsBaixarPDFCorrigido() {
-  const conteudoPdf = document.getElementById('conteudo-pdf');
-
-  if (!conteudoPdf) {
-    alert('Área do PDF não encontrada.');
-    return;
-  }
-
-  if (!conteudoPdf.innerHTML.trim()) {
-    if (typeof gerarPrevia === 'function') {
-      await gerarPrevia();
-    }
-  }
-
-  if (!conteudoPdf.innerHTML.trim()) {
-    alert('Gere a pré-visualização antes de baixar o PDF.');
-    return;
-  }
-
-  await fsSalvarOrcamentoSePlanoPermitido('download_pdf');
-
-  const folha = conteudoPdf.firstElementChild || conteudoPdf;
-  const nomeArquivo = fsNomeArquivoSeguro(document.getElementById('titulo')?.value || 'orcamento');
-
-  document.body.classList.add('gerando-pdf');
-
-  await fsAguardarRenderizacaoPDF(folha);
-
-  const opt = {
-    margin: 0,
-    filename: `${nomeArquivo}.pdf`,
-    image: {
-      type: 'jpeg',
-      quality: 0.98
-    },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: '#ffffff',
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: 794,
-      windowHeight: 1123
-    },
-    jsPDF: {
-      unit: 'px',
-      format: [794, 1123],
-      orientation: 'portrait'
-    },
-    pagebreak: {
-      mode: ['avoid-all', 'css', 'legacy']
-    }
-  };
-
-  try {
-    await html2pdf()
-      .set(opt)
-      .from(folha)
-      .save();
-  } catch (error) {
-    console.error('Erro ao gerar PDF:', error);
-    alert('Não foi possível gerar o PDF.');
-  } finally {
-    document.body.classList.remove('gerando-pdf');
-  }
-}
-
-function montarMensagemWhatsappCliente(clienteNome, linkOrcamento) {
-  const nome = clienteNome && String(clienteNome).trim()
-    ? String(clienteNome).trim()
-    : 'cliente';
-
-  return `Olá, ${nome}! Tudo bem?
-
-Seu orçamento está pronto para visualização.
-
-Acesse o link abaixo para conferir os detalhes e aprovar ou recusar a proposta:
-
-${linkOrcamento}
-
-Qualquer dúvida, estou à disposição.`;
-}
-
-async function enviarPorWhatsApp() {
-  if (enviandoWhatsappFS) return;
-
-  enviandoWhatsappFS = true;
-
-  const botoesWhatsapp = document.querySelectorAll('.btn-whatsapp, .btn-acao-whatsapp, .btn-float-whatsapp');
-
-  botoesWhatsapp.forEach(btn => {
-    btn.disabled = true;
-  });
-
-  try {
-    if (!fsPlanoPermiteSalvarOrcamento()) {
-      alert('O envio por WhatsApp com link está disponível no Plano Básico.');
-      return;
-    }
-
-    const dados = fsColetarDadosOrcamentoAtual();
-    const telefoneLimpo = fsLimparTelefoneWhatsapp(dados.clienteWhatsapp);
-
-    if (!dados.clienteNome) {
-      alert('Informe o nome do cliente.');
-      return;
-    }
-
-    if (!telefoneLimpo) {
-      alert('Informe o WhatsApp do cliente.');
-      return;
-    }
-
-    if (!dados.itens.length) {
-      alert('Adicione pelo menos um item ao orçamento.');
-      return;
-    }
-
-    const orcamentoSalvo = await fsSalvarOrcamentoSePlanoPermitido('whatsapp_manual');
-
-    const linkOrcamento = orcamentoSalvo?.id
-      ? `${window.location.origin}/ver.html?id=${orcamentoSalvo.id}`
-      : '';
-
-    if (!linkOrcamento) {
-      alert('Não foi possível gerar o link do orçamento. O orçamento precisa ser salvo na nuvem.');
-      return;
-    }
-
-    const mensagem = montarMensagemWhatsappCliente(dados.clienteNome, linkOrcamento);
-    const urlWhatsapp = `https://wa.me/${telefoneLimpo}?text=${encodeURIComponent(mensagem)}`;
-
-    const janela = window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
-
-    if (!janela) {
-      alert('O navegador bloqueou a abertura do WhatsApp. Permita pop-ups para este site.');
-      return;
-    }
-
-    janela.focus();
-  } catch (error) {
-    console.error('Erro ao enviar por WhatsApp:', error);
-    alert('Não foi possível abrir o WhatsApp.');
-  } finally {
-    enviandoWhatsappFS = false;
-
-    botoesWhatsapp.forEach(btn => {
-      btn.disabled = false;
-    });
-  }
-}
-
-function exibirAcoesProfissionaisOrcamento() {
-  const botoesAcao = document.getElementById('botoes-acao');
-  const btnFloatBaixar = document.getElementById('btn-float-baixar');
-  const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
-  const floatingActions = document.querySelector('.floating-actions');
-
-  if (botoesAcao) botoesAcao.style.display = 'block';
-  if (btnFloatBaixar) btnFloatBaixar.style.display = 'flex';
-  if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'flex';
-  if (floatingActions) floatingActions.classList.add('show');
-}
-
-function fsSlotAdsenseValido(slot) {
-  const valor = String(slot || '').trim();
-  return /^\d{6,}$/.test(valor);
-}
-
-function fsInicializarAdsenseVisivel() {
-  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
-
-  blocos.forEach(bloco => {
-    if (bloco.style.display === 'none') return;
-
-    const ins = bloco.querySelector('ins.adsbygoogle');
-
-    if (!ins) return;
-
-    const slot = ins.getAttribute('data-ad-slot');
-
-    if (!fsSlotAdsenseValido(slot)) return;
-    if (ins.dataset.adsenseInicializado === 'true') return;
-
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      ins.dataset.adsenseInicializado = 'true';
-    } catch (error) {
-      console.warn('AdSense ainda não inicializado:', error);
-    }
-  });
-}
-
-async function fsAtualizarAnunciosGratisGerador() {
-  const blocos = document.querySelectorAll('.fs-anuncio-gratis');
-
-  if (!blocos.length) return;
-
-  let deveExibir = true;
-
-  try {
-    const plano = fsPlanoAtualNormalizado();
-    deveExibir = !(plano === 'basico' || plano === 'premium');
-  } catch (error) {
-    deveExibir = true;
-  }
-
-  blocos.forEach(bloco => {
-    bloco.style.display = deveExibir ? 'block' : 'none';
-  });
-
-  if (deveExibir) {
-    setTimeout(fsInicializarAdsenseVisivel, 300);
-  }
-}
-
-function toggleAjuda() {
-  const modal = document.getElementById('modal-ajuda');
-
-  if (modal) {
-    modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  fsVerificarSessaoGerador();
-
-  window.baixarPDF = fsBaixarPDFCorrigido;
-
-  const previaOriginal = window.gerarPrevia;
-
-  if (typeof previaOriginal === 'function' && !window.gerarPreviaComAcoesProfissionais) {
-    window.gerarPrevia = async function() {
-      const resultado = await previaOriginal.apply(this, arguments);
-
-      setTimeout(() => {
-        const conteudo = document.getElementById('conteudo-pdf');
-
-        if (conteudo && conteudo.innerHTML.trim()) {
-          exibirAcoesProfissionaisOrcamento();
-        }
-      }, 250);
-
-      return resultado;
-    };
-
-    window.gerarPreviaComAcoesProfissionais = true;
-  }
-
-  const limparOriginal = window.limparFormulario;
-
-  if (typeof limparOriginal === 'function' && !window.limparFormularioComResetOrcamento) {
-    window.limparFormulario = function() {
-      orcamentoSalvoAtualId = null;
-      window.orcamentoAtualSalvoId = null;
-      window.orcamentoSalvoAtualId = null;
-
-      const retorno = limparOriginal.apply(this, arguments);
-
-      const botoesAcao = document.getElementById('botoes-acao');
-      const btnFloatBaixar = document.getElementById('btn-float-baixar');
-      const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
-      const floatingActions = document.querySelector('.floating-actions');
-
-      if (botoesAcao) botoesAcao.style.display = 'none';
-      if (btnFloatBaixar) btnFloatBaixar.style.display = 'none';
-      if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'none';
-      if (floatingActions) floatingActions.classList.remove('show');
-
-      return retorno;
-    };
-
-    window.limparFormularioComResetOrcamento = true;
-  }
-
-  setTimeout(fsAtualizarAnunciosGratisGerador, 1000);
-  setTimeout(fsAtualizarAnunciosGratisGerador, 2000);
-});
-
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
-    setTimeout(fsVerificarSessaoGerador, 500);
-    setTimeout(fsAtualizarAnunciosGratisGerador, 1200);
-  });
-}
-
-document.addEventListener('click', function(event) {
-  const modalLogin = document.getElementById('modal-login');
-  const modalAjuda = document.getElementById('modal-ajuda');
-
-  if (event.target === modalLogin) {
-    fecharModalLoginGerador();
-  }
-
-  if (event.target === modalAjuda) {
-    toggleAjuda();
-  }
-});
-
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    const modalAjuda = document.getElementById('modal-ajuda');
-
-    if (modalAjuda && modalAjuda.style.display === 'flex') {
-      toggleAjuda();
-    }
-
-    fecharModalLoginGerador();
-  }
-});
-</script>
 
 </body>
 </html>

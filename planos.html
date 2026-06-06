@@ -11,7 +11,7 @@
 
   <title>Planos - FS Orçamentos</title>
 
-  <meta name="description" content="Conheça os planos do FS Orçamentos. Gere orçamentos profissionais grátis ou assine o Plano Básico para salvar na nuvem, enviar por WhatsApp e acompanhar status.">
+  <meta name="description" content="Conheça os planos do FS Orçamentos: Grátis para PDF, Básico para gestão de orçamentos e Premium para clientes, veículos, ordens de serviço e estoque.">
   <meta name="keywords" content="planos fs orçamentos, plano básico orçamento, gerar orçamento PDF, orçamento online">
   <meta name="author" content="Filipi Aparecido dos Santos">
 
@@ -238,7 +238,7 @@
 
     .tabela-comparativo {
       width: 100%;
-      min-width: 720px;
+      min-width: 920px;
       border-collapse: collapse;
       background: #ffffff;
     }
@@ -254,8 +254,10 @@
 
     .tabela-comparativo th:nth-child(2),
     .tabela-comparativo th:nth-child(3),
+    .tabela-comparativo th:nth-child(4),
     .tabela-comparativo td:nth-child(2),
-    .tabela-comparativo td:nth-child(3) {
+    .tabela-comparativo td:nth-child(3),
+    .tabela-comparativo td:nth-child(4) {
       text-align: center;
     }
 
@@ -460,6 +462,40 @@
       padding: 8px 12px;
       font-size: 13px;
       font-weight: 700;
+    }
+
+
+
+    .planos-pix-section.premium-section {
+      background: linear-gradient(135deg, #fff8e1, #f4ece1);
+      border-top-color: var(--fs-amarelo);
+    }
+
+    .premium-section .tag-plano-pix,
+    .premium-section .plano-pix-selo {
+      background: #111827;
+      color: var(--fs-amarelo);
+    }
+
+    .premium-section .plano-pix-card {
+      border-top-color: #111827;
+    }
+
+    .premium-section .plano-pix-card.destaque {
+      border-color: #111827;
+    }
+
+    .premium-aviso {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #fff8e1;
+      border-left: 6px solid var(--fs-amarelo);
+      color: var(--fs-marrom);
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 800;
+      text-align: center;
     }
 
     .faq-section {
@@ -723,7 +759,41 @@
 
       .comparativo-section,
       .planos-pix-section,
-      .faq-section {
+  
+
+    .planos-pix-section.premium-section {
+      background: linear-gradient(135deg, #fff8e1, #f4ece1);
+      border-top-color: var(--fs-amarelo);
+    }
+
+    .premium-section .tag-plano-pix,
+    .premium-section .plano-pix-selo {
+      background: #111827;
+      color: var(--fs-amarelo);
+    }
+
+    .premium-section .plano-pix-card {
+      border-top-color: #111827;
+    }
+
+    .premium-section .plano-pix-card.destaque {
+      border-color: #111827;
+    }
+
+    .premium-aviso {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #fff8e1;
+      border-left: 6px solid var(--fs-amarelo);
+      color: var(--fs-marrom);
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .faq-section {
         padding: 22px 14px;
         border-radius: 18px;
       }
@@ -813,9 +883,7 @@
       <h1>Escolha o plano ideal para profissionalizar seus orçamentos.</h1>
 
       <p>
-        Comece grátis gerando PDFs profissionais. Quando quiser salvar na nuvem,
-        enviar link pelo WhatsApp, acompanhar status e usar resumo financeiro,
-        ative o Plano Básico via Pix.
+        Comece grátis gerando PDFs profissionais. Ative o Básico para salvar orçamentos, enviar link pelo WhatsApp e acompanhar status. Use o Premium para liberar clientes, veículos, ordens de serviço e estoque.
       </p>
 
       <div class="planos-acoes-hero">
@@ -824,7 +892,11 @@
         </a>
 
         <a href="#assinar-plano-basico" class="btn-hero-planos btn-hero-secundario">
-          Ver valores
+          Ver Básico
+        </a>
+
+        <a href="#assinar-plano-premium" class="btn-hero-planos btn-hero-secundario">
+          Ver Premium
         </a>
       </div>
     </div>
@@ -836,10 +908,10 @@
 
   <section class="comparativo-section">
     <div class="section-topo">
-      <h2>Grátis x Básico</h2>
+      <h2>Comparativo dos planos</h2>
       <p>
-        O Plano Grátis serve para gerar PDF. O Plano Básico é para quem quer controlar,
-        salvar e acompanhar os orçamentos como um sistema profissional.
+        O Grátis é para gerar PDF com anúncios. O Básico é para vender e acompanhar orçamentos.
+        O Premium é o sistema completo para oficina e prestadores com clientes, veículos, OS e estoque.
       </p>
     </div>
 
@@ -848,77 +920,31 @@
         <thead>
           <tr>
             <th>Recurso</th>
-            <th>Plano Grátis</th>
-            <th>Plano Básico</th>
+            <th>Grátis</th>
+            <th>Básico</th>
+            <th>Premium</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr>
-            <td>Gerar orçamento</td>
-            <td class="sim">Sim</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Pré-visualizar orçamento</td>
-            <td class="sim">Sim</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Baixar PDF</td>
-            <td class="sim">Sim</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Anúncios na plataforma</td>
-            <td class="sim">Sim</td>
-            <td class="nao">Não</td>
-          </tr>
-
-          <tr>
-            <td>Salvar orçamento na nuvem</td>
-            <td class="nao">Não</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Histórico de orçamentos</td>
-            <td class="nao">Não</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>WhatsApp com link do orçamento</td>
-            <td class="nao">Não</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Cliente aprova ou recusa online</td>
-            <td class="nao">Não</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Status: pendente, aprovado, recusado, em serviço e finalizado</td>
-            <td class="nao">Não</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Resumo financeiro</td>
-            <td class="nao">Não</td>
-            <td class="sim">Sim</td>
-          </tr>
-
-          <tr>
-            <td>Consultores Técnicos</td>
-            <td>2 Consultores</td>
-            <td>Até 5 Consultores</td>
-          </tr>
+          <tr><td>Gerar orçamento</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Pré-visualizar orçamento</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Baixar PDF</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Anúncios na plataforma</td><td class="sim">Sim</td><td class="nao">Não</td><td class="nao">Não</td></tr>
+          <tr><td>Salvar orçamento na nuvem</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Histórico e gestão de orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>WhatsApp com link do orçamento</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Cliente aprova ou recusa online</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Notificações de status</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Resumo financeiro de orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
+          <tr><td>Cadastro de clientes</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
+          <tr><td>Cadastro de veículos</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
+          <tr><td>Ordens de serviço</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
+          <tr><td>PDF profissional da OS</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
+          <tr><td>Controle de estoque</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
+          <tr><td>Orçamento aprovado virar OS</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
+          <tr><td>Histórico por cliente e veículo</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
+          <tr><td>Consultores Técnicos</td><td>Até 2</td><td>Até 5</td><td>Até 5</td></tr>
         </tbody>
       </table>
     </div>
@@ -942,7 +968,7 @@
         <div class="plano-pix-preco">R$ 19,90</div>
         <p>Ideal para testar todos os recursos pagos por 30 dias.</p>
 
-        <button type="button" data-botao-pix data-periodo="mensal" onclick="gerarPixPlanoBasico('mensal')">
+        <button type="button" data-botao-pix data-plano="basico" data-periodo="mensal" onclick="gerarPixPlanoBasico('mensal')">
           Gerar Pix
         </button>
       </div>
@@ -954,7 +980,7 @@
         <span class="plano-pix-economia">Economia no período</span>
         <p>Melhor equilíbrio para usar por mais tempo pagando menos que mensalmente.</p>
 
-        <button type="button" data-botao-pix data-periodo="semestral" onclick="gerarPixPlanoBasico('semestral')">
+        <button type="button" data-botao-pix data-plano="basico" data-periodo="semestral" onclick="gerarPixPlanoBasico('semestral')">
           Gerar Pix
         </button>
       </div>
@@ -965,7 +991,7 @@
         <span class="plano-pix-economia">Melhor custo-benefício</span>
         <p>Perfeito para usar o FS Orçamentos durante o ano todo.</p>
 
-        <button type="button" data-botao-pix data-periodo="anual" onclick="gerarPixPlanoBasico('anual')">
+        <button type="button" data-botao-pix data-plano="basico" data-periodo="anual" onclick="gerarPixPlanoBasico('anual')">
           Gerar Pix
         </button>
       </div>
@@ -985,11 +1011,82 @@
     </div>
   </section>
 
+
+
+  <section id="assinar-plano-premium" class="planos-pix-section premium-section">
+    <div class="planos-pix-topo">
+      <span class="tag-plano-pix">Plano Premium</span>
+
+      <h2 id="titulo-assinatura-premium">Ative o Plano Premium via Pix</h2>
+
+      <p id="texto-assinatura-premium">
+        O Premium transforma o FS Orçamentos em um sistema completo de gestão para oficinas e prestadores:
+        clientes, veículos, ordens de serviço, estoque, PDF da OS e controle financeiro por serviço.
+      </p>
+    </div>
+
+    <div class="planos-pix-grid">
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">1 mês</div>
+        <div class="plano-pix-preco">R$ 69,90</div>
+        <p>Ideal para testar a gestão completa com clientes, veículos, OS e estoque por 30 dias.</p>
+
+        <button type="button" data-botao-pix data-plano="premium" data-periodo="mensal" onclick="gerarPixPlanoPremium('mensal')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card destaque">
+        <div class="plano-pix-selo">Mais indicado</div>
+        <div class="plano-pix-periodo">6 meses</div>
+        <div class="plano-pix-preco">R$ 399,90</div>
+        <span class="plano-pix-economia">Gestão por semestre</span>
+        <p>Perfeito para oficinas que querem organizar atendimentos, veículos, OS e estoque.</p>
+
+        <button type="button" data-botao-pix data-plano="premium" data-periodo="semestral" onclick="gerarPixPlanoPremium('semestral')">
+          Gerar Pix
+        </button>
+      </div>
+
+      <div class="plano-pix-card">
+        <div class="plano-pix-periodo">12 meses</div>
+        <div class="plano-pix-preco">R$ 599,90</div>
+        <span class="plano-pix-economia">Melhor custo-benefício</span>
+        <p>Melhor opção para usar o sistema completo durante o ano todo pagando menos por mês.</p>
+
+        <button type="button" data-botao-pix data-plano="premium" data-periodo="anual" onclick="gerarPixPlanoPremium('anual')">
+          Gerar Pix
+        </button>
+      </div>
+    </div>
+
+    <div class="plano-pix-beneficios">
+      <strong>O Plano Premium inclui:</strong>
+      <span>Tudo do Plano Básico</span>
+      <span>Cadastro de clientes</span>
+      <span>Cadastro de veículos</span>
+      <span>Ordens de serviço</span>
+      <span>PDF profissional da OS</span>
+      <span>Controle de estoque</span>
+      <span>Orçamento vinculado ao cliente e veículo</span>
+      <span>Converter orçamento aprovado em OS</span>
+      <span>Histórico por cliente</span>
+      <span>Histórico por veículo</span>
+      <span>Controle financeiro por OS</span>
+      <span>Gestão completa para oficina/prestador</span>
+    </div>
+
+    <div class="premium-aviso">
+      O Premium é indicado para quem precisa controlar o atendimento completo:
+      cliente → veículo → orçamento → aprovação → ordem de serviço → estoque → pagamento → histórico.
+    </div>
+  </section>
+
   <section class="faq-section">
     <div class="section-topo">
       <h2>Dúvidas frequentes</h2>
       <p>
-        Informações importantes sobre o Plano Básico, pagamento via Pix e liberação dos recursos.
+        Informações importantes sobre os planos Grátis, Básico, Premium, pagamento via Pix e liberação dos recursos.
       </p>
     </div>
 
@@ -1002,7 +1099,7 @@
       </div>
 
       <div class="faq-card">
-        <strong>Quando o Plano Básico é liberado?</strong>
+        <strong>Quando o plano pago é liberado?</strong>
         <p>
           A liberação acontece automaticamente quando o pagamento Pix for confirmado pela Efí e registrado no sistema.
         </p>
@@ -1033,6 +1130,21 @@
         <strong>Tem contrato ou fidelidade?</strong>
         <p>
           Não. Você escolhe o período desejado e renova quando quiser.
+        </p>
+      </div>
+
+
+      <div class="faq-card">
+        <strong>Qual a diferença entre Básico e Premium?</strong>
+        <p>
+          O Básico gerencia orçamentos. O Premium gerencia o fluxo completo com clientes, veículos, ordem de serviço, estoque e histórico.
+        </p>
+      </div>
+
+      <div class="faq-card">
+        <strong>O Premium é para oficina?</strong>
+        <p>
+          Sim. Ele foi pensado para oficinas e prestadores que precisam registrar cliente, veículo, serviço, peças, pagamento e histórico.
         </p>
       </div>
     </div>
@@ -1087,7 +1199,7 @@
       </div>
 
       <p class="pix-aviso">
-        Após o pagamento, seu Plano Básico será liberado automaticamente quando a Efí confirmar o Pix.
+        Após o pagamento, seu plano será liberado automaticamente quando a Efí confirmar o Pix.
       </p>
     </div>
 
@@ -1108,272 +1220,6 @@
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 <script src="pagamentos.js"></script>
-
-<script>
-function normalizarPlanoPlanos(valor) {
-  return String(valor || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
-}
-
-function formatarDataPlano(valor) {
-  if (!valor) return '';
-
-  const data = new Date(valor);
-
-  if (isNaN(data.getTime())) return '';
-
-  return data.toLocaleDateString('pt-BR');
-}
-
-function diasAteExpirarPlano(valor) {
-  if (!valor) return null;
-
-  const hoje = new Date();
-  const expira = new Date(valor);
-
-  if (isNaN(expira.getTime())) return null;
-
-  hoje.setHours(0, 0, 0, 0);
-  expira.setHours(0, 0, 0, 0);
-
-  const diff = expira.getTime() - hoje.getTime();
-
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
-}
-
-function planoLabelPlanos(plano) {
-  const p = normalizarPlanoPlanos(plano);
-
-  if (p === 'basico') return 'Plano Básico';
-  if (p === 'premium') return 'Plano Premium';
-
-  return 'Plano Grátis';
-}
-
-function statusPlanoLabelPlanos(status) {
-  const s = normalizarPlanoPlanos(status || 'ativo');
-
-  if (s === 'ativo') return 'Ativo';
-  if (s === 'pago') return 'Ativo';
-  if (s === 'pendente') return 'Pendente';
-  if (s === 'cancelado') return 'Cancelado';
-  if (s === 'expirado') return 'Expirado';
-
-  return status || 'Ativo';
-}
-
-function planoAtivoPlanos(data) {
-  const plano = normalizarPlanoPlanos(data?.plano || 'gratis');
-  const status = normalizarPlanoPlanos(data?.plano_status || 'ativo');
-  const dias = diasAteExpirarPlano(data?.plano_expira_em);
-
-  if (plano === 'premium') return status !== 'cancelado' && status !== 'expirado';
-
-  if (plano === 'basico' && status !== 'cancelado' && status !== 'expirado') {
-    if (dias === null) return true;
-    return dias >= 0;
-  }
-
-  return false;
-}
-
-function planosAbrirLogin() {
-  if (typeof abrirModalLogin === 'function') {
-    abrirModalLogin();
-    return;
-  }
-
-  const modal = document.getElementById('modal-login');
-
-  if (modal) {
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    return;
-  }
-
-  window.location.href = '/index.html?login=1';
-}
-
-function atualizarTextoAreaAssinatura(planoAtivo) {
-  const titulo = document.getElementById('titulo-assinatura-basico');
-  const texto = document.getElementById('texto-assinatura-basico');
-
-  if (!titulo || !texto) return;
-
-  if (planoAtivo) {
-    titulo.innerText = 'Renove ou amplie seu Plano Básico';
-    texto.innerText = 'Seu plano está ativo. Você pode gerar um novo Pix abaixo para renovar ou ampliar o período de uso.';
-    return;
-  }
-
-  titulo.innerText = 'Ative o Plano Básico via Pix';
-  texto.innerText = 'Escolha o período desejado, gere o Pix e libere os recursos pagos assim que o pagamento for confirmado pela Efí.';
-}
-
-function atualizarBotoesPixPlanos(planoAtivo, logado) {
-  const botoes = document.querySelectorAll('[data-botao-pix]');
-
-  botoes.forEach(botao => {
-    const periodo = botao.dataset.periodo || '';
-
-    if (!logado) {
-      botao.innerText = 'Entrar para assinar';
-      botao.onclick = planosAbrirLogin;
-      return;
-    }
-
-    botao.disabled = false;
-    botao.innerText = planoAtivo ? 'Renovar Pix' : 'Gerar Pix';
-
-    botao.onclick = function() {
-      if (typeof gerarPixPlanoBasico === 'function') {
-        gerarPixPlanoBasico(periodo);
-      } else {
-        alert('Sistema de pagamento ainda não carregou. Atualize a página e tente novamente.');
-      }
-    };
-  });
-}
-
-function setStatusBox(tipo, html) {
-  const box = document.getElementById('status-plano-box');
-
-  if (!box) return;
-
-  box.style.display = 'block';
-  box.className = `status-plano-box ${tipo || ''}`;
-  box.innerHTML = html;
-}
-
-async function atualizarStatusPlanoPlanos() {
-  const box = document.getElementById('status-plano-box');
-
-  if (!box) return;
-
-  try {
-    if (!window._supabase) {
-      box.style.display = 'none';
-      atualizarTextoAreaAssinatura(false);
-      atualizarBotoesPixPlanos(false, false);
-      return;
-    }
-
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    if (!session?.user?.id) {
-      setStatusBox('status-alerta', `
-        Você ainda não está logado. Entre na sua conta para assinar ou verificar seu plano atual.
-        <br>
-        <button type="button" class="btn-login-status-plano" onclick="planosAbrirLogin()">
-          Entrar ou criar conta
-        </button>
-      `);
-
-      atualizarTextoAreaAssinatura(false);
-      atualizarBotoesPixPlanos(false, false);
-      return;
-    }
-
-    const { data, error } = await _supabase
-      .from('perfis')
-      .select('plano, plano_status, plano_expira_em')
-      .eq('id', session.user.id)
-      .maybeSingle();
-
-    if (error) {
-      console.warn('Não foi possível verificar o plano:', error);
-      box.style.display = 'none';
-      atualizarTextoAreaAssinatura(false);
-      atualizarBotoesPixPlanos(false, true);
-      return;
-    }
-
-    const plano = normalizarPlanoPlanos(data?.plano || 'gratis');
-    const status = normalizarPlanoPlanos(data?.plano_status || 'ativo');
-    const expiraEm = data?.plano_expira_em || '';
-    const dias = diasAteExpirarPlano(expiraEm);
-    const dataFormatada = formatarDataPlano(expiraEm);
-    const ativo = planoAtivoPlanos(data);
-
-    localStorage.setItem('usuario_plano', plano);
-
-    if (data?.plano_status) {
-      localStorage.setItem('usuario_plano_status', data.plano_status);
-    } else {
-      localStorage.removeItem('usuario_plano_status');
-    }
-
-    if (data?.plano_expira_em) {
-      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
-    } else {
-      localStorage.removeItem('usuario_plano_expira_em');
-    }
-
-    atualizarTextoAreaAssinatura(ativo);
-    atualizarBotoesPixPlanos(ativo, true);
-
-    if (plano === 'basico' || plano === 'premium') {
-      if (!ativo || status === 'expirado' || status === 'cancelado' || (dias !== null && dias < 0)) {
-        setStatusBox('status-erro', `
-          Seu <strong>${planoLabelPlanos(plano)}</strong> está ${status === 'cancelado' ? 'cancelado' : 'expirado'}.
-          Renove abaixo para continuar usando os recursos pagos.
-        `);
-        return;
-      }
-
-      let textoExpiracao = '';
-
-      if (dataFormatada) {
-        if (dias === 0) {
-          textoExpiracao = ` Vence hoje (${dataFormatada}).`;
-        } else if (dias === 1) {
-          textoExpiracao = ` Vence amanhã (${dataFormatada}).`;
-        } else if (dias !== null) {
-          textoExpiracao = ` Expira em ${dataFormatada}, faltam ${dias} dias.`;
-        } else {
-          textoExpiracao = ` Expira em ${dataFormatada}.`;
-        }
-      }
-
-      setStatusBox('status-ok', `
-        Você está no <strong>${planoLabelPlanos(plano)}</strong>.
-        Status: <strong>${statusPlanoLabelPlanos(status)}</strong>.${textoExpiracao}
-      `);
-      return;
-    }
-
-    setStatusBox('status-alerta', `
-      Você está no <strong>Plano Grátis</strong>. Ative o Plano Básico para liberar nuvem,
-      histórico, WhatsApp com link, aprovação online e resumo financeiro.
-    `);
-
-  } catch (error) {
-    console.warn('Erro ao atualizar status do plano:', error);
-    box.style.display = 'none';
-    atualizarTextoAreaAssinatura(false);
-    atualizarBotoesPixPlanos(false, false);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  atualizarStatusPlanoPlanos();
-
-  setTimeout(atualizarStatusPlanoPlanos, 900);
-  setTimeout(atualizarStatusPlanoPlanos, 1800);
-});
-
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(() => {
-    setTimeout(atualizarStatusPlanoPlanos, 500);
-    setTimeout(atualizarStatusPlanoPlanos, 1400);
-  });
-}
-
-window.planosAbrirLogin = planosAbrirLogin;
-</script>
-
+<script src="planos.js"></script>
 </body>
 </html>

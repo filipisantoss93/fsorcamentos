@@ -27,6 +27,12 @@ function getEnvObrigatorio(nome: string) {
   return valor;
 }
 
+
+function normalizarPlanoWebhook(valor: unknown) {
+  const texto = String(valor || "basico").toLowerCase().trim();
+  return texto === "premium" ? "premium" : "basico";
+}
+
 function adicionarDias(dataBase: Date, dias: number) {
   const novaData = new Date(dataBase);
   novaData.setDate(novaData.getDate() + dias);
@@ -168,10 +174,12 @@ serve(async (req) => {
 
       const novaExpiracao = adicionarDias(baseExpiracao, Number(pagamento.dias || 30));
 
+      const planoPago = normalizarPlanoWebhook(pagamento.plano);
+
       const { error: updatePerfilError } = await supabaseAdmin
         .from("perfis")
         .update({
-          plano: "basico",
+          plano: planoPago,
           plano_status: "ativo",
           plano_expira_em: novaExpiracao.toISOString(),
         })
@@ -190,7 +198,7 @@ serve(async (req) => {
       resultados.push({
         txid,
         sucesso: true,
-        mensagem: "Pagamento confirmado e Plano Básico liberado.",
+        mensagem: `Pagamento confirmado e ${planoPago === "premium" ? "Plano Premium" : "Plano Básico"} liberado.`,
         usuario_id: pagamento.usuario_id,
         plano_expira_em: novaExpiracao.toISOString(),
       });

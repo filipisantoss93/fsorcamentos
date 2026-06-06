@@ -45,6 +45,8 @@ async function inicializarPainel(session) {
 
   atualizarCardPlano(perfilAtual);
 
+  await carregarResumoOrdensServicoPainel();
+  await carregarIndicadoresPremiumPainel();
   await carregarDashboardPainel();
   await carregarUltimosOrcamentosPainel();
 
@@ -202,6 +204,99 @@ function atualizarTexto(id, valor) {
   if (el) el.innerText = valor;
 }
 
+function converterNumeroPainel(valor) {
+  if (valor === null || valor === undefined || valor === '') return 0;
+
+  if (typeof valor === 'number') {
+    return Number.isFinite(valor) ? valor : 0;
+  }
+
+  let texto = String(valor).trim();
+
+  if (!texto) return 0;
+
+  texto = texto.replace(/[^\d.,-]/g, '');
+
+  const temVirgula = texto.includes(',');
+  const temPonto = texto.includes('.');
+
+  if (temVirgula) {
+    texto = texto.replace(/\./g, '').replace(',', '.');
+    const numeroBR = Number(texto);
+    return Number.isFinite(numeroBR) ? numeroBR : 0;
+  }
+
+  if (temPonto) {
+    const numeroUS = Number(texto);
+    return Number.isFinite(numeroUS) ? numeroUS : 0;
+  }
+
+  const numero = Number(texto);
+  return Number.isFinite(numero) ? numero : 0;
+}
+
+function estaNoMesAtualPainel(dataValor) {
+  if (!dataValor) return false;
+
+  const data = new Date(dataValor);
+  const agora = new Date();
+
+  if (Number.isNaN(data.getTime())) return false;
+
+  return data.getMonth() === agora.getMonth() && data.getFullYear() === agora.getFullYear();
+}
+
+function statusPagamentoEhPagoPainel(status) {
+  const s = normalizarStatusOrdemServicoPainel(status);
+  return ['pago', 'quitado', 'recebido', 'concluido'].includes(s);
+}
+
+function obterDataConclusaoOSPainel(os) {
+  return os?.data_conclusao || os?.concluido_em || os?.finalizado_em || os?.updated_at || os?.created_at || os?.criado_em || null;
+}
+
+async function buscarTabelaDoUsuarioPainel(tabela, colunas = '*', opcoes = {}) {
+  const session = await obterSessaoPainel();
+  if (!session) return [];
+
+  const usuarioId = session.user.id;
+  const camposUsuario = opcoes.camposUsuario || ['user_id', 'usuario_id', 'id_usuario'];
+  const orderBy = opcoes.orderBy || null;
+  const ascending = opcoes.ascending ?? false;
+  const limit = opcoes.limit || null;
+
+  for (const campo of camposUsuario) {
+    let query = _supabase
+      .from(tabela)
+      .select(colunas)
+      .eq(campo, usuarioId);
+
+    if (orderBy) {
+      query = query.order(orderBy, { ascending });
+    }
+
+    if (limit) {
+      query = query.limit(limit);
+    }
+
+    const { data, error } = await query;
+
+    if (!error) {
+      return Array.isArray(data) ? data : [];
+    }
+
+    const textoErro = String(error.message || error.details || error.hint || '').toLowerCase();
+    const erroDeColuna = textoErro.includes('column') || textoErro.includes('schema cache') || textoErro.includes('could not find');
+
+    if (!erroDeColuna) {
+      console.warn(`Erro ao buscar ${tabela}:`, error);
+      return [];
+    }
+  }
+
+  return [];
+}
+
 // ==================== CONTROLE DE TELA ====================
 
 function mostrarAreaLoginPainel() {
@@ -352,7 +447,7 @@ function atualizarCardPlano(perfil) {
   const planoAtual = perfil?.plano || 'gratis';
   const planoNormalizado = normalizarPlanoPainel(planoAtual);
 
-  const badge = document.getElementById('perfil-plano');
+    const badge = document.getElementById('perfil-plano');
   const planoTexto = document.getElementById('perfil-plano-texto');
   const statusEl = document.getElementById('perfil-plano-status');
   const expiraEl = document.getElementById('perfil-plano-expira');
@@ -748,11 +843,6 @@ function limiteResponsaveisPorPlano() {
     'gratis'
   );
 
-  // REGRA ATUAL DO FS ORÇAMENTOS:
-  // Plano Grátis: máximo 2 responsáveis/consultores
-  // Plano Básico: máximo 5 responsáveis/consultores
-  // Plano Premium: temporariamente 5, pois ainda está em desenvolvimento
-
   if (plano === 'basico') return 5;
   if (plano === 'premium') return 5;
 
@@ -807,7 +897,8 @@ async function garantirResponsavelSelecionadoNaLista(session) {
       nome: nomeSelecionado,
       ativo: true
     })
-    .select()
+
+        .select()
     .single();
 
   if (!error && data) {
@@ -1192,6 +1283,288 @@ window.abrirModalExcluirConta = abrirModalExcluirConta;
 window.fecharModalExcluirConta = fecharModalExcluirConta;
 window.excluirMinhaConta = excluirMinhaConta;
 
+// ==================== RESUMO DE ORDENS DE SERVIÇO ====================
+
+function normalizarStatusOrdemServicoPainel(status) {
+  return String(status || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '_')
+    .replace(/-/g, '_');
+}
+
+function obterValorTotalOrdemServicoPainel(os) {
+  const camposPossiveis = [
+    os?.valor_total,
+    os?.total,
+    os?.valor,
+    os?.valor_os,
+    os?.total_os,
+    os?.valor_servico,
+    os?.valor_mao_obra
+  ];
+
+  for (const campo of camposPossiveis) {
+    const numero = Number(campo);
+    if (!Number.isNaN(numero) && numero > 0) {
+      return numero;
+    }
+  }
+
+  return 0;
+}
+
+function statusOrdemEhAberta(statusNormalizado) {
+  return [
+    'aberta',
+    'aberto',
+    'em_aberto',
+    'nova',
+    'novo',
+    'pendente'
+  ].includes(statusNormalizado);
+}
+
+function statusOrdemEhEmExecucao(statusNormalizado) {
+  return [
+    'em_execucao',
+    'execucao',
+    'em_andamento',
+    'andamento',
+    'executando',
+    'em_servico',
+    'servico'
+  ].includes(statusNormalizado);
+}
+
+function statusOrdemEhConcluida(statusNormalizado) {
+  return [
+    'concluida',
+    'concluido',
+    'finalizada',
+    'finalizado',
+    'fechada',
+    'fechado'
+  ].includes(statusNormalizado);
+}
+
+async function carregarResumoOrdensServicoPainel() {
+  const possuiCardsOS =
+    document.getElementById('painel-total-os') ||
+    document.getElementById('painel-os-abertas') ||
+    document.getElementById('painel-os-execucao') ||
+    document.getElementById('painel-os-concluidas') ||
+    document.getElementById('painel-total-valor-os');
+
+  if (!possuiCardsOS) return;
+
+  try {
+    const ordens = await buscarTabelaDoUsuarioPainel('ordens_servico', '*', {
+      camposUsuario: ['user_id', 'usuario_id'],
+      orderBy: 'created_at',
+      ascending: false
+    });
+
+    const totalOS = ordens.length;
+
+    const abertas = ordens.filter(os =>
+      statusOrdemEhAberta(normalizarStatusOrdemServicoPainel(os.status))
+    ).length;
+
+    const emExecucao = ordens.filter(os =>
+      statusOrdemEhEmExecucao(normalizarStatusOrdemServicoPainel(os.status))
+    ).length;
+
+    const concluidas = ordens.filter(os =>
+      statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status))
+    ).length;
+
+    const totalValorOS = ordens.reduce((soma, os) => {
+      return soma + obterValorTotalOrdemServicoPainel(os);
+    }, 0);
+
+    atualizarTexto('painel-total-os', totalOS);
+    atualizarTexto('painel-os-abertas', abertas);
+    atualizarTexto('painel-os-execucao', emExecucao);
+    atualizarTexto('painel-os-concluidas', concluidas);
+    atualizarTexto('painel-total-valor-os', formatarMoedaPainel(totalValorOS));
+
+  } catch (error) {
+    console.warn('Erro inesperado ao carregar resumo de ordens de serviço:', error);
+
+    atualizarTexto('painel-total-os', '0');
+    atualizarTexto('painel-os-abertas', '0');
+    atualizarTexto('painel-os-execucao', '0');
+    atualizarTexto('painel-os-concluidas', '0');
+    atualizarTexto('painel-total-valor-os', formatarMoedaPainel(0));
+  }
+}
+
+// ==================== INDICADORES PREMIUM / OS / ESTOQUE ====================
+
+async function carregarIndicadoresPremiumPainel() {
+  const precisaCarregar =
+    document.getElementById('painel-faturamento-os-total') ||
+    document.getElementById('painel-recebido-mes-os') ||
+    document.getElementById('painel-os-pagas-mes') ||
+    document.getElementById('painel-ticket-medio-os') ||
+    document.getElementById('painel-orcamentos-aprovados') ||
+    document.getElementById('painel-orcamentos-convertidos-os') ||
+    document.getElementById('painel-os-pendentes-pagamento') ||
+    document.getElementById('painel-produtos-estoque-baixo') ||
+    document.getElementById('lista-ultimas-os-finalizadas-painel');
+
+  if (!precisaCarregar) return;
+
+  const [ordens, orcamentos, produtos] = await Promise.all([
+    buscarTabelaDoUsuarioPainel('ordens_servico', '*', {
+      camposUsuario: ['user_id', 'usuario_id'],
+      orderBy: 'created_at',
+      ascending: false
+    }),
+    buscarTabelaDoUsuarioPainel('orcamentos', 'id, status, total, ordem_servico_id, criado_em, resposta_cliente_em', {
+      camposUsuario: ['usuario_id', 'user_id'],
+      orderBy: 'criado_em',
+      ascending: false
+    }),
+    buscarTabelaDoUsuarioPainel('produtos_estoque', '*', {
+      camposUsuario: ['user_id', 'usuario_id'],
+      orderBy: 'nome',
+      ascending: true
+    })
+  ]);
+
+  const osConcluidasPagas = ordens.filter(os => {
+    return statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status)) &&
+      statusPagamentoEhPagoPainel(os.status_pagamento);
+  });
+
+  const faturamentoTotalOS = osConcluidasPagas.reduce((soma, os) => {
+    return soma + obterValorTotalOrdemServicoPainel(os);
+  }, 0);
+
+  const osPagasMes = osConcluidasPagas.filter(os => estaNoMesAtualPainel(obterDataConclusaoOSPainel(os)));
+
+  const recebidoMesOS = osPagasMes.reduce((soma, os) => {
+    return soma + obterValorTotalOrdemServicoPainel(os);
+  }, 0);
+
+  const ticketMedioOS = osConcluidasPagas.length > 0
+    ? faturamentoTotalOS / osConcluidasPagas.length
+    : 0;
+
+  const orcamentosAprovados = orcamentos.filter(o => {
+    const status = normalizarStatusOrdemServicoPainel(o.status);
+    return ['aprovado', 'em_servico', 'finalizado'].includes(status);
+  });
+
+  const orcamentosConvertidosOS = orcamentos.filter(o => {
+    const status = normalizarStatusOrdemServicoPainel(o.status);
+    return !!o.ordem_servico_id || ['em_servico', 'finalizado'].includes(status);
+  });
+
+  const osPendentesPagamento = ordens.filter(os => {
+    const status = normalizarStatusOrdemServicoPainel(os.status);
+    const pagamento = normalizarStatusOrdemServicoPainel(os.status_pagamento);
+
+    return status !== 'cancelada' && status !== 'cancelado' && pagamento !== 'pago';
+  });
+
+  const produtosEstoqueBaixo = produtos.filter(produto => {
+    if (produto.ativo === false) return false;
+    if (produto.controlar_estoque === false) return false;
+
+    const atual = converterNumeroPainel(produto.quantidade_atual);
+    const minimo = converterNumeroPainel(produto.estoque_minimo);
+
+    return minimo > 0 && atual <= minimo;
+  });
+
+  atualizarTexto('painel-faturamento-os-total', formatarMoedaPainel(faturamentoTotalOS));
+  atualizarTexto('painel-recebido-mes-os', formatarMoedaPainel(recebidoMesOS));
+  atualizarTexto('painel-os-pagas-mes', osPagasMes.length);
+  atualizarTexto('painel-ticket-medio-os', formatarMoedaPainel(ticketMedioOS));
+
+  atualizarTexto('painel-orcamentos-aprovados', orcamentosAprovados.length);
+  atualizarTexto('painel-orcamentos-convertidos-os', orcamentosConvertidosOS.length);
+  atualizarTexto('painel-os-pendentes-pagamento', osPendentesPagamento.length);
+  atualizarTexto('painel-produtos-estoque-baixo', produtosEstoqueBaixo.length);
+
+  renderizarUltimasOSFinalizadasPainel(osConcluidasPagas);
+}
+
+function renderizarUltimasOSFinalizadasPainel(ordens) {
+  const container = document.getElementById('lista-ultimas-os-finalizadas-painel');
+  if (!container) return;
+
+  const ultimas = [...ordens]
+    .sort((a, b) => {
+      const dataA = new Date(obterDataConclusaoOSPainel(a) || 0).getTime();
+      const dataB = new Date(obterDataConclusaoOSPainel(b) || 0).getTime();
+      return dataB - dataA;
+    })
+    .slice(0, 6);
+
+  if (!ultimas.length) {
+    container.innerHTML = `
+      <div class="painel-aviso">
+        Nenhuma OS concluída e paga ainda.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="width:100%; overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse; min-width:720px; background:#fff; border-radius:12px; overflow:hidden;">
+        <thead>
+          <tr style="background:#3e2723; color:#ffc400;">
+            <th style="padding:10px; text-align:left;">OS</th>
+            <th style="padding:10px; text-align:left;">Título</th>
+            <th style="padding:10px; text-align:left;">Pagamento</th>
+            <th style="padding:10px; text-align:left;">Conclusão</th>
+            <th style="padding:10px; text-align:right;">Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${ultimas.map(os => {
+            const numero = os.numero_os ? String(os.numero_os).padStart(6, '0') : '-';
+            const id = encodeURIComponent(os.id || '');
+
+            return `
+              <tr onclick="window.location.href='/ordem.html?id=${id}'" style="cursor:pointer;">
+                <td style="padding:10px; border-bottom:1px solid #eee; font-weight:800;">${numero}</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">${escaparHtmlPainel(os.titulo || '-')}</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">${escaparHtmlPainel(formatarFormaPagamentoOrdemServicoPainel(os.forma_pagamento))}</td>
+                <td style="padding:10px; border-bottom:1px solid #eee;">${formatarDataPainel(obterDataConclusaoOSPainel(os))}</td>
+                <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">${formatarMoedaPainel(obterValorTotalOrdemServicoPainel(os))}</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function formatarFormaPagamentoOrdemServicoPainel(forma) {
+  const mapa = {
+    pix: 'Pix',
+    dinheiro: 'Dinheiro',
+    cartao_credito: 'Cartão de crédito',
+    cartao_debito: 'Cartão de débito',
+    boleto: 'Boleto',
+    transferencia: 'Transferência',
+    outro: 'Outro'
+  };
+
+  const chave = normalizarStatusOrdemServicoPainel(forma);
+  return mapa[chave] || forma || '-';
+}
+
 // ==================== DASHBOARD ====================
 
 async function carregarDashboardPainel() {
@@ -1380,5 +1753,10 @@ window.abrirModalResponsavelInterno = abrirModalResponsavelInterno;
 window.fecharModalResponsavelInterno = fecharModalResponsavelInterno;
 window.salvarResponsavel = salvarResponsavel;
 window.excluirResponsavel = excluirResponsavel;
+
+window.carregarResumoOrdensServicoPainel = carregarResumoOrdensServicoPainel;
+window.carregarIndicadoresPremiumPainel = carregarIndicadoresPremiumPainel;
+window.carregarDashboardPainel = carregarDashboardPainel;
+window.carregarUltimosOrcamentosPainel = carregarUltimosOrcamentosPainel;
 
 window.abrirGeradorGlobal = abrirGeradorGlobal;

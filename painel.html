@@ -37,6 +37,54 @@
       --fs-borda: #e0d6c8;
     }
 
+    /* =========================================================
+   CORREÇÃO: HEADER FIXO NÃO SOBREPOR CONTEÚDO
+   ========================================================= */
+
+body {
+  padding-top: 118px;
+}
+
+#conteudo-protegido {
+  min-height: calc(100vh - 118px);
+}
+
+#area-orcamentos-funcoes .container {
+  padding-top: 12px;
+}
+
+#bloqueio-plano-gratis {
+  padding-top: 12px;
+}
+
+@media (max-width: 850px) {
+  body {
+    padding-top: 104px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 104px);
+  }
+
+  .filtro-flutuante {
+    top: 72px;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    padding-top: 86px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 86px);
+  }
+
+  .filtro-flutuante {
+    top: 0;
+  }
+}
+
     .painel-header {
       display: flex;
       justify-content: space-between;
@@ -227,6 +275,132 @@
     .info-card.full {
       grid-column: 1 / -1;
     }
+
+
+    .painel-os-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .painel-os-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 15px;
+      border-left: 5px solid var(--fs-amarelo);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      min-height: 72px;
+      box-sizing: border-box;
+    }
+
+    .painel-os-card strong {
+      display: block;
+      font-size: 12px;
+      color: #6d4c41;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: .3px;
+    }
+
+    .painel-os-card span {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 24px;
+      line-height: 1.15;
+      font-weight: 900;
+      word-break: break-word;
+    }
+
+    .painel-os-topo {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .painel-os-topo h2 {
+      margin-bottom: 6px;
+    }
+
+    .painel-os-topo p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .btn-ver-ordens-painel {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 8px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .btn-ver-ordens-painel:hover {
+      background: #2c1b17;
+      transform: translateY(-1px);
+    }
+
+
+    .painel-lista-operacional {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .painel-lista-item {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--fs-marrom);
+    }
+
+    .painel-lista-item strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .painel-lista-item small {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .painel-lista-item span {
+      color: var(--fs-marrom);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .painel-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
 
     .acoes-painel {
       display: flex;
@@ -622,6 +796,21 @@
     }
 
     @media (max-width: 760px) {
+
+      .painel-os-grid,
+      .painel-grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .painel-os-topo {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-ver-ordens-painel {
+        width: 100%;
+      }
+
       .perfil-layout,
       .perfil-dados-grid,
       .grid-painel,
@@ -747,7 +936,7 @@
       <div>
         <h1>Painel de Controle</h1>
         <p class="painel-subtitulo">
-          Gerencie os dados da empresa, plano e acompanhe o resumo dos orçamentos.
+          Gerencie os dados da empresa, plano, orçamentos, ordens de serviço, estoque e faturamento.
         </p>
       </div>
     </div>
@@ -843,6 +1032,135 @@
             </a>
           </span>
         </div>
+      </div>
+    </section>
+
+
+    <section id="resumo-ordens-servico-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Ordens de Serviço</h2>
+          <p>
+            Resumo rápido das OS cadastradas, abertas, em execução, concluídas e valores vinculados às ordens de serviço.
+          </p>
+        </div>
+
+        <a href="/ordens.html" class="btn-ver-ordens-painel">
+          🧰 Ver ordens
+        </a>
+      </div>
+
+      <div class="painel-os-grid">
+        <div class="painel-os-card">
+          <strong>Total de OS</strong>
+          <span id="painel-total-os">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Abertas</strong>
+          <span id="painel-os-abertas">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Em execução</strong>
+          <span id="painel-os-execucao">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Concluídas</strong>
+          <span id="painel-os-concluidas">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Total em OS</strong>
+          <span id="painel-total-valor-os">R$ 0,00</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="faturamento-os-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Faturamento por OS</h2>
+          <p>
+            Estes valores devem considerar somente ordens de serviço concluídas e pagas,
+            evitando misturar orçamento aprovado com dinheiro realmente recebido.
+          </p>
+        </div>
+      </div>
+
+      <div class="painel-grid-4">
+        <div class="painel-os-card">
+          <strong>Total faturado em OS</strong>
+          <span id="painel-faturamento-os-total">R$ 0,00</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Recebido no mês</strong>
+          <span id="painel-recebido-mes-os">R$ 0,00</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>OS pagas no mês</strong>
+          <span id="painel-os-pagas-mes">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Ticket médio por OS</strong>
+          <span id="painel-ticket-medio-os">R$ 0,00</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="operacional-premium-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Indicadores Operacionais</h2>
+          <p>
+            Acompanhe conversão de orçamentos em OS, pendências de pagamento e produtos com estoque baixo.
+          </p>
+        </div>
+      </div>
+
+      <div class="painel-grid-4">
+        <div class="painel-os-card">
+          <strong>Orçamentos aprovados</strong>
+          <span id="painel-orcamentos-aprovados">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Convertidos em OS</strong>
+          <span id="painel-orcamentos-convertidos-os">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>OS pendentes pagamento</strong>
+          <span id="painel-os-pendentes-pagamento">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Produtos estoque baixo</strong>
+          <span id="painel-produtos-estoque-baixo">0</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ultimas-os-finalizadas-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Últimas OS Finalizadas</h2>
+          <p>
+            Lista rápida das últimas ordens concluídas e pagas que entram no faturamento.
+          </p>
+        </div>
+
+        <a href="/ordens.html" class="btn-ver-ordens-painel">
+          🧰 Ver todas
+        </a>
+      </div>
+
+      <div id="lista-ultimas-os-finalizadas-painel" class="painel-lista-operacional">
+        <div class="painel-aviso">Carregando últimas OS finalizadas...</div>
       </div>
     </section>
 
@@ -1084,6 +1402,7 @@
 <script src="auth.js"></script>
 <script src="ui.js"></script>
 <script src="carregar-menu.js"></script>
+<script src="planos.js"></script>
 <script src="notificacoes.js"></script>
 <script src="painel.js"></script>
 

@@ -1,5 +1,5 @@
 // ==================== PAGAMENTOS.JS ====================
-// FS Orçamentos - Pagamento Pix Plano Básico
+// FS Orçamentos - Pagamento Pix Planos Básico e Premium
 // Arquivo central do pagamento via Pix.
 // Use este arquivo principalmente na página planos.html.
 // As demais páginas devem apenas redirecionar para /planos.html.
@@ -14,17 +14,33 @@
     'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
 
   const FS_PLANOS_PIX = {
-    mensal: {
-      label: 'Plano Básico - 1 mês',
-      valor: 19.90
+    basico: {
+      mensal: {
+        label: 'Plano Básico - 1 mês',
+        valor: 19.90
+      },
+      semestral: {
+        label: 'Plano Básico - 6 meses',
+        valor: 109.90
+      },
+      anual: {
+        label: 'Plano Básico - 12 meses',
+        valor: 209.90
+      }
     },
-    semestral: {
-      label: 'Plano Básico - 6 meses',
-      valor: 109.90
-    },
-    anual: {
-      label: 'Plano Básico - 12 meses',
-      valor: 209.90
+    premium: {
+      mensal: {
+        label: 'Plano Premium - 1 mês',
+        valor: 69.90
+      },
+      semestral: {
+        label: 'Plano Premium - 6 meses',
+        valor: 399.90
+      },
+      anual: {
+        label: 'Plano Premium - 12 meses',
+        valor: 599.90
+      }
     }
   };
 
@@ -51,12 +67,22 @@
       .trim();
   }
 
-  function fsPeriodoPixValido(periodo) {
-    return Object.prototype.hasOwnProperty.call(FS_PLANOS_PIX, periodo);
+  function fsNormalizarPlanoPix(plano) {
+    const normalizado = fsNormalizarTextoPagamento(plano || 'basico');
+    return normalizado === 'premium' ? 'premium' : 'basico';
   }
 
-  function fsObterPlanoPix(periodo) {
-    return FS_PLANOS_PIX[periodo] || FS_PLANOS_PIX.mensal;
+  function fsPeriodoPixValido(periodo) {
+    return Object.prototype.hasOwnProperty.call(FS_PLANOS_PIX.basico, periodo);
+  }
+
+  function fsObterPlanoPix(periodo, plano = 'basico') {
+    const planoFinal = fsNormalizarPlanoPix(plano);
+    return FS_PLANOS_PIX[planoFinal][periodo] || FS_PLANOS_PIX[planoFinal].mensal;
+  }
+
+  function fsPlanoLabelPix(plano) {
+    return fsNormalizarPlanoPix(plano) === 'premium' ? 'Plano Premium' : 'Plano Básico';
   }
 
   function fsExisteModalPixNaPagina() {
@@ -182,12 +208,12 @@
     document.body.style.overflow = '';
   }
 
-  function setEstadoModalPixCarregando(periodo = 'mensal') {
+  function setEstadoModalPixCarregando(periodo = 'mensal', planoSelecionado = 'basico') {
     const abriu = abrirModalPixBasico();
 
     if (!abriu) return;
 
-    const plano = fsObterPlanoPix(periodo);
+    const plano = fsObterPlanoPix(periodo, planoSelecionado);
 
     const loading = fsPagamentoEl('pix-loading');
     const conteudo = fsPagamentoEl('pix-conteudo');
@@ -332,8 +358,9 @@
 
   // ==================== GERAR PIX ====================
 
-  async function gerarPixPlanoBasico(periodo) {
+  async function gerarPixPlano(planoSelecionado = 'basico', periodo = 'mensal') {
     try {
+      const planoFinal = fsNormalizarPlanoPix(planoSelecionado);
       const periodoFinal = fsPeriodoPixValido(periodo) ? periodo : 'mensal';
 
       if (!window._supabase) {
@@ -342,7 +369,7 @@
       }
 
       if (!fsExisteModalPixNaPagina()) {
-        window.location.href = `/planos.html?periodo=${encodeURIComponent(periodoFinal)}#assinar-plano-basico`;
+        window.location.href = `/planos.html?plano=${encodeURIComponent(planoFinal)}&periodo=${encodeURIComponent(periodoFinal)}#assinar-plano-${planoFinal}`;
         return;
       }
 
@@ -353,7 +380,7 @@
         return;
       }
 
-      setEstadoModalPixCarregando(periodoFinal);
+      setEstadoModalPixCarregando(periodoFinal, planoFinal);
 
       const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
         method: 'POST',
@@ -362,6 +389,7 @@
           'Authorization': `Bearer ${session.access_token}`
         },
         body: JSON.stringify({
+          plano: planoFinal,
           periodo: periodoFinal
         })
       });
@@ -386,6 +414,14 @@
       console.error('Erro inesperado ao gerar Pix:', error);
       setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
     }
+  }
+
+  async function gerarPixPlanoBasico(periodo) {
+    return gerarPixPlano('basico', periodo);
+  }
+
+  async function gerarPixPlanoPremium(periodo) {
+    return gerarPixPlano('premium', periodo);
   }
 
   // ==================== COPIAR PIX ====================
@@ -439,7 +475,7 @@
 
       const { data, error } = await _supabase
         .from('pagamentos_pix')
-        .select('id, status, pago_em, periodo, valor')
+        .select('id, plano, status, pago_em, periodo, valor')
         .eq('id', idPagamento)
         .maybeSingle();
 
@@ -457,7 +493,7 @@
       const status = fsNormalizarTextoPagamento(data.status);
 
       if (status === 'pago' || status === 'confirmado' || status === 'paid') {
-        alert('Pagamento confirmado! Seu Plano Básico já foi liberado.');
+        alert(`Pagamento confirmado! Seu ${fsPlanoLabelPix(data.plano)} já foi liberado.`);
 
         fecharModalPixBasico();
 
@@ -543,13 +579,14 @@
   async function fsAbrirPixPorParametroUrl() {
     const params = new URLSearchParams(window.location.search);
     const periodo = params.get('periodo');
+    const plano = fsNormalizarPlanoPix(params.get('plano') || 'basico');
 
     if (!periodo || !fsPeriodoPixValido(periodo)) return;
 
     if (!fsExisteModalPixNaPagina()) return;
 
     setTimeout(() => {
-      gerarPixPlanoBasico(periodo);
+      gerarPixPlano(plano, periodo);
     }, 700);
   }
 
@@ -582,7 +619,10 @@
 
   // ==================== EXPORTAÇÕES GLOBAIS ====================
 
+  window.gerarPixPlano = gerarPixPlano;
   window.gerarPixPlanoBasico = gerarPixPlanoBasico;
+  window.gerarPixPlanoPremium = gerarPixPlanoPremium;
+  window.gerarPixPremium = gerarPixPlanoPremium;
 
   window.abrirModalPixBasico = abrirModalPixBasico;
   window.fecharModalPixBasico = fecharModalPixBasico;

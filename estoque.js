@@ -1,0 +1,1353 @@
+/* =========================================================
+   FS ORÇAMENTOS - estoque.js
+   Controle de Estoque / Premium em desenvolvimento
+   Corrigido: números + funções auxiliares + formulário mobile
+   ========================================================= */
+
+let produtosEstoqueCache = [];
+let usuarioLogadoEstoque = null;
+
+let paginaProdutosEstoque = 0;
+let limiteProdutosEstoque = 50;
+let temMaisProdutosEstoque = false;
+let filtrosAtuaisEstoque = {
+  termo: "",
+  status: "",
+  estoque: "",
+  categoria: ""
+
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await inicializarModuloEstoque();
+});
+/* =========================================================
+   INICIALIZAÇÃO
+   ========================================================= */
+
+async function inicializarModuloEstoque() {
+  try {
+    garantirSupabaseEstoque();
+
+    const session = await obterSessaoAtualEstoque();
+
+    if (!session) {
+      redirecionarParaLoginEstoque();
+      return;
+    }
+
+    usuarioLogadoEstoque = session.user;
+
+    configurarEventosEstoque();
+    await carregarProdutosEstoque();
+
+    
+  } catch (erro) {
+    console.error("Erro ao inicializar estoque.js:", erro);
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Erro ao iniciar o controle de estoque. Verifique sua conexão e tente novamente.",
+      "erro"
+    );
+  }
+}
+
+function garantirSupabaseEstoque() {
+  if (window._supabase) return;
+
+  if (window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+    window._supabase = window.supabase.createClient(
+      window.SUPABASE_URL,
+      window.SUPABASE_ANON_KEY
+    );
+    return;
+  }
+
+  throw new Error("Supabase não inicializado. Verifique config.js.");
+}
+
+async function obterSessaoAtualEstoque() {
+  const { data, error } = await window._supabase.auth.getSession();
+
+  if (error) {
+    console.error("Erro ao obter sessão:", error);
+    return null;
+  }
+
+  return data && data.session ? data.session : null;
+}
+
+function redirecionarParaLoginEstoque() {
+  const destino = encodeURIComponent("estoque.html");
+  window.location.href = "index.html?redirect=" + destino;
+}
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+
+function configurarEventosEstoque() {
+  const formProduto = document.getElementById("form-produto-estoque");
+  const btnLimpar = document.getElementById("btn-limpar-produto");
+  const btnAtualizar = document.getElementById("btn-atualizar-estoque");
+  const btnCarregarMais = document.getElementById("btn-carregar-mais-produtos");
+
+  const busca = document.getElementById("busca-produtos");
+  const filtroStatus = document.getElementById("filtro-status-produtos");
+  const filtroEstoque = document.getElementById("filtro-estoque-produtos");
+  const filtroCategoria = document.getElementById("filtro-categoria-produtos");
+  const categoriaProduto = document.getElementById("produto-categoria");
+  const categoriaOutra = document.getElementById("produto-categoria-outra");
+
+  const formMovimentacao = document.getElementById("form-movimentacao-estoque");
+  const btnFecharModal = document.getElementById("btn-fechar-modal-estoque");
+  const btnCancelarModal = document.getElementById("btn-cancelar-modal-estoque");
+
+  if (formProduto) {
+    formProduto.addEventListener("submit", salvarProdutoEstoque);
+  }
+
+  if (btnLimpar) {
+    btnLimpar.addEventListener("click", limparFormularioProdutoEstoque);
+  }
+
+if (btnAtualizar) {
+  btnAtualizar.addEventListener("click", () => carregarProdutosEstoque(true));
+}
+
+if (btnCarregarMais) {
+  btnCarregarMais.addEventListener("click", carregarMaisProdutosEstoque);
+}
+
+  if (busca) {
+    busca.addEventListener("input", filtrarProdutosEstoque);
+  }
+
+  if (filtroStatus) {
+    filtroStatus.addEventListener("change", filtrarProdutosEstoque);
+  }
+
+  if (filtroEstoque) {
+    filtroEstoque.addEventListener("change", filtrarProdutosEstoque);
+  }
+
+if (filtroCategoria) {
+  filtroCategoria.addEventListener("change", filtrarProdutosEstoque);
+}
+
+if (categoriaProduto) {
+  categoriaProduto.addEventListener("change", controlarCampoOutraCategoriaEstoque);
+}
+
+if (categoriaOutra) {
+  categoriaOutra.addEventListener("input", () => {
+    if (valorInputEstoque("produto-categoria") === "__outra__") {
+      // Apenas mantém o campo ativo para salvar a categoria digitada
+    }
+  });
+}
+
+  if (formMovimentacao) {
+    formMovimentacao.addEventListener("submit", confirmarMovimentacaoEstoque);
+  }
+
+  if (btnFecharModal) {
+    btnFecharModal.addEventListener("click", fecharModalMovimentacaoEstoque);
+  }
+
+  if (btnCancelarModal) {
+    btnCancelarModal.addEventListener("click", fecharModalMovimentacaoEstoque);
+  }
+
+  const modal = document.getElementById("modal-movimentacao-estoque");
+
+  if (modal) {
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        fecharModalMovimentacaoEstoque();
+      }
+    });
+  }
+
+  configurarFormularioMobileEstoque();
+}
+
+/* =========================================================
+   FORMULÁRIO MOBILE MINIMIZÁVEL
+   ========================================================= */
+
+function configurarFormularioMobileEstoque() {
+  const card = document.getElementById("card-form-produto");
+  const botao = document.getElementById("btn-toggle-form-produto");
+
+  if (!card || !botao) return;
+
+  function aplicarEstadoInicial() {
+    if (window.innerWidth <= 700) {
+      card.classList.add("form-fechado");
+      botao.textContent = "Abrir";
+    } else {
+      card.classList.remove("form-fechado");
+      botao.textContent = "Aberto";
+    }
+  }
+
+  botao.addEventListener("click", () => {
+    const fechado = card.classList.toggle("form-fechado");
+    botao.textContent = fechado ? "Abrir" : "Fechar";
+  });
+
+  aplicarEstadoInicial();
+
+  window.addEventListener("resize", aplicarEstadoInicial);
+}
+
+function abrirFormularioMobileProduto() {
+  const card = document.getElementById("card-form-produto");
+  const botao = document.getElementById("btn-toggle-form-produto");
+
+  if (!card || !botao) return;
+
+  card.classList.remove("form-fechado");
+
+  if (window.innerWidth <= 700) {
+    botao.textContent = "Fechar";
+  }
+}
+
+/* =========================================================
+   CRUD PRODUTOS
+   ========================================================= */
+
+async function carregarProdutosEstoque(resetar = true) {
+  try {
+    setLoadingEstoque(true);
+    limparMensagemEstoque("mensagem-estoque-lista");
+
+    if (resetar) {
+      paginaProdutosEstoque = 0;
+      produtosEstoqueCache = [];
+    }
+
+    if (!usuarioLogadoEstoque || !usuarioLogadoEstoque.id) {
+      const session = await obterSessaoAtualEstoque();
+
+      if (!session) {
+        redirecionarParaLoginEstoque();
+        return;
+      }
+
+      usuarioLogadoEstoque = session.user;
+    }
+
+    atualizarFiltrosAtuaisEstoque();
+
+    const inicio = paginaProdutosEstoque * limiteProdutosEstoque;
+    const fim = inicio + limiteProdutosEstoque - 1;
+
+    let query = window._supabase
+      .from("produtos_estoque")
+      .select("*")
+      .eq("user_id", usuarioLogadoEstoque.id)
+      .order("categoria", { ascending: true })
+      .order("nome", { ascending: true })
+      .range(inicio, fim);
+
+    if (filtrosAtuaisEstoque.termo) {
+      const termo = `%${filtrosAtuaisEstoque.termo}%`;
+
+      query = query.or(
+        `nome.ilike.${termo},codigo.ilike.${termo},categoria.ilike.${termo},descricao.ilike.${termo},observacoes.ilike.${termo},unidade.ilike.${termo}`
+      );
+    }
+
+    if (filtrosAtuaisEstoque.status === "ativo") {
+      query = query.eq("ativo", true);
+    }
+
+if (filtrosAtuaisEstoque.status === "inativo") {
+  query = query.eq("ativo", false);
+}
+
+if (filtrosAtuaisEstoque.categoria) {
+  if (filtrosAtuaisEstoque.categoria === "Sem categoria") {
+    query = query.or("categoria.is.null,categoria.eq.");
+  } else {
+    query = query.eq("categoria", filtrosAtuaisEstoque.categoria);
+  }
+}
+
+if (filtrosAtuaisEstoque.estoque === "sem_controle") {
+  query = query.eq("controlar_estoque", false);
+}
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error("Erro ao carregar produtos:", error);
+      mostrarMensagemEstoque(
+        "mensagem-estoque-lista",
+        "Não foi possível carregar os produtos. Verifique se a tabela produtos_estoque foi criada no Supabase.",
+        "erro"
+      );
+      return;
+    }
+
+    let novosProdutos = Array.isArray(data) ? data : [];
+
+    if (filtrosAtuaisEstoque.estoque === "baixo") {
+      novosProdutos = novosProdutos.filter((produto) => produtoEstoqueBaixo(produto));
+    }
+
+    if (filtrosAtuaisEstoque.estoque === "normal") {
+      novosProdutos = novosProdutos.filter((produto) => {
+        return produto.controlar_estoque !== false && !produtoEstoqueBaixo(produto);
+      });
+    }
+
+    if (resetar) {
+      produtosEstoqueCache = novosProdutos;
+    } else {
+      produtosEstoqueCache = [...produtosEstoqueCache, ...novosProdutos];
+    }
+
+    temMaisProdutosEstoque = Array.isArray(data) && data.length === limiteProdutosEstoque;
+
+    atualizarResumoEstoque(produtosEstoqueCache);
+    renderizarProdutosEstoque(produtosEstoqueCache);
+    atualizarBotaoCarregarMaisProdutos();
+
+  } catch (erro) {
+    console.error("Erro inesperado ao carregar estoque:", erro);
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Erro inesperado ao carregar produtos do estoque.",
+      "erro"
+    );
+  } finally {
+    setLoadingEstoque(false);
+  }
+}
+
+async function salvarProdutoEstoque(event) {
+  event.preventDefault();
+
+  try {
+    limparMensagemEstoque("mensagem-estoque-form");
+
+    const session = await obterSessaoAtualEstoque();
+
+    if (!session) {
+      redirecionarParaLoginEstoque();
+      return;
+    }
+
+    usuarioLogadoEstoque = session.user;
+
+    const produto = montarObjetoProdutoEstoque();
+
+    if (!produto.nome) {
+      mostrarMensagemEstoque(
+        "mensagem-estoque-form",
+        "Informe o nome do produto.",
+        "erro"
+      );
+      return;
+    }
+
+    const btnSalvar = document.getElementById("btn-salvar-produto");
+    alterarEstadoBotaoEstoque(btnSalvar, true, "Salvando...");
+
+    const produtoId = valorInputEstoque("produto-id");
+
+    let resultado;
+
+    if (produtoId) {
+      resultado = await window._supabase
+        .from("produtos_estoque")
+        .update(produto)
+        .eq("id", produtoId)
+        .eq("user_id", usuarioLogadoEstoque.id)
+        .select()
+        .single();
+    } else {
+      resultado = await window._supabase
+        .from("produtos_estoque")
+        .insert({
+          ...produto,
+          user_id: usuarioLogadoEstoque.id
+        })
+        .select()
+        .single();
+    }
+
+    if (resultado.error) {
+      console.error("Erro ao salvar produto:", resultado.error);
+      mostrarMensagemEstoque(
+        "mensagem-estoque-form",
+        "Erro ao salvar produto. Verifique os dados e tente novamente.",
+        "erro"
+      );
+      return;
+    }
+
+    mostrarMensagemEstoque(
+      "mensagem-estoque-form",
+      produtoId ? "Produto atualizado com sucesso." : "Produto cadastrado com sucesso.",
+      "sucesso"
+    );
+
+    limparFormularioProdutoEstoque();
+    await carregarProdutosEstoque();
+
+  } catch (erro) {
+    console.error("Erro inesperado ao salvar produto:", erro);
+    mostrarMensagemEstoque(
+      "mensagem-estoque-form",
+      "Erro inesperado ao salvar produto.",
+      "erro"
+    );
+  } finally {
+    const btnSalvar = document.getElementById("btn-salvar-produto");
+    alterarEstadoBotaoEstoque(btnSalvar, false, "Salvar produto");
+  }
+}
+
+function montarObjetoProdutoEstoque() {
+  return {
+    nome: valorInputEstoque("produto-nome"),
+    descricao: valorInputEstoque("produto-descricao"),
+    categoria: obterCategoriaProdutoEstoque(),
+    codigo: valorInputEstoque("produto-codigo"),
+    unidade: valorInputEstoque("produto-unidade") || "un",
+
+    quantidade_atual: numeroCampoEstoque("produto-quantidade-atual"),
+    estoque_minimo: numeroCampoEstoque("produto-estoque-minimo"),
+
+    valor_custo: numeroCampoEstoque("produto-valor-custo"),
+    valor_venda: numeroCampoEstoque("produto-valor-venda"),
+
+    controlar_estoque: checkboxMarcadoEstoque("produto-controlar-estoque"),
+    ativo: valorInputEstoque("produto-ativo") !== "false",
+
+    observacoes: valorInputEstoque("produto-observacoes")
+  };
+}
+
+function editarProdutoEstoque(id) {
+  const produto = produtosEstoqueCache.find((item) => item.id === id);
+
+  if (!produto) {
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Produto não encontrado para edição.",
+      "erro"
+    );
+    return;
+  }
+
+  setValorEstoque("produto-id", produto.id);
+  setValorEstoque("produto-nome", produto.nome);
+  setValorEstoque("produto-descricao", produto.descricao);
+  preencherCategoriaProdutoParaEdicao(produto.categoria);
+  setValorEstoque("produto-codigo", produto.codigo);
+  setValorEstoque("produto-unidade", produto.unidade || "un");
+  setValorEstoque("produto-ativo", produto.ativo === false ? "false" : "true");
+
+  setCheckboxEstoque("produto-controlar-estoque", produto.controlar_estoque !== false);
+
+  setValorEstoque("produto-quantidade-atual", numeroParaInputEstoque(produto.quantidade_atual));
+  setValorEstoque("produto-estoque-minimo", numeroParaInputEstoque(produto.estoque_minimo));
+  setValorEstoque("produto-valor-custo", numeroParaInputEstoque(produto.valor_custo));
+  setValorEstoque("produto-valor-venda", numeroParaInputEstoque(produto.valor_venda));
+  setValorEstoque("produto-observacoes", produto.observacoes);
+
+  const titulo = document.getElementById("titulo-form-produto");
+  const btnSalvar = document.getElementById("btn-salvar-produto");
+
+  if (titulo) titulo.textContent = "Editar produto";
+  if (btnSalvar) btnSalvar.textContent = "Atualizar produto";
+
+  abrirFormularioMobileProduto();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+async function excluirProdutoEstoque(id) {
+  try {
+    const produto = produtosEstoqueCache.find((item) => item.id === id);
+    const nomeProduto = produto?.nome || "este produto";
+
+    const confirmar = confirm(
+      `Deseja realmente excluir ${nomeProduto}? Se ele tiver movimentações ou itens de OS vinculados, talvez seja melhor marcar como inativo.`
+    );
+
+    if (!confirmar) return;
+
+    const session = await obterSessaoAtualEstoque();
+
+    if (!session) {
+      redirecionarParaLoginEstoque();
+      return;
+    }
+
+    usuarioLogadoEstoque = session.user;
+
+    const { error } = await window._supabase
+      .from("produtos_estoque")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", usuarioLogadoEstoque.id);
+
+    if (error) {
+      console.error("Erro ao excluir produto:", error);
+      mostrarMensagemEstoque(
+        "mensagem-estoque-lista",
+        "Não foi possível excluir o produto. Se houver histórico, marque como inativo em vez de excluir.",
+        "erro"
+      );
+      return;
+    }
+
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Produto excluído com sucesso.",
+      "sucesso"
+    );
+
+    await carregarProdutosEstoque();
+
+  } catch (erro) {
+    console.error("Erro inesperado ao excluir produto:", erro);
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Erro inesperado ao excluir produto.",
+      "erro"
+    );
+  }
+}
+
+/* =========================================================
+   RENDERIZAÇÃO
+   ========================================================= */
+
+function renderizarProdutosEstoque(lista) {
+  const container = document.getElementById("lista-produtos-estoque");
+
+  if (!container) return;
+
+  if (!lista || lista.length === 0) {
+    container.innerHTML = `
+      <div class="estado-vazio">
+        <strong>Nenhum produto encontrado</strong>
+        <p>Cadastre seu primeiro produto, peça ou material usando o formulário ao lado.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const grupos = agruparProdutosPorCategoriaEstoque(lista);
+
+  container.innerHTML = grupos.map((grupo) => {
+    const totalGrupo = grupo.produtos.length;
+
+    return `
+      <section class="estoque-categoria-grupo">
+        <div class="estoque-categoria-titulo">
+          <span>${escaparHTMLEstoque(grupo.categoria)}</span>
+          <small>${totalGrupo} item${totalGrupo === 1 ? "" : "s"}</small>
+        </div>
+
+        <div class="estoque-grade-cabecalho">
+          <div>Produto</div>
+          <div style="text-align:right;">Qtd</div>
+          <div style="text-align:right;">Venda</div>
+          <div></div>
+        </div>
+
+        <div>
+          ${grupo.produtos.map((produto) => criarLinhaProdutoEstoque(produto)).join("")}
+        </div>
+      </section>
+    `;
+  }).join("");
+}
+
+function agruparProdutosPorCategoriaEstoque(lista) {
+  const mapa = new Map();
+
+  lista.forEach((produto) => {
+    const categoriaBruta = String(produto.categoria || "").trim();
+    const categoria = categoriaBruta || "Sem categoria";
+
+    if (!mapa.has(categoria)) {
+      mapa.set(categoria, []);
+    }
+
+    mapa.get(categoria).push(produto);
+  });
+
+  return Array.from(mapa.entries())
+    .map(([categoria, produtos]) => {
+      const produtosOrdenados = [...produtos].sort((a, b) => {
+        const nomeA = String(a.nome || "").localeCompare(String(b.nome || ""), "pt-BR");
+        return nomeA;
+      });
+
+      return {
+        categoria,
+        produtos: produtosOrdenados
+      };
+    })
+    .sort((a, b) => {
+      if (a.categoria === "Sem categoria") return 1;
+      if (b.categoria === "Sem categoria") return -1;
+
+      return a.categoria.localeCompare(b.categoria, "pt-BR");
+    });
+}
+
+function criarLinhaProdutoEstoque(produto) {
+  const id = escaparHTMLEstoque(produto.id);
+  const nome = escaparHTMLEstoque(produto.nome || "Produto sem nome");
+  const codigo = escaparHTMLEstoque(produto.codigo || "");
+  const descricao = escaparHTMLEstoque(produto.descricao || "");
+  const categoria = escaparHTMLEstoque(produto.categoria || "Sem categoria");
+  const unidade = escaparHTMLEstoque(produto.unidade || "un");
+
+  const ativo = produto.ativo !== false;
+  const controla = produto.controlar_estoque !== false;
+  const baixo = produtoEstoqueBaixo(produto);
+
+  const quantidade = converterNumeroEstoque(produto.quantidade_atual);
+  const minimo = converterNumeroEstoque(produto.estoque_minimo);
+
+  const valorVenda = formatarMoedaEstoque(produto.valor_venda);
+  const valorCusto = formatarMoedaEstoque(produto.valor_custo);
+
+  const classeBloco = baixo
+    ? "estoque-produto-bloco estoque-baixo"
+    : "estoque-produto-bloco";
+
+  const classeQtd = baixo
+    ? "estoque-produto-qtd baixo"
+    : "estoque-produto-qtd";
+
+  const textoQuantidade = controla
+    ? `${formatarQuantidadeEstoque(quantidade)} ${unidade}`
+    : "S/ctrl";
+
+  const detalhesLinha = [
+    codigo ? `Cód: ${codigo}` : "",
+    controla ? `Mín: ${formatarQuantidadeEstoque(minimo)} ${unidade}` : "Sem controle",
+    baixo ? "Estoque baixo" : "",
+    ativo ? "" : "Inativo"
+  ].filter(Boolean).join(" • ");
+
+  return `
+    <article class="${classeBloco}" data-produto-id="${id}">
+      <div class="estoque-produto-linha" onclick="alternarLinhaProdutoEstoque('${id}')">
+        <div class="estoque-produto-nome" title="${nome}">
+          <strong>${nome}</strong>
+          <small>${escaparHTMLEstoque(detalhesLinha || descricao || "Sem detalhes")}</small>
+        </div>
+
+        <div class="${classeQtd}">
+          ${textoQuantidade}
+        </div>
+
+        <div class="estoque-produto-valor">
+          ${valorVenda}
+        </div>
+
+        <div class="estoque-produto-seta">
+          ▾
+        </div>
+      </div>
+
+      <div class="estoque-produto-detalhes">
+        <div class="estoque-produto-meta">
+          <span>Categoria: ${categoria}</span>
+          ${codigo ? `<span>Código: ${codigo}</span>` : ""}
+          <span>Quantidade: ${textoQuantidade}</span>
+          ${controla ? `<span>Mínimo: ${formatarQuantidadeEstoque(minimo)} ${unidade}</span>` : `<span>Sem controle de estoque</span>`}
+          <span>Custo: ${valorCusto}</span>
+          <span>Venda: ${valorVenda}</span>
+          ${descricao ? `<span>${descricao}</span>` : ""}
+          ${ativo ? `<span class="estoque-status-mini ativo">Ativo</span>` : `<span class="estoque-status-mini inativo">Inativo</span>`}
+          ${baixo ? `<span class="estoque-status-mini baixo">Baixo</span>` : ""}
+        </div>
+
+        <div class="estoque-produto-botoes">
+          <button type="button" onclick="event.stopPropagation(); editarProdutoEstoque('${id}')">
+            Editar
+          </button>
+
+          <button type="button" class="verde" onclick="event.stopPropagation(); abrirModalMovimentacaoEstoque('${id}', 'entrada')">
+            Entrada
+          </button>
+
+          <button type="button" class="laranja" onclick="event.stopPropagation(); abrirModalMovimentacaoEstoque('${id}', 'saida')">
+            Saída
+          </button>
+
+          <button type="button" onclick="event.stopPropagation(); abrirModalMovimentacaoEstoque('${id}', 'ajuste')">
+            Ajuste
+          </button>
+
+          <button type="button" class="perigo" onclick="event.stopPropagation(); excluirProdutoEstoque('${id}')">
+            Excluir
+          </button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function criarStatusProdutoCompactoEstoque(produto) {
+  const ativo = produto.ativo !== false;
+  const controla = produto.controlar_estoque !== false;
+  const baixo = produtoEstoqueBaixo(produto);
+
+  const status = [];
+
+  if (ativo) {
+    status.push(`<span class="estoque-status-mini ativo">Ativo</span>`);
+  } else {
+    status.push(`<span class="estoque-status-mini inativo">Inativo</span>`);
+  }
+
+  if (!controla) {
+    status.push(`<span class="estoque-status-mini inativo">Sem controle</span>`);
+  }
+
+  if (baixo) {
+    status.push(`<span class="estoque-status-mini baixo">Baixo</span>`);
+  }
+
+  return `
+    <div style="display:flex; gap:4px; flex-wrap:wrap; margin-bottom:5px;">
+      ${status.join("")}
+    </div>
+  `;
+}
+
+/* =========================================================
+   FILTROS E RESUMO
+   ========================================================= */
+
+function atualizarFiltrosAtuaisEstoque() {
+  filtrosAtuaisEstoque = {
+    termo: valorInputEstoque("busca-produtos"),
+    status: valorInputEstoque("filtro-status-produtos"),
+    estoque: valorInputEstoque("filtro-estoque-produtos"),
+    categoria: valorInputEstoque("filtro-categoria-produtos")
+  };
+}
+
+async function carregarMaisProdutosEstoque() {
+  if (!temMaisProdutosEstoque) return;
+
+  paginaProdutosEstoque += 1;
+
+  await carregarProdutosEstoque(false);
+}
+
+function atualizarBotaoCarregarMaisProdutos() {
+  const botao = document.getElementById("btn-carregar-mais-produtos");
+
+  if (!botao) return;
+
+  if (temMaisProdutosEstoque) {
+    botao.classList.remove("oculto");
+    botao.textContent = `Carregar mais ${limiteProdutosEstoque} produtos`;
+  } else {
+    botao.classList.add("oculto");
+  }
+}
+
+function filtrarProdutosEstoque() {
+  carregarProdutosEstoque(true);
+}
+
+function atualizarResumoEstoque(lista) {
+  const total = lista.length;
+  const ativos = lista.filter((produto) => produto.ativo !== false).length;
+  const baixo = lista.filter((produto) => produtoEstoqueBaixo(produto)).length;
+
+  const valorCusto = lista.reduce((soma, produto) => {
+    if (produto.controlar_estoque === false) return soma;
+
+    return soma + (
+      converterNumeroEstoque(produto.quantidade_atual) *
+      converterNumeroEstoque(produto.valor_custo)
+    );
+  }, 0);
+
+  const valorVenda = lista.reduce((soma, produto) => {
+    if (produto.controlar_estoque === false) return soma;
+
+    return soma + (
+      converterNumeroEstoque(produto.quantidade_atual) *
+      converterNumeroEstoque(produto.valor_venda)
+    );
+  }, 0);
+
+  setTextoEstoque("resumo-total-produtos", total);
+  setTextoEstoque("resumo-produtos-ativos", ativos);
+  setTextoEstoque("resumo-produtos-baixo", baixo);
+  setTextoEstoque("resumo-valor-custo", formatarMoedaEstoque(valorCusto));
+  setTextoEstoque("resumo-valor-venda", formatarMoedaEstoque(valorVenda));
+}
+
+function produtoEstoqueBaixo(produto) {
+  if (!produto) return false;
+  if (produto.ativo === false) return false;
+  if (produto.controlar_estoque === false) return false;
+
+  const quantidade = converterNumeroEstoque(produto.quantidade_atual);
+  const minimo = converterNumeroEstoque(produto.estoque_minimo);
+
+  return quantidade <= minimo;
+}
+
+/* =========================================================
+   MOVIMENTAÇÃO DE ESTOQUE
+   ========================================================= */
+
+function abrirModalMovimentacaoEstoque(id, tipo) {
+  const produto = produtosEstoqueCache.find((item) => item.id === id);
+
+  if (!produto) {
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Produto não encontrado.",
+      "erro"
+    );
+    return;
+  }
+
+  if (produto.controlar_estoque === false && tipo !== "ajuste") {
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Este produto está marcado como sem controle de estoque.",
+      "erro"
+    );
+    return;
+  }
+
+  limparMensagemEstoque("mensagem-estoque-modal");
+
+  setValorEstoque("movimentacao-produto-id", produto.id);
+  setValorEstoque("movimentacao-tipo", tipo);
+  setValorEstoque("movimentacao-produto-nome", produto.nome || "");
+  setValorEstoque("movimentacao-quantidade", "");
+
+  const valorPadrao = tipo === "saida"
+    ? produto.valor_venda
+    : produto.valor_custo;
+
+  setValorEstoque("movimentacao-valor-unitario", numeroParaInputEstoque(valorPadrao || 0));
+  setValorEstoque("movimentacao-observacao", "");
+
+  const titulo = document.getElementById("titulo-modal-movimentacao");
+  const btnConfirmar = document.getElementById("btn-confirmar-movimentacao");
+
+  if (titulo) {
+    titulo.textContent = tituloMovimentacaoEstoque(tipo);
+  }
+
+  if (btnConfirmar) {
+    btnConfirmar.textContent = textoBotaoMovimentacaoEstoque(tipo);
+  }
+
+  const modal = document.getElementById("modal-movimentacao-estoque");
+
+  if (modal) {
+    modal.classList.add("ativo");
+  }
+}
+
+function fecharModalMovimentacaoEstoque() {
+  const modal = document.getElementById("modal-movimentacao-estoque");
+
+  if (modal) {
+    modal.classList.remove("ativo");
+  }
+
+  limparMensagemEstoque("mensagem-estoque-modal");
+
+  const form = document.getElementById("form-movimentacao-estoque");
+
+  if (form) form.reset();
+}
+
+async function confirmarMovimentacaoEstoque(event) {
+  event.preventDefault();
+
+  try {
+    limparMensagemEstoque("mensagem-estoque-modal");
+
+    const session = await obterSessaoAtualEstoque();
+
+    if (!session) {
+      redirecionarParaLoginEstoque();
+      return;
+    }
+
+    usuarioLogadoEstoque = session.user;
+
+    const produtoId = valorInputEstoque("movimentacao-produto-id");
+    const tipo = valorInputEstoque("movimentacao-tipo");
+    const quantidade = numeroCampoEstoque("movimentacao-quantidade");
+    const valorUnitario = numeroCampoEstoque("movimentacao-valor-unitario");
+    const observacao = valorInputEstoque("movimentacao-observacao");
+
+    if (!produtoId) {
+      mostrarMensagemEstoque(
+        "mensagem-estoque-modal",
+        "Produto não informado.",
+        "erro"
+      );
+      return;
+    }
+
+    if (!tipo) {
+      mostrarMensagemEstoque(
+        "mensagem-estoque-modal",
+        "Tipo de movimentação não informado.",
+        "erro"
+      );
+      return;
+    }
+
+    if (quantidade <= 0) {
+      mostrarMensagemEstoque(
+        "mensagem-estoque-modal",
+        "Informe uma quantidade maior que zero.",
+        "erro"
+      );
+      return;
+    }
+
+    const produto = produtosEstoqueCache.find((item) => item.id === produtoId);
+
+    if (!produto) {
+      mostrarMensagemEstoque(
+        "mensagem-estoque-modal",
+        "Produto não encontrado.",
+        "erro"
+      );
+      return;
+    }
+
+    if (tipo === "saida") {
+      const atual = converterNumeroEstoque(produto.quantidade_atual);
+
+      if (quantidade > atual) {
+        mostrarMensagemEstoque(
+          "mensagem-estoque-modal",
+          `Estoque insuficiente. Quantidade atual: ${formatarQuantidadeEstoque(atual)}.`,
+          "erro"
+        );
+        return;
+      }
+    }
+
+    const btnConfirmar = document.getElementById("btn-confirmar-movimentacao");
+    alterarEstadoBotaoEstoque(btnConfirmar, true, "Confirmando...");
+
+    const { error } = await window._supabase.rpc(
+      "registrar_movimentacao_estoque",
+      {
+        p_user_id: usuarioLogadoEstoque.id,
+        p_produto_id: produtoId,
+        p_tipo_movimentacao: tipo,
+        p_quantidade: quantidade,
+        p_ordem_servico_id: null,
+        p_ordem_servico_item_id: null,
+        p_valor_unitario: valorUnitario,
+        p_observacao: observacao || descricaoPadraoMovimentacaoEstoque(tipo)
+      }
+    );
+
+    if (error) {
+      console.error("Erro ao registrar movimentação:", error);
+      mostrarMensagemEstoque(
+        "mensagem-estoque-modal",
+        traduzirErroMovimentacaoEstoque(error.message),
+        "erro"
+      );
+      return;
+    }
+
+    fecharModalMovimentacaoEstoque();
+
+    mostrarMensagemEstoque(
+      "mensagem-estoque-lista",
+      "Movimentação registrada com sucesso.",
+      "sucesso"
+    );
+
+    await carregarProdutosEstoque();
+
+  } catch (erro) {
+    console.error("Erro inesperado na movimentação:", erro);
+    mostrarMensagemEstoque(
+      "mensagem-estoque-modal",
+      "Erro inesperado ao registrar movimentação.",
+      "erro"
+    );
+  } finally {
+    const btnConfirmar = document.getElementById("btn-confirmar-movimentacao");
+    alterarEstadoBotaoEstoque(
+      btnConfirmar,
+      false,
+      textoBotaoMovimentacaoEstoque(valorInputEstoque("movimentacao-tipo"))
+    );
+  }
+}
+
+function tituloMovimentacaoEstoque(tipo) {
+  const mapa = {
+    entrada: "Entrada de estoque",
+    saida: "Saída de estoque",
+    ajuste: "Ajuste de estoque"
+  };
+
+  return mapa[tipo] || "Movimentar estoque";
+}
+
+function textoBotaoMovimentacaoEstoque(tipo) {
+  const mapa = {
+    entrada: "Confirmar entrada",
+    saida: "Confirmar saída",
+    ajuste: "Confirmar ajuste"
+  };
+
+  return mapa[tipo] || "Confirmar";
+}
+
+function descricaoPadraoMovimentacaoEstoque(tipo) {
+  const mapa = {
+    entrada: "Entrada manual de estoque",
+    saida: "Saída manual de estoque",
+    ajuste: "Ajuste manual de estoque"
+  };
+
+  return mapa[tipo] || "Movimentação manual de estoque";
+}
+
+function traduzirErroMovimentacaoEstoque(mensagem) {
+  const texto = String(mensagem || "").toLowerCase();
+
+  if (texto.includes("estoque insuficiente")) {
+    return "Estoque insuficiente para realizar esta saída.";
+  }
+
+  if (texto.includes("produto não encontrado")) {
+    return "Produto não encontrado para este usuário.";
+  }
+
+  if (texto.includes("quantidade da movimentação")) {
+    return "A quantidade da movimentação precisa ser maior que zero.";
+  }
+
+  if (texto.includes("tipo de movimentação inválido")) {
+    return "Tipo de movimentação inválido.";
+  }
+
+  return "Erro ao registrar movimentação. Verifique os dados e tente novamente.";
+}
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+function limparFormularioProdutoEstoque() {
+  const form = document.getElementById("form-produto-estoque");
+
+  if (form) form.reset();
+
+  setValorEstoque("produto-id", "");
+  setValorEstoque("produto-unidade", "un");
+  setValorEstoque("produto-ativo", "true");
+  setValorEstoque("produto-quantidade-atual", "");
+  setValorEstoque("produto-estoque-minimo", "");
+  setValorEstoque("produto-valor-custo", "");
+  setValorEstoque("produto-valor-venda", "");
+  setCheckboxEstoque("produto-controlar-estoque", true);
+  setValorEstoque("produto-categoria", "");
+  setValorEstoque("produto-categoria-outra", "");
+  controlarCampoOutraCategoriaEstoque();
+
+  const titulo = document.getElementById("titulo-form-produto");
+  const btnSalvar = document.getElementById("btn-salvar-produto");
+
+  if (titulo) titulo.textContent = "Novo produto";
+  if (btnSalvar) btnSalvar.textContent = "Salvar produto";
+
+  limparMensagemEstoque("mensagem-estoque-form");
+}
+
+/* =========================================================
+   HELPERS DOM
+   ========================================================= */
+
+function valorInputEstoque(id) {
+  const el = document.getElementById(id);
+  return el && typeof el.value === "string" ? el.value.trim() : "";
+}
+
+function setValorEstoque(id, valor) {
+  const el = document.getElementById(id);
+
+  if (!el) return;
+
+  el.value = valor ?? "";
+}
+
+function setTextoEstoque(id, valor) {
+  const el = document.getElementById(id);
+
+  if (!el) return;
+
+  el.textContent = valor ?? "";
+}
+
+function checkboxMarcadoEstoque(id) {
+  const el = document.getElementById(id);
+  return !!(el && el.checked);
+}
+
+function setCheckboxEstoque(id, marcado) {
+  const el = document.getElementById(id);
+
+  if (!el) return;
+
+  el.checked = !!marcado;
+}
+
+function mostrarMensagemEstoque(id, texto, tipo = "info") {
+  const el = document.getElementById(id);
+
+  if (!el) return;
+
+  el.className = `mensagem-estoque ${tipo}`;
+  el.textContent = texto;
+
+  if (tipo === "sucesso") {
+    setTimeout(() => {
+      limparMensagemEstoque(id);
+    }, 4000);
+  }
+}
+
+function limparMensagemEstoque(id) {
+  const el = document.getElementById(id);
+
+  if (!el) return;
+
+  el.className = "mensagem-estoque";
+  el.textContent = "";
+}
+
+function setLoadingEstoque(ativo) {
+  const loading = document.getElementById("loading-estoque");
+
+  if (!loading) return;
+
+  if (ativo) {
+    loading.classList.add("ativo");
+  } else {
+    loading.classList.remove("ativo");
+  }
+}
+
+function alterarEstadoBotaoEstoque(botao, carregando, texto) {
+  if (!botao) return;
+
+  botao.disabled = carregando;
+  botao.textContent = texto;
+}
+
+/* =========================================================
+   HELPERS NÚMEROS / TEXTO
+   CORRIGIDO: 1.00 não vira 100
+   ========================================================= */
+
+function converterNumeroEstoque(valor) {
+  if (valor === null || valor === undefined || valor === "") return 0;
+
+  if (typeof valor === "number") {
+    return Number.isFinite(valor) ? valor : 0;
+  }
+
+  let texto = String(valor).trim();
+
+  if (!texto) return 0;
+
+  texto = texto.replace(/[^\d.,-]/g, "");
+
+  const temVirgula = texto.includes(",");
+  const temPonto = texto.includes(".");
+
+  // Formato brasileiro: 1.234,56
+  if (temVirgula) {
+    texto = texto.replace(/\./g, "").replace(",", ".");
+    const numeroBR = Number(texto);
+    return Number.isFinite(numeroBR) ? numeroBR : 0;
+  }
+
+  // Formato de input type="number": 1234.56
+  if (temPonto) {
+    const numeroUS = Number(texto);
+    return Number.isFinite(numeroUS) ? numeroUS : 0;
+  }
+
+  const numero = Number(texto);
+  return Number.isFinite(numero) ? numero : 0;
+}
+
+function numeroCampoEstoque(id) {
+  return converterNumeroEstoque(valorInputEstoque(id));
+}
+
+function numeroParaInputEstoque(valor) {
+  const numero = converterNumeroEstoque(valor);
+  return numero.toFixed(2);
+}
+
+function formatarQuantidadeEstoque(valor) {
+  const numero = converterNumeroEstoque(valor);
+
+  return numero.toLocaleString("pt-BR", {
+    minimumFractionDigits: numero % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function formatarMoedaEstoque(valor) {
+  const numero = converterNumeroEstoque(valor);
+
+  return numero.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
+function normalizarTextoEstoque(valor) {
+  return String(valor || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function escaparHTMLEstoque(valor) {
+  return String(valor || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function alternarLinhaProdutoEstoque(id) {
+  const bloco = document.querySelector(`.estoque-produto-bloco[data-produto-id="${CSS.escape(id)}"]`);
+
+  if (!bloco) return;
+
+  const estavaAberto = bloco.classList.contains("expandido");
+
+  document.querySelectorAll(".estoque-produto-bloco.expandido").forEach((item) => {
+    item.classList.remove("expandido");
+  });
+
+  if (!estavaAberto) {
+    bloco.classList.add("expandido");
+  }
+}
+
+function controlarCampoOutraCategoriaEstoque() {
+  const select = document.getElementById("produto-categoria");
+  const grupoOutra = document.getElementById("grupo-produto-categoria-outra");
+  const inputOutra = document.getElementById("produto-categoria-outra");
+
+  if (!select || !grupoOutra) return;
+
+  if (select.value === "__outra__") {
+    grupoOutra.classList.remove("oculto");
+
+    setTimeout(() => {
+      if (inputOutra) inputOutra.focus();
+    }, 80);
+  } else {
+    grupoOutra.classList.add("oculto");
+
+    if (inputOutra) {
+      inputOutra.value = "";
+    }
+  }
+}
+
+function obterCategoriaProdutoEstoque() {
+  const categoriaSelecionada = valorInputEstoque("produto-categoria");
+
+  if (categoriaSelecionada === "__outra__") {
+    return valorInputEstoque("produto-categoria-outra") || "Outros";
+  }
+
+  return categoriaSelecionada || "";
+}
+
+function preencherCategoriaProdutoParaEdicao(categoria) {
+  const categoriasPadrao = [
+    "Peças",
+    "Materiais",
+    "Produtos",
+    "Ferramentas",
+    "Insumos",
+    "Serviços",
+    "Outros"
+  ];
+
+  const categoriaFinal = String(categoria || "").trim();
+
+  if (!categoriaFinal) {
+    setValorEstoque("produto-categoria", "");
+    setValorEstoque("produto-categoria-outra", "");
+    controlarCampoOutraCategoriaEstoque();
+    return;
+  }
+
+  if (categoriasPadrao.includes(categoriaFinal)) {
+    setValorEstoque("produto-categoria", categoriaFinal);
+    setValorEstoque("produto-categoria-outra", "");
+  } else {
+    setValorEstoque("produto-categoria", "__outra__");
+    setValorEstoque("produto-categoria-outra", categoriaFinal);
+  }
+
+  controlarCampoOutraCategoriaEstoque();
+}
+
+/* =========================================================
+   EXPORTAÇÕES GLOBAIS
+   Necessário porque os botões são criados via innerHTML.
+   ========================================================= */
+
+window.carregarProdutosEstoque = carregarProdutosEstoque;
+window.salvarProdutoEstoque = salvarProdutoEstoque;
+window.editarProdutoEstoque = editarProdutoEstoque;
+window.excluirProdutoEstoque = excluirProdutoEstoque;
+window.filtrarProdutosEstoque = filtrarProdutosEstoque;
+window.abrirModalMovimentacaoEstoque = abrirModalMovimentacaoEstoque;
+window.fecharModalMovimentacaoEstoque = fecharModalMovimentacaoEstoque;
+window.confirmarMovimentacaoEstoque = confirmarMovimentacaoEstoque;
+window.limparFormularioProdutoEstoque = limparFormularioProdutoEstoque;
+window.alternarLinhaProdutoEstoque = alternarLinhaProdutoEstoque;
+window.controlarCampoOutraCategoriaEstoque = controlarCampoOutraCategoriaEstoque;

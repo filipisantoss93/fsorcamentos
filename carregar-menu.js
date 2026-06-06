@@ -104,6 +104,7 @@ async function carregarMenu(sessionRecebida = undefined) {
     }
 
     await atualizarHeaderUsuario(session || null);
+    aplicarVisibilidadeMenuPorPlano();
     await controlarBotaoFlutuanteGeradorGlobal(session || null);
 
     setTimeout(() => {
@@ -164,6 +165,7 @@ async function atualizarHeaderUsuario(session) {
 
   if (!session?.user?.id) {
     mostrarDeslogado();
+    aplicarVisibilidadeMenuPorPlano();
     return;
   }
 
@@ -214,6 +216,38 @@ async function atualizarHeaderUsuario(session) {
   }
 
   mostrarLogado(nomeFinal);
+  aplicarVisibilidadeMenuPorPlano();
+}
+
+
+
+/* =========================
+   VISIBILIDADE POR PLANO
+========================= */
+
+function fsPlanoMenuAtual() {
+  return fsNormalizarTextoMenu(localStorage.getItem('usuario_plano') || 'gratis');
+}
+
+function fsPlanoMenuOrdem(plano) {
+  const p = fsNormalizarTextoMenu(plano);
+  if (p === 'premium') return 2;
+  if (p === 'basico') return 1;
+  return 0;
+}
+
+function aplicarVisibilidadeMenuPorPlano() {
+  const plano = fsPlanoMenuAtual();
+  const nivelAtual = fsPlanoMenuOrdem(plano);
+
+  document.querySelectorAll('[data-plano-min]').forEach(link => {
+    const minimo = link.getAttribute('data-plano-min') || 'gratis';
+    const permitido = nivelAtual >= fsPlanoMenuOrdem(minimo);
+    const li = link.closest('li');
+
+    if (li) li.style.display = permitido ? '' : 'none';
+    else link.style.display = permitido ? '' : 'none';
+  });
 }
 
 /* =========================
@@ -539,3 +573,4 @@ window.abrirGeradorGlobal = abrirGeradorGlobal;
 window.controlarBotaoFlutuanteGeradorGlobal = controlarBotaoFlutuanteGeradorGlobal;
 window.configurarHeaderInteligente = configurarHeaderInteligente;
 window.controlarHeaderInteligente = controlarHeaderInteligente;
+window.aplicarVisibilidadeMenuPorPlano = aplicarVisibilidadeMenuPorPlano;

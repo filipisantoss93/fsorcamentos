@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Veículos - FS Orçamentos</title>
+
+  <meta name="description" content="Cadastre veículos, placas, chassi, marca, modelo, cor e cliente vinculado no FS Orçamentos." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --fs-amarelo: #ffc400;
+      --fs-amarelo-claro: #fff8e1;
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #4e342e;
+      --fs-marrom-claro: #5d4037;
+      --fs-fundo-escuro: #2c2c2c;
+      --fs-bege: #f4ece1;
+      --fs-bege-2: #fffaf0;
+      --fs-branco: #ffffff;
+      --fs-borda: #d7ccc8;
+      --fs-texto: #3e2723;
+      --fs-texto-suave: #6d4c41;
+      --fs-perigo: #dc2626;
+      --fs-sucesso: #25D366;
+      --fs-verde-escuro: #083b2f;
+      --fs-radius: 16px;
+      --fs-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+
+      --fs-azul: #ffc400;
+      --fs-azul-escuro: #3e2723;
+      --fs-azul-claro: #fff8e1;
+      --fs-verde: #25D366;
+      --fs-vermelho: #dc2626;
+      --fs-cinza: #6d4c41;
+      --fs-fundo: #2c2c2c;
+      --fs-texto-claro: #f4ece1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--fs-fundo-escuro);
+      color: #eeeeee;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pagina-veiculos {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      color: var(--fs-texto);
+    }
+
+    .veiculos-hero {
+      background: linear-gradient(135deg, #3e2723, #2c2c2c);
+      color: #ffffff;
+      border-radius: 22px;
+      border-top: 6px solid var(--fs-amarelo);
+      padding: 28px;
+      box-shadow: var(--fs-shadow);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .veiculos-hero::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(255, 196, 0, 0.16);
+      right: -80px;
+      top: -90px;
+    }
+
+    .veiculos-hero h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      color: #ffffff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .veiculos-hero p {
+      margin: 0;
+      max-width: 820px;
+      color: var(--fs-bege);
+      font-size: 15px;
+      line-height: 1.6;
+      opacity: 0.96;
+      position: relative;
+      z-index: 1;
+    }
+
+    .aviso-plano {
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .veiculos-resumo {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .card-resumo {
+      background: linear-gradient(135deg, #fffaf0, #f4ece1);
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: var(--fs-radius);
+      padding: 18px;
+      box-shadow: var(--fs-shadow);
+    }
+
+    .card-resumo span {
+      display: block;
+      color: var(--fs-texto-suave);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .card-resumo strong {
+      display: block;
+      font-size: 26px;
+      color: var(--fs-marrom);
+    }
+
+    .veiculos-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .veiculos-card {
+      background: var(--fs-bege);
+      color: var(--fs-texto);
+      border: 1px solid var(--fs-borda);
+      border-top: 5px solid var(--fs-amarelo);
+      border-radius: var(--fs-radius);
+      box-shadow: var(--fs-shadow);
+      overflow: hidden;
+    }
+
+    .veiculos-card-header {
+      padding: 18px 20px;
+      border-bottom: 2px solid var(--fs-amarelo);
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+    }
+
+    .veiculos-card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--fs-amarelo);
+    }
+
+    .veiculos-card-header p {
+      margin: 6px 0 0;
+      color: var(--fs-bege);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .veiculos-card-body {
+      padding: 20px;
+      background: var(--fs-bege);
+      color: var(--fs-texto);
+    }
+
+    .veiculos-topo-acoes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .form-veiculos {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-linha {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--fs-marrom-claro);
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width: 100%;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      background: #ffffff;
+      color: var(--fs-texto);
+      box-sizing: border-box;
+      transition: 0.2s ease;
+    }
+
+    .campo textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .campo input:focus,
+    .campo select:focus,
+    .campo textarea:focus {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.22);
+    }
+
+    .campo small {
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .veiculos-acoes-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s ease;
+      min-height: 42px;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-primario {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn-primario:hover {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      transform: translateY(-1px);
+    }
+
+    .btn-secundario {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+    }
+
+    .btn-secundario:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+    }
+
+    .btn-perigo {
+      background: #fff1f1;
+      color: var(--fs-perigo);
+      border: 2px solid var(--fs-perigo);
+    }
+
+    .btn-perigo:hover {
+      background: var(--fs-perigo);
+      color: #ffffff;
+    }
+
+    .btn-verde {
+      background: var(--fs-sucesso);
+      color: var(--fs-verde-escuro);
+      border: 2px solid #128c4a;
+    }
+
+    .btn-verde:hover {
+      background: #20ba5a;
+      color: #ffffff;
+    }
+
+    .btn-pequeno {
+      min-height: 34px;
+      padding: 7px 10px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .veiculos-filtros {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr 0.8fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .lista-veiculos {
+      display: grid;
+      gap: 8px;
+      max-height: 720px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .veiculo-item {
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #ffffff;
+      color: var(--fs-texto);
+      transition: 0.2s ease;
+    }
+
+    .veiculo-item:hover {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 8px 22px rgba(62, 39, 35, 0.18);
+    }
+
+    .veiculo-linha-topo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .veiculo-info h3 {
+      margin: 0 0 4px;
+      color: var(--fs-marrom);
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .veiculo-info p {
+      margin: 0;
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .placa-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff8e1;
+      border: 2px solid var(--fs-marrom);
+      color: var(--fs-marrom);
+      border-radius: 8px;
+      padding: 6px 10px;
+      min-width: 92px;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .veiculo-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      background: #efebe9;
+      color: var(--fs-marrom);
+      border: 1px solid #d7ccc8;
+    }
+
+    .tag.ativo {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .tag.inativo {
+      background: #f1f1f1;
+      color: #475569;
+    }
+
+    .veiculo-acoes {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .estado-vazio {
+      text-align: center;
+      padding: 36px 20px;
+      border: 1px dashed var(--fs-amarelo);
+      border-radius: 16px;
+      background: #fffaf0;
+      color: var(--fs-texto-suave);
+    }
+
+    .estado-vazio strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .mensagem-veiculos {
+      display: none;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .mensagem-veiculos.sucesso {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .mensagem-veiculos.erro {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .mensagem-veiculos.info {
+      display: block;
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+    }
+
+    .loading-veiculos {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px;
+      color: var(--fs-marrom-claro);
+      font-weight: 800;
+    }
+
+    .loading-veiculos.ativo {
+      display: flex;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #f4e3a1;
+      border-top-color: var(--fs-amarelo);
+      border-radius: 50%;
+      animation: girar 0.8s linear infinite;
+    }
+
+    @keyframes girar {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    .btn-toggle-form-mobile,
+    .btn-toggle-lista-mobile {
+      display: none;
+      border: 2px solid var(--fs-amarelo);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .btn-toggle-form-mobile:hover,
+    .btn-toggle-lista-mobile:hover {
+      background: #ffffff;
+      color: var(--fs-marrom);
+    }
+
+    .header-form-mobile {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .veiculos-lista-toggle-mobile {
+      display: none;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .veiculos-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .veiculos-resumo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .veiculos-filtros {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .pagina-veiculos {
+        padding: 18px 12px 42px;
+      }
+
+      .veiculos-hero {
+        padding: 22px;
+        border-radius: 18px;
+      }
+
+      .veiculos-hero h1 {
+        font-size: 24px;
+      }
+
+      .veiculos-resumo {
+        grid-template-columns: 1fr;
+      }
+
+      .form-linha,
+      .veiculos-filtros {
+        grid-template-columns: 1fr;
+      }
+
+      .veiculo-linha-topo {
+        grid-template-columns: 1fr;
+      }
+
+      .placa-badge {
+        justify-self: start;
+      }
+
+      .veiculos-acoes-form .btn,
+      .veiculo-acoes .btn {
+        width: 100%;
+      }
+
+      .btn-toggle-form-mobile,
+      .btn-toggle-lista-mobile {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card-form-mobile.form-fechado .corpo-form-mobile {
+        display: none;
+      }
+
+      .card-form-mobile.form-fechado .veiculos-card-header {
+        border-bottom: none;
+      }
+
+      .header-form-mobile p {
+        display: none;
+      }
+
+      .veiculos-lista-toggle-mobile {
+        display: block;
+      }
+
+      .lista-veiculos-mobile-fechada {
+        display: none !important;
+      }
+
+      .lista-veiculos {
+        max-height: none;
+        overflow-y: visible;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+
+  <main class="pagina-veiculos">
+    <section class="veiculos-hero">
+      <h1>Veículos</h1>
+      <p>
+        Cadastre os veículos dos clientes com placa, chassi, marca, modelo, cor e prisma.
+        Depois vincule o veículo às ordens de serviço para gerar OS e PDF com dados completos da oficina.
+      </p>
+    </section>
+
+    <div id="aviso-plano-veiculos" class="aviso-plano oculto">
+      Este módulo faz parte do plano Premium do FS Orçamentos. Durante o desenvolvimento, você pode testar a estrutura normalmente.
+    </div>
+
+    <section class="veiculos-resumo">
+      <div class="card-resumo">
+        <span>Total de veículos</span>
+        <strong id="resumo-total-veiculos">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Veículos ativos</span>
+        <strong id="resumo-veiculos-ativos">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Clientes vinculados</span>
+        <strong id="resumo-clientes-vinculados">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Sem cliente</span>
+        <strong id="resumo-veiculos-sem-cliente">0</strong>
+      </div>
+    </section>
+
+    <section class="veiculos-grid">
+      <aside class="veiculos-card card-form-mobile" id="card-form-veiculo">
+        <div class="veiculos-card-header header-form-mobile">
+          <div>
+            <h2 id="titulo-form-veiculo">Novo veículo</h2>
+            <p>
+              Cadastre o veículo e vincule ao cliente para usar em orçamentos e ordens de serviço.
+            </p>
+          </div>
+
+          <button type="button" id="btn-toggle-form-veiculo" class="btn-toggle-form-mobile">
+            Abrir
+          </button>
+        </div>
+
+        <div class="veiculos-card-body corpo-form-mobile" id="corpo-form-veiculo">
+          <div id="mensagem-veiculos-form" class="mensagem-veiculos"></div>
+
+          <form id="form-veiculo" class="form-veiculos">
+            <input type="hidden" id="veiculo-id" />
+
+            <div class="campo">
+              <label for="veiculo-cliente-id">Cliente vinculado</label>
+              <select id="veiculo-cliente-id">
+                <option value="">Sem cliente vinculado</option>
+              </select>
+              <small>Cadastre o cliente antes, se desejar vincular o veículo ao dono.</small>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="veiculo-placa">Placa *</label>
+                <input
+                  type="text"
+                  id="veiculo-placa"
+                  placeholder="Ex: ABC1D23"
+                  maxlength="8"
+                  required
+                />
+                <small>A placa será salva em maiúsculo e sem espaços.</small>
+              </div>
+
+              <div class="campo">
+                <label for="veiculo-chassi">Chassi</label>
+                <input
+                  type="text"
+                  id="veiculo-chassi"
+                  placeholder="Opcional"
+                  maxlength="30"
+                />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="veiculo-marca">Marca</label>
+                <input type="text" id="veiculo-marca" placeholder="Ex: Chevrolet, Fiat, Honda" />
+              </div>
+
+              <div class="campo">
+                <label for="veiculo-modelo">Modelo</label>
+                <input type="text" id="veiculo-modelo" placeholder="Ex: Prisma, Onix, Civic" />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="veiculo-cor">Cor</label>
+                <input type="text" id="veiculo-cor" placeholder="Ex: Branco, Preto, Prata" />
+              </div>
+
+              <div class="campo">
+                <label for="veiculo-ano">Ano</label>
+                <input type="text" id="veiculo-ano" placeholder="Ex: 2018/2019" />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="veiculo-prisma">Prisma</label>
+              <input type="text" id="veiculo-prisma" placeholder="Ex: informação interna, versão, frota, identificação extra" />
+              <small>Campo livre para identificação extra usada pela sua oficina.</small>
+            </div>
+
+            <div class="campo">
+              <label for="veiculo-ativo">Status</label>
+              <select id="veiculo-ativo">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="veiculo-observacoes">Observações</label>
+              <textarea
+                id="veiculo-observacoes"
+                placeholder="Informações importantes, histórico, detalhes do veículo, localização, observações internas..."
+              ></textarea>
+            </div>
+
+            <div class="veiculos-acoes-form">
+              <button type="submit" id="btn-salvar-veiculo" class="btn btn-primario">
+                Salvar veículo
+              </button>
+
+              <button type="button" id="btn-limpar-veiculo" class="btn btn-secundario">
+                Limpar
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+
+      <section class="veiculos-card">
+        <div class="veiculos-card-header">
+          <div class="veiculos-topo-acoes">
+            <div>
+              <h2>Lista de veículos</h2>
+              <p>Consulte por placa, cliente, marca, modelo ou cor.</p>
+            </div>
+
+            <button type="button" id="btn-atualizar-veiculos" class="btn btn-secundario">
+              Atualizar
+            </button>
+          </div>
+        </div>
+
+        <div class="veiculos-card-body">
+          <div id="mensagem-veiculos-lista" class="mensagem-veiculos"></div>
+
+          <div class="veiculos-lista-toggle-mobile">
+            <button type="button" id="btn-toggle-lista-veiculos" class="btn-toggle-lista-mobile">
+              Ver veículos
+            </button>
+          </div>
+
+          <div class="veiculos-filtros">
+            <div class="campo">
+              <label for="busca-veiculos">Buscar</label>
+              <input
+                type="search"
+                id="busca-veiculos"
+                placeholder="Placa, cliente, marca, modelo, cor..."
+              />
+            </div>
+
+            <div class="campo">
+              <label for="filtro-status-veiculos">Status</label>
+              <select id="filtro-status-veiculos">
+                <option value="">Todos</option>
+                <option value="ativo">Ativos</option>
+                <option value="inativo">Inativos</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="filtro-cliente-veiculos">Cliente</label>
+              <select id="filtro-cliente-veiculos">
+                <option value="">Todos</option>
+                <option value="sem_cliente">Sem cliente</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="loading-veiculos" class="loading-veiculos">
+            <span class="spinner"></span>
+            Carregando veículos...
+          </div>
+
+          <div id="lista-veiculos" class="lista-veiculos lista-veiculos-mobile-fechada">
+            <div class="estado-vazio">
+              <strong>Nenhum veículo carregado</strong>
+              <p>Os veículos cadastrados aparecerão aqui após a conexão com o Supabase.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="carregar-menu.js"></script>
+<script src="planos.js"></script>
+  <script>
+(async function() {
+  if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
+    const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Cadastro de veículos faz parte do Plano Premium.');
+    if (bloqueado) return;
+  }
+  const script = document.createElement('script');
+  script.src = 'veiculos.js';
+  script.defer = false;
+  document.body.appendChild(script);
+})();
+</script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        if (!window._supabase && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+          window._supabase = window.supabase.createClient(
+            window.SUPABASE_URL,
+            window.SUPABASE_ANON_KEY
+          );
+        }
+
+        if (!window._supabase) {
+          console.warn("Supabase não foi inicializado. Verifique o config.js.");
+          return;
+        }
+
+        const { data } = await window._supabase.auth.getSession();
+        const session = data && data.session ? data.session : null;
+
+        if (!session) {
+          const destino = encodeURIComponent("veiculos.html");
+          window.location.href = "index.html?redirect=" + destino;
+          return;
+        }
+      } catch (erro) {
+        console.error("Erro ao validar sessão em veiculos.html:", erro);
+      }
+    });
+  </script>
+</body>
+</html>
