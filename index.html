@@ -1438,6 +1438,597 @@
       }
     }
 
+  
+    /* =========================================================
+       HOME GRÁTIS - ÁREA EXPLICATIVA E COMERCIAL
+       Visível somente dentro de #home-plano-gratis
+       ========================================================= */
+
+    .home-story-section,
+    .home-whatsapp-section,
+    .home-aprovacao-section,
+    .home-status-section,
+    .home-comparativo-section {
+      max-width: 1150px;
+      margin: 34px auto 0;
+      padding: 34px 24px;
+      background: linear-gradient(135deg, #fffaf0, var(--fs-creme));
+      border-radius: 24px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+      color: var(--fs-marrom);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .home-section-topo {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto 24px;
+    }
+
+    .home-section-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .home-story-section h2,
+    .home-whatsapp-section h2,
+    .home-aprovacao-section h2,
+    .home-status-section h2,
+    .home-comparativo-section h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.18;
+      color: var(--fs-marrom);
+    }
+
+    .home-story-section p,
+    .home-whatsapp-section p,
+    .home-aprovacao-section p,
+    .home-status-section p,
+    .home-comparativo-section p {
+      color: #6d4c41;
+      line-height: 1.55;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .home-passos-grid,
+    .home-fluxo-grid,
+    .home-status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .home-passo-card,
+    .home-fluxo-card,
+    .home-status-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px;
+      border-left: 7px solid var(--fs-amarelo);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .home-passo-card strong,
+    .home-fluxo-numero {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .home-passo-card h3,
+    .home-fluxo-card h3,
+    .home-status-card h3 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      font-size: 18px;
+    }
+
+    .home-passo-card p,
+    .home-fluxo-card p,
+    .home-status-card p {
+      font-size: 14px;
+    }
+
+    .home-whatsapp-section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .home-whatsapp-texto ul {
+      margin: 18px 0 0;
+      padding-left: 18px;
+      color: #5d4037;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    .home-whatsapp-mockup {
+      background: #075e54;
+      border-radius: 26px;
+      padding: 14px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.25);
+      color: #ffffff;
+    }
+
+    .home-whatsapp-topo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px 14px;
+    }
+
+    .home-whatsapp-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .home-whatsapp-topo strong {
+      display: block;
+      color: #ffffff;
+    }
+
+    .home-whatsapp-topo span {
+      display: block;
+      color: #d9fdd3;
+      font-size: 12px;
+    }
+
+    .home-whatsapp-conversa {
+      background: #efeae2;
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .home-msg-whatsapp {
+      width: fit-content;
+      max-width: 92%;
+      background: #ffffff;
+      color: #263238;
+      padding: 9px 11px;
+      border-radius: 12px 12px 12px 3px;
+      font-size: 13px;
+      line-height: 1.35;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .home-orcamento-whatsapp-card {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #d7ccc8;
+      box-shadow: 0 5px 14px rgba(0,0,0,0.10);
+    }
+
+    .home-orcamento-whatsapp-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 10px 12px;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .home-orcamento-whatsapp-body {
+      padding: 12px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .home-orcamento-whatsapp-body strong {
+      color: var(--fs-marrom);
+    }
+
+    .home-orcamento-whatsapp-body span {
+      color: #6d4c41;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .home-orcamento-whatsapp-card button {
+      width: calc(100% - 24px);
+      margin: 0 12px 12px;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      background: #25d366;
+      color: #073b1d;
+      font-weight: 900;
+      cursor: default;
+    }
+
+    .home-whatsapp-hora {
+      color: #667781;
+      font-size: 11px;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .home-cliente-preview {
+      max-width: 820px;
+      margin: 24px auto 0;
+      background: #ffffff;
+      border-radius: 22px;
+      border: 1px solid #e0d6c8;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.16);
+      overflow: hidden;
+    }
+
+    .home-cliente-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px;
+    }
+
+    .home-cliente-topo strong {
+      display: block;
+      color: var(--fs-amarelo);
+      font-size: 18px;
+    }
+
+    .home-cliente-topo span {
+      display: block;
+      color: #f4ece1;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .home-cliente-status {
+      background: #fff8e1;
+      color: #8a5a00;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .home-cliente-corpo {
+      padding: 18px;
+    }
+
+    .home-cliente-empresa {
+      display: grid;
+      grid-template-columns: 62px 1fr;
+      gap: 13px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .home-cliente-logo {
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 22px;
+    }
+
+    .home-cliente-empresa strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+    }
+
+    .home-cliente-empresa span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .home-cliente-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .home-cliente-info-grid div {
+      background: #fffaf0;
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 11px;
+    }
+
+    .home-cliente-info-grid small {
+      display: block;
+      color: #8d6e63;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .home-cliente-info-grid strong {
+      display: block;
+      color: var(--fs-marrom);
+    }
+
+    .home-cliente-itens {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .home-cliente-itens div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #eee1d5;
+      padding-bottom: 8px;
+      color: #5d4037;
+      font-weight: 800;
+    }
+
+    .home-cliente-itens strong {
+      color: var(--fs-marrom);
+      white-space: nowrap;
+    }
+
+    .home-cliente-total {
+      text-align: right;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 13px;
+      font-size: 21px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .home-cliente-acoes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .home-cliente-acoes button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      color: #ffffff;
+      font-weight: 900;
+      cursor: default;
+    }
+
+    .home-btn-aprovar { background: #2e7d32; }
+    .home-btn-recusar { background: #d32f2f; }
+
+    .home-cliente-aviso {
+      margin-top: 12px !important;
+      color: #6d4c41 !important;
+      font-size: 13px !important;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .home-comparativo-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid #e0d6c8;
+      background: #ffffff;
+    }
+
+    .home-tabela-comparativo {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    .home-tabela-comparativo th {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 14px;
+      font-size: 13px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    .home-tabela-comparativo th:not(:first-child),
+    .home-tabela-comparativo td:not(:first-child) {
+      text-align: center;
+    }
+
+    .home-tabela-comparativo td {
+      padding: 13px 14px;
+      border-bottom: 1px solid #eee1d5;
+      color: var(--fs-marrom);
+      font-weight: 800;
+    }
+
+    .home-tabela-comparativo tr:nth-child(even) {
+      background: #fffaf0;
+    }
+
+    .home-ok-recurso {
+      color: #15803d;
+      font-weight: 900;
+    }
+
+    .home-nao-recurso {
+      color: #dc2626;
+      font-weight: 900;
+    }
+
+    .home-destaque-recurso {
+      color: #3e2723;
+      font-weight: 900;
+      background: #fff8e1;
+      border-radius: 999px;
+      padding: 4px 8px;
+      display: inline-block;
+    }
+
+    .home-comparativo-cta {
+      margin-top: 18px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-home-planos-forte {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+    }
+
+    .btn-home-planos-secundario {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+    }
+
+    .home-status-resumo {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: var(--fs-marrom);
+      color: #ffffff;
+      border-radius: 18px;
+      border: 2px solid var(--fs-amarelo);
+      padding: 18px;
+    }
+
+    .home-status-resumo strong {
+      display: block;
+      color: var(--fs-amarelo);
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .home-status-resumo p {
+      color: #f4ece1;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .home-status-resumo a {
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 980px) {
+      .home-whatsapp-section {
+        grid-template-columns: 1fr;
+      }
+
+      .home-passos-grid,
+      .home-fluxo-grid,
+      .home-status-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .home-story-section,
+      .home-whatsapp-section,
+      .home-aprovacao-section,
+      .home-status-section,
+      .home-comparativo-section {
+        padding: 24px 14px;
+        border-radius: 18px;
+      }
+
+      .home-story-section h2,
+      .home-whatsapp-section h2,
+      .home-aprovacao-section h2,
+      .home-status-section h2,
+      .home-comparativo-section h2 {
+        font-size: 24px;
+      }
+
+      .home-cliente-topo,
+      .home-cliente-empresa,
+      .home-cliente-info-grid,
+      .home-cliente-acoes {
+        grid-template-columns: 1fr;
+      }
+
+      .home-cliente-topo {
+        display: grid;
+      }
+
+      .home-cliente-itens div {
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .home-cliente-total {
+        text-align: center;
+      }
+
+      .home-status-resumo {
+        display: grid;
+      }
+
+      .home-status-resumo a {
+        width: 100%;
+      }
+    }
+
   </style>
 </head>
 
@@ -1558,7 +2149,294 @@
         data-ad-slot="1739813454"
         data-ad-format="auto"
         data-full-width-responsive="true"></ins>
+
     </div>
+
+    <section class="home-story-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Como funciona</span>
+        <h2>Comece pelo PDF e evolua para gestão quando precisar</h2>
+        <p>
+          O FS Orçamentos foi pensado para acompanhar o crescimento do seu negócio:
+          primeiro você gera um PDF profissional, depois passa a controlar status,
+          aprovação online, clientes, veículos, ordens de serviço e estoque.
+        </p>
+      </div>
+
+      <div class="home-passos-grid">
+        <div class="home-passo-card">
+          <strong>1</strong>
+          <h3>Preencha os dados</h3>
+          <p>Informe cliente, itens, valores, observações e condições do orçamento.</p>
+        </div>
+
+        <div class="home-passo-card">
+          <strong>2</strong>
+          <h3>Gere o PDF</h3>
+          <p>No Grátis, você já baixa um orçamento profissional com a identidade da sua empresa.</p>
+        </div>
+
+        <div class="home-passo-card">
+          <strong>3</strong>
+          <h3>Ative a gestão</h3>
+          <p>No Básico ou Premium, você salva, acompanha, envia link e organiza sua rotina.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-whatsapp-section">
+      <div class="home-whatsapp-texto">
+        <span class="home-section-tag">WhatsApp com link</span>
+        <h2>O Plano Básico transforma o orçamento em um link profissional</h2>
+        <p>
+          Em vez de enviar só um PDF solto, você pode salvar o orçamento na nuvem e mandar
+          um link pelo WhatsApp para o cliente visualizar, aprovar ou recusar online.
+        </p>
+
+        <ul>
+          <li>Mensagem pronta para enviar ao cliente.</li>
+          <li>Link de visualização do orçamento.</li>
+          <li>Aprovação ou recusa registrada automaticamente.</li>
+          <li>Status para saber quem ainda precisa de acompanhamento.</li>
+        </ul>
+      </div>
+
+      <div class="home-whatsapp-mockup" aria-label="Simulação de mensagem no WhatsApp">
+        <div class="home-whatsapp-topo">
+          <div class="home-whatsapp-avatar">FS</div>
+          <div>
+            <strong>FS Orçamentos</strong>
+            <span>online</span>
+          </div>
+        </div>
+
+        <div class="home-whatsapp-conversa">
+          <div class="home-msg-whatsapp">Olá, João! Tudo bem?</div>
+          <div class="home-msg-whatsapp">Segue o orçamento solicitado:</div>
+
+          <div class="home-orcamento-whatsapp-card">
+            <div class="home-orcamento-whatsapp-header">🧾 Orçamento Nº 001024</div>
+            <div class="home-orcamento-whatsapp-body">
+              <strong>Manutenção de Suspensão</strong>
+              <span>Cliente: João Silva</span>
+              <span>Total: R$ 850,00</span>
+            </div>
+            <button type="button">Visualizar orçamento</button>
+          </div>
+
+          <div class="home-msg-whatsapp">Qualquer dúvida, estou à disposição. ✅</div>
+          <div class="home-whatsapp-hora">enviado pelo FS Orçamentos</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-aprovacao-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Aprovação online</span>
+        <h2>O cliente responde o orçamento em uma página simples e profissional</h2>
+        <p>
+          No Plano Básico, o cliente abre o link, confere empresa, itens, valores e pode
+          aprovar ou recusar. No Premium, esse orçamento aprovado pode virar OS com cliente e veículo vinculados.
+        </p>
+      </div>
+
+      <div class="home-fluxo-grid">
+        <div class="home-fluxo-card">
+          <div class="home-fluxo-numero">1</div>
+          <h3>Recebe no WhatsApp</h3>
+          <p>Você envia o link com o resumo do orçamento para o cliente.</p>
+        </div>
+
+        <div class="home-fluxo-card">
+          <div class="home-fluxo-numero">2</div>
+          <h3>Visualiza online</h3>
+          <p>O cliente acessa uma página limpa com itens, total, observações e dados da empresa.</p>
+        </div>
+
+        <div class="home-fluxo-card">
+          <div class="home-fluxo-numero">3</div>
+          <h3>Aprova ou recusa</h3>
+          <p>O status muda na plataforma e você sabe exatamente qual proposta avançou.</p>
+        </div>
+      </div>
+
+      <div class="home-cliente-preview">
+        <div class="home-cliente-topo">
+          <div>
+            <strong>Orçamento recebido</strong>
+            <span>Visualização do cliente</span>
+          </div>
+          <div class="home-cliente-status">Pendente</div>
+        </div>
+
+        <div class="home-cliente-corpo">
+          <div class="home-cliente-empresa">
+            <div class="home-cliente-logo">FS</div>
+            <div>
+              <strong>Sua Empresa</strong>
+              <span>Consultor: Responsável técnico</span>
+              <span>WhatsApp: (18) 99999-9999</span>
+            </div>
+          </div>
+
+          <div class="home-cliente-info-grid">
+            <div>
+              <small>Cliente</small>
+              <strong>João Silva</strong>
+            </div>
+
+            <div>
+              <small>Orçamento</small>
+              <strong>Manutenção de Suspensão</strong>
+            </div>
+          </div>
+
+          <div class="home-cliente-itens">
+            <div><span>Troca de amortecedores</span><strong>R$ 520,00</strong></div>
+            <div><span>Alinhamento e balanceamento</span><strong>R$ 180,00</strong></div>
+            <div><span>Mão de obra</span><strong>R$ 150,00</strong></div>
+          </div>
+
+          <div class="home-cliente-total">Total: R$ 850,00</div>
+
+          <div class="home-cliente-acoes">
+            <button type="button" class="home-btn-aprovar">✅ Aprovar orçamento</button>
+            <button type="button" class="home-btn-recusar">❌ Recusar orçamento</button>
+          </div>
+
+          <p class="home-cliente-aviso">
+            Ao responder, o status é atualizado para você acompanhar na gestão de orçamentos.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-status-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Controle por status</span>
+        <h2>Saiba quais orçamentos precisam de atenção</h2>
+        <p>
+          O Básico libera a gestão de orçamentos. O Premium amplia esse controle para clientes,
+          veículos, ordens de serviço e estoque, criando um painel completo de acompanhamento.
+        </p>
+      </div>
+
+      <div class="home-status-grid">
+        <div class="home-status-card">
+          <h3>⏳ Pendente</h3>
+          <p>Propostas enviadas ou salvas que ainda aguardam resposta do cliente.</p>
+        </div>
+
+        <div class="home-status-card">
+          <h3>✅ Aprovado</h3>
+          <p>Orçamentos aceitos, prontos para avançar para execução ou ordem de serviço.</p>
+        </div>
+
+        <div class="home-status-card">
+          <h3>🛠️ Em serviço</h3>
+          <p>No Premium, o orçamento aprovado pode virar OS com cliente, veículo e itens vinculados.</p>
+        </div>
+      </div>
+
+      <div class="home-status-resumo">
+        <div>
+          <strong>Resumo financeiro e acompanhamento</strong>
+          <p>
+            Acompanhe pendentes, aprovados, recusados, total aprovado e, no Premium,
+            OS abertas, estoque baixo e faturamento de serviços.
+          </p>
+        </div>
+
+        <a href="/planos.html" class="btn-home-planos-forte">Comparar planos</a>
+      </div>
+    </section>
+
+    <section class="home-comparativo-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Qual plano combina com você?</span>
+        <h2>Grátis para começar, Básico para vender melhor, Premium para gerenciar tudo</h2>
+        <p>
+          A ideia é simples: o Grátis gera PDF, o Básico controla orçamentos e o Premium
+          transforma a plataforma em gestão completa para oficina e prestadores de serviço.
+        </p>
+      </div>
+
+      <div class="home-comparativo-wrapper">
+        <table class="home-tabela-comparativo">
+          <thead>
+            <tr>
+              <th>Recurso</th>
+              <th>Grátis</th>
+              <th>Básico</th>
+              <th>Premium</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Gerar orçamento em PDF</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>Anúncios na plataforma</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+            </tr>
+
+            <tr>
+              <td>Salvar orçamento na nuvem</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>WhatsApp com link do orçamento</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>Cliente aprova ou recusa online</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>Gestão de clientes e veículos</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-destaque-recurso">Completo</td>
+            </tr>
+
+            <tr>
+              <td>Ordens de serviço e PDF da OS</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-destaque-recurso">Completo</td>
+            </tr>
+
+            <tr>
+              <td>Estoque e baixa de itens na OS</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-destaque-recurso">Completo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="home-comparativo-cta">
+        <a href="/planos.html#assinar-plano-basico" class="btn-home-planos-forte">⭐ Conhecer Básico</a>
+        <a href="/planos.html#assinar-plano-premium" class="btn-home-planos-secundario">🚀 Conhecer Premium</a>
+      </div>
+    </section>
 
     <div class="home-grid-planos">
       <article class="home-promo-card">
@@ -1662,11 +2540,15 @@
       </div>
 
       <div class="home-display-status">
-        <h3>Próxima evolução: Premium</h3>
+        <h3>🚀 Upgrade recomendado: Premium</h3>
         <p>
-          Libere clientes, veículos, ordens de serviço, estoque e histórico completo. Ideal para oficinas,
-          assistência técnica, instalação, manutenção e prestadores que precisam controlar a execução.
+          Seu Básico já organiza orçamentos, links e aprovações. Com o Premium você transforma cada orçamento aprovado
+          em ordem de serviço, controla clientes, veículos, estoque e acompanha a execução até o pagamento final.
         </p>
+        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          <a href="/planos.html#assinar-plano-premium" class="btn-home-atalho" style="width:auto;">Ver Premium</a>
+          <a href="/ordens.html" class="btn-home-atalho" style="width:auto;">Conhecer OS</a>
+        </div>
       </div>
     </article>
   </section>
@@ -2017,17 +2899,26 @@ function homeIndexMostrarVisao(plano) {
 async function homeIndexBuscarOrcamentos(userId) {
   if (!userId || !window._supabase) return [];
 
-  const { data, error } = await _supabase
-    .from('orcamentos')
-    .select('*')
-    .eq('usuario_id', userId);
+  async function tentarBusca(campoUsuario) {
+    return await _supabase
+      .from('orcamentos')
+      .select('*')
+      .eq(campoUsuario, userId);
+  }
 
-  if (error) {
-    console.warn('Erro ao buscar orçamentos da home:', error);
+  let resultado = await tentarBusca('usuario_id');
+
+  if (resultado.error) {
+    console.warn('Erro ao buscar orçamentos por usuario_id, tentando user_id:', resultado.error);
+    resultado = await tentarBusca('user_id');
+  }
+
+  if (resultado.error) {
+    console.warn('Erro ao buscar orçamentos da home:', resultado.error);
     return [];
   }
 
-  return Array.isArray(data) ? data : [];
+  return Array.isArray(resultado.data) ? resultado.data : [];
 }
 
 function homeIndexPreencherMetricasBasico(orcamentos) {
@@ -2050,29 +2941,17 @@ function homeIndexPreencherMetricasBasico(orcamentos) {
 async function homeIndexBuscarTabela(tabela, colunas, campoUser, userId) {
   if (!userId || !window._supabase) return [];
 
-  const campos = Array.from(new Set([campoUser, 'user_id', 'usuario_id'].filter(Boolean)));
+  const { data, error } = await _supabase
+    .from(tabela)
+    .select(colunas)
+    .eq(campoUser, userId);
 
-  for (const campo of campos) {
-    const { data, error } = await _supabase
-      .from(tabela)
-      .select('*')
-      .eq(campo, userId);
-
-    if (!error) {
-      return Array.isArray(data) ? data : [];
-    }
-
-    const textoErro = String(error.message || error.details || '').toLowerCase();
-    const erroColuna = textoErro.includes('column') || textoErro.includes('schema cache') || textoErro.includes('could not find');
-
-    if (!erroColuna) {
-      console.warn(`Erro ao buscar ${tabela} na home:`, error);
-      return [];
-    }
+  if (error) {
+    console.warn(`Erro ao buscar ${tabela} na home:`, error);
+    return [];
   }
 
-  console.warn(`Não foi possível buscar ${tabela}: nenhum campo de usuário compatível foi encontrado.`);
-  return [];
+  return Array.isArray(data) ? data : [];
 }
 
 async function homeIndexPreencherPremium(userId, orcamentos) {
