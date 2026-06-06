@@ -317,7 +317,7 @@ function montarAvisoPlano(perfil) {
   if (plano === 'gratis') {
     return {
       tipo: 'gratis',
-      texto: 'Você está no Plano Grátis. Ative o Plano Básico para salvar orçamentos na nuvem, usar histórico, WhatsApp com link, aprovação online e resumo financeiro.'
+      texto: 'Você está no Plano Grátis. Ative o Plano Básico para salvar orçamentos na nuvem, usar histórico, WhatsApp com link, aprovação online, lembrete interno de orçamentos pendentes e resumo financeiro.'
     };
   }
 
@@ -735,7 +735,7 @@ async function removerLogoPerfil() {
   mostrarStatus('status-logo', 'Logo removida com sucesso.', 'sucesso');
 }
 
-// ==================== RESPONSÁVEIS ====================
+// ==================== RESPONSÁVEIS / CONSULTORES ====================
 
 function obterResponsavelSelecionadoNome() {
   return perfilAtual?.nome || '';
@@ -748,10 +748,15 @@ function limiteResponsaveisPorPlano() {
     'gratis'
   );
 
-  if (plano === 'premium') return 10;
-  if (plano === 'basico') return 2;
+  // REGRA ATUAL DO FS ORÇAMENTOS:
+  // Plano Grátis: máximo 2 responsáveis/consultores
+  // Plano Básico: máximo 5 responsáveis/consultores
+  // Plano Premium: temporariamente 5, pois ainda está em desenvolvimento
 
-  return 1;
+  if (plano === 'basico') return 5;
+  if (plano === 'premium') return 5;
+
+  return 2;
 }
 
 async function carregarResponsaveis() {
@@ -857,42 +862,49 @@ function renderizarListaResponsaveis() {
   if (!container) return;
 
   const selecionado = obterResponsavelSelecionadoNome();
+  const limite = limiteResponsaveisPorPlano();
 
   if (!responsaveisCache.length) {
     container.innerHTML = `
       <div class="responsavel-item">
         <div>
           <span>Nenhum responsável cadastrado</span>
-          <small>Cadastre um responsável para selecionar no perfil.</small>
+          <small>Cadastre um responsável para selecionar no perfil. Limite atual: ${limite}.</small>
         </div>
       </div>
     `;
     return;
   }
 
-  container.innerHTML = responsaveisCache.map(resp => {
-    const ativo = String(resp.nome || '') === String(selecionado || '');
+  container.innerHTML = `
+    <div class="painel-aviso" style="margin-bottom:10px;">
+      Você cadastrou ${responsaveisCache.length} de ${limite} responsável(is)/consultor(es) disponíveis no seu plano.
+    </div>
 
-    return `
-      <div class="responsavel-item ${ativo ? 'selecionado' : ''}">
-        <div>
-          <span>${escaparHtmlPainel(resp.nome)}</span>
-          <small>${ativo ? 'Responsável selecionado' : 'Responsável cadastrado'}</small>
+    ${responsaveisCache.map(resp => {
+      const ativo = String(resp.nome || '') === String(selecionado || '');
+
+      return `
+        <div class="responsavel-item ${ativo ? 'selecionado' : ''}">
+          <div>
+            <span>${escaparHtmlPainel(resp.nome)}</span>
+            <small>${ativo ? 'Responsável selecionado' : 'Responsável cadastrado'}</small>
+          </div>
+
+          <button type="button" onclick="excluirResponsavel('${resp.id}')">
+            Excluir
+          </button>
         </div>
-
-        <button type="button" onclick="excluirResponsavel('${resp.id}')">
-          Excluir
-        </button>
-      </div>
-    `;
-  }).join('');
+      `;
+    }).join('')}
+  `;
 }
 
 function abrirModalResponsavelInterno() {
   const limite = limiteResponsaveisPorPlano();
 
   if (responsaveisCache.length >= limite) {
-    alert(`Seu plano permite no máximo ${limite} responsável(is).`);
+    alert(`Seu plano permite no máximo ${limite} responsável(is)/consultor(es).`);
     return;
   }
 
@@ -928,14 +940,14 @@ async function salvarResponsavel() {
   const nome = input?.value?.trim() || '';
 
   if (!nome) {
-    mostrarStatus('status-responsavel', 'Informe o nome do responsável.', 'erro');
+    mostrarStatus('status-responsavel', 'Informe o nome do responsável/consultor.', 'erro');
     return;
   }
 
   const limite = limiteResponsaveisPorPlano();
 
   if (responsaveisCache.length >= limite) {
-    mostrarStatus('status-responsavel', `Seu plano permite no máximo ${limite} responsável(is).`, 'erro');
+    mostrarStatus('status-responsavel', `Seu plano permite no máximo ${limite} responsável(is)/consultor(es).`, 'erro');
     return;
   }
 
@@ -944,7 +956,7 @@ async function salvarResponsavel() {
   );
 
   if (jaExiste) {
-    mostrarStatus('status-responsavel', 'Este responsável já está cadastrado.', 'erro');
+    mostrarStatus('status-responsavel', 'Este responsável/consultor já está cadastrado.', 'erro');
     return;
   }
 
@@ -960,7 +972,7 @@ async function salvarResponsavel() {
 
   if (error) {
     console.error('Erro ao salvar responsável:', error);
-    mostrarStatus('status-responsavel', 'Erro ao salvar responsável.', 'erro');
+    mostrarStatus('status-responsavel', 'Erro ao salvar responsável/consultor.', 'erro');
     return;
   }
 
@@ -987,7 +999,7 @@ async function excluirResponsavel(id) {
     return;
   }
 
-  const confirmar = confirm('Deseja excluir este responsável?');
+  const confirmar = confirm('Deseja excluir este responsável/consultor?');
 
   if (!confirmar) return;
 
@@ -1002,7 +1014,7 @@ async function excluirResponsavel(id) {
 
   if (error) {
     console.error('Erro ao excluir responsável:', error);
-    alert('Erro ao excluir responsável.');
+    alert('Erro ao excluir responsável/consultor.');
     return;
   }
 
@@ -1089,7 +1101,6 @@ async function alterarSenhaSegura() {
   fecharModalSenha();
   alert('Senha alterada com sucesso.');
 }
-
 
 // ==================== EXCLUSÃO DE CONTA ====================
 
@@ -1180,7 +1191,6 @@ async function excluirMinhaConta() {
 window.abrirModalExcluirConta = abrirModalExcluirConta;
 window.fecharModalExcluirConta = fecharModalExcluirConta;
 window.excluirMinhaConta = excluirMinhaConta;
-
 
 // ==================== DASHBOARD ====================
 
