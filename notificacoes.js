@@ -920,6 +920,72 @@ document.addEventListener('keydown', event => {
   }
 });
 
+async function verificarLembretesOrcamentosPendentes24h() {
+    try {
+        if (!window._supabase) return;
+
+        const { data: { session }, error: erroSessao } = await _supabase.auth.getSession();
+
+        if (erroSessao || !session?.user?.id) return;
+
+        const usuarioId = session.user.id;
+
+        const dataLimite = new Date();
+        dataLimite.setHours(dataLimite.getHours() - 24);
+
+        const { data: orcamentosPendentes, error } = await _supabase
+            .from('orcamentos')
+            .select('id, titulo, cliente_nome, status, criado_em, lembrete_24h_enviado_em')
+            .eq('usuario_id', usuarioId)
+            .eq('status', 'pendente')
+            .lte('criado_em', dataLimite.toISOString())
+            .is('lembrete_24h_enviado_em', null);
+
+        if (error) {
+            console.warn('Erro ao buscar orçamentos pendentes para lembrete:', error);
+            return;
+        }
+
+        if (!orcamentosPendentes || !orcamentosPendentes.length) return;
+
+        for (const orcamento of orcamentosPendentes) {
+            const cliente = orcamento.cliente_nome || 'cliente';
+            const titulo = orcamento.titulo || 'orçamento pendente';
+
+            await _supabase
+                .from('notificacoes')
+                .insert({
+                    usuario_id: usuarioId,
+                    orcamento_id: orcamento.id,
+                    tipo: 'lembrete_orcamento',
+                    titulo: 'Orçamento pendente há 24h',
+                    mensagem: `O orçamento "${titulo}" para ${cliente} ainda está pendente. Talvez seja hora de chamar o cliente.`,
+                    link: `orcamentos.html?id=${orcamento.id}`,
+                    lida: false
+                });
+
+            await _supabase
+                .from('orcamentos')
+                .update({
+                    lembrete_24h_enviado_em: new Date().toISOString()
+                })
+                .eq('id', orcamento.id)
+                .eq('usuario_id', usuarioId);
+        }
+
+        if (typeof carregarNotificacoes === 'function') {
+            carregarNotificacoes();
+        }
+
+    } catch (e) {
+        console.warn('Erro geral ao verificar lembretes de orçamento:', e);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(verificarLembretesOrcamentosPendentes24h, 1500);
+});
+
 // ==================== EXPORTAÇÕES GLOBAIS ====================
 
 window.abrirModalNotificacoes = abrirModalNotificacoes;
