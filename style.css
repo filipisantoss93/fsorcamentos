@@ -3205,9 +3205,14 @@ button.google::after {
   border-radius: 999px;
 }
 
+    footer {
+      text-align: center;
+      color: #bdbdbd;
+      padding: 25px 10px;
+      font-size: 13px;
+    }
+
     footer a {
       color: #ffc400;
       text-decoration: none;
-      text-align: center;
-
     }
