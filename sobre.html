@@ -1,416 +1,551 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#3e2723">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3e2723">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <title>Sobre o FS Orçamentos - Gerador de Orçamentos Profissionais</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Conheça o FS Orçamentos, uma plataforma para gerar orçamentos profissionais em PDF, salvar propostas, enviar por WhatsApp e receber lembretes internos de orçamentos pendentes.">
-    <meta name="keywords" content="FS Orçamentos, gerador de orçamento, orçamento PDF, orçamento profissional, MEI, autônomo, prestador de serviço, oficina, gestão de orçamentos, lembrete de orçamento pendente">
-    <meta name="author" content="Filipi Aparecido dos Santos">
+  <title>Sobre o FS Orçamentos - Orçamentos, Clientes, Veículos, OS e Estoque</title>
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://fsorcamentos.com.br/sobre.html">
-    <meta property="og:title" content="Sobre o FS Orçamentos">
-    <meta property="og:description" content="Gere orçamentos profissionais em PDF, organize propostas, envie por WhatsApp e acompanhe pendências com lembretes internos.">
-    <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
+  <meta name="description" content="Conheça o FS Orçamentos: plataforma para gerar orçamentos profissionais em PDF, enviar link pelo WhatsApp, gerenciar clientes, veículos, ordens de serviço e estoque conforme o plano contratado.">
+  <meta name="keywords" content="FS Orçamentos, gerador de orçamento, orçamento PDF, orçamento profissional, MEI, autônomo, prestador de serviço, oficina, gestão de oficina, ordem de serviço, controle de estoque, cadastro de clientes, cadastro de veículos">
+  <meta name="author" content="Filipi Aparecido dos Santos">
 
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://fsorcamentos.com.br/sobre.html">
-    <meta property="twitter:title" content="Sobre o FS Orçamentos">
-    <meta property="twitter:description" content="Uma plataforma criada para gerar, organizar e acompanhar orçamentos profissionais.">
-    <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fsorcamentos.com.br/sobre.html">
+  <meta property="og:title" content="Sobre o FS Orçamentos">
+  <meta property="og:description" content="Gere orçamentos profissionais, envie links pelo WhatsApp e evolua para gestão completa com clientes, veículos, OS e estoque.">
+  <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="shortcut icon" href="/favicon.png">
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://fsorcamentos.com.br/sobre.html">
+  <meta property="twitter:title" content="Sobre o FS Orçamentos">
+  <meta property="twitter:description" content="Uma plataforma criada para gerar, organizar e acompanhar orçamentos, clientes, veículos e ordens de serviço.">
+  <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
 
-    <meta name="google-adsense-account" content="ca-pub-5628949951885077">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077"
-        crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "FS Orçamentos",
-        "url": "https://fsorcamentos.com.br/"
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077" crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "FS Orçamentos",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "url": "https://fsorcamentos.com.br/",
+    "description": "Plataforma para gerar orçamentos profissionais, acompanhar aprovações e gerenciar clientes, veículos, ordens de serviço e estoque."
+  }
+  </script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17435932696');
+  </script>
+
+  <style>
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #2c1b17;
+      --fs-creme: #f4ece1;
+      --fs-creme-2: #fffaf0;
+      --fs-amarelo: #ffc400;
+      --fs-verde: #22c55e;
+      --fs-vermelho: #dc2626;
+      --fs-azul: #2563eb;
+      --fs-borda: #e0d6c8;
+      --fs-texto-suave: #6d4c41;
     }
-    </script>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'AW-17435932696');
-    </script>
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255,196,0,0.16), transparent 30%),
+        linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+      min-height: 100vh;
+      color: var(--fs-marrom);
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-    <style>
-        .sobre-hero {
-            max-width: 1000px;
-            margin: 35px auto 20px;
-            padding: 30px 20px;
-            text-align: center;
-            color: #ffffff;
-        }
+    .sobre-hero {
+      max-width: 1080px;
+      margin: 34px auto 20px;
+      padding: 36px 18px 24px;
+      text-align: center;
+      color: #ffffff;
+    }
 
-        .sobre-hero-logo {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
+    .sobre-hero-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
 
-        .sobre-fs-box {
-            font-weight: 800;
-            color: #3e2723;
-            background: var(--accent-yellow);
-            padding: 5px 14px;
-            border-radius: 8px;
-            font-size: 34px;
-        }
+    .sobre-fs-box {
+      font-weight: 900;
+      color: var(--fs-marrom);
+      background: var(--fs-amarelo);
+      padding: 5px 14px;
+      border-radius: 8px;
+      font-size: 34px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+    }
 
-        .sobre-fs-text {
-            font-weight: 300;
-            color: #ffffff;
-            font-size: 34px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+    .sobre-fs-text {
+      font-weight: 300;
+      color: #ffffff;
+      font-size: 34px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-        .sobre-hero p {
-            max-width: 780px;
-            margin: 10px auto 0;
-            color: #dddddd;
-            font-size: 18px;
-            line-height: 1.5;
-        }
+    .sobre-hero h1 {
+      margin: 10px auto 12px;
+      max-width: 900px;
+      color: #ffffff;
+      font-size: 38px;
+      line-height: 1.15;
+    }
 
-        .container-sobre {
-            max-width: 950px;
-            margin: 25px auto 45px;
-            padding: 30px;
-            background: var(--body-brown);
-            color: var(--text-dark);
-            border-radius: 18px;
-            border-top: 5px solid var(--accent-yellow);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-        }
+    .sobre-hero p {
+      max-width: 840px;
+      margin: 10px auto 0;
+      color: #dddddd;
+      font-size: 18px;
+      line-height: 1.55;
+    }
 
-        .container-sobre h1,
-        .container-sobre h2 {
-            color: #3e2723;
-            border-bottom: 2px solid var(--accent-yellow);
-            padding-bottom: 10px;
-        }
+    .sobre-hero-acoes {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
 
-        .container-sobre h1 {
-            margin-top: 0;
-            font-size: 30px;
-        }
+    .sobre-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-weight: 900;
+      text-decoration: none;
+      border: 2px solid var(--fs-amarelo);
+      transition: .2s ease;
+    }
 
-        .container-sobre h2 {
-            margin-top: 32px;
-            font-size: 22px;
-        }
+    .sobre-btn-principal {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border-color: var(--fs-amarelo);
+    }
 
-        .highlight {
-            color: #5d4037;
-            font-weight: bold;
-            font-size: 17px;
-        }
+    .sobre-btn-secundario {
+      background: transparent;
+      color: var(--fs-amarelo);
+      border-color: var(--fs-amarelo);
+    }
 
-        .cards-sobre {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin: 25px 0;
-        }
+    .sobre-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.24);
+    }
 
-        .card-sobre {
-            background: #ffffff;
-            border-left: 5px solid var(--accent-yellow);
-            padding: 16px;
-            border-radius: 12px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-        }
+    .container-sobre {
+      max-width: 1080px;
+      margin: 25px auto 45px;
+      padding: 30px;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
+      border-radius: 22px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 12px 34px rgba(0,0,0,0.42);
+    }
 
-        .card-sobre strong {
-            display: block;
-            margin-bottom: 6px;
-            color: #3e2723;
-        }
+    .container-sobre h2 {
+      color: var(--fs-marrom);
+      border-bottom: 2px solid var(--fs-amarelo);
+      padding-bottom: 10px;
+      margin-top: 34px;
+      font-size: 25px;
+    }
 
-        .lista-beneficios {
-            padding-left: 20px;
-        }
+    .container-sobre h2:first-child {
+      margin-top: 0;
+    }
 
-        .lista-beneficios li {
-            margin-bottom: 8px;
-        }
+    .container-sobre p {
+      color: var(--fs-texto-suave);
+      line-height: 1.65;
+      font-size: 16px;
+    }
 
-        .plano-box {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin: 24px 0;
-        }
+    .highlight {
+      color: #5d4037;
+      font-weight: 900;
+      font-size: 17px;
+      background: #fff8e1;
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 16px;
+    }
 
-        .plano-card {
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 18px;
-            border: 1px solid #e0d6c8;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+    .cards-sobre {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 25px 0;
+    }
 
-        .plano-card h3 {
-            margin: 0 0 8px 0;
-            color: #3e2723;
-            font-size: 22px;
-        }
+    .card-sobre {
+      background: #ffffff;
+      border-left: 6px solid var(--fs-amarelo);
+      padding: 17px;
+      border-radius: 14px;
+      box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+      color: #5d4037;
+      line-height: 1.45;
+    }
 
-        .plano-card .tag-plano {
-            display: inline-block;
-            width: fit-content;
-            margin-bottom: 12px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+    .card-sobre strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--fs-marrom);
+      font-size: 16px;
+    }
 
-        .tag-gratis {
-            background: #fff3cd;
-            color: #856404;
-        }
+    .lista-beneficios {
+      padding-left: 20px;
+      color: var(--fs-texto-suave);
+      line-height: 1.6;
+    }
 
-        .tag-basico {
-            background: #d4edda;
-            color: #155724;
-        }
+    .lista-beneficios li {
+      margin-bottom: 9px;
+    }
 
-        .tag-premium {
-            background: #e3f2fd;
-            color: #0d47a1;
-        }
+    .fluxo-box {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 22px 0;
+    }
 
-        .plano-card ul {
-            padding-left: 18px;
-            margin: 10px 0;
-        }
+    .fluxo-item {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-top: 5px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      font-weight: 900;
+      color: var(--fs-marrom);
+      box-shadow: 0 5px 14px rgba(0,0,0,.08);
+    }
 
-        .plano-card li {
-            margin-bottom: 7px;
-        }
+    .fluxo-item small {
+      display: block;
+      margin-top: 6px;
+      font-weight: 700;
+      color: var(--fs-texto-suave);
+      line-height: 1.35;
+    }
 
-        .plano-card small {
-            display: block;
-            margin-top: 12px;
-            color: #777;
-        }
+    .plano-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
 
-        .premium-destaque {
-            border: 2px solid var(--accent-yellow);
-            position: relative;
-        }
+    .plano-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #e0d6c8;
+      box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100%;
+    }
 
-        .premium-destaque::before {
-            content: "Em desenvolvimento";
-            position: absolute;
-            top: -12px;
-            right: 14px;
-            background: var(--accent-yellow);
-            color: #3e2723;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
+    .plano-card h3 {
+      margin: 0 0 8px 0;
+      color: var(--fs-marrom);
+      font-size: 23px;
+    }
 
-        .plano-em-desenvolvimento {
-            opacity: 0.92;
-        }
+    .plano-preco {
+      display: block;
+      margin: 0 0 12px;
+      color: var(--fs-marrom);
+      font-size: 25px;
+      font-weight: 900;
+    }
 
-        .premium-status {
-            margin: 22px 0;
-            padding: 16px;
-            border-radius: 12px;
-            background: #f5f5f5;
-            color: #3e2723;
-            font-size: 18px;
-            font-weight: 900;
-            text-align: center;
-            letter-spacing: 1px;
-            border: 2px dashed #c8b8a8;
-        }
+    .plano-card .tag-plano {
+      display: inline-block;
+      width: fit-content;
+      margin-bottom: 12px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
 
-        .comparativo {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 18px;
-            background: #ffffff;
-            border-radius: 12px;
-            overflow: hidden;
-        }
+    .tag-gratis {
+      background: #fff3cd;
+      color: #856404;
+    }
 
-        .comparativo th,
-        .comparativo td {
-            padding: 12px;
-            border-bottom: 1px solid #e7ded2;
-            text-align: left;
-            font-size: 14px;
-        }
+    .tag-basico {
+      background: #d4edda;
+      color: #155724;
+    }
 
-        .comparativo th {
-            background: #3e2723;
-            color: var(--accent-yellow);
-            text-transform: uppercase;
-            font-size: 12px;
-        }
+    .tag-premium {
+      background: #e3f2fd;
+      color: #0d47a1;
+    }
 
-        .comparativo td:not(:first-child),
-        .comparativo th:not(:first-child) {
-            text-align: center;
-        }
+    .plano-card ul {
+      padding-left: 18px;
+      margin: 10px 0;
+      color: var(--fs-texto-suave);
+    }
 
-        .sim {
-            color: #1b5e20;
-            font-weight: bold;
-        }
+    .plano-card li {
+      margin-bottom: 8px;
+    }
 
-        .nao {
-            color: #b71c1c;
-            font-weight: bold;
-        }
+    .plano-card small {
+      display: block;
+      margin-top: 12px;
+      color: #777;
+      line-height: 1.45;
+    }
 
-        .em-breve {
-            color: #795548;
-            font-weight: bold;
-            font-size: 13px;
-        }
+    .premium-destaque {
+      border: 2px solid var(--fs-amarelo);
+      position: relative;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,.14);
+    }
 
-        .cta-sobre {
-            margin-top: 30px;
-            padding: 22px;
-            background: #fff3cd;
-            border-radius: 14px;
-            text-align: center;
-            color: #3e2723;
-        }
+    .premium-destaque::before {
+      content: "Gestão completa";
+      position: absolute;
+      top: -13px;
+      right: 14px;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      font-size: 11px;
+      font-weight: 900;
+      padding: 5px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
 
-        .cta-sobre a {
-            display: inline-block;
-            margin-top: 12px;
-            background: #3e2723;
-            color: var(--accent-yellow);
-            padding: 12px 22px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
+    .comparativo-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--fs-borda);
+      background: #ffffff;
+      margin-top: 18px;
+    }
 
-        .cta-sobre a:hover {
-            background: var(--accent-yellow);
-            color: #3e2723;
-        }
+    .comparativo {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+      background: #ffffff;
+    }
 
-        .fs-adsense-bloco {
-            display: none;
-            margin: 32px auto;
-            padding: 14px;
-            background: #fffaf0;
-            border: 1px solid #e7ded2;
-            border-radius: 14px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-            overflow: hidden;
-        }
+    .comparativo th,
+    .comparativo td {
+      padding: 13px 12px;
+      border-bottom: 1px solid #e7ded2;
+      text-align: left;
+      font-size: 14px;
+    }
 
-        .fs-adsense-bloco .ads-label {
-            display: block;
-            margin-bottom: 8px;
-            color: #8d6e63;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            text-align: center;
-        }
+    .comparativo th {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      text-transform: uppercase;
+      font-size: 12px;
+    }
 
-        .fs-adsense-bloco ins.adsbygoogle {
-            min-height: 90px;
-        }
+    .comparativo td:not(:first-child),
+    .comparativo th:not(:first-child) {
+      text-align: center;
+      font-weight: 800;
+    }
 
-        .fs-adsense-bloco-horizontal ins.adsbygoogle {
-            min-height: 120px;
-        }
+    .comparativo tr:nth-child(even) {
+      background: #fffaf0;
+    }
 
-        .sobre-footer {
-            text-align: center;
-            padding: 35px 20px;
-            color: #777;
-            font-size: 13px;
-        }
+    .sim {
+      color: #1b5e20;
+      font-weight: 900;
+    }
 
-        .sobre-footer a {
-            color: #777;
-        }
+    .nao {
+      color: #b71c1c;
+      font-weight: 900;
+    }
 
-        @media (max-width: 800px) {
-            .cards-sobre,
-            .plano-box {
-                grid-template-columns: 1fr;
-            }
+    .obs {
+      color: #795548;
+      font-weight: 900;
+      font-size: 13px;
+    }
 
-            .comparativo {
-                font-size: 12px;
-            }
+    .cta-sobre {
+      margin-top: 30px;
+      padding: 24px;
+      background: #fff3cd;
+      border-radius: 16px;
+      text-align: center;
+      color: var(--fs-marrom);
+      border: 1px solid #f3df9c;
+    }
 
-            .comparativo th,
-            .comparativo td {
-                padding: 9px;
-            }
-        }
+    .cta-sobre strong {
+      font-size: 20px;
+    }
 
-        @media (max-width: 700px) {
-            .sobre-hero {
-                padding-top: 25px;
-            }
+    .cta-sobre-acoes {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-            .sobre-fs-box,
-            .sobre-fs-text {
-                font-size: 26px;
-            }
+    .cta-sobre a {
+      display: inline-flex;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 12px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 13px;
+      border: 2px solid var(--fs-marrom);
+    }
 
-            .container-sobre {
-                margin: 20px 12px 35px;
-                padding: 22px;
-            }
+    .cta-sobre a:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+    }
 
-            .fs-adsense-bloco {
-                margin: 26px auto;
-                padding: 10px;
-            }
-        }
-    </style>
+    .fs-adsense-bloco {
+      display: none;
+      margin: 32px auto;
+      padding: 14px;
+      background: #fffaf0;
+      border: 1px solid #e7ded2;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+
+    .fs-adsense-bloco .ads-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #8d6e63;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      text-align: center;
+    }
+
+    .fs-adsense-bloco ins.adsbygoogle {
+      min-height: 90px;
+    }
+
+    .fs-adsense-bloco-horizontal ins.adsbygoogle {
+      min-height: 120px;
+    }
+
+    .sobre-footer {
+      text-align: center;
+      padding: 35px 20px;
+      color: #bdbdbd;
+      font-size: 13px;
+    }
+
+    .sobre-footer a {
+      color: var(--fs-amarelo);
+      text-decoration: none;
+    }
+
+    @media (max-width: 940px) {
+      .cards-sobre,
+      .plano-box {
+        grid-template-columns: 1fr;
+      }
+
+      .premium-destaque {
+        transform: none;
+      }
+
+      .fluxo-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sobre-hero {
+        padding-top: 25px;
+      }
+
+      .sobre-hero h1 {
+        font-size: 27px;
+      }
+
+      .sobre-fs-box,
+      .sobre-fs-text {
+        font-size: 26px;
+      }
+
+      .container-sobre {
+        margin: 20px 12px 35px;
+        padding: 22px;
+      }
+
+      .fs-adsense-bloco {
+        margin: 26px auto;
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -421,404 +556,442 @@
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script src="ui.js"></script>
+<script src="planos.js"></script>
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 
 <script>
-async function carregarHeaderPublicoSeDeslogado() {
-    setTimeout(async () => {
-        const headerContainer = document.getElementById('header-container');
-
-        if (!headerContainer) return;
-        if (headerContainer.innerHTML.trim()) return;
-
-        let session = null;
-
-        try {
-            if (window._supabase) {
-                const result = await _supabase.auth.getSession();
-                session = result.data.session;
-            }
-        } catch (e) {
-            console.warn('Não foi possível verificar sessão para header público:', e);
-        }
-
-        if (session) return;
-
-        headerContainer.style.display = 'block';
-
-        headerContainer.innerHTML = `
-            <header class="main-header" style="display:block;">
-                <nav class="nav-container">
-                    <div class="logo-nav">FS<span>Orçamentos</span></div>
-
-                    <ul class="nav-menu">
-                        <li><a href="index.html">Início</a></li>
-                        <li><a href="sobre.html">Sobre</a></li>
-                        <li><a href="orcamentos.html">Orçamentos</a></li>
-                        <li><a href="painel.html">Painel</a></li>
-                        <li><a href="contato.html">Contato</a></li>
-                    </ul>
-
-                    <button class="menu-mobile-btn" onclick="toggleMenuMobile()">☰</button>
-                </nav>
-            </header>
-        `;
-    }, 600);
-}
-
 function normalizarPlanoSobre(valor) {
-    return String(valor || 'gratis')
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim();
+  return String(valor || 'gratis')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
 }
 
 async function obterPlanoAtualSobre() {
-    let plano = localStorage.getItem('usuario_plano') || 'gratis';
+  let plano = localStorage.getItem('usuario_plano') || 'gratis';
 
-    try {
-        if (!window._supabase) return normalizarPlanoSobre(plano);
+  try {
+    if (!window._supabase) return normalizarPlanoSobre(plano);
 
-        const { data: { session } } = await _supabase.auth.getSession();
+    const { data: { session } } = await _supabase.auth.getSession();
 
-        if (!session?.user?.id) {
-            return 'gratis';
-        }
-
-        const { data: perfil, error } = await _supabase
-            .from('perfis')
-            .select('plano')
-            .eq('id', session.user.id)
-            .maybeSingle();
-
-        if (error) {
-            console.warn('Não foi possível verificar plano para anúncios:', error);
-            return normalizarPlanoSobre(plano);
-        }
-
-        plano = perfil?.plano || plano || 'gratis';
-        localStorage.setItem('usuario_plano', plano);
-
-        return normalizarPlanoSobre(plano);
-    } catch (e) {
-        console.warn('Não foi possível verificar plano para anúncios:', e);
-        return normalizarPlanoSobre(plano);
+    if (!session?.user?.id) {
+      return 'gratis';
     }
+
+    const { data: perfil, error } = await _supabase
+      .from('perfis')
+      .select('plano, plano_status, plano_expira_em')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    if (error) {
+      console.warn('Não foi possível verificar plano para anúncios:', error);
+      return normalizarPlanoSobre(plano);
+    }
+
+    const planoBanco = perfil?.plano || plano || 'gratis';
+    const status = normalizarPlanoSobre(perfil?.plano_status || 'ativo');
+    const expiraEm = perfil?.plano_expira_em || '';
+    let planoFinal = normalizarPlanoSobre(planoBanco);
+
+    if ((planoFinal === 'basico' || planoFinal === 'premium') && (status === 'cancelado' || status === 'expirado')) {
+      planoFinal = 'gratis';
+    }
+
+    if (expiraEm) {
+      const expira = new Date(expiraEm);
+      if (!isNaN(expira.getTime()) && expira < new Date()) {
+        planoFinal = 'gratis';
+      }
+    }
+
+    localStorage.setItem('usuario_plano', planoFinal);
+    return planoFinal;
+  } catch (e) {
+    console.warn('Não foi possível verificar plano para anúncios:', e);
+    return normalizarPlanoSobre(plano);
+  }
 }
 
 async function controlarAnunciosSobre() {
-    const blocos = document.querySelectorAll('.fs-adsense-bloco');
-    if (!blocos.length) return;
+  const blocos = document.querySelectorAll('.fs-adsense-bloco');
+  if (!blocos.length) return;
 
-    const plano = await obterPlanoAtualSobre();
-    const deveExibir = plano !== 'basico' && plano !== 'premium';
+  const plano = await obterPlanoAtualSobre();
+  const deveExibir = plano !== 'basico' && plano !== 'premium';
 
+  blocos.forEach(bloco => {
+    bloco.style.display = deveExibir ? 'block' : 'none';
+  });
+
+  if (!deveExibir) return;
+
+  setTimeout(() => {
     blocos.forEach(bloco => {
-        bloco.style.display = deveExibir ? 'block' : 'none';
+      const anuncio = bloco.querySelector('ins.adsbygoogle');
+
+      if (!anuncio) return;
+      if (anuncio.dataset.carregado === 'true') return;
+
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        anuncio.dataset.carregado = 'true';
+      } catch (e) {
+        console.warn('AdSense não carregado:', e);
+      }
     });
-
-    if (!deveExibir) return;
-
-    setTimeout(() => {
-        blocos.forEach(bloco => {
-            const anuncio = bloco.querySelector('ins.adsbygoogle');
-
-            if (!anuncio) return;
-            if (anuncio.dataset.carregado === 'true') return;
-
-            try {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-                anuncio.dataset.carregado = 'true';
-            } catch (e) {
-                console.warn('AdSense não carregado:', e);
-            }
-        });
-    }, 300);
+  }, 300);
 }
 
 function configurarAtualizacaoAnunciosSobre() {
-    controlarAnunciosSobre();
+  controlarAnunciosSobre();
 
-    if (window._supabase) {
-        _supabase.auth.onAuthStateChange(() => {
-            setTimeout(controlarAnunciosSobre, 500);
-        });
-    }
+  if (window._supabase) {
+    _supabase.auth.onAuthStateChange(() => {
+      setTimeout(controlarAnunciosSobre, 500);
+    });
+  }
 
-    setTimeout(controlarAnunciosSobre, 1200);
-}
-
-function irParaPlanosHome() {
-    window.location.href = 'index.html#painel-plano-basico-home';
+  setTimeout(controlarAnunciosSobre, 1200);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    carregarHeaderPublicoSeDeslogado();
-    configurarAtualizacaoAnunciosSobre();
+  configurarAtualizacaoAnunciosSobre();
 });
 </script>
 
 <section class="sobre-hero">
-    <div class="sobre-hero-logo">
-        <span class="sobre-fs-box">FS</span>
-        <span class="sobre-fs-text">Orçamentos</span>
-    </div>
+  <div class="sobre-hero-logo">
+    <span class="sobre-fs-box">FS</span>
+    <span class="sobre-fs-text">Orçamentos</span>
+  </div>
 
-    <p>
-        Gere orçamentos profissionais em PDF, organize propostas, envie pelo WhatsApp
-        e receba lembretes internos para não esquecer orçamentos pendentes.
-    </p>
+  <h1>Do orçamento em PDF à gestão completa do serviço.</h1>
+
+  <p>
+    O FS Orçamentos ajuda profissionais, MEIs, prestadores de serviço e oficinas a gerar propostas profissionais,
+    acompanhar aprovações, organizar clientes, veículos, ordens de serviço e estoque conforme o plano contratado.
+  </p>
+
+  <div class="sobre-hero-acoes">
+    <a href="/gerador.html" class="sobre-btn sobre-btn-principal">🧾 Gerar orçamento</a>
+    <a href="/planos.html" class="sobre-btn sobre-btn-secundario">⭐ Ver planos</a>
+  </div>
 </section>
 
 <main class="container-sobre">
-    <h1>Sobre o FS Orçamentos</h1>
+  <h2>O que é o FS Orçamentos?</h2>
 
-    <p class="highlight">
-        O FS Orçamentos foi criado para ajudar profissionais autônomos, MEIs, oficinas,
-        prestadores de serviço e pequenas empresas a criarem propostas com aparência profissional,
-        de forma rápida, organizada e fácil de enviar ao cliente.
-    </p>
+  <p class="highlight">
+    O FS Orçamentos é uma plataforma criada para profissionalizar o atendimento de quem vende serviços ou produtos.
+    Ela começa com um gerador de orçamento em PDF e evolui, no Premium, para um sistema de gestão com clientes,
+    veículos, ordens de serviço, estoque e histórico operacional.
+  </p>
 
-    <p>
-        A plataforma começou como um gerador simples de orçamento em PDF e evoluiu para uma ferramenta
-        de organização comercial. Agora, além de montar o documento, o sistema também pode salvar
-        propostas na nuvem, facilitar o envio manual por WhatsApp e lembrar o usuário quando um
-        orçamento continuar pendente por mais de 24 horas.
-    </p>
+  <p>
+    A ideia é simples: o profissional não deve depender apenas de conversa perdida no WhatsApp, papel ou planilha.
+    Com a plataforma, ele cria o orçamento, envia para o cliente, acompanha a resposta e, no plano Premium,
+    transforma o orçamento aprovado em uma ordem de serviço com controle financeiro e operacional.
+  </p>
 
-    <div class="fs-adsense-bloco fs-adsense-bloco-horizontal" data-local="sobre-topo">
-        <span class="ads-label">Publicidade</span>
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-5628949951885077"
-            data-ad-slot="6308389759"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
+  <div class="fs-adsense-bloco fs-adsense-bloco-horizontal" data-local="sobre-topo">
+    <span class="ads-label">Publicidade</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5628949951885077"
+      data-ad-slot="6308389759"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+  <div class="cards-sobre">
+    <div class="card-sobre">
+      <strong>📄 Orçamento profissional</strong>
+      Gere prévia e PDF com dados da empresa, logo, cliente, itens, total, condições e observações.
     </div>
 
-    <div class="cards-sobre">
-        <div class="card-sobre">
-            <strong>📄 PDF profissional</strong>
-            Crie orçamentos organizados, claros e prontos para enviar ao cliente.
-        </div>
-
-        <div class="card-sobre">
-            <strong>☁️ Orçamentos na nuvem</strong>
-            Nos planos pagos, suas propostas ficam salvas para consulta e acompanhamento.
-        </div>
-
-        <div class="card-sobre">
-            <strong>🔔 Lembrete após 24h</strong>
-            O sistema pode avisar o usuário quando um orçamento continuar pendente por mais de 24 horas.
-        </div>
+    <div class="card-sobre">
+      <strong>🔗 Link com aprovação</strong>
+      No Básico, envie o link do orçamento pelo WhatsApp e permita que o cliente aprove ou recuse online.
     </div>
 
-    <h2>Nossa missão</h2>
+    <div class="card-sobre">
+      <strong>🧰 Gestão completa no Premium</strong>
+      Controle clientes, veículos, ordens de serviço, itens, pagamento, estoque e PDF da OS.
+    </div>
+  </div>
 
-    <p>
-        Nossa missão é dar mais profissionalismo para quem vende serviços ou produtos todos os dias.
-        Um orçamento bem apresentado transmite confiança, evita dúvidas e aumenta as chances de fechamento.
-    </p>
+  <h2>Nossa missão</h2>
 
-    <p>
-        Queremos que o profissional tenha menos trabalho repetitivo e mais controle sobre suas propostas.
-        Por isso, a plataforma foi pensada para funcionar de forma simples no celular ou no computador.
-    </p>
+  <p>
+    Nossa missão é dar mais organização, credibilidade e controle para profissionais que precisam vender e executar serviços.
+    Um orçamento bem apresentado transmite confiança, reduz dúvidas e aumenta a chance de fechamento.
+  </p>
 
-    <h2>Como a plataforma funciona</h2>
+  <p>
+    Para quem trabalha com oficina, manutenção, instalação, elétrica, estética automotiva, assistência técnica,
+    construção, marcenaria, ar-condicionado, limpeza ou serviços recorrentes, o FS Orçamentos ajuda a transformar
+    o atendimento em um fluxo organizado.
+  </p>
 
-    <ul class="lista-beneficios">
-        <li><strong>Dados da empresa:</strong> o emissor cadastra nome, WhatsApp, endereço, CNPJ/CPF e logo no Painel de Controle.</li>
-        <li><strong>Criação do orçamento:</strong> o usuário informa título, cliente, itens, valores e observações.</li>
-        <li><strong>PDF automático:</strong> o sistema monta o documento com os dados da empresa e os itens do orçamento.</li>
-        <li><strong>Salvamento por plano:</strong> no plano Grátis o orçamento apenas baixa em PDF; nos planos pagos ele também pode ser salvo na nuvem.</li>
-        <li><strong>Acompanhamento:</strong> o plano Básico permite consultar orçamentos pendentes, aprovados e recusados.</li>
-        <li><strong>Lembrete interno:</strong> quando um orçamento ficar pendente por mais de 24 horas, o sistema pode criar uma notificação para o usuário lembrar de fazer o acompanhamento.</li>
-    </ul>
+  <h2>Fluxo ideal da plataforma</h2>
 
-    <div class="fs-adsense-bloco" data-local="sobre-meio">
-        <span class="ads-label">Publicidade</span>
-        <ins class="adsbygoogle"
-            style="display:block; text-align:center;"
-            data-ad-layout="in-article"
-            data-ad-format="fluid"
-            data-ad-client="ca-pub-5628949951885077"
-            data-ad-slot="8513105369"></ins>
+  <div class="fluxo-box">
+    <div class="fluxo-item">
+      Cliente
+      <small>Cadastro e contato organizado</small>
     </div>
 
-    <h2>Diferença entre os planos</h2>
-
-    <p>
-        Cada plano foi criado para uma fase diferente do profissional: começar gratuitamente,
-        organizar melhor as propostas ou acompanhar as novidades que estão em desenvolvimento.
-    </p>
-
-    <div class="plano-box">
-        <div class="plano-card">
-            <span class="tag-plano tag-gratis">Com anúncios</span>
-            <h3>Plano Grátis</h3>
-
-            <p>
-                Ideal para quem quer apenas criar um orçamento profissional e baixar o PDF.
-            </p>
-
-            <ul>
-                <li>Gera orçamento em PDF.</li>
-                <li>Exibe anúncios nas páginas públicas e na plataforma.</li>
-                <li>Não salva o orçamento na nuvem.</li>
-                <li>Não envia link automático ao cliente.</li>
-                <li>Não possui lembrete interno de orçamento pendente.</li>
-            </ul>
-
-            <small>Recomendado para uso simples e pontual.</small>
-        </div>
-
-        <div class="plano-card">
-            <span class="tag-plano tag-basico">Sem anúncios</span>
-            <h3>Plano Básico</h3>
-
-            <p>
-                Ideal para quem já precisa organizar melhor os orçamentos, consultar propostas depois
-                e lembrar de acompanhar orçamentos que continuam pendentes.
-            </p>
-
-            <ul>
-                <li>Tudo do plano Grátis.</li>
-                <li>Remove anúncios da plataforma.</li>
-                <li>Salva os orçamentos na nuvem.</li>
-                <li>Permite visualizar pendentes, aprovados e recusados.</li>
-                <li>Permite envio manual do orçamento por WhatsApp.</li>
-                <li>Cria lembrete interno para o usuário após 24h de orçamento pendente.</li>
-            </ul>
-
-            <small>Recomendado para profissionais que geram orçamentos com frequência.</small>
-        </div>
-
-        <div class="plano-card premium-destaque plano-em-desenvolvimento">
-            <span class="tag-plano tag-premium">Em breve</span>
-            <h3>Plano Premium</h3>
-
-            <p class="premium-status">
-                EM DESENVOLVIMENTO
-            </p>
-
-            <small>Novos recursos serão anunciados quando estiverem disponíveis.</small>
-        </div>
+    <div class="fluxo-item">
+      Veículo
+      <small>Placa, modelo, cor, chassi e prisma</small>
     </div>
 
-    <h2>Comparativo rápido</h2>
+    <div class="fluxo-item">
+      Orçamento
+      <small>PDF, link e aprovação online</small>
+    </div>
 
+    <div class="fluxo-item">
+      OS
+      <small>Serviço, itens, pagamento e garantia</small>
+    </div>
+
+    <div class="fluxo-item">
+      Estoque
+      <small>Produtos, peças e baixa ao finalizar</small>
+    </div>
+  </div>
+
+  <h2>Como cada plano funciona</h2>
+
+  <div class="plano-box">
+    <div class="plano-card">
+      <span class="tag-plano tag-gratis">Com anúncios</span>
+      <h3>Plano Grátis</h3>
+      <span class="plano-preco">R$ 0</span>
+
+      <p>
+        Ideal para quem quer começar agora e gerar um orçamento profissional em PDF.
+      </p>
+
+      <ul>
+        <li>Gera orçamento.</li>
+        <li>Mostra prévia do documento.</li>
+        <li>Baixa PDF.</li>
+        <li>Exibe anúncios na plataforma.</li>
+        <li>Não salva orçamento na nuvem.</li>
+        <li>Não gera link de aprovação.</li>
+        <li>Não libera gestão de clientes, veículos, OS ou estoque.</li>
+      </ul>
+
+      <small>Recomendado para uso simples, pontual ou para testar a plataforma.</small>
+    </div>
+
+    <div class="plano-card">
+      <span class="tag-plano tag-basico">Sem anúncios</span>
+      <h3>Plano Básico</h3>
+      <span class="plano-preco">R$ 19,90/mês</span>
+
+      <p>
+        Ideal para quem gera orçamentos com frequência e precisa acompanhar propostas.
+      </p>
+
+      <ul>
+        <li>Tudo do Grátis.</li>
+        <li>Remove anúncios da plataforma.</li>
+        <li>Salva orçamento na nuvem.</li>
+        <li>Gera link para enviar pelo WhatsApp.</li>
+        <li>Cliente aprova ou recusa online.</li>
+        <li>Gestão de orçamentos pendentes, aprovados e recusados.</li>
+        <li>Resumo financeiro básico.</li>
+        <li>Até 5 consultores técnicos.</li>
+      </ul>
+
+      <small>Recomendado para prestadores que querem vender mais e acompanhar as propostas.</small>
+    </div>
+
+    <div class="plano-card premium-destaque">
+      <span class="tag-plano tag-premium">Gestão completa</span>
+      <h3>Plano Premium</h3>
+      <span class="plano-preco">R$ 69,90/mês</span>
+
+      <p>
+        Ideal para quem quer transformar o orçamento em gestão de serviço, oficina ou operação.
+      </p>
+
+      <ul>
+        <li>Tudo do Básico.</li>
+        <li>Cadastro de clientes.</li>
+        <li>Cadastro de veículos com placa, chassi, marca, modelo, cor e prisma.</li>
+        <li>Ordens de serviço.</li>
+        <li>Orçamento aprovado vira OS.</li>
+        <li>PDF profissional da OS.</li>
+        <li>Controle de estoque.</li>
+        <li>Itens, mão de obra, pagamento e garantia dentro da OS.</li>
+        <li>Histórico por cliente e veículo em evolução.</li>
+      </ul>
+
+      <small>Recomendado para oficinas e prestadores que precisam controlar execução, histórico e operação.</small>
+    </div>
+  </div>
+
+  <div class="fs-adsense-bloco" data-local="sobre-meio">
+    <span class="ads-label">Publicidade</span>
+    <ins class="adsbygoogle"
+      style="display:block; text-align:center;"
+      data-ad-layout="in-article"
+      data-ad-format="fluid"
+      data-ad-client="ca-pub-5628949951885077"
+      data-ad-slot="8513105369"></ins>
+  </div>
+
+  <h2>Comparativo rápido</h2>
+
+  <div class="comparativo-wrapper">
     <table class="comparativo">
-        <thead>
-            <tr>
-                <th>Recurso</th>
-                <th>Grátis</th>
-                <th>Básico</th>
-                <th>Premium</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Gerar PDF</td>
-                <td class="sim">Sim</td>
-                <td class="sim">Sim</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Exibição de anúncios</td>
-                <td class="nao">Sim</td>
-                <td class="sim">Não</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Salvar orçamentos na nuvem</td>
-                <td class="nao">Não</td>
-                <td class="sim">Sim</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Enviar link do orçamento por WhatsApp</td>
-                <td class="nao">Não</td>
-                <td class="sim">Sim</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Notificação quando o cliente aprova via link</td>
-                <td class="nao">Não</td>
-                <td class="sim">Sim</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Visualizar orçamentos pendentes, aprovados e recusados</td>
-                <td class="nao">Não</td>
-                <td class="sim">Sim</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Relatório mensal no Painel de Controle</td>
-                <td class="nao">Não</td>
-                <td class="sim">Sim</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-            <tr>
-                <td>Lembrete interno para o usuário após 24h de orçamento pendente</td>
-                <td class="nao">Não</td>
-                <td class="sim">Sim</td>
-                <td class="em-breve">Em desenvolvimento</td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Recurso</th>
+          <th>Grátis</th>
+          <th>Básico</th>
+          <th>Premium</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gerar orçamento</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Pré-visualizar e baixar PDF</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Anúncios na plataforma</td>
+          <td class="obs">Sim</td>
+          <td class="sim">Não</td>
+          <td class="sim">Não</td>
+        </tr>
+        <tr>
+          <td>Salvar orçamentos na nuvem</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Link do orçamento por WhatsApp</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Aprovação ou recusa pelo cliente</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Histórico e status dos orçamentos</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Resumo financeiro de orçamentos</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Cadastro de clientes</td>
+          <td class="nao">Não</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Cadastro de veículos</td>
+          <td class="nao">Não</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Ordens de serviço</td>
+          <td class="nao">Não</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>PDF da OS</td>
+          <td class="nao">Não</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+        </tr>
+        <tr>
+          <td>Controle de estoque</td>
+          <td class="nao">Não</td>
+          <td class="nao">Não</td>
+          <td class="sim">Sim</td>
+        </tr>
+      </tbody>
     </table>
+  </div>
 
-    <h2>Por que usar?</h2>
+  <h2>Por que usar?</h2>
 
-    <ul class="lista-beneficios">
-        <li><strong>Agilidade:</strong> crie orçamentos em poucos minutos.</li>
-        <li><strong>Profissionalismo:</strong> envie propostas com aparência mais confiável.</li>
-        <li><strong>Organização:</strong> mantenha os dados da empresa cadastrados no painel.</li>
-        <li><strong>Controle:</strong> planos pagos permitem acompanhar o histórico e o status dos orçamentos.</li>
-        <li><strong>Lembrete inteligente:</strong> receba um aviso interno quando um orçamento pendente precisar de atenção depois de 24 horas.</li>
-        <li><strong>Evolução contínua:</strong> novos recursos serão adicionados conforme a plataforma crescer.</li>
-    </ul>
+  <ul class="lista-beneficios">
+    <li><strong>Agilidade:</strong> crie orçamentos em poucos minutos.</li>
+    <li><strong>Profissionalismo:</strong> envie propostas com aparência mais confiável.</li>
+    <li><strong>Organização:</strong> salve orçamentos e acompanhe status nos planos pagos.</li>
+    <li><strong>Controle:</strong> o Básico permite gestão comercial; o Premium adiciona gestão operacional.</li>
+    <li><strong>Fluxo completo:</strong> no Premium, cliente e veículo podem ser vinculados ao orçamento e à OS.</li>
+    <li><strong>Evolução contínua:</strong> a plataforma segue crescendo com recursos voltados para prestadores e oficinas.</li>
+  </ul>
 
-    <h2>Compromisso</h2>
+  <h2>Compromisso</h2>
 
-    <p>
-        O compromisso do FS Orçamentos é evoluir continuamente para se tornar uma ferramenta cada vez mais útil
-        para profissionais que precisam vender melhor, acompanhar propostas e atender clientes com mais eficiência.
-    </p>
+  <p>
+    O compromisso do FS Orçamentos é evoluir continuamente para ser uma ferramenta cada vez mais útil para profissionais
+    que precisam vender melhor, acompanhar propostas e executar serviços com mais organização.
+  </p>
 
-    <div class="cta-sobre">
-        <strong>Pronto para criar seu próximo orçamento?</strong>
-        <br>
-        Gere uma proposta profissional agora mesmo.
-        <br>
-        <a href="index.html">Gerar orçamento agora</a>
-        <a href="javascript:void(0)" onclick="irParaPlanosHome()" style="margin-left:8px;">Ver Plano Básico</a>
+  <p>
+    A plataforma foi pensada para funcionar no celular e no computador, com foco em simplicidade, clareza e uso real no dia a dia.
+  </p>
+
+  <div class="cta-sobre">
+    <strong>Pronto para criar seu próximo orçamento?</strong>
+    <br>
+    Gere uma proposta profissional agora mesmo ou conheça os planos para liberar recursos avançados.
+    <div class="cta-sobre-acoes">
+      <a href="/gerador.html">Gerar orçamento</a>
+      <a href="/planos.html">Ver planos</a>
     </div>
+  </div>
 
-    <div class="fs-adsense-bloco" data-local="sobre-final">
-        <span class="ads-label">Publicidade</span>
-        <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-5628949951885077"
-            data-ad-slot="3260778682"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-    </div>
+  <div class="fs-adsense-bloco" data-local="sobre-final">
+    <span class="ads-label">Publicidade</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5628949951885077"
+      data-ad-slot="3260778682"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
 </main>
 
 <footer class="sobre-footer">
-    &copy; 2026 FS Orçamentos |
-    <a href="/privacidade.html">Privacidade</a> |
-    <a href="/termos.html">Termos</a>
+  &copy; 2026 FS Orçamentos |
+  <a href="/privacidade.html">Privacidade</a> |
+  <a href="/termos.html">Termos</a>
 </footer>
-
-<button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">
-    🧾
-    <span>Gerar orçamento</span>
-</button>
 
 </body>
 </html>
