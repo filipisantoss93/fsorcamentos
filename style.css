@@ -3208,4 +3208,6 @@ button.google::after {
     footer a {
       color: #ffc400;
       text-decoration: none;
+      text-align: center;
+
     }
