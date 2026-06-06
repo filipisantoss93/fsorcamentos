@@ -18,9 +18,19 @@ let filtrosAtuaisEstoque = {
 
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
+let fsEstoqueInicializado = false;
+
+async function iniciarEstoqueInicializado() {
+  if (fsEstoqueInicializado) return;
+  fsEstoqueInicializado = true;
   await inicializarModuloEstoque();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarEstoqueInicializado);
+} else {
+  iniciarEstoqueInicializado();
+}
 /* =========================================================
    INICIALIZAÇÃO
    ========================================================= */

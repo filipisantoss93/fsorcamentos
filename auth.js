@@ -26,7 +26,17 @@ const FS_PAGINAS_PROTEGIDAS = [
   'painel.html',
   'painel',
   'orcamentos.html',
-  'orcamentos'
+  'orcamentos',
+  'clientes.html',
+  'clientes',
+  'veiculos.html',
+  'veiculos',
+  'ordens.html',
+  'ordens',
+  'ordem.html',
+  'ordem',
+  'estoque.html',
+  'estoque'
 ];
 
 function fsPathAtualLimpo() {
@@ -44,7 +54,17 @@ function paginaAtualProtegida() {
     path.endsWith('/painel') ||
     path.endsWith('/painel.html') ||
     path.endsWith('/orcamentos') ||
-    path.endsWith('/orcamentos.html')
+    path.endsWith('/orcamentos.html') ||
+    path.endsWith('/clientes') ||
+    path.endsWith('/clientes.html') ||
+    path.endsWith('/veiculos') ||
+    path.endsWith('/veiculos.html') ||
+    path.endsWith('/ordens') ||
+    path.endsWith('/ordens.html') ||
+    path.endsWith('/ordem') ||
+    path.endsWith('/ordem.html') ||
+    path.endsWith('/estoque') ||
+    path.endsWith('/estoque.html')
   );
 }
 

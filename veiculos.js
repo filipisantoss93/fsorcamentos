@@ -13,9 +13,19 @@ let clientesVeiculosCache = [];
 let usuarioLogadoVeiculos = null;
 let listaVeiculosMobileAberta = false;
 
-document.addEventListener("DOMContentLoaded", async () => {
+let fsVeiculosInicializado = false;
+
+async function iniciarVeiculosInicializado() {
+  if (fsVeiculosInicializado) return;
+  fsVeiculosInicializado = true;
   await inicializarModuloVeiculos();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarVeiculosInicializado);
+} else {
+  iniciarVeiculosInicializado();
+}
 
 /* =========================================================
    INICIALIZAÇÃO

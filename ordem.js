@@ -16,9 +16,19 @@ let itensOrdemCache = [];
 let orcamentoVinculadoOrdem = null;
 let veiculoVinculadoOrdem = null;
 
-document.addEventListener("DOMContentLoaded", async () => {
+let fsOrdemDetalheInicializado = false;
+
+async function iniciarOrdemDetalheInicializado() {
+  if (fsOrdemDetalheInicializado) return;
+  fsOrdemDetalheInicializado = true;
   await inicializarDetalheOrdem();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarOrdemDetalheInicializado);
+} else {
+  iniciarOrdemDetalheInicializado();
+}
 
 /* =========================================================
    INICIALIZAÇÃO

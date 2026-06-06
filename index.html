@@ -1511,6 +1511,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
+<script src="planos.js"></script>
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 
@@ -2018,7 +2019,7 @@ async function homeIndexBuscarOrcamentos(userId) {
 
   const { data, error } = await _supabase
     .from('orcamentos')
-    .select('id, status, total, criado_em, created_at')
+    .select('*')
     .eq('usuario_id', userId);
 
   if (error) {
@@ -2049,17 +2050,29 @@ function homeIndexPreencherMetricasBasico(orcamentos) {
 async function homeIndexBuscarTabela(tabela, colunas, campoUser, userId) {
   if (!userId || !window._supabase) return [];
 
-  const { data, error } = await _supabase
-    .from(tabela)
-    .select(colunas)
-    .eq(campoUser, userId);
+  const campos = Array.from(new Set([campoUser, 'user_id', 'usuario_id'].filter(Boolean)));
 
-  if (error) {
-    console.warn(`Erro ao buscar ${tabela} na home:`, error);
-    return [];
+  for (const campo of campos) {
+    const { data, error } = await _supabase
+      .from(tabela)
+      .select('*')
+      .eq(campo, userId);
+
+    if (!error) {
+      return Array.isArray(data) ? data : [];
+    }
+
+    const textoErro = String(error.message || error.details || '').toLowerCase();
+    const erroColuna = textoErro.includes('column') || textoErro.includes('schema cache') || textoErro.includes('could not find');
+
+    if (!erroColuna) {
+      console.warn(`Erro ao buscar ${tabela} na home:`, error);
+      return [];
+    }
   }
 
-  return Array.isArray(data) ? data : [];
+  console.warn(`Não foi possível buscar ${tabela}: nenhum campo de usuário compatível foi encontrado.`);
+  return [];
 }
 
 async function homeIndexPreencherPremium(userId, orcamentos) {

@@ -7,9 +7,19 @@
 let clientesCache = [];
 let usuarioLogado = null;
 
-document.addEventListener("DOMContentLoaded", async () => {
+let fsClientesInicializado = false;
+
+async function iniciarClientesInicializado() {
+  if (fsClientesInicializado) return;
+  fsClientesInicializado = true;
   await inicializarModuloClientes();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarClientesInicializado);
+} else {
+  iniciarClientesInicializado();
+}
 
 /* =========================================================
    INICIALIZAÇÃO

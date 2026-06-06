@@ -69,6 +69,27 @@ function fecharMenuMobileSeAberto() {
    CARREGAR HEADER / MENU
 ========================= */
 
+async function carregarHeaderHtmlMenu() {
+  const caminhos = ['header.html', './header.html', '/header.html'];
+  let ultimoErro = null;
+
+  for (const caminho of caminhos) {
+    try {
+      const response = await fetch(caminho, { cache: 'no-cache' });
+
+      if (response.ok) {
+        return await response.text();
+      }
+
+      ultimoErro = new Error(`Falha ao carregar ${caminho}: ${response.status}`);
+    } catch (error) {
+      ultimoErro = error;
+    }
+  }
+
+  throw ultimoErro || new Error('Não foi possível carregar header.html.');
+}
+
 async function carregarMenu(sessionRecebida = undefined) {
   const headerContainer = document.getElementById('header-container');
 
@@ -76,14 +97,7 @@ async function carregarMenu(sessionRecebida = undefined) {
 
   try {
     if (!headerJaCarregado) {
-      const response = await fetch('/header.html');
-
-      if (!response.ok) {
-        console.error('Erro ao carregar header.html:', response.status);
-        return;
-      }
-
-      const html = await response.text();
+      const html = await carregarHeaderHtmlMenu();
 
       headerContainer.innerHTML = html;
       headerContainer.style.display = 'block';
@@ -534,7 +548,12 @@ function controlarHeaderInteligente() {
    INICIALIZAÇÃO
 ========================= */
 
-document.addEventListener('DOMContentLoaded', async () => {
+let fsMenuInicializado = false;
+
+async function inicializarMenuFS() {
+  if (fsMenuInicializado) return;
+  fsMenuInicializado = true;
+
   await carregarMenu();
 
   abrirLoginAutomaticamenteSeSolicitado();
@@ -547,6 +566,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (window._supabase) {
     _supabase.auth.onAuthStateChange(async (event, session) => {
       await atualizarHeaderUsuario(session || null);
+      aplicarVisibilidadeMenuPorPlano();
       await controlarBotaoFlutuanteGeradorGlobal(session || null);
 
       if (!session) {
@@ -558,7 +578,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       }, 150);
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', inicializarMenuFS);
+} else {
+  inicializarMenuFS();
+}
 
 /* =========================
    EXPORTAR FUNÇÕES GLOBAIS
@@ -574,3 +600,4 @@ window.controlarBotaoFlutuanteGeradorGlobal = controlarBotaoFlutuanteGeradorGlob
 window.configurarHeaderInteligente = configurarHeaderInteligente;
 window.controlarHeaderInteligente = controlarHeaderInteligente;
 window.aplicarVisibilidadeMenuPorPlano = aplicarVisibilidadeMenuPorPlano;
+window.inicializarMenuFS = inicializarMenuFS;

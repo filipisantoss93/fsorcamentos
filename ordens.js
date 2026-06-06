@@ -14,9 +14,19 @@ let veiculosCacheOS = [];
 let usuarioLogadoOS = null;
 let orcamentoOrigemOS = null;
 
-document.addEventListener("DOMContentLoaded", async () => {
+let fsOrdensInicializado = false;
+
+async function iniciarOrdensInicializado() {
+  if (fsOrdensInicializado) return;
+  fsOrdensInicializado = true;
   await inicializarModuloOrdens();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", iniciarOrdensInicializado);
+} else {
+  iniciarOrdensInicializado();
+}
 
 /* =========================================================
    INICIALIZAÇÃO
