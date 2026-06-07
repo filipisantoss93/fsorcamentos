@@ -80,6 +80,7 @@ function statusPlanoLabelPlanos(status) {
   const s = normalizarPlanoPlanos(status || 'ativo');
 
   if (s === 'ativo') return 'Ativo';
+  if (s === 'teste_gratis') return 'Teste grátis';
   if (s === 'pago') return 'Ativo';
   if (s === 'pendente') return 'Pendente';
   if (s === 'cancelado') return 'Cancelado';
@@ -257,6 +258,171 @@ function atualizarBotoesPixPlanos(planoAtivo, logado, planoAtual) {
   });
 }
 
+
+async function verificarExpiracaoTestePremium(silencioso = true) {
+  try {
+    if (!window._supabase) return null;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session?.user?.id) return null;
+
+    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
+
+    if (error) {
+      console.warn('Teste Premium não verificado. Rode o SQL do teste grátis no Supabase se ainda não rodou:', error);
+      return null;
+    }
+
+    if (data?.plano) {
+      localStorage.setItem('usuario_plano', data.plano);
+    }
+
+    if (data?.plano_status) {
+      localStorage.setItem('usuario_plano_status', data.plano_status);
+    }
+
+    if (data?.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+    } else if (data?.plano === 'basico') {
+      localStorage.removeItem('usuario_plano_expira_em');
+    }
+
+    if (data?.expirado && !silencioso) {
+      alert(data.mensagem || 'Seu teste grátis do Premium expirou. Sua conta voltou para o Plano Básico.');
+    }
+
+    return data || null;
+  } catch (error) {
+    console.warn('Erro ao verificar teste Premium:', error);
+    return null;
+  }
+}
+
+function atualizarBotaoTestePremium(perfil) {
+  const botao = document.getElementById('btn-teste-premium');
+  const texto = document.getElementById('texto-status-teste-premium');
+
+  if (!botao && !texto) return;
+
+  const plano = normalizarPlanoPlanos(perfil?.plano || 'gratis');
+  const status = normalizarPlanoPlanos(perfil?.plano_status || 'ativo');
+  const testeUsado = perfil?.teste_premium_usado === true;
+  const testeFim = perfil?.teste_premium_fim || '';
+  const testeAtivo = plano === 'premium' && status === 'teste_gratis' && testeFim && diasAteExpirarPlano(testeFim) !== null && diasAteExpirarPlano(testeFim) >= 0;
+
+  if (testeAtivo) {
+    if (botao) {
+      botao.disabled = true;
+      botao.innerText = 'Teste Premium ativo';
+    }
+
+    if (texto) {
+      texto.innerText = `Teste grátis ativo até ${formatarDataPlano(testeFim)}. Depois disso, sua conta volta automaticamente para o Plano Básico.`;
+    }
+    return;
+  }
+
+  if (plano === 'premium' && status !== 'teste_gratis') {
+    if (botao) {
+      botao.disabled = true;
+      botao.innerText = 'Premium já ativo';
+    }
+
+    if (texto) {
+      texto.innerText = 'Sua conta já está no Plano Premium.';
+    }
+    return;
+  }
+
+  if (testeUsado) {
+    if (botao) {
+      botao.disabled = true;
+      botao.innerText = 'Teste já utilizado';
+    }
+
+    if (texto) {
+      texto.innerText = 'O teste grátis do Premium já foi utilizado nesta conta.';
+    }
+    return;
+  }
+
+  if (plano !== 'basico' || status === 'cancelado' || status === 'expirado') {
+    if (botao) {
+      botao.disabled = true;
+      botao.innerText = 'Disponível no Básico';
+    }
+
+    if (texto) {
+      texto.innerText = 'Para testar o Premium grátis, primeiro ative o Plano Básico. Após o teste, a conta volta automaticamente para o Básico.';
+    }
+    return;
+  }
+
+  if (botao) {
+    botao.disabled = false;
+    botao.innerText = 'Testar Premium grátis';
+  }
+
+  if (texto) {
+    texto.innerText = 'Disponível por 7 dias para usuários do Plano Básico ativo. Uso permitido uma única vez por conta.';
+  }
+}
+
+async function ativarTesteGratisPremium() {
+  try {
+    if (!window._supabase) {
+      alert('Sistema ainda não carregou. Atualize a página e tente novamente.');
+      return;
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      planosAbrirLogin();
+      return;
+    }
+
+    const confirmar = confirm('Deseja ativar o teste grátis do Premium por 7 dias? Ao vencer, sua conta volta automaticamente para o Plano Básico.');
+    if (!confirmar) return;
+
+    const botao = document.getElementById('btn-teste-premium');
+    if (botao) {
+      botao.disabled = true;
+      botao.innerText = 'Ativando...';
+    }
+
+    const { data, error } = await _supabase.rpc('ativar_teste_gratis_premium');
+
+    if (error) {
+      console.error('Erro ao ativar teste Premium:', error);
+      alert('Erro ao ativar teste grátis. Verifique se o SQL do teste Premium já foi rodado no Supabase.');
+      if (botao) {
+        botao.disabled = false;
+        botao.innerText = 'Testar Premium grátis';
+      }
+      return;
+    }
+
+    alert(data?.mensagem || 'Teste Premium atualizado.');
+
+    if (data?.sucesso) {
+      localStorage.setItem('usuario_plano', 'premium');
+      localStorage.setItem('usuario_plano_status', 'teste_gratis');
+      if (data?.teste_premium_fim) {
+        localStorage.setItem('usuario_plano_expira_em', data.teste_premium_fim);
+      }
+      location.reload();
+      return;
+    }
+
+    await atualizarStatusPlanoPlanos();
+  } catch (error) {
+    console.error('Erro inesperado ao ativar teste Premium:', error);
+    alert('Erro inesperado ao ativar o teste grátis.');
+    await atualizarStatusPlanoPlanos();
+  }
+}
+
 function setStatusBox(tipo, html) {
   const box = document.getElementById('status-plano-box');
 
@@ -277,6 +443,7 @@ async function atualizarStatusPlanoPlanos() {
       box.style.display = 'none';
       atualizarTextoAreaAssinatura(false, 'gratis');
       atualizarBotoesPixPlanos(false, false, 'gratis');
+      atualizarBotaoTestePremium({ plano: 'gratis' });
       return;
     }
 
@@ -296,9 +463,11 @@ async function atualizarStatusPlanoPlanos() {
       return;
     }
 
-    const { data, error } = await _supabase
+    await verificarExpiracaoTestePremium(true);
+
+const { data, error } = await _supabase
       .from('perfis')
-      .select('plano, plano_status, plano_expira_em')
+      .select('plano, plano_status, plano_expira_em, teste_premium_usado, teste_premium_inicio, teste_premium_fim')
       .eq('id', session.user.id)
       .maybeSingle();
 
@@ -307,6 +476,7 @@ async function atualizarStatusPlanoPlanos() {
       box.style.display = 'none';
       atualizarTextoAreaAssinatura(false, 'gratis');
       atualizarBotoesPixPlanos(false, true, 'gratis');
+      atualizarBotaoTestePremium({ plano: 'gratis' });
       return;
     }
 
@@ -333,6 +503,7 @@ async function atualizarStatusPlanoPlanos() {
 
     atualizarTextoAreaAssinatura(ativo, plano);
     atualizarBotoesPixPlanos(ativo, true, plano);
+    atualizarBotaoTestePremium(data);
 
     if (plano === 'basico' || plano === 'premium') {
       if (!ativo || status === 'expirado' || status === 'cancelado' || (dias !== null && dias < 0)) {
@@ -363,6 +534,8 @@ async function atualizarStatusPlanoPlanos() {
       `);
       return;
     }
+
+    atualizarBotaoTestePremium(data);
 
     setStatusBox('status-alerta', `
       Você está no <strong>Plano Grátis</strong>. Ative o Básico para liberar gestão de orçamentos
@@ -468,7 +641,7 @@ async function buscarPlanoUsuarioAtualizado() {
 
     const { data, error } = await _supabase
       .from('perfis')
-      .select('plano, plano_status, plano_expira_em')
+      .select('plano, plano_status, plano_expira_em, teste_premium_usado, teste_premium_inicio, teste_premium_fim')
       .eq('id', session.user.id)
       .maybeSingle();
 
@@ -580,3 +753,7 @@ window.buscarPlanoUsuarioAtualizado = buscarPlanoUsuarioAtualizado;
 window.bloquearPaginaPorPlano = bloquearPaginaPorPlano;
 window.bloquearPaginaSeNaoPremiumAsync = bloquearPaginaSeNaoPremiumAsync;
 window.bloquearPaginaSeGratisAsync = bloquearPaginaSeGratisAsync;
+
+window.verificarExpiracaoTestePremium = verificarExpiracaoTestePremium;
+window.ativarTesteGratisPremium = ativarTesteGratisPremium;
+window.atualizarBotaoTestePremium = atualizarBotaoTestePremium;

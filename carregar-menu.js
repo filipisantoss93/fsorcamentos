@@ -139,6 +139,37 @@ async function carregarMenu(sessionRecebida = undefined) {
    HEADER USUÁRIO
 ========================= */
 
+
+async function verificarExpiracaoTestePremiumMenu() {
+  try {
+    if (!window._supabase) return null;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session?.user?.id) return null;
+
+    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
+
+    if (error) {
+      console.warn('Teste Premium não verificado pelo menu:', error);
+      return null;
+    }
+
+    if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
+    if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
+
+    if (data?.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+    } else if (data?.plano === 'basico') {
+      localStorage.removeItem('usuario_plano_expira_em');
+    }
+
+    return data || null;
+  } catch (error) {
+    console.warn('Erro ao verificar expiração do teste Premium no menu:', error);
+    return null;
+  }
+}
+
 async function atualizarHeaderUsuario(session) {
   const saudacao = document.getElementById('usuario-saudacao');
 
@@ -197,6 +228,8 @@ async function atualizarHeaderUsuario(session) {
     'Visitante';
 
   try {
+    await verificarExpiracaoTestePremiumMenu();
+
     if (window._supabase) {
       const { data: perfil, error } = await _supabase
         .from('perfis')
@@ -610,6 +643,7 @@ if (document.readyState === 'loading') {
 ========================= */
 
 window.carregarMenu = carregarMenu;
+window.verificarExpiracaoTestePremiumMenu = verificarExpiracaoTestePremiumMenu;
 window.atualizarHeaderUsuario = atualizarHeaderUsuario;
 window.irParaLogin = irParaLogin;
 window.toggleMenuMobile = toggleMenuMobile;

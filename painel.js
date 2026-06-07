@@ -150,6 +150,7 @@ function statusPlanoLabel(status) {
   const s = normalizarPlanoPainel(status || 'ativo');
 
   if (s === 'ativo') return 'Ativo';
+  if (s === 'teste_gratis') return 'Teste grátis';
   if (s === 'pago') return 'Ativo';
   if (s === 'cancelado') return 'Cancelado';
   if (s === 'expirado') return 'Expirado';
@@ -391,6 +392,17 @@ function montarTextoExpiracaoPlano(perfil) {
   const expiraEm = perfil?.plano_expira_em;
 
   if (plano === 'gratis') return 'Sem expiração';
+
+  if (normalizarPlanoPainel(perfil?.plano_status) === 'teste_gratis' && perfil?.teste_premium_fim) {
+    const diasTeste = diasAteExpirar(perfil.teste_premium_fim);
+    const dataTeste = formatarDataPainel(perfil.teste_premium_fim);
+
+    if (diasTeste === 0) return `${dataTeste} · teste vence hoje`;
+    if (diasTeste === 1) return `${dataTeste} · teste vence amanhã`;
+    if (diasTeste !== null) return `${dataTeste} · teste Premium, faltam ${diasTeste} dias`;
+    return `${dataTeste} · teste Premium`;
+  }
+
   if (!expiraEm) return 'Não informado';
 
   const dias = diasAteExpirar(expiraEm);
@@ -414,6 +426,17 @@ function montarAvisoPlano(perfil) {
     return {
       tipo: 'gratis',
       texto: 'Você está no Plano Grátis. Ative o Plano Básico para salvar orçamentos na nuvem, usar histórico, WhatsApp com link, aprovação online, lembrete interno de orçamentos pendentes e resumo financeiro.'
+    };
+  }
+
+  if (status === 'teste_gratis' && plano === 'premium') {
+    const diasTeste = diasAteExpirar(perfil?.teste_premium_fim || perfil?.plano_expira_em);
+
+    return {
+      tipo: 'alerta',
+      texto: diasTeste !== null
+        ? `Teste grátis do Premium ativo. Ao vencer, sua conta volta automaticamente para o Plano Básico. Faltam ${diasTeste} dia(s).`
+        : 'Teste grátis do Premium ativo. Ao vencer, sua conta volta automaticamente para o Plano Básico.'
     };
   }
 
@@ -515,9 +538,13 @@ async function carregarPerfil() {
     return;
   }
 
-  const { data, error } = await _supabase
+  if (typeof window.verificarExpiracaoTestePremium === 'function') {
+    await window.verificarExpiracaoTestePremium(true);
+  }
+
+const { data, error } = await _supabase
     .from('perfis')
-    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano, plano_status, plano_expira_em')
+    .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano, plano_status, plano_expira_em, teste_premium_usado, teste_premium_inicio, teste_premium_fim')
     .eq('id', session.user.id)
     .maybeSingle();
 

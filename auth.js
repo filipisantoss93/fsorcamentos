@@ -634,10 +634,43 @@ async function garantirPerfilAposLogin(session) {
   }
 }
 
+
+async function verificarExpiracaoTestePremiumAuth() {
+  try {
+    if (!window._supabase) return null;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session?.user?.id) return null;
+
+    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
+
+    if (error) {
+      console.warn('Teste Premium não verificado pelo auth.js:', error);
+      return null;
+    }
+
+    if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
+    if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
+
+    if (data?.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+    } else if (data?.plano === 'basico') {
+      localStorage.removeItem('usuario_plano_expira_em');
+    }
+
+    return data || null;
+  } catch (error) {
+    console.warn('Erro ao verificar expiração do teste Premium no auth.js:', error);
+    return null;
+  }
+}
+
 async function carregarPerfilLocal(session) {
   if (!session?.user?.id) return;
 
   try {
+    await verificarExpiracaoTestePremiumAuth();
+
     localStorage.setItem('id', session.user.id);
     localStorage.setItem('usuario_email', session.user.email || '');
 
@@ -1357,6 +1390,7 @@ window.abrirModalGerador = abrirModalGerador;
 window.fecharModalGerador = fecharModalGerador;
 
 window.carregarPerfilLocal = carregarPerfilLocal;
+window.verificarExpiracaoTestePremiumAuth = verificarExpiracaoTestePremiumAuth;
 window.garantirPerfilAposLogin = garantirPerfilAposLogin;
 window.atualizarTelaAutenticacao = atualizarTelaAutenticacao;
 
