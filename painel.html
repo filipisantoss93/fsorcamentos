@@ -1288,6 +1288,474 @@ body {
 
   </style>
 
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
 </head>
 
 <body>

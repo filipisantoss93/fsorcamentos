@@ -63,6 +63,10 @@ function fecharMenuMobileSeAberto() {
   if (menuLinha) {
     menuLinha.classList.remove('menu-aberto');
   }
+
+  document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
+    details.removeAttribute('open');
+  });
 }
 
 /* =========================
@@ -104,6 +108,7 @@ async function carregarMenu(sessionRecebida = undefined) {
       headerJaCarregado = true;
 
       configurarLinksDoHeader();
+      configurarDropdownsHeader();
       marcarLinkAtivoHeader();
 
       setTimeout(() => {
@@ -331,6 +336,20 @@ function configurarLinksDoHeader() {
     });
   });
 }
+
+function configurarDropdownsHeader() {
+  document.addEventListener('click', (event) => {
+    const clicouDentroDropdown = event.target.closest('.nav-dropdown');
+    const clicouNoMenuMobile = event.target.closest('.menu-mobile-btn');
+
+    if (clicouDentroDropdown || clicouNoMenuMobile) return;
+
+    document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
+      details.removeAttribute('open');
+    });
+  });
+}
+
 
 function marcarLinkAtivoHeader() {
   const paginaAtual = fsPaginaAtual();
