@@ -115,7 +115,6 @@ function configurarEventosOrdem() {
   const btnEditar = document.getElementById("btn-editar-ordem");
   const btnPDF = document.getElementById("btn-pdf-ordem");
   const btnWhatsApp = document.getElementById("btn-whatsapp-cliente");
-  const btnAgendar = document.getElementById("btn-agendar-ordem");
   const btnImportarItensOrcamento = document.getElementById("btn-importar-itens-orcamento");
   const btnVerOrcamentoVinculado = document.getElementById("btn-ver-orcamento-vinculado");
 
@@ -130,20 +129,10 @@ function configurarEventosOrdem() {
   const formFinanceiro = document.getElementById("form-financeiro-ordem");
   const btnFinalizar = document.getElementById("btn-finalizar-ordem");
 
-  const inputFotoAntes = document.getElementById("input-foto-antes-os");
-  const btnSalvarFotoAntes = document.getElementById("btn-salvar-foto-antes");
-  const btnRemoverFotoAntes = document.getElementById("btn-remover-foto-antes");
-  const btnSalvarAssinatura = document.getElementById("btn-salvar-assinatura-cliente");
-  const btnLimparAssinatura = document.getElementById("btn-limpar-assinatura-cliente");
-  const btnRemoverAssinatura = document.getElementById("btn-remover-assinatura-cliente");
-  const btnTermoGarantia = document.getElementById("btn-termo-garantia");
-  const btnReciboPagamento = document.getElementById("btn-recibo-pagamento");
-
   const financeiroMaoObra = document.getElementById("financeiro-valor-mao-obra");
   const financeiroDesconto = document.getElementById("financeiro-desconto");
   const financeiroStatusPagamento = document.getElementById("financeiro-status-pagamento");
   const financeiroValorPago = document.getElementById("financeiro-valor-pago");
-  const financeiroValorEntrada = document.getElementById("financeiro-valor-entrada");
 
   if (btnEditar) {
     btnEditar.addEventListener("click", editarOrdemAtual);
@@ -155,10 +144,6 @@ function configurarEventosOrdem() {
 
   if (btnWhatsApp) {
     btnWhatsApp.addEventListener("click", abrirWhatsAppClienteOrdem);
-  }
-
-  if (btnAgendar) {
-    btnAgendar.addEventListener("click", abrirAgendaDaOrdemAtual);
   }
 
   if (btnImportarItensOrcamento) {
@@ -202,40 +187,6 @@ function configurarEventosOrdem() {
     formFinanceiro.addEventListener("submit", salvarFinanceiroOrdem);
   }
 
-  if (inputFotoAntes) {
-    inputFotoAntes.addEventListener("change", prepararPreviewFotoAntesOrdem);
-  }
-
-  if (btnSalvarFotoAntes) {
-    btnSalvarFotoAntes.addEventListener("click", salvarFotoAntesOrdem);
-  }
-
-  if (btnRemoverFotoAntes) {
-    btnRemoverFotoAntes.addEventListener("click", removerFotoAntesOrdem);
-  }
-
-  if (btnSalvarAssinatura) {
-    btnSalvarAssinatura.addEventListener("click", salvarAssinaturaClienteOrdem);
-  }
-
-  if (btnLimparAssinatura) {
-    btnLimparAssinatura.addEventListener("click", limparCanvasAssinaturaClienteOrdem);
-  }
-
-  if (btnRemoverAssinatura) {
-    btnRemoverAssinatura.addEventListener("click", removerAssinaturaClienteOrdem);
-  }
-
-  if (btnTermoGarantia) {
-    btnTermoGarantia.addEventListener("click", gerarTermoGarantiaOrdem);
-  }
-
-  if (btnReciboPagamento) {
-    btnReciboPagamento.addEventListener("click", gerarReciboPagamentoOrdem);
-  }
-
-  configurarAssinaturaClienteCanvasOrdem();
-
   if (btnFinalizar) {
     btnFinalizar.addEventListener("click", finalizarOrdemServico);
   }
@@ -250,10 +201,6 @@ function configurarEventosOrdem() {
 
   if (financeiroValorPago) {
     financeiroValorPago.addEventListener("input", calcularFinanceiroOrdemNaTela);
-  }
-
-  if (financeiroValorEntrada) {
-    financeiroValorEntrada.addEventListener("input", sincronizarEntradaFinanceiroOrdem);
   }
 
   if (financeiroStatusPagamento) {
@@ -610,86 +557,7 @@ function formatarProdutoEstoqueResumoOrdem(produto) {
   const unidade = produto.unidade || "un";
   const controla = produto.controlar_estoque !== false;
   const estoque = controla ? `Estoque: ${formatarQuantidadeOrdem(quantidade)} ${unidade}` : "Sem controle de estoque";
-  const aplicacao = resumirAplicacaoProdutoOrdem(produto);
-  return [
-    produto.codigo ? `Código: ${produto.codigo}` : "",
-    produto.categoria ? `Categoria: ${produto.categoria}` : "",
-    produto.subcategoria ? `Tipo: ${produto.subcategoria}` : "",
-    aplicacao ? `Aplicação: ${aplicacao}` : "",
-    estoque,
-    produto.valor_venda ? `Venda: ${formatarMoedaOrdem(produto.valor_venda)}` : ""
-  ].filter(Boolean).join(" • ");
-}
-
-function resumirAplicacaoProdutoOrdem(produto) {
-  if (!produto) return "";
-  if (produto.produto_universal === true) return "Universal / serve para vários veículos";
-
-  const anos = formatarAnosProdutoOrdem(produto);
-  const porCampos = [
-    produto.marca_veiculo,
-    produto.modelo_veiculo,
-    produto.versao_veiculo,
-    produto.motor_veiculo,
-    anos
-  ].filter(Boolean).join(" • ");
-
-  return porCampos || produto.aplicacao || "";
-}
-
-function formatarAnosProdutoOrdem(produto) {
-  const inicial = produto?.ano_inicial;
-  const final = produto?.ano_final;
-
-  if (inicial && final) return `${inicial} a ${final}`;
-  if (inicial) return `A partir de ${inicial}`;
-  if (final) return `Até ${final}`;
-
-  return "";
-}
-
-function produtoCompativelComVeiculoOrdem(produto) {
-  if (!produto) return false;
-  if (produto.produto_universal === true) return true;
-
-  const veiculo = veiculoVinculadoOrdem;
-  if (!veiculo) return false;
-
-  const marcaProduto = normalizarTextoOrdem(produto.marca_veiculo || "");
-  const modeloProduto = normalizarTextoOrdem(produto.modelo_veiculo || "");
-  const marcaVeiculo = normalizarTextoOrdem(veiculo.marca || "");
-  const modeloVeiculo = normalizarTextoOrdem(veiculo.modelo || "");
-  const anoVeiculo = parseInt(String(veiculo.ano || "").replace(/\D/g, ""), 10);
-
-  const marcaOk = !marcaProduto || !marcaVeiculo || marcaVeiculo.includes(marcaProduto) || marcaProduto.includes(marcaVeiculo);
-  const modeloOk = !modeloProduto || !modeloVeiculo || modeloVeiculo.includes(modeloProduto) || modeloProduto.includes(modeloVeiculo);
-
-  let anoOk = true;
-  const anoInicial = produto.ano_inicial ? parseInt(produto.ano_inicial, 10) : null;
-  const anoFinal = produto.ano_final ? parseInt(produto.ano_final, 10) : null;
-
-  if (Number.isFinite(anoVeiculo)) {
-    if (anoInicial && anoVeiculo < anoInicial) anoOk = false;
-    if (anoFinal && anoVeiculo > anoFinal) anoOk = false;
-  }
-
-  return marcaOk && modeloOk && anoOk && (marcaProduto || modeloProduto || produto.aplicacao);
-}
-
-function ordenarProdutosPorCompatibilidadeOrdem(lista) {
-  return [...lista].sort((a, b) => {
-    const compA = produtoCompativelComVeiculoOrdem(a) ? 0 : 1;
-    const compB = produtoCompativelComVeiculoOrdem(b) ? 0 : 1;
-    if (compA !== compB) return compA - compB;
-
-    const cat = String(a.categoria || "").localeCompare(String(b.categoria || ""), "pt-BR");
-    if (cat !== 0) return cat;
-
-    const sub = String(a.subcategoria || "").localeCompare(String(b.subcategoria || ""), "pt-BR");
-    if (sub !== 0) return sub;
-
-    return String(a.nome || "").localeCompare(String(b.nome || ""), "pt-BR");
-  });
+  return [produto.codigo ? `Código: ${produto.codigo}` : "", produto.categoria ? `Categoria: ${produto.categoria}` : "", estoque, produto.valor_venda ? `Venda: ${formatarMoedaOrdem(produto.valor_venda)}` : ""].filter(Boolean).join(" • ");
 }
 
 function atualizarProdutoEstoqueSelecionadoCard() {
@@ -708,7 +576,7 @@ function abrirModalBuscaProdutoEstoqueOrdem() {
   const modal = document.getElementById("modal-busca-produto-estoque-ordem");
   const campo = document.getElementById("campo-busca-produto-estoque-ordem");
   const resultado = document.getElementById("resultado-busca-produtos-ordem");
-  if (resultado) resultado.innerHTML = montarSugestaoProdutosCompativeisOrdem();
+  if (resultado) resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>`;
   if (campo) campo.value = "";
   if (modal) { modal.classList.add("ativo"); modal.setAttribute("aria-hidden", "false"); setTimeout(() => campo?.focus(), 80); }
 }
@@ -727,29 +595,7 @@ function normalizarTextoOrdem(valor) {
 }
 
 function textoBuscaProdutoEstoqueOrdem(produto) {
-  return normalizarTextoOrdem([produto.nome, produto.codigo, produto.sku, produto.categoria, produto.subcategoria, produto.marca_veiculo, produto.modelo_veiculo, produto.versao_veiculo, produto.motor_veiculo, produto.codigo_original, produto.codigo_fabricante, produto.aplicacao, produto.descricao, produto.observacoes, produto.unidade].filter(Boolean).join(" "));
-}
-
-function montarSugestaoProdutosCompativeisOrdem() {
-  const compativeis = ordenarProdutosPorCompatibilidadeOrdem(produtosEstoqueOrdemCache)
-    .filter((produto) => produtoCompativelComVeiculoOrdem(produto))
-    .slice(0, 20);
-
-  if (!compativeis.length) {
-    const veiculo = veiculoVinculadoOrdem;
-    const textoVeiculo = veiculo
-      ? `${veiculo.marca || ""} ${veiculo.modelo || ""} ${veiculo.ano || ""}`.trim()
-      : "a OS atual";
-
-    return `<div class="estado-busca-produto-modal">Nenhum produto compatível encontrado automaticamente para ${escaparHTMLOrdem(textoVeiculo)}. Pesquise por nome, código, categoria, subcategoria, marca, modelo ou aplicação.</div>`;
-  }
-
-  return `
-    <div class="estado-busca-produto-modal">
-      Produtos compatíveis com o veículo da OS aparecem primeiro. Você também pode pesquisar qualquer item do estoque.
-    </div>
-    ${renderizarProdutosModalOrdem(compativeis)}
-  `;
+  return normalizarTextoOrdem([produto.nome, produto.codigo, produto.sku, produto.categoria, produto.descricao, produto.observacoes, produto.unidade].filter(Boolean).join(" "));
 }
 
 function buscarProdutosModalOrdem() {
@@ -757,32 +603,14 @@ function buscarProdutosModalOrdem() {
   const resultado = document.getElementById("resultado-busca-produtos-ordem");
   if (!resultado) return;
   const termo = normalizarTextoOrdem(campo?.value || "");
-
-  if (termo.length < 2) {
-    resultado.innerHTML = montarSugestaoProdutosCompativeisOrdem();
-    return;
-  }
-
-  const encontrados = ordenarProdutosPorCompatibilidadeOrdem(
-    produtosEstoqueOrdemCache.filter((produto) => textoBuscaProdutoEstoqueOrdem(produto).includes(termo))
-  ).slice(0, 60);
-
-  if (!encontrados.length) {
-    resultado.innerHTML = `<div class="estado-busca-produto-modal">Nenhum produto encontrado. Cadastre o item em Estoque ou adicione como item manual.</div>`;
-    return;
-  }
-
-  resultado.innerHTML = renderizarProdutosModalOrdem(encontrados);
-}
-
-function renderizarProdutosModalOrdem(lista) {
-  return lista.map((produto) => {
+  if (termo.length < 2) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres para buscar produto.</div>`; return; }
+  const encontrados = produtosEstoqueOrdemCache.filter((produto) => textoBuscaProdutoEstoqueOrdem(produto).includes(termo)).slice(0, 40);
+  if (!encontrados.length) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Nenhum produto encontrado. Cadastre o item em Estoque ou adicione como item manual.</div>`; return; }
+  resultado.innerHTML = encontrados.map((produto) => {
     const id = escaparHTMLAtributo(produto.id);
     const nome = escaparHTMLOrdem(produto.nome || "Produto sem nome");
     const resumo = escaparHTMLOrdem(formatarProdutoEstoqueResumoOrdem(produto));
-    const compativel = produtoCompativelComVeiculoOrdem(produto);
-    const etiqueta = compativel ? `<em class="produto-modal-tag-compativel">Compatível com esta OS</em>` : "";
-    return `<button type="button" class="produto-modal-item" onclick="selecionarProdutoEstoqueModalOrdem('${id}')"><strong>${nome}</strong>${etiqueta}<span>${resumo}</span></button>`;
+    return `<button type="button" class="produto-modal-item" onclick="selecionarProdutoEstoqueModalOrdem('${id}')"><strong>${nome}</strong><span>${resumo}</span></button>`;
   }).join("");
 }
 
@@ -1064,9 +892,9 @@ function renderizarItensOrdem(lista) {
       ${lista.map((item) => criarCardItemOrdem(item)).join("")}
     </div>
 
-    <div style="margin-top:14px; padding:14px; border-radius:14px; background:var(--fs-marrom); border:2px solid var(--fs-amarelo); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-      <strong style="color:var(--fs-amarelo);">Total dos itens</strong>
-      <strong style="color:var(--fs-amarelo); font-size:18px;">${formatarMoedaOrdem(total)}</strong>
+    <div class="total-itens-ordem-box" style="margin-top:14px; padding:14px; border-radius:14px; background:#3e2723 !important; border:2px solid #ffc400 !important; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:#ffc400 !important;">
+      <strong style="color:#ffc400 !important;">Total dos itens</strong>
+      <strong style="color:#ffc400 !important; font-size:18px;">${formatarMoedaOrdem(total)}</strong>
     </div>
   `;
 }
@@ -1280,8 +1108,7 @@ function preencherFormularioFinanceiroOrdem() {
   setValorOrdem("financeiro-desconto", numeroParaInputOrdem(ordemAtual.desconto || 0));
   setValorOrdem("financeiro-forma-pagamento", ordemAtual.forma_pagamento || "");
   setValorOrdem("financeiro-status-pagamento", ordemAtual.status_pagamento || "pendente");
-  setValorOrdem("financeiro-valor-entrada", numeroParaInputOrdem(ordemAtual.valor_entrada || 0));
-  setValorOrdem("financeiro-valor-pago", numeroParaInputOrdem(ordemAtual.valor_pago || ordemAtual.valor_entrada || 0));
+  setValorOrdem("financeiro-valor-pago", numeroParaInputOrdem(ordemAtual.valor_pago || 0));
 
   calcularFinanceiroOrdemNaTela();
 }
@@ -1290,7 +1117,6 @@ function calcularFinanceiroOrdemNaTela() {
   const totalItens = calcularTotalItensOrdem();
   const maoObra = numeroCampoOrdem("financeiro-valor-mao-obra");
   const desconto = numeroCampoOrdem("financeiro-desconto");
-  const entrada = numeroCampoOrdem("financeiro-valor-entrada");
   const valorPago = numeroCampoOrdem("financeiro-valor-pago");
 
   const total = Math.max((totalItens + maoObra) - desconto, 0);
@@ -1303,23 +1129,10 @@ function calcularFinanceiroOrdemNaTela() {
     totalItens,
     maoObra,
     desconto,
-    entrada,
     valorPago,
     total,
     saldo
   };
-}
-
-function sincronizarEntradaFinanceiroOrdem() {
-  const entrada = numeroCampoOrdem("financeiro-valor-entrada");
-  const valorPago = numeroCampoOrdem("financeiro-valor-pago");
-  const statusPagamento = valorInputOrdem("financeiro-status-pagamento");
-
-  if (entrada > valorPago || statusPagamento === "parcial") {
-    setValorOrdem("financeiro-valor-pago", numeroParaInputOrdem(entrada));
-  }
-
-  calcularFinanceiroOrdemNaTela();
 }
 
 function ajustarPagamentoFinanceiroOrdem() {
@@ -1447,11 +1260,6 @@ function montarObjetoFinanceiroOrdem() {
     saldo = financeiro.total;
   }
 
-  if (statusPagamento === "parcial" && valorPago < financeiro.entrada) {
-    valorPago = financeiro.entrada;
-    saldo = Math.max(financeiro.total - valorPago, 0);
-  }
-
   if (statusPagamento === "parcial") {
     saldo = Math.max(financeiro.total - valorPago, 0);
   }
@@ -1463,7 +1271,6 @@ function montarObjetoFinanceiroOrdem() {
     valor_total: financeiro.total,
     forma_pagamento: valorInputOrdem("financeiro-forma-pagamento") || null,
     status_pagamento: statusPagamento,
-    valor_entrada: financeiro.entrada,
     valor_pago: valorPago,
     saldo_restante: saldo
   };
@@ -1670,7 +1477,6 @@ function preencherDadosOrdem(ordem) {
   preencherVeiculoOrdem(veiculoVinculadoOrdem);
   preencherValoresOrdem(ordem);
   preencherGarantiaOrdem(ordem);
-  preencherExtrasPremiumOrdem(ordem);
   controlarTelaPorStatusOrdem(ordem);
 
   if (orcamentoVinculadoOrdem) {
@@ -1796,7 +1602,6 @@ function preencherValoresOrdem(ordem) {
   setTextoOrdem("detalhe-valor-mao-obra", formatarMoedaOrdem(ordem.valor_mao_obra));
   setTextoOrdem("detalhe-valor-materiais", formatarMoedaOrdem(ordem.valor_materiais));
   setTextoOrdem("detalhe-desconto", formatarMoedaOrdem(ordem.desconto));
-  setTextoOrdem("detalhe-valor-entrada", formatarMoedaOrdem(ordem.valor_entrada));
   setTextoOrdem("detalhe-valor-pago", formatarMoedaOrdem(ordem.valor_pago));
   setTextoOrdem("detalhe-saldo-restante", formatarMoedaOrdem(ordem.saldo_restante));
   setTextoOrdem("detalhe-valor-total", formatarMoedaOrdem(ordem.valor_total));
@@ -1836,510 +1641,6 @@ function controlarTelaPorStatusOrdem(ordem) {
   }
   if (btnSalvarItem) btnSalvarItem.disabled = concluida;
   if (btnImportarItens) btnImportarItens.disabled = concluida;
-}
-
-
-
-/* =========================================================
-   EXTRAS PREMIUM DA OS - FOTO, ASSINATURA, TERMO E RECIBO
-   ========================================================= */
-
-let fotoAntesTempBase64Ordem = "";
-let assinaturaCanvasConfiguradaOrdem = false;
-let assinaturaDesenhandoOrdem = false;
-let assinaturaTemRiscoOrdem = false;
-
-function preencherExtrasPremiumOrdem(ordem) {
-  preencherFotoAntesOrdem(ordem);
-  preencherAssinaturaClienteOrdem(ordem);
-}
-
-function preencherFotoAntesOrdem(ordem) {
-  const status = document.getElementById("foto-antes-status");
-  const preview = document.getElementById("foto-antes-preview");
-
-  if (!status) return;
-
-  const foto = ordem?.foto_antes_url || "";
-
-  if (foto) {
-    status.querySelector("strong").textContent = "Foto antes salva";
-    status.querySelector("span").textContent = "Esta imagem será usada como registro inicial da OS.";
-    if (preview) {
-      preview.src = foto;
-      preview.style.display = "block";
-    }
-    return;
-  }
-
-  status.querySelector("strong").textContent = "Nenhuma foto salva";
-  status.querySelector("span").textContent = "Envie uma foto opcional antes de iniciar o serviço.";
-  if (preview) {
-    preview.src = "";
-    preview.style.display = "none";
-  }
-}
-
-function prepararPreviewFotoAntesOrdem() {
-  const input = document.getElementById("input-foto-antes-os");
-  const arquivo = input?.files?.[0];
-
-  fotoAntesTempBase64Ordem = "";
-
-  if (!arquivo) return;
-
-  if (!arquivo.type.startsWith("image/")) {
-    alert("Selecione uma imagem válida.");
-    input.value = "";
-    return;
-  }
-
-  redimensionarImagemBase64Ordem(arquivo, 1100, 0.78)
-    .then((base64) => {
-      fotoAntesTempBase64Ordem = base64;
-      const preview = document.getElementById("foto-antes-preview");
-      const status = document.getElementById("foto-antes-status");
-
-      if (preview) {
-        preview.src = base64;
-        preview.style.display = "block";
-      }
-
-      if (status) {
-        status.querySelector("strong").textContent = "Foto pronta para salvar";
-        status.querySelector("span").textContent = "Clique em Salvar foto para registrar no banco de dados.";
-      }
-    })
-    .catch((erro) => {
-      console.error("Erro ao preparar foto:", erro);
-      alert("Não foi possível carregar a imagem.");
-    });
-}
-
-function redimensionarImagemBase64Ordem(arquivo, larguraMaxima = 1100, qualidade = 0.78) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const img = new Image();
-
-      img.onload = () => {
-        const escala = Math.min(1, larguraMaxima / img.width);
-        const largura = Math.round(img.width * escala);
-        const altura = Math.round(img.height * escala);
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = largura;
-        canvas.height = altura;
-        ctx.drawImage(img, 0, 0, largura, altura);
-
-        resolve(canvas.toDataURL("image/jpeg", qualidade));
-      };
-
-      img.onerror = reject;
-      img.src = reader.result;
-    };
-
-    reader.onerror = reject;
-    reader.readAsDataURL(arquivo);
-  });
-}
-
-async function salvarFotoAntesOrdem() {
-  if (!ordemAtual?.id) {
-    alert("OS não carregada.");
-    return;
-  }
-
-  if (!fotoAntesTempBase64Ordem) {
-    alert("Selecione uma foto antes de salvar.");
-    return;
-  }
-
-  const btn = document.getElementById("btn-salvar-foto-antes");
-  alterarEstadoBotaoOrdem(btn, true, "Salvando...");
-
-  try {
-    const { data, error } = await window._supabase
-      .from("ordens_servico")
-      .update({ foto_antes_url: fotoAntesTempBase64Ordem })
-      .eq("id", ordemAtual.id)
-      .eq("user_id", usuarioLogadoOrdem.id)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    ordemAtual = { ...ordemAtual, ...data };
-    fotoAntesTempBase64Ordem = "";
-    preencherFotoAntesOrdem(ordemAtual);
-    alert("Foto antes salva com sucesso.");
-  } catch (erro) {
-    console.error("Erro ao salvar foto antes:", erro);
-    alert("Não foi possível salvar a foto. Rode o SQL dos extras da OS no Supabase e tente novamente.");
-  } finally {
-    alterarEstadoBotaoOrdem(btn, false, "Salvar foto");
-  }
-}
-
-async function removerFotoAntesOrdem() {
-  if (!ordemAtual?.id) return;
-
-  const confirmar = confirm("Remover a foto antes desta OS?");
-  if (!confirmar) return;
-
-  try {
-    const { data, error } = await window._supabase
-      .from("ordens_servico")
-      .update({ foto_antes_url: null })
-      .eq("id", ordemAtual.id)
-      .eq("user_id", usuarioLogadoOrdem.id)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    ordemAtual = { ...ordemAtual, ...data };
-    fotoAntesTempBase64Ordem = "";
-    const input = document.getElementById("input-foto-antes-os");
-    if (input) input.value = "";
-    preencherFotoAntesOrdem(ordemAtual);
-  } catch (erro) {
-    console.error("Erro ao remover foto:", erro);
-    alert("Não foi possível remover a foto.");
-  }
-}
-
-function configurarAssinaturaClienteCanvasOrdem() {
-  if (assinaturaCanvasConfiguradaOrdem) return;
-
-  const canvas = document.getElementById("canvas-assinatura-cliente");
-  if (!canvas) return;
-
-  assinaturaCanvasConfiguradaOrdem = true;
-  const ctx = canvas.getContext("2d");
-  ctx.lineWidth = 2.2;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.strokeStyle = "#000000";
-
-  function ponto(evento) {
-    const rect = canvas.getBoundingClientRect();
-    const toque = evento.touches && evento.touches[0] ? evento.touches[0] : evento;
-    return {
-      x: ((toque.clientX - rect.left) / rect.width) * canvas.width,
-      y: ((toque.clientY - rect.top) / rect.height) * canvas.height
-    };
-  }
-
-  function iniciar(evento) {
-    evento.preventDefault();
-    assinaturaDesenhandoOrdem = true;
-    assinaturaTemRiscoOrdem = true;
-    const p = ponto(evento);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-  }
-
-  function mover(evento) {
-    if (!assinaturaDesenhandoOrdem) return;
-    evento.preventDefault();
-    const p = ponto(evento);
-    ctx.lineTo(p.x, p.y);
-    ctx.stroke();
-  }
-
-  function finalizar() {
-    assinaturaDesenhandoOrdem = false;
-  }
-
-  canvas.addEventListener("mousedown", iniciar);
-  canvas.addEventListener("mousemove", mover);
-  window.addEventListener("mouseup", finalizar);
-  canvas.addEventListener("touchstart", iniciar, { passive: false });
-  canvas.addEventListener("touchmove", mover, { passive: false });
-  canvas.addEventListener("touchend", finalizar);
-}
-
-function limparCanvasAssinaturaClienteOrdem() {
-  const canvas = document.getElementById("canvas-assinatura-cliente");
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  assinaturaTemRiscoOrdem = false;
-}
-
-function preencherAssinaturaClienteOrdem(ordem) {
-  const nomeInput = document.getElementById("assinatura-cliente-nome");
-  const status = document.getElementById("assinatura-cliente-status");
-  const preview = document.getElementById("assinatura-cliente-preview");
-
-  if (nomeInput && ordem?.assinatura_cliente_nome) {
-    nomeInput.value = ordem.assinatura_cliente_nome;
-  }
-
-  if (!status) return;
-
-  if (ordem?.assinatura_cliente_url) {
-    status.querySelector("strong").textContent = "Assinatura salva";
-    status.querySelector("span").textContent = ordem.assinatura_cliente_data
-      ? `Registrada em ${formatarDataHoraVisualOrdem(ordem.assinatura_cliente_data)}.`
-      : "Assinatura registrada na OS.";
-
-    if (preview) {
-      preview.src = ordem.assinatura_cliente_url;
-      preview.style.display = "block";
-    }
-    return;
-  }
-
-  status.querySelector("strong").textContent = "Nenhuma assinatura salva";
-  status.querySelector("span").textContent = "Peça para o cliente assinar e clique em Salvar assinatura.";
-
-  if (preview) {
-    preview.src = "";
-    preview.style.display = "none";
-  }
-}
-
-async function salvarAssinaturaClienteOrdem() {
-  if (!ordemAtual?.id) {
-    alert("OS não carregada.");
-    return;
-  }
-
-  const canvas = document.getElementById("canvas-assinatura-cliente");
-  if (!canvas || !assinaturaTemRiscoOrdem) {
-    alert("Peça para o cliente assinar no quadro antes de salvar.");
-    return;
-  }
-
-  const assinatura = canvas.toDataURL("image/png");
-  const nome = valorInputOrdem("assinatura-cliente-nome") || ordemAtual.clientes?.nome || "";
-
-  const btn = document.getElementById("btn-salvar-assinatura-cliente");
-  alterarEstadoBotaoOrdem(btn, true, "Salvando...");
-
-  try {
-    const payload = {
-      assinatura_cliente_url: assinatura,
-      assinatura_cliente_nome: nome || null,
-      assinatura_cliente_data: new Date().toISOString()
-    };
-
-    const { data, error } = await window._supabase
-      .from("ordens_servico")
-      .update(payload)
-      .eq("id", ordemAtual.id)
-      .eq("user_id", usuarioLogadoOrdem.id)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    ordemAtual = { ...ordemAtual, ...data };
-    preencherAssinaturaClienteOrdem(ordemAtual);
-    limparCanvasAssinaturaClienteOrdem();
-    alert("Assinatura salva com sucesso.");
-  } catch (erro) {
-    console.error("Erro ao salvar assinatura:", erro);
-    alert("Não foi possível salvar a assinatura. Rode o SQL dos extras da OS no Supabase e tente novamente.");
-  } finally {
-    alterarEstadoBotaoOrdem(btn, false, "Salvar assinatura");
-  }
-}
-
-async function removerAssinaturaClienteOrdem() {
-  if (!ordemAtual?.id) return;
-
-  const confirmar = confirm("Remover a assinatura salva desta OS?");
-  if (!confirmar) return;
-
-  try {
-    const { data, error } = await window._supabase
-      .from("ordens_servico")
-      .update({
-        assinatura_cliente_url: null,
-        assinatura_cliente_nome: null,
-        assinatura_cliente_data: null
-      })
-      .eq("id", ordemAtual.id)
-      .eq("user_id", usuarioLogadoOrdem.id)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    ordemAtual = { ...ordemAtual, ...data };
-    preencherAssinaturaClienteOrdem(ordemAtual);
-    limparCanvasAssinaturaClienteOrdem();
-  } catch (erro) {
-    console.error("Erro ao remover assinatura:", erro);
-    alert("Não foi possível remover a assinatura.");
-  }
-}
-
-async function gerarTermoGarantiaOrdem() {
-  if (!ordemAtual?.id) {
-    alert("OS não carregada.");
-    return;
-  }
-
-  if (!window.jspdf || !window.jspdf.jsPDF) {
-    alert("Biblioteca jsPDF não carregada.");
-    return;
-  }
-
-  const perfil = await buscarPerfilEmpresaPDFOrdem();
-  const cliente = ordemAtual.clientes || {};
-  const veiculo = veiculoVinculadoOrdem || {};
-  const dias = converterNumeroOrdem(ordemAtual.garantia_dias);
-  const validade = calcularValidadeGarantia(ordemAtual.data_conclusao || new Date().toISOString(), dias);
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-  const margem = 16;
-  let y = 18;
-
-  doc.setTextColor(0, 0, 0);
-  doc.setDrawColor(0, 0, 0);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.text("TERMO DE GARANTIA DE SERVIÇO", 105, y, { align: "center" });
-  y += 10;
-  doc.setLineWidth(0.4);
-  doc.line(margem, y, 210 - margem, y);
-  y += 10;
-
-  function linha(rotulo, valor) {
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text(`${rotulo}:`, margem, y);
-    doc.setFont("helvetica", "normal");
-    const linhas = doc.splitTextToSize(String(valor || "-"), 130);
-    doc.text(linhas, margem + 45, y);
-    y += Math.max(7, linhas.length * 5);
-  }
-
-  linha("Empresa", perfil?.nome_empresa || localStorage.getItem("nome_empresa") || "FS Orçamentos");
-  linha("OS", formatarNumeroOSDetalhe(ordemAtual.numero_os));
-  linha("Cliente", cliente.nome || "-");
-  linha("Veículo", veiculoTemDadosOrdem(veiculo) ? `${veiculo.placa || ""} ${veiculo.marca || ""} ${veiculo.modelo || ""}`.trim() : "Não vinculado");
-  linha("Serviço", ordemAtual.titulo || ordemAtual.descricao_servico || "-");
-  linha("Data de conclusão", formatarDataVisualOrdem(ordemAtual.data_conclusao) || formatarDataVisualOrdem(new Date().toISOString()));
-  linha("Prazo de garantia", dias > 0 ? `${dias} dias` : "Sem prazo informado");
-  linha("Validade", validade || "-");
-
-  y += 5;
-  doc.setFont("helvetica", "bold");
-  doc.text("Condições e observações:", margem, y);
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  const textoGarantia = ordemAtual.garantia_observacoes || "A garantia cobre exclusivamente o serviço descrito nesta ordem de serviço, respeitando mau uso, danos externos e alterações feitas por terceiros.";
-  doc.text(doc.splitTextToSize(textoGarantia, 178), margem, y);
-  y += 35;
-
-  doc.line(margem, y, margem + 75, y);
-  doc.line(210 - margem - 75, y, 210 - margem, y);
-  y += 5;
-  doc.setFontSize(9);
-  doc.text("Cliente", margem + 37.5, y, { align: "center" });
-  doc.text("Consultor Técnico", 210 - margem - 37.5, y, { align: "center" });
-
-  doc.save(`Termo-Garantia-OS-${String(ordemAtual.numero_os || ordemAtual.id).replace(/[^a-zA-Z0-9_-]/g, "")}.pdf`);
-}
-
-async function gerarReciboPagamentoOrdem() {
-  if (!ordemAtual?.id) {
-    alert("OS não carregada.");
-    return;
-  }
-
-  if (!window.jspdf || !window.jspdf.jsPDF) {
-    alert("Biblioteca jsPDF não carregada.");
-    return;
-  }
-
-  const perfil = await buscarPerfilEmpresaPDFOrdem();
-  const cliente = ordemAtual.clientes || {};
-  const total = converterNumeroOrdem(ordemAtual.valor_total);
-  const entrada = converterNumeroOrdem(ordemAtual.valor_entrada);
-  const pago = converterNumeroOrdem(ordemAtual.valor_pago);
-  const saldo = converterNumeroOrdem(ordemAtual.saldo_restante || Math.max(total - pago, 0));
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-  const margem = 16;
-  let y = 18;
-
-  doc.setTextColor(0, 0, 0);
-  doc.setDrawColor(0, 0, 0);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.text("RECIBO DE PAGAMENTO", 105, y, { align: "center" });
-  y += 10;
-  doc.setLineWidth(0.4);
-  doc.line(margem, y, 210 - margem, y);
-  y += 10;
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  const textoRecibo = `Recebemos de ${cliente.nome || "cliente não informado"} o valor de ${formatarMoedaOrdem(pago)}, referente à ${formatarNumeroOSDetalhe(ordemAtual.numero_os)} - ${ordemAtual.titulo || "Ordem de Serviço"}.`;
-  doc.text(doc.splitTextToSize(textoRecibo, 178), margem, y);
-  y += 22;
-
-  function linha(rotulo, valor) {
-    doc.setFont("helvetica", "bold");
-    doc.text(`${rotulo}:`, margem, y);
-    doc.setFont("helvetica", "normal");
-    doc.text(String(valor || "-"), margem + 58, y);
-    y += 7;
-  }
-
-  linha("Empresa", perfil?.nome_empresa || localStorage.getItem("nome_empresa") || "FS Orçamentos");
-  linha("Cliente", cliente.nome || "-");
-  linha("OS", formatarNumeroOSDetalhe(ordemAtual.numero_os));
-  linha("Forma de pagamento", formatarFormaPagamentoOrdem(ordemAtual.forma_pagamento));
-  linha("Status", formatarStatusPagamentoOrdem(ordemAtual.status_pagamento));
-  linha("Valor total", formatarMoedaOrdem(total));
-  linha("Entrada", formatarMoedaOrdem(entrada));
-  linha("Valor pago", formatarMoedaOrdem(pago));
-  linha("Saldo restante", formatarMoedaOrdem(saldo));
-  linha("Data", formatarDataVisualOrdem(new Date().toISOString()));
-
-  y += 18;
-  doc.line(65, y, 145, y);
-  y += 5;
-  doc.setFontSize(9);
-  doc.text(perfil?.nome_empresa || localStorage.getItem("nome_empresa") || "Assinatura", 105, y, { align: "center" });
-
-  doc.save(`Recibo-OS-${String(ordemAtual.numero_os || ordemAtual.id).replace(/[^a-zA-Z0-9_-]/g, "")}.pdf`);
-}
-
-
-function abrirAgendaDaOrdemAtual() {
-  if (!ordemAtual?.id) {
-    alert("OS não carregada.");
-    return;
-  }
-
-  const params = new URLSearchParams();
-  params.set("ordem_id", ordemAtual.id);
-
-  if (ordemAtual.cliente_id) {
-    params.set("cliente_id", ordemAtual.cliente_id);
-  }
-
-  if (ordemAtual.veiculo_id) {
-    params.set("veiculo_id", ordemAtual.veiculo_id);
-  }
-
-  if (ordemAtual.titulo) {
-    params.set("titulo", ordemAtual.titulo);
-  }
-
-  const destino = `agenda.html?${params.toString()}`;
-  window.location.href = destino;
 }
 
 /* =========================================================
@@ -2606,7 +1907,6 @@ async function gerarPDFProfissionalOrdemServico() {
     const materiais = converterNumeroOrdem(ordemAtual.valor_materiais || totalItens);
     const desconto = converterNumeroOrdem(ordemAtual.desconto);
     const total = converterNumeroOrdem(ordemAtual.valor_total || ((totalItens + maoObra) - desconto));
-    const entrada = converterNumeroOrdem(ordemAtual.valor_entrada);
     const valorPago = converterNumeroOrdem(ordemAtual.valor_pago);
     const saldo = converterNumeroOrdem(ordemAtual.saldo_restante || Math.max(total - valorPago, 0));
 
@@ -2618,7 +1918,7 @@ async function gerarPDFProfissionalOrdemServico() {
 
     caixaInfo([
       { rotulo: "Forma de pagamento", valor: formatarFormaPagamentoOrdem(ordemAtual.forma_pagamento) },
-      { rotulo: "Entrada", valor: formatarMoedaOrdem(entrada) },
+      { rotulo: "Status do pagamento", valor: formatarStatusPagamentoOrdem(ordemAtual.status_pagamento) },
       { rotulo: "Valor pago", valor: formatarMoedaOrdem(valorPago) }
     ]);
 
@@ -2645,15 +1945,6 @@ async function gerarPDFProfissionalOrdemServico() {
 
     setDraw(corTextoSuave);
     doc.setLineWidth(0.35);
-
-    if (ordemAtual.assinatura_cliente_url) {
-      try {
-        doc.addImage(ordemAtual.assinatura_cliente_url, "PNG", margem + 4, y + 1, larguraAss - 8, 15);
-      } catch (erroAssinaturaPDF) {
-        console.warn("Não foi possível inserir assinatura no PDF:", erroAssinaturaPDF);
-      }
-    }
-
     doc.line(margem, yLinha, margem + larguraAss, yLinha);
     doc.line(margem + larguraAss + 12, yLinha, margem + (larguraAss * 2) + 12, yLinha);
 
@@ -2666,7 +1957,7 @@ async function gerarPDFProfissionalOrdemServico() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     setTexto(corTextoSuave);
-    doc.text(texto(ordemAtual.assinatura_cliente_nome || cliente.nome, "Cliente"), margem + larguraAss / 2, yLinha + 9, { align: "center" });
+    doc.text(texto(cliente.nome, "Cliente"), margem + larguraAss / 2, yLinha + 9, { align: "center" });
     doc.text(texto(ordemAtual.responsavel, perfil?.nome || "Consultor Técnico"), margem + larguraAss + 12 + larguraAss / 2, yLinha + 9, { align: "center" });
 
     y = yLinha + 16;
@@ -2802,18 +2093,6 @@ async function gerarPDFProfissionalOrdemServico() {
   secao("SOLICITAÇÃO E SERVIÇO");
   blocoTexto("Solicitação / problema informado", ordemAtual.descricao_problema);
   blocoTexto("Serviço a executar", ordemAtual.descricao_servico);
-
-  if (ordemAtual.foto_antes_url) {
-    secao("REGISTRO FOTOGRÁFICO");
-    blocoTexto("Foto antes do serviço", "Imagem registrada antes da execução do serviço.");
-    try {
-      adicionarPaginaSePreciso(72);
-      doc.addImage(ordemAtual.foto_antes_url, "JPEG", margem, y, larguraUtil, 58);
-      y += 64;
-    } catch (erroFotoPDF) {
-      console.warn("Não foi possível inserir foto antes no PDF:", erroFotoPDF);
-    }
-  }
 
   tabelaItens();
   resumoFinanceiro();
@@ -3381,14 +2660,3 @@ window.fecharModalBuscaProdutoEstoqueOrdem = fecharModalBuscaProdutoEstoqueOrdem
 window.buscarProdutosModalOrdem = buscarProdutosModalOrdem;
 window.selecionarProdutoEstoqueModalOrdem = selecionarProdutoEstoqueModalOrdem;
 window.limparProdutoEstoqueSelecionadoOrdem = limparProdutoEstoqueSelecionadoOrdem;
-
-window.salvarFotoAntesOrdem = salvarFotoAntesOrdem;
-window.removerFotoAntesOrdem = removerFotoAntesOrdem;
-window.prepararPreviewFotoAntesOrdem = prepararPreviewFotoAntesOrdem;
-window.salvarAssinaturaClienteOrdem = salvarAssinaturaClienteOrdem;
-window.limparCanvasAssinaturaClienteOrdem = limparCanvasAssinaturaClienteOrdem;
-window.removerAssinaturaClienteOrdem = removerAssinaturaClienteOrdem;
-window.gerarTermoGarantiaOrdem = gerarTermoGarantiaOrdem;
-window.gerarReciboPagamentoOrdem = gerarReciboPagamentoOrdem;
-
-window.abrirAgendaDaOrdemAtual = abrirAgendaDaOrdemAtual;

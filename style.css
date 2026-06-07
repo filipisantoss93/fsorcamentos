@@ -4477,3 +4477,59 @@ body.gerando-pdf * {
   color: #083b2f !important;
   border-color: #128c4a !important;
 }
+
+
+/* =========================================================
+   CORREÇÃO FINAL DE CONTRASTE - TOTAIS DA ORDEM DE SERVIÇO
+   Evita texto marrom em fundo marrom nos blocos de total.
+   ========================================================= */
+.valor-total,
+.total-container,
+.total-itens-ordem-box,
+.resumo-total-itens-ordem,
+.os-total-box,
+.card-total-os {
+  background: #3e2723 !important;
+  color: #ffc400 !important;
+  border: 2px solid #ffc400 !important;
+}
+
+.valor-total *,
+.total-container *,
+.total-itens-ordem-box *,
+.resumo-total-itens-ordem *,
+.os-total-box *,
+.card-total-os * {
+  color: #ffc400 !important;
+}
+
+.valor-total span,
+.valor-total strong,
+.valor-total b,
+.total-container span,
+.total-container strong,
+.total-container b,
+.total-itens-ordem-box span,
+.total-itens-ordem-box strong,
+.total-itens-ordem-box b,
+.resumo-total-itens-ordem span,
+.resumo-total-itens-ordem strong,
+.resumo-total-itens-ordem b {
+  color: #ffc400 !important;
+  opacity: 1 !important;
+}
+
+/* Campos de valor devem continuar claros e legíveis */
+#item-valor-total,
+#financeiro-valor-total,
+#financeiro-saldo-restante {
+  background: #ffffff !important;
+  color: #2f241f !important;
+  border-color: #d8c9b8 !important;
+}
+
+label[for="item-valor-total"],
+label[for="financeiro-valor-total"],
+label[for="financeiro-saldo-restante"] {
+  color: #3e2723 !important;
+}
