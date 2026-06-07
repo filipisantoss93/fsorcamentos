@@ -2184,6 +2184,146 @@
       .home-premium-showcase h2 { font-size: 24px; }
     }
 
+
+    /* =========================================================
+       PROPAGANDA BÁSICO VISUAL - HOME
+       ========================================================= */
+    .home-basico-showcase {
+      margin: 24px 0;
+      background: linear-gradient(135deg, #fffaf0, #f4ece1);
+      border: 2px solid #ffc400;
+      border-radius: 24px;
+      padding: 24px;
+      color: #3e2723;
+      box-shadow: 0 18px 46px rgba(0,0,0,.18);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .home-basico-showcase::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -110px;
+      top: -110px;
+      border-radius: 999px;
+      background: rgba(62,39,35,.08);
+    }
+
+    .home-basico-showcase > * { position: relative; z-index: 1; }
+
+    .home-basico-showcase-topo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 350px;
+      gap: 22px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .home-basico-showcase .tag-basico-home {
+      display: inline-flex;
+      background: #3e2723;
+      color: #ffc400;
+      border: 1px solid #ffc400;
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .home-basico-showcase h2 {
+      margin: 0 0 10px;
+      color: #3e2723;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .home-basico-showcase p {
+      margin: 0;
+      color: #6d4c41;
+      line-height: 1.55;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .home-basico-mini-dashboard {
+      background: #ffffff;
+      border: 1px solid #e0d6c8;
+      border-top: 5px solid #ffc400;
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+    }
+
+    .home-basico-mini-linha {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      background: #fff8e1;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .home-basico-mini-linha strong { color: #3e2723; }
+
+    .home-basico-recursos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .home-basico-recurso-card {
+      background: #ffffff;
+      color: #3e2723;
+      border-radius: 16px;
+      padding: 15px;
+      border-left: 6px solid #ffc400;
+      min-height: 116px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+    }
+
+    .home-basico-recurso-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #3e2723;
+      font-size: 15px;
+    }
+
+    .home-basico-recurso-card span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .home-basico-showcase-acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .home-basico-showcase-topo,
+      .home-basico-recursos-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .home-basico-showcase { padding: 18px; border-radius: 18px; }
+      .home-basico-showcase-topo,
+      .home-basico-recursos-grid { grid-template-columns: 1fr; }
+      .home-basico-showcase h2 { font-size: 24px; }
+    }
+
   </style>
 </head>
 
@@ -2375,7 +2515,39 @@
 
       <div class="home-premium-showcase-acoes">
         <a href="/planos.html#assinar-plano-premium" class="btn-home-planos-forte">🚀 Conhecer Premium</a>
-        <a href="/sobre.html" class="btn-home-planos-secundario">Ver como funciona</a>
+        <a href="/manual-premium.html" class="btn-home-planos-secundario">Ver como funciona</a>
+      </div>
+    </section>
+
+    <section class="home-basico-showcase">
+      <div class="home-basico-showcase-topo">
+        <div>
+          <span class="tag-basico-home">Plano Básico</span>
+          <h2>Orçamentos com link, aprovação online e acompanhamento comercial.</h2>
+          <p>
+            O Básico é para quem ainda não precisa de oficina completa, mas quer parar de perder orçamento no WhatsApp.
+            Você gera o PDF, salva na nuvem, envia o link para o cliente e acompanha se está pendente, aprovado ou recusado.
+          </p>
+        </div>
+
+        <div class="home-basico-mini-dashboard" aria-label="Exemplo visual do painel do Plano Básico">
+          <div class="home-basico-mini-linha"><span>Pendentes</span><strong>8</strong></div>
+          <div class="home-basico-mini-linha"><span>Aprovados no mês</span><strong>R$ 4.870</strong></div>
+          <div class="home-basico-mini-linha"><span>Taxa de aprovação</span><strong>62%</strong></div>
+          <div class="home-basico-mini-linha"><span>Lembretes</span><strong>3 acompanhar</strong></div>
+        </div>
+      </div>
+
+      <div class="home-basico-recursos-grid">
+        <div class="home-basico-recurso-card"><strong>🔗 Link do orçamento</strong><span>Envie uma página profissional para o cliente visualizar pelo celular.</span></div>
+        <div class="home-basico-recurso-card"><strong>✅ Aprovação online</strong><span>O cliente aprova ou recusa e o status fica salvo no sistema.</span></div>
+        <div class="home-basico-recurso-card"><strong>📊 Gestão comercial</strong><span>Veja pendentes, aprovados, recusados, total aprovado e últimos orçamentos.</span></div>
+        <div class="home-basico-recurso-card"><strong>🔔 Lembrete interno</strong><span>Receba aviso para acompanhar orçamentos que ficaram pendentes.</span></div>
+      </div>
+
+      <div class="home-basico-showcase-acoes">
+        <a href="/planos.html#assinar-plano-basico" class="btn-home-planos-forte">⭐ Conhecer Básico</a>
+        <a href="/manual-basico.html" class="btn-home-planos-secundario">Ver como funciona</a>
       </div>
     </section>
 
@@ -2648,6 +2820,7 @@
           <li>Resumo financeiro de orçamentos</li>
         </ul>
         <a href="/planos.html#assinar-plano-basico" class="btn-home-medio">Conhecer Básico</a>
+        <a href="/manual-basico.html" class="btn-home-atalho" style="margin-top:10px; width:auto;">Ver como funciona</a>
       </article>
 
       <article class="home-promo-card premium">
@@ -2663,6 +2836,7 @@
           <li>Histórico por cliente, veículo e OS</li>
         </ul>
         <a href="/planos.html#assinar-plano-premium" class="btn-home-medio">Conhecer Premium</a>
+        <a href="/manual-premium.html" class="btn-home-atalho" style="margin-top:10px; width:auto;">Ver como funciona</a>
       </article>
     </div>
 

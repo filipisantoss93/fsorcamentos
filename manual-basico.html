@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3e2723">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual do Plano Básico - FS Orçamentos</title>
+  <meta name="description" content="Entenda como funciona o Plano Básico do FS Orçamentos: PDF, link por WhatsApp, aprovação online e gestão de orçamentos.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root{--fs-marrom:#3e2723;--fs-marrom-2:#2c1b17;--fs-creme:#f4ece1;--fs-creme-2:#fffaf0;--fs-amarelo:#ffc400;--fs-verde:#25d366;--fs-azul:#2563eb;--fs-vermelho:#dc2626;--fs-borda:#e0d6c8;--fs-texto:#3e2723}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(circle at top left,rgba(255,196,0,.16),transparent 30%),linear-gradient(180deg,#2c2c2c 0%,#1f1f1f 100%);font-family:Arial,Helvetica,sans-serif;color:var(--fs-texto)}
+    .manual-page{max-width:1180px;margin:0 auto;padding:28px 14px 52px}.manual-hero{background:linear-gradient(135deg,#fff8dc,var(--fs-creme));border-radius:28px;padding:36px 28px;border-top:7px solid var(--fs-amarelo);box-shadow:0 18px 48px rgba(0,0,0,.30);color:var(--fs-marrom);margin-bottom:24px;position:relative;overflow:hidden}.manual-hero:before{content:"";position:absolute;width:260px;height:260px;right:-100px;top:-110px;border-radius:999px;background:rgba(255,196,0,.18)}.manual-hero>*{position:relative}.manual-tag{display:inline-flex;background:var(--fs-marrom);color:var(--fs-amarelo);border:1px solid var(--fs-amarelo);border-radius:999px;padding:8px 14px;font-size:12px;font-weight:900;text-transform:uppercase;margin-bottom:12px}.manual-hero h1{margin:0 0 12px;font-size:38px;line-height:1.12;color:var(--fs-marrom);max-width:920px}.manual-hero p{margin:0;color:#5d4037;font-size:17px;line-height:1.55;font-weight:700;max-width:860px}.manual-acoes{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}.btn-manual{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:13px 20px;font-weight:900;text-decoration:none;border:2px solid var(--fs-marrom);box-shadow:0 8px 18px rgba(0,0,0,.18);transition:.2s ease}.btn-principal{background:var(--fs-amarelo);color:var(--fs-marrom)}.btn-secundario{background:#fff;color:var(--fs-marrom)}.btn-escuro{background:var(--fs-marrom);color:var(--fs-amarelo);border-color:var(--fs-amarelo)}.btn-manual:hover{transform:translateY(-2px)}.manual-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}.manual-card,.manual-section,.manual-step,.manual-demo-card{background:#fff;border:1px solid var(--fs-borda);border-left:6px solid var(--fs-amarelo);border-radius:20px;padding:20px;box-shadow:0 10px 26px rgba(0,0,0,.14);color:var(--fs-marrom)}.manual-card strong{display:block;font-size:18px;margin-bottom:8px;color:var(--fs-marrom)}.manual-card p,.manual-section p,.manual-step p,.manual-demo-card p{margin:0;color:#6d4c41;line-height:1.5;font-weight:700}.manual-section{margin:24px 0;background:linear-gradient(135deg,#fffaf0,#fff)}.manual-section h2{margin:0 0 12px;color:var(--fs-marrom);font-size:28px}.manual-section h3{margin:0 0 8px;color:var(--fs-marrom)}.manual-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}.manual-step{padding:16px}.manual-num{width:42px;height:42px;border-radius:999px;background:var(--fs-amarelo);color:var(--fs-marrom);display:flex;align-items:center;justify-content:center;font-weight:900;margin-bottom:10px;border:2px solid var(--fs-marrom)}.manual-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:18px}.manual-flow div{background:var(--fs-marrom);color:var(--fs-amarelo);border:1px solid var(--fs-amarelo);border-radius:14px;padding:13px 8px;text-align:center;font-weight:900;font-size:13px}.manual-demo{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start;margin-top:18px}.manual-demo-card{padding:16px}.mock-phone{background:#111b21;border-radius:26px;padding:14px;color:#fff;box-shadow:0 16px 38px rgba(0,0,0,.32)}.mock-top{display:flex;gap:10px;align-items:center;padding:8px 8px 14px;border-bottom:1px solid rgba(255,255,255,.08)}.mock-avatar{width:42px;height:42px;border-radius:50%;background:var(--fs-amarelo);color:var(--fs-marrom);display:flex;align-items:center;justify-content:center;font-weight:900}.mock-body{background:#efeae2;border-radius:18px;padding:14px;margin-top:12px;display:grid;gap:10px}.mock-msg{background:#fff;color:#263238;padding:10px 12px;border-radius:12px 12px 12px 3px;font-size:14px;line-height:1.35}.mock-card{background:#fff;color:var(--fs-marrom);border-radius:14px;overflow:hidden;border:1px solid #d7ccc8}.mock-card-head{background:var(--fs-marrom);color:var(--fs-amarelo);font-weight:900;padding:10px 12px}.mock-card-body{padding:12px;display:grid;gap:5px;font-size:14px}.mock-button{display:block;margin:0 12px 12px;background:var(--fs-amarelo);color:var(--fs-marrom);border:2px solid var(--fs-marrom);border-radius:10px;padding:10px;text-align:center;font-weight:900}.manual-table-wrap{overflow-x:auto;border-radius:16px;border:1px solid var(--fs-borda);background:#fff;margin-top:18px}.manual-table{width:100%;min-width:760px;border-collapse:collapse}.manual-table th{background:var(--fs-marrom);color:var(--fs-amarelo);text-align:left;padding:14px;text-transform:uppercase;font-size:13px}.manual-table td{padding:13px 14px;border-bottom:1px solid #eee1d5;font-weight:800;color:var(--fs-marrom)}.manual-table td:not(:first-child),.manual-table th:not(:first-child){text-align:center}.ok{color:#15803d;font-weight:900}.no{color:#dc2626;font-weight:900}.premium{color:#2563eb;font-weight:900}.manual-alert{background:#fff8e1;border:1px solid var(--fs-amarelo);border-left:7px solid var(--fs-amarelo);border-radius:18px;padding:18px;margin-top:18px;color:#5d4037;font-weight:800;line-height:1.5}.mini-dashboard{background:var(--fs-marrom);border:2px solid var(--fs-amarelo);border-radius:18px;padding:14px;display:grid;gap:10px}.mini-line{display:flex;justify-content:space-between;gap:10px;background:rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;font-weight:900;color:#fffaf0}.mini-line strong{color:var(--fs-amarelo)}footer{text-align:center;color:#bdbdbd;padding:24px 10px}footer a{color:var(--fs-amarelo);text-decoration:none}@media(max-width:980px){.manual-grid,.manual-steps{grid-template-columns:1fr 1fr}.manual-demo{grid-template-columns:1fr}.manual-flow{grid-template-columns:1fr}}@media(max-width:680px){.manual-page{padding:18px 10px 38px}.manual-hero{padding:26px 16px;border-radius:20px}.manual-hero h1{font-size:28px}.manual-grid,.manual-steps{grid-template-columns:1fr}.manual-section{padding:18px}.btn-manual{width:100%}.manual-acoes{display:grid}.manual-section h2{font-size:24px}}
+</style>
+</head>
+<body>
+<div id="header-container"></div>
+<main class="manual-page">
+
+<section class="manual-hero">
+  <span class="manual-tag">Manual do Plano Básico</span>
+  <h1>Como o Plano Básico funciona no FS Orçamentos</h1>
+  <p>O Plano Básico é o plano ideal para quem quer sair do PDF solto e começar a controlar propostas: salvar orçamento na nuvem, enviar link pelo WhatsApp, receber aprovação ou recusa online e acompanhar pendências.</p>
+  <div class="manual-acoes">
+    <a href="/planos.html#assinar-plano-basico" class="btn-manual btn-principal">⭐ Assinar Básico</a>
+    <a href="/gerador.html" class="btn-manual btn-secundario">🧾 Gerar orçamento</a>
+    <button type="button" class="btn-manual btn-escuro" onclick="abrirSessaoManual('fluxo-basico')">Ver fluxo</button>
+  </div>
+</section>
+
+<section class="manual-grid">
+  <article class="manual-card"><strong>🔗 Link profissional</strong><p>O orçamento deixa de ser apenas um arquivo e vira uma página que o cliente abre no celular.</p></article>
+  <article class="manual-card"><strong>✅ Aprovação online</strong><p>O cliente aprova ou recusa pelo link. O status fica salvo para você acompanhar.</p></article>
+  <article class="manual-card"><strong>📊 Gestão comercial</strong><p>Veja pendentes, aprovados, recusados, valor aprovado e histórico de propostas.</p></article>
+</section>
+
+<section id="fluxo-basico" class="manual-section">
+  <h2>Fluxo do Plano Básico</h2>
+  <p>O objetivo é controlar a venda do orçamento, desde a criação até a resposta do cliente.</p>
+  <div class="manual-flow">
+    <div>1. Gerar orçamento</div><div>2. Salvar na nuvem</div><div>3. Enviar link</div><div>4. Cliente responde</div><div>5. Acompanhar status</div>
+  </div>
+  <div class="manual-steps">
+    <article class="manual-step"><span class="manual-num">1</span><h3>Crie o orçamento</h3><p>Preencha cliente, itens, valores, validade, pagamento e observações.</p></article>
+    <article class="manual-step"><span class="manual-num">2</span><h3>Salve e envie</h3><p>O orçamento fica no histórico e você envia o link pelo WhatsApp.</p></article>
+    <article class="manual-step"><span class="manual-num">3</span><h3>Cliente aprova</h3><p>O cliente acessa uma página limpa e escolhe aprovar ou recusar.</p></article>
+    <article class="manual-step"><span class="manual-num">4</span><h3>Acompanhe</h3><p>Use a página Orçamentos para ver o que precisa de atenção.</p></article>
+  </div>
+</section>
+
+<section class="manual-section">
+  <h2>Exemplo visual: envio por WhatsApp</h2>
+  <div class="manual-demo">
+    <div>
+      <p>Após gerar e salvar, o sistema prepara o envio pelo WhatsApp com o link do orçamento. O cliente não precisa instalar nada.</p>
+      <div class="manual-alert">Dica: o link ajuda a dar aparência mais profissional e registra a resposta do cliente no sistema.</div>
+    </div>
+    <div class="mock-phone">
+      <div class="mock-top"><div class="mock-avatar">FS</div><div><strong>Cliente</strong><br><span>online</span></div></div>
+      <div class="mock-body">
+        <div class="mock-msg">Olá! Segue o orçamento para sua avaliação.</div>
+        <div class="mock-card"><div class="mock-card-head">Orçamento Nº 000128</div><div class="mock-card-body"><strong>Manutenção preventiva</strong><span>Total: R$ 780,00</span><span>Status: Pendente</span></div><div class="mock-button">Abrir orçamento</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="manual-section">
+  <h2>O que o cliente vê no link</h2>
+  <div class="manual-demo">
+    <div class="manual-demo-card"><h3>Página do cliente</h3><p>O cliente visualiza dados da sua empresa, itens, total, observações, validade e botões para aprovar ou recusar.</p><br><div class="mini-dashboard"><div class="mini-line"><span>Status</span><strong>Pendente</strong></div><div class="mini-line"><span>Total</span><strong>R$ 780,00</strong></div><div class="mini-line"><span>Ação</span><strong>Aprovar / Recusar</strong></div></div></div>
+    <div class="manual-demo-card"><h3>Depois da resposta</h3><p>Quando o cliente aprova ou recusa, o orçamento muda de status e você consegue acompanhar na página Orçamentos.</p><br><div class="mini-dashboard"><div class="mini-line"><span>Pendentes</span><strong>8</strong></div><div class="mini-line"><span>Aprovados</span><strong>14</strong></div><div class="mini-line"><span>Total aprovado</span><strong>R$ 9.420</strong></div></div></div>
+  </div>
+</section>
+
+<section class="manual-section">
+  <h2>Recursos do Básico</h2>
+  <div class="manual-table-wrap"><table class="manual-table"><thead><tr><th>Recurso</th><th>Grátis</th><th>Básico</th><th>Premium</th></tr></thead><tbody><tr><td>Gerar PDF</td><td class="ok">Sim</td><td class="ok">Sim</td><td class="ok">Sim</td></tr><tr><td>Remover anúncios</td><td class="no">Não</td><td class="ok">Sim</td><td class="ok">Sim</td></tr><tr><td>Salvar orçamento na nuvem</td><td class="no">Não</td><td class="ok">Sim</td><td class="ok">Sim</td></tr><tr><td>Enviar link pelo WhatsApp</td><td class="no">Não</td><td class="ok">Sim</td><td class="ok">Sim</td></tr><tr><td>Aprovação/recusa online</td><td class="no">Não</td><td class="ok">Sim</td><td class="ok">Sim</td></tr><tr><td>Clientes, veículos, OS e estoque</td><td class="no">Não</td><td class="no">Não</td><td class="premium">Sim</td></tr></tbody></table></div>
+</section>
+
+<section class="manual-section"><h2>Quando escolher o Básico?</h2><p>Escolha o Básico quando você gera orçamentos com frequência, precisa acompanhar propostas pendentes e quer uma forma mais profissional de receber aprovação do cliente. Se você precisa também controlar execução, OS, veículos, estoque e histórico operacional, o Premium é o plano mais indicado.</p><div class="manual-acoes"><a href="/planos.html#assinar-plano-basico" class="btn-manual btn-principal">Assinar Básico</a><a href="/manual-premium.html" class="btn-manual btn-secundario">Ver Premium</a></div></section>
+
+</main>
+<footer>&copy; 2026 FS Orçamentos | <a href="/planos.html">Planos</a> | <a href="/sobre.html">Sobre</a></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="planos.js"></script>
+<script src="carregar-menu.js"></script>
+<script src="notificacoes.js"></script>
+<script>
+function abrirSessaoManual(id){const alvo=document.getElementById(id);if(alvo) alvo.scrollIntoView({behavior:'smooth',block:'start'});}
+</script>
+</body>
+</html>
