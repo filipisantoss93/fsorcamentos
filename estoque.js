@@ -267,7 +267,7 @@ async function carregarProdutosEstoque(resetar = true) {
       const termo = `%${filtrosAtuaisEstoque.termo}%`;
 
       query = query.or(
-        `nome.ilike.${termo},codigo.ilike.${termo},categoria.ilike.${termo},descricao.ilike.${termo},observacoes.ilike.${termo},unidade.ilike.${termo}`
+        `nome.ilike.${termo},codigo.ilike.${termo},categoria.ilike.${termo},subcategoria.ilike.${termo},marca_veiculo.ilike.${termo},modelo_veiculo.ilike.${termo},versao_veiculo.ilike.${termo},motor_veiculo.ilike.${termo},codigo_original.ilike.${termo},codigo_fabricante.ilike.${termo},aplicacao.ilike.${termo},descricao.ilike.${termo},observacoes.ilike.${termo},unidade.ilike.${termo}`
       );
     }
 
@@ -428,6 +428,17 @@ function montarObjetoProdutoEstoque() {
     nome: valorInputEstoque("produto-nome"),
     descricao: valorInputEstoque("produto-descricao"),
     categoria: obterCategoriaProdutoEstoque(),
+    subcategoria: valorInputEstoque("produto-subcategoria"),
+    marca_veiculo: valorInputEstoque("produto-marca-veiculo"),
+    modelo_veiculo: valorInputEstoque("produto-modelo-veiculo"),
+    ano_inicial: numeroInteiroCampoEstoque("produto-ano-inicial"),
+    ano_final: numeroInteiroCampoEstoque("produto-ano-final"),
+    versao_veiculo: valorInputEstoque("produto-versao-veiculo"),
+    motor_veiculo: valorInputEstoque("produto-motor-veiculo"),
+    codigo_original: valorInputEstoque("produto-codigo-original"),
+    codigo_fabricante: valorInputEstoque("produto-codigo-fabricante"),
+    aplicacao: valorInputEstoque("produto-aplicacao"),
+    produto_universal: checkboxMarcadoEstoque("produto-universal"),
     codigo: valorInputEstoque("produto-codigo"),
     unidade: valorInputEstoque("produto-unidade") || "un",
 
@@ -460,6 +471,17 @@ function editarProdutoEstoque(id) {
   setValorEstoque("produto-nome", produto.nome);
   setValorEstoque("produto-descricao", produto.descricao);
   preencherCategoriaProdutoParaEdicao(produto.categoria);
+  setValorEstoque("produto-subcategoria", produto.subcategoria || "");
+  setValorEstoque("produto-marca-veiculo", produto.marca_veiculo || "");
+  setValorEstoque("produto-modelo-veiculo", produto.modelo_veiculo || "");
+  setValorEstoque("produto-ano-inicial", produto.ano_inicial || "");
+  setValorEstoque("produto-ano-final", produto.ano_final || "");
+  setValorEstoque("produto-versao-veiculo", produto.versao_veiculo || "");
+  setValorEstoque("produto-motor-veiculo", produto.motor_veiculo || "");
+  setValorEstoque("produto-codigo-original", produto.codigo_original || "");
+  setValorEstoque("produto-codigo-fabricante", produto.codigo_fabricante || "");
+  setValorEstoque("produto-aplicacao", produto.aplicacao || "");
+  setCheckboxEstoque("produto-universal", produto.produto_universal === true);
   setValorEstoque("produto-codigo", produto.codigo);
   setValorEstoque("produto-unidade", produto.unidade || "un");
   setValorEstoque("produto-ativo", produto.ativo === false ? "false" : "true");
@@ -559,10 +581,10 @@ function renderizarProdutosEstoque(lista) {
     return;
   }
 
-  const grupos = agruparProdutosPorCategoriaEstoque(lista);
+  const grupos = agruparProdutosPorCategoriaAplicacaoEstoque(lista);
 
   container.innerHTML = grupos.map((grupo) => {
-    const totalGrupo = grupo.produtos.length;
+    const totalGrupo = grupo.subcategorias.reduce((soma, sub) => soma + sub.aplicacoes.reduce((s, ap) => s + ap.produtos.length, 0), 0);
 
     return `
       <section class="estoque-categoria-grupo">
@@ -571,53 +593,117 @@ function renderizarProdutosEstoque(lista) {
           <small>${totalGrupo} item${totalGrupo === 1 ? "" : "s"}</small>
         </div>
 
-        <div class="estoque-grade-cabecalho">
-          <div>Produto</div>
-          <div style="text-align:right;">Qtd</div>
-          <div style="text-align:right;">Venda</div>
-          <div></div>
-        </div>
+        ${grupo.subcategorias.map((subgrupo) => {
+          const totalSubgrupo = subgrupo.aplicacoes.reduce((soma, aplicacao) => soma + aplicacao.produtos.length, 0);
 
-        <div>
-          ${grupo.produtos.map((produto) => criarLinhaProdutoEstoque(produto)).join("")}
-        </div>
+          return `
+            <div class="estoque-subcategoria-grupo">
+              <div class="estoque-subcategoria-titulo">
+                <span>${escaparHTMLEstoque(subgrupo.subcategoria)}</span>
+                <small>${totalSubgrupo} item${totalSubgrupo === 1 ? "" : "s"}</small>
+              </div>
+
+              ${subgrupo.aplicacoes.map((aplicacao) => `
+                <div class="estoque-aplicacao-grupo">
+                  <div class="estoque-aplicacao-titulo">
+                    <span>${escaparHTMLEstoque(aplicacao.aplicacao)}</span>
+                    <small>${aplicacao.produtos.length} item${aplicacao.produtos.length === 1 ? "" : "s"}</small>
+                  </div>
+
+                  <div class="estoque-grade-cabecalho">
+                    <div>Produto</div>
+                    <div style="text-align:right;">Qtd</div>
+                    <div style="text-align:right;">Venda</div>
+                    <div></div>
+                  </div>
+
+                  <div>
+                    ${aplicacao.produtos.map((produto) => criarLinhaProdutoEstoque(produto)).join("")}
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          `;
+        }).join("")}
       </section>
     `;
   }).join("");
 }
 
-function agruparProdutosPorCategoriaEstoque(lista) {
-  const mapa = new Map();
+function agruparProdutosPorCategoriaAplicacaoEstoque(lista) {
+  const mapaCategorias = new Map();
 
   lista.forEach((produto) => {
-    const categoriaBruta = String(produto.categoria || "").trim();
-    const categoria = categoriaBruta || "Sem categoria";
+    const categoria = String(produto.categoria || "").trim() || "Sem categoria";
+    const subcategoria = String(produto.subcategoria || "").trim() || "Sem subcategoria";
+    const aplicacao = montarAplicacaoProdutoEstoque(produto);
 
-    if (!mapa.has(categoria)) {
-      mapa.set(categoria, []);
-    }
+    if (!mapaCategorias.has(categoria)) mapaCategorias.set(categoria, new Map());
+    const mapaSub = mapaCategorias.get(categoria);
 
-    mapa.get(categoria).push(produto);
+    if (!mapaSub.has(subcategoria)) mapaSub.set(subcategoria, new Map());
+    const mapaAplicacao = mapaSub.get(subcategoria);
+
+    if (!mapaAplicacao.has(aplicacao)) mapaAplicacao.set(aplicacao, []);
+    mapaAplicacao.get(aplicacao).push(produto);
   });
 
-  return Array.from(mapa.entries())
-    .map(([categoria, produtos]) => {
-      const produtosOrdenados = [...produtos].sort((a, b) => {
-        const nomeA = String(a.nome || "").localeCompare(String(b.nome || ""), "pt-BR");
-        return nomeA;
-      });
-
-      return {
-        categoria,
-        produtos: produtosOrdenados
-      };
-    })
+  return Array.from(mapaCategorias.entries())
+    .map(([categoria, mapaSub]) => ({
+      categoria,
+      subcategorias: Array.from(mapaSub.entries())
+        .map(([subcategoria, mapaAplicacao]) => ({
+          subcategoria,
+          aplicacoes: Array.from(mapaAplicacao.entries())
+            .map(([aplicacao, produtos]) => ({
+              aplicacao,
+              produtos: [...produtos].sort((a, b) => String(a.nome || "").localeCompare(String(b.nome || ""), "pt-BR"))
+            }))
+            .sort((a, b) => a.aplicacao.localeCompare(b.aplicacao, "pt-BR"))
+        }))
+        .sort((a, b) => a.subcategoria.localeCompare(b.subcategoria, "pt-BR"))
+    }))
     .sort((a, b) => {
       if (a.categoria === "Sem categoria") return 1;
       if (b.categoria === "Sem categoria") return -1;
-
       return a.categoria.localeCompare(b.categoria, "pt-BR");
     });
+}
+
+function montarAplicacaoProdutoEstoque(produto) {
+  if (produto?.produto_universal === true) return "Universal / serve para vários veículos";
+
+  const marca = String(produto?.marca_veiculo || "").trim();
+  const modelo = String(produto?.modelo_veiculo || "").trim();
+  const versao = String(produto?.versao_veiculo || "").trim();
+  const motor = String(produto?.motor_veiculo || "").trim();
+  const anos = formatarAnosAplicacaoEstoque(produto);
+  const aplicacao = String(produto?.aplicacao || "").trim();
+
+  const principal = [marca, modelo, versao, motor, anos].filter(Boolean).join(" • ");
+  return principal || aplicacao || "Aplicação não informada";
+}
+
+function formatarAnosAplicacaoEstoque(produto) {
+  const inicial = produto?.ano_inicial;
+  const final = produto?.ano_final;
+
+  if (inicial && final) return `${inicial} a ${final}`;
+  if (inicial) return `A partir de ${inicial}`;
+  if (final) return `Até ${final}`;
+
+  return "";
+}
+
+function resumirAplicacaoProdutoEstoque(produto) {
+  const partes = [
+    produto?.subcategoria ? `Tipo: ${produto.subcategoria}` : "",
+    produto?.produto_universal === true ? "Universal" : montarAplicacaoProdutoEstoque(produto),
+    produto?.codigo_original ? `Original: ${produto.codigo_original}` : "",
+    produto?.codigo_fabricante ? `Fabricante: ${produto.codigo_fabricante}` : ""
+  ].filter(Boolean);
+
+  return partes.join(" • ");
 }
 
 function criarLinhaProdutoEstoque(produto) {
@@ -626,6 +712,8 @@ function criarLinhaProdutoEstoque(produto) {
   const codigo = escaparHTMLEstoque(produto.codigo || "");
   const descricao = escaparHTMLEstoque(produto.descricao || "");
   const categoria = escaparHTMLEstoque(produto.categoria || "Sem categoria");
+  const subcategoria = escaparHTMLEstoque(produto.subcategoria || "");
+  const aplicacao = escaparHTMLEstoque(resumirAplicacaoProdutoEstoque(produto));
   const unidade = escaparHTMLEstoque(produto.unidade || "un");
 
   const ativo = produto.ativo !== false;
@@ -652,6 +740,8 @@ function criarLinhaProdutoEstoque(produto) {
 
   const detalhesLinha = [
     codigo ? `Cód: ${codigo}` : "",
+    produto.subcategoria ? produto.subcategoria : "",
+    produto.produto_universal ? "Universal" : [produto.marca_veiculo, produto.modelo_veiculo, formatarAnosAplicacaoEstoque(produto)].filter(Boolean).join(" "),
     controla ? `Mín: ${formatarQuantidadeEstoque(minimo)} ${unidade}` : "Sem controle",
     baixo ? "Estoque baixo" : "",
     ativo ? "" : "Inativo"
@@ -681,7 +771,11 @@ function criarLinhaProdutoEstoque(produto) {
       <div class="estoque-produto-detalhes">
         <div class="estoque-produto-meta">
           <span>Categoria: ${categoria}</span>
+          ${subcategoria ? `<span>Subcategoria: ${subcategoria}</span>` : ""}
+          ${aplicacao ? `<span>Aplicação: ${aplicacao}</span>` : ""}
           ${codigo ? `<span>Código: ${codigo}</span>` : ""}
+          ${produto.codigo_original ? `<span>Código original: ${escaparHTMLEstoque(produto.codigo_original)}</span>` : ""}
+          ${produto.codigo_fabricante ? `<span>Código fabricante: ${escaparHTMLEstoque(produto.codigo_fabricante)}</span>` : ""}
           <span>Quantidade: ${textoQuantidade}</span>
           ${controla ? `<span>Mínimo: ${formatarQuantidadeEstoque(minimo)} ${unidade}</span>` : `<span>Sem controle de estoque</span>`}
           <span>Custo: ${valorCusto}</span>
@@ -1220,6 +1314,13 @@ function converterNumeroEstoque(valor) {
 
   const numero = Number(texto);
   return Number.isFinite(numero) ? numero : 0;
+}
+
+function numeroInteiroCampoEstoque(id) {
+  const valor = valorInputEstoque(id);
+  if (valor === "") return null;
+  const numero = parseInt(String(valor).replace(/[^0-9-]/g, ""), 10);
+  return Number.isFinite(numero) ? numero : null;
 }
 
 function numeroCampoEstoque(id) {

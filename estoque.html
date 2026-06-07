@@ -1748,7 +1748,50 @@ textarea:focus {
 #grupo-produto-categoria-outra.oculto {
   display: none !important;
 }
-  </style>
+  
+/* Agrupamento profissional do estoque por categoria, subcategoria e aplicação */
+.estoque-subcategoria-grupo {
+  border-top: 1px solid #eadfce;
+}
+.estoque-subcategoria-titulo {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 14px;
+  background: #fff8e1;
+  color: var(--fs-marrom);
+  font-weight: 900;
+  font-size: 13px;
+  border-bottom: 1px solid #eadfce;
+}
+.estoque-subcategoria-titulo small {
+  color: #8d6e63;
+  font-size: 11px;
+  font-weight: 800;
+}
+.estoque-aplicacao-grupo {
+  border-top: 1px solid #f1e5d7;
+}
+.estoque-aplicacao-titulo {
+  padding: 7px 14px;
+  background: #ffffff;
+  color: #6d4c41;
+  font-size: 12px;
+  font-weight: 900;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.estoque-aplicacao-titulo span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.estoque-aplicacao-titulo small {
+  color: #8d6e63;
+}
+</style>
 
 
 <!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
@@ -2616,6 +2659,16 @@ body.gerando-pdf * {
   <label for="produto-categoria">Categoria</label>
   <select id="produto-categoria">
     <option value="">Selecione</option>
+    <option value="Filtros">Filtros</option>
+    <option value="Suspensão">Suspensão</option>
+    <option value="Injeção">Injeção</option>
+    <option value="Correias">Correias</option>
+    <option value="Freios">Freios</option>
+    <option value="Elétrica">Elétrica</option>
+    <option value="Motor">Motor</option>
+    <option value="Fluidos">Fluidos</option>
+    <option value="Lubrificantes">Lubrificantes</option>
+    <option value="Acessórios">Acessórios</option>
     <option value="Peças">Peças</option>
     <option value="Materiais">Materiais</option>
     <option value="Produtos">Produtos</option>
@@ -2632,9 +2685,89 @@ body.gerando-pdf * {
                 <input
                   type="text"
                   id="produto-codigo"
-                  placeholder="Ex: PÇ-001"
+                  placeholder="Ex: FIL-AR-CIVIC-14"
                 />
               </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-subcategoria">Subcategoria / tipo da peça</label>
+                <input
+                  type="text"
+                  id="produto-subcategoria"
+                  placeholder="Ex: Filtro de ar do motor, Filtro de óleo, Amortecedor dianteiro"
+                />
+                <small>Use para separar a categoria em tipos específicos de peça.</small>
+              </div>
+
+              <div class="campo">
+                <label for="produto-aplicacao">Aplicação / compatibilidade</label>
+                <input
+                  type="text"
+                  id="produto-aplicacao"
+                  placeholder="Ex: Honda Civic 2014 a 2016 motor 2.0"
+                />
+                <small>Resumo livre da aplicação da peça.</small>
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-marca-veiculo">Marca do veículo</label>
+                <input type="text" id="produto-marca-veiculo" placeholder="Ex: Honda, GM, Fiat, VW" />
+              </div>
+
+              <div class="campo">
+                <label for="produto-modelo-veiculo">Modelo do veículo</label>
+                <input type="text" id="produto-modelo-veiculo" placeholder="Ex: Civic, Corsa Maxx, Uno Fire, Gol G5" />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-ano-inicial">Ano inicial</label>
+                <input type="number" id="produto-ano-inicial" min="1900" max="2100" step="1" placeholder="Ex: 2009" />
+              </div>
+
+              <div class="campo">
+                <label for="produto-ano-final">Ano final</label>
+                <input type="number" id="produto-ano-final" min="1900" max="2100" step="1" placeholder="Ex: 2014" />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-versao-veiculo">Versão</label>
+                <input type="text" id="produto-versao-veiculo" placeholder="Ex: EXL, Maxx, Fire, Comfortline" />
+              </div>
+
+              <div class="campo">
+                <label for="produto-motor-veiculo">Motor</label>
+                <input type="text" id="produto-motor-veiculo" placeholder="Ex: 1.0, 1.6, 2.0 Flex" />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="produto-codigo-original">Código original</label>
+                <input type="text" id="produto-codigo-original" placeholder="Código original da peça, se houver" />
+              </div>
+
+              <div class="campo">
+                <label for="produto-codigo-fabricante">Código do fabricante</label>
+                <input type="text" id="produto-codigo-fabricante" placeholder="Ex: WOE-123, ARL-456" />
+              </div>
+            </div>
+
+            <div class="checkbox-linha">
+              <input type="checkbox" id="produto-universal" />
+              <label for="produto-universal">
+                <strong>Produto universal / serve para qualquer veículo</strong>
+                <span>
+                  Marque para óleos, fluidos, serviços, insumos e produtos que não dependem de marca/modelo.
+                </span>
+              </label>
             </div>
 
             <div class="form-linha">
@@ -2770,6 +2903,16 @@ body.gerando-pdf * {
   <label for="filtro-categoria-produtos">Categoria</label>
   <select id="filtro-categoria-produtos">
     <option value="">Todas</option>
+    <option value="Filtros">Filtros</option>
+    <option value="Suspensão">Suspensão</option>
+    <option value="Injeção">Injeção</option>
+    <option value="Correias">Correias</option>
+    <option value="Freios">Freios</option>
+    <option value="Elétrica">Elétrica</option>
+    <option value="Motor">Motor</option>
+    <option value="Fluidos">Fluidos</option>
+    <option value="Lubrificantes">Lubrificantes</option>
+    <option value="Acessórios">Acessórios</option>
     <option value="Peças">Peças</option>
     <option value="Materiais">Materiais</option>
     <option value="Produtos">Produtos</option>

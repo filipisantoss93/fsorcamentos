@@ -610,7 +610,86 @@ function formatarProdutoEstoqueResumoOrdem(produto) {
   const unidade = produto.unidade || "un";
   const controla = produto.controlar_estoque !== false;
   const estoque = controla ? `Estoque: ${formatarQuantidadeOrdem(quantidade)} ${unidade}` : "Sem controle de estoque";
-  return [produto.codigo ? `Código: ${produto.codigo}` : "", produto.categoria ? `Categoria: ${produto.categoria}` : "", estoque, produto.valor_venda ? `Venda: ${formatarMoedaOrdem(produto.valor_venda)}` : ""].filter(Boolean).join(" • ");
+  const aplicacao = resumirAplicacaoProdutoOrdem(produto);
+  return [
+    produto.codigo ? `Código: ${produto.codigo}` : "",
+    produto.categoria ? `Categoria: ${produto.categoria}` : "",
+    produto.subcategoria ? `Tipo: ${produto.subcategoria}` : "",
+    aplicacao ? `Aplicação: ${aplicacao}` : "",
+    estoque,
+    produto.valor_venda ? `Venda: ${formatarMoedaOrdem(produto.valor_venda)}` : ""
+  ].filter(Boolean).join(" • ");
+}
+
+function resumirAplicacaoProdutoOrdem(produto) {
+  if (!produto) return "";
+  if (produto.produto_universal === true) return "Universal / serve para vários veículos";
+
+  const anos = formatarAnosProdutoOrdem(produto);
+  const porCampos = [
+    produto.marca_veiculo,
+    produto.modelo_veiculo,
+    produto.versao_veiculo,
+    produto.motor_veiculo,
+    anos
+  ].filter(Boolean).join(" • ");
+
+  return porCampos || produto.aplicacao || "";
+}
+
+function formatarAnosProdutoOrdem(produto) {
+  const inicial = produto?.ano_inicial;
+  const final = produto?.ano_final;
+
+  if (inicial && final) return `${inicial} a ${final}`;
+  if (inicial) return `A partir de ${inicial}`;
+  if (final) return `Até ${final}`;
+
+  return "";
+}
+
+function produtoCompativelComVeiculoOrdem(produto) {
+  if (!produto) return false;
+  if (produto.produto_universal === true) return true;
+
+  const veiculo = veiculoVinculadoOrdem;
+  if (!veiculo) return false;
+
+  const marcaProduto = normalizarTextoOrdem(produto.marca_veiculo || "");
+  const modeloProduto = normalizarTextoOrdem(produto.modelo_veiculo || "");
+  const marcaVeiculo = normalizarTextoOrdem(veiculo.marca || "");
+  const modeloVeiculo = normalizarTextoOrdem(veiculo.modelo || "");
+  const anoVeiculo = parseInt(String(veiculo.ano || "").replace(/\D/g, ""), 10);
+
+  const marcaOk = !marcaProduto || !marcaVeiculo || marcaVeiculo.includes(marcaProduto) || marcaProduto.includes(marcaVeiculo);
+  const modeloOk = !modeloProduto || !modeloVeiculo || modeloVeiculo.includes(modeloProduto) || modeloProduto.includes(modeloVeiculo);
+
+  let anoOk = true;
+  const anoInicial = produto.ano_inicial ? parseInt(produto.ano_inicial, 10) : null;
+  const anoFinal = produto.ano_final ? parseInt(produto.ano_final, 10) : null;
+
+  if (Number.isFinite(anoVeiculo)) {
+    if (anoInicial && anoVeiculo < anoInicial) anoOk = false;
+    if (anoFinal && anoVeiculo > anoFinal) anoOk = false;
+  }
+
+  return marcaOk && modeloOk && anoOk && (marcaProduto || modeloProduto || produto.aplicacao);
+}
+
+function ordenarProdutosPorCompatibilidadeOrdem(lista) {
+  return [...lista].sort((a, b) => {
+    const compA = produtoCompativelComVeiculoOrdem(a) ? 0 : 1;
+    const compB = produtoCompativelComVeiculoOrdem(b) ? 0 : 1;
+    if (compA !== compB) return compA - compB;
+
+    const cat = String(a.categoria || "").localeCompare(String(b.categoria || ""), "pt-BR");
+    if (cat !== 0) return cat;
+
+    const sub = String(a.subcategoria || "").localeCompare(String(b.subcategoria || ""), "pt-BR");
+    if (sub !== 0) return sub;
+
+    return String(a.nome || "").localeCompare(String(b.nome || ""), "pt-BR");
+  });
 }
 
 function atualizarProdutoEstoqueSelecionadoCard() {
@@ -629,7 +708,7 @@ function abrirModalBuscaProdutoEstoqueOrdem() {
   const modal = document.getElementById("modal-busca-produto-estoque-ordem");
   const campo = document.getElementById("campo-busca-produto-estoque-ordem");
   const resultado = document.getElementById("resultado-busca-produtos-ordem");
-  if (resultado) resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>`;
+  if (resultado) resultado.innerHTML = montarSugestaoProdutosCompativeisOrdem();
   if (campo) campo.value = "";
   if (modal) { modal.classList.add("ativo"); modal.setAttribute("aria-hidden", "false"); setTimeout(() => campo?.focus(), 80); }
 }
@@ -648,7 +727,29 @@ function normalizarTextoOrdem(valor) {
 }
 
 function textoBuscaProdutoEstoqueOrdem(produto) {
-  return normalizarTextoOrdem([produto.nome, produto.codigo, produto.sku, produto.categoria, produto.descricao, produto.observacoes, produto.unidade].filter(Boolean).join(" "));
+  return normalizarTextoOrdem([produto.nome, produto.codigo, produto.sku, produto.categoria, produto.subcategoria, produto.marca_veiculo, produto.modelo_veiculo, produto.versao_veiculo, produto.motor_veiculo, produto.codigo_original, produto.codigo_fabricante, produto.aplicacao, produto.descricao, produto.observacoes, produto.unidade].filter(Boolean).join(" "));
+}
+
+function montarSugestaoProdutosCompativeisOrdem() {
+  const compativeis = ordenarProdutosPorCompatibilidadeOrdem(produtosEstoqueOrdemCache)
+    .filter((produto) => produtoCompativelComVeiculoOrdem(produto))
+    .slice(0, 20);
+
+  if (!compativeis.length) {
+    const veiculo = veiculoVinculadoOrdem;
+    const textoVeiculo = veiculo
+      ? `${veiculo.marca || ""} ${veiculo.modelo || ""} ${veiculo.ano || ""}`.trim()
+      : "a OS atual";
+
+    return `<div class="estado-busca-produto-modal">Nenhum produto compatível encontrado automaticamente para ${escaparHTMLOrdem(textoVeiculo)}. Pesquise por nome, código, categoria, subcategoria, marca, modelo ou aplicação.</div>`;
+  }
+
+  return `
+    <div class="estado-busca-produto-modal">
+      Produtos compatíveis com o veículo da OS aparecem primeiro. Você também pode pesquisar qualquer item do estoque.
+    </div>
+    ${renderizarProdutosModalOrdem(compativeis)}
+  `;
 }
 
 function buscarProdutosModalOrdem() {
@@ -656,14 +757,32 @@ function buscarProdutosModalOrdem() {
   const resultado = document.getElementById("resultado-busca-produtos-ordem");
   if (!resultado) return;
   const termo = normalizarTextoOrdem(campo?.value || "");
-  if (termo.length < 2) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres para buscar produto.</div>`; return; }
-  const encontrados = produtosEstoqueOrdemCache.filter((produto) => textoBuscaProdutoEstoqueOrdem(produto).includes(termo)).slice(0, 40);
-  if (!encontrados.length) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Nenhum produto encontrado. Cadastre o item em Estoque ou adicione como item manual.</div>`; return; }
-  resultado.innerHTML = encontrados.map((produto) => {
+
+  if (termo.length < 2) {
+    resultado.innerHTML = montarSugestaoProdutosCompativeisOrdem();
+    return;
+  }
+
+  const encontrados = ordenarProdutosPorCompatibilidadeOrdem(
+    produtosEstoqueOrdemCache.filter((produto) => textoBuscaProdutoEstoqueOrdem(produto).includes(termo))
+  ).slice(0, 60);
+
+  if (!encontrados.length) {
+    resultado.innerHTML = `<div class="estado-busca-produto-modal">Nenhum produto encontrado. Cadastre o item em Estoque ou adicione como item manual.</div>`;
+    return;
+  }
+
+  resultado.innerHTML = renderizarProdutosModalOrdem(encontrados);
+}
+
+function renderizarProdutosModalOrdem(lista) {
+  return lista.map((produto) => {
     const id = escaparHTMLAtributo(produto.id);
     const nome = escaparHTMLOrdem(produto.nome || "Produto sem nome");
     const resumo = escaparHTMLOrdem(formatarProdutoEstoqueResumoOrdem(produto));
-    return `<button type="button" class="produto-modal-item" onclick="selecionarProdutoEstoqueModalOrdem('${id}')"><strong>${nome}</strong><span>${resumo}</span></button>`;
+    const compativel = produtoCompativelComVeiculoOrdem(produto);
+    const etiqueta = compativel ? `<em class="produto-modal-tag-compativel">Compatível com esta OS</em>` : "";
+    return `<button type="button" class="produto-modal-item" onclick="selecionarProdutoEstoqueModalOrdem('${id}')"><strong>${nome}</strong>${etiqueta}<span>${resumo}</span></button>`;
   }).join("");
 }
 
