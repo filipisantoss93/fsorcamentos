@@ -152,6 +152,48 @@ function configurarFormularioMobileClientes() {
   window.addEventListener("resize", aplicarEstadoInicial);
 }
 
+
+function formatarNumeroCliente(clienteOuNumero) {
+  const numero = typeof clienteOuNumero === "object" ? clienteOuNumero?.numero_cliente : clienteOuNumero;
+  const n = Number(numero);
+  return Number.isFinite(n) && n > 0 ? String(Math.trunc(n)).padStart(6, "0") : "";
+}
+
+function obterCodigoClienteVisivel(cliente) {
+  const numero = formatarNumeroCliente(cliente);
+  return numero ? `CLI-${numero}` : "Cliente sem número";
+}
+
+function normalizarBuscaCodigoCliente(valor) {
+  const apenasNumeros = String(valor || "").replace(/^cli[-\s]*/i, "").replace(/\D/g, "");
+  return apenasNumeros ? String(Number(apenasNumeros)) : "";
+}
+
+function clienteCombinaComCodigo(cliente, termo) {
+  const busca = normalizarBuscaCodigoCliente(termo);
+  if (!busca) return false;
+  const numero = Number(cliente?.numero_cliente || 0);
+  return Number.isFinite(numero) && String(numero) === busca;
+}
+
+async function obterProximoNumeroCliente() {
+  if (!usuarioLogado?.id || !window._supabase) return null;
+  try {
+    const { data, error } = await window._supabase
+      .from("clientes")
+      .select("numero_cliente")
+      .eq("user_id", usuarioLogado.id)
+      .not("numero_cliente", "is", null)
+      .order("numero_cliente", { ascending: false })
+      .limit(1);
+    if (error) return null;
+    const ultimo = Array.isArray(data) && data[0]?.numero_cliente ? Number(data[0].numero_cliente) : 0;
+    return ultimo + 1;
+  } catch (_) {
+    return null;
+  }
+}
+
 /* =========================================================
    CRUD - CLIENTES
    ========================================================= */
@@ -247,14 +289,28 @@ async function salvarCliente(event) {
         .select()
         .single();
     } else {
+      const proximoNumeroCliente = await obterProximoNumeroCliente();
+      const payloadNovoCliente = {
+        ...cliente,
+        user_id: usuarioLogado.id
+      };
+
+      if (proximoNumeroCliente) payloadNovoCliente.numero_cliente = proximoNumeroCliente;
+
       resultado = await window._supabase
         .from("clientes")
-        .insert({
-          ...cliente,
-          user_id: usuarioLogado.id
-        })
+        .insert(payloadNovoCliente)
         .select()
         .single();
+
+      if (resultado.error && String(resultado.error.message || resultado.error.details || '').toLowerCase().includes('numero_cliente')) {
+        delete payloadNovoCliente.numero_cliente;
+        resultado = await window._supabase
+          .from("clientes")
+          .insert(payloadNovoCliente)
+          .select()
+          .single();
+      }
     }
 
     if (resultado.error) {
@@ -437,6 +493,7 @@ function renderizarClientes(lista) {
 
 function criarCardCliente(cliente) {
   const idSeguro = escaparHTML(cliente.id || "");
+  const codigoCliente = escaparHTML(obterCodigoClienteVisivel(cliente));
   const nome = escaparHTML(cliente.nome || "Cliente sem nome");
   const whatsapp = escaparHTML(formatarTelefoneVisual(cliente.whatsapp));
   const email = escaparHTML(cliente.email || "");
@@ -459,7 +516,7 @@ function criarCardCliente(cliente) {
           <p>${textoContato || "Sem contato cadastrado"}</p>
           ${cidadeEstado ? `<p>${escaparHTML(cidadeEstado)}</p>` : ""}
           <p class="cliente-id-linha">
-            <strong>ID:</strong> ${idSeguro}
+            <strong>ID:</strong> ${codigoCliente}
           </p>
         </div>
       </div>
@@ -520,6 +577,7 @@ function filtrarClientes() {
   if (termo) {
     listaFiltrada = listaFiltrada.filter((cliente) => {
       const textoBusca = normalizarTexto([
+        obterCodigoClienteVisivel(cliente),
         cliente.nome,
         cliente.whatsapp,
         cliente.email,
@@ -535,7 +593,7 @@ function filtrarClientes() {
 
   if (termoId) {
     listaFiltrada = listaFiltrada.filter((cliente) => {
-      return normalizarTexto(cliente.id).includes(termoId);
+      return clienteCombinaComCodigo(cliente, termoId) || normalizarTexto(cliente.id).includes(termoId);
     });
   }
 
@@ -611,16 +669,19 @@ function criarOSCliente(id) {
 }
 
 async function copiarIdCliente(id) {
-  if (!id) {
+  const cliente = clientesCache.find((item) => item.id === id);
+  const codigo = cliente ? obterCodigoClienteVisivel(cliente) : id;
+
+  if (!codigo) {
     alert("ID do cliente não encontrado.");
     return;
   }
 
   try {
     if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(id);
+      await navigator.clipboard.writeText(codigo);
     } else {
-      copiarTextoFallback(id);
+      copiarTextoFallback(codigo);
     }
 
     mostrarMensagem(
@@ -630,7 +691,7 @@ async function copiarIdCliente(id) {
     );
   } catch (erro) {
     console.error("Erro ao copiar ID:", erro);
-    copiarTextoFallback(id);
+    copiarTextoFallback(codigo);
     mostrarMensagem(
       "mensagem-clientes-lista",
       "ID do cliente copiado.",

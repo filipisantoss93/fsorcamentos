@@ -169,14 +169,16 @@ function fsPrimeiroNomeDoEmail(email) {
 function fsNomeUsuarioDaSessao(session) {
   const meta = session?.user?.user_metadata || {};
 
-  return (
+  // Não use "Usuário" como fallback automático.
+  // Se o Google/Supabase não entregar nome, deixamos em branco
+  // para o usuário cadastrar o consultor manualmente no Painel.
+  return String(
     meta.nome ||
     meta.full_name ||
     meta.name ||
     meta.user_name ||
-    fsPrimeiroNomeDoEmail(session?.user?.email) ||
-    'Usuário'
-  );
+    ''
+  ).trim();
 }
 
 function fsAvatarUsuarioDaSessao(session) {
@@ -525,28 +527,36 @@ function fsLimparLocalStorageAuth() {
 }
 
 async function garantirResponsavelPrincipal(session, nomeResponsavel) {
-  if (!session?.user?.id || !nomeResponsavel) return;
+  if (!session?.user?.id) return;
+
+  const nomeFinal = String(nomeResponsavel || '').trim();
+  const nomeNormalizado = fsNormalizarTextoAuth(nomeFinal);
+
+  // Não cria responsável automático genérico.
+  if (!nomeFinal || nomeNormalizado === 'usuario' || nomeNormalizado === 'usuário') {
+    return;
+  }
 
   try {
-    const { data: existente, error: erroBusca } = await _supabase
+    // Se já existe qualquer responsável para este usuário, não cria outro.
+    const { data: existentes, error: erroBusca } = await _supabase
       .from('responsaveis_orcamento')
-      .select('id')
+      .select('id, nome')
       .eq('usuario_id', session.user.id)
-      .eq('nome', nomeResponsavel)
-      .maybeSingle();
+      .limit(1);
 
     if (erroBusca) {
       console.warn('Erro ao buscar responsável principal:', erroBusca);
       return;
     }
 
-    if (existente?.id) return;
+    if (Array.isArray(existentes) && existentes.length > 0) return;
 
     const { error } = await _supabase
       .from('responsaveis_orcamento')
       .insert({
         usuario_id: session.user.id,
-        nome: nomeResponsavel,
+        nome: nomeFinal,
         ativo: true
       });
 
@@ -568,7 +578,7 @@ async function garantirPerfilAposLogin(session) {
     const nomeSessao = fsNomeUsuarioDaSessao(session);
     const avatar = fsAvatarUsuarioDaSessao(session);
 
-    const nomeMetadata = meta.nome || nomeSessao || 'Usuário';
+    const nomeMetadata = String(meta.nome || nomeSessao || '').trim();
     const empresaMetadata = meta.nome_empresa || '';
     const telefoneMetadata = meta.telefone_empresa || '';
 
@@ -585,7 +595,7 @@ async function garantirPerfilAposLogin(session) {
 
     const payload = {
       id: userId,
-      nome: perfilExistente?.nome || nomeMetadata || 'Usuário',
+      nome: perfilExistente?.nome || nomeMetadata || '',
       nome_empresa: perfilExistente?.nome_empresa || empresaMetadata || '',
       telefone_empresa: perfilExistente?.telefone_empresa || telefoneMetadata || '',
       endereco_empresa: perfilExistente?.endereco_empresa || '',
@@ -646,7 +656,7 @@ async function carregarPerfilLocal(session) {
       perfil?.nome ||
       perfil?.nome_empresa ||
       fsNomeUsuarioDaSessao(session) ||
-      'Usuário';
+      '';
 
     localStorage.setItem('usuario_nome', nomeFinal);
     localStorage.setItem('usuario_plano', perfil?.plano || 'gratis');
@@ -860,19 +870,31 @@ async function tentarSalvarPerfilAposCadastro(data, dadosCadastro) {
       );
     }
 
-    const { error: erroResponsavel } = await _supabase
-      .from('responsaveis_orcamento')
-      .insert({
-        usuario_id: userId,
-        nome: dadosCadastro.nome,
-        ativo: true
-      });
+    const nomeResponsavelCadastro = String(dadosCadastro.nome || '').trim();
 
-    if (erroResponsavel) {
-      console.warn(
-        'Responsável não foi salvo no cadastro. Será criado após confirmação/login:',
-        erroResponsavel
-      );
+    if (nomeResponsavelCadastro && fsNormalizarTextoAuth(nomeResponsavelCadastro) !== 'usuario') {
+      const { data: responsaveisExistentes } = await _supabase
+        .from('responsaveis_orcamento')
+        .select('id')
+        .eq('usuario_id', userId)
+        .limit(1);
+
+      if (!responsaveisExistentes || responsaveisExistentes.length === 0) {
+        const { error: erroResponsavel } = await _supabase
+          .from('responsaveis_orcamento')
+          .insert({
+            usuario_id: userId,
+            nome: nomeResponsavelCadastro,
+            ativo: true
+          });
+
+        if (erroResponsavel) {
+          console.warn(
+            'Responsável não foi salvo no cadastro. Será criado após confirmação/login:',
+            erroResponsavel
+          );
+        }
+      }
     }
 
   } catch (error) {

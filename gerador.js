@@ -160,7 +160,7 @@ function fsAtualizarClienteVinculadoCard(cliente) {
     cliente.whatsapp ? `WhatsApp: ${cliente.whatsapp}` : '',
     cliente.email ? `E-mail: ${cliente.email}` : '',
     cliente.cpf_cnpj ? `CPF/CNPJ: ${cliente.cpf_cnpj}` : '',
-    cliente.id ? `ID: ${cliente.id}` : ''
+    fsCodigoClienteVisivel(cliente) ? `ID: ${fsCodigoClienteVisivel(cliente)}` : ''
   ].filter(Boolean);
 
   texto.innerText = partes.join(' • ');
@@ -345,11 +345,26 @@ function fsInserirVeiculoNaPreviaOrcamento() {
   }
 }
 
+
+function fsFormatarNumeroCliente(clienteOuNumero) {
+  const numero = typeof clienteOuNumero === 'object' ? clienteOuNumero?.numero_cliente : clienteOuNumero;
+  const n = Number(numero);
+  return Number.isFinite(n) && n > 0 ? String(Math.trunc(n)).padStart(6, '0') : '';
+}
+function fsCodigoClienteVisivel(cliente) {
+  const numero = fsFormatarNumeroCliente(cliente);
+  return numero ? `CLI-${numero}` : '';
+}
+function fsNormalizarCodigoCliente(valor) {
+  const numeros = String(valor || '').replace(/^cli[-\s]*/i, '').replace(/\D/g, '');
+  return numeros ? String(Number(numeros)) : '';
+}
+
 function fsAplicarClienteNoOrcamento(cliente) {
   if (!cliente) return;
 
   fsSetValorCampo('cliente-id-cadastrado', cliente.id || '');
-  fsSetValorCampo('orcamento-cliente-id', cliente.id || '');
+  fsSetValorCampo('orcamento-cliente-id', fsCodigoClienteVisivel(cliente) || cliente.id || '');
   fsSetValorCampo('cliente', cliente.nome || '');
   fsSetValorCampo('tel-cliente', cliente.whatsapp || '');
 
@@ -391,12 +406,32 @@ async function fsBuscarClientePorId(clienteId) {
     return null;
   }
 
-  const { data, error } = await _supabase
+  const codigoCliente = fsNormalizarCodigoCliente(id);
+  const pareceUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+  let consulta = _supabase
     .from('clientes')
     .select('*')
-    .eq('id', id)
-    .eq('user_id', session.user.id)
-    .maybeSingle();
+    .eq('user_id', session.user.id);
+
+  if (codigoCliente && !pareceUuid) {
+    consulta = consulta.eq('numero_cliente', Number(codigoCliente));
+  } else {
+    consulta = consulta.eq('id', id);
+  }
+
+  let { data, error } = await consulta.maybeSingle();
+
+  if (error && String(error.message || error.details || '').toLowerCase().includes('numero_cliente')) {
+    const fallback = await _supabase
+      .from('clientes')
+      .select('*')
+      .eq('id', id)
+      .eq('user_id', session.user.id)
+      .maybeSingle();
+    data = fallback.data;
+    error = fallback.error;
+  }
 
   if (error) {
     console.error('Erro ao buscar cliente por ID:', error);
@@ -471,6 +506,7 @@ function fsEscaparBuscaSupabase(valor) {
 
 function fsTextoClienteBusca(cliente) {
   return [
+    fsCodigoClienteVisivel(cliente),
     cliente.nome,
     cliente.whatsapp,
     cliente.telefone,
@@ -539,6 +575,10 @@ async function buscarClientesNoModalOrcamento() {
     `cep.ilike.%${termo}%`
   ];
 
+  if (termoNumerico.length >= 1) {
+    filtros.push(`numero_cliente.eq.${Number(termoNumerico)}`);
+  }
+
   if (termoNumerico.length >= 2) {
     filtros.push(`whatsapp.ilike.%${termoNumerico}%`);
     filtros.push(`cep.ilike.%${termoNumerico}%`);
@@ -547,7 +587,7 @@ async function buscarClientesNoModalOrcamento() {
 
   const { data, error } = await _supabase
     .from('clientes')
-    .select('id, nome, whatsapp, email, cpf_cnpj, endereco, cidade, estado, cep, status')
+    .select('id, numero_cliente, nome, whatsapp, email, cpf_cnpj, endereco, cidade, estado, cep, status')
     .eq('user_id', session.user.id)
     .or(filtros.join(','))
     .order('nome', { ascending: true })
@@ -591,6 +631,7 @@ function renderizarResultadoBuscaClientesOrcamento(clientes) {
 
 function criarItemClienteBuscaOrcamento(cliente) {
   const id = fsEscapeHTML(cliente.id || '');
+  const codigoCliente = fsEscapeHTML(fsCodigoClienteVisivel(cliente) || '');
   const nome = fsEscapeHTML(cliente.nome || 'Cliente sem nome');
   const telefone = fsEscapeHTML(cliente.whatsapp || '');
   const endereco = fsEscapeHTML([
@@ -608,10 +649,10 @@ function criarItemClienteBuscaOrcamento(cliente) {
 
   return `
     <button type="button" class="cliente-busca-item" onclick="selecionarClienteBuscaOrcamento('${id}')">
-      <strong>${nome}</strong>
+      <strong>${codigoCliente ? `${codigoCliente} - ` : ''}${nome}</strong>
       <span>${contato || 'Sem telefone cadastrado'}</span>
       <span>${endereco || 'Sem endereço cadastrado'}</span>
-      <span>ID: ${id}</span>
+      <span>ID: ${codigoCliente || id}</span>
     </button>
   `;
 }

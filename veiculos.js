@@ -239,7 +239,7 @@ async function carregarClientesParaVeiculos() {
 
     const { data, error } = await window._supabase
       .from("clientes")
-      .select("id, nome, whatsapp, email, endereco, cidade, estado, cep, status")
+      .select("id, numero_cliente, nome, whatsapp, email, endereco, cidade, estado, cep, status")
       .eq("user_id", usuarioLogadoVeiculos.id)
       .order("nome", { ascending: true });
 
@@ -248,7 +248,7 @@ async function carregarClientesParaVeiculos() {
 
       const fallback = await window._supabase
         .from("clientes")
-        .select("id, nome, whatsapp, email, endereco, cidade, estado, cep, status")
+        .select("id, numero_cliente, nome, whatsapp, email, endereco, cidade, estado, cep, status")
         .eq("usuario_id", usuarioLogadoVeiculos.id)
         .order("nome", { ascending: true });
 
@@ -1017,6 +1017,8 @@ function escaparHTMLAtributoVeiculo(valor) {
 
 function textoBuscaClienteVeiculo(cliente) {
   return normalizarTextoVeiculo([
+    codigoClienteVeiculo(cliente),
+    cliente?.numero_cliente,
     cliente?.nome,
     cliente?.whatsapp,
     cliente?.email,
@@ -1027,10 +1029,22 @@ function textoBuscaClienteVeiculo(cliente) {
   ].filter(Boolean).join(" "));
 }
 
+
+function formatarNumeroClienteVeiculo(clienteOuNumero) {
+  const numero = typeof clienteOuNumero === "object" ? clienteOuNumero?.numero_cliente : clienteOuNumero;
+  const n = Number(numero);
+  return Number.isFinite(n) && n > 0 ? String(Math.trunc(n)).padStart(6, "0") : "";
+}
+function codigoClienteVeiculo(cliente) {
+  const numero = formatarNumeroClienteVeiculo(cliente);
+  return numero ? `CLI-${numero}` : "";
+}
+
 function detalhesClienteVeiculo(cliente) {
   if (!cliente) return "";
 
   return [
+    codigoClienteVeiculo(cliente) ? `ID: ${codigoClienteVeiculo(cliente)}` : "",
     cliente.whatsapp ? `WhatsApp: ${formatarTelefoneVeiculo(cliente.whatsapp)}` : "",
     cliente.email ? `E-mail: ${cliente.email}` : "",
     cliente.endereco ? `Endereço: ${cliente.endereco}` : "",
@@ -1112,7 +1126,7 @@ function buscarClientesModalVeiculo() {
 
   resultado.innerHTML = encontrados.map((cliente) => `
     <button type="button" class="cliente-modal-item" onclick="selecionarClienteModalVeiculo('${escaparHTMLAtributoVeiculo(cliente.id)}')">
-      <strong>${escaparHTMLVeiculo(cliente.nome || "Cliente sem nome")}</strong>
+      <strong>${escaparHTMLVeiculo(codigoClienteVeiculo(cliente) ? codigoClienteVeiculo(cliente) + ' - ' : '')}${escaparHTMLVeiculo(cliente.nome || "Cliente sem nome")}</strong>
       <span>${escaparHTMLVeiculo(detalhesClienteVeiculo(cliente) || "Sem detalhes adicionais")}</span>
     </button>
   `).join("");

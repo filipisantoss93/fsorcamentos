@@ -844,7 +844,7 @@ function limiteResponsaveisPorPlano() {
   );
 
   if (plano === 'basico') return 5;
-  if (plano === 'premium') return 5;
+  if (plano === 'premium') return 999;
 
   return 2;
 }
@@ -878,16 +878,19 @@ async function carregarResponsaveis() {
 }
 
 async function garantirResponsavelSelecionadoNaLista(session) {
-  const nomeSelecionado = perfilAtual?.nome?.trim();
+  const nomeSelecionado = String(perfilAtual?.nome || '').trim();
+  const nomeNormalizado = normalizarPlanoPainel(nomeSelecionado);
 
-  if (!nomeSelecionado) return;
+  // Não cria automaticamente responsável chamado "Usuário" nem responsável em branco.
+  // Se não houver nome, o usuário cadastra manualmente.
+  if (!nomeSelecionado || nomeNormalizado === 'usuario') return;
 
   const jaExiste = responsaveisCache.some(resp =>
     String(resp.nome || '').trim().toLowerCase() === nomeSelecionado.toLowerCase()
   );
 
   if (jaExiste) return;
-
+  if (responsaveisCache.length > 0) return;
   if (responsaveisCache.length >= limiteResponsaveisPorPlano()) return;
 
   const { data, error } = await _supabase
@@ -897,8 +900,7 @@ async function garantirResponsavelSelecionadoNaLista(session) {
       nome: nomeSelecionado,
       ativo: true
     })
-
-        .select()
+    .select()
     .single();
 
   if (!error && data) {

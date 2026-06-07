@@ -530,6 +530,7 @@ async function carregarProdutosEstoqueOrdem() {
 
     produtosEstoqueOrdemCache = Array.isArray(data) ? data : [];
     renderizarSelectProdutosEstoqueOrdem();
+    atualizarProdutoEstoqueSelecionadoCard();
 
   } catch (erro) {
     console.error("Erro inesperado ao carregar produtos do estoque:", erro);
@@ -537,30 +538,85 @@ async function carregarProdutosEstoqueOrdem() {
 }
 
 function renderizarSelectProdutosEstoqueOrdem() {
-  const select = document.getElementById("item-produto-estoque-id");
+  atualizarProdutoEstoqueSelecionadoCard();
+}
 
-  if (!select) return;
+function formatarProdutoEstoqueResumoOrdem(produto) {
+  if (!produto) return "Item manual / sem vínculo com estoque";
+  const quantidade = converterNumeroOrdem(produto.quantidade_atual);
+  const unidade = produto.unidade || "un";
+  const controla = produto.controlar_estoque !== false;
+  const estoque = controla ? `Estoque: ${formatarQuantidadeOrdem(quantidade)} ${unidade}` : "Sem controle de estoque";
+  return [produto.codigo ? `Código: ${produto.codigo}` : "", produto.categoria ? `Categoria: ${produto.categoria}` : "", estoque, produto.valor_venda ? `Venda: ${formatarMoedaOrdem(produto.valor_venda)}` : ""].filter(Boolean).join(" • ");
+}
 
-  const opcoes = produtosEstoqueOrdemCache.map((produto) => {
-    const quantidade = converterNumeroOrdem(produto.quantidade_atual);
-    const unidade = produto.unidade || "un";
-    const controla = produto.controlar_estoque !== false;
+function atualizarProdutoEstoqueSelecionadoCard() {
+  const card = document.getElementById("produto-estoque-selecionado-card");
+  const produtoId = valorInputOrdem("item-produto-estoque-id");
+  const produto = produtosEstoqueOrdemCache.find((item) => item.id === produtoId);
+  if (!card) return;
+  if (!produto) {
+    card.innerHTML = `<strong>Nenhum produto selecionado</strong><span>Item manual / sem vínculo com estoque</span>`;
+    return;
+  }
+  card.innerHTML = `<strong>${escaparHTMLOrdem(produto.nome || "Produto sem nome")}</strong><span>${escaparHTMLOrdem(formatarProdutoEstoqueResumoOrdem(produto))}</span>`;
+}
 
-    const textoEstoque = controla
-      ? ` - estoque: ${formatarQuantidadeOrdem(quantidade)} ${unidade}`
-      : " - sem controle";
+function abrirModalBuscaProdutoEstoqueOrdem() {
+  const modal = document.getElementById("modal-busca-produto-estoque-ordem");
+  const campo = document.getElementById("campo-busca-produto-estoque-ordem");
+  const resultado = document.getElementById("resultado-busca-produtos-ordem");
+  if (resultado) resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>`;
+  if (campo) campo.value = "";
+  if (modal) { modal.classList.add("ativo"); modal.setAttribute("aria-hidden", "false"); setTimeout(() => campo?.focus(), 80); }
+}
 
-    return `
-      <option value="${escaparHTMLAtributo(produto.id)}">
-        ${escaparHTMLOrdem(produto.nome || "Produto sem nome")}${textoEstoque}
-      </option>
-    `;
+function fecharModalBuscaProdutoEstoqueOrdem() {
+  const modal = document.getElementById("modal-busca-produto-estoque-ordem");
+  if (modal) { modal.classList.remove("ativo"); modal.setAttribute("aria-hidden", "true"); }
+}
+
+function normalizarTextoOrdem(valor) {
+  return String(valor || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .trim();
+}
+
+function textoBuscaProdutoEstoqueOrdem(produto) {
+  return normalizarTextoOrdem([produto.nome, produto.codigo, produto.sku, produto.categoria, produto.descricao, produto.observacoes, produto.unidade].filter(Boolean).join(" "));
+}
+
+function buscarProdutosModalOrdem() {
+  const campo = document.getElementById("campo-busca-produto-estoque-ordem");
+  const resultado = document.getElementById("resultado-busca-produtos-ordem");
+  if (!resultado) return;
+  const termo = normalizarTextoOrdem(campo?.value || "");
+  if (termo.length < 2) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres para buscar produto.</div>`; return; }
+  const encontrados = produtosEstoqueOrdemCache.filter((produto) => textoBuscaProdutoEstoqueOrdem(produto).includes(termo)).slice(0, 40);
+  if (!encontrados.length) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Nenhum produto encontrado. Cadastre o item em Estoque ou adicione como item manual.</div>`; return; }
+  resultado.innerHTML = encontrados.map((produto) => {
+    const id = escaparHTMLAtributo(produto.id);
+    const nome = escaparHTMLOrdem(produto.nome || "Produto sem nome");
+    const resumo = escaparHTMLOrdem(formatarProdutoEstoqueResumoOrdem(produto));
+    return `<button type="button" class="produto-modal-item" onclick="selecionarProdutoEstoqueModalOrdem('${id}')"><strong>${nome}</strong><span>${resumo}</span></button>`;
   }).join("");
+}
 
-  select.innerHTML = `
-    <option value="">Item manual / sem vínculo com estoque</option>
-    ${opcoes}
-  `;
+function selecionarProdutoEstoqueModalOrdem(produtoId) {
+  setValorOrdem("item-produto-estoque-id", produtoId || "");
+  preencherItemComProdutoEstoque();
+  atualizarProdutoEstoqueSelecionadoCard();
+  fecharModalBuscaProdutoEstoqueOrdem();
+}
+
+function limparProdutoEstoqueSelecionadoOrdem() {
+  setValorOrdem("item-produto-estoque-id", "");
+  atualizarProdutoEstoqueSelecionadoCard();
+  atualizarProdutoEstoqueSelecionadoCard();
+  const checkboxBaixarVazio = document.getElementById("item-baixar-estoque");
+  if (checkboxBaixarVazio) checkboxBaixarVazio.checked = false;
 }
 
 function preencherItemComProdutoEstoque() {
@@ -587,6 +643,7 @@ function preencherItemComProdutoEstoque() {
   }
 
   calcularValorTotalItemOrdem();
+  atualizarProdutoEstoqueSelecionadoCard();
 }
 
 /* =========================================================
@@ -916,6 +973,7 @@ function editarItemOrdem(id) {
 
   setValorOrdem("item-ordem-id", item.id);
   setValorOrdem("item-produto-estoque-id", item.produto_estoque_id || "");
+  atualizarProdutoEstoqueSelecionadoCard();
   setValorOrdem("item-tipo", item.tipo || "servico");
   setValorOrdem("item-descricao", item.descricao || "");
   setValorOrdem("item-quantidade", numeroParaInputOrdem(item.quantidade || 1));
@@ -997,6 +1055,7 @@ function limparFormularioItemOrdem() {
 
   setValorOrdem("item-ordem-id", "");
   setValorOrdem("item-produto-estoque-id", "");
+  atualizarProdutoEstoqueSelecionadoCard();
   setValorOrdem("item-tipo", "servico");
   setValorOrdem("item-quantidade", "1");
   setValorOrdem("item-unidade", "un");
@@ -1629,12 +1688,12 @@ async function gerarPDFProfissionalOrdemServico() {
   const larguraUtil = larguraPagina - (margem * 2);
   let y = margem;
 
-  const corMarrom = [62, 39, 35];
-  const corAmarelo = [255, 196, 0];
-  const corTexto = [48, 35, 32];
-  const corTextoSuave = [109, 76, 65];
-  const corBorda = [215, 204, 200];
-  const corBege = [255, 250, 240];
+  const corMarrom = [0, 0, 0];
+  const corAmarelo = [255, 255, 255];
+  const corTexto = [0, 0, 0];
+  const corTextoSuave = [70, 70, 70];
+  const corBorda = [120, 120, 120];
+  const corBege = [245, 245, 245];
 
   function setTexto(cor = corTexto) {
     doc.setTextColor(cor[0], cor[1], cor[2]);
@@ -2586,3 +2645,8 @@ window.carregarOrcamentoVinculadoOrdem = carregarOrcamentoVinculadoOrdem;
 window.importarItensDoOrcamentoVinculado = importarItensDoOrcamentoVinculado;
 window.abrirOrcamentoVinculado = abrirOrcamentoVinculado;
 window.carregarVeiculoVinculadoOrdem = carregarVeiculoVinculadoOrdem;
+window.abrirModalBuscaProdutoEstoqueOrdem = abrirModalBuscaProdutoEstoqueOrdem;
+window.fecharModalBuscaProdutoEstoqueOrdem = fecharModalBuscaProdutoEstoqueOrdem;
+window.buscarProdutosModalOrdem = buscarProdutosModalOrdem;
+window.selecionarProdutoEstoqueModalOrdem = selecionarProdutoEstoqueModalOrdem;
+window.limparProdutoEstoqueSelecionadoOrdem = limparProdutoEstoqueSelecionadoOrdem;

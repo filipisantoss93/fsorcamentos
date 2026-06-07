@@ -228,7 +228,7 @@ async function carregarClientesSelectOS() {
   try {
     const { data, error } = await window._supabase
       .from("clientes")
-      .select("id, nome, whatsapp, email, endereco, cidade, estado, cep, status")
+      .select("id, numero_cliente, nome, whatsapp, email, endereco, cidade, estado, cep, status")
       .eq("user_id", usuarioLogadoOS.id)
       .order("nome", { ascending: true });
 
@@ -1493,6 +1493,8 @@ function obterClientePorIdOS(clienteId) {
 
 function textoBuscaClienteOS(cliente) {
   return normalizarTextoOS([
+    codigoClienteOS(cliente),
+    cliente?.numero_cliente,
     cliente?.nome,
     cliente?.whatsapp,
     cliente?.email,
@@ -1503,10 +1505,22 @@ function textoBuscaClienteOS(cliente) {
   ].filter(Boolean).join(" "));
 }
 
+
+function formatarNumeroClienteOS(clienteOuNumero) {
+  const numero = typeof clienteOuNumero === "object" ? clienteOuNumero?.numero_cliente : clienteOuNumero;
+  const n = Number(numero);
+  return Number.isFinite(n) && n > 0 ? String(Math.trunc(n)).padStart(6, "0") : "";
+}
+function codigoClienteOS(cliente) {
+  const numero = formatarNumeroClienteOS(cliente);
+  return numero ? `CLI-${numero}` : "";
+}
+
 function detalhesClienteOS(cliente) {
   if (!cliente) return "";
 
   return [
+    codigoClienteOS(cliente) ? `ID: ${codigoClienteOS(cliente)}` : "",
     cliente.whatsapp ? `WhatsApp: ${formatarTelefoneVisualOS(cliente.whatsapp)}` : "",
     cliente.email ? `E-mail: ${cliente.email}` : "",
     cliente.endereco ? `Endereço: ${cliente.endereco}` : "",
@@ -1588,7 +1602,7 @@ function buscarClientesModalOS() {
 
   resultado.innerHTML = encontrados.map((cliente) => `
     <button type="button" class="cliente-modal-item" onclick="selecionarClienteModalOS('${escaparHTMLOS(cliente.id)}')">
-      <strong>${escaparHTMLOS(cliente.nome || "Cliente sem nome")}</strong>
+      <strong>${escaparHTMLOS(codigoClienteOS(cliente) ? codigoClienteOS(cliente) + ' - ' : '')}${escaparHTMLOS(cliente.nome || "Cliente sem nome")}</strong>
       <span>${escaparHTMLOS(detalhesClienteOS(cliente) || "Sem detalhes adicionais")}</span>
     </button>
   `).join("");
