@@ -2456,6 +2456,12 @@
   filter: grayscale(.2);
 }
 
+
+.teste-premium-inline-card.teste-premium-topo {
+  max-width: 1180px;
+  margin: 18px auto 22px;
+}
+
 @media (max-width: 760px) {
   .teste-premium-inline-card {
     grid-template-columns: 1fr;
@@ -3325,6 +3331,18 @@ body.gerando-pdf * {
 
 <main id="home-publica" class="home-publica">
 
+
+  <section class="teste-premium-inline-card teste-premium-topo" id="box-teste-premium-index">
+    <div>
+      <h3>Teste Premium grátis por 7 dias</h3>
+      <p>Disponível para usuários do Plano Grátis e Básico. Experimente clientes, veículos, OS, estoque e gestão completa.</p>
+      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
+    </div>
+    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
+      Verificando...
+    </button>
+  </section>
+
   <section id="home-plano-gratis" class="home-visao-plano ativo">
     <div class="home-plano-hero">
       <span class="home-plano-tag">Plano Grátis</span>
@@ -3422,19 +3440,7 @@ body.gerando-pdf * {
         <div class="home-premium-recurso-card"><strong>🛠️ Ordem de serviço</strong><span>Controle da execução, itens, mão de obra, pagamento, garantia e PDF da OS.</span></div>
         <div class="home-premium-recurso-card"><strong>📦 Estoque integrado</strong><span>Produtos, peças, materiais, estoque baixo e baixa automática ao finalizar OS.</span></div>
       </div>
-
-      <section class="teste-premium-inline-card" id="box-teste-premium-index">
-        <div>
-          <h3>Teste Premium grátis por 7 dias</h3>
-          <p>Experimente clientes, veículos, OS, estoque e gestão completa. Ao vencer, sua conta volta para o Plano Básico.</p>
-          <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
-        </div>
-        <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
-          Verificando...
-        </button>
-      </section>
-
-      <div class="home-premium-showcase-acoes">
+<div class="home-premium-showcase-acoes">
         <a href="/planos.html#assinar-plano-premium" class="btn-home-planos-forte">🚀 Conhecer Premium</a>
         <a href="/manual-premium.html" class="btn-home-planos-secundario">Ver como funciona</a>
       </div>

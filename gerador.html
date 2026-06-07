@@ -1608,6 +1608,12 @@
   filter: grayscale(.2);
 }
 
+
+.teste-premium-inline-card.teste-premium-topo {
+  max-width: 1180px;
+  margin: 18px auto 22px;
+}
+
 @media (max-width: 760px) {
   .teste-premium-inline-card {
     grid-template-columns: 1fr;
@@ -2475,6 +2481,18 @@ body.gerando-pdf * {
 
 <main id="conteudo-gerador" class="pagina-gerador" style="display:none;">
 
+
+  <section class="teste-premium-inline-card teste-premium-topo" id="box-teste-premium-gerador">
+    <div>
+      <h3>Teste Premium grátis por 7 dias</h3>
+      <p>Disponível para Plano Grátis e Básico. Libere gestão completa com clientes, veículos, ordens de serviço e estoque.</p>
+      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
+    </div>
+    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
+      Verificando...
+    </button>
+  </section>
+
   <section class="gerador-hero">
     <div class="gerador-hero-conteudo">
       <div>
@@ -2487,19 +2505,7 @@ body.gerando-pdf * {
       </div>
     </div>
   </section>
-
-  <section class="teste-premium-inline-card" id="box-teste-premium-gerador">
-    <div>
-      <h3>Teste Premium grátis por 7 dias</h3>
-      <p>Libere gestão completa com clientes, veículos, ordens de serviço e estoque. Ao vencer, sua conta volta para o Plano Básico.</p>
-      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
-    </div>
-    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
-      Verificando...
-    </button>
-  </section>
-
-  <div id="adsense-gerador-topo" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+<div id="adsense-gerador-topo" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
     <span class="adsense-label">Publicidade</span>
     <ins class="adsbygoogle"
       style="display:block"

@@ -304,11 +304,25 @@ function atualizarBotaoTestePremium(perfil) {
 
   if (!botao && !texto) return;
 
+  const logado = perfil?.logado !== false;
   const plano = normalizarPlanoPlanos(perfil?.plano || 'gratis');
   const status = normalizarPlanoPlanos(perfil?.plano_status || 'ativo');
   const testeUsado = perfil?.teste_premium_usado === true;
   const testeFim = perfil?.teste_premium_fim || '';
   const testeAtivo = plano === 'premium' && status === 'teste_gratis' && testeFim && diasAteExpirarPlano(testeFim) !== null && diasAteExpirarPlano(testeFim) >= 0;
+  const podeTestar = (plano === 'gratis' || plano === 'basico') && !['cancelado', 'expirado'].includes(status);
+
+  if (!logado) {
+    if (botao) {
+      botao.disabled = false;
+      botao.innerText = 'Entrar para testar grátis';
+    }
+
+    if (texto) {
+      texto.innerText = 'Entre ou crie uma conta grátis para ativar o teste Premium por 7 dias.';
+    }
+    return;
+  }
 
   if (testeAtivo) {
     if (botao) {
@@ -346,14 +360,14 @@ function atualizarBotaoTestePremium(perfil) {
     return;
   }
 
-  if (plano !== 'basico' || status === 'cancelado' || status === 'expirado') {
+  if (!podeTestar) {
     if (botao) {
       botao.disabled = true;
-      botao.innerText = 'Disponível no Básico';
+      botao.innerText = 'Teste indisponível';
     }
 
     if (texto) {
-      texto.innerText = 'Para testar o Premium grátis, primeiro ative o Plano Básico. Após o teste, a conta volta automaticamente para o Básico.';
+      texto.innerText = 'O teste grátis Premium está disponível para contas no Plano Grátis ou Básico com status ativo.';
     }
     return;
   }
@@ -364,7 +378,7 @@ function atualizarBotaoTestePremium(perfil) {
   }
 
   if (texto) {
-    texto.innerText = 'Disponível por 7 dias para usuários do Plano Básico ativo. Uso permitido uma única vez por conta.';
+    texto.innerText = 'Disponível por 7 dias para usuários do Plano Grátis e Plano Básico. Uso permitido uma única vez.';
   }
 }
 
@@ -382,7 +396,7 @@ async function ativarTesteGratisPremium() {
       return;
     }
 
-    const confirmar = confirm('Deseja ativar o teste grátis do Premium por 7 dias? Ao vencer, sua conta volta automaticamente para o Plano Básico.');
+    const confirmar = confirm('Deseja ativar o teste grátis do Premium por 7 dias? Disponível para Plano Grátis e Básico. Ao vencer, sua conta volta automaticamente para o Plano Básico.');
     if (!confirmar) return;
 
     const botao = document.getElementById('btn-teste-premium');
@@ -435,15 +449,16 @@ function setStatusBox(tipo, html) {
 
 async function atualizarStatusPlanoPlanos() {
   const box = document.getElementById('status-plano-box');
+  const possuiBotaoTeste = !!document.getElementById('btn-teste-premium') || !!document.getElementById('texto-status-teste-premium');
 
-  if (!box) return;
+  if (!box && !possuiBotaoTeste) return;
 
   try {
     if (!window._supabase) {
-      box.style.display = 'none';
+      if (box) box.style.display = 'none';
       atualizarTextoAreaAssinatura(false, 'gratis');
       atualizarBotoesPixPlanos(false, false, 'gratis');
-      atualizarBotaoTestePremium({ plano: 'gratis' });
+      atualizarBotaoTestePremium({ plano: 'gratis', logado: false });
       return;
     }
 
@@ -460,12 +475,13 @@ async function atualizarStatusPlanoPlanos() {
 
       atualizarTextoAreaAssinatura(false, 'gratis');
       atualizarBotoesPixPlanos(false, false, 'gratis');
+      atualizarBotaoTestePremium({ plano: 'gratis', logado: false });
       return;
     }
 
     await verificarExpiracaoTestePremium(true);
 
-const { data, error } = await _supabase
+    const { data, error } = await _supabase
       .from('perfis')
       .select('plano, plano_status, plano_expira_em, teste_premium_usado, teste_premium_inicio, teste_premium_fim')
       .eq('id', session.user.id)
@@ -473,37 +489,38 @@ const { data, error } = await _supabase
 
     if (error) {
       console.warn('Não foi possível verificar o plano:', error);
-      box.style.display = 'none';
+      if (box) box.style.display = 'none';
       atualizarTextoAreaAssinatura(false, 'gratis');
       atualizarBotoesPixPlanos(false, true, 'gratis');
       atualizarBotaoTestePremium({ plano: 'gratis' });
       return;
     }
 
-    const plano = normalizarPlanoPlanos(data?.plano || 'gratis');
-    const status = normalizarPlanoPlanos(data?.plano_status || 'ativo');
-    const expiraEm = data?.plano_expira_em || '';
+    const perfilAtual = data || { plano: 'gratis', plano_status: 'ativo' };
+    const plano = normalizarPlanoPlanos(perfilAtual?.plano || 'gratis');
+    const status = normalizarPlanoPlanos(perfilAtual?.plano_status || 'ativo');
+    const expiraEm = perfilAtual?.plano_expira_em || '';
     const dias = diasAteExpirarPlano(expiraEm);
     const dataFormatada = formatarDataPlano(expiraEm);
-    const ativo = planoAtivoPlanos(data);
+    const ativo = planoAtivoPlanos(perfilAtual);
 
     localStorage.setItem('usuario_plano', plano);
 
-    if (data?.plano_status) {
-      localStorage.setItem('usuario_plano_status', data.plano_status);
+    if (perfilAtual?.plano_status) {
+      localStorage.setItem('usuario_plano_status', perfilAtual.plano_status);
     } else {
       localStorage.removeItem('usuario_plano_status');
     }
 
-    if (data?.plano_expira_em) {
-      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+    if (perfilAtual?.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', perfilAtual.plano_expira_em);
     } else {
       localStorage.removeItem('usuario_plano_expira_em');
     }
 
     atualizarTextoAreaAssinatura(ativo, plano);
     atualizarBotoesPixPlanos(ativo, true, plano);
-    atualizarBotaoTestePremium(data);
+    atualizarBotaoTestePremium(perfilAtual);
 
     if (plano === 'basico' || plano === 'premium') {
       if (!ativo || status === 'expirado' || status === 'cancelado' || (dias !== null && dias < 0)) {
@@ -535,18 +552,17 @@ const { data, error } = await _supabase
       return;
     }
 
-    atualizarBotaoTestePremium(data);
-
     setStatusBox('status-alerta', `
-      Você está no <strong>Plano Grátis</strong>. Ative o Básico para liberar gestão de orçamentos
-      ou o Premium para liberar clientes, veículos, OS e estoque.
+      Você está no <strong>Plano Grátis</strong>. Você já pode testar o Premium por 7 dias
+      ou ativar o Básico para liberar gestão de orçamentos.
     `);
 
   } catch (error) {
     console.warn('Erro ao atualizar status do plano:', error);
-    box.style.display = 'none';
+    if (box) box.style.display = 'none';
     atualizarTextoAreaAssinatura(false, 'gratis');
     atualizarBotoesPixPlanos(false, false, 'gratis');
+    atualizarBotaoTestePremium({ plano: 'gratis' });
   }
 }
 

@@ -217,6 +217,12 @@
       align-items: center;
     }
 
+
+    .teste-premium-card.teste-premium-topo {
+      margin-top: 18px;
+      margin-bottom: 24px;
+    }
+
     .teste-premium-card h3 {
       margin: 0 0 6px;
       color: var(--fs-amarelo);
@@ -1717,6 +1723,22 @@ body.gerando-pdf * {
 
 <main class="pagina-planos">
 
+
+  <section class="teste-premium-card teste-premium-topo" id="box-teste-premium">
+    <div>
+      <h3>Teste Premium grátis por 7 dias</h3>
+      <p>
+        Disponível para usuários do Plano Grátis e Básico. Libere clientes, veículos, ordens de serviço,
+        estoque e gestão completa por 7 dias. Ao vencer, sua conta volta automaticamente para o Plano Básico.
+      </p>
+      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
+    </div>
+
+    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
+      Verificando...
+    </button>
+  </section>
+
   <section class="planos-hero">
     <div class="planos-hero-conteudo">
       <span class="tag-planos">⭐ Planos FS Orçamentos</span>
@@ -1746,23 +1768,7 @@ body.gerando-pdf * {
   <div id="status-plano-box" class="status-plano-box">
     Verificando seu plano atual...
   </div>
-
-  <section class="teste-premium-card" id="box-teste-premium">
-    <div>
-      <h3>Teste Premium grátis por 7 dias</h3>
-      <p>
-        Libere clientes, veículos, ordens de serviço, estoque e gestão completa por 7 dias.
-        Ao vencer, sua conta volta automaticamente para o Plano Básico.
-      </p>
-      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
-    </div>
-
-    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
-      Verificando...
-    </button>
-  </section>
-
-  <section class="comparativo-section">
+<section class="comparativo-section">
     <div class="section-topo">
       <h2>Comparativo dos planos</h2>
       <p>
