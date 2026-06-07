@@ -13,6 +13,9 @@ let veiculosCarregadosUmaVez = false;
 let clientesVeiculosCache = [];
 let usuarioLogadoVeiculos = null;
 let listaVeiculosMobileAberta = false;
+let catalogoMarcasVeiculoCache = [];
+let catalogoModelosVeiculoCache = [];
+let catalogoMarcaSelecionadaVeiculoId = null;
 
 let fsVeiculosInicializado = false;
 
@@ -103,6 +106,9 @@ function configurarEventosVeiculos() {
   const filtroCliente = document.getElementById("filtro-cliente-veiculos");
   const btnToggleLista = document.getElementById("btn-toggle-lista-veiculos");
   const campoBuscaClienteModal = document.getElementById("campo-busca-cliente-veiculo");
+  const campoBuscaMarcaModal = document.getElementById("campo-busca-marca-veiculo");
+  const campoBuscaModeloModal = document.getElementById("campo-busca-modelo-veiculo");
+  const inputMarca = document.getElementById("veiculo-marca");
 
   const inputPlaca = document.getElementById("veiculo-placa");
   const inputChassi = document.getElementById("veiculo-chassi");
@@ -144,6 +150,31 @@ function configurarEventosVeiculos() {
         event.preventDefault();
         buscarClientesModalVeiculo();
       }
+    });
+  }
+
+  if (campoBuscaMarcaModal) {
+    campoBuscaMarcaModal.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        buscarCatalogoMarcasVeiculo();
+      }
+    });
+  }
+
+  if (campoBuscaModeloModal) {
+    campoBuscaModeloModal.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        buscarCatalogoModelosVeiculo();
+      }
+    });
+  }
+
+  if (inputMarca) {
+    inputMarca.addEventListener("input", () => {
+      catalogoMarcaSelecionadaVeiculoId = null;
+      setValorVeiculo("veiculo-modelo", "");
     });
   }
 
@@ -1167,6 +1198,193 @@ function limparClienteSelecionadoVeiculo() {
   atualizarClienteVisualVeiculo("");
 }
 
+
+/* =========================================================
+   CATÁLOGO NACIONAL DE MARCAS E MODELOS
+   ========================================================= */
+
+function abrirModalCatalogoMarcaVeiculo() {
+  const modal = document.getElementById("modal-catalogo-marca-veiculo");
+  const campo = document.getElementById("campo-busca-marca-veiculo");
+  const resultado = document.getElementById("resultado-catalogo-marcas-veiculo");
+
+  if (campo) campo.value = valorInputVeiculo("veiculo-marca") || "";
+  if (resultado) resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite a marca e clique em Buscar.</div>`;
+
+  if (modal) {
+    modal.classList.add("ativo");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => campo?.focus(), 80);
+  }
+}
+
+function fecharModalCatalogoMarcaVeiculo() {
+  const modal = document.getElementById("modal-catalogo-marca-veiculo");
+  if (modal) {
+    modal.classList.remove("ativo");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+function abrirModalCatalogoModeloVeiculo() {
+  const modal = document.getElementById("modal-catalogo-modelo-veiculo");
+  const campo = document.getElementById("campo-busca-modelo-veiculo");
+  const resultado = document.getElementById("resultado-catalogo-modelos-veiculo");
+
+  if (campo) campo.value = valorInputVeiculo("veiculo-modelo") || "";
+  if (resultado) resultado.innerHTML = `<div class="estado-busca-cliente-modal">Carregando modelos da marca selecionada...</div>`;
+
+  if (modal) {
+    modal.classList.add("ativo");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => campo?.focus(), 80);
+  }
+
+  resolverMarcaCatalogoVeiculo().then(() => buscarCatalogoModelosVeiculo()).catch((erro) => {
+    console.error("Erro ao abrir busca de modelos:", erro);
+    if (resultado) resultado.innerHTML = `<div class="estado-busca-cliente-modal">Selecione uma marca válida primeiro.</div>`;
+  });
+}
+
+function fecharModalCatalogoModeloVeiculo() {
+  const modal = document.getElementById("modal-catalogo-modelo-veiculo");
+  if (modal) {
+    modal.classList.remove("ativo");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+async function buscarCatalogoMarcasVeiculo() {
+  const campo = document.getElementById("campo-busca-marca-veiculo");
+  const resultado = document.getElementById("resultado-catalogo-marcas-veiculo");
+  if (!resultado) return;
+
+  const termo = String(campo?.value || "").trim();
+  resultado.innerHTML = `<div class="estado-busca-cliente-modal">Buscando marcas...</div>`;
+
+  try {
+    let query = window._supabase
+      .from("veiculo_marcas_catalogo")
+      .select("id, nome")
+      .order("nome", { ascending: true })
+      .limit(60);
+
+    if (termo) query = query.ilike("nome", `%${termo}%`);
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    catalogoMarcasVeiculoCache = Array.isArray(data) ? data : [];
+
+    if (!catalogoMarcasVeiculoCache.length) {
+      resultado.innerHTML = `<div class="estado-busca-cliente-modal">Nenhuma marca encontrada. Você pode digitar manualmente no campo Marca.</div>`;
+      return;
+    }
+
+    resultado.innerHTML = catalogoMarcasVeiculoCache.map((marca) => `
+      <button type="button" class="catalogo-modal-item" onclick="selecionarCatalogoMarcaVeiculo('${escaparHTMLAtributoVeiculo(marca.id)}')">
+        <strong>${escaparHTMLVeiculo(marca.nome)}</strong>
+        <span>Selecionar marca</span>
+      </button>
+    `).join("");
+  } catch (erro) {
+    console.error("Erro ao buscar marcas do catálogo:", erro);
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Não foi possível buscar o catálogo. Rode o SQL do catálogo de veículos no Supabase ou digite a marca manualmente.</div>`;
+  }
+}
+
+function selecionarCatalogoMarcaVeiculo(marcaId) {
+  const marca = catalogoMarcasVeiculoCache.find((item) => String(item.id) === String(marcaId));
+  if (!marca) return;
+
+  catalogoMarcaSelecionadaVeiculoId = marca.id;
+  setValorVeiculo("veiculo-marca", marca.nome || "");
+  setValorVeiculo("veiculo-modelo", "");
+  fecharModalCatalogoMarcaVeiculo();
+  abrirModalCatalogoModeloVeiculo();
+}
+
+async function resolverMarcaCatalogoVeiculo() {
+  if (catalogoMarcaSelecionadaVeiculoId) return catalogoMarcaSelecionadaVeiculoId;
+
+  const marcaDigitada = valorInputVeiculo("veiculo-marca");
+  if (!marcaDigitada) return null;
+
+  const { data, error } = await window._supabase
+    .from("veiculo_marcas_catalogo")
+    .select("id, nome")
+    .ilike("nome", marcaDigitada)
+    .limit(1);
+
+  if (error) {
+    console.warn("Erro ao resolver marca do catálogo:", error);
+    return null;
+  }
+
+  const marca = Array.isArray(data) ? data[0] : null;
+  if (marca?.id) {
+    catalogoMarcaSelecionadaVeiculoId = marca.id;
+    setValorVeiculo("veiculo-marca", marca.nome || marcaDigitada);
+    return marca.id;
+  }
+
+  return null;
+}
+
+async function buscarCatalogoModelosVeiculo() {
+  const campo = document.getElementById("campo-busca-modelo-veiculo");
+  const resultado = document.getElementById("resultado-catalogo-modelos-veiculo");
+  if (!resultado) return;
+
+  const marcaId = await resolverMarcaCatalogoVeiculo();
+  if (!marcaId) {
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Selecione uma marca do catálogo primeiro ou digite uma marca válida.</div>`;
+    return;
+  }
+
+  const termo = String(campo?.value || "").trim();
+  resultado.innerHTML = `<div class="estado-busca-cliente-modal">Buscando modelos...</div>`;
+
+  try {
+    let query = window._supabase
+      .from("veiculo_modelos_catalogo")
+      .select("id, nome, tipo")
+      .eq("marca_id", marcaId)
+      .order("nome", { ascending: true })
+      .limit(80);
+
+    if (termo) query = query.ilike("nome", `%${termo}%`);
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    catalogoModelosVeiculoCache = Array.isArray(data) ? data : [];
+
+    if (!catalogoModelosVeiculoCache.length) {
+      resultado.innerHTML = `<div class="estado-busca-cliente-modal">Nenhum modelo encontrado para esta marca. Você pode digitar manualmente no campo Modelo.</div>`;
+      return;
+    }
+
+    resultado.innerHTML = catalogoModelosVeiculoCache.map((modelo) => `
+      <button type="button" class="catalogo-modal-item" onclick="selecionarCatalogoModeloVeiculo('${escaparHTMLAtributoVeiculo(modelo.id)}')">
+        <strong>${escaparHTMLVeiculo(modelo.nome)}</strong>
+        <span>${escaparHTMLVeiculo(modelo.tipo || "Modelo do catálogo")}</span>
+      </button>
+    `).join("");
+  } catch (erro) {
+    console.error("Erro ao buscar modelos do catálogo:", erro);
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Não foi possível buscar modelos. Confira se a tabela veiculo_modelos_catalogo existe no Supabase.</div>`;
+  }
+}
+
+function selecionarCatalogoModeloVeiculo(modeloId) {
+  const modelo = catalogoModelosVeiculoCache.find((item) => String(item.id) === String(modeloId));
+  if (!modelo) return;
+
+  setValorVeiculo("veiculo-modelo", modelo.nome || "");
+  fecharModalCatalogoModeloVeiculo();
+}
+
 /* =========================================================
    EXPORTAÇÕES GLOBAIS
    Necessário porque botões são criados via innerHTML.
@@ -1188,3 +1406,11 @@ window.fecharModalBuscaClienteVeiculo = fecharModalBuscaClienteVeiculo;
 window.buscarClientesModalVeiculo = buscarClientesModalVeiculo;
 window.selecionarClienteModalVeiculo = selecionarClienteModalVeiculo;
 window.limparClienteSelecionadoVeiculo = limparClienteSelecionadoVeiculo;
+window.abrirModalCatalogoMarcaVeiculo = abrirModalCatalogoMarcaVeiculo;
+window.fecharModalCatalogoMarcaVeiculo = fecharModalCatalogoMarcaVeiculo;
+window.buscarCatalogoMarcasVeiculo = buscarCatalogoMarcasVeiculo;
+window.selecionarCatalogoMarcaVeiculo = selecionarCatalogoMarcaVeiculo;
+window.abrirModalCatalogoModeloVeiculo = abrirModalCatalogoModeloVeiculo;
+window.fecharModalCatalogoModeloVeiculo = fecharModalCatalogoModeloVeiculo;
+window.buscarCatalogoModelosVeiculo = buscarCatalogoModelosVeiculo;
+window.selecionarCatalogoModeloVeiculo = selecionarCatalogoModeloVeiculo;

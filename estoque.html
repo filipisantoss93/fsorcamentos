@@ -1791,6 +1791,33 @@ textarea:focus {
 .estoque-aplicacao-titulo small {
   color: #8d6e63;
 }
+
+.campo-com-botao {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: stretch;
+}
+.catalogo-modal-item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--fs-borda);
+  background: #ffffff;
+  color: var(--fs-texto);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.catalogo-modal-item:hover {
+  border-color: var(--fs-amarelo);
+  background: var(--fs-amarelo-claro);
+}
+.catalogo-modal-item strong { display: block; color: var(--fs-marrom); }
+.catalogo-modal-item span { display: block; color: var(--fs-texto-suave); font-size: 12px; margin-top: 3px; }
+.resultado-catalogo-veiculos { max-height: 360px; overflow: auto; }
+@media (max-width: 700px) { .campo-com-botao { grid-template-columns: 1fr; } }
+
 </style>
 
 
@@ -2715,12 +2742,20 @@ body.gerando-pdf * {
             <div class="form-linha">
               <div class="campo">
                 <label for="produto-marca-veiculo">Marca do veículo</label>
-                <input type="text" id="produto-marca-veiculo" placeholder="Ex: Honda, GM, Fiat, VW" />
+                <div class="campo-com-botao">
+                  <input type="text" id="produto-marca-veiculo" placeholder="Ex: Honda, GM, Fiat, VW" autocomplete="off" />
+                  <button type="button" class="btn btn-secundario btn-pequeno" onclick="abrirModalCatalogoMarcaEstoque()">Buscar</button>
+                </div>
+                <small>Use o catálogo nacional ou digite manualmente.</small>
               </div>
 
               <div class="campo">
                 <label for="produto-modelo-veiculo">Modelo do veículo</label>
-                <input type="text" id="produto-modelo-veiculo" placeholder="Ex: Civic, Corsa Maxx, Uno Fire, Gol G5" />
+                <div class="campo-com-botao">
+                  <input type="text" id="produto-modelo-veiculo" placeholder="Ex: Civic, Corsa Maxx, Uno Fire, Gol G5" autocomplete="off" />
+                  <button type="button" class="btn btn-secundario btn-pequeno" onclick="abrirModalCatalogoModeloEstoque()">Buscar</button>
+                </div>
+                <small>Selecione a marca primeiro para listar somente modelos relacionados.</small>
               </div>
             </div>
 
@@ -3060,6 +3095,44 @@ body.gerando-pdf * {
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div id="modal-catalogo-marca-estoque" class="modal-estoque" aria-hidden="true">
+    <div class="modal-conteudo" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-catalogo-marca-estoque">
+      <div class="modal-header">
+        <h2 id="titulo-modal-catalogo-marca-estoque">Buscar marca</h2>
+        <button type="button" class="btn btn-secundario btn-pequeno" onclick="fecharModalCatalogoMarcaEstoque()">Fechar</button>
+      </div>
+      <div class="modal-body">
+        <div class="campo">
+          <label for="campo-busca-marca-estoque">Marca</label>
+          <input type="search" id="campo-busca-marca-estoque" placeholder="Ex: Fiat, Chevrolet, Volkswagen, Honda" autocomplete="off">
+        </div>
+        <button type="button" class="btn btn-primario" onclick="buscarCatalogoMarcasEstoque()">Buscar</button>
+        <div id="resultado-catalogo-marcas-estoque" class="resultado-catalogo-veiculos">
+          <div class="estado-vazio">Digite pelo menos 1 caractere e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-catalogo-modelo-estoque" class="modal-estoque" aria-hidden="true">
+    <div class="modal-conteudo" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-catalogo-modelo-estoque">
+      <div class="modal-header">
+        <h2 id="titulo-modal-catalogo-modelo-estoque">Buscar modelo</h2>
+        <button type="button" class="btn btn-secundario btn-pequeno" onclick="fecharModalCatalogoModeloEstoque()">Fechar</button>
+      </div>
+      <div class="modal-body">
+        <div class="campo">
+          <label for="campo-busca-modelo-estoque">Modelo</label>
+          <input type="search" id="campo-busca-modelo-estoque" placeholder="Ex: Strada, Onix, Gol, Corolla" autocomplete="off">
+        </div>
+        <button type="button" class="btn btn-primario" onclick="buscarCatalogoModelosEstoque()">Buscar</button>
+        <div id="resultado-catalogo-modelos-estoque" class="resultado-catalogo-veiculos">
+          <div class="estado-vazio">Selecione uma marca primeiro.</div>
+        </div>
+      </div>
     </div>
   </div>
 

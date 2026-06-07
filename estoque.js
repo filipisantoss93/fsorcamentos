@@ -6,6 +6,9 @@
 
 let produtosEstoqueCache = [];
 let usuarioLogadoEstoque = null;
+let catalogoMarcasEstoqueCache = [];
+let catalogoModelosEstoqueCache = [];
+let catalogoMarcaSelecionadaEstoqueId = null;
 
 let paginaProdutosEstoque = 0;
 let limiteProdutosEstoque = 20;
@@ -130,6 +133,9 @@ function configurarEventosEstoque() {
   const filtroSubcategoria = document.getElementById("filtro-subcategoria-produtos");
   const categoriaProduto = document.getElementById("produto-categoria");
   const categoriaOutra = document.getElementById("produto-categoria-outra");
+  const campoBuscaMarcaModal = document.getElementById("campo-busca-marca-estoque");
+  const campoBuscaModeloModal = document.getElementById("campo-busca-modelo-estoque");
+  const inputMarcaVeiculo = document.getElementById("produto-marca-veiculo");
 
   const formMovimentacao = document.getElementById("form-movimentacao-estoque");
   const btnFecharModal = document.getElementById("btn-fechar-modal-estoque");
@@ -187,6 +193,31 @@ if (categoriaOutra) {
     if (valorInputEstoque("produto-categoria") === "__outra__") {
       // Apenas mantém o campo ativo para salvar a categoria digitada
     }
+  });
+}
+
+if (campoBuscaMarcaModal) {
+  campoBuscaMarcaModal.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      buscarCatalogoMarcasEstoque();
+    }
+  });
+}
+
+if (campoBuscaModeloModal) {
+  campoBuscaModeloModal.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      buscarCatalogoModelosEstoque();
+    }
+  });
+}
+
+if (inputMarcaVeiculo) {
+  inputMarcaVeiculo.addEventListener("input", () => {
+    catalogoMarcaSelecionadaEstoqueId = null;
+    setValorEstoque("produto-modelo-veiculo", "");
   });
 }
 
@@ -1548,6 +1579,193 @@ function preencherCategoriaProdutoParaEdicao(categoria) {
   controlarCampoOutraCategoriaEstoque();
 }
 
+
+/* =========================================================
+   CATÁLOGO NACIONAL DE MARCAS E MODELOS PARA APLICAÇÃO
+   ========================================================= */
+
+function abrirModalCatalogoMarcaEstoque() {
+  const modal = document.getElementById("modal-catalogo-marca-estoque");
+  const campo = document.getElementById("campo-busca-marca-estoque");
+  const resultado = document.getElementById("resultado-catalogo-marcas-estoque");
+
+  if (campo) campo.value = valorInputEstoque("produto-marca-veiculo") || "";
+  if (resultado) resultado.innerHTML = `<div class="estado-vazio">Digite a marca e clique em Buscar.</div>`;
+
+  if (modal) {
+    modal.classList.add("ativo");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => campo?.focus(), 80);
+  }
+}
+
+function fecharModalCatalogoMarcaEstoque() {
+  const modal = document.getElementById("modal-catalogo-marca-estoque");
+  if (modal) {
+    modal.classList.remove("ativo");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+function abrirModalCatalogoModeloEstoque() {
+  const modal = document.getElementById("modal-catalogo-modelo-estoque");
+  const campo = document.getElementById("campo-busca-modelo-estoque");
+  const resultado = document.getElementById("resultado-catalogo-modelos-estoque");
+
+  if (campo) campo.value = valorInputEstoque("produto-modelo-veiculo") || "";
+  if (resultado) resultado.innerHTML = `<div class="estado-vazio">Carregando modelos da marca selecionada...</div>`;
+
+  if (modal) {
+    modal.classList.add("ativo");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => campo?.focus(), 80);
+  }
+
+  resolverMarcaCatalogoEstoque().then(() => buscarCatalogoModelosEstoque()).catch((erro) => {
+    console.error("Erro ao abrir busca de modelos:", erro);
+    if (resultado) resultado.innerHTML = `<div class="estado-vazio">Selecione uma marca válida primeiro.</div>`;
+  });
+}
+
+function fecharModalCatalogoModeloEstoque() {
+  const modal = document.getElementById("modal-catalogo-modelo-estoque");
+  if (modal) {
+    modal.classList.remove("ativo");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+async function buscarCatalogoMarcasEstoque() {
+  const campo = document.getElementById("campo-busca-marca-estoque");
+  const resultado = document.getElementById("resultado-catalogo-marcas-estoque");
+  if (!resultado) return;
+
+  const termo = String(campo?.value || "").trim();
+  resultado.innerHTML = `<div class="estado-vazio">Buscando marcas...</div>`;
+
+  try {
+    let query = window._supabase
+      .from("veiculo_marcas_catalogo")
+      .select("id, nome")
+      .order("nome", { ascending: true })
+      .limit(60);
+
+    if (termo) query = query.ilike("nome", `%${termo}%`);
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    catalogoMarcasEstoqueCache = Array.isArray(data) ? data : [];
+
+    if (!catalogoMarcasEstoqueCache.length) {
+      resultado.innerHTML = `<div class="estado-vazio">Nenhuma marca encontrada. Você pode digitar manualmente.</div>`;
+      return;
+    }
+
+    resultado.innerHTML = catalogoMarcasEstoqueCache.map((marca) => `
+      <button type="button" class="catalogo-modal-item" onclick="selecionarCatalogoMarcaEstoque('${escaparHTMLAtributoEstoque(marca.id)}')">
+        <strong>${escaparHTMLEstoque(marca.nome)}</strong>
+        <span>Selecionar marca para aplicação da peça</span>
+      </button>
+    `).join("");
+  } catch (erro) {
+    console.error("Erro ao buscar marcas do catálogo:", erro);
+    resultado.innerHTML = `<div class="estado-vazio">Não foi possível buscar o catálogo. Rode o SQL do catálogo no Supabase ou digite manualmente.</div>`;
+  }
+}
+
+function selecionarCatalogoMarcaEstoque(marcaId) {
+  const marca = catalogoMarcasEstoqueCache.find((item) => String(item.id) === String(marcaId));
+  if (!marca) return;
+
+  catalogoMarcaSelecionadaEstoqueId = marca.id;
+  setValorEstoque("produto-marca-veiculo", marca.nome || "");
+  setValorEstoque("produto-modelo-veiculo", "");
+  fecharModalCatalogoMarcaEstoque();
+  abrirModalCatalogoModeloEstoque();
+}
+
+async function resolverMarcaCatalogoEstoque() {
+  if (catalogoMarcaSelecionadaEstoqueId) return catalogoMarcaSelecionadaEstoqueId;
+
+  const marcaDigitada = valorInputEstoque("produto-marca-veiculo");
+  if (!marcaDigitada) return null;
+
+  const { data, error } = await window._supabase
+    .from("veiculo_marcas_catalogo")
+    .select("id, nome")
+    .ilike("nome", marcaDigitada)
+    .limit(1);
+
+  if (error) {
+    console.warn("Erro ao resolver marca do catálogo:", error);
+    return null;
+  }
+
+  const marca = Array.isArray(data) ? data[0] : null;
+  if (marca?.id) {
+    catalogoMarcaSelecionadaEstoqueId = marca.id;
+    setValorEstoque("produto-marca-veiculo", marca.nome || marcaDigitada);
+    return marca.id;
+  }
+
+  return null;
+}
+
+async function buscarCatalogoModelosEstoque() {
+  const campo = document.getElementById("campo-busca-modelo-estoque");
+  const resultado = document.getElementById("resultado-catalogo-modelos-estoque");
+  if (!resultado) return;
+
+  const marcaId = await resolverMarcaCatalogoEstoque();
+  if (!marcaId) {
+    resultado.innerHTML = `<div class="estado-vazio">Selecione uma marca do catálogo primeiro ou digite uma marca válida.</div>`;
+    return;
+  }
+
+  const termo = String(campo?.value || "").trim();
+  resultado.innerHTML = `<div class="estado-vazio">Buscando modelos...</div>`;
+
+  try {
+    let query = window._supabase
+      .from("veiculo_modelos_catalogo")
+      .select("id, nome, tipo")
+      .eq("marca_id", marcaId)
+      .order("nome", { ascending: true })
+      .limit(80);
+
+    if (termo) query = query.ilike("nome", `%${termo}%`);
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    catalogoModelosEstoqueCache = Array.isArray(data) ? data : [];
+
+    if (!catalogoModelosEstoqueCache.length) {
+      resultado.innerHTML = `<div class="estado-vazio">Nenhum modelo encontrado para esta marca. Você pode digitar manualmente.</div>`;
+      return;
+    }
+
+    resultado.innerHTML = catalogoModelosEstoqueCache.map((modelo) => `
+      <button type="button" class="catalogo-modal-item" onclick="selecionarCatalogoModeloEstoque('${escaparHTMLAtributoEstoque(modelo.id)}')">
+        <strong>${escaparHTMLEstoque(modelo.nome)}</strong>
+        <span>${escaparHTMLEstoque(modelo.tipo || "Modelo do catálogo")}</span>
+      </button>
+    `).join("");
+  } catch (erro) {
+    console.error("Erro ao buscar modelos do catálogo:", erro);
+    resultado.innerHTML = `<div class="estado-vazio">Não foi possível buscar modelos. Confira se a tabela veiculo_modelos_catalogo existe no Supabase.</div>`;
+  }
+}
+
+function selecionarCatalogoModeloEstoque(modeloId) {
+  const modelo = catalogoModelosEstoqueCache.find((item) => String(item.id) === String(modeloId));
+  if (!modelo) return;
+
+  setValorEstoque("produto-modelo-veiculo", modelo.nome || "");
+  fecharModalCatalogoModeloEstoque();
+}
+
 /* =========================================================
    EXPORTAÇÕES GLOBAIS
    Necessário porque os botões são criados via innerHTML.
@@ -1563,4 +1781,12 @@ window.fecharModalMovimentacaoEstoque = fecharModalMovimentacaoEstoque;
 window.confirmarMovimentacaoEstoque = confirmarMovimentacaoEstoque;
 window.limparFormularioProdutoEstoque = limparFormularioProdutoEstoque;
 window.alternarLinhaProdutoEstoque = alternarLinhaProdutoEstoque;
+window.abrirModalCatalogoMarcaEstoque = abrirModalCatalogoMarcaEstoque;
+window.fecharModalCatalogoMarcaEstoque = fecharModalCatalogoMarcaEstoque;
+window.buscarCatalogoMarcasEstoque = buscarCatalogoMarcasEstoque;
+window.selecionarCatalogoMarcaEstoque = selecionarCatalogoMarcaEstoque;
+window.abrirModalCatalogoModeloEstoque = abrirModalCatalogoModeloEstoque;
+window.fecharModalCatalogoModeloEstoque = fecharModalCatalogoModeloEstoque;
+window.buscarCatalogoModelosEstoque = buscarCatalogoModelosEstoque;
+window.selecionarCatalogoModeloEstoque = selecionarCatalogoModeloEstoque;
 window.controlarCampoOutraCategoriaEstoque = controlarCampoOutraCategoriaEstoque;

@@ -794,6 +794,38 @@
       }
     }
 
+  
+    .campo-com-botao {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .catalogo-modal-item {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--fs-borda);
+      background: #ffffff;
+      color: var(--fs-texto);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .catalogo-modal-item:hover {
+      border-color: var(--fs-amarelo);
+      background: var(--fs-amarelo-claro);
+    }
+
+    .catalogo-modal-item strong { display: block; color: var(--fs-marrom); }
+    .catalogo-modal-item span { display: block; color: var(--fs-texto-suave); font-size: 12px; margin-top: 3px; }
+
+    @media (max-width: 680px) {
+      .campo-com-botao { grid-template-columns: 1fr; }
+    }
+
   </style>
 
 
@@ -1679,12 +1711,20 @@ body.gerando-pdf * {
             <div class="form-linha">
               <div class="campo">
                 <label for="veiculo-marca">Marca</label>
-                <input type="text" id="veiculo-marca" placeholder="Ex: Chevrolet, Fiat, Honda" />
+                <div class="campo-com-botao">
+                  <input type="text" id="veiculo-marca" placeholder="Ex: Chevrolet, Fiat, Honda" autocomplete="off" />
+                  <button type="button" class="btn btn-secundario btn-pequeno" onclick="abrirModalCatalogoMarcaVeiculo()">Buscar</button>
+                </div>
+                <small>Busque no catálogo nacional ou digite manualmente.</small>
               </div>
 
               <div class="campo">
                 <label for="veiculo-modelo">Modelo</label>
-                <input type="text" id="veiculo-modelo" placeholder="Ex: Prisma, Onix, Civic" />
+                <div class="campo-com-botao">
+                  <input type="text" id="veiculo-modelo" placeholder="Ex: Prisma, Onix, Civic" autocomplete="off" />
+                  <button type="button" class="btn btn-secundario btn-pequeno" onclick="abrirModalCatalogoModeloVeiculo()">Buscar</button>
+                </div>
+                <small>Selecione a marca primeiro para listar somente os modelos relacionados.</small>
               </div>
             </div>
 
@@ -1825,6 +1865,54 @@ body.gerando-pdf * {
 
         <div id="resultado-busca-clientes-veiculo" class="resultado-busca-clientes-modal">
           <div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-catalogo-marca-veiculo" class="modal-busca-cliente-overlay" aria-hidden="true">
+    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-catalogo-marca-veiculo">
+      <div class="modal-busca-cliente-header">
+        <div>
+          <h3 id="titulo-modal-catalogo-marca-veiculo">Buscar marca</h3>
+          <p>Pesquise uma marca do catálogo nacional. Você também pode digitar manualmente no campo.</p>
+        </div>
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalCatalogoMarcaVeiculo()">×</button>
+      </div>
+      <div class="modal-busca-cliente-body">
+        <div class="busca-cliente-modal-linha">
+          <div class="campo">
+            <label for="campo-busca-marca-veiculo">Marca</label>
+            <input type="search" id="campo-busca-marca-veiculo" placeholder="Ex: Fiat, Chevrolet, Volkswagen, Toyota" autocomplete="off">
+          </div>
+          <button type="button" class="btn btn-primario" onclick="buscarCatalogoMarcasVeiculo()">Buscar</button>
+        </div>
+        <div id="resultado-catalogo-marcas-veiculo" class="resultado-busca-clientes-modal">
+          <div class="estado-busca-cliente-modal">Digite pelo menos 1 caractere e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-catalogo-modelo-veiculo" class="modal-busca-cliente-overlay" aria-hidden="true">
+    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-catalogo-modelo-veiculo">
+      <div class="modal-busca-cliente-header">
+        <div>
+          <h3 id="titulo-modal-catalogo-modelo-veiculo">Buscar modelo</h3>
+          <p>Os modelos são filtrados conforme a marca selecionada.</p>
+        </div>
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalCatalogoModeloVeiculo()">×</button>
+      </div>
+      <div class="modal-busca-cliente-body">
+        <div class="busca-cliente-modal-linha">
+          <div class="campo">
+            <label for="campo-busca-modelo-veiculo">Modelo</label>
+            <input type="search" id="campo-busca-modelo-veiculo" placeholder="Ex: Strada, Onix, Gol, Corolla" autocomplete="off">
+          </div>
+          <button type="button" class="btn btn-primario" onclick="buscarCatalogoModelosVeiculo()">Buscar</button>
+        </div>
+        <div id="resultado-catalogo-modelos-veiculo" class="resultado-busca-clientes-modal">
+          <div class="estado-busca-cliente-modal">Selecione uma marca primeiro.</div>
         </div>
       </div>
     </div>
