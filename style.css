@@ -4180,3 +4180,91 @@ body.gerando-pdf * {
   color: inherit;
 }
 
+/* =========================================================
+   CORREÇÃO DE CONTRASTE - HEADERS DOS CARDS
+   Evita texto marrom em fundo marrom
+   ========================================================= */
+
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header {
+  background: #3e2723 !important;
+  color: #fffaf0 !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header p,
+.card-header span,
+.card-header small,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-busca-produto-header strong {
+  color: #fffaf0 !important;
+}
+
+.card-header h2,
+.clientes-card-header h2,
+.veiculos-card-header h2,
+.ordens-card-header h2,
+.estoque-card-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-produto-header h3 {
+  color: #ffc400 !important;
+}
+
+.card-header p,
+.clientes-card-header p,
+.veiculos-card-header p,
+.ordens-card-header p,
+.estoque-card-header p,
+.modal-busca-cliente-header p,
+.modal-busca-produto-header p {
+  color: #fffaf0 !important;
+  opacity: 0.95;
+}
