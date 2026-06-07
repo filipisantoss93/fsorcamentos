@@ -20,6 +20,27 @@ let filtrosAtuaisEstoque = {
 
 let fsEstoqueInicializado = false;
 
+const SUBCATEGORIAS_OFICINA_POR_CATEGORIA = {
+  "Filtros": ["Filtro de ar", "Filtro de óleo", "Filtro de combustível", "Filtro de cabine"],
+  "Suspensão": ["Amortecedor", "Mola", "Bandeja", "Bucha", "Pivô", "Terminal", "Coxim"],
+  "Injeção": ["Bico injetor", "Sensor", "Corpo de borboleta", "Bomba de combustível", "Vela", "Cabo de vela"],
+  "Correias": ["Correia dentada", "Correia auxiliar", "Tensor", "Polia", "Kit correia"],
+  "Freios": ["Pastilha de freio", "Disco de freio", "Lona", "Tambor", "Cilindro", "Fluido de freio"],
+  "Elétrica": ["Bateria", "Lâmpada", "Alternador", "Motor de partida", "Relé", "Fusível", "Chicote"],
+  "Motor": ["Junta", "Retentor", "Coxim", "Bomba d'água", "Vela", "Óleo", "Aditivo"],
+  "Fluidos": ["Óleo de motor", "Fluido de freio", "Fluido de direção", "Aditivo", "Limpa para-brisa"],
+  "Lubrificantes": ["Óleo de motor", "Óleo de câmbio", "Graxa", "Aditivo"],
+  "Acessórios": ["Palheta", "Lâmpada", "Tapete", "Calha", "Capa"],
+  "Peças": ["Peça mecânica", "Peça elétrica", "Peça de acabamento", "Kit"],
+  "Materiais": ["Material de consumo", "Parafuso", "Abraçadeira", "Cola", "Fita"],
+  "Produtos": ["Limpeza", "Aditivo", "Químico automotivo", "Polimento"],
+  "Ferramentas": ["Ferramenta manual", "Ferramenta elétrica", "Equipamento", "Acessório de ferramenta"],
+  "Insumos": ["Descartável", "EPI", "Material de limpeza", "Material de oficina"],
+  "Serviços": ["Mão de obra", "Diagnóstico", "Instalação", "Reparo", "Revisão"],
+  "Outros": ["Geral"]
+};
+
+
 async function iniciarEstoqueInicializado() {
   if (fsEstoqueInicializado) return;
   fsEstoqueInicializado = true;
@@ -145,12 +166,17 @@ if (btnCarregarMais) {
   }
 
 if (filtroCategoria) {
-  filtroCategoria.addEventListener("change", filtrarProdutosEstoque);
+  filtroCategoria.addEventListener("change", () => {
+    atualizarSubcategoriasFiltroEstoque(true);
+    filtrarProdutosEstoque();
+  });
 }
 
 if (filtroSubcategoria) {
   filtroSubcategoria.addEventListener("change", filtrarProdutosEstoque);
 }
+
+atualizarSubcategoriasFiltroEstoque(false);
 
 if (categoriaProduto) {
   categoriaProduto.addEventListener("change", controlarCampoOutraCategoriaEstoque);
@@ -1387,6 +1413,15 @@ function normalizarTextoEstoque(valor) {
     .trim();
 }
 
+function escaparHTMLAtributoEstoque(valor) {
+  return String(valor || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 function escaparHTMLEstoque(valor) {
   return String(valor || "")
     .replaceAll("&", "&amp;")
@@ -1431,6 +1466,44 @@ function controlarCampoOutraCategoriaEstoque() {
     if (inputOutra) {
       inputOutra.value = "";
     }
+  }
+}
+
+function obterSubcategoriasPermitidasEstoque(categoria) {
+  const categoriaLimpa = String(categoria || "").trim();
+  const base = [];
+
+  if (categoriaLimpa && SUBCATEGORIAS_OFICINA_POR_CATEGORIA[categoriaLimpa]) {
+    base.push(...SUBCATEGORIAS_OFICINA_POR_CATEGORIA[categoriaLimpa]);
+  } else if (!categoriaLimpa) {
+    Object.values(SUBCATEGORIAS_OFICINA_POR_CATEGORIA).forEach((lista) => base.push(...lista));
+  }
+
+  produtosEstoqueCache.forEach((produto) => {
+    const mesmaCategoria = !categoriaLimpa || String(produto.categoria || "").trim() === categoriaLimpa;
+    const sub = String(produto.subcategoria || "").trim();
+    if (mesmaCategoria && sub) base.push(sub);
+  });
+
+  return Array.from(new Set(base.filter(Boolean))).sort((a, b) => a.localeCompare(b, "pt-BR"));
+}
+
+function atualizarSubcategoriasFiltroEstoque(limparSelecao = false) {
+  const select = document.getElementById("filtro-subcategoria-produtos");
+  if (!select) return;
+
+  const categoria = valorInputEstoque("filtro-categoria-produtos");
+  const valorAnterior = limparSelecao ? "" : select.value;
+  const subcategorias = obterSubcategoriasPermitidasEstoque(categoria);
+
+  select.innerHTML = [
+    `<option value="">Todas</option>`,
+    ...subcategorias.map((sub) => `<option value="${escaparHTMLAtributoEstoque(sub)}">${escaparHTMLEstoque(sub)}</option>`),
+    `<option value="Sem subcategoria">Sem subcategoria</option>`
+  ].join("");
+
+  if (valorAnterior && Array.from(select.options).some((opcao) => opcao.value === valorAnterior)) {
+    select.value = valorAnterior;
   }
 }
 

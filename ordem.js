@@ -12,6 +12,27 @@
 let ordemAtual = null;
 let usuarioLogadoOrdem = null;
 let produtosEstoqueOrdemCache = [];
+
+const SUBCATEGORIAS_OFICINA_POR_CATEGORIA_ORDEM = {
+  "Filtros": ["Filtro de ar", "Filtro de óleo", "Filtro de combustível", "Filtro de cabine"],
+  "Suspensão": ["Amortecedor", "Mola", "Bandeja", "Bucha", "Pivô", "Terminal", "Coxim"],
+  "Injeção": ["Bico injetor", "Sensor", "Corpo de borboleta", "Bomba de combustível", "Vela", "Cabo de vela"],
+  "Correias": ["Correia dentada", "Correia auxiliar", "Tensor", "Polia", "Kit correia"],
+  "Freios": ["Pastilha de freio", "Disco de freio", "Lona", "Tambor", "Cilindro", "Fluido de freio"],
+  "Elétrica": ["Bateria", "Lâmpada", "Alternador", "Motor de partida", "Relé", "Fusível", "Chicote"],
+  "Motor": ["Junta", "Retentor", "Coxim", "Bomba d'água", "Vela", "Óleo", "Aditivo"],
+  "Fluidos": ["Óleo de motor", "Fluido de freio", "Fluido de direção", "Aditivo", "Limpa para-brisa"],
+  "Lubrificantes": ["Óleo de motor", "Óleo de câmbio", "Graxa", "Aditivo"],
+  "Acessórios": ["Palheta", "Lâmpada", "Tapete", "Calha", "Capa"],
+  "Peças": ["Peça mecânica", "Peça elétrica", "Peça de acabamento", "Kit"],
+  "Materiais": ["Material de consumo", "Parafuso", "Abraçadeira", "Cola", "Fita"],
+  "Produtos": ["Limpeza", "Aditivo", "Químico automotivo", "Polimento"],
+  "Ferramentas": ["Ferramenta manual", "Ferramenta elétrica", "Equipamento", "Acessório de ferramenta"],
+  "Insumos": ["Descartável", "EPI", "Material de limpeza", "Material de oficina"],
+  "Serviços": ["Mão de obra", "Diagnóstico", "Instalação", "Reparo", "Revisão"],
+  "Outros": ["Geral"]
+};
+
 let itensOrdemCache = [];
 let orcamentoVinculadoOrdem = null;
 let veiculoVinculadoOrdem = null;
@@ -185,9 +206,19 @@ function configurarEventosOrdem() {
     });
   }
 
+  if (filtroCategoriaProdutoOrdem) {
+    filtroCategoriaProdutoOrdem.addEventListener("change", () => {
+      atualizarSubcategoriasProdutoOrdem(true);
+      buscarProdutosModalOrdem();
+    });
+  }
+
+  if (filtroSubcategoriaProdutoOrdem) {
+    filtroSubcategoriaProdutoOrdem.addEventListener("change", buscarProdutosModalOrdem);
+  }
+
   [filtroCategoriaProdutoOrdem, filtroSubcategoriaProdutoOrdem].forEach((campoFiltroProduto) => {
     if (!campoFiltroProduto) return;
-    campoFiltroProduto.addEventListener("change", buscarProdutosModalOrdem);
     campoFiltroProduto.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         event.preventDefault();
@@ -195,6 +226,8 @@ function configurarEventosOrdem() {
       }
     });
   });
+
+  atualizarSubcategoriasProdutoOrdem(false);
 
   if (formFinanceiro) {
     formFinanceiro.addEventListener("submit", salvarFinanceiroOrdem);
@@ -552,6 +585,7 @@ async function carregarProdutosEstoqueOrdem() {
     }
 
     produtosEstoqueOrdemCache = Array.isArray(data) ? data : [];
+    atualizarSubcategoriasProdutoOrdem(false);
     renderizarSelectProdutosEstoqueOrdem();
     atualizarProdutoEstoqueSelecionadoCard();
 
@@ -583,6 +617,44 @@ function atualizarProdutoEstoqueSelecionadoCard() {
     return;
   }
   card.innerHTML = `<strong>${escaparHTMLOrdem(produto.nome || "Produto sem nome")}</strong><span>${escaparHTMLOrdem(formatarProdutoEstoqueResumoOrdem(produto))}</span>`;
+}
+
+function obterSubcategoriasPermitidasProdutoOrdem(categoria) {
+  const categoriaLimpa = String(categoria || "").trim();
+  const base = [];
+
+  if (categoriaLimpa && SUBCATEGORIAS_OFICINA_POR_CATEGORIA_ORDEM[categoriaLimpa]) {
+    base.push(...SUBCATEGORIAS_OFICINA_POR_CATEGORIA_ORDEM[categoriaLimpa]);
+  } else if (!categoriaLimpa) {
+    Object.values(SUBCATEGORIAS_OFICINA_POR_CATEGORIA_ORDEM).forEach((lista) => base.push(...lista));
+  }
+
+  produtosEstoqueOrdemCache.forEach((produto) => {
+    const mesmaCategoria = !categoriaLimpa || String(produto.categoria || "").trim() === categoriaLimpa;
+    const sub = String(produto.subcategoria || "").trim();
+    if (mesmaCategoria && sub) base.push(sub);
+  });
+
+  return Array.from(new Set(base.filter(Boolean))).sort((a, b) => a.localeCompare(b, "pt-BR"));
+}
+
+function atualizarSubcategoriasProdutoOrdem(limparSelecao = false) {
+  const select = document.getElementById("filtro-subcategoria-produto-ordem");
+  if (!select) return;
+
+  const categoria = document.getElementById("filtro-categoria-produto-ordem")?.value || "";
+  const valorAnterior = limparSelecao ? "" : select.value;
+  const subcategorias = obterSubcategoriasPermitidasProdutoOrdem(categoria);
+
+  select.innerHTML = [
+    `<option value="">Todas as subcategorias</option>`,
+    ...subcategorias.map((sub) => `<option value="${escaparHTMLAtributo(sub)}">${escaparHTMLOrdem(sub)}</option>`),
+    `<option value="Sem subcategoria">Sem subcategoria</option>`
+  ].join("");
+
+  if (valorAnterior && Array.from(select.options).some((opcao) => opcao.value === valorAnterior)) {
+    select.value = valorAnterior;
+  }
 }
 
 function abrirModalBuscaProdutoEstoqueOrdem() {
@@ -622,7 +694,7 @@ function buscarProdutosModalOrdem() {
   const encontrados = produtosEstoqueOrdemCache.filter((produto) => {
     const okTermo = termo.length < 2 || textoBuscaProdutoEstoqueOrdem(produto).includes(termo);
     const okCategoria = !categoria || String(produto.categoria || "") === categoria;
-    const okSubcategoria = !subcategoria || normalizarTextoOrdem(produto.subcategoria || "").includes(subcategoria);
+    const okSubcategoria = !subcategoria || normalizarTextoOrdem(produto.subcategoria || "") === subcategoria;
     return okTermo && okCategoria && okSubcategoria;
   }).slice(0, 40);
   if (!encontrados.length) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Nenhum produto encontrado. Cadastre o item em Estoque ou adicione como item manual.</div>`; return; }

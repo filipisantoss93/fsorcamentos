@@ -637,56 +637,18 @@ async function carregarOrdens(resetar = true) {
 
     const filtrosBusca = filtrosAplicadosOrdensOS || obterFiltrosOrdensAtuais();
 
+    // Consulta sem joins para evitar erro quando o relacionamento entre
+    // ordens_servico, clientes e veiculos ainda não existe no Supabase.
+    // Os nomes são resolvidos pelos caches já carregados em clientesCacheOS/veiculosCacheOS.
     let queryOrdens = window._supabase
       .from("ordens_servico")
-      .select(`
-        *,
-        clientes (
-          id,
-          nome,
-          whatsapp,
-          email
-        ),
-        veiculos (
-          id,
-          placa,
-          marca,
-          modelo,
-          cor,
-          prisma,
-          ano
-        )
-      `)
+      .select("*")
       .eq("user_id", usuarioLogadoOS.id)
       .order("created_at", { ascending: false });
 
     queryOrdens = aplicarFiltrosBancoOrdens(queryOrdens, filtrosBusca);
 
-    let consulta = await queryOrdens.range(inicio, fim);
-
-    if (consulta.error && erroColunaInexistenteOS(consulta.error)) {
-      console.warn(
-        "Não foi possível carregar o relacionamento direto com veículos. Tentando carregar OS sem join de veículos.",
-        consulta.error
-      );
-
-      let queryFallbackOrdens = window._supabase
-        .from("ordens_servico")
-        .select(`
-          *,
-          clientes (
-            id,
-            nome,
-            whatsapp,
-            email
-          )
-        `)
-        .eq("user_id", usuarioLogadoOS.id)
-        .order("created_at", { ascending: false });
-
-      queryFallbackOrdens = aplicarFiltrosBancoOrdens(queryFallbackOrdens, filtrosBusca);
-      consulta = await queryFallbackOrdens.range(inicio, fim);
-    }
+    const consulta = await queryOrdens.range(inicio, fim);
 
     if (consulta.error) {
       console.error("Erro ao carregar ordens:", consulta.error);
@@ -1776,6 +1738,15 @@ function formatarTelefoneVisualOS(telefone) {
    EXPORTAÇÕES GLOBAIS
    Necessário porque os botões são criados via innerHTML.
    ========================================================= */
+
+function escaparHTMLAtributo(valor) {
+  return String(valor || "")
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
 
 window.carregarOrdens = carregarOrdens;
 window.salvarOrdem = salvarOrdem;
