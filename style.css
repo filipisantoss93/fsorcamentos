@@ -4409,3 +4409,71 @@ body.gerando-pdf * {
     justify-content: flex-end !important;
   }
 }
+
+
+/* =========================================================
+   FS ORDEM CONTRASTE FINAL - texto legível em fundo marrom
+   ========================================================= */
+.pagina-ordem .card-header,
+.pagina-ordem .modal-busca-produto-header,
+.pagina-ordem .modal-busca-cliente-header {
+  background: #3e2723 !important;
+  color: #fffaf0 !important;
+  border-bottom: 3px solid #ffc400 !important;
+}
+
+.pagina-ordem .card-header *,
+.pagina-ordem .modal-busca-produto-header *,
+.pagina-ordem .modal-busca-cliente-header * {
+  color: #fffaf0 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.pagina-ordem .card-header h1,
+.pagina-ordem .card-header h2,
+.pagina-ordem .card-header h3,
+.pagina-ordem .card-header strong,
+.pagina-ordem .modal-busca-produto-header h1,
+.pagina-ordem .modal-busca-produto-header h2,
+.pagina-ordem .modal-busca-produto-header h3,
+.pagina-ordem .modal-busca-produto-header strong,
+.pagina-ordem .modal-busca-cliente-header h1,
+.pagina-ordem .modal-busca-cliente-header h2,
+.pagina-ordem .modal-busca-cliente-header h3,
+.pagina-ordem .modal-busca-cliente-header strong {
+  color: #ffc400 !important;
+}
+
+.pagina-ordem .card-header p,
+.pagina-ordem .card-header span,
+.pagina-ordem .card-header small,
+.pagina-ordem .modal-busca-produto-header p,
+.pagina-ordem .modal-busca-produto-header span,
+.pagina-ordem .modal-busca-produto-header small,
+.pagina-ordem .modal-busca-cliente-header p,
+.pagina-ordem .modal-busca-cliente-header span,
+.pagina-ordem .modal-busca-cliente-header small {
+  color: #fffaf0 !important;
+}
+
+.pagina-ordem .btn-secundario,
+.pagina-ordem .btn-primario:not(.btn-verde),
+.pagina-ordem button.btn-secundario,
+.pagina-ordem button.btn-primario:not(.btn-verde) {
+  background: #3e2723 !important;
+  color: #ffc400 !important;
+  border: 2px solid #ffc400 !important;
+}
+
+.pagina-ordem .btn-secundario *,
+.pagina-ordem .btn-primario:not(.btn-verde) * {
+  color: #ffc400 !important;
+}
+
+.pagina-ordem .btn-verde,
+.pagina-ordem #btn-pdf-ordem {
+  background: #25d366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
