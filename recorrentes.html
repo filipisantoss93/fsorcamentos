@@ -867,9 +867,14 @@ body.gerando-pdf * {
               <div class="form-linha">
                 <div class="campo">
                   <label for="recorrente-cliente-id">Cliente</label>
-                  <select id="recorrente-cliente-id">
-                    <option value="">Selecione</option>
-                  </select>
+                  <input type="hidden" id="recorrente-cliente-id" />
+                  <div id="recorrente-cliente-selecionado" class="estado-vazio" style="text-align:left;padding:12px;min-height:auto;">
+                    Nenhum cliente selecionado
+                  </div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteRecorrentes()">Buscar cliente</button>
+                    <a href="clientes.html?novo=1" class="btn btn-primario">Cadastrar novo</a>
+                  </div>
                 </div>
 
                 <div class="campo">
@@ -1004,6 +1009,26 @@ body.gerando-pdf * {
       </div>
     </section>
   </main>
+
+
+  <div id="modal-busca-cliente-recorrentes" class="modal-busca-cliente-overlay" aria-hidden="true" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.62);align-items:center;justify-content:center;padding:16px;">
+    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" style="width:min(100%,720px);background:#f4ece1;border-radius:20px;overflow:hidden;box-shadow:0 18px 48px rgba(0,0,0,.35);">
+      <div class="modal-busca-cliente-header" style="background:#3e2723;color:#ffc400;padding:18px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;">
+        <div><h3 style="margin:0;color:#ffc400;">Buscar cliente</h3><p style="margin:6px 0 0;color:#f4ece1;">Selecione um cliente para vincular ao serviço recorrente.</p></div>
+        <button type="button" class="btn" onclick="fecharModalBuscaClienteRecorrentes()" style="background:#ffc400;color:#3e2723;border-radius:50%;width:40px;height:40px;padding:0;">×</button>
+      </div>
+      <div style="padding:18px;display:grid;gap:12px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="search" id="campo-busca-cliente-recorrentes" placeholder="Nome, WhatsApp, e-mail ou número do cliente" style="flex:1;min-width:220px;border:1px solid #d7ccc8;border-radius:12px;padding:12px;">
+          <button type="button" class="btn btn-primario" onclick="buscarClientesModalRecorrentes()">Buscar</button>
+          <a href="clientes.html?novo=1" class="btn btn-secundario">Cadastrar novo</a>
+        </div>
+        <div id="resultado-busca-clientes-recorrentes" class="resultado-busca-clientes-modal">
+          <div class="estado-vazio" style="min-height:auto;">Digite pelo menos 2 caracteres e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>

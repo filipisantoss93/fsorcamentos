@@ -116,6 +116,8 @@ function configurarEventosOrdens() {
   const filtroPagamento = document.getElementById("filtro-pagamento-ordens");
   const filtroVeiculo = document.getElementById("filtro-veiculo-ordens");
   const campoBuscaClienteModal = document.getElementById("campo-busca-cliente-os");
+  const filtroDataInicio = document.getElementById("filtro-data-inicio-ordens");
+  const filtroDataFim = document.getElementById("filtro-data-fim-ordens");
 
   if (form) {
     form.addEventListener("submit", salvarOrdem);
@@ -160,6 +162,17 @@ function configurarEventosOrdens() {
       }
     });
   }
+
+  [filtroDataInicio, filtroDataFim].forEach((campoData) => {
+    if (!campoData) return;
+    campoData.addEventListener("change", () => carregarOrdens(true));
+    campoData.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        carregarOrdens(true);
+      }
+    });
+  });
 
   configurarFormularioMobileOrdens();
 }
@@ -622,7 +635,9 @@ async function carregarOrdens(resetar = true) {
       usuarioLogadoOS = session.user;
     }
 
-    let consulta = await window._supabase
+    const filtrosBusca = filtrosAplicadosOrdensOS || obterFiltrosOrdensAtuais();
+
+    let queryOrdens = window._supabase
       .from("ordens_servico")
       .select(`
         *,
@@ -643,8 +658,11 @@ async function carregarOrdens(resetar = true) {
         )
       `)
       .eq("user_id", usuarioLogadoOS.id)
-      .order("created_at", { ascending: false })
-      .range(inicio, fim);
+      .order("created_at", { ascending: false });
+
+    queryOrdens = aplicarFiltrosBancoOrdens(queryOrdens, filtrosBusca);
+
+    let consulta = await queryOrdens.range(inicio, fim);
 
     if (consulta.error && erroColunaInexistenteOS(consulta.error)) {
       console.warn(
@@ -652,7 +670,7 @@ async function carregarOrdens(resetar = true) {
         consulta.error
       );
 
-      consulta = await window._supabase
+      let queryFallbackOrdens = window._supabase
         .from("ordens_servico")
         .select(`
           *,
@@ -664,8 +682,10 @@ async function carregarOrdens(resetar = true) {
           )
         `)
         .eq("user_id", usuarioLogadoOS.id)
-        .order("created_at", { ascending: false })
-        .range(inicio, fim);
+        .order("created_at", { ascending: false });
+
+      queryFallbackOrdens = aplicarFiltrosBancoOrdens(queryFallbackOrdens, filtrosBusca);
+      consulta = await queryFallbackOrdens.range(inicio, fim);
     }
 
     if (consulta.error) {
@@ -1119,12 +1139,31 @@ function prepararListaOrdensVazia() {
   atualizarBotaoCarregarMaisOrdens();
 }
 
+function aplicarFiltrosBancoOrdens(query, filtros) {
+  const f = filtros || {};
+
+  if (f.status) query = query.eq("status", f.status);
+  if (f.pagamento) query = query.eq("status_pagamento", f.pagamento);
+  if (f.dataInicio) query = query.gte("data_abertura", f.dataInicio);
+  if (f.dataFim) query = query.lte("data_abertura", f.dataFim);
+
+  if (f.termo) {
+    const termoOriginal = valorInputOS("busca-ordens");
+    const termo = `%${termoOriginal}%`;
+    query = query.or(`titulo.ilike.${termo},responsavel.ilike.${termo},descricao_problema.ilike.${termo},descricao_servico.ilike.${termo},status.ilike.${termo},status_pagamento.ilike.${termo}`);
+  }
+
+  return query;
+}
+
 function obterFiltrosOrdensAtuais() {
   return {
     termo: normalizarTextoOS(valorInputOS("busca-ordens")),
     status: valorInputOS("filtro-status-ordens"),
     pagamento: valorInputOS("filtro-pagamento-ordens"),
-    veiculo: normalizarTextoOS(valorInputOS("filtro-veiculo-ordens"))
+    veiculo: normalizarTextoOS(valorInputOS("filtro-veiculo-ordens")),
+    dataInicio: valorInputOS("filtro-data-inicio-ordens"),
+    dataFim: valorInputOS("filtro-data-fim-ordens")
   };
 }
 
@@ -1208,6 +1247,8 @@ function filtrarOrdens() {
   const status = valorInputOS("filtro-status-ordens");
   const pagamento = valorInputOS("filtro-pagamento-ordens");
   const veiculoFiltro = normalizarTextoOS(valorInputOS("filtro-veiculo-ordens"));
+  const dataInicio = valorInputOS("filtro-data-inicio-ordens");
+  const dataFim = valorInputOS("filtro-data-fim-ordens");
 
   let listaFiltrada = [...ordensCache];
 
@@ -1245,6 +1286,14 @@ function filtrarOrdens() {
 
   if (pagamento) {
     listaFiltrada = listaFiltrada.filter((ordem) => ordem.status_pagamento === pagamento);
+  }
+
+  if (dataInicio) {
+    listaFiltrada = listaFiltrada.filter((ordem) => String(ordem.data_abertura || "") >= dataInicio);
+  }
+
+  if (dataFim) {
+    listaFiltrada = listaFiltrada.filter((ordem) => String(ordem.data_abertura || "") <= dataFim);
   }
 
   if (veiculoFiltro) {

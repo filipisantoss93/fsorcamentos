@@ -376,7 +376,7 @@
 
     .ordens-filtros {
       display: grid;
-      grid-template-columns: 1.4fr 0.8fr 0.8fr 0.8fr;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 16px;
     }
@@ -1912,6 +1912,16 @@ body.gerando-pdf * {
                 placeholder="Placa, marca ou modelo"
               />
             </div>
+            <div class="campo">
+              <label for="filtro-data-inicio-ordens">De</label>
+              <input type="date" id="filtro-data-inicio-ordens" />
+            </div>
+
+            <div class="campo">
+              <label for="filtro-data-fim-ordens">Até</label>
+              <input type="date" id="filtro-data-fim-ordens" />
+            </div>
+
           </div>
 
           <div id="loading-ordens" class="loading-ordens">

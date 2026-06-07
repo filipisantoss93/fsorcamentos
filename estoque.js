@@ -14,8 +14,8 @@ let filtrosAtuaisEstoque = {
   termo: "",
   status: "",
   estoque: "",
-  categoria: ""
-
+  categoria: "",
+  subcategoria: ""
 };
 
 let fsEstoqueInicializado = false;
@@ -106,6 +106,7 @@ function configurarEventosEstoque() {
   const filtroStatus = document.getElementById("filtro-status-produtos");
   const filtroEstoque = document.getElementById("filtro-estoque-produtos");
   const filtroCategoria = document.getElementById("filtro-categoria-produtos");
+  const filtroSubcategoria = document.getElementById("filtro-subcategoria-produtos");
   const categoriaProduto = document.getElementById("produto-categoria");
   const categoriaOutra = document.getElementById("produto-categoria-outra");
 
@@ -145,6 +146,10 @@ if (btnCarregarMais) {
 
 if (filtroCategoria) {
   filtroCategoria.addEventListener("change", filtrarProdutosEstoque);
+}
+
+if (filtroSubcategoria) {
+  filtroSubcategoria.addEventListener("change", filtrarProdutosEstoque);
 }
 
 if (categoriaProduto) {
@@ -241,7 +246,7 @@ function prepararListaProdutosEstoqueVazia() {
       <p>Use os filtros e clique em Buscar. A página carrega no máximo 20 produtos por vez.</p>
     </div>
   `;
-  atualizarBotaoCarregarMaisEstoque();
+  atualizarBotaoCarregarMaisProdutos();
 }
 
 async function carregarProdutosEstoque(resetar = true) {
@@ -302,6 +307,14 @@ if (filtrosAtuaisEstoque.categoria) {
   }
 }
 
+if (filtrosAtuaisEstoque.subcategoria) {
+  if (filtrosAtuaisEstoque.subcategoria === "Sem subcategoria") {
+    query = query.or("subcategoria.is.null,subcategoria.eq.");
+  } else {
+    query = query.eq("subcategoria", filtrosAtuaisEstoque.subcategoria);
+  }
+}
+
 if (filtrosAtuaisEstoque.estoque === "sem_controle") {
   query = query.eq("controlar_estoque", false);
 }
@@ -312,7 +325,7 @@ if (filtrosAtuaisEstoque.estoque === "sem_controle") {
       console.error("Erro ao carregar produtos:", error);
       mostrarMensagemEstoque(
         "mensagem-estoque-lista",
-        "Não foi possível carregar os produtos. Verifique se a tabela produtos_estoque foi criada no Supabase.",
+        "Não foi possível carregar os produtos. Verifique se a tabela produtos_estoque foi criada e se as colunas categoria/subcategoria existem no Supabase.",
         "erro"
       );
       return;
@@ -863,7 +876,8 @@ function atualizarFiltrosAtuaisEstoque() {
     termo: valorInputEstoque("busca-produtos"),
     status: valorInputEstoque("filtro-status-produtos"),
     estoque: valorInputEstoque("filtro-estoque-produtos"),
-    categoria: valorInputEstoque("filtro-categoria-produtos")
+    categoria: valorInputEstoque("filtro-categoria-produtos"),
+    subcategoria: valorInputEstoque("filtro-subcategoria-produtos")
   };
 }
 

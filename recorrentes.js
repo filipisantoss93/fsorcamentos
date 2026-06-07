@@ -88,6 +88,7 @@ function configurarEventosRecorrentes() {
   const btnLimpar = document.getElementById("btn-limpar-recorrente");
   const btnAtualizar = document.getElementById("btn-atualizar-recorrentes");
   const selectCliente = document.getElementById("recorrente-cliente-id");
+  const campoBuscaClienteModal = document.getElementById("campo-busca-cliente-recorrentes");
   const ultimoServico = document.getElementById("recorrente-ultimo-servico");
   const intervaloMeses = document.getElementById("recorrente-intervalo-meses");
   const kmAtual = document.getElementById("recorrente-km-atual");
@@ -105,6 +106,16 @@ function configurarEventosRecorrentes() {
   if (selectCliente) {
     selectCliente.addEventListener("change", () => {
       renderizarSelectVeiculosRecorrentes(selectCliente.value);
+      atualizarClienteSelecionadoRecorrentes(selectCliente.value);
+    });
+  }
+
+  if (campoBuscaClienteModal) {
+    campoBuscaClienteModal.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        buscarClientesModalRecorrentes();
+      }
     });
   }
 
@@ -165,17 +176,92 @@ async function carregarVeiculosRecorrentes() {
 }
 
 function renderizarSelectClientesRecorrentes() {
-  const select = document.getElementById("recorrente-cliente-id");
+  atualizarClienteSelecionadoRecorrentes(valorInputRecorrentes("recorrente-cliente-id"));
+}
 
-  if (!select) return;
+function atualizarClienteSelecionadoRecorrentes(clienteId) {
+  const card = document.getElementById("recorrente-cliente-selecionado");
+  if (!card) return;
 
-  const opcoes = clientesRecorrentesCache.map((cliente) => {
+  const cliente = clientesRecorrentesCache.find((item) => String(item.id) === String(clienteId || ""));
+
+  if (!cliente) {
+    card.innerHTML = "Nenhum cliente selecionado";
+    return;
+  }
+
+  const numero = formatarNumeroClienteRecorrentes(cliente.numero_cliente);
+  const linhas = [
+    numero ? `ID: ${numero}` : "",
+    cliente.whatsapp ? `WhatsApp: ${cliente.whatsapp}` : "",
+    cliente.email ? `E-mail: ${cliente.email}` : ""
+  ].filter(Boolean).join(" • ");
+
+  card.innerHTML = `<strong>${escaparHtmlRecorrentes(cliente.nome || "Cliente sem nome")}</strong>${linhas ? `<br><span>${escaparHtmlRecorrentes(linhas)}</span>` : ""}`;
+}
+
+function abrirModalBuscaClienteRecorrentes() {
+  const modal = document.getElementById("modal-busca-cliente-recorrentes");
+  const campo = document.getElementById("campo-busca-cliente-recorrentes");
+  const resultado = document.getElementById("resultado-busca-clientes-recorrentes");
+  if (resultado) resultado.innerHTML = `<div class="estado-vazio" style="min-height:auto;">Digite pelo menos 2 caracteres e clique em Buscar.</div>`;
+  if (campo) campo.value = "";
+  if (modal) {
+    modal.style.display = "flex";
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => campo?.focus(), 80);
+  }
+}
+
+function fecharModalBuscaClienteRecorrentes() {
+  const modal = document.getElementById("modal-busca-cliente-recorrentes");
+  if (modal) {
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+function buscarClientesModalRecorrentes() {
+  const campo = document.getElementById("campo-busca-cliente-recorrentes");
+  const resultado = document.getElementById("resultado-busca-clientes-recorrentes");
+  if (!resultado) return;
+
+  const termo = normalizarTextoRecorrentes(campo?.value || "");
+  if (termo.length < 2) {
+    resultado.innerHTML = `<div class="estado-vazio" style="min-height:auto;">Digite pelo menos 2 caracteres para buscar cliente.</div>`;
+    return;
+  }
+
+  const encontrados = clientesRecorrentesCache.filter((cliente) => {
+    const texto = normalizarTextoRecorrentes([
+      cliente.nome,
+      cliente.numero_cliente,
+      cliente.whatsapp,
+      cliente.email,
+      cliente.endereco,
+      cliente.cidade
+    ].filter(Boolean).join(" "));
+    return texto.includes(termo);
+  }).slice(0, 30);
+
+  if (!encontrados.length) {
+    resultado.innerHTML = `<div class="estado-vazio" style="min-height:auto;">Nenhum cliente encontrado. Cadastre um novo cliente se necessário.</div>`;
+    return;
+  }
+
+  resultado.innerHTML = encontrados.map((cliente) => {
+    const id = escaparHtmlAtributoRecorrentes(cliente.id);
     const numero = formatarNumeroClienteRecorrentes(cliente.numero_cliente);
-    const texto = `${numero ? `${numero} - ` : ""}${cliente.nome || "Cliente sem nome"}`;
-    return `<option value="${escaparHtmlAtributoRecorrentes(cliente.id)}">${escaparHtmlRecorrentes(texto)}</option>`;
+    const resumo = [numero ? `ID: ${numero}` : "", cliente.whatsapp ? `WhatsApp: ${cliente.whatsapp}` : "", cliente.email ? `E-mail: ${cliente.email}` : ""].filter(Boolean).join(" • ");
+    return `<button type="button" class="cliente-item" style="width:100%;text-align:left;margin-bottom:8px;cursor:pointer;" onclick="selecionarClienteModalRecorrentes('${id}')"><strong>${escaparHtmlRecorrentes(cliente.nome || "Cliente sem nome")}</strong><span>${escaparHtmlRecorrentes(resumo)}</span></button>`;
   }).join("");
+}
 
-  select.innerHTML = `<option value="">Selecione</option>${opcoes}`;
+function selecionarClienteModalRecorrentes(clienteId) {
+  setValorRecorrentes("recorrente-cliente-id", clienteId || "");
+  atualizarClienteSelecionadoRecorrentes(clienteId || "");
+  renderizarSelectVeiculosRecorrentes(clienteId || "");
+  fecharModalBuscaClienteRecorrentes();
 }
 
 function renderizarSelectVeiculosRecorrentes(clienteId, selecionado = "") {
@@ -346,6 +432,7 @@ function editarRecorrente(id) {
   setValorRecorrentes("recorrente-id", item.id);
   setValorRecorrentes("recorrente-titulo", item.titulo);
   setValorRecorrentes("recorrente-cliente-id", item.cliente_id || "");
+  atualizarClienteSelecionadoRecorrentes(item.cliente_id || "");
   renderizarSelectVeiculosRecorrentes(item.cliente_id || "", item.veiculo_id || "");
   setValorRecorrentes("recorrente-veiculo-id", item.veiculo_id || "");
   setValorRecorrentes("recorrente-tipo-servico", item.tipo_servico);
@@ -397,6 +484,7 @@ function limparFormularioRecorrente() {
 
   setValorRecorrentes("recorrente-id", "");
   setValorRecorrentes("recorrente-status", "ativo");
+  atualizarClienteSelecionadoRecorrentes("");
   renderizarSelectVeiculosRecorrentes("");
   setTextoRecorrentes("titulo-form-recorrente", "Novo serviço recorrente");
 
@@ -731,3 +819,8 @@ function escaparHtmlAtributoRecorrentes(valor) {
 window.carregarRecorrentes = carregarRecorrentes;
 window.editarRecorrente = editarRecorrente;
 window.excluirRecorrente = excluirRecorrente;
+
+window.abrirModalBuscaClienteRecorrentes = abrirModalBuscaClienteRecorrentes;
+window.fecharModalBuscaClienteRecorrentes = fecharModalBuscaClienteRecorrentes;
+window.buscarClientesModalRecorrentes = buscarClientesModalRecorrentes;
+window.selecionarClienteModalRecorrentes = selecionarClienteModalRecorrentes;

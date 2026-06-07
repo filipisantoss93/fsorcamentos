@@ -125,6 +125,8 @@ function configurarEventosOrdem() {
   const quantidade = document.getElementById("item-quantidade");
   const valorUnitario = document.getElementById("item-valor-unitario");
   const campoBuscaProdutoEstoque = document.getElementById("campo-busca-produto-estoque-ordem");
+  const filtroCategoriaProdutoOrdem = document.getElementById("filtro-categoria-produto-ordem");
+  const filtroSubcategoriaProdutoOrdem = document.getElementById("filtro-subcategoria-produto-ordem");
 
   const formFinanceiro = document.getElementById("form-financeiro-ordem");
   const btnFinalizar = document.getElementById("btn-finalizar-ordem");
@@ -182,6 +184,17 @@ function configurarEventosOrdem() {
       }
     });
   }
+
+  [filtroCategoriaProdutoOrdem, filtroSubcategoriaProdutoOrdem].forEach((campoFiltroProduto) => {
+    if (!campoFiltroProduto) return;
+    campoFiltroProduto.addEventListener("change", buscarProdutosModalOrdem);
+    campoFiltroProduto.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        buscarProdutosModalOrdem();
+      }
+    });
+  });
 
   if (formFinanceiro) {
     formFinanceiro.addEventListener("submit", salvarFinanceiroOrdem);
@@ -557,7 +570,7 @@ function formatarProdutoEstoqueResumoOrdem(produto) {
   const unidade = produto.unidade || "un";
   const controla = produto.controlar_estoque !== false;
   const estoque = controla ? `Estoque: ${formatarQuantidadeOrdem(quantidade)} ${unidade}` : "Sem controle de estoque";
-  return [produto.codigo ? `Código: ${produto.codigo}` : "", produto.categoria ? `Categoria: ${produto.categoria}` : "", estoque, produto.valor_venda ? `Venda: ${formatarMoedaOrdem(produto.valor_venda)}` : ""].filter(Boolean).join(" • ");
+  return [produto.codigo ? `Código: ${produto.codigo}` : "", produto.categoria ? `Categoria: ${produto.categoria}` : "", produto.subcategoria ? `Subcategoria: ${produto.subcategoria}` : "", estoque, produto.valor_venda ? `Venda: ${formatarMoedaOrdem(produto.valor_venda)}` : ""].filter(Boolean).join(" • ");
 }
 
 function atualizarProdutoEstoqueSelecionadoCard() {
@@ -595,7 +608,7 @@ function normalizarTextoOrdem(valor) {
 }
 
 function textoBuscaProdutoEstoqueOrdem(produto) {
-  return normalizarTextoOrdem([produto.nome, produto.codigo, produto.sku, produto.categoria, produto.descricao, produto.observacoes, produto.unidade].filter(Boolean).join(" "));
+  return normalizarTextoOrdem([produto.nome, produto.codigo, produto.sku, produto.categoria, produto.subcategoria, produto.descricao, produto.observacoes, produto.unidade, produto.aplicacao, produto.marca_veiculo, produto.modelo_veiculo].filter(Boolean).join(" "));
 }
 
 function buscarProdutosModalOrdem() {
@@ -603,8 +616,15 @@ function buscarProdutosModalOrdem() {
   const resultado = document.getElementById("resultado-busca-produtos-ordem");
   if (!resultado) return;
   const termo = normalizarTextoOrdem(campo?.value || "");
-  if (termo.length < 2) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres para buscar produto.</div>`; return; }
-  const encontrados = produtosEstoqueOrdemCache.filter((produto) => textoBuscaProdutoEstoqueOrdem(produto).includes(termo)).slice(0, 40);
+  const categoria = document.getElementById("filtro-categoria-produto-ordem")?.value || "";
+  const subcategoria = normalizarTextoOrdem(document.getElementById("filtro-subcategoria-produto-ordem")?.value || "");
+  if (termo.length < 2 && !categoria && !subcategoria) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres ou selecione uma categoria/subcategoria.</div>`; return; }
+  const encontrados = produtosEstoqueOrdemCache.filter((produto) => {
+    const okTermo = termo.length < 2 || textoBuscaProdutoEstoqueOrdem(produto).includes(termo);
+    const okCategoria = !categoria || String(produto.categoria || "") === categoria;
+    const okSubcategoria = !subcategoria || normalizarTextoOrdem(produto.subcategoria || "").includes(subcategoria);
+    return okTermo && okCategoria && okSubcategoria;
+  }).slice(0, 40);
   if (!encontrados.length) { resultado.innerHTML = `<div class="estado-busca-produto-modal">Nenhum produto encontrado. Cadastre o item em Estoque ou adicione como item manual.</div>`; return; }
   resultado.innerHTML = encontrados.map((produto) => {
     const id = escaparHTMLAtributo(produto.id);

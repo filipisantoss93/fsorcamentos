@@ -366,7 +366,7 @@
 
 .estoque-filtros {
   display: grid;
-  grid-template-columns: 1.4fr 0.8fr 0.7fr 0.8fr;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -2898,35 +2898,57 @@ body.gerando-pdf * {
 
           <div class="estoque-filtros">
             <div class="campo">
+              <label for="filtro-categoria-produtos">Categoria</label>
+              <select id="filtro-categoria-produtos">
+                <option value="">Todas</option>
+                <option value="Filtros">Filtros</option>
+                <option value="Suspensão">Suspensão</option>
+                <option value="Injeção">Injeção</option>
+                <option value="Correias">Correias</option>
+                <option value="Freios">Freios</option>
+                <option value="Elétrica">Elétrica</option>
+                <option value="Motor">Motor</option>
+                <option value="Fluidos">Fluidos</option>
+                <option value="Lubrificantes">Lubrificantes</option>
+                <option value="Acessórios">Acessórios</option>
+                <option value="Peças">Peças</option>
+                <option value="Materiais">Materiais</option>
+                <option value="Produtos">Produtos</option>
+                <option value="Ferramentas">Ferramentas</option>
+                <option value="Insumos">Insumos</option>
+                <option value="Serviços">Serviços</option>
+                <option value="Outros">Outros</option>
+                <option value="Sem categoria">Sem categoria</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="filtro-subcategoria-produtos">Subcategoria</label>
+              <select id="filtro-subcategoria-produtos">
+                <option value="">Todas</option>
+                <option value="Filtro de ar">Filtro de ar</option>
+                <option value="Filtro de óleo">Filtro de óleo</option>
+                <option value="Filtro de combustível">Filtro de combustível</option>
+                <option value="Filtro de cabine">Filtro de cabine</option>
+                <option value="Amortecedor">Amortecedor</option>
+                <option value="Pastilha de freio">Pastilha de freio</option>
+                <option value="Disco de freio">Disco de freio</option>
+                <option value="Correia dentada">Correia dentada</option>
+                <option value="Correia auxiliar">Correia auxiliar</option>
+                <option value="Óleo de motor">Óleo de motor</option>
+                <option value="Aditivo">Aditivo</option>
+                <option value="Lâmpada">Lâmpada</option>
+                <option value="Bateria">Bateria</option>
+                <option value="Sem subcategoria">Sem subcategoria</option>
+              </select>
+            </div>
+
+            <div class="campo">
               <label for="busca-produtos">Buscar</label>
-              <div class="campo">
-  <label for="filtro-categoria-produtos">Categoria</label>
-  <select id="filtro-categoria-produtos">
-    <option value="">Todas</option>
-    <option value="Filtros">Filtros</option>
-    <option value="Suspensão">Suspensão</option>
-    <option value="Injeção">Injeção</option>
-    <option value="Correias">Correias</option>
-    <option value="Freios">Freios</option>
-    <option value="Elétrica">Elétrica</option>
-    <option value="Motor">Motor</option>
-    <option value="Fluidos">Fluidos</option>
-    <option value="Lubrificantes">Lubrificantes</option>
-    <option value="Acessórios">Acessórios</option>
-    <option value="Peças">Peças</option>
-    <option value="Materiais">Materiais</option>
-    <option value="Produtos">Produtos</option>
-    <option value="Ferramentas">Ferramentas</option>
-    <option value="Insumos">Insumos</option>
-    <option value="Serviços">Serviços</option>
-    <option value="Outros">Outros</option>
-    <option value="Sem categoria">Sem categoria</option>
-  </select>
-</div>
               <input
                 type="search"
                 id="busca-produtos"
-                placeholder="Buscar por nome, código, categoria ou descrição"
+                placeholder="Nome, código, categoria, subcategoria ou descrição"
               />
             </div>
 
