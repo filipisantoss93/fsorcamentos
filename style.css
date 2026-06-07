@@ -4268,3 +4268,144 @@ body.gerando-pdf * {
   color: #fffaf0 !important;
   opacity: 0.95;
 }
+
+
+/* =========================================================
+   AJUSTES FINAIS - CONTRASTE HOME + HEADER MOBILE
+   Corrige textos claros sobre fundos claros e organiza dropdowns.
+   ========================================================= */
+
+/* Home: blocos claros devem sempre usar texto escuro */
+.home-premium-showcase,
+.home-basico-showcase,
+.home-premium-mini-dashboard,
+.home-basico-mini-dashboard,
+.home-premium-fluxo-visual,
+.home-basico-fluxo-visual,
+.home-premium-recursos-grid,
+.home-basico-recursos-grid {
+  color: var(--fs-texto) !important;
+}
+
+.home-premium-showcase h1,
+.home-premium-showcase h2,
+.home-premium-showcase h3,
+.home-basico-showcase h1,
+.home-basico-showcase h2,
+.home-basico-showcase h3 {
+  color: var(--fs-marrom) !important;
+}
+
+.home-premium-showcase p,
+.home-basico-showcase p,
+.home-premium-showcase span:not(.tag-premium-home),
+.home-basico-showcase span:not(.tag-basico-home),
+.home-premium-showcase small,
+.home-basico-showcase small {
+  color: var(--fs-texto-suave) !important;
+}
+
+.home-premium-mini-dashboard,
+.home-basico-mini-dashboard {
+  background: #ffffff !important;
+  border: 1px solid var(--fs-borda) !important;
+}
+
+.home-premium-mini-linha,
+.home-basico-mini-linha,
+.home-premium-fluxo-visual div,
+.home-basico-fluxo-visual div {
+  background: #fffaf0 !important;
+  color: var(--fs-marrom) !important;
+  border: 1px solid #f2d98b !important;
+}
+
+.home-premium-mini-linha strong,
+.home-basico-mini-linha strong,
+.home-premium-fluxo-visual div strong,
+.home-basico-fluxo-visual div strong {
+  color: var(--fs-marrom) !important;
+}
+
+.home-premium-recurso-card,
+.home-basico-recurso-card {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-left-color: var(--fs-amarelo) !important;
+}
+
+.home-premium-recurso-card strong,
+.home-basico-recurso-card strong {
+  color: var(--fs-marrom) !important;
+}
+
+.home-premium-recurso-card span,
+.home-basico-recurso-card span {
+  color: var(--fs-texto-suave) !important;
+}
+
+/* Botões/etapas visuais em cards claros não podem ficar branco sobre creme */
+.home-premium-showcase .btn-home-atalho,
+.home-basico-showcase .btn-home-atalho,
+.home-premium-showcase .btn-home-medio,
+.home-basico-showcase .btn-home-medio {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.home-premium-showcase .btn-home-atalho:hover,
+.home-basico-showcase .btn-home-atalho:hover,
+.home-premium-showcase .btn-home-medio:hover,
+.home-basico-showcase .btn-home-medio:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Header compacto */
+.nav-dropdown summary {
+  color: #fffaf0 !important;
+}
+
+.nav-dropdown summary:hover,
+.nav-dropdown details[open] > summary {
+  color: var(--fs-amarelo) !important;
+}
+
+/* Mobile: dropdowns alinhados como os demais itens do menu */
+@media (max-width: 900px) {
+  .header-menu-linha .nav-menu.nav-menu-compacto {
+    align-items: stretch !important;
+  }
+
+  .nav-dropdown,
+  .nav-dropdown details {
+    width: 100% !important;
+  }
+
+  .nav-dropdown summary {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    text-align: right !important;
+    gap: 8px !important;
+    padding: 12px 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-dropdown summary::after {
+    margin-left: 4px !important;
+  }
+
+  .nav-dropdown-menu,
+  .nav-dropdown-menu-direita {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .header-menu-linha .nav-dropdown-menu a {
+    text-align: right !important;
+    justify-content: flex-end !important;
+  }
+}
