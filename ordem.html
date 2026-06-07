@@ -578,6 +578,99 @@
 
     .produto-estoque-selecionado-card{background:#fffaf0;border:1px solid var(--fs-borda);border-left:5px solid var(--fs-amarelo);border-radius:12px;padding:12px;color:var(--fs-marrom);margin-bottom:10px}.produto-estoque-selecionado-card strong,.produto-estoque-selecionado-card span{display:block}.produto-estoque-selecionado-card span{color:#6d4c41;font-size:13px;margin-top:3px;line-height:1.4}.produto-estoque-modal-acoes{display:flex;gap:8px;flex-wrap:wrap}.modal-busca-produto-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:25000;padding:16px}.modal-busca-produto-overlay.ativo{display:flex}.modal-busca-produto-box{width:min(100%,760px);max-height:88vh;overflow:hidden;background:var(--fs-creme);border-radius:18px;border-top:6px solid var(--fs-amarelo);box-shadow:0 20px 60px rgba(0,0,0,.45);display:flex;flex-direction:column}.modal-busca-produto-header{background:var(--fs-marrom);color:var(--fs-amarelo);padding:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.modal-busca-produto-header h3{margin:0;color:var(--fs-amarelo)}.modal-busca-produto-header p{margin:4px 0 0;color:var(--fs-bege);font-size:13px}.btn-fechar-modal-produto{background:#dc2626;color:#fff;border:none;border-radius:9px;width:34px;height:34px;font-size:22px;font-weight:900;cursor:pointer}.modal-busca-produto-body{padding:18px;overflow:auto}.busca-produto-modal-linha{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:14px}.busca-produto-modal-linha input{border:1px solid #d7ccc8;border-radius:12px;padding:12px;font-size:15px}.resultado-busca-produtos-modal{display:grid;gap:8px}.produto-modal-item{width:100%;text-align:left;background:#fff;color:var(--fs-marrom);border:1px solid var(--fs-borda);border-left:5px solid var(--fs-amarelo);border-radius:12px;padding:12px;cursor:pointer}.produto-modal-item:hover{background:#fff8e1}.produto-modal-item strong{display:block;margin-bottom:4px}.produto-modal-item span{display:block;color:#6d4c41;font-size:12px;line-height:1.4}.estado-busca-produto-modal{background:#fff8e1;border-left:5px solid var(--fs-amarelo);border-radius:12px;padding:14px;color:var(--fs-marrom);font-weight:800}@media(max-width:700px){.busca-produto-modal-linha{grid-template-columns:1fr}.produto-estoque-modal-acoes .btn{width:100%}}
 
+
+    /* =========================================================
+       OS PREMIUM - FOTO ANTES, ASSINATURA, TERMO E RECIBO
+       ========================================================= */
+    .os-extra-preview {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--fs-marrom);
+      margin-bottom: 12px;
+    }
+
+    .os-extra-preview strong,
+    .os-extra-preview span {
+      display: block;
+    }
+
+    .os-extra-preview span {
+      color: var(--fs-texto-suave);
+      font-size: 13px;
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+
+    .os-foto-preview-img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--fs-borda);
+      background: #ffffff;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .assinatura-canvas-wrap {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    #canvas-assinatura-cliente {
+      width: 100%;
+      height: 160px;
+      display: block;
+      background: #ffffff;
+      border: 1px dashed #8d7a70;
+      border-radius: 12px;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .assinatura-preview-img {
+      width: 100%;
+      max-height: 140px;
+      object-fit: contain;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .os-documentos-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .os-documento-card {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--fs-marrom);
+    }
+
+    .os-documento-card strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .os-documento-card p {
+      margin: 0 0 10px;
+      color: var(--fs-texto-suave);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
   </style>
 
 
@@ -897,6 +990,7 @@
       <button type="button" id="btn-editar-ordem" class="btn btn-primario">Editar dados básicos</button>
       <button type="button" id="btn-pdf-ordem" class="btn btn-verde">Gerar PDF</button>
       <button type="button" id="btn-whatsapp-cliente" class="btn btn-secundario">WhatsApp do cliente</button>
+      <button type="button" id="btn-agendar-ordem" class="btn btn-primario">Agendar serviço</button>
     </div>
 
     <div id="mensagem-ordem" class="mensagem-ordem"></div>
@@ -1355,6 +1449,18 @@
               </div>
 
               <div class="campo">
+                <label for="financeiro-valor-entrada">Entrada / adiantamento</label>
+                <input
+                  type="number"
+                  id="financeiro-valor-entrada"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                />
+                <small>Use este campo para registrar uma entrada inicial. O valor pago pode ser igual ou maior que a entrada.</small>
+              </div>
+
+              <div class="campo">
                 <label for="financeiro-valor-pago">Valor pago</label>
                 <input
                   type="number"
@@ -1419,6 +1525,11 @@
               </div>
 
               <div class="valor-linha">
+                <span>Entrada / adiantamento</span>
+                <strong id="detalhe-valor-entrada">R$ 0,00</strong>
+              </div>
+
+              <div class="valor-linha">
                 <span>Valor pago</span>
                 <strong id="detalhe-valor-pago">R$ 0,00</strong>
               </div>
@@ -1466,6 +1577,84 @@
             <div id="detalhe-garantia-observacoes" class="texto-bloco">-</div>
           </div>
         </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Foto antes do serviço</h2>
+            <p>Registro opcional do estado inicial antes da execução da OS.</p>
+          </div>
+
+          <div class="card-body">
+            <div id="foto-antes-status" class="os-extra-preview">
+              <strong>Nenhuma foto salva</strong>
+              <span>Envie uma foto opcional antes de iniciar o serviço.</span>
+              <img id="foto-antes-preview" class="os-foto-preview-img" src="" alt="Foto antes do serviço">
+            </div>
+
+            <div class="campo">
+              <label for="input-foto-antes-os">Selecionar foto</label>
+              <input type="file" id="input-foto-antes-os" accept="image/*" />
+              <small>A imagem será otimizada antes de salvar para evitar arquivos grandes.</small>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <button type="button" id="btn-salvar-foto-antes" class="btn btn-primario">Salvar foto</button>
+              <button type="button" id="btn-remover-foto-antes" class="btn btn-secundario">Remover foto</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Assinatura do cliente</h2>
+            <p>Assine na tela do celular ou computador para registrar aceite/entrega do serviço.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="campo">
+              <label for="assinatura-cliente-nome">Nome de quem assinou</label>
+              <input type="text" id="assinatura-cliente-nome" placeholder="Nome do cliente ou responsável" />
+            </div>
+
+            <div class="assinatura-canvas-wrap" style="margin-top:12px;">
+              <canvas id="canvas-assinatura-cliente" width="700" height="230"></canvas>
+              <img id="assinatura-cliente-preview" class="assinatura-preview-img" src="" alt="Assinatura salva do cliente">
+            </div>
+
+            <div id="assinatura-cliente-status" class="os-extra-preview" style="margin-top:12px;">
+              <strong>Nenhuma assinatura salva</strong>
+              <span>Peça para o cliente assinar e clique em Salvar assinatura.</span>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <button type="button" id="btn-salvar-assinatura-cliente" class="btn btn-primario">Salvar assinatura</button>
+              <button type="button" id="btn-limpar-assinatura-cliente" class="btn btn-secundario">Limpar desenho</button>
+              <button type="button" id="btn-remover-assinatura-cliente" class="btn btn-secundario">Remover assinatura</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Termo e recibo</h2>
+            <p>Gere documentos simples em preto e branco para impressão ou envio ao cliente.</p>
+          </div>
+
+          <div class="card-body os-documentos-grid">
+            <div class="os-documento-card">
+              <strong>Termo de garantia</strong>
+              <p>Documento com dados do cliente, veículo, serviço executado, prazo e observações de garantia.</p>
+              <button type="button" id="btn-termo-garantia" class="btn btn-primario">Gerar termo de garantia</button>
+            </div>
+
+            <div class="os-documento-card">
+              <strong>Recibo de pagamento</strong>
+              <p>Documento com total da OS, entrada, valor pago, saldo restante e forma de pagamento.</p>
+              <button type="button" id="btn-recibo-pagamento" class="btn btn-primario">Gerar recibo de pagamento</button>
+            </div>
+          </div>
+        </article>
+
       </aside>
     </section>
   </main>

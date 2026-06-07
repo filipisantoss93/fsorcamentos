@@ -528,10 +528,12 @@ async function buscarClientesNoModalOrcamento() {
 
   if (!resultado) return;
 
-  if (termo.length < 2) {
+  const termoNumericoCurto = String(termoOriginal || '').replace(/\D/g, '');
+
+  if (termo.length < 2 && termoNumericoCurto.length < 1) {
     resultado.innerHTML = `
       <div class="estado-busca-cliente">
-        Digite pelo menos 2 caracteres para buscar por nome, telefone, rua, cidade ou CEP.
+        Digite o ID do cliente ou pelo menos 2 caracteres para buscar por nome, telefone, rua, cidade ou CEP.
       </div>
     `;
     return;
@@ -783,7 +785,7 @@ async function fsBuscarPerfilUsuario(session) {
   }
 
   if (data) {
-    localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email?.split('@')[0] || 'Usuário');
+    localStorage.setItem('usuario_nome', data.nome || data.nome_empresa || session.user.email?.split('@')[0] || '');
     localStorage.setItem('usuario_plano', data.plano || 'gratis');
     localStorage.setItem('nome_empresa', data.nome_empresa || '');
     localStorage.setItem('telefone_empresa', data.telefone_empresa || '');

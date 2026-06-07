@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3e2723">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Relatórios Premium - FS Orçamentos</title>
+  <meta name="description" content="Relatórios mensais por serviço, faturamento, clientes, veículos e produtos no FS Orçamentos Premium.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <style>
+    :root {
+      --fs-marrom:#3e2723;
+      --fs-marrom-2:#5d4037;
+      --fs-creme:#f4ece1;
+      --fs-creme-2:#fffaf0;
+      --fs-amarelo:#ffc400;
+      --fs-borda:#e8dccb;
+      --fs-texto:#2f241f;
+      --fs-texto-suave:#6d5b52;
+      --fs-verde:#16a34a;
+      --fs-vermelho:#dc2626;
+      --fs-azul:#2563eb;
+      --fs-card:#ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding-top: 118px;
+      background:
+        radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+        linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%);
+      color: var(--fs-texto);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pagina-relatorios {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 14px 60px;
+    }
+
+    .relatorios-hero {
+      background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+      border-radius: 24px;
+      border-top: 7px solid var(--fs-amarelo);
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(62,39,35,0.13);
+      margin-bottom: 20px;
+    }
+
+    .tag-premium {
+      display:inline-flex;
+      background:var(--fs-marrom);
+      color:var(--fs-amarelo);
+      border:1px solid var(--fs-amarelo);
+      border-radius:999px;
+      padding:7px 13px;
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .relatorios-hero h1 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      font-size: 32px;
+      line-height: 1.15;
+    }
+
+    .relatorios-hero p {
+      margin: 0;
+      color: var(--fs-texto-suave);
+      line-height: 1.55;
+      max-width: 860px;
+      font-weight: 700;
+    }
+
+    .filtros-relatorios,
+    .card-relatorio {
+      background: var(--fs-card);
+      border: 1px solid var(--fs-borda);
+      border-radius: 20px;
+      box-shadow: 0 8px 22px rgba(62,39,35,0.10);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .filtros-relatorios {
+      display:grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap:12px;
+      align-items:end;
+    }
+
+    .campo label {
+      display:block;
+      color:var(--fs-marrom-2);
+      font-weight:900;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+
+    .campo input, .campo select {
+      width:100%;
+      border:1px solid #d8c9b8;
+      border-radius:12px;
+      padding:11px 12px;
+      color:var(--fs-texto);
+      background:#fff;
+      font-size:14px;
+    }
+
+    .btn {
+      border:2px solid var(--fs-marrom);
+      border-radius:12px;
+      min-height:42px;
+      padding:11px 16px;
+      font-weight:900;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .btn-primario {
+      background:var(--fs-marrom);
+      color:var(--fs-amarelo);
+      border-color:var(--fs-amarelo);
+    }
+
+    .btn-primario:hover {
+      background:var(--fs-amarelo);
+      color:var(--fs-marrom);
+      border-color:var(--fs-marrom);
+    }
+
+    .metricas-grid {
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .metrica-card {
+      background:#fff;
+      border:1px solid var(--fs-borda);
+      border-left:6px solid var(--fs-amarelo);
+      border-radius:18px;
+      padding:17px;
+      box-shadow:0 8px 22px rgba(62,39,35,.09);
+    }
+
+    .metrica-card span {
+      display:block;
+      color:var(--fs-texto-suave);
+      font-size:12px;
+      text-transform:uppercase;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .metrica-card strong {
+      display:block;
+      color:var(--fs-marrom);
+      font-size:28px;
+      line-height:1;
+    }
+
+    .metrica-card small {
+      display:block;
+      color:#8d6e63;
+      margin-top:8px;
+      line-height:1.35;
+      font-weight:700;
+    }
+
+    .relatorio-grid {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+    }
+
+    .card-relatorio h2 {
+      margin:0 0 8px;
+      color:var(--fs-marrom);
+      font-size:21px;
+    }
+
+    .card-relatorio p {
+      margin:0 0 14px;
+      color:var(--fs-texto-suave);
+      line-height:1.45;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .lista-ranking {
+      display:grid;
+      gap:10px;
+    }
+
+    .ranking-item {
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:center;
+      background:#fffaf0;
+      border:1px solid #eadfce;
+      border-left:5px solid var(--fs-amarelo);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .ranking-item strong,
+    .ranking-item span {
+      display:block;
+    }
+
+    .ranking-item strong {
+      color:var(--fs-marrom);
+      font-size:14px;
+      line-height:1.25;
+    }
+
+    .ranking-item span {
+      color:var(--fs-texto-suave);
+      font-size:12px;
+      margin-top:4px;
+      font-weight:800;
+    }
+
+    .ranking-valor {
+      color:var(--fs-marrom);
+      font-weight:900;
+      white-space:nowrap;
+      text-align:right;
+    }
+
+    .estado-vazio {
+      background:#fff8e1;
+      border:1px dashed var(--fs-amarelo);
+      border-radius:16px;
+      padding:20px;
+      text-align:center;
+      color:var(--fs-marrom);
+      font-weight:800;
+    }
+
+    .mensagem {
+      display:none;
+      margin-bottom:14px;
+      padding:13px 15px;
+      border-radius:12px;
+      font-weight:800;
+    }
+
+    .mensagem.erro {
+      display:block;
+      background:#fee2e2;
+      color:#991b1b;
+      border:1px solid #fecaca;
+    }
+
+    .mensagem.info {
+      display:block;
+      background:#fff8e1;
+      color:var(--fs-marrom);
+      border:1px solid var(--fs-amarelo);
+    }
+
+    @media (max-width: 900px) {
+      body { padding-top: 96px; }
+      .metricas-grid, .relatorio-grid, .filtros-relatorios {
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="pagina-relatorios">
+    <section class="relatorios-hero">
+      <span class="tag-premium">Plano Premium</span>
+      <h1>Relatórios mensais por serviço</h1>
+      <p>
+        Acompanhe faturamento, OS concluídas, serviços mais realizados, produtos mais usados,
+        clientes que mais compraram e veículos com mais manutenção.
+      </p>
+    </section>
+
+    <div id="mensagem-relatorios" class="mensagem"></div>
+
+    <section class="filtros-relatorios">
+      <div class="campo">
+        <label for="relatorio-data-inicio">Data inicial</label>
+        <input type="date" id="relatorio-data-inicio">
+      </div>
+
+      <div class="campo">
+        <label for="relatorio-data-fim">Data final</label>
+        <input type="date" id="relatorio-data-fim">
+      </div>
+
+      <button type="button" class="btn btn-primario" id="btn-atualizar-relatorios">
+        Atualizar relatório
+      </button>
+    </section>
+
+    <section class="metricas-grid">
+      <div class="metrica-card">
+        <span>Faturamento no período</span>
+        <strong id="relatorio-faturamento">R$ 0,00</strong>
+        <small>Baseado no valor total das OS.</small>
+      </div>
+
+      <div class="metrica-card">
+        <span>OS concluídas</span>
+        <strong id="relatorio-os-concluidas">0</strong>
+        <small>Serviços finalizados no período.</small>
+      </div>
+
+      <div class="metrica-card">
+        <span>Ticket médio</span>
+        <strong id="relatorio-ticket-medio">R$ 0,00</strong>
+        <small>Média por OS concluída.</small>
+      </div>
+
+      <div class="metrica-card">
+        <span>Valor pendente/parcial</span>
+        <strong id="relatorio-pendente">R$ 0,00</strong>
+        <small>Saldo em aberto no período.</small>
+      </div>
+    </section>
+
+    <section class="relatorio-grid">
+      <div class="card-relatorio">
+        <h2>Serviços mais realizados</h2>
+        <p>Itens de tipo serviço agrupados por descrição.</p>
+        <div id="ranking-servicos" class="lista-ranking"></div>
+      </div>
+
+      <div class="card-relatorio">
+        <h2>Produtos mais usados</h2>
+        <p>Peças/materiais usados nas OS.</p>
+        <div id="ranking-produtos" class="lista-ranking"></div>
+      </div>
+
+      <div class="card-relatorio">
+        <h2>Clientes que mais geraram receita</h2>
+        <p>Ranking por valor total de OS no período.</p>
+        <div id="ranking-clientes" class="lista-ranking"></div>
+      </div>
+
+      <div class="card-relatorio">
+        <h2>Veículos com mais manutenção</h2>
+        <p>Quantidade e valor por veículo atendido.</p>
+        <div id="ranking-veiculos" class="lista-ranking"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
+  <script src="relatorios.js"></script>
+</body>
+</html>

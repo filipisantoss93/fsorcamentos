@@ -1106,12 +1106,17 @@ function buscarClientesModalVeiculo() {
 
   const termo = normalizarTextoVeiculo(campo?.value || "");
 
-  if (termo.length < 2) {
-    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres para buscar cliente.</div>`;
+  const termoNumerico = String(campo?.value || "").replace(/\D/g, "");
+
+  if (termo.length < 2 && termoNumerico.length < 1) {
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite o ID do cliente ou pelo menos 2 caracteres para buscar cliente.</div>`;
     return;
   }
 
-  const encontrados = clientesVeiculosCache.filter((cliente) => textoBuscaClienteVeiculo(cliente).includes(termo)).slice(0, 30);
+  const encontrados = clientesVeiculosCache.filter((cliente) => {
+    const texto = textoBuscaClienteVeiculo(cliente);
+    return texto.includes(termo) || (termoNumerico && String(Number(cliente?.numero_cliente || 0)) === String(Number(termoNumerico)));
+  }).slice(0, 30);
 
   if (!encontrados.length) {
     resultado.innerHTML = `

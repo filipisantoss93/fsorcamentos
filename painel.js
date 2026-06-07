@@ -47,6 +47,7 @@ async function inicializarPainel(session) {
 
   await carregarResumoOrdensServicoPainel();
   await carregarIndicadoresPremiumPainel();
+  await carregarResumoRelatoriosRecorrentesPainel();
   await carregarDashboardPainel();
   await carregarUltimosOrcamentosPainel();
 
@@ -564,7 +565,7 @@ function preencherCamposEstaticos(data, session) {
     data?.nome ||
     data?.nome_empresa ||
     session?.user?.email?.split('@')[0] ||
-    'Usuário';
+    '';
 
   localStorage.setItem('usuario_nome', nomeLocal);
   localStorage.setItem('usuario_plano', data?.plano || 'gratis');
@@ -1762,3 +1763,91 @@ window.carregarDashboardPainel = carregarDashboardPainel;
 window.carregarUltimosOrcamentosPainel = carregarUltimosOrcamentosPainel;
 
 window.abrirGeradorGlobal = abrirGeradorGlobal;
+
+/* =========================================================
+   PAINEL - RESUMO PREMIUM: RELATÓRIOS E RECORRÊNCIAS
+   ========================================================= */
+
+async function carregarResumoRelatoriosRecorrentesPainel() {
+  const precisaCarregar =
+    document.getElementById('painel-recorrentes-vencidas') ||
+    document.getElementById('painel-recorrentes-7') ||
+    document.getElementById('painel-relatorio-faturado-mes') ||
+    document.getElementById('painel-relatorio-os-mes');
+
+  if (!precisaCarregar) return;
+
+  try {
+    const plano = normalizarPlanoPainel(localStorage.getItem('usuario_plano') || perfilAtual?.plano || 'gratis');
+
+    if (plano !== 'premium') {
+      const bloco = document.getElementById('painel-premium-gestao-avancada');
+      if (bloco) bloco.style.display = 'none';
+      return;
+    }
+
+    const bloco = document.getElementById('painel-premium-gestao-avancada');
+    if (bloco) bloco.style.display = 'block';
+
+    const [ordens, recorrentes] = await Promise.all([
+      buscarTabelaDoUsuarioPainel('ordens_servico', '*', {
+        camposUsuario: ['user_id', 'usuario_id'],
+        orderBy: 'created_at',
+        ascending: false
+      }),
+      buscarTabelaDoUsuarioPainel('servicos_recorrentes', '*', {
+        camposUsuario: ['user_id', 'usuario_id'],
+        orderBy: 'proxima_data',
+        ascending: true
+      })
+    ]);
+
+    const osMes = ordens.filter(os => {
+      return statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status)) &&
+        estaNoMesAtualPainel(obterDataConclusaoOSPainel(os) || os.updated_at || os.created_at);
+    });
+
+    const faturadoMes = osMes.reduce((soma, os) => {
+      return soma + obterValorTotalOrdemServicoPainel(os);
+    }, 0);
+
+    const vencidas = recorrentes.filter(item => {
+      return normalizarStatusOrdemServicoPainel(item.status || 'ativo') === 'ativo' &&
+        diasAteDataPainelPremium(item.proxima_data) !== null &&
+        diasAteDataPainelPremium(item.proxima_data) < 0;
+    }).length;
+
+    const proximos7 = recorrentes.filter(item => {
+      const dias = diasAteDataPainelPremium(item.proxima_data);
+      return normalizarStatusOrdemServicoPainel(item.status || 'ativo') === 'ativo' &&
+        dias !== null &&
+        dias >= 0 &&
+        dias <= 7;
+    }).length;
+
+    atualizarTexto('painel-recorrentes-vencidas', vencidas);
+    atualizarTexto('painel-recorrentes-7', proximos7);
+    atualizarTexto('painel-relatorio-faturado-mes', formatarMoedaPainel(faturadoMes));
+    atualizarTexto('painel-relatorio-os-mes', osMes.length);
+  } catch (erro) {
+    console.warn('Não foi possível carregar resumo Premium avançado:', erro);
+    atualizarTexto('painel-recorrentes-vencidas', '-');
+    atualizarTexto('painel-recorrentes-7', '-');
+    atualizarTexto('painel-relatorio-faturado-mes', '-');
+    atualizarTexto('painel-relatorio-os-mes', '-');
+  }
+}
+
+function diasAteDataPainelPremium(valor) {
+  if (!valor) return null;
+
+  const hoje = new Date();
+  const data = new Date(String(valor).substring(0, 10) + 'T00:00:00');
+
+  if (isNaN(data.getTime())) return null;
+
+  hoje.setHours(0, 0, 0, 0);
+  data.setHours(0, 0, 0, 0);
+
+  return Math.ceil((data.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
+}

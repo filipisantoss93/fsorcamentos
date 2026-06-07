@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3e2723">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Serviços Recorrentes - FS Orçamentos</title>
+  <meta name="description" content="Controle manutenções preventivas, retornos e serviços recorrentes no FS Orçamentos Premium.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <style>
+    :root {
+      --fs-marrom:#3e2723;
+      --fs-marrom-2:#5d4037;
+      --fs-creme:#f4ece1;
+      --fs-creme-2:#fffaf0;
+      --fs-amarelo:#ffc400;
+      --fs-borda:#e8dccb;
+      --fs-texto:#2f241f;
+      --fs-texto-suave:#6d5b52;
+      --fs-verde:#16a34a;
+      --fs-vermelho:#dc2626;
+      --fs-azul:#2563eb;
+      --fs-card:#ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding-top: 118px;
+      background:
+        radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+        linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%);
+      color: var(--fs-texto);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pagina-recorrentes {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 14px 60px;
+    }
+
+    .recorrentes-hero {
+      background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+      border-radius: 24px;
+      border-top: 7px solid var(--fs-amarelo);
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(62,39,35,0.13);
+      margin-bottom: 20px;
+    }
+
+    .tag-premium {
+      display:inline-flex;
+      background:var(--fs-marrom);
+      color:var(--fs-amarelo);
+      border:1px solid var(--fs-amarelo);
+      border-radius:999px;
+      padding:7px 13px;
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .recorrentes-hero h1 {
+      margin:0 0 8px;
+      color:var(--fs-marrom);
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .recorrentes-hero p {
+      margin:0;
+      color:var(--fs-texto-suave);
+      line-height:1.55;
+      max-width:900px;
+      font-weight:700;
+    }
+
+    .layout-recorrentes {
+      display:grid;
+      grid-template-columns: 0.86fr 1.14fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .card-recorrente {
+      background:#fff;
+      border:1px solid var(--fs-borda);
+      border-top:5px solid var(--fs-amarelo);
+      border-radius:20px;
+      box-shadow:0 8px 22px rgba(62,39,35,.10);
+      overflow:hidden;
+      margin-bottom:18px;
+    }
+
+    .card-header {
+      background:var(--fs-marrom);
+      color:var(--fs-amarelo);
+      padding:16px 18px;
+      border-bottom:2px solid var(--fs-amarelo);
+    }
+
+    .card-header h2 {
+      margin:0;
+      color:var(--fs-amarelo);
+      font-size:20px;
+    }
+
+    .card-header p {
+      margin:5px 0 0;
+      color:#fffaf0;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .card-body {
+      padding:18px;
+    }
+
+    .form-recorrente {
+      display:grid;
+      gap:13px;
+    }
+
+    .form-linha {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .campo label {
+      display:block;
+      color:var(--fs-marrom-2);
+      font-weight:900;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width:100%;
+      border:1px solid #d8c9b8;
+      border-radius:12px;
+      padding:11px 12px;
+      color:var(--fs-texto);
+      background:#fff;
+      font-size:14px;
+    }
+
+    .campo textarea { min-height: 84px; resize: vertical; }
+
+    .btn {
+      border:2px solid var(--fs-marrom);
+      border-radius:12px;
+      min-height:42px;
+      padding:11px 16px;
+      font-weight:900;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .btn-primario {
+      background:var(--fs-marrom);
+      color:var(--fs-amarelo);
+      border-color:var(--fs-amarelo);
+    }
+
+    .btn-secundario {
+      background:#fff;
+      color:var(--fs-marrom);
+      border-color:#d8c9b8;
+    }
+
+    .btn-perigo {
+      background:#fff1f1;
+      color:#991b1b;
+      border-color:#fecaca;
+    }
+
+    .acoes-form {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .resumo-recorrentes {
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .resumo-card {
+      background:#fff;
+      border:1px solid var(--fs-borda);
+      border-left:5px solid var(--fs-amarelo);
+      border-radius:16px;
+      padding:14px;
+    }
+
+    .resumo-card span {
+      display:block;
+      color:var(--fs-texto-suave);
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:6px;
+    }
+
+    .resumo-card strong {
+      display:block;
+      color:var(--fs-marrom);
+      font-size:25px;
+      line-height:1;
+    }
+
+    .filtros-recorrentes {
+      display:grid;
+      grid-template-columns: 1fr 0.7fr auto;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .lista-recorrentes {
+      display:grid;
+      gap:12px;
+    }
+
+    .recorrente-item {
+      background:#fff;
+      border:1px solid var(--fs-borda);
+      border-left:6px solid var(--fs-amarelo);
+      border-radius:18px;
+      padding:15px;
+      box-shadow:0 8px 18px rgba(62,39,35,.08);
+    }
+
+    .recorrente-topo {
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .recorrente-topo h3 {
+      margin:0 0 4px;
+      color:var(--fs-marrom);
+      font-size:18px;
+    }
+
+    .recorrente-topo p {
+      margin:0;
+      color:var(--fs-texto-suave);
+      font-size:13px;
+      line-height:1.45;
+      font-weight:800;
+    }
+
+    .tag {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      font-weight:900;
+      border:1px solid #d8c9b8;
+      background:#fffaf0;
+      color:var(--fs-marrom);
+      white-space:nowrap;
+    }
+
+    .tag.vencido { background:#fee2e2; color:#991b1b; border-color:#fecaca; }
+    .tag.hoje { background:#fff8e1; color:#8a5a00; border-color:var(--fs-amarelo); }
+    .tag.proximo { background:#dbeafe; color:#1e40af; border-color:#bfdbfe; }
+    .tag.ok { background:#dcfce7; color:#166534; border-color:#bbf7d0; }
+
+    .recorrente-detalhes {
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:8px;
+      margin:10px 0;
+    }
+
+    .recorrente-detalhes div {
+      background:#fffaf0;
+      border:1px solid #eadfce;
+      border-radius:12px;
+      padding:10px;
+    }
+
+    .recorrente-detalhes small {
+      display:block;
+      color:#8d6e63;
+      text-transform:uppercase;
+      font-weight:900;
+      font-size:10px;
+      margin-bottom:3px;
+    }
+
+    .recorrente-detalhes strong {
+      display:block;
+      color:var(--fs-marrom);
+      font-size:13px;
+      line-height:1.3;
+    }
+
+    .item-acoes {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .estado-vazio {
+      background:#fff8e1;
+      border:1px dashed var(--fs-amarelo);
+      border-radius:16px;
+      padding:22px;
+      text-align:center;
+      color:var(--fs-marrom);
+      font-weight:800;
+    }
+
+    .mensagem {
+      display:none;
+      margin-bottom:14px;
+      padding:13px 15px;
+      border-radius:12px;
+      font-weight:800;
+    }
+
+    .mensagem.erro { display:block; background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+    .mensagem.sucesso { display:block; background:#dcfce7; color:#166534; border:1px solid #bbf7d0; }
+    .mensagem.info { display:block; background:#fff8e1; color:var(--fs-marrom); border:1px solid var(--fs-amarelo); }
+
+    @media (max-width: 980px) {
+      body { padding-top: 96px; }
+      .layout-recorrentes,
+      .resumo-recorrentes,
+      .filtros-recorrentes,
+      .recorrente-detalhes {
+        grid-template-columns:1fr;
+      }
+      .form-linha { grid-template-columns:1fr; }
+      .acoes-form .btn, .filtros-recorrentes .btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="pagina-recorrentes">
+    <section class="recorrentes-hero">
+      <span class="tag-premium">Plano Premium</span>
+      <h1>Serviços recorrentes e manutenção preventiva</h1>
+      <p>
+        Controle retornos, revisões preventivas, trocas periódicas e serviços que precisam ser lembrados
+        por data ou quilometragem.
+      </p>
+    </section>
+
+    <div id="mensagem-recorrentes" class="mensagem"></div>
+
+    <section class="layout-recorrentes">
+      <div>
+        <article class="card-recorrente">
+          <div class="card-header">
+            <h2 id="titulo-form-recorrente">Novo serviço recorrente</h2>
+            <p>Use para trocas de óleo, revisões, retornos de garantia e manutenções preventivas.</p>
+          </div>
+
+          <div class="card-body">
+            <form id="form-recorrente" class="form-recorrente">
+              <input type="hidden" id="recorrente-id">
+
+              <div class="campo">
+                <label for="recorrente-titulo">Título do serviço</label>
+                <input type="text" id="recorrente-titulo" placeholder="Ex: Troca de óleo / Revisão preventiva">
+              </div>
+
+              <div class="form-linha">
+                <div class="campo">
+                  <label for="recorrente-cliente-id">Cliente</label>
+                  <select id="recorrente-cliente-id">
+                    <option value="">Selecione</option>
+                  </select>
+                </div>
+
+                <div class="campo">
+                  <label for="recorrente-veiculo-id">Veículo</label>
+                  <select id="recorrente-veiculo-id">
+                    <option value="">Selecione um cliente primeiro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-linha">
+                <div class="campo">
+                  <label for="recorrente-tipo-servico">Tipo de serviço</label>
+                  <input type="text" id="recorrente-tipo-servico" placeholder="Ex: Manutenção preventiva">
+                </div>
+
+                <div class="campo">
+                  <label for="recorrente-status">Status</label>
+                  <select id="recorrente-status">
+                    <option value="ativo">Ativo</option>
+                    <option value="pausado">Pausado</option>
+                    <option value="concluido">Concluído</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-linha">
+                <div class="campo">
+                  <label for="recorrente-ultimo-servico">Data do último serviço</label>
+                  <input type="date" id="recorrente-ultimo-servico">
+                </div>
+
+                <div class="campo">
+                  <label for="recorrente-proxima-data">Próxima data prevista</label>
+                  <input type="date" id="recorrente-proxima-data">
+                </div>
+              </div>
+
+              <div class="form-linha">
+                <div class="campo">
+                  <label for="recorrente-intervalo-meses">Intervalo em meses</label>
+                  <input type="number" id="recorrente-intervalo-meses" min="0" step="1" placeholder="Ex: 6">
+                </div>
+
+                <div class="campo">
+                  <label for="recorrente-intervalo-km">Intervalo em km</label>
+                  <input type="number" id="recorrente-intervalo-km" min="0" step="1" placeholder="Ex: 10000">
+                </div>
+              </div>
+
+              <div class="form-linha">
+                <div class="campo">
+                  <label for="recorrente-km-atual">Km atual/opcional</label>
+                  <input type="number" id="recorrente-km-atual" min="0" step="1">
+                </div>
+
+                <div class="campo">
+                  <label for="recorrente-proximo-km">Próximo km/opcional</label>
+                  <input type="number" id="recorrente-proximo-km" min="0" step="1">
+                </div>
+              </div>
+
+              <div class="campo">
+                <label for="recorrente-observacoes">Observações</label>
+                <textarea id="recorrente-observacoes" placeholder="Ex: avisar cliente 7 dias antes, verificar garantia, peças utilizadas..."></textarea>
+              </div>
+
+              <div class="acoes-form">
+                <button type="submit" class="btn btn-primario" id="btn-salvar-recorrente">Salvar recorrência</button>
+                <button type="button" class="btn btn-secundario" id="btn-limpar-recorrente">Limpar</button>
+              </div>
+            </form>
+          </div>
+        </article>
+      </div>
+
+      <div>
+        <section class="resumo-recorrentes">
+          <div class="resumo-card">
+            <span>Vencidos</span>
+            <strong id="resumo-recorrentes-vencidos">0</strong>
+          </div>
+          <div class="resumo-card">
+            <span>Vencem hoje</span>
+            <strong id="resumo-recorrentes-hoje">0</strong>
+          </div>
+          <div class="resumo-card">
+            <span>Próx. 7 dias</span>
+            <strong id="resumo-recorrentes-7">0</strong>
+          </div>
+          <div class="resumo-card">
+            <span>Próx. 30 dias</span>
+            <strong id="resumo-recorrentes-30">0</strong>
+          </div>
+        </section>
+
+        <article class="card-recorrente">
+          <div class="card-header">
+            <h2>Manutenções e retornos</h2>
+            <p>Filtre por placa, cliente, tipo de serviço, ID do cliente ou status.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="filtros-recorrentes">
+              <div class="campo">
+                <label for="busca-recorrentes">Buscar</label>
+                <input type="text" id="busca-recorrentes" placeholder="Nome, placa, serviço, CLI-000001...">
+              </div>
+
+              <div class="campo">
+                <label for="filtro-status-recorrentes">Status</label>
+                <select id="filtro-status-recorrentes">
+                  <option value="">Todos</option>
+                  <option value="ativo">Ativos</option>
+                  <option value="pausado">Pausados</option>
+                  <option value="concluido">Concluídos</option>
+                  <option value="cancelado">Cancelados</option>
+                  <option value="vencido">Vencidos</option>
+                  <option value="proximo">Próximos 30 dias</option>
+                </select>
+              </div>
+
+              <button type="button" class="btn btn-primario" id="btn-atualizar-recorrentes">Atualizar</button>
+            </div>
+
+            <div id="lista-recorrentes" class="lista-recorrentes">
+              <div class="estado-vazio">Carregando serviços recorrentes...</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
+  <script src="recorrentes.js"></script>
+</body>
+</html>

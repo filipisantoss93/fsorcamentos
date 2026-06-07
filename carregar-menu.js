@@ -189,7 +189,7 @@ async function atualizarHeaderUsuario(session) {
     session.user.user_metadata?.full_name ||
     session.user.user_metadata?.name ||
     session.user.email?.split('@')[0] ||
-    'Usuário';
+    'Visitante';
 
   try {
     if (window._supabase) {

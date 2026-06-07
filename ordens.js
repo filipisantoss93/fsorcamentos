@@ -1582,12 +1582,17 @@ function buscarClientesModalOS() {
 
   const termo = normalizarTextoOS(campo?.value || "");
 
-  if (termo.length < 2) {
-    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres para buscar cliente.</div>`;
+  const termoNumerico = String(campo?.value || "").replace(/\D/g, "");
+
+  if (termo.length < 2 && termoNumerico.length < 1) {
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite o ID do cliente ou pelo menos 2 caracteres para buscar cliente.</div>`;
     return;
   }
 
-  const encontrados = clientesCacheOS.filter((cliente) => textoBuscaClienteOS(cliente).includes(termo)).slice(0, 30);
+  const encontrados = clientesCacheOS.filter((cliente) => {
+    const texto = textoBuscaClienteOS(cliente);
+    return texto.includes(termo) || (termoNumerico && String(Number(cliente?.numero_cliente || 0)) === String(Number(termoNumerico)));
+  }).slice(0, 30);
 
   if (!encontrados.length) {
     resultado.innerHTML = `

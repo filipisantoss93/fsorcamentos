@@ -869,6 +869,65 @@ body {
         font-size: 24px;
       }
     }
+  
+    .painel-premium-atalhos-grid,
+    .painel-premium-resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .painel-premium-atalho {
+      display: block;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 16px;
+      padding: 15px;
+      color: var(--fs-marrom);
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(62,39,35,0.08);
+      transition: .2s ease;
+    }
+
+    .painel-premium-atalho:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(62,39,35,0.14);
+    }
+
+    .painel-premium-atalho strong,
+    .painel-premium-atalho span {
+      display: block;
+    }
+
+    .painel-premium-atalho strong {
+      color: var(--fs-marrom);
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .painel-premium-atalho span {
+      color: #6d5b52;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 
 
@@ -1168,7 +1227,66 @@ body {
     color: #3e2723 !important;
     font-weight: 800 !important;
   }
-</style>
+
+    .painel-premium-atalhos-grid,
+    .painel-premium-resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .painel-premium-atalho {
+      display: block;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 16px;
+      padding: 15px;
+      color: var(--fs-marrom);
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(62,39,35,0.08);
+      transition: .2s ease;
+    }
+
+    .painel-premium-atalho:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(62,39,35,0.14);
+    }
+
+    .painel-premium-atalho strong,
+    .painel-premium-atalho span {
+      display: block;
+    }
+
+    .painel-premium-atalho strong {
+      color: var(--fs-marrom);
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .painel-premium-atalho span {
+      color: #6d5b52;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
 
 </head>
 
@@ -1252,6 +1370,59 @@ body {
     <div class="painel-aviso">
       Mantenha seus dados atualizados. Essas informações aparecem no gerador, no PDF e no link enviado ao cliente.
     </div>
+
+
+    <section id="painel-premium-gestao-avancada" class="painel-card painel-premium-gestao-avancada" data-plano-min="premium">
+      <h2>Gestão Premium avançada</h2>
+      <p class="painel-subtitulo">
+        Acesse relatórios mensais e controle manutenções recorrentes para transformar o FS Orçamentos em uma central de gestão.
+      </p>
+
+      <div class="painel-premium-atalhos-grid">
+        <a href="relatorios.html" class="painel-premium-atalho">
+          <strong>📊 Relatórios por serviço</strong>
+          <span>Faturamento, OS concluídas, serviços mais realizados, produtos usados, clientes e veículos.</span>
+        </a>
+
+        <a href="recorrentes.html" class="painel-premium-atalho">
+          <strong>🔁 Manutenção preventiva</strong>
+          <span>Serviços recorrentes, vencidos, próximos 7 dias e próximos 30 dias.</span>
+        </a>
+
+        <a href="agenda.html" class="painel-premium-atalho">
+          <strong>📅 Agenda de serviços</strong>
+          <span>Organize atendimentos por data, status, cliente, veículo e OS vinculada.</span>
+        </a>
+
+        <a href="ordens.html" class="painel-premium-atalho">
+          <strong>🛠️ Ordens de serviço</strong>
+          <span>Acompanhe execução, estoque, pagamento, recibo, garantia e assinatura.</span>
+        </a>
+      </div>
+
+      <div class="painel-premium-resumo-grid">
+        <div class="info-card">
+          <strong>Recorrências vencidas</strong>
+          <span id="painel-recorrentes-vencidas">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Próximos 7 dias</strong>
+          <span id="painel-recorrentes-7">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Faturado no mês em OS</strong>
+          <span id="painel-relatorio-faturado-mes">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>OS concluídas no mês</strong>
+          <span id="painel-relatorio-os-mes">-</span>
+        </div>
+      </div>
+    </section>
+
 
     <section class="painel-card">
       <h2>Dados da Empresa</h2>
