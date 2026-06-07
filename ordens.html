@@ -263,6 +263,117 @@
       border-radius: 10px;
     }
 
+
+
+    .ordem-item-resumida {
+      cursor: pointer;
+    }
+
+    .ordem-item-resumida:focus {
+      outline: 3px solid rgba(255,196,0,.45);
+      outline-offset: 2px;
+    }
+
+    .modal-resumo-ordem-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30000;
+      padding: 16px;
+    }
+
+    .modal-resumo-ordem-overlay.ativo {
+      display: flex;
+    }
+
+    .modal-resumo-ordem-box {
+      width: min(100%, 820px);
+      max-height: 90vh;
+      overflow: auto;
+      background: var(--fs-bege);
+      border-radius: 18px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .modal-resumo-ordem-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-resumo-ordem-header h3 {
+      margin: 0;
+      color: var(--fs-amarelo);
+    }
+
+    .modal-resumo-ordem-header p {
+      margin: 5px 0 0;
+      color: var(--fs-bege);
+      font-weight: 800;
+    }
+
+    .modal-resumo-ordem-body {
+      padding: 18px;
+    }
+
+    .modal-resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .modal-resumo-grid > div,
+    .modal-resumo-texto {
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--fs-texto);
+    }
+
+    .modal-resumo-grid strong,
+    .modal-resumo-texto strong {
+      display: block;
+      color: var(--fs-texto-suave);
+      text-transform: uppercase;
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .modal-resumo-grid span {
+      font-weight: 900;
+      color: var(--fs-marrom);
+    }
+
+    .modal-resumo-texto {
+      margin-top: 10px;
+    }
+
+    .modal-resumo-texto p {
+      margin: 0;
+      color: var(--fs-texto);
+      line-height: 1.5;
+    }
+
+    .modal-resumo-acoes {
+      margin-top: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .modal-resumo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .ordens-filtros {
       display: grid;
       grid-template-columns: 1.4fr 0.8fr 0.8fr 0.8fr;
@@ -498,7 +609,118 @@
       }
 
       .form-linha,
-      .ordens-filtros {
+  
+
+    .ordem-item-resumida {
+      cursor: pointer;
+    }
+
+    .ordem-item-resumida:focus {
+      outline: 3px solid rgba(255,196,0,.45);
+      outline-offset: 2px;
+    }
+
+    .modal-resumo-ordem-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30000;
+      padding: 16px;
+    }
+
+    .modal-resumo-ordem-overlay.ativo {
+      display: flex;
+    }
+
+    .modal-resumo-ordem-box {
+      width: min(100%, 820px);
+      max-height: 90vh;
+      overflow: auto;
+      background: var(--fs-bege);
+      border-radius: 18px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .modal-resumo-ordem-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-resumo-ordem-header h3 {
+      margin: 0;
+      color: var(--fs-amarelo);
+    }
+
+    .modal-resumo-ordem-header p {
+      margin: 5px 0 0;
+      color: var(--fs-bege);
+      font-weight: 800;
+    }
+
+    .modal-resumo-ordem-body {
+      padding: 18px;
+    }
+
+    .modal-resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .modal-resumo-grid > div,
+    .modal-resumo-texto {
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--fs-texto);
+    }
+
+    .modal-resumo-grid strong,
+    .modal-resumo-texto strong {
+      display: block;
+      color: var(--fs-texto-suave);
+      text-transform: uppercase;
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .modal-resumo-grid span {
+      font-weight: 900;
+      color: var(--fs-marrom);
+    }
+
+    .modal-resumo-texto {
+      margin-top: 10px;
+    }
+
+    .modal-resumo-texto p {
+      margin: 0;
+      color: var(--fs-texto);
+      line-height: 1.5;
+    }
+
+    .modal-resumo-acoes {
+      margin-top: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .modal-resumo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ordens-filtros {
         grid-template-columns: 1fr;
       }
 
@@ -1639,7 +1861,7 @@ body.gerando-pdf * {
             </div>
 
             <button type="button" id="btn-atualizar-ordens" class="btn btn-secundario">
-              Atualizar
+              Buscar
             </button>
           </div>
         </div>
@@ -1700,8 +1922,14 @@ body.gerando-pdf * {
           <div id="lista-ordens" class="lista-ordens">
             <div class="estado-vazio">
               <strong>Nenhuma OS carregada</strong>
-              <p>As ordens de serviço cadastradas aparecerão aqui após conectar o arquivo ordens.js.</p>
+              <p>Use os filtros e clique em Buscar. A página carrega no máximo 20 ordens por vez.</p>
             </div>
+          </div>
+
+          <div style="display:flex; justify-content:center; margin-top:14px;">
+            <button type="button" id="btn-carregar-mais-ordens" class="btn btn-secundario" style="display:none;">
+              Carregar mais 20 OS
+            </button>
           </div>
         </div>
       </section>
@@ -1726,7 +1954,7 @@ body.gerando-pdf * {
             <input type="search" id="campo-busca-cliente-os" placeholder="Ex: João, 18999999999, Rua Brasil, Assis ou 19800-000" autocomplete="off">
           </div>
           <button type="button" class="btn btn-primario" onclick="buscarClientesModalOS()">Buscar</button>
-          <a href="clientes.html?novo=1" class="btn btn-secundario">Novo cliente</a>
+          <a href="clientes.html?novo=1" class="btn btn-secundario">Cadastrar novo cliente</a>
         </div>
 
         <div id="resultado-busca-clientes-os" class="resultado-busca-clientes-modal">

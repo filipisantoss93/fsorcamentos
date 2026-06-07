@@ -1508,7 +1508,7 @@ function renderizarUltimasOSFinalizadasPainel(ordens) {
       const dataB = new Date(obterDataConclusaoOSPainel(b) || 0).getTime();
       return dataB - dataA;
     })
-    .slice(0, 6);
+    .slice(0, 5);
 
   if (!ultimas.length) {
     container.innerHTML = `
@@ -1630,7 +1630,7 @@ async function carregarUltimosOrcamentosPainel() {
     .select('id, numero_orcamento, assunto, cliente_nome, total, status, forma_pagamento_cliente, criado_em')
     .eq('usuario_id', session.user.id)
     .order('criado_em', { ascending: false })
-    .limit(6);
+    .limit(5);
 
   if (error) {
     console.warn('Erro ao buscar últimos orçamentos:', error);

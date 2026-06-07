@@ -5,6 +5,7 @@
    ========================================================= */
 
 let clientesCache = [];
+let clientesCarregadosUmaVez = false;
 let usuarioLogado = null;
 
 let fsClientesInicializado = false;
@@ -39,7 +40,7 @@ async function inicializarModuloClientes() {
     usuarioLogado = session.user;
 
     configurarEventosClientes();
-    await carregarClientes();
+    prepararListaClientesVazia();
 
   } catch (erro) {
     console.error("Erro ao inicializar clientes.js:", erro);
@@ -104,15 +105,18 @@ function configurarEventosClientes() {
   }
 
   if (btnAtualizar) {
+    btnAtualizar.textContent = "Buscar";
     btnAtualizar.addEventListener("click", carregarClientes);
   }
 
   if (busca) {
     busca.addEventListener("input", filtrarClientes);
+    busca.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); carregarClientes(); } });
   }
 
   if (buscaIdCliente) {
     buscaIdCliente.addEventListener("input", filtrarClientes);
+    buscaIdCliente.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); carregarClientes(); } });
   }
 
   if (filtroStatus) {
@@ -198,6 +202,18 @@ async function obterProximoNumeroCliente() {
    CRUD - CLIENTES
    ========================================================= */
 
+
+function prepararListaClientesVazia() {
+  const container = document.getElementById("lista-clientes");
+  if (!container) return;
+  container.innerHTML = `
+    <div class="estado-vazio">
+      <strong>Nenhum cliente carregado</strong>
+      <p>Use os filtros e clique em Buscar. A página carrega no máximo 20 clientes por vez.</p>
+    </div>
+  `;
+}
+
 async function carregarClientes() {
   try {
     setLoadingClientes(true);
@@ -218,7 +234,8 @@ async function carregarClientes() {
       .from("clientes")
       .select("*")
       .eq("user_id", usuarioLogado.id)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .limit(20);
 
     if (error) {
       console.error("Erro ao carregar clientes:", error);
@@ -231,6 +248,7 @@ async function carregarClientes() {
     }
 
     clientesCache = Array.isArray(data) ? data : [];
+    clientesCarregadosUmaVez = true;
 
     atualizarResumoClientes(clientesCache);
     renderizarClientes(clientesCache);

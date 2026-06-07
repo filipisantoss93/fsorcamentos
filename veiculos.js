@@ -9,6 +9,7 @@
    ========================================================= */
 
 let veiculosCache = [];
+let veiculosCarregadosUmaVez = false;
 let clientesVeiculosCache = [];
 let usuarioLogadoVeiculos = null;
 let listaVeiculosMobileAberta = false;
@@ -46,7 +47,7 @@ async function inicializarModuloVeiculos() {
 
     configurarEventosVeiculos();
     await carregarClientesParaVeiculos();
-    await carregarVeiculos();
+    prepararListaVeiculosVazia();
     aplicarParametrosUrlVeiculos();
 
   } catch (erro) {
@@ -116,11 +117,13 @@ function configurarEventosVeiculos() {
   }
 
   if (btnAtualizar) {
+    btnAtualizar.textContent = "Buscar";
     btnAtualizar.addEventListener("click", carregarVeiculos);
   }
 
   if (busca) {
     busca.addEventListener("input", filtrarVeiculos);
+    busca.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); carregarVeiculos(); } });
   }
 
   if (filtroStatus) {
@@ -302,6 +305,18 @@ function obterClientePorIdVeiculo(clienteId) {
    CRUD VEÍCULOS
    ========================================================= */
 
+
+function prepararListaVeiculosVazia() {
+  const container = document.getElementById("lista-veiculos");
+  if (!container) return;
+  container.innerHTML = `
+    <div class="estado-vazio">
+      <strong>Nenhum veículo carregado</strong>
+      <p>Use os filtros e clique em Buscar. A página carrega no máximo 20 veículos por vez.</p>
+    </div>
+  `;
+}
+
 async function carregarVeiculos() {
   try {
     setLoadingVeiculos(true);
@@ -322,7 +337,8 @@ async function carregarVeiculos() {
       .from("veiculos_com_clientes")
       .select("*")
       .eq("user_id", usuarioLogadoVeiculos.id)
-      .order("placa", { ascending: true });
+      .order("placa", { ascending: true })
+      .limit(20);
 
     if (error) {
       console.warn("Erro ao carregar view veiculos_com_clientes, tentando tabela veiculos:", error);
@@ -331,7 +347,8 @@ async function carregarVeiculos() {
         .from("veiculos")
         .select("*")
         .eq("user_id", usuarioLogadoVeiculos.id)
-        .order("placa", { ascending: true });
+        .order("placa", { ascending: true })
+        .limit(20);
 
       if (fallback.error) {
         console.error("Erro ao carregar veículos:", fallback.error);
@@ -344,8 +361,10 @@ async function carregarVeiculos() {
       }
 
       veiculosCache = enriquecerVeiculosComCliente(fallback.data || []);
+      veiculosCarregadosUmaVez = true;
     } else {
       veiculosCache = Array.isArray(data) ? data : [];
+      veiculosCarregadosUmaVez = true;
     }
 
     atualizarResumoVeiculos(veiculosCache);

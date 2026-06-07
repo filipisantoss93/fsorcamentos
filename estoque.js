@@ -8,7 +8,7 @@ let produtosEstoqueCache = [];
 let usuarioLogadoEstoque = null;
 
 let paginaProdutosEstoque = 0;
-let limiteProdutosEstoque = 50;
+let limiteProdutosEstoque = 20;
 let temMaisProdutosEstoque = false;
 let filtrosAtuaisEstoque = {
   termo: "",
@@ -49,7 +49,7 @@ async function inicializarModuloEstoque() {
     usuarioLogadoEstoque = session.user;
 
     configurarEventosEstoque();
-    await carregarProdutosEstoque();
+    prepararListaProdutosEstoqueVazia();
 
     
   } catch (erro) {
@@ -122,6 +122,7 @@ function configurarEventosEstoque() {
   }
 
 if (btnAtualizar) {
+  btnAtualizar.textContent = "Buscar";
   btnAtualizar.addEventListener("click", () => carregarProdutosEstoque(true));
 }
 
@@ -131,6 +132,7 @@ if (btnCarregarMais) {
 
   if (busca) {
     busca.addEventListener("input", filtrarProdutosEstoque);
+    busca.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); carregarProdutosEstoque(true); } });
   }
 
   if (filtroStatus) {
@@ -228,6 +230,19 @@ function abrirFormularioMobileProduto() {
 /* =========================================================
    CRUD PRODUTOS
    ========================================================= */
+
+
+function prepararListaProdutosEstoqueVazia() {
+  const container = document.getElementById("lista-produtos-estoque") || document.getElementById("lista-estoque") || document.getElementById("tabela-produtos-estoque");
+  if (!container) return;
+  container.innerHTML = `
+    <div class="estado-vazio">
+      <strong>Nenhum produto carregado</strong>
+      <p>Use os filtros e clique em Buscar. A página carrega no máximo 20 produtos por vez.</p>
+    </div>
+  `;
+  atualizarBotaoCarregarMaisEstoque();
+}
 
 async function carregarProdutosEstoque(resetar = true) {
   try {

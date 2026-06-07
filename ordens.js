@@ -9,6 +9,10 @@
    ========================================================= */
 
 let ordensCache = [];
+let paginaOrdensOS = 0;
+const limiteOrdensOS = 20;
+let temMaisOrdensOS = false;
+let filtrosAplicadosOrdensOS = null;
 let clientesCacheOS = [];
 let veiculosCacheOS = [];
 let usuarioLogadoOS = null;
@@ -54,7 +58,7 @@ async function inicializarModuloOrdens() {
     selecionarClientePelaURL();
     selecionarVeiculoPelaURL();
     await carregarOrcamentoOrigemPelaURL();
-    await carregarOrdens();
+    prepararListaOrdensVazia();
     carregarEdicaoPelaURL();
 
   } catch (erro) {
@@ -105,6 +109,7 @@ function configurarEventosOrdens() {
   const form = document.getElementById("form-ordem");
   const btnLimpar = document.getElementById("btn-limpar-ordem");
   const btnAtualizar = document.getElementById("btn-atualizar-ordens");
+  const btnCarregarMais = document.getElementById("btn-carregar-mais-ordens");
 
   const busca = document.getElementById("busca-ordens");
   const filtroStatus = document.getElementById("filtro-status-ordens");
@@ -121,11 +126,17 @@ function configurarEventosOrdens() {
   }
 
   if (btnAtualizar) {
-    btnAtualizar.addEventListener("click", carregarOrdens);
+    btnAtualizar.textContent = "Buscar";
+    btnAtualizar.addEventListener("click", () => carregarOrdens(true));
+  }
+
+  if (btnCarregarMais) {
+    btnCarregarMais.addEventListener("click", () => carregarOrdens(false));
   }
 
   if (busca) {
     busca.addEventListener("input", filtrarOrdens);
+    busca.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); carregarOrdens(true); } });
   }
 
   if (filtroStatus) {
@@ -138,6 +149,7 @@ function configurarEventosOrdens() {
 
   if (filtroVeiculo) {
     filtroVeiculo.addEventListener("input", filtrarOrdens);
+    filtroVeiculo.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); carregarOrdens(true); } });
   }
 
   if (campoBuscaClienteModal) {
@@ -585,10 +597,19 @@ function carregarEdicaoPelaURL() {
    CRUD - ORDENS
    ========================================================= */
 
-async function carregarOrdens() {
+async function carregarOrdens(resetar = true) {
   try {
     setLoadingOrdens(true);
     limparMensagemOS("mensagem-ordens-lista");
+
+    if (resetar) {
+      paginaOrdensOS = 0;
+      ordensCache = [];
+      filtrosAplicadosOrdensOS = obterFiltrosOrdensAtuais();
+    }
+
+    const inicio = paginaOrdensOS * limiteOrdensOS;
+    const fim = inicio + limiteOrdensOS - 1;
 
     if (!usuarioLogadoOS || !usuarioLogadoOS.id) {
       const session = await obterSessaoAtualOS();
@@ -622,7 +643,8 @@ async function carregarOrdens() {
         )
       `)
       .eq("user_id", usuarioLogadoOS.id)
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(inicio, fim);
 
     if (consulta.error && erroColunaInexistenteOS(consulta.error)) {
       console.warn(
@@ -642,7 +664,8 @@ async function carregarOrdens() {
           )
         `)
         .eq("user_id", usuarioLogadoOS.id)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .range(inicio, fim);
     }
 
     if (consulta.error) {
@@ -655,10 +678,14 @@ async function carregarOrdens() {
       return;
     }
 
-    ordensCache = Array.isArray(consulta.data) ? consulta.data : [];
+    const novasOrdens = Array.isArray(consulta.data) ? consulta.data : [];
+    temMaisOrdensOS = novasOrdens.length === limiteOrdensOS;
+    ordensCache = resetar ? novasOrdens : [...ordensCache, ...novasOrdens];
+    paginaOrdensOS += 1;
 
     atualizarResumoOrdens(ordensCache);
     renderizarOrdens(ordensCache);
+    atualizarBotaoCarregarMaisOrdens();
 
   } catch (erro) {
     console.error("Erro inesperado ao carregar ordens:", erro);
@@ -1036,8 +1063,8 @@ function renderizarOrdens(lista) {
   if (!lista || lista.length === 0) {
     container.innerHTML = `
       <div class="estado-vazio">
-        <strong>Nenhuma ordem de serviço encontrada</strong>
-        <p>Cadastre a primeira OS usando o formulário ao lado.</p>
+        <strong>Nenhuma ordem carregada</strong>
+        <p>Use os filtros e clique em Buscar para carregar até 20 ordens por vez.</p>
       </div>
     `;
     return;
@@ -1048,73 +1075,128 @@ function renderizarOrdens(lista) {
 
 function criarCardOrdem(ordem) {
   const numero = formatarNumeroOS(ordem.numero_os);
-  const titulo = escaparHTMLOS(ordem.titulo || "Ordem de serviço sem título");
-  const clienteNome = escaparHTMLOS(obterNomeClienteDaOrdem(ordem));
-  const consultorTecnico = escaparHTMLOS(ordem.responsavel || "");
+  const clienteNome = escaparHTMLOS(obterNomeClienteDaOrdem(ordem) || "Sem cliente vinculado");
   const veiculo = obterVeiculoDaOrdem(ordem);
-  const veiculoTexto = veiculo ? formatarVeiculoOS(veiculo) : "";
+  const marca = escaparHTMLOS(veiculo?.marca || "-");
+  const modelo = escaparHTMLOS(veiculo?.modelo || "-");
+  const veiculoTexto = veiculo ? `${marca} ${modelo}`.trim() : "Sem veículo";
   const status = ordem.status || "aberta";
-  const pagamento = ordem.status_pagamento || "pendente";
   const valorTotal = formatarMoedaOS(ordem.valor_total || 0);
-
-  const dataAbertura = formatarDataVisualOS(ordem.data_abertura);
-  const dataPrevista = formatarDataVisualOS(ordem.data_prevista);
-  const dataConclusao = formatarDataVisualOS(ordem.data_conclusao);
-
-  const detalhes = [
-    clienteNome ? `Cliente: ${clienteNome}` : "Sem cliente vinculado",
-    consultorTecnico ? `Consultor Técnico: ${consultorTecnico}` : "",
-    veiculoTexto ? `Veículo: ${veiculoTexto}` : "",
-    dataAbertura ? `Abertura: ${dataAbertura}` : "",
-    dataPrevista ? `Prevista: ${dataPrevista}` : "",
-    dataConclusao ? `Conclusão: ${dataConclusao}` : "",
-    ordem.orcamento_id ? `Orçamento vinculado: ${ordem.orcamento_id}` : ""
-  ].filter(Boolean).join(" • ");
+  const idSeguro = escaparHTMLAtributo(ordem.id || "");
 
   return `
-    <article class="ordem-item" data-ordem-id="${escaparHTMLOS(ordem.id)}">
+    <article class="ordem-item ordem-item-resumida" data-ordem-id="${idSeguro}" onclick="abrirModalResumoOrdem('${idSeguro}')" tabindex="0" role="button">
       <div class="ordem-linha-topo">
         <div class="ordem-info">
-          <h3>${numero} - ${titulo}</h3>
-          <p>${escaparHTMLOS(detalhes)}</p>
+          <h3>${numero}</h3>
+          <p><strong>Cliente:</strong> ${clienteNome}</p>
+          <p><strong>Veículo:</strong> ${escaparHTMLOS(veiculoTexto)}</p>
         </div>
 
         <div class="ordem-valor">
-          <span>Total atual</span>
+          <span>Valor</span>
           <strong>${valorTotal}</strong>
         </div>
       </div>
 
       <div class="ordem-tags">
         <span class="tag ${escaparHTMLOS(status)}">${formatarStatusOS(status)}</span>
-        <span class="tag ${escaparHTMLOS(pagamento)}">${formatarStatusPagamentoOS(pagamento)}</span>
-      </div>
-
-      ${
-        ordem.descricao_problema
-          ? `<p style="margin: 8px 0 0; color:#475569; font-size:13px; line-height:1.5;">${escaparHTMLOS(ordem.descricao_problema)}</p>`
-          : ""
-      }
-
-      <div class="ordem-acoes">
-        <button type="button" class="btn btn-secundario btn-pequeno" onclick="editarOrdem('${ordem.id}')">
-          Editar dados básicos
-        </button>
-
-        <button type="button" class="btn btn-primario btn-pequeno" onclick="abrirDetalhesOrdem('${ordem.id}')">
-          Abrir OS
-        </button>
-
-        <button type="button" class="btn btn-verde btn-pequeno" onclick="gerarPDFOrdem('${ordem.id}')">
-          PDF
-        </button>
-
-        <button type="button" class="btn btn-perigo btn-pequeno" onclick="excluirOrdem('${ordem.id}')">
-          Excluir
-        </button>
       </div>
     </article>
   `;
+}
+
+function prepararListaOrdensVazia() {
+  const container = document.getElementById("lista-ordens");
+  if (container) {
+    container.innerHTML = `
+      <div class="estado-vazio">
+        <strong>Nenhuma OS carregada</strong>
+        <p>Use os filtros e clique em Buscar. A página carrega no máximo 20 registros por vez.</p>
+      </div>
+    `;
+  }
+  atualizarBotaoCarregarMaisOrdens();
+}
+
+function obterFiltrosOrdensAtuais() {
+  return {
+    termo: normalizarTextoOS(valorInputOS("busca-ordens")),
+    status: valorInputOS("filtro-status-ordens"),
+    pagamento: valorInputOS("filtro-pagamento-ordens"),
+    veiculo: normalizarTextoOS(valorInputOS("filtro-veiculo-ordens"))
+  };
+}
+
+function atualizarBotaoCarregarMaisOrdens() {
+  const botao = document.getElementById("btn-carregar-mais-ordens");
+  if (!botao) return;
+  botao.style.display = temMaisOrdensOS ? "inline-flex" : "none";
+  botao.textContent = "Carregar mais 20 OS";
+}
+
+function abrirModalResumoOrdem(id) {
+  const ordem = ordensCache.find((item) => item.id === id);
+  if (!ordem) return;
+
+  let modal = document.getElementById("modal-resumo-ordem-lista");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "modal-resumo-ordem-lista";
+    modal.className = "modal-resumo-ordem-overlay";
+    document.body.appendChild(modal);
+  }
+
+  const numero = formatarNumeroOS(ordem.numero_os);
+  const titulo = escaparHTMLOS(ordem.titulo || "Ordem de serviço");
+  const clienteNome = escaparHTMLOS(obterNomeClienteDaOrdem(ordem) || "Sem cliente vinculado");
+  const veiculo = obterVeiculoDaOrdem(ordem);
+  const veiculoTexto = veiculo ? formatarVeiculoOS(veiculo) : "Sem veículo vinculado";
+  const status = ordem.status || "aberta";
+  const pagamento = ordem.status_pagamento || "pendente";
+
+  modal.innerHTML = `
+    <div class="modal-resumo-ordem-box" role="dialog" aria-modal="true">
+      <div class="modal-resumo-ordem-header">
+        <div>
+          <h3>${numero} - ${titulo}</h3>
+          <p>${clienteNome}</p>
+        </div>
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalResumoOrdem()">×</button>
+      </div>
+
+      <div class="modal-resumo-ordem-body">
+        <div class="modal-resumo-grid">
+          <div><strong>Cliente</strong><span>${clienteNome}</span></div>
+          <div><strong>Veículo</strong><span>${escaparHTMLOS(veiculoTexto)}</span></div>
+          <div><strong>Status da OS</strong><span>${formatarStatusOS(status)}</span></div>
+          <div><strong>Pagamento</strong><span>${formatarStatusPagamentoOS(pagamento)}</span></div>
+          <div><strong>Valor</strong><span>${formatarMoedaOS(ordem.valor_total || 0)}</span></div>
+          <div><strong>Abertura</strong><span>${formatarDataVisualOS(ordem.data_abertura) || '-'}</span></div>
+          <div><strong>Prevista</strong><span>${formatarDataVisualOS(ordem.data_prevista) || '-'}</span></div>
+          <div><strong>Conclusão</strong><span>${formatarDataVisualOS(ordem.data_conclusao) || '-'}</span></div>
+        </div>
+
+        <div class="modal-resumo-texto">
+          <strong>Descrição / observações</strong>
+          <p>${escaparHTMLOS(ordem.descricao_problema || ordem.descricao_servico || ordem.observacoes || 'Sem descrição cadastrada.')}</p>
+        </div>
+
+        <div class="ordem-acoes modal-resumo-acoes">
+          <button type="button" class="btn btn-secundario btn-pequeno" onclick="editarOrdem('${id}')">Editar dados básicos</button>
+          <button type="button" class="btn btn-primario btn-pequeno" onclick="abrirPaginaDetalhesOrdem('${id}')">Abrir OS completa</button>
+          <button type="button" class="btn btn-verde btn-pequeno" onclick="gerarPDFOrdem('${id}')">PDF</button>
+          <button type="button" class="btn btn-perigo btn-pequeno" onclick="excluirOrdem('${id}')">Excluir</button>
+        </div>
+      </div>
+    </div>
+  `;
+  modal.classList.add("ativo");
+}
+
+function fecharModalResumoOrdem() {
+  const modal = document.getElementById("modal-resumo-ordem-lista");
+  if (modal) modal.classList.remove("ativo");
 }
 
 /* =========================================================
@@ -1205,7 +1287,7 @@ function atualizarResumoOrdens(lista) {
    AÇÕES
    ========================================================= */
 
-function abrirDetalhesOrdem(id) {
+function abrirPaginaDetalhesOrdem(id) {
   if (!id) {
     alert("ID da ordem de serviço não encontrado.");
     return;
@@ -1223,6 +1305,10 @@ function abrirDetalhesOrdem(id) {
   window.location.href = destino;
 }
 
+function abrirDetalhesOrdem(id) {
+  abrirModalResumoOrdem(id);
+}
+
 function gerarPDFOrdem(id) {
   const ordem = ordensCache.find((item) => item.id === id);
 
@@ -1231,7 +1317,7 @@ function gerarPDFOrdem(id) {
     return;
   }
 
-  abrirDetalhesOrdem(id);
+  abrirPaginaDetalhesOrdem(id);
 }
 
 /* =========================================================
@@ -1648,6 +1734,9 @@ window.editarOrdem = editarOrdem;
 window.excluirOrdem = excluirOrdem;
 window.filtrarOrdens = filtrarOrdens;
 window.abrirDetalhesOrdem = abrirDetalhesOrdem;
+window.abrirPaginaDetalhesOrdem = abrirPaginaDetalhesOrdem;
+window.abrirModalResumoOrdem = abrirModalResumoOrdem;
+window.fecharModalResumoOrdem = fecharModalResumoOrdem;
 window.gerarPDFOrdem = gerarPDFOrdem;
 window.limparFormularioOrdem = limparFormularioOrdem;
 window.carregarOrcamentoOrigemPelaURL = carregarOrcamentoOrigemPelaURL;

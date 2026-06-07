@@ -972,6 +972,15 @@
       font-size: 15px;
     }
 
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
     @media (max-width: 980px) {
       .cards-explicativos,
       .passos-funciona,
@@ -1406,11 +1415,24 @@
       font-weight: 900;
     }
 
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
     @media (max-width: 980px) {
       .home-dashboard-grid,
       .home-atalhos-grid,
       .home-relatorio-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .home-dashboard-grid-premium {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
 
@@ -1425,10 +1447,35 @@
       }
 
       .home-grid-planos,
-      .home-dashboard-grid,
+      .home-dashboard-grid:not(.home-dashboard-grid-premium),
       .home-atalhos-grid,
       .home-relatorio-grid {
         grid-template-columns: 1fr;
+      }
+
+      .home-dashboard-grid-premium {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card {
+        padding: 11px 8px;
+        border-left-width: 4px;
+        border-radius: 14px;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card span {
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card strong {
+        font-size: 22px;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card small {
+        font-size: 10px;
+        line-height: 1.2;
       }
 
       .btn-home-grande,
@@ -1970,6 +2017,15 @@
       flex: 0 0 auto;
     }
 
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
     @media (max-width: 980px) {
       .home-whatsapp-section {
         grid-template-columns: 1fr;
@@ -2148,7 +2204,7 @@
 
     .home-premium-fluxo-visual {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
       margin-top: 16px;
     }
@@ -2171,10 +2227,19 @@
       margin-top: 18px;
     }
 
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
     @media (max-width: 980px) {
       .home-premium-showcase-topo,
       .home-premium-recursos-grid { grid-template-columns: 1fr 1fr; }
-      .home-premium-fluxo-visual { grid-template-columns: 1fr; }
+      .home-premium-fluxo-visual { grid-template-columns: repeat(3, 1fr); }
     }
 
     @media (max-width: 640px) {
@@ -2310,6 +2375,15 @@
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 18px;
+    }
+
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
     }
 
     @media (max-width: 980px) {
@@ -3681,11 +3755,9 @@ body.gerando-pdf * {
         <h3>🚀 Upgrade recomendado: Premium</h3>
         <p>
           Seu Básico já organiza orçamentos, links e aprovações. Com o Premium você transforma cada orçamento aprovado
-          em ordem de serviço, controla clientes, veículos, estoque e acompanha a execução até o pagamento final.
+          em ordem de serviço, controla estoque e acompanha a execução até o pagamento final.
         </p>
         <div class="home-premium-fluxo-visual" style="margin-top:14px;">
-          <div>Cliente</div>
-          <div>Veículo</div>
           <div>Orçamento</div>
           <div>OS</div>
           <div>Estoque</div>
@@ -3704,13 +3776,12 @@ body.gerando-pdf * {
       <span class="home-plano-tag">Plano Premium ativo</span>
       <h1>Central de acompanhamento da sua operação.</h1>
       <p>
-        Controle orçamentos, clientes, veículos, ordens de serviço e estoque em uma visão rápida para decidir
+        Controle orçamentos, ordens de serviço e estoque em uma visão rápida para decidir
         o que precisa de atenção hoje.
       </p>
       <div class="home-plano-acoes">
         <button type="button" class="btn-home-medio" onclick="abrirGeradorHomeProtegido()">🧾 Novo orçamento</button>
         <a href="/ordens.html" class="btn-home-atalho">🛠️ Nova OS</a>
-        <a href="/clientes.html" class="btn-home-atalho">👤 Clientes</a>
         <a href="/estoque.html" class="btn-home-atalho">📦 Estoque</a>
       </div>
     </div>
@@ -3718,29 +3789,24 @@ body.gerando-pdf * {
     <article class="home-painel-card">
       <div class="home-painel-topo">
         <div>
-          <h2>Display operacional</h2>
-          <p>Tudo do Básico + acompanhamento das ordens, veículos e estoque.</p>
+          <h2>Central operacional</h2>
+          <p>Tudo do Básico + acompanhamento das ordens e estoque.</p>
         </div>
         <a href="/painel.html" class="btn-home-medio">Painel completo</a>
       </div>
 
-      <div class="home-dashboard-grid">
+      <div class="home-dashboard-grid home-dashboard-grid-premium">
         <div class="home-metrica-card"><span>Orçamentos pendentes</span><strong id="home-premium-orc-pendentes">0</strong><small>Propostas em aberto</small></div>
         <div class="home-metrica-card"><span>Orçamentos aprovados</span><strong id="home-premium-orc-aprovados">0</strong><small>Prontos para execução</small></div>
         <div class="home-metrica-card"><span>OS abertas</span><strong id="home-premium-os-abertas">0</strong><small>Aguardando início</small></div>
         <div class="home-metrica-card"><span>OS em execução</span><strong id="home-premium-os-execucao">0</strong><small>Serviços em andamento</small></div>
-      </div>
-
-      <div class="home-relatorio-grid">
-        <div class="home-relatorio-card destaque"><span>Faturamento em OS</span><strong id="home-premium-faturamento">R$ 0,00</strong><small>Concluídas e pagas</small></div>
-        <div class="home-relatorio-card"><span>Estoque baixo</span><strong id="home-premium-estoque-baixo">0</strong><small>Itens que precisam atenção</small></div>
-        <div class="home-relatorio-card"><span>Clientes / Veículos</span><strong id="home-premium-clientes-veiculos">0 / 0</strong><small>Base cadastrada</small></div>
+        <div class="home-metrica-card destaque"><span>Faturamento em OS</span><strong id="home-premium-faturamento">R$ 0,00</strong><small>Concluídas e pagas</small></div>
+        <div class="home-metrica-card"><span>Estoque baixo</span><strong id="home-premium-estoque-baixo">0</strong><small>Itens que precisam atenção</small></div>
       </div>
 
       <div class="home-atalhos-grid">
         <a href="/orcamentos.html" class="btn-home-atalho">📋 Orçamentos</a>
         <a href="/ordens.html" class="btn-home-atalho">🛠️ Ordens</a>
-        <a href="/veiculos.html" class="btn-home-atalho">🚗 Veículos</a>
         <a href="/estoque.html" class="btn-home-atalho">📦 Estoque</a>
       </div>
 
