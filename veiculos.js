@@ -101,6 +101,7 @@ function configurarEventosVeiculos() {
   const filtroStatus = document.getElementById("filtro-status-veiculos");
   const filtroCliente = document.getElementById("filtro-cliente-veiculos");
   const btnToggleLista = document.getElementById("btn-toggle-lista-veiculos");
+  const campoBuscaClienteModal = document.getElementById("campo-busca-cliente-veiculo");
 
   const inputPlaca = document.getElementById("veiculo-placa");
   const inputChassi = document.getElementById("veiculo-chassi");
@@ -132,6 +133,15 @@ function configurarEventosVeiculos() {
 
   if (btnToggleLista) {
     btnToggleLista.addEventListener("click", alternarListaVeiculosMobile);
+  }
+
+  if (campoBuscaClienteModal) {
+    campoBuscaClienteModal.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        buscarClientesModalVeiculo();
+      }
+    });
   }
 
   if (inputPlaca) {
@@ -229,7 +239,7 @@ async function carregarClientesParaVeiculos() {
 
     const { data, error } = await window._supabase
       .from("clientes")
-      .select("id, nome, whatsapp, cidade, estado, status")
+      .select("id, nome, whatsapp, email, endereco, cidade, estado, cep, status")
       .eq("user_id", usuarioLogadoVeiculos.id)
       .order("nome", { ascending: true });
 
@@ -238,7 +248,7 @@ async function carregarClientesParaVeiculos() {
 
       const fallback = await window._supabase
         .from("clientes")
-        .select("id, nome, whatsapp, cidade, estado, status")
+        .select("id, nome, whatsapp, email, endereco, cidade, estado, cep, status")
         .eq("usuario_id", usuarioLogadoVeiculos.id)
         .order("nome", { ascending: true });
 
@@ -262,23 +272,12 @@ async function carregarClientesParaVeiculos() {
 }
 
 function preencherSelectClientesVeiculos() {
-  const selectForm = document.getElementById("veiculo-cliente-id");
   const selectFiltro = document.getElementById("filtro-cliente-veiculos");
 
   const opcoesClientes = clientesVeiculosCache.map((cliente) => {
     const textoExtra = cliente.whatsapp ? ` - ${formatarTelefoneVeiculo(cliente.whatsapp)}` : "";
     return `<option value="${escaparHTMLAtributoVeiculo(cliente.id)}">${escaparHTMLVeiculo(cliente.nome || "Cliente sem nome")}${textoExtra}</option>`;
   }).join("");
-
-  if (selectForm) {
-    const valorAtual = selectForm.value;
-    selectForm.innerHTML = `
-      <option value="">Sem cliente vinculado</option>
-      ${opcoesClientes}
-    `;
-
-    if (valorAtual) selectForm.value = valorAtual;
-  }
 
   if (selectFiltro) {
     const valorAtual = selectFiltro.value;
@@ -290,6 +289,8 @@ function preencherSelectClientesVeiculos() {
 
     if (valorAtual) selectFiltro.value = valorAtual;
   }
+
+  atualizarClienteVisualVeiculo(valorInputVeiculo("veiculo-cliente-id"));
 }
 
 function obterClientePorIdVeiculo(clienteId) {
@@ -490,6 +491,7 @@ function editarVeiculo(id) {
 
   setValorVeiculo("veiculo-id", veiculo.id);
   setValorVeiculo("veiculo-cliente-id", veiculo.cliente_id || "");
+  atualizarClienteVisualVeiculo(veiculo.cliente_id || "");
   setValorVeiculo("veiculo-placa", veiculo.placa || "");
   setValorVeiculo("veiculo-chassi", veiculo.chassi || "");
   setValorVeiculo("veiculo-marca", veiculo.marca || "");
@@ -791,6 +793,7 @@ function aplicarParametrosUrlVeiculos() {
 
   if (clienteId) {
     setValorVeiculo("veiculo-cliente-id", clienteId);
+    atualizarClienteVisualVeiculo(clienteId);
     setValorVeiculo("filtro-cliente-veiculos", clienteId);
     filtrarVeiculos();
   }
@@ -811,6 +814,7 @@ function limparFormularioVeiculo() {
 
   setValorVeiculo("veiculo-id", "");
   setValorVeiculo("veiculo-cliente-id", "");
+  atualizarClienteVisualVeiculo("");
   setValorVeiculo("veiculo-placa", "");
   setValorVeiculo("veiculo-chassi", "");
   setValorVeiculo("veiculo-marca", "");
@@ -1005,6 +1009,126 @@ function escaparHTMLAtributoVeiculo(valor) {
   return escaparHTMLVeiculo(valor);
 }
 
+
+
+/* =========================================================
+   MODAL DE BUSCA DE CLIENTE
+   ========================================================= */
+
+function textoBuscaClienteVeiculo(cliente) {
+  return normalizarTextoVeiculo([
+    cliente?.nome,
+    cliente?.whatsapp,
+    cliente?.email,
+    cliente?.endereco,
+    cliente?.cidade,
+    cliente?.estado,
+    cliente?.cep
+  ].filter(Boolean).join(" "));
+}
+
+function detalhesClienteVeiculo(cliente) {
+  if (!cliente) return "";
+
+  return [
+    cliente.whatsapp ? `WhatsApp: ${formatarTelefoneVeiculo(cliente.whatsapp)}` : "",
+    cliente.email ? `E-mail: ${cliente.email}` : "",
+    cliente.endereco ? `Endereço: ${cliente.endereco}` : "",
+    [cliente.cidade, cliente.estado].filter(Boolean).join("/") || "",
+    cliente.cep ? `CEP: ${cliente.cep}` : ""
+  ].filter(Boolean).join(" • ");
+}
+
+function atualizarClienteVisualVeiculo(clienteId) {
+  const nomeEl = document.getElementById("veiculo-cliente-visual");
+  const detalhesEl = document.getElementById("veiculo-cliente-detalhes");
+
+  if (!nomeEl || !detalhesEl) return;
+
+  const cliente = obterClientePorIdVeiculo(clienteId);
+
+  if (!cliente) {
+    nomeEl.textContent = "Nenhum cliente selecionado";
+    detalhesEl.textContent = "Você pode salvar o veículo sem cliente ou buscar um cliente cadastrado.";
+    return;
+  }
+
+  nomeEl.textContent = cliente.nome || "Cliente sem nome";
+  detalhesEl.textContent = detalhesClienteVeiculo(cliente) || "Cliente vinculado ao veículo.";
+}
+
+function abrirModalBuscaClienteVeiculo() {
+  const modal = document.getElementById("modal-busca-cliente-veiculo");
+  const resultado = document.getElementById("resultado-busca-clientes-veiculo");
+  const campo = document.getElementById("campo-busca-cliente-veiculo");
+
+  if (resultado) {
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>`;
+  }
+
+  if (campo) campo.value = "";
+
+  if (modal) {
+    modal.classList.add("ativo");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => campo?.focus(), 80);
+  }
+}
+
+function fecharModalBuscaClienteVeiculo() {
+  const modal = document.getElementById("modal-busca-cliente-veiculo");
+
+  if (modal) {
+    modal.classList.remove("ativo");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+function buscarClientesModalVeiculo() {
+  const campo = document.getElementById("campo-busca-cliente-veiculo");
+  const resultado = document.getElementById("resultado-busca-clientes-veiculo");
+
+  if (!resultado) return;
+
+  const termo = normalizarTextoVeiculo(campo?.value || "");
+
+  if (termo.length < 2) {
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres para buscar cliente.</div>`;
+    return;
+  }
+
+  const encontrados = clientesVeiculosCache.filter((cliente) => textoBuscaClienteVeiculo(cliente).includes(termo)).slice(0, 30);
+
+  if (!encontrados.length) {
+    resultado.innerHTML = `
+      <div class="estado-busca-cliente-modal">
+        Nenhum cliente encontrado.
+        <br><br>
+        <a href="clientes.html?novo=1" class="btn btn-primario">Cadastrar novo cliente</a>
+      </div>
+    `;
+    return;
+  }
+
+  resultado.innerHTML = encontrados.map((cliente) => `
+    <button type="button" class="cliente-modal-item" onclick="selecionarClienteModalVeiculo('${escaparHTMLAtributoVeiculo(cliente.id)}')">
+      <strong>${escaparHTMLVeiculo(cliente.nome || "Cliente sem nome")}</strong>
+      <span>${escaparHTMLVeiculo(detalhesClienteVeiculo(cliente) || "Sem detalhes adicionais")}</span>
+    </button>
+  `).join("");
+}
+
+function selecionarClienteModalVeiculo(clienteId) {
+  setValorVeiculo("veiculo-cliente-id", clienteId || "");
+  atualizarClienteVisualVeiculo(clienteId || "");
+  fecharModalBuscaClienteVeiculo();
+}
+
+function limparClienteSelecionadoVeiculo() {
+  setValorVeiculo("veiculo-cliente-id", "");
+  atualizarClienteVisualVeiculo("");
+}
+
 /* =========================================================
    EXPORTAÇÕES GLOBAIS
    Necessário porque botões são criados via innerHTML.
@@ -1020,3 +1144,9 @@ window.limparFormularioVeiculo = limparFormularioVeiculo;
 window.alternarListaVeiculosMobile = alternarListaVeiculosMobile;
 window.novoOrcamentoComVeiculo = novoOrcamentoComVeiculo;
 window.novaOSComVeiculo = novaOSComVeiculo;
+
+window.abrirModalBuscaClienteVeiculo = abrirModalBuscaClienteVeiculo;
+window.fecharModalBuscaClienteVeiculo = fecharModalBuscaClienteVeiculo;
+window.buscarClientesModalVeiculo = buscarClientesModalVeiculo;
+window.selecionarClienteModalVeiculo = selecionarClienteModalVeiculo;
+window.limparClienteSelecionadoVeiculo = limparClienteSelecionadoVeiculo;

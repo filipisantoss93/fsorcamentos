@@ -110,7 +110,7 @@ function configurarEventosOrdens() {
   const filtroStatus = document.getElementById("filtro-status-ordens");
   const filtroPagamento = document.getElementById("filtro-pagamento-ordens");
   const filtroVeiculo = document.getElementById("filtro-veiculo-ordens");
-  const selectCliente = document.getElementById("ordem-cliente-id");
+  const campoBuscaClienteModal = document.getElementById("campo-busca-cliente-os");
 
   if (form) {
     form.addEventListener("submit", salvarOrdem);
@@ -140,9 +140,12 @@ function configurarEventosOrdens() {
     filtroVeiculo.addEventListener("input", filtrarOrdens);
   }
 
-  if (selectCliente) {
-    selectCliente.addEventListener("change", () => {
-      atualizarSelectVeiculosPorClienteOS(selectCliente.value);
+  if (campoBuscaClienteModal) {
+    campoBuscaClienteModal.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        buscarClientesModalOS();
+      }
     });
   }
 
@@ -225,7 +228,7 @@ async function carregarClientesSelectOS() {
   try {
     const { data, error } = await window._supabase
       .from("clientes")
-      .select("id, nome, whatsapp, email, status")
+      .select("id, nome, whatsapp, email, endereco, cidade, estado, cep, status")
       .eq("user_id", usuarioLogadoOS.id)
       .order("nome", { ascending: true });
 
@@ -248,22 +251,7 @@ async function carregarClientesSelectOS() {
 }
 
 function renderizarSelectClientesOS() {
-  const select = document.getElementById("ordem-cliente-id");
-
-  if (!select) return;
-
-  const opcoes = clientesCacheOS.map((cliente) => {
-    return `
-      <option value="${escaparHTMLOS(cliente.id)}">
-        ${escaparHTMLOS(cliente.nome || "Cliente sem nome")}
-      </option>
-    `;
-  }).join("");
-
-  select.innerHTML = `
-    <option value="">Selecione um cliente</option>
-    ${opcoes}
-  `;
+  atualizarClienteVisualOS(valorInputOS("ordem-cliente-id"));
 }
 
 function selecionarClientePelaURL() {
@@ -272,12 +260,9 @@ function selecionarClientePelaURL() {
 
   if (!clienteId) return;
 
-  const select = document.getElementById("ordem-cliente-id");
-
-  if (select) {
-    select.value = clienteId;
-    atualizarSelectVeiculosPorClienteOS(clienteId, params.get("veiculo_id") || "");
-  }
+  setValorOS("ordem-cliente-id", clienteId);
+  atualizarClienteVisualOS(clienteId);
+  atualizarSelectVeiculosPorClienteOS(clienteId, params.get("veiculo_id") || "");
 }
 
 
@@ -375,6 +360,7 @@ function selecionarVeiculoPelaURL() {
 
   if (veiculo?.cliente_id) {
     setValorOS("ordem-cliente-id", veiculo.cliente_id);
+    atualizarClienteVisualOS(veiculo.cliente_id);
     atualizarSelectVeiculosPorClienteOS(veiculo.cliente_id, veiculoId);
     return;
   }
@@ -472,6 +458,7 @@ function preencherOSComOrcamentoOrigem(orcamento) {
 
   if (clienteId) {
     setValorOS("ordem-cliente-id", clienteId);
+    atualizarClienteVisualOS(clienteId);
     atualizarSelectVeiculosPorClienteOS(clienteId, veiculoId);
   }
 
@@ -930,6 +917,7 @@ function editarOrdem(id) {
 
   setValorOS("ordem-id", ordem.id);
   setValorOS("ordem-cliente-id", ordem.cliente_id);
+  atualizarClienteVisualOS(ordem.cliente_id);
   atualizarSelectVeiculosPorClienteOS(ordem.cliente_id, ordem.veiculo_id || "");
   setValorOS("ordem-veiculo-id", ordem.veiculo_id || "");
   setValorOS("ordem-titulo", ordem.titulo);
@@ -1261,6 +1249,7 @@ function limparFormularioOrdem() {
 
   definirDataAberturaPadrao();
   selecionarClientePelaURL();
+  atualizarClienteVisualOS(valorInputOS("ordem-cliente-id"));
   atualizarSelectVeiculosPorClienteOS(valorInputOS("ordem-cliente-id"));
   selecionarVeiculoPelaURL();
   preencherConsultorTecnicoVisual();
@@ -1491,6 +1480,144 @@ function formatarStatusPagamentoOS(status) {
   return mapa[status] || "Pagamento pendente";
 }
 
+
+
+/* =========================================================
+   MODAL DE BUSCA DE CLIENTE
+   ========================================================= */
+
+function obterClientePorIdOS(clienteId) {
+  if (!clienteId) return null;
+  return clientesCacheOS.find((cliente) => String(cliente.id) === String(clienteId)) || null;
+}
+
+function textoBuscaClienteOS(cliente) {
+  return normalizarTextoOS([
+    cliente?.nome,
+    cliente?.whatsapp,
+    cliente?.email,
+    cliente?.endereco,
+    cliente?.cidade,
+    cliente?.estado,
+    cliente?.cep
+  ].filter(Boolean).join(" "));
+}
+
+function detalhesClienteOS(cliente) {
+  if (!cliente) return "";
+
+  return [
+    cliente.whatsapp ? `WhatsApp: ${formatarTelefoneVisualOS(cliente.whatsapp)}` : "",
+    cliente.email ? `E-mail: ${cliente.email}` : "",
+    cliente.endereco ? `Endereço: ${cliente.endereco}` : "",
+    [cliente.cidade, cliente.estado].filter(Boolean).join("/") || "",
+    cliente.cep ? `CEP: ${cliente.cep}` : ""
+  ].filter(Boolean).join(" • ");
+}
+
+function atualizarClienteVisualOS(clienteId) {
+  const nomeEl = document.getElementById("ordem-cliente-visual");
+  const detalhesEl = document.getElementById("ordem-cliente-detalhes");
+
+  if (!nomeEl || !detalhesEl) return;
+
+  const cliente = obterClientePorIdOS(clienteId);
+
+  if (!cliente) {
+    nomeEl.textContent = "Nenhum cliente selecionado";
+    detalhesEl.textContent = "Busque um cliente cadastrado para preencher a OS automaticamente.";
+    return;
+  }
+
+  nomeEl.textContent = cliente.nome || "Cliente sem nome";
+  detalhesEl.textContent = detalhesClienteOS(cliente) || "Cliente vinculado à OS.";
+}
+
+function abrirModalBuscaClienteOS() {
+  const modal = document.getElementById("modal-busca-cliente-os");
+  const resultado = document.getElementById("resultado-busca-clientes-os");
+  const campo = document.getElementById("campo-busca-cliente-os");
+
+  if (resultado) {
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>`;
+  }
+
+  if (campo) campo.value = "";
+
+  if (modal) {
+    modal.classList.add("ativo");
+    modal.setAttribute("aria-hidden", "false");
+    setTimeout(() => campo?.focus(), 80);
+  }
+}
+
+function fecharModalBuscaClienteOS() {
+  const modal = document.getElementById("modal-busca-cliente-os");
+
+  if (modal) {
+    modal.classList.remove("ativo");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+function buscarClientesModalOS() {
+  const campo = document.getElementById("campo-busca-cliente-os");
+  const resultado = document.getElementById("resultado-busca-clientes-os");
+
+  if (!resultado) return;
+
+  const termo = normalizarTextoOS(campo?.value || "");
+
+  if (termo.length < 2) {
+    resultado.innerHTML = `<div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres para buscar cliente.</div>`;
+    return;
+  }
+
+  const encontrados = clientesCacheOS.filter((cliente) => textoBuscaClienteOS(cliente).includes(termo)).slice(0, 30);
+
+  if (!encontrados.length) {
+    resultado.innerHTML = `
+      <div class="estado-busca-cliente-modal">
+        Nenhum cliente encontrado.
+        <br><br>
+        <a href="clientes.html?novo=1" class="btn btn-primario">Cadastrar novo cliente</a>
+      </div>
+    `;
+    return;
+  }
+
+  resultado.innerHTML = encontrados.map((cliente) => `
+    <button type="button" class="cliente-modal-item" onclick="selecionarClienteModalOS('${escaparHTMLOS(cliente.id)}')">
+      <strong>${escaparHTMLOS(cliente.nome || "Cliente sem nome")}</strong>
+      <span>${escaparHTMLOS(detalhesClienteOS(cliente) || "Sem detalhes adicionais")}</span>
+    </button>
+  `).join("");
+}
+
+function selecionarClienteModalOS(clienteId) {
+  setValorOS("ordem-cliente-id", clienteId || "");
+  atualizarClienteVisualOS(clienteId || "");
+  atualizarSelectVeiculosPorClienteOS(clienteId || "");
+  fecharModalBuscaClienteOS();
+}
+
+function limparClienteSelecionadoOS() {
+  setValorOS("ordem-cliente-id", "");
+  setValorOS("ordem-veiculo-id", "");
+  atualizarClienteVisualOS("");
+  atualizarSelectVeiculosPorClienteOS("");
+}
+
+function formatarTelefoneVisualOS(telefone) {
+  const numero = String(telefone || "").replace(/\D/g, "");
+  if (!numero) return "";
+  let n = numero;
+  if (n.startsWith("55") && n.length > 11) n = n.substring(2);
+  if (n.length === 11) return `(${n.substring(0, 2)}) ${n.substring(2, 7)}-${n.substring(7)}`;
+  if (n.length === 10) return `(${n.substring(0, 2)}) ${n.substring(2, 6)}-${n.substring(6)}`;
+  return numero;
+}
+
 /* =========================================================
    EXPORTAÇÕES GLOBAIS
    Necessário porque os botões são criados via innerHTML.
@@ -1508,3 +1635,9 @@ window.carregarOrcamentoOrigemPelaURL = carregarOrcamentoOrigemPelaURL;
 window.carregarVeiculosSelectOS = carregarVeiculosSelectOS;
 window.atualizarSelectVeiculosPorClienteOS = atualizarSelectVeiculosPorClienteOS;
 window.selecionarVeiculoPelaURL = selecionarVeiculoPelaURL;
+
+window.abrirModalBuscaClienteOS = abrirModalBuscaClienteOS;
+window.fecharModalBuscaClienteOS = fecharModalBuscaClienteOS;
+window.buscarClientesModalOS = buscarClientesModalOS;
+window.selecionarClienteModalOS = selecionarClienteModalOS;
+window.limparClienteSelecionadoOS = limparClienteSelecionadoOS;

@@ -533,6 +533,170 @@
         display: none;
       }
     }
+  
+
+    /* =========================================================
+       BUSCA DE CLIENTE POR MODAL - ORDENS
+       ========================================================= */
+    .campo-cliente-modal { gap: 10px; }
+
+    .cliente-selecionado-box {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 13px 14px;
+      color: var(--fs-texto);
+      min-height: 62px;
+    }
+
+    .cliente-selecionado-box strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .cliente-selecionado-box span {
+      display: block;
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .cliente-modal-acoes {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .modal-busca-cliente-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 20000;
+      padding: 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-busca-cliente-overlay.ativo { display: flex; }
+
+    .modal-busca-cliente-box {
+      width: min(100%, 760px);
+      margin: 24px auto;
+      background: var(--fs-bege);
+      border-radius: 20px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 22px 60px rgba(0,0,0,.5);
+      overflow: hidden;
+      color: var(--fs-marrom);
+    }
+
+    .modal-busca-cliente-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--fs-amarelo);
+    }
+
+    .modal-busca-cliente-header h3 { margin: 0; color: var(--fs-amarelo); font-size: 20px; }
+    .modal-busca-cliente-header p { margin: 5px 0 0; color: var(--fs-bege); font-size: 13px; line-height: 1.4; }
+
+    .btn-fechar-modal-cliente {
+      border: none;
+      background: var(--fs-perigo);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .modal-busca-cliente-body { padding: 18px; }
+
+    .busca-cliente-modal-linha {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .busca-cliente-modal-linha input {
+      width: 100%;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--fs-marrom);
+      background: #fff;
+    }
+
+    .resultado-busca-clientes-modal {
+      display: grid;
+      gap: 10px;
+      max-height: 430px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .cliente-modal-item {
+      width: 100%;
+      text-align: left;
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border-radius: 14px;
+      padding: 13px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .cliente-modal-item:hover {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 8px 18px rgba(62,39,35,.18);
+      transform: translateY(-1px);
+    }
+
+    .cliente-modal-item strong { display: block; margin-bottom: 4px; }
+    .cliente-modal-item span { display: block; color: var(--fs-texto-suave); font-size: 12px; line-height: 1.45; }
+
+    .estado-busca-cliente-modal {
+      background: #fffaf0;
+      border: 1px dashed var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      color: var(--fs-texto-suave);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 720px) {
+      .cliente-modal-acoes,
+      .busca-cliente-modal-linha {
+        grid-template-columns: 1fr;
+      }
+
+      .cliente-modal-acoes .btn,
+      .cliente-modal-acoes a {
+        width: 100%;
+      }
+    }
+
   </style>
 </head>
 
@@ -562,14 +726,32 @@
           <form id="form-ordem" class="form-ordens">
             <input type="hidden" id="ordem-id" />
 
-            <div class="campo">
-              <label for="ordem-cliente-id">Cliente</label>
-              <select id="ordem-cliente-id">
-                <option value="">Selecione um cliente</option>
-              </select>
-              <small>
-                Cadastre clientes em Clientes. Se veio de um cliente específico, ele será selecionado automaticamente.
-              </small>
+            <div class="campo campo-cliente-modal">
+              <label for="ordem-cliente-visual">Cliente</label>
+              <input type="hidden" id="ordem-cliente-id" value="" />
+
+              <div class="cliente-selecionado-box" id="ordem-cliente-box">
+                <div>
+                  <strong id="ordem-cliente-visual">Nenhum cliente selecionado</strong>
+                  <span id="ordem-cliente-detalhes">Busque um cliente cadastrado para preencher a OS automaticamente.</span>
+                </div>
+              </div>
+
+              <div class="cliente-modal-acoes">
+                <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteOS()">
+                  Buscar cliente
+                </button>
+
+                <a href="clientes.html?novo=1" class="btn btn-primario">
+                  Cadastrar novo cliente
+                </a>
+
+                <button type="button" class="btn btn-perigo" onclick="limparClienteSelecionadoOS()">
+                  Limpar
+                </button>
+              </div>
+
+              <small>Pesquise por nome, telefone, e-mail, rua, cidade ou CEP. Se veio de um orçamento ou cliente, será preenchido automaticamente.</small>
             </div>
 
             <div class="campo">
@@ -757,6 +939,34 @@
       </section>
     </section>
   </main>
+
+
+  <div id="modal-busca-cliente-os" class="modal-busca-cliente-overlay" aria-hidden="true">
+    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca-cliente-os">
+      <div class="modal-busca-cliente-header">
+        <div>
+          <h3 id="titulo-modal-busca-cliente-os">Buscar cliente</h3>
+          <p>Pesquise por nome, telefone, e-mail, rua, cidade, estado ou CEP. A lista aparece somente depois da busca.</p>
+        </div>
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalBuscaClienteOS()">×</button>
+      </div>
+
+      <div class="modal-busca-cliente-body">
+        <div class="busca-cliente-modal-linha">
+          <div class="campo">
+            <label for="campo-busca-cliente-os">Nome, telefone, e-mail ou endereço</label>
+            <input type="search" id="campo-busca-cliente-os" placeholder="Ex: João, 18999999999, Rua Brasil, Assis ou 19800-000" autocomplete="off">
+          </div>
+          <button type="button" class="btn btn-primario" onclick="buscarClientesModalOS()">Buscar</button>
+          <a href="clientes.html?novo=1" class="btn btn-secundario">Novo cliente</a>
+        </div>
+
+        <div id="resultado-busca-clientes-os" class="resultado-busca-clientes-modal">
+          <div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
