@@ -1550,7 +1550,75 @@
         padding: 10px;
       }
     }
-  </style>
+  
+
+/* Teste grátis Premium */
+.teste-premium-inline-card {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff8dc, #ffffff);
+  border: 1px solid rgba(255, 196, 0, 0.65);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.teste-premium-inline-card h3 {
+  margin: 0 0 6px;
+  color: var(--fs-marrom, #4b2e1f);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.teste-premium-inline-card p {
+  margin: 0 0 8px;
+  color: #5d4037;
+  line-height: 1.45;
+}
+
+.teste-premium-inline-card small {
+  display: block;
+  color: #6d4c41;
+  font-weight: 700;
+}
+
+.teste-premium-inline-card .btn-teste-premium {
+  min-width: 210px;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #4b2e1f, #2b1710);
+  color: #ffc400;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.22);
+}
+
+.teste-premium-inline-card .btn-teste-premium:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.teste-premium-inline-card .btn-teste-premium:disabled {
+  opacity: .68;
+  cursor: not-allowed;
+  filter: grayscale(.2);
+}
+
+@media (max-width: 760px) {
+  .teste-premium-inline-card {
+    grid-template-columns: 1fr;
+  }
+
+  .teste-premium-inline-card .btn-teste-premium {
+    width: 100%;
+  }
+}
+
+</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696">
 </script>
@@ -2418,6 +2486,17 @@ body.gerando-pdf * {
         </p>
       </div>
     </div>
+  </section>
+
+  <section class="teste-premium-inline-card" id="box-teste-premium-gerador">
+    <div>
+      <h3>Teste Premium grátis por 7 dias</h3>
+      <p>Libere gestão completa com clientes, veículos, ordens de serviço e estoque. Ao vencer, sua conta volta para o Plano Básico.</p>
+      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
+    </div>
+    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
+      Verificando...
+    </button>
   </section>
 
   <div id="adsense-gerador-topo" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">

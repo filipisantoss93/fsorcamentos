@@ -2398,7 +2398,75 @@
       .home-basico-showcase h2 { font-size: 24px; }
     }
 
-  </style>
+  
+
+/* Teste grátis Premium */
+.teste-premium-inline-card {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff8dc, #ffffff);
+  border: 1px solid rgba(255, 196, 0, 0.65);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.teste-premium-inline-card h3 {
+  margin: 0 0 6px;
+  color: var(--fs-marrom, #4b2e1f);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.teste-premium-inline-card p {
+  margin: 0 0 8px;
+  color: #5d4037;
+  line-height: 1.45;
+}
+
+.teste-premium-inline-card small {
+  display: block;
+  color: #6d4c41;
+  font-weight: 700;
+}
+
+.teste-premium-inline-card .btn-teste-premium {
+  min-width: 210px;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #4b2e1f, #2b1710);
+  color: #ffc400;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.22);
+}
+
+.teste-premium-inline-card .btn-teste-premium:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.teste-premium-inline-card .btn-teste-premium:disabled {
+  opacity: .68;
+  cursor: not-allowed;
+  filter: grayscale(.2);
+}
+
+@media (max-width: 760px) {
+  .teste-premium-inline-card {
+    grid-template-columns: 1fr;
+  }
+
+  .teste-premium-inline-card .btn-teste-premium {
+    width: 100%;
+  }
+}
+
+</style>
 
 
 <!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
@@ -3355,6 +3423,17 @@ body.gerando-pdf * {
         <div class="home-premium-recurso-card"><strong>📦 Estoque integrado</strong><span>Produtos, peças, materiais, estoque baixo e baixa automática ao finalizar OS.</span></div>
       </div>
 
+      <section class="teste-premium-inline-card" id="box-teste-premium-index">
+        <div>
+          <h3>Teste Premium grátis por 7 dias</h3>
+          <p>Experimente clientes, veículos, OS, estoque e gestão completa. Ao vencer, sua conta volta para o Plano Básico.</p>
+          <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
+        </div>
+        <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
+          Verificando...
+        </button>
+      </section>
+
       <div class="home-premium-showcase-acoes">
         <a href="/planos.html#assinar-plano-premium" class="btn-home-planos-forte">🚀 Conhecer Premium</a>
         <a href="/manual-premium.html" class="btn-home-planos-secundario">Ver como funciona</a>
@@ -3926,15 +4005,8 @@ async function abrirGeradorGlobal() {
 }
 
 function redirecionarDestinoAposLoginSeExistir() {
-  const destino = localStorage.getItem('fs_destino_apos_login');
-
-  if (!destino) return;
-
+  // Após login, manter o usuário no index.html.
   localStorage.removeItem('fs_destino_apos_login');
-
-  if (window.location.pathname !== destino) {
-    window.location.href = destino;
-  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {

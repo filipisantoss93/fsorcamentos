@@ -115,7 +115,7 @@ function fsObterDestinoAposLoginPadrao() {
 
   if (paginaAtualProtegida()) return fsDestinoAtual();
 
-  return '/gerador.html';
+  return '/index.html';
 }
 
 function fsLimparDestinoAposLogin() {
@@ -127,15 +127,12 @@ function fsLimparDestinoAposLogin() {
 }
 
 function fsRedirecionarAposLogin() {
-  const destino = fsObterDestinoAposLoginPadrao();
-
   fsLimparDestinoAposLogin();
 
-  if (!destino) return;
-
+  const destino = '/index.html';
   const atual = fsDestinoAtual();
 
-  if (destino !== atual) {
+  if (!atual.endsWith('/index.html') && atual !== '/' && atual !== '/index') {
     window.location.href = destino;
   }
 }
@@ -1055,11 +1052,10 @@ async function loginComProvider(provider) {
       return;
     }
 
-    const destino = fsObterDestinoAposLoginPadrao();
+    fsLimparDestinoAposLogin();
 
-    fsSalvarDestinoAposLogin(destino);
-
-    const redirectTo = `${window.location.origin}${destino || '/gerador.html'}`;
+    const redirectTo = `${window.location.origin}/index.html`;
+    // Login social sempre retorna para a página inicial após autenticar.
 
     const { error } = await _supabase.auth.signInWithOAuth({
       provider: providerNormalizado,
