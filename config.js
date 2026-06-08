@@ -131,6 +131,14 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
   }
 
+  if (
+    path.endsWith('/agenda') || path.endsWith('/agenda.html') ||
+    path.endsWith('/ordens') || path.endsWith('/ordens.html') ||
+    path.endsWith('/clientes') || path.endsWith('/clientes.html')
+  ) {
+    fsConfigCarregarScriptUnico('/fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js');
+  }
+
   if (path.endsWith('/agenda') || path.endsWith('/agenda.html')) {
     fsConfigCarregarScriptUnico('/agenda-grid-fix.js', 'fs-agenda-grid-fix-js');
   }
