@@ -128,6 +128,10 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
   }
 
+  if (path.endsWith('/painel') || path.endsWith('/painel.html')) {
+    fsConfigCarregarScriptUnico('/painel-logo-fix.js', 'fs-painel-logo-fix-js');
+  }
+
   if (path.endsWith('/orcamentos') || path.endsWith('/orcamentos.html')) {
     fsConfigCarregarScriptUnico('/orcamentos-pdf.js', 'fs-orcamentos-pdf-js');
   }
