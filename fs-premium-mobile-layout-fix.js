@@ -2,6 +2,7 @@
    FS ORÇAMENTOS - Ajustes Premium Mobile/Layout
    - Agenda: Novo agendamento minimizável.
    - Clientes: Novo cliente minimizável e cards em 2 colunas.
+   - Clientes: lista sempre visível, sem botão Ver/Ocultar e sem botão Buscar duplicado.
    - Ordens: dashboard/resumo em grid 2 colunas.
    ========================================================= */
 (function () {
@@ -92,6 +93,25 @@
       .fs-btn-toggle-card:hover {
         background: #ffffff;
         color: var(--fs-marrom, #3e2723);
+      }
+
+      /* clientes.html: lista sempre aberta e somente botão Buscar cliente */
+      body .clientes-lista-toggle-mobile,
+      body #btn-toggle-lista-clientes,
+      body #btn-atualizar-clientes {
+        display: none !important;
+      }
+
+      body #lista-clientes.lista-clientes-mobile-fechada,
+      body #lista-clientes {
+        display: grid !important;
+      }
+
+      body #btn-buscar-cliente-modal-clientes {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
       }
 
       .fs-ordens-dashboard {
@@ -288,6 +308,34 @@
     prepararHeaderCard(novoCliente, 'Fechar', 'Abrir');
   }
 
+  function ajustarListaClientesSempreVisivel() {
+    if (!path.endsWith('/clientes') && !path.endsWith('/clientes.html')) return;
+
+    const lista = document.getElementById('lista-clientes');
+    if (lista) {
+      lista.classList.remove('lista-clientes-mobile-fechada');
+      lista.style.display = 'grid';
+    }
+
+    const toggleLista = document.querySelector('.clientes-lista-toggle-mobile');
+    if (toggleLista) toggleLista.remove();
+
+    const btnToggle = document.getElementById('btn-toggle-lista-clientes');
+    if (btnToggle) btnToggle.remove();
+
+    const btnBuscarAntigo = document.getElementById('btn-atualizar-clientes');
+    if (btnBuscarAntigo) {
+      btnBuscarAntigo.style.display = 'none';
+      btnBuscarAntigo.setAttribute('aria-hidden', 'true');
+    }
+
+    const btnBuscarCliente = document.getElementById('btn-buscar-cliente-modal-clientes');
+    if (btnBuscarCliente) {
+      btnBuscarCliente.textContent = 'Buscar cliente';
+      btnBuscarCliente.style.display = 'inline-flex';
+    }
+  }
+
   async function aguardarSupabase(tentativas = 20) {
     for (let i = 0; i < tentativas; i += 1) {
       if (window._supabase) return true;
@@ -399,17 +447,20 @@
     injetarEstilo();
     instalarAgendaMinimizavel();
     instalarClientesMinimizavel();
+    ajustarListaClientesSempreVisivel();
     preencherDashboardOrdens();
 
     setTimeout(() => {
       instalarAgendaMinimizavel();
       instalarClientesMinimizavel();
+      ajustarListaClientesSempreVisivel();
       preencherDashboardOrdens();
     }, 800);
 
     setTimeout(() => {
       instalarAgendaMinimizavel();
       instalarClientesMinimizavel();
+      ajustarListaClientesSempreVisivel();
       preencherDashboardOrdens();
     }, 1800);
   }
