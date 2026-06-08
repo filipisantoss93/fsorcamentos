@@ -148,9 +148,9 @@ app.post('/orcamentos', async (req, res) => {
   }
 });
 
-// --- 2. ADICIONE ESTA ROTA PARA ENTREGAR A PÁGINA V.HTML ---
+// Rota antiga de visualização mantida para compatibilidade, usando a página atual ver.html.
 app.get('/ver/:id', (req, res) => {
-  res.sendFile(path.resolve('v.html'));
+  res.sendFile(path.resolve('ver.html'));
 });
 
 
