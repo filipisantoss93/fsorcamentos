@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Agenda de Serviços - FS Orçamentos</title>
+
+  <meta name="description" content="Agenda de serviços Premium do FS Orçamentos." />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <style>
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #5d4037;
+      --fs-amarelo: #ffc400;
+      --fs-fundo: #f7f2ea;
+      --fs-fundo-2: #efe3d2;
+      --fs-card: #ffffff;
+      --fs-creme: #fffaf0;
+      --fs-borda: #e8dccb;
+      --fs-texto: #2f241f;
+      --fs-texto-suave: #6d5b52;
+      --fs-verde: #22c55e;
+      --fs-azul: #2563eb;
+      --fs-vermelho: #dc2626;
+      --fs-radius: 18px;
+      --fs-shadow: 0 10px 26px rgba(62, 39, 35, 0.10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--fs-texto);
+      background:
+        radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+        linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%);
+    }
+
+    .pagina-agenda {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    .agenda-hero {
+      background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%);
+      border-radius: 26px;
+      border-top: 7px solid var(--fs-amarelo);
+      box-shadow: var(--fs-shadow);
+      padding: 30px 24px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .agenda-hero::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: rgba(255,196,0,0.16);
+      right: -110px;
+      top: -115px;
+    }
+
+    .agenda-hero > * { position: relative; z-index: 1; }
+
+    .agenda-tag {
+      display: inline-flex;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .agenda-hero h1 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      font-size: 32px;
+      line-height: 1.15;
+    }
+
+    .agenda-hero p {
+      margin: 0;
+      max-width: 850px;
+      color: var(--fs-texto-suave);
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .agenda-layout {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .agenda-card {
+      background: var(--fs-card);
+      border: 1px solid var(--fs-borda);
+      border-top: 5px solid var(--fs-amarelo);
+      border-radius: var(--fs-radius);
+      box-shadow: var(--fs-shadow);
+      overflow: hidden;
+    }
+
+    .agenda-card-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 17px 20px;
+      border-bottom: 2px solid var(--fs-amarelo);
+    }
+
+    .agenda-card-header h2 {
+      margin: 0;
+      color: var(--fs-amarelo);
+      font-size: 20px;
+    }
+
+    .agenda-card-header p {
+      margin: 5px 0 0;
+      color: #fffaf0;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .agenda-card-body {
+      padding: 20px;
+      background: #ffffff;
+    }
+
+    .form-agenda {
+      display: grid;
+      gap: 13px;
+    }
+
+    .form-linha {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo label {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--fs-marrom-2);
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width: 100%;
+      border: 1px solid #d8c9b8;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      color: var(--fs-texto);
+      background: #ffffff;
+    }
+
+    .campo textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .campo input:focus,
+    .campo select:focus,
+    .campo textarea:focus {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 0 0 4px rgba(255,196,0,0.20);
+    }
+
+    .cliente-selecionado-agenda {
+      background: var(--fs-creme);
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 13px;
+      padding: 12px;
+      color: var(--fs-marrom);
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .cliente-selecionado-agenda span {
+      display: block;
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .acoes-linha {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 15px;
+      min-height: 42px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-decoration: none;
+      transition: .2s ease;
+      font-size: 14px;
+    }
+
+    .btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .btn-primario {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+    }
+
+    .btn-primario:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border-color: var(--fs-marrom);
+    }
+
+    .btn-secundario {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border: 2px solid #d8c9b8;
+    }
+
+    .btn-secundario:hover {
+      border-color: var(--fs-amarelo);
+      background: var(--fs-creme);
+    }
+
+    .btn-perigo {
+      background: #fff1f1;
+      color: var(--fs-vermelho);
+      border: 2px solid var(--fs-vermelho);
+    }
+
+    .btn-pequeno {
+      min-height: 34px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .agenda-resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .agenda-metrica {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: var(--fs-shadow);
+    }
+
+    .agenda-metrica span {
+      display: block;
+      color: var(--fs-texto-suave);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .agenda-metrica strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 24px;
+    }
+
+    .agenda-filtros {
+      display: grid;
+      grid-template-columns: 1.2fr .7fr .7fr .8fr auto;
+      gap: 10px;
+      margin-bottom: 16px;
+      align-items: end;
+    }
+
+    .agenda-lista {
+      display: grid;
+      gap: 14px;
+    }
+
+    .agenda-dia {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-radius: 18px;
+      box-shadow: var(--fs-shadow);
+      overflow: hidden;
+    }
+
+    .agenda-dia-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 12px 15px;
+      font-weight: 900;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .agenda-item {
+      padding: 14px 15px;
+      border-bottom: 1px solid #f0e5d5;
+      display: grid;
+      gap: 10px;
+    }
+
+    .agenda-item:last-child {
+      border-bottom: none;
+    }
+
+    .agenda-item-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .agenda-item h3 {
+      margin: 0 0 4px;
+      color: var(--fs-marrom);
+      font-size: 17px;
+    }
+
+    .agenda-item p {
+      margin: 0;
+      color: var(--fs-texto-suave);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .agenda-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      background: #efebe9;
+      color: var(--fs-marrom);
+      border: 1px solid #d8c9b8;
+    }
+
+    .tag.agendado { background:#fff8e1; color:#8a5a00; border-color: var(--fs-amarelo); }
+    .tag.confirmado { background:#dbeafe; color:#1e40af; border-color:#bfdbfe; }
+    .tag.em_execucao { background:#dcfce7; color:#166534; border-color:#bbf7d0; }
+    .tag.concluido { background:#ede9fe; color:#5b21b6; border-color:#ddd6fe; }
+    .tag.cancelado { background:#fee2e2; color:#991b1b; border-color:#fecaca; }
+
+    .mensagem-agenda {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .mensagem-agenda.sucesso { display:block; background:#dcfce7; color:#166534; border:1px solid #bbf7d0; }
+    .mensagem-agenda.erro { display:block; background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
+    .mensagem-agenda.info { display:block; background:#fff8e1; color:var(--fs-marrom); border:1px solid var(--fs-amarelo); }
+
+    .estado-vazio {
+      text-align: center;
+      padding: 34px 18px;
+      border: 1px dashed var(--fs-amarelo);
+      border-radius: 16px;
+      background: var(--fs-creme);
+      color: var(--fs-texto-suave);
+      font-weight: 800;
+    }
+
+    .estado-vazio strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .modal-cliente-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 25000;
+      padding: 16px;
+    }
+
+    .modal-cliente-overlay.ativo {
+      display: flex;
+    }
+
+    .modal-cliente-box {
+      width: min(100%, 780px);
+      max-height: 88vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      border-radius: 18px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 22px 60px rgba(0,0,0,.45);
+    }
+
+    .modal-cliente-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-cliente-header h3 {
+      margin: 0;
+      color: var(--fs-amarelo);
+    }
+
+    .modal-cliente-header p {
+      margin: 4px 0 0;
+      color: #fffaf0;
+      font-size: 13px;
+    }
+
+    .btn-fechar-modal {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 9px;
+      background: var(--fs-vermelho);
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .modal-cliente-body {
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .busca-modal-linha {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .busca-modal-linha input {
+      border: 1px solid #d8c9b8;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 15px;
+    }
+
+    .resultado-clientes-modal {
+      display: grid;
+      gap: 8px;
+    }
+
+    .cliente-modal-item {
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+    }
+
+    .cliente-modal-item:hover {
+      background: var(--fs-creme);
+    }
+
+    .cliente-modal-item strong,
+    .cliente-modal-item span {
+      display: block;
+    }
+
+    .cliente-modal-item span {
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .oculto { display: none !important; }
+
+    @media (max-width: 960px) {
+      .agenda-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .agenda-resumo-grid,
+      .agenda-filtros {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .pagina-agenda {
+        padding: 18px 10px 44px;
+      }
+
+      .agenda-hero {
+        padding: 24px 16px;
+        border-radius: 20px;
+      }
+
+      .agenda-hero h1 {
+        font-size: 26px;
+      }
+
+      .form-linha,
+      .agenda-resumo-grid,
+      .agenda-filtros,
+      .busca-modal-linha {
+        grid-template-columns: 1fr;
+      }
+
+      .acoes-linha .btn,
+      .agenda-filtros .btn {
+        width: 100%;
+      }
+    }
+  </style>
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+
+  <main class="pagina-agenda">
+    <section class="agenda-hero">
+      <span class="agenda-tag">Premium • Agenda</span>
+      <h1>Agenda de serviços</h1>
+      <p>
+        Organize os atendimentos por data, horário, cliente, veículo e ordem de serviço.
+        Use a agenda para controlar visitas, execuções, retornos e manutenções preventivas.
+      </p>
+    </section>
+
+    <div class="agenda-layout">
+      <aside class="agenda-card">
+        <div class="agenda-card-header">
+          <h2 id="titulo-form-agenda">Novo agendamento</h2>
+          <p>Vincule cliente, veículo e OS para acompanhar o serviço até a conclusão.</p>
+        </div>
+
+        <div class="agenda-card-body">
+          <div id="mensagem-agenda-form" class="mensagem-agenda"></div>
+
+          <form id="form-agenda" class="form-agenda">
+            <input type="hidden" id="agenda-id" />
+            <input type="hidden" id="agenda-cliente-id" />
+
+            <div class="campo">
+              <label>Cliente vinculado</label>
+              <div id="agenda-cliente-selecionado" class="cliente-selecionado-agenda">
+                Nenhum cliente selecionado
+                <span>Use o botão abaixo para buscar por ID, nome, telefone ou endereço.</span>
+              </div>
+
+              <div class="acoes-linha">
+                <button type="button" id="btn-buscar-cliente-agenda" class="btn btn-secundario">
+                  Buscar cliente
+                </button>
+                <button type="button" id="btn-limpar-cliente-agenda" class="btn btn-secundario">
+                  Limpar
+                </button>
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="agenda-veiculo-id">Veículo</label>
+                <select id="agenda-veiculo-id">
+                  <option value="">Selecione um cliente primeiro</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="agenda-ordem-id">OS vinculada</label>
+                <select id="agenda-ordem-id">
+                  <option value="">Opcional</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="agenda-titulo">Título do agendamento</label>
+              <input type="text" id="agenda-titulo" placeholder="Ex: Troca de óleo, revisão, instalação..." />
+            </div>
+
+            <div class="campo">
+              <label for="agenda-descricao">Descrição</label>
+              <textarea id="agenda-descricao" placeholder="Resumo do serviço agendado"></textarea>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="agenda-data">Data</label>
+                <input type="date" id="agenda-data" />
+              </div>
+
+              <div class="campo">
+                <label for="agenda-status">Status</label>
+                <select id="agenda-status">
+                  <option value="agendado">Agendado</option>
+                  <option value="confirmado">Confirmado</option>
+                  <option value="em_execucao">Em execução</option>
+                  <option value="concluido">Concluído</option>
+                  <option value="cancelado">Cancelado</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="agenda-hora-inicio">Início</label>
+                <input type="time" id="agenda-hora-inicio" />
+              </div>
+
+              <div class="campo">
+                <label for="agenda-hora-fim">Fim</label>
+                <input type="time" id="agenda-hora-fim" />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="agenda-responsavel">Consultor Técnico / responsável</label>
+              <input type="text" id="agenda-responsavel" placeholder="Nome do responsável pelo atendimento" />
+            </div>
+
+            <div class="campo">
+              <label for="agenda-observacoes">Observações internas</label>
+              <textarea id="agenda-observacoes" placeholder="Observações para a equipe"></textarea>
+            </div>
+
+            <div class="acoes-linha">
+              <button type="submit" id="btn-salvar-agenda" class="btn btn-primario">
+                Salvar agendamento
+              </button>
+
+              <button type="button" id="btn-limpar-agenda" class="btn btn-secundario">
+                Limpar
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+
+      <section>
+        <div class="agenda-resumo-grid">
+          <div class="agenda-metrica">
+            <span>Hoje</span>
+            <strong id="agenda-resumo-hoje">0</strong>
+          </div>
+
+          <div class="agenda-metrica">
+            <span>Semana</span>
+            <strong id="agenda-resumo-semana">0</strong>
+          </div>
+
+          <div class="agenda-metrica">
+            <span>Confirmados</span>
+            <strong id="agenda-resumo-confirmados">0</strong>
+          </div>
+
+          <div class="agenda-metrica">
+            <span>Em execução</span>
+            <strong id="agenda-resumo-execucao">0</strong>
+          </div>
+        </div>
+
+        <article class="agenda-card">
+          <div class="agenda-card-header">
+            <h2>Serviços agendados</h2>
+            <p>Filtre por período, status, cliente, veículo, placa ou número da OS.</p>
+          </div>
+
+          <div class="agenda-card-body">
+            <div id="mensagem-agenda-lista" class="mensagem-agenda"></div>
+
+            <div class="agenda-filtros">
+              <div class="campo">
+                <label for="busca-agenda">Buscar</label>
+                <input type="text" id="busca-agenda" placeholder="Cliente, placa, OS, serviço..." />
+              </div>
+
+              <div class="campo">
+                <label for="filtro-agenda-inicio">De</label>
+                <input type="date" id="filtro-agenda-inicio" />
+              </div>
+
+              <div class="campo">
+                <label for="filtro-agenda-fim">Até</label>
+                <input type="date" id="filtro-agenda-fim" />
+              </div>
+
+              <div class="campo">
+                <label for="filtro-agenda-status">Status</label>
+                <select id="filtro-agenda-status">
+                  <option value="">Todos</option>
+                  <option value="agendado">Agendado</option>
+                  <option value="confirmado">Confirmado</option>
+                  <option value="em_execucao">Em execução</option>
+                  <option value="concluido">Concluído</option>
+                  <option value="cancelado">Cancelado</option>
+                </select>
+              </div>
+
+              <button type="button" id="btn-atualizar-agenda" class="btn btn-primario">
+                Atualizar
+              </button>
+            </div>
+
+            <div id="lista-agenda" class="agenda-lista">
+              <div class="estado-vazio">
+                <strong>Carregando agenda...</strong>
+                <p>Aguarde enquanto buscamos seus serviços agendados.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <div id="modal-busca-cliente-agenda" class="modal-cliente-overlay" aria-hidden="true">
+    <div class="modal-cliente-box">
+      <div class="modal-cliente-header">
+        <div>
+          <h3>Buscar cliente</h3>
+          <p>Pesquise por ID, nome, telefone, e-mail, endereço, cidade ou CEP.</p>
+        </div>
+
+        <button type="button" class="btn-fechar-modal" onclick="fecharModalClienteAgenda()">×</button>
+      </div>
+
+      <div class="modal-cliente-body">
+        <div class="busca-modal-linha">
+          <input type="text" id="campo-busca-cliente-agenda" placeholder="Ex: CLI-000001, João, telefone, cidade..." />
+          <button type="button" class="btn btn-primario" onclick="buscarClientesModalAgenda()">Buscar</button>
+          <a href="clientes.html" class="btn btn-secundario">Cadastrar novo</a>
+        </div>
+
+        <div id="resultado-clientes-agenda" class="resultado-clientes-modal">
+          <div class="estado-vazio">
+            <strong>Pesquise um cliente</strong>
+            <p>Nenhum cliente é exibido automaticamente. Digite pelo menos 2 caracteres e clique em Buscar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script>
+    (async function() {
+      if (typeof bloquearPaginaSeNaoPremiumAsync === "function") {
+        const bloqueado = await bloquearPaginaSeNaoPremiumAsync("Agenda de serviços faz parte do Plano Premium.");
+        if (bloqueado) return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "agenda.js";
+      script.defer = false;
+      document.body.appendChild(script);
+    })();
+  </script>
+</body>
+</html>

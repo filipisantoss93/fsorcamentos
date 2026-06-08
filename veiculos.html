@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Veículos - FS Orçamentos</title>
+
+  <meta name="description" content="Cadastre veículos, placas, chassi, marca, modelo, cor e cliente vinculado no FS Orçamentos." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --fs-amarelo: #ffc400;
+      --fs-amarelo-claro: #fff8e1;
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #4e342e;
+      --fs-marrom-claro: #5d4037;
+      --fs-fundo-escuro: #2c2c2c;
+      --fs-bege: #f4ece1;
+      --fs-bege-2: #fffaf0;
+      --fs-branco: #ffffff;
+      --fs-borda: #d7ccc8;
+      --fs-texto: #3e2723;
+      --fs-texto-suave: #6d4c41;
+      --fs-perigo: #dc2626;
+      --fs-sucesso: #25D366;
+      --fs-verde-escuro: #083b2f;
+      --fs-radius: 16px;
+      --fs-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+
+      --fs-azul: #ffc400;
+      --fs-azul-escuro: #3e2723;
+      --fs-azul-claro: #fff8e1;
+      --fs-verde: #25D366;
+      --fs-vermelho: #dc2626;
+      --fs-cinza: #6d4c41;
+      --fs-fundo: #2c2c2c;
+      --fs-texto-claro: #f4ece1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--fs-fundo-escuro);
+      color: #eeeeee;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pagina-veiculos {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      color: var(--fs-texto);
+    }
+
+    .veiculos-hero {
+      background: linear-gradient(135deg, #3e2723, #2c2c2c);
+      color: #ffffff;
+      border-radius: 22px;
+      border-top: 6px solid var(--fs-amarelo);
+      padding: 28px;
+      box-shadow: var(--fs-shadow);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .veiculos-hero::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: rgba(255, 196, 0, 0.16);
+      right: -80px;
+      top: -90px;
+    }
+
+    .veiculos-hero h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      color: #ffffff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .veiculos-hero p {
+      margin: 0;
+      max-width: 820px;
+      color: var(--fs-bege);
+      font-size: 15px;
+      line-height: 1.6;
+      opacity: 0.96;
+      position: relative;
+      z-index: 1;
+    }
+
+    .aviso-plano {
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .veiculos-resumo {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .card-resumo {
+      background: linear-gradient(135deg, #fffaf0, #f4ece1);
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: var(--fs-radius);
+      padding: 18px;
+      box-shadow: var(--fs-shadow);
+    }
+
+    .card-resumo span {
+      display: block;
+      color: var(--fs-texto-suave);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .card-resumo strong {
+      display: block;
+      font-size: 26px;
+      color: var(--fs-marrom);
+    }
+
+    .veiculos-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .veiculos-card {
+      background: var(--fs-bege);
+      color: var(--fs-texto);
+      border: 1px solid var(--fs-borda);
+      border-top: 5px solid var(--fs-amarelo);
+      border-radius: var(--fs-radius);
+      box-shadow: var(--fs-shadow);
+      overflow: hidden;
+    }
+
+    .veiculos-card-header {
+      padding: 18px 20px;
+      border-bottom: 2px solid var(--fs-amarelo);
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+    }
+
+    .veiculos-card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--fs-amarelo);
+    }
+
+    .veiculos-card-header p {
+      margin: 6px 0 0;
+      color: var(--fs-bege);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .veiculos-card-body {
+      padding: 20px;
+      background: var(--fs-bege);
+      color: var(--fs-texto);
+    }
+
+    .veiculos-topo-acoes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .form-veiculos {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-linha {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--fs-marrom-claro);
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width: 100%;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      background: #ffffff;
+      color: var(--fs-texto);
+      box-sizing: border-box;
+      transition: 0.2s ease;
+    }
+
+    .campo textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .campo input:focus,
+    .campo select:focus,
+    .campo textarea:focus {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.22);
+    }
+
+    .campo small {
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .veiculos-acoes-form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s ease;
+      min-height: 42px;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-primario {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn-primario:hover {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      transform: translateY(-1px);
+    }
+
+    .btn-secundario {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+    }
+
+    .btn-secundario:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+    }
+
+    .btn-perigo {
+      background: #fff1f1;
+      color: var(--fs-perigo);
+      border: 2px solid var(--fs-perigo);
+    }
+
+    .btn-perigo:hover {
+      background: var(--fs-perigo);
+      color: #ffffff;
+    }
+
+    .btn-verde {
+      background: var(--fs-sucesso);
+      color: var(--fs-verde-escuro);
+      border: 2px solid #128c4a;
+    }
+
+    .btn-verde:hover {
+      background: #20ba5a;
+      color: #ffffff;
+    }
+
+    .btn-pequeno {
+      min-height: 34px;
+      padding: 7px 10px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .veiculos-filtros {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr 0.8fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .lista-veiculos {
+      display: grid;
+      gap: 8px;
+      max-height: 720px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .veiculo-item {
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #ffffff;
+      color: var(--fs-texto);
+      transition: 0.2s ease;
+    }
+
+    .veiculo-item:hover {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 8px 22px rgba(62, 39, 35, 0.18);
+    }
+
+    .veiculo-linha-topo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .veiculo-info h3 {
+      margin: 0 0 4px;
+      color: var(--fs-marrom);
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .veiculo-info p {
+      margin: 0;
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .placa-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff8e1;
+      border: 2px solid var(--fs-marrom);
+      color: var(--fs-marrom);
+      border-radius: 8px;
+      padding: 6px 10px;
+      min-width: 92px;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .veiculo-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      background: #efebe9;
+      color: var(--fs-marrom);
+      border: 1px solid #d7ccc8;
+    }
+
+    .tag.ativo {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .tag.inativo {
+      background: #f1f1f1;
+      color: #475569;
+    }
+
+    .veiculo-acoes {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .estado-vazio {
+      text-align: center;
+      padding: 36px 20px;
+      border: 1px dashed var(--fs-amarelo);
+      border-radius: 16px;
+      background: #fffaf0;
+      color: var(--fs-texto-suave);
+    }
+
+    .estado-vazio strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .mensagem-veiculos {
+      display: none;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .mensagem-veiculos.sucesso {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .mensagem-veiculos.erro {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .mensagem-veiculos.info {
+      display: block;
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+    }
+
+    .loading-veiculos {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px;
+      color: var(--fs-marrom-claro);
+      font-weight: 800;
+    }
+
+    .loading-veiculos.ativo {
+      display: flex;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #f4e3a1;
+      border-top-color: var(--fs-amarelo);
+      border-radius: 50%;
+      animation: girar 0.8s linear infinite;
+    }
+
+    @keyframes girar {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    .btn-toggle-form-mobile,
+    .btn-toggle-lista-mobile {
+      display: none;
+      border: 2px solid var(--fs-amarelo);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .btn-toggle-form-mobile:hover,
+    .btn-toggle-lista-mobile:hover {
+      background: #ffffff;
+      color: var(--fs-marrom);
+    }
+
+    .header-form-mobile {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .veiculos-lista-toggle-mobile {
+      display: none;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .veiculos-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .veiculos-resumo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .veiculos-filtros {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .pagina-veiculos {
+        padding: 18px 12px 42px;
+      }
+
+      .veiculos-hero {
+        padding: 22px;
+        border-radius: 18px;
+      }
+
+      .veiculos-hero h1 {
+        font-size: 24px;
+      }
+
+      .veiculos-resumo {
+        grid-template-columns: 1fr;
+      }
+
+      .form-linha,
+      .veiculos-filtros {
+        grid-template-columns: 1fr;
+      }
+
+      .veiculo-linha-topo {
+        grid-template-columns: 1fr;
+      }
+
+      .placa-badge {
+        justify-self: start;
+      }
+
+      .veiculos-acoes-form .btn,
+      .veiculo-acoes .btn {
+        width: 100%;
+      }
+
+      .btn-toggle-form-mobile,
+      .btn-toggle-lista-mobile {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card-form-mobile.form-fechado .corpo-form-mobile {
+        display: none;
+      }
+
+      .card-form-mobile.form-fechado .veiculos-card-header {
+        border-bottom: none;
+      }
+
+      .header-form-mobile p {
+        display: none;
+      }
+
+      .veiculos-lista-toggle-mobile {
+        display: block;
+      }
+
+      .lista-veiculos-mobile-fechada {
+        display: none !important;
+      }
+
+      .lista-veiculos {
+        max-height: none;
+        overflow-y: visible;
+      }
+    }
+  
+
+    /* =========================================================
+       BUSCA DE CLIENTE POR MODAL - VEÍCULOS
+       ========================================================= */
+    .campo-cliente-modal { gap: 10px; }
+
+    .cliente-selecionado-box {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 13px 14px;
+      color: var(--fs-texto);
+      min-height: 62px;
+    }
+
+    .cliente-selecionado-box strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .cliente-selecionado-box span {
+      display: block;
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .cliente-modal-acoes {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .modal-busca-cliente-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 20000;
+      padding: 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-busca-cliente-overlay.ativo { display: flex; }
+
+    .modal-busca-cliente-box {
+      width: min(100%, 760px);
+      margin: 24px auto;
+      background: var(--fs-bege);
+      border-radius: 20px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 22px 60px rgba(0,0,0,.5);
+      overflow: hidden;
+      color: var(--fs-marrom);
+    }
+
+    .modal-busca-cliente-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--fs-amarelo);
+    }
+
+    .modal-busca-cliente-header h3 { margin: 0; color: var(--fs-amarelo); font-size: 20px; }
+    .modal-busca-cliente-header p { margin: 5px 0 0; color: var(--fs-bege); font-size: 13px; line-height: 1.4; }
+
+    .btn-fechar-modal-cliente {
+      border: none;
+      background: var(--fs-perigo);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .modal-busca-cliente-body { padding: 18px; }
+
+    .busca-cliente-modal-linha {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .busca-cliente-modal-linha input {
+      width: 100%;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--fs-marrom);
+      background: #fff;
+    }
+
+    .resultado-busca-clientes-modal {
+      display: grid;
+      gap: 10px;
+      max-height: 430px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .cliente-modal-item {
+      width: 100%;
+      text-align: left;
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border-radius: 14px;
+      padding: 13px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .cliente-modal-item:hover {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 8px 18px rgba(62,39,35,.18);
+      transform: translateY(-1px);
+    }
+
+    .cliente-modal-item strong { display: block; margin-bottom: 4px; }
+    .cliente-modal-item span { display: block; color: var(--fs-texto-suave); font-size: 12px; line-height: 1.45; }
+
+    .estado-busca-cliente-modal {
+      background: #fffaf0;
+      border: 1px dashed var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      color: var(--fs-texto-suave);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 720px) {
+      .cliente-modal-acoes,
+      .busca-cliente-modal-linha {
+        grid-template-columns: 1fr;
+      }
+
+      .cliente-modal-acoes .btn,
+      .cliente-modal-acoes a {
+        width: 100%;
+      }
+    }
+
+  
+    .campo-com-botao {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .catalogo-modal-item {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--fs-borda);
+      background: #ffffff;
+      color: var(--fs-texto);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .catalogo-modal-item:hover {
+      border-color: var(--fs-amarelo);
+      background: var(--fs-amarelo-claro);
+    }
+
+    .catalogo-modal-item strong { display: block; color: var(--fs-marrom); }
+    .catalogo-modal-item span { display: block; color: var(--fs-texto-suave); font-size: 12px; margin-top: 3px; }
+
+    @media (max-width: 680px) {
+      .campo-com-botao { grid-template-columns: 1fr; }
+    }
+
+  </style>
+
+
+<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
+<style id="fs-formal-theme-overrides">
+  :root {
+    --fs-marrom: #3e2723;
+    --fs-marrom-2: #5d4037;
+    --fs-fundo-escuro: #f7f2ea;
+    --fs-fundo: #f7f2ea;
+    --fs-page-bg: #f7f2ea;
+    --fs-page-bg-2: #efe3d2;
+    --fs-card: #ffffff;
+    --fs-creme: #f4ece1;
+    --fs-creme-2: #fffaf0;
+    --fs-bege: #f4ece1;
+    --fs-bege-2: #fffaf0;
+    --fs-amarelo: #ffc400;
+    --fs-borda: #e8dccb;
+    --fs-texto: #2f241f;
+    --fs-texto-suave: #6d5b52;
+    --bg-dark: #f7f2ea;
+    --body-brown: #ffffff;
+    --text-dark: #2f241f;
+    --accent-yellow: #ffc400;
+  }
+
+  body:not(.gerando-pdf) {
+    background:
+      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
+    color: #2f241f !important;
+  }
+
+  #header-container,
+  .main-header,
+  .header-topo,
+  .header-menu-linha {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav,
+  .logo-nav span,
+  #usuario-saudacao,
+  .header-menu-linha a,
+  .nav-menu a {
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav strong,
+  .fs-box,
+  .sobre-fs-box {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+  }
+
+  .link-destaque-gerador,
+  .btn-header-entrar,
+  .btn-menu-mobile-entrar,
+  .btn-home-grande,
+  .btn-home-medio,
+  .btn-home-atalho.btn-principal,
+  .btn-gerar-orcamento-home,
+  .btn-previa-profissional,
+  .btn-hero-principal,
+  .btn-ir-planos-home,
+  .btn-home-planos-forte,
+  .btn-add,
+  .btn-extra,
+  .btn-primario,
+  .btn-primary,
+  .btn-salvar,
+  .btn-acao-pdf,
+  .plano-pix-card button,
+  .btn-editar-dados-empresa {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .link-destaque-gerador:hover,
+  .btn-header-entrar:hover,
+  .btn-menu-mobile-entrar:hover,
+  .btn-home-grande:hover,
+  .btn-home-medio:hover,
+  .btn-gerar-orcamento-home:hover,
+  .btn-previa-profissional:hover,
+  .btn-hero-principal:hover,
+  .btn-ir-planos-home:hover,
+  .btn-home-planos-forte:hover,
+  .btn-add:hover,
+  .btn-extra:hover,
+  .btn-primario:hover,
+  .btn-primary:hover,
+  .btn-salvar:hover,
+  .btn-acao-pdf:hover,
+  .plano-pix-card button:hover,
+  .btn-editar-dados-empresa:hover {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+    border-color: #3e2723 !important;
+  }
+
+  .hero-publico,
+  .home-plano-hero,
+  .gerador-hero,
+  .planos-hero,
+  .clientes-hero,
+  .veiculos-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero,
+  .sobre-hero,
+  .manual-hero,
+  .termos-hero,
+  .privacidade-hero,
+  .orcamentos-hero,
+  .painel-hero,
+  .secao-como-funciona,
+  .whatsapp-preview-home,
+  .cliente-aprovacao-home,
+  .comparativo-home,
+  .status-orcamentos-home,
+  .home-story-section,
+  .home-whatsapp-section,
+  .home-aprovacao-section,
+  .home-status-section,
+  .home-comparativo-section,
+  .planos-pix-section,
+  .comparativo-section,
+  .faq-section,
+  .container-sobre,
+  .container-termos,
+  .container-privacidade,
+  .home-premium-showcase {
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+    color: #2f241f !important;
+    border-top-color: #ffc400 !important;
+    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
+  }
+
+  .hero-publico h1,
+  .home-plano-hero h1,
+  .gerador-hero h1,
+  .planos-hero h1,
+  .clientes-hero h1,
+  .veiculos-hero h1,
+  .ordens-hero h1,
+  .ordem-hero h1,
+  .estoque-hero h1,
+  .sobre-hero h1,
+  .manual-hero h1,
+  .home-premium-showcase h2,
+  .container-sobre h1,
+  .container-sobre h2,
+  .container-termos h1,
+  .container-termos h2,
+  .section-topo h2,
+  .dadositens,
+  .card-header h2,
+  .clientes-card-header h2,
+  .veiculos-card-header h2,
+  .ordens-card-header h2,
+  .estoque-card-header h2 {
+    color: #3e2723 !important;
+  }
+
+  .hero-publico p,
+  .home-plano-hero p,
+  .gerador-hero p,
+  .planos-hero p,
+  .clientes-hero p,
+  .veiculos-hero p,
+  .ordens-hero p,
+  .ordem-hero p,
+  .estoque-hero p,
+  .sobre-hero p,
+  .manual-hero p,
+  .home-premium-showcase p,
+  .container-sobre p,
+  .container-termos p,
+  .section-topo p {
+    color: #6d5b52 !important;
+  }
+
+  .container,
+  .card,
+  .clientes-card,
+  .veiculos-card,
+  .ordens-card,
+  .estoque-card,
+  .gerador-card-principal,
+  .sidebar-card,
+  .plano-pix-card,
+  .faq-card,
+  .home-promo-card,
+  .home-metrica-card,
+  .home-relatorio-card,
+  .home-painel-card,
+  .card-sobre,
+  .plano-card,
+  .manual-card,
+  .manual-section,
+  .manual-step,
+  .manual-demo-card,
+  .cliente-item,
+  .veiculo-item,
+  .ordem-item,
+  .estoque-categoria-grupo,
+  .emissor-readonly-card,
+  .cliente-tela-preview,
+  .home-cliente-preview {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #e8dccb !important;
+    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
+  }
+
+  .card-header,
+  .clientes-card-header,
+  .veiculos-card-header,
+  .ordens-card-header,
+  .estoque-card-header,
+  .modal-busca-cliente-header,
+  .modal-busca-produto-header,
+  .modal-pix-topo,
+  .home-cliente-topo,
+  .mock-card-head,
+  .orcamento-whatsapp-header,
+  .home-orcamento-whatsapp-header,
+  .total-container,
+  .cliente-total-demo,
+  .home-cliente-total,
+  .manual-flow div,
+  .mini-dashboard {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .card-body,
+  .clientes-card-body,
+  .veiculos-card-body,
+  .ordens-card-body,
+  .estoque-card-body {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #d8c9b8 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #ffc400 !important;
+    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+    outline: none !important;
+  }
+
+  table,
+  .tabela-comparativo,
+  .home-tabela-comparativo,
+  .manual-table,
+  .comparativo {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  th,
+  .tabela-comparativo th,
+  .home-tabela-comparativo th,
+  .manual-table th,
+  .comparativo th {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+  }
+
+  tr:nth-child(even),
+  tbody tr:nth-child(even) {
+    background: #fffaf0 !important;
+  }
+
+  footer,
+  .sobre-footer {
+    color: #6d5b52 !important;
+  }
+
+  footer a,
+  .sobre-footer a {
+    color: #3e2723 !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+
+  <main class="pagina-veiculos">
+    <section class="veiculos-hero">
+      <h1>Veículos</h1>
+      <p>
+        Cadastre os veículos dos clientes com placa, chassi, marca, modelo, cor e prisma.
+        Depois vincule o veículo às ordens de serviço para gerar OS e PDF com dados completos da oficina.
+      </p>
+    </section>
+
+    <div id="aviso-plano-veiculos" class="aviso-plano oculto">
+      Este módulo faz parte do plano Premium do FS Orçamentos. Durante o desenvolvimento, você pode testar a estrutura normalmente.
+    </div>
+
+    <section class="veiculos-resumo">
+      <div class="card-resumo">
+        <span>Total de veículos</span>
+        <strong id="resumo-total-veiculos">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Veículos ativos</span>
+        <strong id="resumo-veiculos-ativos">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Clientes vinculados</span>
+        <strong id="resumo-clientes-vinculados">0</strong>
+      </div>
+
+      <div class="card-resumo">
+        <span>Sem cliente</span>
+        <strong id="resumo-veiculos-sem-cliente">0</strong>
+      </div>
+    </section>
+
+    <section class="veiculos-grid">
+      <aside class="veiculos-card card-form-mobile" id="card-form-veiculo">
+        <div class="veiculos-card-header header-form-mobile">
+          <div>
+            <h2 id="titulo-form-veiculo">Novo veículo</h2>
+            <p>
+              Cadastre o veículo e vincule ao cliente para usar em orçamentos e ordens de serviço.
+            </p>
+          </div>
+
+          <button type="button" id="btn-toggle-form-veiculo" class="btn-toggle-form-mobile">
+            Abrir
+          </button>
+        </div>
+
+        <div class="veiculos-card-body corpo-form-mobile" id="corpo-form-veiculo">
+          <div id="mensagem-veiculos-form" class="mensagem-veiculos"></div>
+
+          <form id="form-veiculo" class="form-veiculos">
+            <input type="hidden" id="veiculo-id" />
+
+            <div class="campo campo-cliente-modal">
+              <label for="veiculo-cliente-visual">Cliente vinculado</label>
+              <input type="hidden" id="veiculo-cliente-id" value="" />
+
+              <div class="cliente-selecionado-box" id="veiculo-cliente-box">
+                <div>
+                  <strong id="veiculo-cliente-visual">Nenhum cliente selecionado</strong>
+                  <span id="veiculo-cliente-detalhes">Você pode salvar o veículo sem cliente ou buscar um cliente cadastrado.</span>
+                </div>
+              </div>
+
+              <div class="cliente-modal-acoes">
+                <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteVeiculo()">
+                  Buscar cliente
+                </button>
+
+                <a href="clientes.html?novo=1" class="btn btn-primario">
+                  Cadastrar novo cliente
+                </a>
+
+                <button type="button" class="btn btn-perigo" onclick="limparClienteSelecionadoVeiculo()">
+                  Limpar
+                </button>
+              </div>
+
+              <small>Pesquise por nome, telefone, e-mail, rua, cidade ou CEP. Se o cliente ainda não existir, use o atalho para cadastrar.</small>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="veiculo-placa">Placa *</label>
+                <input
+                  type="text"
+                  id="veiculo-placa"
+                  placeholder="Ex: ABC1D23"
+                  maxlength="8"
+                  required
+                />
+                <small>A placa será salva em maiúsculo e sem espaços.</small>
+              </div>
+
+              <div class="campo">
+                <label for="veiculo-chassi">Chassi</label>
+                <input
+                  type="text"
+                  id="veiculo-chassi"
+                  placeholder="Opcional"
+                  maxlength="30"
+                />
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="veiculo-marca">Marca</label>
+                <div class="campo-com-botao">
+                  <input type="text" id="veiculo-marca" placeholder="Ex: Chevrolet, Fiat, Honda" autocomplete="off" />
+                  <button type="button" class="btn btn-secundario btn-pequeno" onclick="abrirModalCatalogoMarcaVeiculo()">Buscar</button>
+                </div>
+                <small>Busque no catálogo nacional ou digite manualmente.</small>
+              </div>
+
+              <div class="campo">
+                <label for="veiculo-modelo">Modelo</label>
+                <div class="campo-com-botao">
+                  <input type="text" id="veiculo-modelo" placeholder="Ex: Prisma, Onix, Civic" autocomplete="off" />
+                  <button type="button" class="btn btn-secundario btn-pequeno" onclick="abrirModalCatalogoModeloVeiculo()">Buscar</button>
+                </div>
+                <small>Selecione a marca primeiro para listar somente os modelos relacionados.</small>
+              </div>
+            </div>
+
+            <div class="form-linha">
+              <div class="campo">
+                <label for="veiculo-cor">Cor</label>
+                <input type="text" id="veiculo-cor" placeholder="Ex: Branco, Preto, Prata" />
+              </div>
+
+              <div class="campo">
+                <label for="veiculo-ano">Ano</label>
+                <input type="text" id="veiculo-ano" placeholder="Ex: 2018/2019" />
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="veiculo-prisma">Prisma</label>
+              <input type="text" id="veiculo-prisma" placeholder="Ex: informação interna, versão, frota, identificação extra" />
+              <small>Campo livre para identificação extra usada pela sua oficina.</small>
+            </div>
+
+            <div class="campo">
+              <label for="veiculo-ativo">Status</label>
+              <select id="veiculo-ativo">
+                <option value="true">Ativo</option>
+                <option value="false">Inativo</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="veiculo-observacoes">Observações</label>
+              <textarea
+                id="veiculo-observacoes"
+                placeholder="Informações importantes, histórico, detalhes do veículo, localização, observações internas..."
+              ></textarea>
+            </div>
+
+            <div class="veiculos-acoes-form">
+              <button type="submit" id="btn-salvar-veiculo" class="btn btn-primario">
+                Salvar veículo
+              </button>
+
+              <button type="button" id="btn-limpar-veiculo" class="btn btn-secundario">
+                Limpar
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+
+      <section class="veiculos-card">
+        <div class="veiculos-card-header">
+          <div class="veiculos-topo-acoes">
+            <div>
+              <h2>Lista de veículos</h2>
+              <p>Consulte por placa, cliente, marca, modelo ou cor.</p>
+            </div>
+
+            <button type="button" id="btn-atualizar-veiculos" class="btn btn-secundario">
+              Buscar
+            </button>
+          </div>
+        </div>
+
+        <div class="veiculos-card-body">
+          <div id="mensagem-veiculos-lista" class="mensagem-veiculos"></div>
+
+          <div class="veiculos-lista-toggle-mobile">
+            <button type="button" id="btn-toggle-lista-veiculos" class="btn-toggle-lista-mobile">
+              Ver veículos
+            </button>
+          </div>
+
+          <div class="veiculos-filtros">
+            <div class="campo">
+              <label for="busca-veiculos">Buscar</label>
+              <input
+                type="search"
+                id="busca-veiculos"
+                placeholder="Placa, cliente, marca, modelo, cor..."
+              />
+            </div>
+
+            <div class="campo">
+              <label for="filtro-status-veiculos">Status</label>
+              <select id="filtro-status-veiculos">
+                <option value="">Todos</option>
+                <option value="ativo">Ativos</option>
+                <option value="inativo">Inativos</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="filtro-cliente-veiculos">Cliente</label>
+              <select id="filtro-cliente-veiculos">
+                <option value="">Todos</option>
+                <option value="sem_cliente">Sem cliente</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="loading-veiculos" class="loading-veiculos">
+            <span class="spinner"></span>
+            Carregando veículos...
+          </div>
+
+          <div id="lista-veiculos" class="lista-veiculos lista-veiculos-mobile-fechada">
+            <div class="estado-vazio">
+              <strong>Nenhum veículo carregado</strong>
+              <p>Os veículos cadastrados aparecerão aqui após a conexão com o Supabase.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+
+  <div id="modal-busca-cliente-veiculo" class="modal-busca-cliente-overlay" aria-hidden="true">
+    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca-cliente-veiculo">
+      <div class="modal-busca-cliente-header">
+        <div>
+          <h3 id="titulo-modal-busca-cliente-veiculo">Buscar cliente</h3>
+          <p>Pesquise por nome, telefone, e-mail, rua, cidade, estado ou CEP. A lista aparece somente depois da busca.</p>
+        </div>
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalBuscaClienteVeiculo()">×</button>
+      </div>
+
+      <div class="modal-busca-cliente-body">
+        <div class="busca-cliente-modal-linha">
+          <div class="campo">
+            <label for="campo-busca-cliente-veiculo">Nome, telefone, e-mail ou endereço</label>
+            <input type="search" id="campo-busca-cliente-veiculo" placeholder="Ex: João, 18999999999, Rua Brasil, Assis ou 19800-000" autocomplete="off">
+          </div>
+          <button type="button" class="btn btn-primario" onclick="buscarClientesModalVeiculo()">Buscar</button>
+          <a href="clientes.html?novo=1" class="btn btn-secundario">Novo cliente</a>
+        </div>
+
+        <div id="resultado-busca-clientes-veiculo" class="resultado-busca-clientes-modal">
+          <div class="estado-busca-cliente-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-catalogo-marca-veiculo" class="modal-busca-cliente-overlay" aria-hidden="true">
+    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-catalogo-marca-veiculo">
+      <div class="modal-busca-cliente-header">
+        <div>
+          <h3 id="titulo-modal-catalogo-marca-veiculo">Buscar marca</h3>
+          <p>Pesquise uma marca do catálogo nacional. Você também pode digitar manualmente no campo.</p>
+        </div>
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalCatalogoMarcaVeiculo()">×</button>
+      </div>
+      <div class="modal-busca-cliente-body">
+        <div class="busca-cliente-modal-linha">
+          <div class="campo">
+            <label for="campo-busca-marca-veiculo">Marca</label>
+            <input type="search" id="campo-busca-marca-veiculo" placeholder="Ex: Fiat, Chevrolet, Volkswagen, Toyota" autocomplete="off">
+          </div>
+          <button type="button" class="btn btn-primario" onclick="buscarCatalogoMarcasVeiculo()">Buscar</button>
+        </div>
+        <div id="resultado-catalogo-marcas-veiculo" class="resultado-busca-clientes-modal">
+          <div class="estado-busca-cliente-modal">Digite pelo menos 1 caractere e clique em Buscar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-catalogo-modelo-veiculo" class="modal-busca-cliente-overlay" aria-hidden="true">
+    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-catalogo-modelo-veiculo">
+      <div class="modal-busca-cliente-header">
+        <div>
+          <h3 id="titulo-modal-catalogo-modelo-veiculo">Buscar modelo</h3>
+          <p>Os modelos são filtrados conforme a marca selecionada.</p>
+        </div>
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalCatalogoModeloVeiculo()">×</button>
+      </div>
+      <div class="modal-busca-cliente-body">
+        <div class="busca-cliente-modal-linha">
+          <div class="campo">
+            <label for="campo-busca-modelo-veiculo">Modelo</label>
+            <input type="search" id="campo-busca-modelo-veiculo" placeholder="Ex: Strada, Onix, Gol, Corolla" autocomplete="off">
+          </div>
+          <button type="button" class="btn btn-primario" onclick="buscarCatalogoModelosVeiculo()">Buscar</button>
+        </div>
+        <div id="resultado-catalogo-modelos-veiculo" class="resultado-busca-clientes-modal">
+          <div class="estado-busca-cliente-modal">Selecione uma marca primeiro.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="planos.js"></script>
+<script src="carregar-menu.js"></script>
+  <script>
+(async function() {
+  if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
+    const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Cadastro de veículos faz parte do Plano Premium.');
+    if (bloqueado) return;
+  }
+  const script = document.createElement('script');
+  script.src = 'veiculos.js';
+  script.defer = false;
+  document.body.appendChild(script);
+})();
+</script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        if (!window._supabase && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+          window._supabase = window.supabase.createClient(
+            window.SUPABASE_URL,
+            window.SUPABASE_ANON_KEY
+          );
+        }
+
+        if (!window._supabase) {
+          console.warn("Supabase não foi inicializado. Verifique o config.js.");
+          return;
+        }
+
+        const { data } = await window._supabase.auth.getSession();
+        const session = data && data.session ? data.session : null;
+
+        if (!session) {
+          const destino = encodeURIComponent("veiculos.html");
+          window.location.href = "index.html?redirect=" + destino;
+          return;
+        }
+      } catch (erro) {
+        console.error("Erro ao validar sessão em veiculos.html:", erro);
+      }
+    });
+  </script>
+</body>
+</html>

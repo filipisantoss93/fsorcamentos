@@ -63,11 +63,36 @@ function fecharMenuMobileSeAberto() {
   if (menuLinha) {
     menuLinha.classList.remove('menu-aberto');
   }
+
+  document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
+    details.removeAttribute('open');
+  });
 }
 
 /* =========================
    CARREGAR HEADER / MENU
 ========================= */
+
+async function carregarHeaderHtmlMenu() {
+  const caminhos = ['header.html', './header.html', '/header.html'];
+  let ultimoErro = null;
+
+  for (const caminho of caminhos) {
+    try {
+      const response = await fetch(caminho, { cache: 'no-cache' });
+
+      if (response.ok) {
+        return await response.text();
+      }
+
+      ultimoErro = new Error(`Falha ao carregar ${caminho}: ${response.status}`);
+    } catch (error) {
+      ultimoErro = error;
+    }
+  }
+
+  throw ultimoErro || new Error('Não foi possível carregar header.html.');
+}
 
 async function carregarMenu(sessionRecebida = undefined) {
   const headerContainer = document.getElementById('header-container');
@@ -76,20 +101,14 @@ async function carregarMenu(sessionRecebida = undefined) {
 
   try {
     if (!headerJaCarregado) {
-      const response = await fetch('/header.html');
-
-      if (!response.ok) {
-        console.error('Erro ao carregar header.html:', response.status);
-        return;
-      }
-
-      const html = await response.text();
+      const html = await carregarHeaderHtmlMenu();
 
       headerContainer.innerHTML = html;
       headerContainer.style.display = 'block';
       headerJaCarregado = true;
 
       configurarLinksDoHeader();
+      configurarDropdownsHeader();
       marcarLinkAtivoHeader();
 
       setTimeout(() => {
@@ -104,6 +123,7 @@ async function carregarMenu(sessionRecebida = undefined) {
     }
 
     await atualizarHeaderUsuario(session || null);
+    aplicarVisibilidadeMenuPorPlano();
     await controlarBotaoFlutuanteGeradorGlobal(session || null);
 
     setTimeout(() => {
@@ -118,6 +138,37 @@ async function carregarMenu(sessionRecebida = undefined) {
 /* =========================
    HEADER USUÁRIO
 ========================= */
+
+
+async function verificarExpiracaoTestePremiumMenu() {
+  try {
+    if (!window._supabase) return null;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session?.user?.id) return null;
+
+    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
+
+    if (error) {
+      console.warn('Teste Premium não verificado pelo menu:', error);
+      return null;
+    }
+
+    if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
+    if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
+
+    if (data?.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+    } else if (data?.plano === 'basico') {
+      localStorage.removeItem('usuario_plano_expira_em');
+    }
+
+    return data || null;
+  } catch (error) {
+    console.warn('Erro ao verificar expiração do teste Premium no menu:', error);
+    return null;
+  }
+}
 
 async function atualizarHeaderUsuario(session) {
   const saudacao = document.getElementById('usuario-saudacao');
@@ -164,6 +215,7 @@ async function atualizarHeaderUsuario(session) {
 
   if (!session?.user?.id) {
     mostrarDeslogado();
+    aplicarVisibilidadeMenuPorPlano();
     return;
   }
 
@@ -173,9 +225,11 @@ async function atualizarHeaderUsuario(session) {
     session.user.user_metadata?.full_name ||
     session.user.user_metadata?.name ||
     session.user.email?.split('@')[0] ||
-    'Usuário';
+    'Visitante';
 
   try {
+    await verificarExpiracaoTestePremiumMenu();
+
     if (window._supabase) {
       const { data: perfil, error } = await _supabase
         .from('perfis')
@@ -214,6 +268,38 @@ async function atualizarHeaderUsuario(session) {
   }
 
   mostrarLogado(nomeFinal);
+  aplicarVisibilidadeMenuPorPlano();
+}
+
+
+
+/* =========================
+   VISIBILIDADE POR PLANO
+========================= */
+
+function fsPlanoMenuAtual() {
+  return fsNormalizarTextoMenu(localStorage.getItem('usuario_plano') || 'gratis');
+}
+
+function fsPlanoMenuOrdem(plano) {
+  const p = fsNormalizarTextoMenu(plano);
+  if (p === 'premium') return 2;
+  if (p === 'basico') return 1;
+  return 0;
+}
+
+function aplicarVisibilidadeMenuPorPlano() {
+  const plano = fsPlanoMenuAtual();
+  const nivelAtual = fsPlanoMenuOrdem(plano);
+
+  document.querySelectorAll('[data-plano-min]').forEach(link => {
+    const minimo = link.getAttribute('data-plano-min') || 'gratis';
+    const permitido = nivelAtual >= fsPlanoMenuOrdem(minimo);
+    const li = link.closest('li');
+
+    if (li) li.style.display = permitido ? '' : 'none';
+    else link.style.display = permitido ? '' : 'none';
+  });
 }
 
 /* =========================
@@ -283,6 +369,20 @@ function configurarLinksDoHeader() {
     });
   });
 }
+
+function configurarDropdownsHeader() {
+  document.addEventListener('click', (event) => {
+    const clicouDentroDropdown = event.target.closest('.nav-dropdown');
+    const clicouNoMenuMobile = event.target.closest('.menu-mobile-btn');
+
+    if (clicouDentroDropdown || clicouNoMenuMobile) return;
+
+    document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
+      details.removeAttribute('open');
+    });
+  });
+}
+
 
 function marcarLinkAtivoHeader() {
   const paginaAtual = fsPaginaAtual();
@@ -500,7 +600,12 @@ function controlarHeaderInteligente() {
    INICIALIZAÇÃO
 ========================= */
 
-document.addEventListener('DOMContentLoaded', async () => {
+let fsMenuInicializado = false;
+
+async function inicializarMenuFS() {
+  if (fsMenuInicializado) return;
+  fsMenuInicializado = true;
+
   await carregarMenu();
 
   abrirLoginAutomaticamenteSeSolicitado();
@@ -513,6 +618,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (window._supabase) {
     _supabase.auth.onAuthStateChange(async (event, session) => {
       await atualizarHeaderUsuario(session || null);
+      aplicarVisibilidadeMenuPorPlano();
       await controlarBotaoFlutuanteGeradorGlobal(session || null);
 
       if (!session) {
@@ -524,13 +630,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       }, 150);
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', inicializarMenuFS);
+} else {
+  inicializarMenuFS();
+}
 
 /* =========================
    EXPORTAR FUNÇÕES GLOBAIS
 ========================= */
 
 window.carregarMenu = carregarMenu;
+window.verificarExpiracaoTestePremiumMenu = verificarExpiracaoTestePremiumMenu;
 window.atualizarHeaderUsuario = atualizarHeaderUsuario;
 window.irParaLogin = irParaLogin;
 window.toggleMenuMobile = toggleMenuMobile;
@@ -539,3 +652,5 @@ window.abrirGeradorGlobal = abrirGeradorGlobal;
 window.controlarBotaoFlutuanteGeradorGlobal = controlarBotaoFlutuanteGeradorGlobal;
 window.configurarHeaderInteligente = configurarHeaderInteligente;
 window.controlarHeaderInteligente = controlarHeaderInteligente;
+window.aplicarVisibilidadeMenuPorPlano = aplicarVisibilidadeMenuPorPlano;
+window.inicializarMenuFS = inicializarMenuFS;

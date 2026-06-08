@@ -1,8 +1,8 @@
 :root {
   --primary: #FFD700;
-  --bg-dark: #2c2c2c;
-  --body-brown: #f4ece1;
-  --text-dark: #3e2723;
+  --bg-dark: #f7f2ea;
+  --body-brown: #ffffff;
+  --text-dark: #2f241f;
   --accent-yellow: #ffc400;
   --white: #ffffff;
   --danger: #dc2626;
@@ -21,8 +21,8 @@ html {
 
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background: var(--bg-dark);
-  color: #eee;
+  background: linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%);
+  color: #2f241f;
   padding: 10px;
   margin: 0;
   overflow-x: hidden;
@@ -44,7 +44,7 @@ body.gerando-pdf {
   color: var(--text-dark);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 22px rgba(62,39,35,0.10);
   border-top: 5px solid var(--accent-yellow);
 }
 
@@ -805,7 +805,7 @@ body.gerador-aberto #btn-flutuante-gerador-global {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--bg-dark);
+  background: linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -3216,3 +3216,1320 @@ button.google::after {
       color: #ffc400;
       text-decoration: none;
     }
+
+
+
+
+/* FS FORMAL THEME OVERRIDES - visual mais claro e profissional */
+
+  :root {
+    --fs-marrom: #3e2723;
+    --fs-marrom-2: #5d4037;
+    --fs-fundo-escuro: #f7f2ea;
+    --fs-fundo: #f7f2ea;
+    --fs-page-bg: #f7f2ea;
+    --fs-page-bg-2: #efe3d2;
+    --fs-card: #ffffff;
+    --fs-creme: #f4ece1;
+    --fs-creme-2: #fffaf0;
+    --fs-bege: #f4ece1;
+    --fs-bege-2: #fffaf0;
+    --fs-amarelo: #ffc400;
+    --fs-borda: #e8dccb;
+    --fs-texto: #2f241f;
+    --fs-texto-suave: #6d5b52;
+    --bg-dark: #f7f2ea;
+    --body-brown: #ffffff;
+    --text-dark: #2f241f;
+    --accent-yellow: #ffc400;
+  }
+
+  body:not(.gerando-pdf) {
+    background:
+      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
+    color: #2f241f !important;
+  }
+
+  #header-container,
+  .main-header,
+  .header-topo,
+  .header-menu-linha {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav,
+  .logo-nav span,
+  #usuario-saudacao,
+  .header-menu-linha a,
+  .nav-menu a {
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav strong,
+  .fs-box,
+  .sobre-fs-box {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+  }
+
+  .link-destaque-gerador,
+  .btn-header-entrar,
+  .btn-menu-mobile-entrar,
+  .btn-home-grande,
+  .btn-home-medio,
+  .btn-home-atalho.btn-principal,
+  .btn-gerar-orcamento-home,
+  .btn-previa-profissional,
+  .btn-hero-principal,
+  .btn-ir-planos-home,
+  .btn-home-planos-forte,
+  .btn-add,
+  .btn-extra,
+  .btn-primario,
+  .btn-primary,
+  .btn-salvar,
+  .btn-acao-pdf,
+  .plano-pix-card button,
+  .btn-editar-dados-empresa {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .link-destaque-gerador:hover,
+  .btn-header-entrar:hover,
+  .btn-menu-mobile-entrar:hover,
+  .btn-home-grande:hover,
+  .btn-home-medio:hover,
+  .btn-gerar-orcamento-home:hover,
+  .btn-previa-profissional:hover,
+  .btn-hero-principal:hover,
+  .btn-ir-planos-home:hover,
+  .btn-home-planos-forte:hover,
+  .btn-add:hover,
+  .btn-extra:hover,
+  .btn-primario:hover,
+  .btn-primary:hover,
+  .btn-salvar:hover,
+  .btn-acao-pdf:hover,
+  .plano-pix-card button:hover,
+  .btn-editar-dados-empresa:hover {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+    border-color: #3e2723 !important;
+  }
+
+  .hero-publico,
+  .home-plano-hero,
+  .gerador-hero,
+  .planos-hero,
+  .clientes-hero,
+  .veiculos-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero,
+  .sobre-hero,
+  .manual-hero,
+  .termos-hero,
+  .privacidade-hero,
+  .orcamentos-hero,
+  .painel-hero,
+  .secao-como-funciona,
+  .whatsapp-preview-home,
+  .cliente-aprovacao-home,
+  .comparativo-home,
+  .status-orcamentos-home,
+  .home-story-section,
+  .home-whatsapp-section,
+  .home-aprovacao-section,
+  .home-status-section,
+  .home-comparativo-section,
+  .planos-pix-section,
+  .comparativo-section,
+  .faq-section,
+  .container-sobre,
+  .container-termos,
+  .container-privacidade,
+  .home-premium-showcase {
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+    color: #2f241f !important;
+    border-top-color: #ffc400 !important;
+    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
+  }
+
+  .hero-publico h1,
+  .home-plano-hero h1,
+  .gerador-hero h1,
+  .planos-hero h1,
+  .clientes-hero h1,
+  .veiculos-hero h1,
+  .ordens-hero h1,
+  .ordem-hero h1,
+  .estoque-hero h1,
+  .sobre-hero h1,
+  .manual-hero h1,
+  .home-premium-showcase h2,
+  .container-sobre h1,
+  .container-sobre h2,
+  .container-termos h1,
+  .container-termos h2,
+  .section-topo h2,
+  .dadositens,
+  .card-header h2,
+  .clientes-card-header h2,
+  .veiculos-card-header h2,
+  .ordens-card-header h2,
+  .estoque-card-header h2 {
+    color: #3e2723 !important;
+  }
+
+  .hero-publico p,
+  .home-plano-hero p,
+  .gerador-hero p,
+  .planos-hero p,
+  .clientes-hero p,
+  .veiculos-hero p,
+  .ordens-hero p,
+  .ordem-hero p,
+  .estoque-hero p,
+  .sobre-hero p,
+  .manual-hero p,
+  .home-premium-showcase p,
+  .container-sobre p,
+  .container-termos p,
+  .section-topo p {
+    color: #6d5b52 !important;
+  }
+
+  .container,
+  .card,
+  .clientes-card,
+  .veiculos-card,
+  .ordens-card,
+  .estoque-card,
+  .gerador-card-principal,
+  .sidebar-card,
+  .plano-pix-card,
+  .faq-card,
+  .home-promo-card,
+  .home-metrica-card,
+  .home-relatorio-card,
+  .home-painel-card,
+  .card-sobre,
+  .plano-card,
+  .manual-card,
+  .manual-section,
+  .manual-step,
+  .manual-demo-card,
+  .cliente-item,
+  .veiculo-item,
+  .ordem-item,
+  .estoque-categoria-grupo,
+  .emissor-readonly-card,
+  .cliente-tela-preview,
+  .home-cliente-preview {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #e8dccb !important;
+    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
+  }
+
+  .card-header,
+  .clientes-card-header,
+  .veiculos-card-header,
+  .ordens-card-header,
+  .estoque-card-header,
+  .modal-busca-cliente-header,
+  .modal-busca-produto-header,
+  .modal-pix-topo,
+  .home-cliente-topo,
+  .mock-card-head,
+  .orcamento-whatsapp-header,
+  .home-orcamento-whatsapp-header,
+  .total-container,
+  .cliente-total-demo,
+  .home-cliente-total,
+  .manual-flow div,
+  .mini-dashboard {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .card-body,
+  .clientes-card-body,
+  .veiculos-card-body,
+  .ordens-card-body,
+  .estoque-card-body {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #d8c9b8 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #ffc400 !important;
+    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+    outline: none !important;
+  }
+
+  table,
+  .tabela-comparativo,
+  .home-tabela-comparativo,
+  .manual-table,
+  .comparativo {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  th,
+  .tabela-comparativo th,
+  .home-tabela-comparativo th,
+  .manual-table th,
+  .comparativo th {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+  }
+
+  tr:nth-child(even),
+  tbody tr:nth-child(even) {
+    background: #fffaf0 !important;
+  }
+
+  footer,
+  .sobre-footer {
+    color: #6d5b52 !important;
+  }
+
+  footer a,
+  .sobre-footer a {
+    color: #3e2723 !important;
+    font-weight: 800 !important;
+  }
+
+
+/* =========================================================
+   HEADER COMPACTO COM DROPDOWNS - PREMIUM / MAIS
+   Evita que muitos links estourem a largura da tela.
+   ========================================================= */
+
+.header-menu-linha .nav-menu.nav-menu-compacto {
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.header-menu-linha .nav-menu.nav-menu-compacto > li {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.nav-dropdown details {
+  position: relative;
+}
+
+.nav-dropdown summary {
+  list-style: none;
+  cursor: pointer;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  transition: 0.2s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  user-select: none;
+}
+
+.nav-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-dropdown summary::after {
+  content: "▾";
+  font-size: 11px;
+  color: #ffc400;
+  transform: translateY(-1px);
+}
+
+.nav-dropdown summary:hover {
+  color: #ffc400;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 230px;
+  background: #ffffff;
+  color: #3e2723;
+  border: 1px solid #e8dccb;
+  border-top: 5px solid #ffc400;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 18px 42px rgba(0,0,0,0.25);
+  z-index: 20000;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+
+.nav-dropdown-menu-direita {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.header-menu-linha .nav-dropdown-menu a {
+  color: #3e2723 !important;
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 850;
+  text-transform: none;
+  text-align: left;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.header-menu-linha .nav-dropdown-menu a:hover,
+.header-menu-linha .nav-dropdown-menu a.ativo {
+  background: #fff8e1;
+  color: #3e2723 !important;
+}
+
+.header-menu-linha .nav-menu a.ativo,
+.nav-dropdown:has(a.ativo) > details > summary {
+  color: #ffc400 !important;
+}
+
+@media (min-width: 901px) {
+  .nav-dropdown details:not([open]) .nav-dropdown-menu {
+    display: none;
+  }
+
+  .nav-dropdown details[open] .nav-dropdown-menu {
+    display: grid;
+  }
+
+  .nav-dropdown details:hover .nav-dropdown-menu {
+    display: grid;
+  }
+}
+
+@media (max-width: 1100px) {
+  .header-menu-linha .nav-menu.nav-menu-compacto {
+    gap: 10px;
+  }
+
+  .header-menu-linha .nav-menu a,
+  .nav-dropdown summary {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .header-menu-linha .nav-menu.nav-menu-compacto {
+    gap: 0;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .nav-dropdown details {
+    width: 100%;
+  }
+
+  .nav-dropdown summary {
+    width: 100%;
+    padding: 12px 10px;
+    border-radius: 10px;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .nav-dropdown summary:hover {
+    background: rgba(255,196,0,0.10);
+  }
+
+  .nav-dropdown-menu,
+  .nav-dropdown-menu-direita {
+    position: static;
+    transform: none;
+    min-width: 0;
+    width: 100%;
+    margin: 4px 0 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,196,0,0.30);
+    border-left: 4px solid #ffc400;
+    border-top: 1px solid rgba(255,196,0,0.30);
+    border-radius: 12px;
+    box-shadow: none;
+    padding: 6px;
+  }
+
+  .header-menu-linha .nav-dropdown-menu a {
+    color: #fffaf0 !important;
+    background: rgba(255,255,255,0.04);
+    padding: 11px 12px;
+    border-radius: 10px;
+  }
+
+  .header-menu-linha .nav-dropdown-menu a:hover,
+  .header-menu-linha .nav-dropdown-menu a.ativo {
+    background: #ffc400;
+    color: #3e2723 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-topo {
+    padding: 11px 12px;
+  }
+
+  #usuario-saudacao {
+    max-width: 160px;
+  }
+
+  .logo-nav {
+    font-size: 18px;
+  }
+}
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+/* =========================================================
+   CORREÇÃO DE CONTRASTE - HEADERS DOS CARDS
+   Evita texto marrom em fundo marrom
+   ========================================================= */
+
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header {
+  background: #3e2723 !important;
+  color: #fffaf0 !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header p,
+.card-header span,
+.card-header small,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-busca-produto-header strong {
+  color: #fffaf0 !important;
+}
+
+.card-header h2,
+.clientes-card-header h2,
+.veiculos-card-header h2,
+.ordens-card-header h2,
+.estoque-card-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-produto-header h3 {
+  color: #ffc400 !important;
+}
+
+.card-header p,
+.clientes-card-header p,
+.veiculos-card-header p,
+.ordens-card-header p,
+.estoque-card-header p,
+.modal-busca-cliente-header p,
+.modal-busca-produto-header p {
+  color: #fffaf0 !important;
+  opacity: 0.95;
+}
+
+
+/* =========================================================
+   AJUSTES FINAIS - CONTRASTE HOME + HEADER MOBILE
+   Corrige textos claros sobre fundos claros e organiza dropdowns.
+   ========================================================= */
+
+/* Home: blocos claros devem sempre usar texto escuro */
+.home-premium-showcase,
+.home-basico-showcase,
+.home-premium-mini-dashboard,
+.home-basico-mini-dashboard,
+.home-premium-fluxo-visual,
+.home-basico-fluxo-visual,
+.home-premium-recursos-grid,
+.home-basico-recursos-grid {
+  color: var(--fs-texto) !important;
+}
+
+.home-premium-showcase h1,
+.home-premium-showcase h2,
+.home-premium-showcase h3,
+.home-basico-showcase h1,
+.home-basico-showcase h2,
+.home-basico-showcase h3 {
+  color: var(--fs-marrom) !important;
+}
+
+.home-premium-showcase p,
+.home-basico-showcase p,
+.home-premium-showcase span:not(.tag-premium-home),
+.home-basico-showcase span:not(.tag-basico-home),
+.home-premium-showcase small,
+.home-basico-showcase small {
+  color: var(--fs-texto-suave) !important;
+}
+
+.home-premium-mini-dashboard,
+.home-basico-mini-dashboard {
+  background: #ffffff !important;
+  border: 1px solid var(--fs-borda) !important;
+}
+
+.home-premium-mini-linha,
+.home-basico-mini-linha,
+.home-premium-fluxo-visual div,
+.home-basico-fluxo-visual div {
+  background: #fffaf0 !important;
+  color: var(--fs-marrom) !important;
+  border: 1px solid #f2d98b !important;
+}
+
+.home-premium-mini-linha strong,
+.home-basico-mini-linha strong,
+.home-premium-fluxo-visual div strong,
+.home-basico-fluxo-visual div strong {
+  color: var(--fs-marrom) !important;
+}
+
+.home-premium-recurso-card,
+.home-basico-recurso-card {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-left-color: var(--fs-amarelo) !important;
+}
+
+.home-premium-recurso-card strong,
+.home-basico-recurso-card strong {
+  color: var(--fs-marrom) !important;
+}
+
+.home-premium-recurso-card span,
+.home-basico-recurso-card span {
+  color: var(--fs-texto-suave) !important;
+}
+
+/* Botões/etapas visuais em cards claros não podem ficar branco sobre creme */
+.home-premium-showcase .btn-home-atalho,
+.home-basico-showcase .btn-home-atalho,
+.home-premium-showcase .btn-home-medio,
+.home-basico-showcase .btn-home-medio {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.home-premium-showcase .btn-home-atalho:hover,
+.home-basico-showcase .btn-home-atalho:hover,
+.home-premium-showcase .btn-home-medio:hover,
+.home-basico-showcase .btn-home-medio:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Header compacto */
+.nav-dropdown summary {
+  color: #fffaf0 !important;
+}
+
+.nav-dropdown summary:hover,
+.nav-dropdown details[open] > summary {
+  color: var(--fs-amarelo) !important;
+}
+
+/* Mobile: dropdowns alinhados como os demais itens do menu */
+@media (max-width: 900px) {
+  .header-menu-linha .nav-menu.nav-menu-compacto {
+    align-items: stretch !important;
+  }
+
+  .nav-dropdown,
+  .nav-dropdown details {
+    width: 100% !important;
+  }
+
+  .nav-dropdown summary {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    text-align: right !important;
+    gap: 8px !important;
+    padding: 12px 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-dropdown summary::after {
+    margin-left: 4px !important;
+  }
+
+  .nav-dropdown-menu,
+  .nav-dropdown-menu-direita {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .header-menu-linha .nav-dropdown-menu a {
+    text-align: right !important;
+    justify-content: flex-end !important;
+  }
+}
+
+
+/* =========================================================
+   FS ORDEM CONTRASTE FINAL - texto legível em fundo marrom
+   ========================================================= */
+.pagina-ordem .card-header,
+.pagina-ordem .modal-busca-produto-header,
+.pagina-ordem .modal-busca-cliente-header {
+  background: #3e2723 !important;
+  color: #fffaf0 !important;
+  border-bottom: 3px solid #ffc400 !important;
+}
+
+.pagina-ordem .card-header *,
+.pagina-ordem .modal-busca-produto-header *,
+.pagina-ordem .modal-busca-cliente-header * {
+  color: #fffaf0 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.pagina-ordem .card-header h1,
+.pagina-ordem .card-header h2,
+.pagina-ordem .card-header h3,
+.pagina-ordem .card-header strong,
+.pagina-ordem .modal-busca-produto-header h1,
+.pagina-ordem .modal-busca-produto-header h2,
+.pagina-ordem .modal-busca-produto-header h3,
+.pagina-ordem .modal-busca-produto-header strong,
+.pagina-ordem .modal-busca-cliente-header h1,
+.pagina-ordem .modal-busca-cliente-header h2,
+.pagina-ordem .modal-busca-cliente-header h3,
+.pagina-ordem .modal-busca-cliente-header strong {
+  color: #ffc400 !important;
+}
+
+.pagina-ordem .card-header p,
+.pagina-ordem .card-header span,
+.pagina-ordem .card-header small,
+.pagina-ordem .modal-busca-produto-header p,
+.pagina-ordem .modal-busca-produto-header span,
+.pagina-ordem .modal-busca-produto-header small,
+.pagina-ordem .modal-busca-cliente-header p,
+.pagina-ordem .modal-busca-cliente-header span,
+.pagina-ordem .modal-busca-cliente-header small {
+  color: #fffaf0 !important;
+}
+
+.pagina-ordem .btn-secundario,
+.pagina-ordem .btn-primario:not(.btn-verde),
+.pagina-ordem button.btn-secundario,
+.pagina-ordem button.btn-primario:not(.btn-verde) {
+  background: #3e2723 !important;
+  color: #ffc400 !important;
+  border: 2px solid #ffc400 !important;
+}
+
+.pagina-ordem .btn-secundario *,
+.pagina-ordem .btn-primario:not(.btn-verde) * {
+  color: #ffc400 !important;
+}
+
+.pagina-ordem .btn-verde,
+.pagina-ordem #btn-pdf-ordem {
+  background: #25d366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+
+/* =========================================================
+   CORREÇÃO FINAL DE CONTRASTE - TOTAIS DA ORDEM DE SERVIÇO
+   Evita texto marrom em fundo marrom nos blocos de total.
+   ========================================================= */
+.valor-total,
+.total-container,
+.total-itens-ordem-box,
+.resumo-total-itens-ordem,
+.os-total-box,
+.card-total-os {
+  background: #3e2723 !important;
+  color: #ffc400 !important;
+  border: 2px solid #ffc400 !important;
+}
+
+.valor-total *,
+.total-container *,
+.total-itens-ordem-box *,
+.resumo-total-itens-ordem *,
+.os-total-box *,
+.card-total-os * {
+  color: #ffc400 !important;
+}
+
+.valor-total span,
+.valor-total strong,
+.valor-total b,
+.total-container span,
+.total-container strong,
+.total-container b,
+.total-itens-ordem-box span,
+.total-itens-ordem-box strong,
+.total-itens-ordem-box b,
+.resumo-total-itens-ordem span,
+.resumo-total-itens-ordem strong,
+.resumo-total-itens-ordem b {
+  color: #ffc400 !important;
+  opacity: 1 !important;
+}
+
+/* Campos de valor devem continuar claros e legíveis */
+#item-valor-total,
+#financeiro-valor-total,
+#financeiro-saldo-restante {
+  background: #ffffff !important;
+  color: #2f241f !important;
+  border-color: #d8c9b8 !important;
+}
+
+label[for="item-valor-total"],
+label[for="financeiro-valor-total"],
+label[for="financeiro-saldo-restante"] {
+  color: #3e2723 !important;
+}

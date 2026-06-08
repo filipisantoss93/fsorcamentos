@@ -8,31 +8,59 @@ const corsHeaders = {
 };
 
 type PeriodoPlano = "mensal" | "semestral" | "anual";
+type TipoPlano = "basico" | "premium";
 
-const PLANOS_BASICOS: Record<
-  PeriodoPlano,
-  {
-    label: string;
-    valor: number;
-    dias: number;
-  }
+const PLANOS_PIX: Record<
+  TipoPlano,
+  Record<
+    PeriodoPlano,
+    {
+      label: string;
+      valor: number;
+      dias: number;
+    }
+  >
 > = {
-  mensal: {
-    label: "1 mês",
-    valor: 19.9,
-    dias: 30,
+  basico: {
+    mensal: {
+      label: "Plano Básico - 1 mês",
+      valor: 19.9,
+      dias: 30,
+    },
+    semestral: {
+      label: "Plano Básico - 6 meses",
+      valor: 109.9,
+      dias: 180,
+    },
+    anual: {
+      label: "Plano Básico - 12 meses",
+      valor: 209.9,
+      dias: 365,
+    },
   },
-  semestral: {
-    label: "6 meses",
-    valor: 109.9,
-    dias: 180,
-  },
-  anual: {
-    label: "12 meses",
-    valor: 209.9,
-    dias: 365,
+  premium: {
+    mensal: {
+      label: "Plano Premium - 1 mês",
+      valor: 69.9,
+      dias: 30,
+    },
+    semestral: {
+      label: "Plano Premium - 6 meses",
+      valor: 399.9,
+      dias: 180,
+    },
+    anual: {
+      label: "Plano Premium - 12 meses",
+      valor: 599.9,
+      dias: 365,
+    },
   },
 };
+
+function normalizarTipoPlano(valor: unknown): TipoPlano {
+  const texto = String(valor || "basico").toLowerCase().trim();
+  return texto === "premium" ? "premium" : "basico";
+}
 
 function respostaJson(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -259,7 +287,7 @@ serve(async (req) => {
   }
 
   try {
-    console.log("Iniciando função criar-pix-basico");
+    console.log("Iniciando função criar-pix-basico / planos Pix");
 
     const supabaseUrl = getEnvObrigatorio("SUPABASE_URL");
     const supabaseAnonKey = getEnvObrigatorio("SUPABASE_ANON_KEY");
@@ -303,8 +331,9 @@ serve(async (req) => {
     const usuario = userData.user;
 
     const body = await req.json().catch(() => ({}));
+    const tipoPlano = normalizarTipoPlano(body.plano);
     const periodo = String(body.periodo || "") as PeriodoPlano;
-    const plano = PLANOS_BASICOS[periodo];
+    const plano = PLANOS_PIX[tipoPlano]?.[periodo];
 
     if (!plano) {
       return respostaJson(
@@ -317,13 +346,14 @@ serve(async (req) => {
 
     console.log("Usuário autenticado e plano selecionado:", {
       usuario_id: usuario.id,
+      plano: tipoPlano,
       periodo,
       valor: plano.valor,
       dias: plano.dias,
     });
 
     const txid = gerarTxid();
-    const descricao = `Plano Básico FS Orçamentos - ${plano.label}`;
+    const descricao = `${plano.label} FS Orçamentos`;
     const expiraEm = new Date(Date.now() + 60 * 60 * 1000).toISOString();
 
     const efiClient = montarHttpClientEfi();
@@ -374,7 +404,7 @@ serve(async (req) => {
       .from("pagamentos_pix")
       .insert({
         usuario_id: usuario.id,
-        plano: "basico",
+        plano: tipoPlano,
         periodo,
         dias: plano.dias,
         valor: plano.valor,
@@ -407,7 +437,7 @@ serve(async (req) => {
       sucesso: true,
       pagamento_id: pagamento.id,
       periodo,
-      plano: "basico",
+      plano: tipoPlano,
       label: plano.label,
       dias: plano.dias,
       valor: plano.valor,

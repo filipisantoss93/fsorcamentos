@@ -1,0 +1,2309 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Detalhes da OS - FS Orçamentos</title>
+
+  <meta name="description" content="Detalhes da ordem de serviço no FS Orçamentos." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --fs-amarelo: #ffc400;
+      --fs-amarelo-claro: #fff8e1;
+
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #4e342e;
+      --fs-marrom-claro: #5d4037;
+
+      --fs-fundo-escuro: #2c2c2c;
+      --fs-bege: #f4ece1;
+      --fs-bege-2: #fffaf0;
+
+      --fs-branco: #ffffff;
+      --fs-borda: #d7ccc8;
+
+      --fs-texto: #3e2723;
+      --fs-texto-suave: #6d4c41;
+
+      --fs-perigo: #dc2626;
+      --fs-sucesso: #25D366;
+      --fs-verde-escuro: #083b2f;
+
+      --fs-radius: 16px;
+      --fs-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+
+      --fs-azul: #ffc400;
+      --fs-azul-escuro: #3e2723;
+      --fs-azul-claro: #fff8e1;
+      --fs-verde: #25D366;
+      --fs-vermelho: #dc2626;
+      --fs-cinza: #6d4c41;
+      --fs-fundo: #2c2c2c;
+      --fs-texto-claro: #f4ece1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--fs-fundo-escuro);
+      color: #eeeeee;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .pagina-ordem {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      color: var(--fs-texto);
+    }
+
+    .ordem-hero {
+      background: linear-gradient(135deg, #3e2723, #2c2c2c);
+      color: #ffffff;
+      border-radius: 22px;
+      border-top: 6px solid var(--fs-amarelo);
+      padding: 28px;
+      box-shadow: var(--fs-shadow);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ordem-hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255, 196, 0, 0.16);
+      right: -90px;
+      top: -100px;
+    }
+
+    .ordem-hero h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      color: #ffffff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ordem-hero p {
+      margin: 0;
+      max-width: 800px;
+      color: var(--fs-bege);
+      font-size: 15px;
+      line-height: 1.6;
+      opacity: 0.96;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ordem-acoes-topo {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .grid-ordem {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--fs-bege);
+      color: var(--fs-texto);
+      border: 1px solid var(--fs-borda);
+      border-top: 5px solid var(--fs-amarelo);
+      border-radius: var(--fs-radius);
+      box-shadow: var(--fs-shadow);
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .card-header {
+      padding: 18px 20px;
+      border-bottom: 2px solid var(--fs-amarelo);
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--fs-amarelo);
+    }
+
+    .card-header p {
+      margin: 6px 0 0;
+      color: var(--fs-bege);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .card-body {
+      padding: 20px;
+      background: var(--fs-bege);
+      color: var(--fs-texto);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .info-item {
+      border: 1px solid var(--fs-borda);
+      border-radius: 14px;
+      padding: 14px;
+      background: #ffffff;
+      color: var(--fs-texto);
+    }
+
+    .info-item span {
+      display: block;
+      color: var(--fs-marrom-claro);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .info-item strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 15px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .texto-bloco {
+      border: 1px solid var(--fs-borda);
+      border-radius: 14px;
+      padding: 14px;
+      background: #ffffff;
+      color: var(--fs-texto-suave);
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      min-height: 46px;
+    }
+
+    .form-os {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-linha {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .campo {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .campo label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--fs-marrom-claro);
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width: 100%;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      background: #ffffff;
+      color: var(--fs-texto);
+      box-sizing: border-box;
+      transition: 0.2s ease;
+    }
+
+    .campo input:focus,
+    .campo select:focus,
+    .campo textarea:focus {
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 0 0 4px rgba(255, 196, 0, 0.22);
+    }
+
+    .campo small {
+      color: var(--fs-texto-suave);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .valores-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .valor-linha {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #eadfce;
+      padding-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .valor-linha:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .valor-linha span {
+      color: var(--fs-texto-suave);
+    }
+
+    .valor-linha strong {
+      color: var(--fs-marrom);
+    }
+
+    .valor-total {
+      background: var(--fs-marrom);
+      border: 2px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .valor-total span {
+      display: block;
+      color: var(--fs-amarelo);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .valor-total strong {
+      display: block;
+      color: var(--fs-amarelo);
+      font-size: 28px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #efebe9;
+      color: var(--fs-marrom);
+      border: 1px solid #d7ccc8;
+    }
+
+    .tag.aberta,
+    .tag.em_analise,
+    .tag.aguardando_aprovacao,
+    .tag.aguardando_material,
+    .tag.pendente {
+      background: #fff8e1;
+      color: #8a5a00;
+      border-color: var(--fs-amarelo);
+    }
+
+    .tag.aprovada,
+    .tag.em_execucao,
+    .tag.parcial {
+      background: #efebe9;
+      color: var(--fs-marrom);
+      border-color: var(--fs-amarelo);
+    }
+
+    .tag.concluida,
+    .tag.pago {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .tag.cancelada {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .tags-linha {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s ease;
+      min-height: 42px;
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .btn-primario {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn-primario:hover {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      transform: translateY(-1px);
+    }
+
+    .btn-secundario {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+    }
+
+    .btn-secundario:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+    }
+
+    .btn-verde {
+      background: var(--fs-sucesso);
+      color: var(--fs-verde-escuro);
+      border: 2px solid #128c4a;
+    }
+
+    .btn-verde:hover {
+      background: #20ba5a;
+      color: #ffffff;
+    }
+
+    .btn-perigo {
+      background: #fff1f1;
+      color: var(--fs-perigo);
+      border: 2px solid var(--fs-perigo);
+    }
+
+    .btn-perigo:hover {
+      background: var(--fs-perigo);
+      color: #ffffff;
+    }
+
+    .btn-pequeno {
+      min-height: 36px;
+      padding: 8px 11px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .estado-vazio {
+      text-align: center;
+      padding: 34px 20px;
+      border: 1px dashed var(--fs-amarelo);
+      border-radius: 16px;
+      background: #fffaf0;
+      color: var(--fs-texto-suave);
+    }
+
+    .estado-vazio strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .mensagem-ordem {
+      display: none;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .mensagem-ordem.sucesso {
+      display: block;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .mensagem-ordem.erro {
+      display: block;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .mensagem-ordem.info {
+      display: block;
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+    }
+
+    .loading-ordem {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 22px;
+      color: var(--fs-marrom-claro);
+      font-weight: 800;
+    }
+
+    .loading-ordem.ativo {
+      display: flex;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid #f4e3a1;
+      border-top-color: var(--fs-amarelo);
+      border-radius: 50%;
+      animation: girar 0.8s linear infinite;
+    }
+
+    @keyframes girar {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    .aviso-financeiro {
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+
+    .orcamento-vinculado-card {
+      display: none;
+    }
+
+    .orcamento-vinculado-card.ativo {
+      display: block;
+    }
+
+    .orcamento-vinculado-destaque {
+      background: #fff8e1;
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--fs-marrom);
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+      font-weight: 800;
+    }
+
+    .orcamento-vinculado-acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 920px) {
+      .grid-ordem {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid,
+      .form-linha {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .pagina-ordem {
+        padding: 18px 12px 42px;
+      }
+
+      .ordem-hero {
+        padding: 22px;
+        border-radius: 18px;
+      }
+
+      .ordem-hero h1 {
+        font-size: 24px;
+      }
+
+      .ordem-acoes-topo .btn,
+      .form-os .btn {
+        width: 100%;
+      }
+    }
+  
+
+    .produto-estoque-selecionado-card{background:#fffaf0;border:1px solid var(--fs-borda);border-left:5px solid var(--fs-amarelo);border-radius:12px;padding:12px;color:var(--fs-marrom);margin-bottom:10px}.produto-estoque-selecionado-card strong,.produto-estoque-selecionado-card span{display:block}.produto-estoque-selecionado-card span{color:#6d4c41;font-size:13px;margin-top:3px;line-height:1.4}.produto-estoque-modal-acoes{display:flex;gap:8px;flex-wrap:wrap}.modal-busca-produto-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:25000;padding:16px}.modal-busca-produto-overlay.ativo{display:flex}.modal-busca-produto-box{width:min(100%,760px);max-height:88vh;overflow:hidden;background:var(--fs-creme);border-radius:18px;border-top:6px solid var(--fs-amarelo);box-shadow:0 20px 60px rgba(0,0,0,.45);display:flex;flex-direction:column}.modal-busca-produto-header{background:var(--fs-marrom);color:var(--fs-amarelo);padding:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.modal-busca-produto-header h3{margin:0;color:var(--fs-amarelo)}.modal-busca-produto-header p{margin:4px 0 0;color:var(--fs-bege);font-size:13px}.btn-fechar-modal-produto{background:#dc2626;color:#fff;border:none;border-radius:9px;width:34px;height:34px;font-size:22px;font-weight:900;cursor:pointer}.modal-busca-produto-body{padding:18px;overflow:auto}.busca-produto-modal-linha{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:14px}.busca-produto-modal-linha input{border:1px solid #d7ccc8;border-radius:12px;padding:12px;font-size:15px}.resultado-busca-produtos-modal{display:grid;gap:8px}.produto-modal-item{width:100%;text-align:left;background:#fff;color:var(--fs-marrom);border:1px solid var(--fs-borda);border-left:5px solid var(--fs-amarelo);border-radius:12px;padding:12px;cursor:pointer}.produto-modal-item:hover{background:#fff8e1}.produto-modal-item strong{display:block;margin-bottom:4px}.produto-modal-tag-compativel{display:inline-flex;background:#dcfce7;color:#166534;border:1px solid #bbf7d0;border-radius:999px;padding:3px 8px;font-style:normal;font-size:11px;font-weight:900;margin:0 0 5px}.produto-modal-item span{display:block;color:#6d4c41;font-size:12px;line-height:1.4}.estado-busca-produto-modal{background:#fff8e1;border-left:5px solid var(--fs-amarelo);border-radius:12px;padding:14px;color:var(--fs-marrom);font-weight:800}@media(max-width:700px){.busca-produto-modal-linha{grid-template-columns:1fr}.produto-estoque-modal-acoes .btn{width:100%}}
+
+
+    /* =========================================================
+       OS PREMIUM - FOTO ANTES, ASSINATURA, TERMO E RECIBO
+       ========================================================= */
+    .os-extra-preview {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--fs-marrom);
+      margin-bottom: 12px;
+    }
+
+    .os-extra-preview strong,
+    .os-extra-preview span {
+      display: block;
+    }
+
+    .os-extra-preview span {
+      color: var(--fs-texto-suave);
+      font-size: 13px;
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+
+    .os-foto-preview-img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--fs-borda);
+      background: #ffffff;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .assinatura-canvas-wrap {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    #canvas-assinatura-cliente {
+      width: 100%;
+      height: 160px;
+      display: block;
+      background: #ffffff;
+      border: 1px dashed #8d7a70;
+      border-radius: 12px;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .assinatura-preview-img {
+      width: 100%;
+      max-height: 140px;
+      object-fit: contain;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-radius: 12px;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .os-documentos-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .os-documento-card {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--fs-marrom);
+    }
+
+    .os-documento-card strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .os-documento-card p {
+      margin: 0 0 10px;
+      color: var(--fs-texto-suave);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+
+
+    /* Correção final dos totais da OS */
+    .valor-total,
+    .total-itens-ordem-box,
+    .resumo-total-itens-ordem {
+      background: #3e2723 !important;
+      color: #ffc400 !important;
+      border: 2px solid #ffc400 !important;
+    }
+
+    .valor-total *,
+    .total-itens-ordem-box *,
+    .resumo-total-itens-ordem * {
+      color: #ffc400 !important;
+    }
+
+    #item-valor-total,
+    #financeiro-valor-total,
+    #financeiro-saldo-restante {
+      background: #ffffff !important;
+      color: #2f241f !important;
+    }
+
+  </style>
+
+
+<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
+<style id="fs-formal-theme-overrides">
+  :root {
+    --fs-marrom: #3e2723;
+    --fs-marrom-2: #5d4037;
+    --fs-fundo-escuro: #f7f2ea;
+    --fs-fundo: #f7f2ea;
+    --fs-page-bg: #f7f2ea;
+    --fs-page-bg-2: #efe3d2;
+    --fs-card: #ffffff;
+    --fs-creme: #f4ece1;
+    --fs-creme-2: #fffaf0;
+    --fs-bege: #f4ece1;
+    --fs-bege-2: #fffaf0;
+    --fs-amarelo: #ffc400;
+    --fs-borda: #e8dccb;
+    --fs-texto: #2f241f;
+    --fs-texto-suave: #6d5b52;
+    --bg-dark: #f7f2ea;
+    --body-brown: #ffffff;
+    --text-dark: #2f241f;
+    --accent-yellow: #ffc400;
+  }
+
+  body:not(.gerando-pdf) {
+    background:
+      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
+    color: #2f241f !important;
+  }
+
+  #header-container,
+  .main-header,
+  .header-topo,
+  .header-menu-linha {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav,
+  .logo-nav span,
+  #usuario-saudacao,
+  .header-menu-linha a,
+  .nav-menu a {
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav strong,
+  .fs-box,
+  .sobre-fs-box {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+  }
+
+  .link-destaque-gerador,
+  .btn-header-entrar,
+  .btn-menu-mobile-entrar,
+  .btn-home-grande,
+  .btn-home-medio,
+  .btn-home-atalho.btn-principal,
+  .btn-gerar-orcamento-home,
+  .btn-previa-profissional,
+  .btn-hero-principal,
+  .btn-ir-planos-home,
+  .btn-home-planos-forte,
+  .btn-add,
+  .btn-extra,
+  .btn-primario,
+  .btn-primary,
+  .btn-salvar,
+  .btn-acao-pdf,
+  .plano-pix-card button,
+  .btn-editar-dados-empresa {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .link-destaque-gerador:hover,
+  .btn-header-entrar:hover,
+  .btn-menu-mobile-entrar:hover,
+  .btn-home-grande:hover,
+  .btn-home-medio:hover,
+  .btn-gerar-orcamento-home:hover,
+  .btn-previa-profissional:hover,
+  .btn-hero-principal:hover,
+  .btn-ir-planos-home:hover,
+  .btn-home-planos-forte:hover,
+  .btn-add:hover,
+  .btn-extra:hover,
+  .btn-primario:hover,
+  .btn-primary:hover,
+  .btn-salvar:hover,
+  .btn-acao-pdf:hover,
+  .plano-pix-card button:hover,
+  .btn-editar-dados-empresa:hover {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+    border-color: #3e2723 !important;
+  }
+
+  .hero-publico,
+  .home-plano-hero,
+  .gerador-hero,
+  .planos-hero,
+  .clientes-hero,
+  .veiculos-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero,
+  .sobre-hero,
+  .manual-hero,
+  .termos-hero,
+  .privacidade-hero,
+  .orcamentos-hero,
+  .painel-hero,
+  .secao-como-funciona,
+  .whatsapp-preview-home,
+  .cliente-aprovacao-home,
+  .comparativo-home,
+  .status-orcamentos-home,
+  .home-story-section,
+  .home-whatsapp-section,
+  .home-aprovacao-section,
+  .home-status-section,
+  .home-comparativo-section,
+  .planos-pix-section,
+  .comparativo-section,
+  .faq-section,
+  .container-sobre,
+  .container-termos,
+  .container-privacidade,
+  .home-premium-showcase {
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+    color: #2f241f !important;
+    border-top-color: #ffc400 !important;
+    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
+  }
+
+  .hero-publico h1,
+  .home-plano-hero h1,
+  .gerador-hero h1,
+  .planos-hero h1,
+  .clientes-hero h1,
+  .veiculos-hero h1,
+  .ordens-hero h1,
+  .ordem-hero h1,
+  .estoque-hero h1,
+  .sobre-hero h1,
+  .manual-hero h1,
+  .home-premium-showcase h2,
+  .container-sobre h1,
+  .container-sobre h2,
+  .container-termos h1,
+  .container-termos h2,
+  .section-topo h2,
+  .dadositens,
+  .card-header h2,
+  .clientes-card-header h2,
+  .veiculos-card-header h2,
+  .ordens-card-header h2,
+  .estoque-card-header h2 {
+    color: #3e2723 !important;
+  }
+
+  .hero-publico p,
+  .home-plano-hero p,
+  .gerador-hero p,
+  .planos-hero p,
+  .clientes-hero p,
+  .veiculos-hero p,
+  .ordens-hero p,
+  .ordem-hero p,
+  .estoque-hero p,
+  .sobre-hero p,
+  .manual-hero p,
+  .home-premium-showcase p,
+  .container-sobre p,
+  .container-termos p,
+  .section-topo p {
+    color: #6d5b52 !important;
+  }
+
+  .container,
+  .card,
+  .clientes-card,
+  .veiculos-card,
+  .ordens-card,
+  .estoque-card,
+  .gerador-card-principal,
+  .sidebar-card,
+  .plano-pix-card,
+  .faq-card,
+  .home-promo-card,
+  .home-metrica-card,
+  .home-relatorio-card,
+  .home-painel-card,
+  .card-sobre,
+  .plano-card,
+  .manual-card,
+  .manual-section,
+  .manual-step,
+  .manual-demo-card,
+  .cliente-item,
+  .veiculo-item,
+  .ordem-item,
+  .estoque-categoria-grupo,
+  .emissor-readonly-card,
+  .cliente-tela-preview,
+  .home-cliente-preview {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #e8dccb !important;
+    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
+  }
+
+  .card-header,
+  .clientes-card-header,
+  .veiculos-card-header,
+  .ordens-card-header,
+  .estoque-card-header,
+  .modal-busca-cliente-header,
+  .modal-busca-produto-header,
+  .modal-pix-topo,
+  .home-cliente-topo,
+  .mock-card-head,
+  .orcamento-whatsapp-header,
+  .home-orcamento-whatsapp-header,
+  .total-container,
+  .cliente-total-demo,
+  .home-cliente-total,
+  .manual-flow div,
+  .mini-dashboard {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .card-body,
+  .clientes-card-body,
+  .veiculos-card-body,
+  .ordens-card-body,
+  .estoque-card-body {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #d8c9b8 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #ffc400 !important;
+    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+    outline: none !important;
+  }
+
+  table,
+  .tabela-comparativo,
+  .home-tabela-comparativo,
+  .manual-table,
+  .comparativo {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  th,
+  .tabela-comparativo th,
+  .home-tabela-comparativo th,
+  .manual-table th,
+  .comparativo th {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+  }
+
+  tr:nth-child(even),
+  tbody tr:nth-child(even) {
+    background: #fffaf0 !important;
+  }
+
+  footer,
+  .sobre-footer {
+    color: #6d5b52 !important;
+  }
+
+  footer a,
+  .sobre-footer a {
+    color: #3e2723 !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
+
+
+<!-- FS ORDEM CONTRASTE FINAL - textos de cabeçalho sempre legíveis -->
+<style id="fs-ordem-contraste-final">
+  /* Corrige textos claros/escuros especificamente dentro da página ordem.html */
+  .pagina-ordem .card-header,
+  .pagina-ordem .modal-busca-produto-header,
+  .pagina-ordem .modal-busca-cliente-header {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+    border-bottom: 3px solid #ffc400 !important;
+  }
+
+  .pagina-ordem .card-header *,
+  .pagina-ordem .modal-busca-produto-header *,
+  .pagina-ordem .modal-busca-cliente-header * {
+    color: #fffaf0 !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+  }
+
+  .pagina-ordem .card-header h1,
+  .pagina-ordem .card-header h2,
+  .pagina-ordem .card-header h3,
+  .pagina-ordem .card-header strong,
+  .pagina-ordem .modal-busca-produto-header h1,
+  .pagina-ordem .modal-busca-produto-header h2,
+  .pagina-ordem .modal-busca-produto-header h3,
+  .pagina-ordem .modal-busca-produto-header strong,
+  .pagina-ordem .modal-busca-cliente-header h1,
+  .pagina-ordem .modal-busca-cliente-header h2,
+  .pagina-ordem .modal-busca-cliente-header h3,
+  .pagina-ordem .modal-busca-cliente-header strong {
+    color: #ffc400 !important;
+  }
+
+  .pagina-ordem .card-header p,
+  .pagina-ordem .card-header span,
+  .pagina-ordem .card-header small,
+  .pagina-ordem .modal-busca-produto-header p,
+  .pagina-ordem .modal-busca-produto-header span,
+  .pagina-ordem .modal-busca-produto-header small,
+  .pagina-ordem .modal-busca-cliente-header p,
+  .pagina-ordem .modal-busca-cliente-header span,
+  .pagina-ordem .modal-busca-cliente-header small {
+    color: #fffaf0 !important;
+  }
+
+  /* Evita textos de botões marrom em botão marrom dentro da OS */
+  .pagina-ordem .btn-secundario,
+  .pagina-ordem .btn-primario:not(.btn-verde),
+  .pagina-ordem button.btn-secundario,
+  .pagina-ordem button.btn-primario:not(.btn-verde) {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border: 2px solid #ffc400 !important;
+  }
+
+  .pagina-ordem .btn-secundario *,
+  .pagina-ordem .btn-primario:not(.btn-verde) * {
+    color: #ffc400 !important;
+  }
+
+  .pagina-ordem .btn-verde,
+  .pagina-ordem #btn-pdf-ordem {
+    background: #25d366 !important;
+    color: #083b2f !important;
+    border-color: #128c4a !important;
+  }
+</style>
+
+</head>
+
+<body>
+  <div id="header-container"></div>
+
+  <main class="pagina-ordem">
+    <section class="ordem-hero">
+      <h1 id="titulo-pagina-ordem">Ordem de Serviço</h1>
+      <p id="subtitulo-pagina-ordem">
+        Abra a OS para adicionar mão de obra, itens do estoque, definir pagamento e finalizar o serviço.
+      </p>
+    </section>
+
+    <div class="ordem-acoes-topo">
+      <a href="ordens.html" class="btn btn-secundario">Voltar para OS</a>
+      <button type="button" id="btn-editar-ordem" class="btn btn-primario">Editar dados básicos</button>
+      <button type="button" id="btn-pdf-ordem" class="btn btn-verde">Gerar PDF</button>
+      <button type="button" id="btn-whatsapp-cliente" class="btn btn-secundario">WhatsApp do cliente</button>
+      <button type="button" id="btn-agendar-ordem" class="btn btn-primario">Agendar serviço</button>
+    </div>
+
+    <div id="mensagem-ordem" class="mensagem-ordem"></div>
+
+    <div id="loading-ordem" class="loading-ordem ativo">
+      <span class="spinner"></span>
+      Carregando ordem de serviço...
+    </div>
+
+    <section id="conteudo-ordem" class="grid-ordem oculto">
+      <div>
+        <article class="card">
+          <div class="card-header">
+            <h2>Dados principais</h2>
+            <p>Informações gerais da ordem de serviço.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="info-item">
+                <span>Número da OS</span>
+                <strong id="detalhe-numero-os">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Status</span>
+                <strong>
+                  <span id="detalhe-status-os" class="tag">-</span>
+                </strong>
+              </div>
+
+              <div class="info-item">
+                <span>Título</span>
+                <strong id="detalhe-titulo-os">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Consultor Técnico</span>
+                <strong id="detalhe-responsavel-os">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Data de abertura</span>
+                <strong id="detalhe-data-abertura-os">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Data prevista</span>
+                <strong id="detalhe-data-prevista-os">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Data de conclusão</span>
+                <strong id="detalhe-data-conclusao-os">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Status do pagamento</span>
+                <strong>
+                  <span id="detalhe-status-pagamento-os" class="tag">-</span>
+                </strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Solicitação e serviço</h2>
+            <p>Descrição do problema informado e serviço a executar.</p>
+          </div>
+
+          <div class="card-body">
+            <p><strong>Solicitação / problema informado</strong></p>
+            <div id="detalhe-descricao-problema" class="texto-bloco">-</div>
+
+            <br />
+
+            <p><strong>Serviço a executar</strong></p>
+            <div id="detalhe-descricao-servico" class="texto-bloco">-</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Itens da OS</h2>
+            <p>
+              Adicione serviços, peças, produtos e materiais usados nesta ordem de serviço.
+              Produtos vinculados ao estoque poderão ser baixados automaticamente ao concluir a OS.
+            </p>
+          </div>
+
+          <div class="card-body">
+            <div id="mensagem-itens-ordem" class="mensagem-ordem"></div>
+
+            <form id="form-item-ordem" class="form-os">
+              <input type="hidden" id="item-ordem-id" />
+
+              <div class="form-linha">
+                <div class="campo campo-produto-estoque-modal">
+                  <label for="item-produto-estoque-id">Produto do estoque</label>
+                  <input type="hidden" id="item-produto-estoque-id" />
+                  <div id="produto-estoque-selecionado-card" class="produto-estoque-selecionado-card">
+                    <strong>Nenhum produto selecionado</strong>
+                    <span>Item manual / sem vínculo com estoque</span>
+                  </div>
+                  <div class="produto-estoque-modal-acoes">
+                    <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaProdutoEstoqueOrdem()">Buscar produto do estoque</button>
+                    <button type="button" class="btn btn-secundario" onclick="limparProdutoEstoqueSelecionadoOrdem()">Limpar produto</button>
+                  </div>
+                </div>
+
+                <div class="campo">
+                  <label for="item-tipo">Tipo</label>
+                  <select id="item-tipo">
+                    <option value="servico">Serviço</option>
+                    <option value="produto">Produto</option>
+                    <option value="peca">Peça</option>
+                    <option value="material">Material</option>
+                    <option value="mao_obra">Mão de obra</option>
+                    <option value="deslocamento">Deslocamento</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="campo">
+                <label for="item-descricao">Descrição do item *</label>
+                <input
+                  type="text"
+                  id="item-descricao"
+                  placeholder="Ex: Fonte 12V, instalação, peça, deslocamento..."
+                  required
+                />
+              </div>
+
+              <div class="form-linha">
+                <div class="campo">
+                  <label for="item-quantidade">Quantidade</label>
+                  <input
+                    type="number"
+                    id="item-quantidade"
+                    min="0.01"
+                    step="0.01"
+                    value="1"
+                  />
+                </div>
+
+                <div class="campo">
+                  <label for="item-unidade">Unidade</label>
+                  <select id="item-unidade">
+                    <option value="un">Unidade</option>
+                    <option value="pc">Peça</option>
+                    <option value="kg">Kg</option>
+                    <option value="g">Grama</option>
+                    <option value="m">Metro</option>
+                    <option value="cm">Centímetro</option>
+                    <option value="l">Litro</option>
+                    <option value="ml">Mililitro</option>
+                    <option value="cx">Caixa</option>
+                    <option value="pct">Pacote</option>
+                    <option value="par">Par</option>
+                    <option value="hora">Hora</option>
+                    <option value="servico">Serviço</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-linha">
+                <div class="campo">
+                  <label for="item-valor-unitario">Valor unitário</label>
+                  <input
+                    type="number"
+                    id="item-valor-unitario"
+                    min="0"
+                    step="0.01"
+                    placeholder="0,00"
+                  />
+                </div>
+
+                <div class="campo">
+                  <label for="item-valor-total">Valor total</label>
+                  <input
+                    type="number"
+                    id="item-valor-total"
+                    min="0"
+                    step="0.01"
+                    placeholder="0,00"
+                    readonly
+                  />
+                </div>
+              </div>
+
+              <label style="display:flex; align-items:flex-start; gap:10px; background:#fffaf0; border:1px solid var(--fs-amarelo); border-radius:14px; padding:12px;">
+                <input type="checkbox" id="item-baixar-estoque" style="margin-top:3px; width:18px; height:18px; accent-color:var(--fs-amarelo);" />
+                <span>
+                  <strong style="display:block; font-size:14px; color:var(--fs-marrom); margin-bottom:3px;">
+                    Baixar do estoque ao concluir a OS
+                  </strong>
+                  <small style="display:block; color:var(--fs-texto-suave); line-height:1.4;">
+                    Use esta opção apenas para produtos, peças ou materiais vinculados ao estoque.
+                  </small>
+                </span>
+              </label>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" id="btn-salvar-item-ordem" class="btn btn-primario">
+                  Adicionar item
+                </button>
+
+                <button type="button" id="btn-limpar-item-ordem" class="btn btn-secundario">
+                  Limpar item
+                </button>
+              </div>
+            </form>
+
+            <br />
+
+            <div id="lista-itens-ordem">
+              <div class="estado-vazio">
+                <strong>Nenhum item adicionado</strong>
+                <p>Adicione serviços, peças ou materiais usados nesta ordem de serviço.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Observações</h2>
+            <p>Observações para o cliente e informações internas.</p>
+          </div>
+
+          <div class="card-body">
+            <p><strong>Observações para o cliente</strong></p>
+            <div id="detalhe-observacoes-cliente" class="texto-bloco">-</div>
+
+            <br />
+
+            <p><strong>Observações internas</strong></p>
+            <div id="detalhe-observacoes-internas" class="texto-bloco">-</div>
+          </div>
+        </article>
+      </div>
+
+      <aside>
+        <article id="card-orcamento-vinculado" class="card orcamento-vinculado-card">
+          <div class="card-header">
+            <h2>Orçamento vinculado</h2>
+            <p>Dados do orçamento aprovado que originou esta ordem de serviço.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="orcamento-vinculado-destaque">
+              Esta OS foi gerada a partir de um orçamento aprovado. Você pode importar os itens do orçamento para a OS e depois ajustar estoque, mão de obra e pagamento.
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <span>Número do orçamento</span>
+                <strong id="detalhe-orcamento-numero">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Status do orçamento</span>
+                <strong id="detalhe-orcamento-status">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Valor aprovado</span>
+                <strong id="detalhe-orcamento-total">R$ 0,00</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Forma de pagamento</span>
+                <strong id="detalhe-orcamento-pagamento">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Aprovado em</span>
+                <strong id="detalhe-orcamento-aprovado-em">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>ID do orçamento</span>
+                <strong id="detalhe-orcamento-id">-</strong>
+              </div>
+            </div>
+
+            <div class="orcamento-vinculado-acoes">
+              <button type="button" id="btn-importar-itens-orcamento" class="btn btn-primario">
+                Importar itens do orçamento
+              </button>
+
+              <button type="button" id="btn-ver-orcamento-vinculado" class="btn btn-secundario">
+                Ver orçamento
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Cliente</h2>
+            <p>Dados do cliente vinculado à OS.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="info-item">
+                <span>Nome</span>
+                <strong id="detalhe-cliente-nome">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>WhatsApp</span>
+                <strong id="detalhe-cliente-whatsapp">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>E-mail</span>
+                <strong id="detalhe-cliente-email">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>CPF/CNPJ</span>
+                <strong id="detalhe-cliente-documento">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Cidade/Estado</span>
+                <strong id="detalhe-cliente-cidade">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Endereço</span>
+                <strong id="detalhe-cliente-endereco">-</strong>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="card-veiculo-ordem" class="card">
+          <div class="card-header">
+            <h2>Veículo</h2>
+            <p>Dados do veículo vinculado à OS.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="info-item">
+                <span>Placa</span>
+                <strong id="detalhe-veiculo-placa">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Marca</span>
+                <strong id="detalhe-veiculo-marca">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Modelo</span>
+                <strong id="detalhe-veiculo-modelo">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Cor</span>
+                <strong id="detalhe-veiculo-cor">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Prisma</span>
+                <strong id="detalhe-veiculo-prisma">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Ano</span>
+                <strong id="detalhe-veiculo-ano">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Chassi</span>
+                <strong id="detalhe-veiculo-chassi">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>ID do veículo</span>
+                <strong id="detalhe-veiculo-id">-</strong>
+              </div>
+            </div>
+
+            <br />
+
+            <p><strong>Observações do veículo</strong></p>
+            <div id="detalhe-veiculo-observacoes" class="texto-bloco">-</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Valores e pagamento</h2>
+            <p>Defina mão de obra, pagamento e finalize a OS após o recebimento.</p>
+          </div>
+
+          <div class="card-body">
+            <div id="mensagem-financeiro-ordem" class="mensagem-ordem"></div>
+
+            <div class="aviso-financeiro">
+              Os materiais/peças são calculados pelos itens adicionados na OS. Ao finalizar como concluída, o sistema deve baixar o estoque dos itens marcados e atualizar o faturamento.
+            </div>
+
+            <form id="form-financeiro-ordem" class="form-os">
+              <div class="campo">
+                <label for="financeiro-valor-mao-obra">Mão de obra</label>
+                <input
+                  type="number"
+                  id="financeiro-valor-mao-obra"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                />
+              </div>
+
+              <div class="campo">
+                <label for="financeiro-desconto">Desconto</label>
+                <input
+                  type="number"
+                  id="financeiro-desconto"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                />
+              </div>
+
+              <div class="campo">
+                <label for="financeiro-forma-pagamento">Forma de pagamento</label>
+                <select id="financeiro-forma-pagamento">
+                  <option value="">Não informado</option>
+                  <option value="pix">Pix</option>
+                  <option value="dinheiro">Dinheiro</option>
+                  <option value="cartao_credito">Cartão de crédito</option>
+                  <option value="cartao_debito">Cartão de débito</option>
+                  <option value="boleto">Boleto</option>
+                  <option value="transferencia">Transferência</option>
+                  <option value="outro">Outro</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="financeiro-status-pagamento">Status do pagamento</label>
+                <select id="financeiro-status-pagamento">
+                  <option value="pendente">Pendente</option>
+                  <option value="parcial">Parcial</option>
+                  <option value="pago">Pago</option>
+                </select>
+              </div>
+
+              <div class="campo">
+                <label for="financeiro-valor-entrada">Entrada / adiantamento</label>
+                <input
+                  type="number"
+                  id="financeiro-valor-entrada"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                />
+                <small>Use este campo para registrar uma entrada inicial. O valor pago pode ser igual ou maior que a entrada.</small>
+              </div>
+
+              <div class="campo">
+                <label for="financeiro-valor-pago">Valor pago</label>
+                <input
+                  type="number"
+                  id="financeiro-valor-pago"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                />
+              </div>
+
+              <div class="campo">
+                <label for="financeiro-saldo-restante">Saldo restante</label>
+                <input
+                  type="number"
+                  id="financeiro-saldo-restante"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                  readonly
+                />
+              </div>
+
+              <div class="campo">
+                <label for="financeiro-valor-total">Valor total da OS</label>
+                <input
+                  type="number"
+                  id="financeiro-valor-total"
+                  min="0"
+                  step="0.01"
+                  placeholder="0,00"
+                  readonly
+                />
+              </div>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" id="btn-salvar-financeiro" class="btn btn-primario">
+                  Salvar pagamento
+                </button>
+
+                <button type="button" id="btn-finalizar-ordem" class="btn btn-verde">
+                  Finalizar OS
+                </button>
+              </div>
+            </form>
+
+            <br />
+
+            <div class="valores-grid">
+              <div class="valor-linha">
+                <span>Mão de obra</span>
+                <strong id="detalhe-valor-mao-obra">R$ 0,00</strong>
+              </div>
+
+              <div class="valor-linha">
+                <span>Materiais / peças</span>
+                <strong id="detalhe-valor-materiais">R$ 0,00</strong>
+              </div>
+
+              <div class="valor-linha">
+                <span>Desconto</span>
+                <strong id="detalhe-desconto">R$ 0,00</strong>
+              </div>
+
+              <div class="valor-linha">
+                <span>Entrada / adiantamento</span>
+                <strong id="detalhe-valor-entrada">R$ 0,00</strong>
+              </div>
+
+              <div class="valor-linha">
+                <span>Valor pago</span>
+                <strong id="detalhe-valor-pago">R$ 0,00</strong>
+              </div>
+
+              <div class="valor-linha">
+                <span>Saldo restante</span>
+                <strong id="detalhe-saldo-restante">R$ 0,00</strong>
+              </div>
+
+              <div class="valor-linha">
+                <span>Forma de pagamento</span>
+                <strong id="detalhe-forma-pagamento">-</strong>
+              </div>
+            </div>
+
+            <div class="valor-total">
+              <span>Valor total da OS</span>
+              <strong id="detalhe-valor-total">R$ 0,00</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Garantia</h2>
+            <p>Informações de garantia do serviço.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="info-grid">
+              <div class="info-item">
+                <span>Garantia</span>
+                <strong id="detalhe-garantia-dias">-</strong>
+              </div>
+
+              <div class="info-item">
+                <span>Validade estimada</span>
+                <strong id="detalhe-garantia-validade">-</strong>
+              </div>
+            </div>
+
+            <br />
+
+            <p><strong>Observações da garantia</strong></p>
+            <div id="detalhe-garantia-observacoes" class="texto-bloco">-</div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Foto antes do serviço</h2>
+            <p>Registro opcional do estado inicial antes da execução da OS.</p>
+          </div>
+
+          <div class="card-body">
+            <div id="foto-antes-status" class="os-extra-preview">
+              <strong>Nenhuma foto salva</strong>
+              <span>Envie uma foto opcional antes de iniciar o serviço.</span>
+              <img id="foto-antes-preview" class="os-foto-preview-img" src="" alt="Foto antes do serviço">
+            </div>
+
+            <div class="campo">
+              <label for="input-foto-antes-os">Selecionar foto</label>
+              <input type="file" id="input-foto-antes-os" accept="image/*" />
+              <small>A imagem será otimizada antes de salvar para evitar arquivos grandes.</small>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <button type="button" id="btn-salvar-foto-antes" class="btn btn-primario">Salvar foto</button>
+              <button type="button" id="btn-remover-foto-antes" class="btn btn-secundario">Remover foto</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Assinatura do cliente</h2>
+            <p>Assine na tela do celular ou computador para registrar aceite/entrega do serviço.</p>
+          </div>
+
+          <div class="card-body">
+            <div class="campo">
+              <label for="assinatura-cliente-nome">Nome de quem assinou</label>
+              <input type="text" id="assinatura-cliente-nome" placeholder="Nome do cliente ou responsável" />
+            </div>
+
+            <div class="assinatura-canvas-wrap" style="margin-top:12px;">
+              <canvas id="canvas-assinatura-cliente" width="700" height="230"></canvas>
+              <img id="assinatura-cliente-preview" class="assinatura-preview-img" src="" alt="Assinatura salva do cliente">
+            </div>
+
+            <div id="assinatura-cliente-status" class="os-extra-preview" style="margin-top:12px;">
+              <strong>Nenhuma assinatura salva</strong>
+              <span>Peça para o cliente assinar e clique em Salvar assinatura.</span>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <button type="button" id="btn-salvar-assinatura-cliente" class="btn btn-primario">Salvar assinatura</button>
+              <button type="button" id="btn-limpar-assinatura-cliente" class="btn btn-secundario">Limpar desenho</button>
+              <button type="button" id="btn-remover-assinatura-cliente" class="btn btn-secundario">Remover assinatura</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>Termo e recibo</h2>
+            <p>Gere documentos simples em preto e branco para impressão ou envio ao cliente.</p>
+          </div>
+
+          <div class="card-body os-documentos-grid">
+            <div class="os-documento-card">
+              <strong>Termo de garantia</strong>
+              <p>Documento com dados do cliente, veículo, serviço executado, prazo e observações de garantia.</p>
+              <button type="button" id="btn-termo-garantia" class="btn btn-primario">Gerar termo de garantia</button>
+            </div>
+
+            <div class="os-documento-card">
+              <strong>Recibo de pagamento</strong>
+              <p>Documento com total da OS, entrada, valor pago, saldo restante e forma de pagamento.</p>
+              <button type="button" id="btn-recibo-pagamento" class="btn btn-primario">Gerar recibo de pagamento</button>
+            </div>
+          </div>
+        </article>
+
+      </aside>
+    </section>
+  </main>
+
+
+
+  <div id="modal-busca-produto-estoque-ordem" class="modal-busca-produto-overlay" aria-hidden="true">
+    <div class="modal-busca-produto-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca-produto-estoque">
+      <div class="modal-busca-produto-header">
+        <div><h3 id="titulo-modal-busca-produto-estoque">Buscar produto do estoque</h3><p>Pesquise por nome, código/SKU, categoria, subcategoria, marca, modelo, ano ou aplicação. Peças compatíveis com o veículo da OS aparecem primeiro.</p></div>
+        <button type="button" class="btn-fechar-modal-produto" onclick="fecharModalBuscaProdutoEstoqueOrdem()">×</button>
+      </div>
+      <div class="modal-busca-produto-body">
+        <div class="busca-produto-modal-linha">
+          <select id="filtro-categoria-produto-ordem" aria-label="Categoria">
+            <option value="">Categoria: todas</option>
+            <option value="Filtros">Filtros</option>
+            <option value="Suspensão">Suspensão</option>
+            <option value="Injeção">Injeção</option>
+            <option value="Correias">Correias</option>
+            <option value="Freios">Freios</option>
+            <option value="Elétrica">Elétrica</option>
+            <option value="Motor">Motor</option>
+            <option value="Fluidos">Fluidos</option>
+            <option value="Lubrificantes">Lubrificantes</option>
+            <option value="Peças">Peças</option>
+            <option value="Serviços">Serviços</option>
+          </select>
+          <select id="filtro-subcategoria-produto-ordem" aria-label="Subcategoria"><option value="">Todas as subcategorias</option></select>
+          <input type="text" id="campo-busca-produto-estoque-ordem" placeholder="Ex: filtro de óleo, Honda Civic, Gol G5, FILTRO-OLEO..." />
+          <button type="button" class="btn btn-primario" onclick="buscarProdutosModalOrdem()">Buscar</button>
+          <a href="estoque.html?novo=1" class="btn btn-secundario">Cadastrar novo</a>
+        </div>
+        <div id="resultado-busca-produtos-ordem" class="resultado-busca-produtos-modal"><div class="estado-busca-produto-modal">Digite pelo menos 2 caracteres e clique em Buscar.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="planos.js"></script>
+<script src="carregar-menu.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+(async function() {
+  if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
+    const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Detalhes e PDF de OS fazem parte do Plano Premium.');
+    if (bloqueado) return;
+  }
+  const script = document.createElement('script');
+  script.src = 'ordem.js';
+  script.defer = false;
+  document.body.appendChild(script);
+})();
+</script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        if (!window._supabase && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+          window._supabase = window.supabase.createClient(
+            window.SUPABASE_URL,
+            window.SUPABASE_ANON_KEY
+          );
+        }
+
+        if (!window._supabase) {
+          console.warn("Supabase não foi inicializado. Verifique o config.js.");
+          return;
+        }
+
+        const { data } = await window._supabase.auth.getSession();
+        const session = data && data.session ? data.session : null;
+
+        if (!session) {
+          const destino = encodeURIComponent("ordem.html" + window.location.search);
+          window.location.href = "index.html?redirect=" + destino;
+          return;
+        }
+      } catch (erro) {
+        console.error("Erro ao validar sessão em ordem.html:", erro);
+      }
+    });
+  </script>
+</body>
+</html>

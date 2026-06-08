@@ -972,6 +972,15 @@
       font-size: 15px;
     }
 
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
     @media (max-width: 980px) {
       .cards-explicativos,
       .passos-funciona,
@@ -1110,7 +1119,2128 @@
         padding: 10px;
       }
     }
-  </style>
+
+    /* =========================================================
+       HOME POR PLANO - FS ORÇAMENTOS
+       ========================================================= */
+    .home-visao-plano {
+      display: none;
+    }
+
+    .home-visao-plano.ativo {
+      display: block;
+    }
+
+    .home-plano-hero {
+      background: linear-gradient(135deg, #fff8dc, var(--fs-creme));
+      border-radius: 28px;
+      padding: 34px 26px;
+      border-top: 7px solid var(--fs-amarelo);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.30);
+      color: var(--fs-marrom);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-plano-hero::before {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255,196,0,0.18);
+      top: -110px;
+      right: -90px;
+    }
+
+    .home-plano-hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .home-plano-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .home-plano-hero h1 {
+      margin: 0 0 10px;
+      color: var(--fs-marrom);
+      font-size: 36px;
+      line-height: 1.12;
+      max-width: 920px;
+    }
+
+    .home-plano-hero p {
+      margin: 0;
+      color: #5d4037;
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 860px;
+      font-weight: 700;
+    }
+
+    .home-plano-acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+      align-items: center;
+    }
+
+    .btn-home-grande,
+    .btn-home-medio,
+    .btn-home-atalho {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 999px;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .2s ease;
+      border: 2px solid var(--fs-marrom);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+
+    .btn-home-grande {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      padding: 19px 30px;
+      font-size: 20px;
+      min-width: min(100%, 340px);
+    }
+
+    .btn-home-medio {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      padding: 13px 20px;
+      font-size: 14px;
+    }
+
+    .btn-home-atalho {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      padding: 12px 16px;
+      font-size: 13px;
+      border-color: #d7ccc8;
+    }
+
+    .btn-home-grande:hover,
+    .btn-home-medio:hover,
+    .btn-home-atalho:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 13px 26px rgba(0,0,0,0.24);
+      filter: brightness(1.03);
+    }
+
+    .home-grid-planos,
+    .home-dashboard-grid,
+    .home-atalhos-grid,
+    .home-relatorio-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .home-grid-planos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-bottom: 24px;
+    }
+
+    .home-dashboard-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin: 20px 0;
+    }
+
+    .home-relatorio-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 20px 0;
+    }
+
+    .home-atalhos-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin: 18px 0 24px;
+    }
+
+    .home-promo-card,
+    .home-metrica-card,
+    .home-relatorio-card,
+    .home-painel-card {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 20px;
+      padding: 18px;
+      color: var(--fs-marrom);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+    }
+
+    .home-promo-card.premium,
+    .home-relatorio-card.destaque {
+      border-left-color: #25d366;
+    }
+
+    .home-promo-card h2,
+    .home-painel-card h2 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      font-size: 22px;
+    }
+
+    .home-promo-card p,
+    .home-painel-card p {
+      margin: 0 0 12px;
+      color: #6d4c41;
+      line-height: 1.5;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .home-promo-card ul,
+    .home-painel-card ul {
+      margin: 0 0 16px;
+      padding-left: 18px;
+      color: #5d4037;
+      line-height: 1.65;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .home-preco-destaque {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .home-metrica-card span,
+    .home-relatorio-card span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      margin-bottom: 8px;
+    }
+
+    .home-metrica-card strong,
+    .home-relatorio-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .home-metrica-card small,
+    .home-relatorio-card small {
+      display: block;
+      color: #8d6e63;
+      margin-top: 8px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .home-painel-card {
+      margin-bottom: 22px;
+      background: linear-gradient(135deg, #fffaf0, #ffffff);
+    }
+
+    .home-painel-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .home-painel-topo h2 {
+      margin-bottom: 4px;
+    }
+
+    .home-display-status {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 18px;
+    }
+
+    .home-display-status h3 {
+      margin: 0 0 8px;
+      color: var(--fs-amarelo);
+      font-size: 19px;
+    }
+
+    .home-display-status p {
+      margin: 0;
+      color: #f4ece1;
+      line-height: 1.45;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .index-aviso-login {
+      display: none;
+      margin-top: 14px;
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 900;
+    }
+
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
+    @media (max-width: 980px) {
+      .home-dashboard-grid,
+      .home-atalhos-grid,
+      .home-relatorio-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .home-dashboard-grid-premium {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .home-plano-hero {
+        padding: 26px 16px;
+        border-radius: 20px;
+      }
+
+      .home-plano-hero h1 {
+        font-size: 28px;
+      }
+
+      .home-grid-planos,
+      .home-dashboard-grid:not(.home-dashboard-grid-premium),
+      .home-atalhos-grid,
+      .home-relatorio-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .home-dashboard-grid-premium {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card {
+        padding: 11px 8px;
+        border-left-width: 4px;
+        border-radius: 14px;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card span {
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card strong {
+        font-size: 22px;
+      }
+
+      .home-dashboard-grid-premium .home-metrica-card small {
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .btn-home-grande,
+      .btn-home-medio,
+      .btn-home-atalho {
+        width: 100%;
+      }
+    }
+
+  
+    /* =========================================================
+       HOME GRÁTIS - ÁREA EXPLICATIVA E COMERCIAL
+       Visível somente dentro de #home-plano-gratis
+       ========================================================= */
+
+    .home-story-section,
+    .home-whatsapp-section,
+    .home-aprovacao-section,
+    .home-status-section,
+    .home-comparativo-section {
+      max-width: 1150px;
+      margin: 34px auto 0;
+      padding: 34px 24px;
+      background: linear-gradient(135deg, #fffaf0, var(--fs-creme));
+      border-radius: 24px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+      color: var(--fs-marrom);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .home-section-topo {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto 24px;
+    }
+
+    .home-section-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .home-story-section h2,
+    .home-whatsapp-section h2,
+    .home-aprovacao-section h2,
+    .home-status-section h2,
+    .home-comparativo-section h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.18;
+      color: var(--fs-marrom);
+    }
+
+    .home-story-section p,
+    .home-whatsapp-section p,
+    .home-aprovacao-section p,
+    .home-status-section p,
+    .home-comparativo-section p {
+      color: #6d4c41;
+      line-height: 1.55;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .home-passos-grid,
+    .home-fluxo-grid,
+    .home-status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .home-passo-card,
+    .home-fluxo-card,
+    .home-status-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px;
+      border-left: 7px solid var(--fs-amarelo);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .home-passo-card strong,
+    .home-fluxo-numero {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .home-passo-card h3,
+    .home-fluxo-card h3,
+    .home-status-card h3 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      font-size: 18px;
+    }
+
+    .home-passo-card p,
+    .home-fluxo-card p,
+    .home-status-card p {
+      font-size: 14px;
+    }
+
+    .home-whatsapp-section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .home-whatsapp-texto ul {
+      margin: 18px 0 0;
+      padding-left: 18px;
+      color: #5d4037;
+      font-weight: 800;
+      line-height: 1.7;
+    }
+
+    .home-whatsapp-mockup {
+      background: #075e54;
+      border-radius: 26px;
+      padding: 14px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.25);
+      color: #ffffff;
+    }
+
+    .home-whatsapp-topo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px 14px;
+    }
+
+    .home-whatsapp-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .home-whatsapp-topo strong {
+      display: block;
+      color: #ffffff;
+    }
+
+    .home-whatsapp-topo span {
+      display: block;
+      color: #d9fdd3;
+      font-size: 12px;
+    }
+
+    .home-whatsapp-conversa {
+      background: #efeae2;
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .home-msg-whatsapp {
+      width: fit-content;
+      max-width: 92%;
+      background: #ffffff;
+      color: #263238;
+      padding: 9px 11px;
+      border-radius: 12px 12px 12px 3px;
+      font-size: 13px;
+      line-height: 1.35;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    .home-orcamento-whatsapp-card {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #d7ccc8;
+      box-shadow: 0 5px 14px rgba(0,0,0,0.10);
+    }
+
+    .home-orcamento-whatsapp-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 10px 12px;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .home-orcamento-whatsapp-body {
+      padding: 12px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .home-orcamento-whatsapp-body strong {
+      color: var(--fs-marrom);
+    }
+
+    .home-orcamento-whatsapp-body span {
+      color: #6d4c41;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .home-orcamento-whatsapp-card button {
+      width: calc(100% - 24px);
+      margin: 0 12px 12px;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      background: #25d366;
+      color: #073b1d;
+      font-weight: 900;
+      cursor: default;
+    }
+
+    .home-whatsapp-hora {
+      color: #667781;
+      font-size: 11px;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .home-cliente-preview {
+      max-width: 820px;
+      margin: 24px auto 0;
+      background: #ffffff;
+      border-radius: 22px;
+      border: 1px solid #e0d6c8;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.16);
+      overflow: hidden;
+    }
+
+    .home-cliente-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px;
+    }
+
+    .home-cliente-topo strong {
+      display: block;
+      color: var(--fs-amarelo);
+      font-size: 18px;
+    }
+
+    .home-cliente-topo span {
+      display: block;
+      color: #f4ece1;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .home-cliente-status {
+      background: #fff8e1;
+      color: #8a5a00;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .home-cliente-corpo {
+      padding: 18px;
+    }
+
+    .home-cliente-empresa {
+      display: grid;
+      grid-template-columns: 62px 1fr;
+      gap: 13px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .home-cliente-logo {
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 22px;
+    }
+
+    .home-cliente-empresa strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 18px;
+    }
+
+    .home-cliente-empresa span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .home-cliente-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .home-cliente-info-grid div {
+      background: #fffaf0;
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 11px;
+    }
+
+    .home-cliente-info-grid small {
+      display: block;
+      color: #8d6e63;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .home-cliente-info-grid strong {
+      display: block;
+      color: var(--fs-marrom);
+    }
+
+    .home-cliente-itens {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .home-cliente-itens div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #eee1d5;
+      padding-bottom: 8px;
+      color: #5d4037;
+      font-weight: 800;
+    }
+
+    .home-cliente-itens strong {
+      color: var(--fs-marrom);
+      white-space: nowrap;
+    }
+
+    .home-cliente-total {
+      text-align: right;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 13px;
+      font-size: 21px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .home-cliente-acoes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .home-cliente-acoes button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      color: #ffffff;
+      font-weight: 900;
+      cursor: default;
+    }
+
+    .home-btn-aprovar { background: #2e7d32; }
+    .home-btn-recusar { background: #d32f2f; }
+
+    .home-cliente-aviso {
+      margin-top: 12px !important;
+      color: #6d4c41 !important;
+      font-size: 13px !important;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .home-comparativo-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid #e0d6c8;
+      background: #ffffff;
+    }
+
+    .home-tabela-comparativo {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    .home-tabela-comparativo th {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 14px;
+      font-size: 13px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    .home-tabela-comparativo th:not(:first-child),
+    .home-tabela-comparativo td:not(:first-child) {
+      text-align: center;
+    }
+
+    .home-tabela-comparativo td {
+      padding: 13px 14px;
+      border-bottom: 1px solid #eee1d5;
+      color: var(--fs-marrom);
+      font-weight: 800;
+    }
+
+    .home-tabela-comparativo tr:nth-child(even) {
+      background: #fffaf0;
+    }
+
+    .home-ok-recurso {
+      color: #15803d;
+      font-weight: 900;
+    }
+
+    .home-nao-recurso {
+      color: #dc2626;
+      font-weight: 900;
+    }
+
+    .home-destaque-recurso {
+      color: #3e2723;
+      font-weight: 900;
+      background: #fff8e1;
+      border-radius: 999px;
+      padding: 4px 8px;
+      display: inline-block;
+    }
+
+    .home-comparativo-cta {
+      margin-top: 18px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-home-planos-forte {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+    }
+
+    .btn-home-planos-secundario {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+    }
+
+    .home-status-resumo {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: var(--fs-marrom);
+      color: #ffffff;
+      border-radius: 18px;
+      border: 2px solid var(--fs-amarelo);
+      padding: 18px;
+    }
+
+    .home-status-resumo strong {
+      display: block;
+      color: var(--fs-amarelo);
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .home-status-resumo p {
+      color: #f4ece1;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .home-status-resumo a {
+      flex: 0 0 auto;
+    }
+
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
+    @media (max-width: 980px) {
+      .home-whatsapp-section {
+        grid-template-columns: 1fr;
+      }
+
+      .home-passos-grid,
+      .home-fluxo-grid,
+      .home-status-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .home-story-section,
+      .home-whatsapp-section,
+      .home-aprovacao-section,
+      .home-status-section,
+      .home-comparativo-section {
+        padding: 24px 14px;
+        border-radius: 18px;
+      }
+
+      .home-story-section h2,
+      .home-whatsapp-section h2,
+      .home-aprovacao-section h2,
+      .home-status-section h2,
+      .home-comparativo-section h2 {
+        font-size: 24px;
+      }
+
+      .home-cliente-topo,
+      .home-cliente-empresa,
+      .home-cliente-info-grid,
+      .home-cliente-acoes {
+        grid-template-columns: 1fr;
+      }
+
+      .home-cliente-topo {
+        display: grid;
+      }
+
+      .home-cliente-itens div {
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .home-cliente-total {
+        text-align: center;
+      }
+
+      .home-status-resumo {
+        display: grid;
+      }
+
+      .home-status-resumo a {
+        width: 100%;
+      }
+    }
+
+  
+
+    /* =========================================================
+       PROPAGANDA PREMIUM VISUAL - HOME
+       ========================================================= */
+    .home-premium-showcase {
+      margin: 24px 0;
+      background: linear-gradient(135deg, #3e2723, #20110e);
+      border: 2px solid #ffc400;
+      border-radius: 24px;
+      padding: 24px;
+      color: #fffaf0;
+      box-shadow: 0 18px 46px rgba(0,0,0,.30);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .home-premium-showcase::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -120px;
+      top: -120px;
+      border-radius: 999px;
+      background: rgba(255,196,0,.18);
+    }
+
+    .home-premium-showcase > * { position: relative; z-index: 1; }
+
+    .home-premium-showcase-topo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 22px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .home-premium-showcase .tag-premium-home {
+      display: inline-flex;
+      background: #ffc400;
+      color: #3e2723;
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .home-premium-showcase h2 {
+      margin: 0 0 10px;
+      color: #ffc400;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .home-premium-showcase p {
+      margin: 0;
+      color: #f4ece1;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .home-premium-mini-dashboard {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,196,0,.45);
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .home-premium-mini-linha {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .home-premium-mini-linha strong { color: #ffc400; }
+
+    .home-premium-recursos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .home-premium-recurso-card {
+      background: #fffaf0;
+      color: #3e2723;
+      border-radius: 16px;
+      padding: 15px;
+      border-left: 6px solid #ffc400;
+      min-height: 128px;
+    }
+
+    .home-premium-recurso-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #3e2723;
+      font-size: 15px;
+    }
+
+    .home-premium-recurso-card span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .home-premium-fluxo-visual {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .home-premium-fluxo-visual div {
+      background: rgba(255,196,0,.12);
+      border: 1px solid rgba(255,196,0,.4);
+      border-radius: 14px;
+      padding: 11px 8px;
+      text-align: center;
+      font-size: 12px;
+      color: #fffaf0;
+      font-weight: 900;
+    }
+
+    .home-premium-showcase-acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
+    @media (max-width: 980px) {
+      .home-premium-showcase-topo,
+      .home-premium-recursos-grid { grid-template-columns: 1fr 1fr; }
+      .home-premium-fluxo-visual { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .home-premium-showcase { padding: 18px; border-radius: 18px; }
+      .home-premium-showcase-topo,
+      .home-premium-recursos-grid { grid-template-columns: 1fr; }
+      .home-premium-showcase h2 { font-size: 24px; }
+    }
+
+
+    /* =========================================================
+       PROPAGANDA BÁSICO VISUAL - HOME
+       ========================================================= */
+    .home-basico-showcase {
+      margin: 24px 0;
+      background: linear-gradient(135deg, #fffaf0, #f4ece1);
+      border: 2px solid #ffc400;
+      border-radius: 24px;
+      padding: 24px;
+      color: #3e2723;
+      box-shadow: 0 18px 46px rgba(0,0,0,.18);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .home-basico-showcase::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      right: -110px;
+      top: -110px;
+      border-radius: 999px;
+      background: rgba(62,39,35,.08);
+    }
+
+    .home-basico-showcase > * { position: relative; z-index: 1; }
+
+    .home-basico-showcase-topo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 350px;
+      gap: 22px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .home-basico-showcase .tag-basico-home {
+      display: inline-flex;
+      background: #3e2723;
+      color: #ffc400;
+      border: 1px solid #ffc400;
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .home-basico-showcase h2 {
+      margin: 0 0 10px;
+      color: #3e2723;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .home-basico-showcase p {
+      margin: 0;
+      color: #6d4c41;
+      line-height: 1.55;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .home-basico-mini-dashboard {
+      background: #ffffff;
+      border: 1px solid #e0d6c8;
+      border-top: 5px solid #ffc400;
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+    }
+
+    .home-basico-mini-linha {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      background: #fff8e1;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .home-basico-mini-linha strong { color: #3e2723; }
+
+    .home-basico-recursos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .home-basico-recurso-card {
+      background: #ffffff;
+      color: #3e2723;
+      border-radius: 16px;
+      padding: 15px;
+      border-left: 6px solid #ffc400;
+      min-height: 116px;
+      box-shadow: 0 6px 16px rgba(0,0,0,.08);
+    }
+
+    .home-basico-recurso-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #3e2723;
+      font-size: 15px;
+    }
+
+    .home-basico-recurso-card span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .home-basico-showcase-acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+
+    .home-dashboard-grid-premium {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .home-dashboard-grid-premium .home-metrica-card {
+      min-width: 0;
+    }
+
+    @media (max-width: 980px) {
+      .home-basico-showcase-topo,
+      .home-basico-recursos-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .home-basico-showcase { padding: 18px; border-radius: 18px; }
+      .home-basico-showcase-topo,
+      .home-basico-recursos-grid { grid-template-columns: 1fr; }
+      .home-basico-showcase h2 { font-size: 24px; }
+    }
+
+  
+
+/* Teste grátis Premium */
+.teste-premium-inline-card {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff8dc, #ffffff);
+  border: 1px solid rgba(255, 196, 0, 0.65);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.teste-premium-inline-card h3 {
+  margin: 0 0 6px;
+  color: var(--fs-marrom, #4b2e1f);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.teste-premium-inline-card p {
+  margin: 0 0 8px;
+  color: #5d4037;
+  line-height: 1.45;
+}
+
+.teste-premium-inline-card small {
+  display: block;
+  color: #6d4c41;
+  font-weight: 700;
+}
+
+.teste-premium-inline-card .btn-teste-premium {
+  min-width: 210px;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #4b2e1f, #2b1710);
+  color: #ffc400;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.22);
+}
+
+.teste-premium-inline-card .btn-teste-premium:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.teste-premium-inline-card .btn-teste-premium:disabled {
+  opacity: .68;
+  cursor: not-allowed;
+  filter: grayscale(.2);
+}
+
+
+.teste-premium-inline-card.teste-premium-topo {
+  max-width: 1180px;
+  margin: 18px auto 22px;
+}
+
+@media (max-width: 760px) {
+  .teste-premium-inline-card {
+    grid-template-columns: 1fr;
+  }
+
+  .teste-premium-inline-card .btn-teste-premium {
+    width: 100%;
+  }
+}
+
+</style>
+
+
+<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
+<style id="fs-formal-theme-overrides">
+  :root {
+    --fs-marrom: #3e2723;
+    --fs-marrom-2: #5d4037;
+    --fs-fundo-escuro: #f7f2ea;
+    --fs-fundo: #f7f2ea;
+    --fs-page-bg: #f7f2ea;
+    --fs-page-bg-2: #efe3d2;
+    --fs-card: #ffffff;
+    --fs-creme: #f4ece1;
+    --fs-creme-2: #fffaf0;
+    --fs-bege: #f4ece1;
+    --fs-bege-2: #fffaf0;
+    --fs-amarelo: #ffc400;
+    --fs-borda: #e8dccb;
+    --fs-texto: #2f241f;
+    --fs-texto-suave: #6d5b52;
+    --bg-dark: #f7f2ea;
+    --body-brown: #ffffff;
+    --text-dark: #2f241f;
+    --accent-yellow: #ffc400;
+  }
+
+  body:not(.gerando-pdf) {
+    background:
+      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
+    color: #2f241f !important;
+  }
+
+  #header-container,
+  .main-header,
+  .header-topo,
+  .header-menu-linha {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav,
+  .logo-nav span,
+  #usuario-saudacao,
+  .header-menu-linha a,
+  .nav-menu a {
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav strong,
+  .fs-box,
+  .sobre-fs-box {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+  }
+
+  .link-destaque-gerador,
+  .btn-header-entrar,
+  .btn-menu-mobile-entrar,
+  .btn-home-grande,
+  .btn-home-medio,
+  .btn-home-atalho.btn-principal,
+  .btn-gerar-orcamento-home,
+  .btn-previa-profissional,
+  .btn-hero-principal,
+  .btn-ir-planos-home,
+  .btn-home-planos-forte,
+  .btn-add,
+  .btn-extra,
+  .btn-primario,
+  .btn-primary,
+  .btn-salvar,
+  .btn-acao-pdf,
+  .plano-pix-card button,
+  .btn-editar-dados-empresa {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .link-destaque-gerador:hover,
+  .btn-header-entrar:hover,
+  .btn-menu-mobile-entrar:hover,
+  .btn-home-grande:hover,
+  .btn-home-medio:hover,
+  .btn-gerar-orcamento-home:hover,
+  .btn-previa-profissional:hover,
+  .btn-hero-principal:hover,
+  .btn-ir-planos-home:hover,
+  .btn-home-planos-forte:hover,
+  .btn-add:hover,
+  .btn-extra:hover,
+  .btn-primario:hover,
+  .btn-primary:hover,
+  .btn-salvar:hover,
+  .btn-acao-pdf:hover,
+  .plano-pix-card button:hover,
+  .btn-editar-dados-empresa:hover {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+    border-color: #3e2723 !important;
+  }
+
+  .hero-publico,
+  .home-plano-hero,
+  .gerador-hero,
+  .planos-hero,
+  .clientes-hero,
+  .veiculos-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero,
+  .sobre-hero,
+  .manual-hero,
+  .termos-hero,
+  .privacidade-hero,
+  .orcamentos-hero,
+  .painel-hero,
+  .secao-como-funciona,
+  .whatsapp-preview-home,
+  .cliente-aprovacao-home,
+  .comparativo-home,
+  .status-orcamentos-home,
+  .home-story-section,
+  .home-whatsapp-section,
+  .home-aprovacao-section,
+  .home-status-section,
+  .home-comparativo-section,
+  .planos-pix-section,
+  .comparativo-section,
+  .faq-section,
+  .container-sobre,
+  .container-termos,
+  .container-privacidade,
+  .home-premium-showcase {
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+    color: #2f241f !important;
+    border-top-color: #ffc400 !important;
+    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
+  }
+
+  .hero-publico h1,
+  .home-plano-hero h1,
+  .gerador-hero h1,
+  .planos-hero h1,
+  .clientes-hero h1,
+  .veiculos-hero h1,
+  .ordens-hero h1,
+  .ordem-hero h1,
+  .estoque-hero h1,
+  .sobre-hero h1,
+  .manual-hero h1,
+  .home-premium-showcase h2,
+  .container-sobre h1,
+  .container-sobre h2,
+  .container-termos h1,
+  .container-termos h2,
+  .section-topo h2,
+  .dadositens,
+  .card-header h2,
+  .clientes-card-header h2,
+  .veiculos-card-header h2,
+  .ordens-card-header h2,
+  .estoque-card-header h2 {
+    color: #3e2723 !important;
+  }
+
+  .hero-publico p,
+  .home-plano-hero p,
+  .gerador-hero p,
+  .planos-hero p,
+  .clientes-hero p,
+  .veiculos-hero p,
+  .ordens-hero p,
+  .ordem-hero p,
+  .estoque-hero p,
+  .sobre-hero p,
+  .manual-hero p,
+  .home-premium-showcase p,
+  .container-sobre p,
+  .container-termos p,
+  .section-topo p {
+    color: #6d5b52 !important;
+  }
+
+  .container,
+  .card,
+  .clientes-card,
+  .veiculos-card,
+  .ordens-card,
+  .estoque-card,
+  .gerador-card-principal,
+  .sidebar-card,
+  .plano-pix-card,
+  .faq-card,
+  .home-promo-card,
+  .home-metrica-card,
+  .home-relatorio-card,
+  .home-painel-card,
+  .card-sobre,
+  .plano-card,
+  .manual-card,
+  .manual-section,
+  .manual-step,
+  .manual-demo-card,
+  .cliente-item,
+  .veiculo-item,
+  .ordem-item,
+  .estoque-categoria-grupo,
+  .emissor-readonly-card,
+  .cliente-tela-preview,
+  .home-cliente-preview {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #e8dccb !important;
+    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
+  }
+
+  .card-header,
+  .clientes-card-header,
+  .veiculos-card-header,
+  .ordens-card-header,
+  .estoque-card-header,
+  .modal-busca-cliente-header,
+  .modal-busca-produto-header,
+  .modal-pix-topo,
+  .home-cliente-topo,
+  .mock-card-head,
+  .orcamento-whatsapp-header,
+  .home-orcamento-whatsapp-header,
+  .total-container,
+  .cliente-total-demo,
+  .home-cliente-total,
+  .manual-flow div,
+  .mini-dashboard {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .card-body,
+  .clientes-card-body,
+  .veiculos-card-body,
+  .ordens-card-body,
+  .estoque-card-body {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #d8c9b8 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #ffc400 !important;
+    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+    outline: none !important;
+  }
+
+  table,
+  .tabela-comparativo,
+  .home-tabela-comparativo,
+  .manual-table,
+  .comparativo {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  th,
+  .tabela-comparativo th,
+  .home-tabela-comparativo th,
+  .manual-table th,
+  .comparativo th {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+  }
+
+  tr:nth-child(even),
+  tbody tr:nth-child(even) {
+    background: #fffaf0 !important;
+  }
+
+  footer,
+  .sobre-footer {
+    color: #6d5b52 !important;
+  }
+
+  footer a,
+  .sobre-footer a {
+    color: #3e2723 !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
 </head>
 
 <body>
@@ -1183,6 +3313,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
+<script src="planos.js"></script>
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 
@@ -1197,423 +3328,584 @@
   </div>
 </div>
 
+
 <main id="home-publica" class="home-publica">
 
-  <section class="hero-publico">
-    <div class="hero-marca">
-      <strong>FS</strong><span>Orçamentos</span>
+
+  <section class="teste-premium-inline-card teste-premium-topo" id="box-teste-premium-index">
+    <div>
+      <h3>Teste Premium grátis por 7 dias</h3>
+      <p>Disponível para usuários do Plano Grátis e Básico. Experimente clientes, veículos, OS, estoque e gestão completa.</p>
+      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
     </div>
-
-    <h1>Crie orçamentos profissionais em PDF de forma rápida e organizada.</h1>
-
-    <p>
-      O FS Orçamentos ajuda profissionais autônomos, MEIs, oficinas e prestadores de serviço
-      a montar propostas com aparência profissional, salvar orçamentos no Plano Básico e
-      acompanhar clientes com mais controle.
-    </p>
-
-    <div class="hero-acoes hero-acoes-principal">
-      <button type="button" class="btn-gerar-orcamento-home btn-gerar-destaque" onclick="abrirGeradorHomeProtegido()">
-        🧾 GERAR ORÇAMENTO
-      </button>
-    </div>
-
-    <div id="index-aviso-login" class="index-aviso-login">
-      Faça login ou crie sua conta para acessar o gerador de orçamento.
-    </div>
+    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
+      Verificando...
+    </button>
   </section>
 
-  <section class="cards-explicativos">
-    <div class="card-explicativo">
-      <div class="icone">🧾</div>
-      <h3>PDF profissional</h3>
-      <p>Monte um orçamento claro, bonito e pronto para baixar ou enviar ao cliente.</p>
-    </div>
-
-    <div class="card-explicativo">
-      <div class="icone">🏢</div>
-      <h3>Dados da empresa</h3>
-      <p>Cadastre nome, WhatsApp, endereço, CNPJ/CPF e logo no Painel de Controle.</p>
-    </div>
-
-    <div class="card-explicativo">
-      <div class="icone">📊</div>
-      <h3>Controle por status</h3>
-      <p>No Plano Básico, acompanhe orçamentos pendentes, aprovados, recusados, em serviço e finalizados.</p>
-    </div>
-  </section>
-
-  <div id="adsense-gratis-topo" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
-    <span class="adsense-label">Publicidade</span>
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-5628949951885077"
-      data-ad-slot="1739813454"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
-
-  <section class="secao-como-funciona">
-    <div class="como-funciona-topo">
-      <span class="tag-demo">Demonstração</span>
-
-      <h2>Veja como funciona na prática</h2>
-
+  <section id="home-plano-gratis" class="home-visao-plano ativo">
+    <div class="home-plano-hero">
+      <span class="home-plano-tag">Plano Grátis</span>
+      <h1>Gere seu orçamento em PDF agora, rápido e profissional.</h1>
       <p>
-        Confira telas reais do FS Orçamentos e veja exemplos de PDFs profissionais gerados pela plataforma.
-      </p>
-    </div>
-
-    <div class="passos-funciona">
-      <div class="passo-card">
-        <strong>1</strong>
-        <h3>Preencha os dados</h3>
-        <p>Informe cliente, itens, valores, observações e condições do orçamento.</p>
-      </div>
-
-      <div class="passo-card">
-        <strong>2</strong>
-        <h3>Escolha o visual</h3>
-        <p>Selecione uma cor para deixar o PDF com a identidade do seu serviço.</p>
-      </div>
-
-      <div class="passo-card">
-        <strong>3</strong>
-        <h3>Gere o PDF</h3>
-        <p>Baixe o orçamento pronto ou envie para o cliente conforme seu plano.</p>
-      </div>
-    </div>
-
-    <div style="text-align:center;">
-      <a href="exemplos.html" class="btn-secundario-home">VER MAIS</a>
-    </div>
-  </section>
-
-  <section class="whatsapp-preview-home">
-    <div class="whatsapp-preview-texto">
-      <span class="tag-whatsapp">Envio pelo WhatsApp</span>
-
-      <h2>Veja como o cliente recebe o orçamento</h2>
-
-      <p>
-        No Plano Básico, você pode enviar o orçamento salvo pelo WhatsApp com um link
-        para o cliente visualizar, aprovar ou recusar a proposta.
+        No Plano Grátis você cria a prévia, baixa o PDF e usa a plataforma com anúncios.
+        É perfeito para começar sem custo e testar o FS Orçamentos na prática.
       </p>
 
-      <ul>
-        <li>Mensagem profissional pronta para o cliente.</li>
-        <li>Link do orçamento para visualizar online.</li>
-        <li>Acompanhamento de orçamentos pendentes.</li>
-      </ul>
+      <div class="home-plano-acoes">
+        <button type="button" class="btn-home-grande" onclick="abrirGeradorHomeProtegido()">
+          🧾 Gerar orçamento grátis
+        </button>
+        <a href="/planos.html" class="btn-home-atalho">Ver planos</a>
+      </div>
+
+      <div id="index-aviso-login" class="index-aviso-login">
+        Faça login ou crie sua conta para acessar o gerador de orçamento.
+      </div>
     </div>
 
-    <div class="whatsapp-mockup">
-      <div class="whatsapp-topo">
-        <div class="whatsapp-avatar">FS</div>
+    <div id="adsense-gratis-topo" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+      <span class="adsense-label">Publicidade</span>
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-5628949951885077"
+        data-ad-slot="1739813454"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+
+    </div>
+
+    <section class="home-story-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Como funciona</span>
+        <h2>Comece pelo PDF e evolua para gestão quando precisar</h2>
+        <p>
+          O FS Orçamentos foi pensado para acompanhar o crescimento do seu negócio:
+          primeiro você gera um PDF profissional, depois passa a controlar status,
+          aprovação online, clientes, veículos, ordens de serviço e estoque.
+        </p>
+      </div>
+
+      <div class="home-passos-grid">
+        <div class="home-passo-card">
+          <strong>1</strong>
+          <h3>Preencha os dados</h3>
+          <p>Informe cliente, itens, valores, observações e condições do orçamento.</p>
+        </div>
+
+        <div class="home-passo-card">
+          <strong>2</strong>
+          <h3>Gere o PDF</h3>
+          <p>No Grátis, você já baixa um orçamento profissional com a identidade da sua empresa.</p>
+        </div>
+
+        <div class="home-passo-card">
+          <strong>3</strong>
+          <h3>Ative a gestão</h3>
+          <p>No Básico ou Premium, você salva, acompanha, envia link e organiza sua rotina.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-premium-showcase">
+      <div class="home-premium-showcase-topo">
         <div>
-          <strong>FS Orçamentos</strong>
-          <span>online</span>
+          <span class="tag-premium-home">Premium Oficina</span>
+          <h2>Transforme orçamento aprovado em gestão completa de serviço.</h2>
+          <p>
+            O Premium foi feito para quem precisa controlar cliente, veículo, ordem de serviço, execução, estoque e pagamento em um só lugar.
+            É a evolução natural para oficinas, assistência técnica, manutenção, instalação e prestadores que querem parar de depender só de WhatsApp e papel.
+          </p>
+        </div>
+
+        <div class="home-premium-mini-dashboard" aria-label="Exemplo visual do painel Premium">
+          <div class="home-premium-mini-linha"><span>OS abertas</span><strong>8</strong></div>
+          <div class="home-premium-mini-linha"><span>Em execução</span><strong>3</strong></div>
+          <div class="home-premium-mini-linha"><span>Estoque baixo</span><strong>5 itens</strong></div>
+          <div class="home-premium-mini-linha"><span>Faturamento em OS</span><strong>R$ 7.840,00</strong></div>
         </div>
       </div>
 
-      <div class="whatsapp-conversa">
-        <div class="msg-whatsapp recebida">Olá, João! Tudo bem?</div>
-        <div class="msg-whatsapp recebida">Segue o orçamento solicitado:</div>
-
-        <div class="orcamento-whatsapp-card">
-          <div class="orcamento-whatsapp-header">🧾 Orçamento #1024</div>
-
-          <div class="orcamento-whatsapp-body">
-            <strong>Manutenção de Suspensão</strong>
-            <span>Cliente: João Silva</span>
-            <span>Total: R$ 850,00</span>
-          </div>
-
-          <button type="button">Visualizar orçamento</button>
-        </div>
-
-        <div class="msg-whatsapp recebida">Qualquer dúvida, estou à disposição. ✅</div>
-
-        <div class="whatsapp-hora">
-          enviado pelo FS Orçamentos
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cliente-aprovacao-home">
-    <div class="cliente-aprovacao-topo">
-      <span class="tag-aprovacao">Aprovação online</span>
-
-      <h2>O cliente visualiza e responde o orçamento pelo link</h2>
-
-      <p>
-        Depois de receber o orçamento, o cliente pode abrir o link, conferir os dados,
-        visualizar os itens e escolher entre aprovar ou recusar a proposta.
-      </p>
-    </div>
-
-    <div class="fluxo-aprovacao-grid">
-      <div class="fluxo-card">
-        <div class="fluxo-numero">1</div>
-        <h3>Recebe no WhatsApp</h3>
-        <p>O cliente recebe uma mensagem com o resumo e o botão para visualizar o orçamento.</p>
+      <div class="home-premium-fluxo-visual">
+        <div>Cliente</div>
+        <div>Veículo</div>
+        <div>Orçamento</div>
+        <div>OS</div>
+        <div>Estoque + financeiro</div>
       </div>
 
-      <div class="fluxo-card">
-        <div class="fluxo-numero">2</div>
-        <h3>Abre o orçamento</h3>
-        <p>O link leva para uma página limpa, com dados do emissor, cliente, itens e valor total.</p>
+      <div class="home-premium-recursos-grid">
+        <div class="home-premium-recurso-card"><strong>👤 Clientes organizados</strong><span>Histórico, contatos, dados e vínculo com veículos e orçamentos.</span></div>
+        <div class="home-premium-recurso-card"><strong>🚗 Veículos por placa</strong><span>Placa, chassi, marca, modelo, cor, prisma e histórico de serviços.</span></div>
+        <div class="home-premium-recurso-card"><strong>🛠️ Ordem de serviço</strong><span>Controle da execução, itens, mão de obra, pagamento, garantia e PDF da OS.</span></div>
+        <div class="home-premium-recurso-card"><strong>📦 Estoque integrado</strong><span>Produtos, peças, materiais, estoque baixo e baixa automática ao finalizar OS.</span></div>
       </div>
-
-      <div class="fluxo-card">
-        <div class="fluxo-numero">3</div>
-        <h3>Aprova ou recusa</h3>
-        <p>Com um clique, o cliente informa a decisão e o status é atualizado na plataforma.</p>
+<div class="home-premium-showcase-acoes">
+        <a href="/planos.html#assinar-plano-premium" class="btn-home-planos-forte">🚀 Conhecer Premium</a>
+        <a href="/manual-premium.html" class="btn-home-planos-secundario">Ver como funciona</a>
       </div>
-    </div>
+    </section>
 
-    <div class="cliente-tela-preview">
-      <div class="cliente-tela-topo">
+    <section class="home-basico-showcase">
+      <div class="home-basico-showcase-topo">
         <div>
-          <strong>Orçamento recebido</strong>
-          <span>Visualização do cliente</span>
+          <span class="tag-basico-home">Plano Básico</span>
+          <h2>Orçamentos com link, aprovação online e acompanhamento comercial.</h2>
+          <p>
+            O Básico é para quem ainda não precisa de oficina completa, mas quer parar de perder orçamento no WhatsApp.
+            Você gera o PDF, salva na nuvem, envia o link para o cliente e acompanha se está pendente, aprovado ou recusado.
+          </p>
         </div>
-        <div class="cliente-status pendente">Pendente</div>
+
+        <div class="home-basico-mini-dashboard" aria-label="Exemplo visual do painel do Plano Básico">
+          <div class="home-basico-mini-linha"><span>Pendentes</span><strong>8</strong></div>
+          <div class="home-basico-mini-linha"><span>Aprovados no mês</span><strong>R$ 4.870</strong></div>
+          <div class="home-basico-mini-linha"><span>Taxa de aprovação</span><strong>62%</strong></div>
+          <div class="home-basico-mini-linha"><span>Lembretes</span><strong>3 acompanhar</strong></div>
+        </div>
       </div>
 
-      <div class="cliente-orcamento-card">
-        <div class="cliente-empresa-linha">
-          <div class="cliente-logo-demo">FS</div>
+      <div class="home-basico-recursos-grid">
+        <div class="home-basico-recurso-card"><strong>🔗 Link do orçamento</strong><span>Envie uma página profissional para o cliente visualizar pelo celular.</span></div>
+        <div class="home-basico-recurso-card"><strong>✅ Aprovação online</strong><span>O cliente aprova ou recusa e o status fica salvo no sistema.</span></div>
+        <div class="home-basico-recurso-card"><strong>📊 Gestão comercial</strong><span>Veja pendentes, aprovados, recusados, total aprovado e últimos orçamentos.</span></div>
+        <div class="home-basico-recurso-card"><strong>🔔 Lembrete interno</strong><span>Receba aviso para acompanhar orçamentos que ficaram pendentes.</span></div>
+      </div>
 
+      <div class="home-basico-showcase-acoes">
+        <a href="/planos.html#assinar-plano-basico" class="btn-home-planos-forte">⭐ Conhecer Básico</a>
+        <a href="/manual-basico.html" class="btn-home-planos-secundario">Ver como funciona</a>
+      </div>
+    </section>
+
+
+    <section class="home-whatsapp-section">
+      <div class="home-whatsapp-texto">
+        <span class="home-section-tag">WhatsApp com link</span>
+        <h2>O Plano Básico transforma o orçamento em um link profissional</h2>
+        <p>
+          Em vez de enviar só um PDF solto, você pode salvar o orçamento na nuvem e mandar
+          um link pelo WhatsApp para o cliente visualizar, aprovar ou recusar online.
+        </p>
+
+        <ul>
+          <li>Mensagem pronta para enviar ao cliente.</li>
+          <li>Link de visualização do orçamento.</li>
+          <li>Aprovação ou recusa registrada automaticamente.</li>
+          <li>Status para saber quem ainda precisa de acompanhamento.</li>
+        </ul>
+      </div>
+
+      <div class="home-whatsapp-mockup" aria-label="Simulação de mensagem no WhatsApp">
+        <div class="home-whatsapp-topo">
+          <div class="home-whatsapp-avatar">FS</div>
           <div>
             <strong>FS Orçamentos</strong>
-            <span>Responsável: Consultor selecionado</span>
-            <span>WhatsApp: (18) 99999-9999</span>
+            <span>online</span>
           </div>
         </div>
 
-        <div class="cliente-info-grid">
-          <div>
-            <small>Cliente</small>
-            <strong>João Silva</strong>
+        <div class="home-whatsapp-conversa">
+          <div class="home-msg-whatsapp">Olá, João! Tudo bem?</div>
+          <div class="home-msg-whatsapp">Segue o orçamento solicitado:</div>
+
+          <div class="home-orcamento-whatsapp-card">
+            <div class="home-orcamento-whatsapp-header">🧾 Orçamento Nº 001024</div>
+            <div class="home-orcamento-whatsapp-body">
+              <strong>Manutenção de Suspensão</strong>
+              <span>Cliente: João Silva</span>
+              <span>Total: R$ 850,00</span>
+            </div>
+            <button type="button">Visualizar orçamento</button>
           </div>
 
-          <div>
-            <small>Orçamento</small>
-            <strong>Manutenção de Suspensão</strong>
-          </div>
+          <div class="home-msg-whatsapp">Qualquer dúvida, estou à disposição. ✅</div>
+          <div class="home-whatsapp-hora">enviado pelo FS Orçamentos</div>
         </div>
+      </div>
+    </section>
 
-        <div class="cliente-itens-demo">
-          <div>
-            <span>Troca de amortecedores</span>
-            <strong>R$ 520,00</strong>
-          </div>
-
-          <div>
-            <span>Alinhamento e balanceamento</span>
-            <strong>R$ 180,00</strong>
-          </div>
-
-          <div>
-            <span>Mão de obra</span>
-            <strong>R$ 150,00</strong>
-          </div>
-        </div>
-
-        <div class="cliente-total-demo">
-          Total: R$ 850,00
-        </div>
-
-        <div class="cliente-acoes-demo">
-          <button type="button" class="btn-cliente-aprovar">✅ Aprovar orçamento</button>
-          <button type="button" class="btn-cliente-recusar">❌ Recusar orçamento</button>
-        </div>
-
-        <p class="cliente-aviso-demo">
-          Ao aprovar ou recusar, o responsável é avisado e o status muda automaticamente.
+    <section class="home-aprovacao-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Aprovação online</span>
+        <h2>O cliente responde o orçamento em uma página simples e profissional</h2>
+        <p>
+          No Plano Básico, o cliente abre o link, confere empresa, itens, valores e pode
+          aprovar ou recusar. No Premium, esse orçamento aprovado pode virar OS com cliente e veículo vinculados.
         </p>
       </div>
+
+      <div class="home-fluxo-grid">
+        <div class="home-fluxo-card">
+          <div class="home-fluxo-numero">1</div>
+          <h3>Recebe no WhatsApp</h3>
+          <p>Você envia o link com o resumo do orçamento para o cliente.</p>
+        </div>
+
+        <div class="home-fluxo-card">
+          <div class="home-fluxo-numero">2</div>
+          <h3>Visualiza online</h3>
+          <p>O cliente acessa uma página limpa com itens, total, observações e dados da empresa.</p>
+        </div>
+
+        <div class="home-fluxo-card">
+          <div class="home-fluxo-numero">3</div>
+          <h3>Aprova ou recusa</h3>
+          <p>O status muda na plataforma e você sabe exatamente qual proposta avançou.</p>
+        </div>
+      </div>
+
+      <div class="home-cliente-preview">
+        <div class="home-cliente-topo">
+          <div>
+            <strong>Orçamento recebido</strong>
+            <span>Visualização do cliente</span>
+          </div>
+          <div class="home-cliente-status">Pendente</div>
+        </div>
+
+        <div class="home-cliente-corpo">
+          <div class="home-cliente-empresa">
+            <div class="home-cliente-logo">FS</div>
+            <div>
+              <strong>Sua Empresa</strong>
+              <span>Consultor: Responsável técnico</span>
+              <span>WhatsApp: (18) 99999-9999</span>
+            </div>
+          </div>
+
+          <div class="home-cliente-info-grid">
+            <div>
+              <small>Cliente</small>
+              <strong>João Silva</strong>
+            </div>
+
+            <div>
+              <small>Orçamento</small>
+              <strong>Manutenção de Suspensão</strong>
+            </div>
+          </div>
+
+          <div class="home-cliente-itens">
+            <div><span>Troca de amortecedores</span><strong>R$ 520,00</strong></div>
+            <div><span>Alinhamento e balanceamento</span><strong>R$ 180,00</strong></div>
+            <div><span>Mão de obra</span><strong>R$ 150,00</strong></div>
+          </div>
+
+          <div class="home-cliente-total">Total: R$ 850,00</div>
+
+          <div class="home-cliente-acoes">
+            <button type="button" class="home-btn-aprovar">✅ Aprovar orçamento</button>
+            <button type="button" class="home-btn-recusar">❌ Recusar orçamento</button>
+          </div>
+
+          <p class="home-cliente-aviso">
+            Ao responder, o status é atualizado para você acompanhar na gestão de orçamentos.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-status-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Controle por status</span>
+        <h2>Saiba quais orçamentos precisam de atenção</h2>
+        <p>
+          O Básico libera a gestão de orçamentos. O Premium amplia esse controle para clientes,
+          veículos, ordens de serviço e estoque, criando um painel completo de acompanhamento.
+        </p>
+      </div>
+
+      <div class="home-status-grid">
+        <div class="home-status-card">
+          <h3>⏳ Pendente</h3>
+          <p>Propostas enviadas ou salvas que ainda aguardam resposta do cliente.</p>
+        </div>
+
+        <div class="home-status-card">
+          <h3>✅ Aprovado</h3>
+          <p>Orçamentos aceitos, prontos para avançar para execução ou ordem de serviço.</p>
+        </div>
+
+        <div class="home-status-card">
+          <h3>🛠️ Em serviço</h3>
+          <p>No Premium, o orçamento aprovado pode virar OS com cliente, veículo e itens vinculados.</p>
+        </div>
+      </div>
+
+      <div class="home-status-resumo">
+        <div>
+          <strong>Resumo financeiro e acompanhamento</strong>
+          <p>
+            Acompanhe pendentes, aprovados, recusados, total aprovado e, no Premium,
+            OS abertas, estoque baixo e faturamento de serviços.
+          </p>
+        </div>
+
+        <a href="/planos.html" class="btn-home-planos-forte">Comparar planos</a>
+      </div>
+    </section>
+
+    <section class="home-comparativo-section">
+      <div class="home-section-topo">
+        <span class="home-section-tag">Qual plano combina com você?</span>
+        <h2>Grátis para começar, Básico para vender melhor, Premium para gerenciar tudo</h2>
+        <p>
+          A ideia é simples: o Grátis gera PDF, o Básico controla orçamentos e o Premium
+          transforma a plataforma em gestão completa para oficina e prestadores de serviço.
+        </p>
+      </div>
+
+      <div class="home-comparativo-wrapper">
+        <table class="home-tabela-comparativo">
+          <thead>
+            <tr>
+              <th>Recurso</th>
+              <th>Grátis</th>
+              <th>Básico</th>
+              <th>Premium</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Gerar orçamento em PDF</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>Anúncios na plataforma</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+            </tr>
+
+            <tr>
+              <td>Salvar orçamento na nuvem</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>WhatsApp com link do orçamento</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>Cliente aprova ou recusa online</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-ok-recurso">Sim</td>
+              <td class="home-ok-recurso">Sim</td>
+            </tr>
+
+            <tr>
+              <td>Gestão de clientes e veículos</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-destaque-recurso">Completo</td>
+            </tr>
+
+            <tr>
+              <td>Ordens de serviço e PDF da OS</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-destaque-recurso">Completo</td>
+            </tr>
+
+            <tr>
+              <td>Estoque e baixa de itens na OS</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-nao-recurso">Não</td>
+              <td class="home-destaque-recurso">Completo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="home-comparativo-cta">
+        <a href="/planos.html#assinar-plano-basico" class="btn-home-planos-forte">⭐ Conhecer Básico</a>
+        <a href="/planos.html#assinar-plano-premium" class="btn-home-planos-secundario">🚀 Conhecer Premium</a>
+      </div>
+    </section>
+
+    <div class="home-grid-planos">
+      <article class="home-promo-card">
+        <span class="home-preco-destaque">⭐ Básico a partir de R$ 19,90/mês</span>
+        <h2>Venda com link pelo WhatsApp</h2>
+        <p>
+          O Plano Básico é para quem quer salvar orçamentos, enviar link para o cliente e acompanhar status.
+        </p>
+        <ul>
+          <li>PDF profissional sem anúncios</li>
+          <li>Histórico e gestão de orçamentos</li>
+          <li>Link para aprovação ou recusa do cliente</li>
+          <li>Resumo financeiro de orçamentos</li>
+        </ul>
+        <a href="/planos.html#assinar-plano-basico" class="btn-home-medio">Conhecer Básico</a>
+        <a href="/manual-basico.html" class="btn-home-atalho" style="margin-top:10px; width:auto;">Ver como funciona</a>
+      </article>
+
+      <article class="home-promo-card premium">
+        <span class="home-preco-destaque">🚀 Premium a partir de R$ 69,90/mês</span>
+        <h2>Gestão completa para oficina e serviços</h2>
+        <p>
+          O Premium libera clientes, veículos, ordens de serviço, estoque e controle profissional da execução.
+        </p>
+        <ul>
+          <li>Cadastro de clientes e veículos</li>
+          <li>Ordens de serviço com PDF</li>
+          <li>Controle de estoque e itens usados</li>
+          <li>Histórico por cliente, veículo e OS</li>
+        </ul>
+        <a href="/planos.html#assinar-plano-premium" class="btn-home-medio">Conhecer Premium</a>
+        <a href="/manual-premium.html" class="btn-home-atalho" style="margin-top:10px; width:auto;">Ver como funciona</a>
+      </article>
+    </div>
+
+    <section class="cards-explicativos">
+      <div class="card-explicativo">
+        <div class="icone">🧾</div>
+        <h3>PDF profissional</h3>
+        <p>Monte um orçamento claro, bonito e pronto para baixar.</p>
+      </div>
+
+      <div class="card-explicativo">
+        <div class="icone">🏢</div>
+        <h3>Dados da empresa</h3>
+        <p>Use nome, WhatsApp, endereço, CNPJ/CPF e logo cadastrados no painel.</p>
+      </div>
+
+      <div class="card-explicativo">
+        <div class="icone">📈</div>
+        <h3>Cresça por etapas</h3>
+        <p>Comece no PDF grátis, evolua para gestão de orçamentos e depois para gestão completa.</p>
+      </div>
+    </section>
+
+    <div id="adsense-gratis-rodape" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+      <span class="adsense-label">Publicidade</span>
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-5628949951885077"
+        data-ad-slot="5487486770"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
     </div>
   </section>
 
-  <div id="adsense-gratis-rodape" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
-    <span class="adsense-label">Publicidade</span>
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-5628949951885077"
-      data-ad-slot="5487486770"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
-
-  <section class="comparativo-home">
-    <div class="comparativo-home-topo">
-      <h2>Compare o Plano Grátis com o Plano Básico</h2>
+  <section id="home-plano-basico" class="home-visao-plano">
+    <div class="home-plano-hero">
+      <span class="home-plano-tag">Plano Básico ativo</span>
+      <h1>Painel rápido dos seus orçamentos.</h1>
       <p>
-        Comece grátis para gerar PDFs. Quando quiser controlar clientes, histórico e status,
-        assine o Plano Básico.
+        Acompanhe propostas pendentes, aprovadas e recusadas. Gere novos orçamentos, envie links pelo WhatsApp
+        e mantenha sua rotina comercial organizada.
       </p>
+      <div class="home-plano-acoes">
+        <button type="button" class="btn-home-medio" onclick="abrirGeradorHomeProtegido()">🧾 Novo orçamento</button>
+        <a href="/orcamentos.html" class="btn-home-atalho">📋 Ver orçamentos</a>
+        <a href="/planos.html#assinar-plano-premium" class="btn-home-atalho">🚀 Conhecer Premium</a>
+      </div>
     </div>
 
-    <div class="tabela-comparativo-wrapper">
-      <table class="tabela-comparativo">
-        <thead>
-          <tr>
-            <th>Recurso</th>
-            <th>Grátis</th>
-            <th>Básico</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Gerar orçamento em PDF</td>
-            <td class="ok-recurso">Sim</td>
-            <td class="ok-recurso">Sim</td>
-          </tr>
-          <tr>
-            <td>Anúncios</td>
-            <td class="nao-recurso">Sim</td>
-            <td class="ok-recurso">Não</td>
-          </tr>
-          <tr>
-            <td>Salvar na nuvem</td>
-            <td class="nao-recurso">Não</td>
-            <td class="ok-recurso">Sim</td>
-          </tr>
-          <tr>
-            <td>Histórico de orçamentos</td>
-            <td class="nao-recurso">Não</td>
-            <td class="ok-recurso">Sim</td>
-          </tr>
-          <tr>
-            <td>WhatsApp com link</td>
-            <td class="nao-recurso">Não</td>
-            <td class="ok-recurso">Sim</td>
-          </tr>
-          <tr>
-            <td>Cliente aprova/recusa</td>
-            <td class="nao-recurso">Não</td>
-            <td class="ok-recurso">Sim</td>
-          </tr>
-          <tr>
-            <td>Resumo financeiro</td>
-            <td class="nao-recurso">Não</td>
-            <td class="ok-recurso">Sim</td>
-          </tr>
-          <tr>
-            <td>Consultores Técnicos</td>
-            <td>2</td>
-            <td class="ok-recurso">Até 5</td>
-          </tr>
-          <tr>
-            <td>Lembrete de Orçamento Pendente</td>
-            <td class="nao-recurso">Não</td>
-            <td class="ok-recurso">Sim</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <article class="home-painel-card">
+      <div class="home-painel-topo">
+        <div>
+          <h2>Resumo comercial</h2>
+          <p>Visão rápida dos orçamentos salvos na sua conta.</p>
+        </div>
+        <a href="/orcamentos.html" class="btn-home-medio">Abrir gestão</a>
+      </div>
 
-    <div class="comparativo-cta">
-      <a href="/planos.html" class="btn-ir-planos-home">
-        ⭐ Conhecer planos e assinar
-      </a>
-    </div>
+      <div class="home-dashboard-grid">
+        <div class="home-metrica-card"><span>Total de orçamentos</span><strong id="home-basico-total">0</strong><small>Todos os registros salvos</small></div>
+        <div class="home-metrica-card"><span>Pendentes</span><strong id="home-basico-pendentes">0</strong><small>Aguardando resposta</small></div>
+        <div class="home-metrica-card"><span>Aprovados</span><strong id="home-basico-aprovados">0</strong><small>Oportunidades ganhas</small></div>
+        <div class="home-metrica-card"><span>Total aprovado</span><strong id="home-basico-valor">R$ 0,00</strong><small>Valor dos aprovados</small></div>
+      </div>
+
+      <div class="home-atalhos-grid">
+        <a href="/gerador.html" class="btn-home-atalho">➕ Gerar orçamento</a>
+        <a href="/orcamentos.html?status=pendente" class="btn-home-atalho">⏳ Pendentes</a>
+        <a href="/orcamentos.html?status=aprovado" class="btn-home-atalho">✅ Aprovados</a>
+        <a href="/orcamentos.html?periodo=30" class="btn-home-atalho">📊 Últimos 30 dias</a>
+      </div>
+
+      <div class="home-display-status">
+        <h3>🚀 Upgrade recomendado: Premium</h3>
+        <p>
+          Seu Básico já organiza orçamentos, links e aprovações. Com o Premium você transforma cada orçamento aprovado
+          em ordem de serviço, controla estoque e acompanha a execução até o pagamento final.
+        </p>
+        <div class="home-premium-fluxo-visual" style="margin-top:14px;">
+          <div>Orçamento</div>
+          <div>OS</div>
+          <div>Estoque</div>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          <a href="/planos.html#assinar-plano-premium" class="btn-home-atalho" style="width:auto;">Ver Premium</a>
+          <a href="/ordens.html" class="btn-home-atalho" style="width:auto;">Conhecer OS</a>
+        </div>
+      </div>
+    </article>
   </section>
 
-  <section class="status-orcamentos-home">
-    <div class="status-home-texto">
-      <span class="tag-status-home">Controle por status</span>
-
-      <h2>Acompanhe cada orçamento sem se perder</h2>
-
+  <section id="home-plano-premium" class="home-visao-plano">
+    <div class="home-plano-hero">
+      <span class="home-plano-tag">Plano Premium ativo</span>
+      <h1>Central de acompanhamento da sua operação.</h1>
       <p>
-        No Plano Básico, seus orçamentos ficam salvos na nuvem e podem ser organizados
-        por status. Assim você sabe rapidamente quais clientes ainda estão analisando,
-        quais aprovaram, quais recusaram e quais serviços já estão em andamento.
+        Controle orçamentos, ordens de serviço e estoque em uma visão rápida para decidir
+        o que precisa de atenção hoje.
       </p>
-    </div>
-
-    <div class="status-home-grid">
-      <div class="status-explicacao-card status-pendente">
-        <div class="status-explicacao-topo">
-          <span class="bolinha-status"></span>
-          <strong>Pendente</strong>
-        </div>
-        <p>
-          Orçamentos enviados ou salvos que ainda aguardam resposta do cliente.
-          Ideal para acompanhar propostas em aberto.
-        </p>
-        <small>Exemplo: cliente recebeu, mas ainda não decidiu.</small>
-      </div>
-
-      <div class="status-explicacao-card status-aprovado">
-        <div class="status-explicacao-topo">
-          <span class="bolinha-status"></span>
-          <strong>Aprovado</strong>
-        </div>
-        <p>
-          Propostas aceitas pelo cliente. Ajuda você a saber quais vendas ou serviços
-          foram confirmados.
-        </p>
-        <small>Exemplo: cliente clicou em aprovar ou você marcou manualmente.</small>
-      </div>
-
-      <div class="status-explicacao-card status-recusado">
-        <div class="status-explicacao-topo">
-          <span class="bolinha-status"></span>
-          <strong>Recusado</strong>
-        </div>
-        <p>
-          Orçamentos que o cliente não aceitou. Mantém o histórico organizado sem
-          misturar com oportunidades em aberto.
-        </p>
-        <small>Exemplo: proposta recusada por valor, prazo ou outro motivo.</small>
-      </div>
-
-      <div class="status-explicacao-card status-servico">
-        <div class="status-explicacao-topo">
-          <span class="bolinha-status"></span>
-          <strong>Em serviço</strong>
-        </div>
-        <p>
-          Orçamentos aprovados que já viraram trabalho em execução. Ajuda a acompanhar
-          o andamento dos serviços.
-        </p>
-        <small>Exemplo: serviço iniciado, mas ainda não finalizado.</small>
-      </div>
-
-      <div class="status-explicacao-card status-finalizado">
-        <div class="status-explicacao-topo">
-          <span class="bolinha-status"></span>
-          <strong>Finalizado</strong>
-        </div>
-        <p>
-          Serviços concluídos. Facilita a conferência dos trabalhos realizados e dos
-          valores já fechados.
-        </p>
-        <small>Exemplo: orçamento aprovado, executado e concluído.</small>
+      <div class="home-plano-acoes">
+        <button type="button" class="btn-home-medio" onclick="abrirGeradorHomeProtegido()">🧾 Novo orçamento</button>
+        <a href="/ordens.html" class="btn-home-atalho">🛠️ Nova OS</a>
+        <a href="/estoque.html" class="btn-home-atalho">📦 Estoque</a>
       </div>
     </div>
 
-    <div class="status-home-resumo">
-      <div>
-        <strong>Resumo financeiro por período</strong>
-        <p>
-          Na página de orçamentos, você pode filtrar por 15, 30, 60 dias ou total
-          e visualizar a soma dos valores por status.
-        </p>
+    <article class="home-painel-card">
+      <div class="home-painel-topo">
+        <div>
+          <h2>Gestão da oficina</h2>
+          <p>Tudo do Básico + acompanhamento das ordens de serviço e estoque.</p>
+        </div>
+        <a href="/painel.html" class="btn-home-medio">Painel completo</a>
       </div>
 
-      <a href="/exemplos.html" class="btn-status-home">
-        Ver exemplos da plataforma
-      </a>
-    </div>
+      <div class="home-dashboard-grid home-dashboard-grid-premium">
+        <div class="home-metrica-card"><span>Orçamentos pendentes</span><strong id="home-premium-orc-pendentes">0</strong><small>Propostas em aberto</small></div>
+        <div class="home-metrica-card"><span>Orçamentos aprovados</span><strong id="home-premium-orc-aprovados">0</strong><small>Prontos para execução</small></div>
+        <div class="home-metrica-card"><span>OS abertas</span><strong id="home-premium-os-abertas">0</strong><small>Aguardando início</small></div>
+        <div class="home-metrica-card"><span>OS em execução</span><strong id="home-premium-os-execucao">0</strong><small>Serviços em andamento</small></div>
+        <div class="home-metrica-card destaque"><span>Faturamento em OS</span><strong id="home-premium-faturamento">R$ 0,00</strong><small>Concluídas e pagas</small></div>
+        <div class="home-metrica-card"><span>Estoque baixo</span><strong id="home-premium-estoque-baixo">0</strong><small>Itens que precisam atenção</small></div>
+      </div>
+
+      <div class="home-atalhos-grid">
+        <a href="/orcamentos.html" class="btn-home-atalho">📋 Orçamentos</a>
+        <a href="/ordens.html" class="btn-home-atalho">🛠️ Ordens</a>
+        <a href="/estoque.html" class="btn-home-atalho">📦 Estoque</a>
+      </div>
+
+      <div class="home-display-status">
+        <h3>Resumo geral</h3>
+        <p id="home-premium-insight">
+          Carregando indicadores do Premium...
+        </p>
+      </div>
+    </article>
   </section>
 
 </main>
+
 
 <footer>
   &copy; 2026 FS Orçamentos |
@@ -1719,15 +4011,8 @@ async function abrirGeradorGlobal() {
 }
 
 function redirecionarDestinoAposLoginSeExistir() {
-  const destino = localStorage.getItem('fs_destino_apos_login');
-
-  if (!destino) return;
-
+  // Após login, manter o usuário no index.html.
   localStorage.removeItem('fs_destino_apos_login');
-
-  if (window.location.pathname !== destino) {
-    window.location.href = destino;
-  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1812,6 +4097,227 @@ async function buscarPlanoAtualIndex() {
     console.warn('Não foi possível buscar plano:', error);
     return fsNormalizarPlano(plano);
   }
+}
+</script>
+
+
+<script>
+function homeIndexSetTexto(id, valor) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = valor;
+}
+
+function homeIndexFormatarMoeda(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+}
+
+function homeIndexPlanoAtivo(perfil) {
+  const plano = fsNormalizarPlano(perfil?.plano || 'gratis');
+  const status = fsNormalizarPlano(perfil?.plano_status || 'ativo');
+
+  if (plano === 'gratis') return false;
+  if (status === 'cancelado' || status === 'expirado') return false;
+
+  if (perfil?.plano_expira_em) {
+    const hoje = new Date();
+    const expira = new Date(perfil.plano_expira_em);
+
+    if (!Number.isNaN(expira.getTime())) {
+      hoje.setHours(0, 0, 0, 0);
+      expira.setHours(0, 0, 0, 0);
+      if (expira.getTime() < hoje.getTime()) return false;
+    }
+  }
+
+  return plano === 'basico' || plano === 'premium';
+}
+
+async function homeIndexObterContextoPlano() {
+  try {
+    if (!window._supabase) {
+      return { plano: 'gratis', userId: null };
+    }
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) {
+      return { plano: 'gratis', userId: null };
+    }
+
+    const { data, error } = await _supabase
+      .from('perfis')
+      .select('plano, plano_status, plano_expira_em')
+      .eq('id', session.user.id)
+      .maybeSingle();
+
+    if (error || !data) {
+      return { plano: fsNormalizarPlano(localStorage.getItem('usuario_plano') || 'gratis'), userId: session.user.id };
+    }
+
+    let plano = homeIndexPlanoAtivo(data) ? fsNormalizarPlano(data.plano) : 'gratis';
+
+    localStorage.setItem('usuario_plano', plano);
+
+    if (data.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
+    if (data.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+
+    return { plano, userId: session.user.id };
+  } catch (error) {
+    console.warn('Erro ao obter plano da home:', error);
+    return { plano: 'gratis', userId: null };
+  }
+}
+
+function homeIndexMostrarVisao(plano) {
+  document.querySelectorAll('.home-visao-plano').forEach(secao => {
+    secao.classList.remove('ativo');
+  });
+
+  const id = plano === 'premium'
+    ? 'home-plano-premium'
+    : plano === 'basico'
+      ? 'home-plano-basico'
+      : 'home-plano-gratis';
+
+  const secao = document.getElementById(id);
+  if (secao) secao.classList.add('ativo');
+}
+
+async function homeIndexBuscarOrcamentos(userId) {
+  if (!userId || !window._supabase) return [];
+
+  async function tentarBusca(campoUsuario) {
+    return await _supabase
+      .from('orcamentos')
+      .select('*')
+      .eq(campoUsuario, userId);
+  }
+
+  let resultado = await tentarBusca('usuario_id');
+
+  if (resultado.error) {
+    console.warn('Erro ao buscar orçamentos por usuario_id, tentando user_id:', resultado.error);
+    resultado = await tentarBusca('user_id');
+  }
+
+  if (resultado.error) {
+    console.warn('Erro ao buscar orçamentos da home:', resultado.error);
+    return [];
+  }
+
+  return Array.isArray(resultado.data) ? resultado.data : [];
+}
+
+function homeIndexPreencherMetricasBasico(orcamentos) {
+  const total = orcamentos.length;
+  const pendentes = orcamentos.filter(o => (o.status || 'pendente') === 'pendente').length;
+  const aprovados = orcamentos.filter(o => ['aprovado', 'em_servico', 'finalizado'].includes(o.status || '')).length;
+  const valorAprovado = orcamentos
+    .filter(o => ['aprovado', 'em_servico', 'finalizado'].includes(o.status || ''))
+    .reduce((soma, o) => soma + Number(o.total || 0), 0);
+
+  homeIndexSetTexto('home-basico-total', total);
+  homeIndexSetTexto('home-basico-pendentes', pendentes);
+  homeIndexSetTexto('home-basico-aprovados', aprovados);
+  homeIndexSetTexto('home-basico-valor', homeIndexFormatarMoeda(valorAprovado));
+
+  homeIndexSetTexto('home-premium-orc-pendentes', pendentes);
+  homeIndexSetTexto('home-premium-orc-aprovados', aprovados);
+}
+
+async function homeIndexBuscarTabela(tabela, colunas, campoUser, userId) {
+  if (!userId || !window._supabase) return [];
+
+  const { data, error } = await _supabase
+    .from(tabela)
+    .select(colunas)
+    .eq(campoUser, userId);
+
+  if (error) {
+    console.warn(`Erro ao buscar ${tabela} na home:`, error);
+    return [];
+  }
+
+  return Array.isArray(data) ? data : [];
+}
+
+async function homeIndexPreencherPremium(userId, orcamentos) {
+  const [ordens, produtos, clientes, veiculos] = await Promise.all([
+    homeIndexBuscarTabela('ordens_servico', 'id, status, status_pagamento, valor_total', 'user_id', userId),
+    homeIndexBuscarTabela('produtos_estoque', 'id, ativo, controlar_estoque, quantidade_atual, estoque_minimo', 'user_id', userId),
+    homeIndexBuscarTabela('clientes', 'id', 'user_id', userId),
+    homeIndexBuscarTabela('veiculos', 'id', 'user_id', userId)
+  ]);
+
+  const abertas = ordens.filter(os => ['aberta', 'em_analise', 'aguardando_aprovacao', 'aprovada'].includes(os.status || 'aberta')).length;
+  const execucao = ordens.filter(os => ['em_execucao', 'aguardando_material'].includes(os.status || '')).length;
+  const concluidasPagas = ordens.filter(os => (os.status === 'concluida') && (os.status_pagamento === 'pago'));
+  const faturamento = concluidasPagas.reduce((soma, os) => soma + Number(os.valor_total || 0), 0);
+
+  const estoqueBaixo = produtos.filter(p => {
+    if (p.ativo === false || p.controlar_estoque === false) return false;
+    const atual = Number(p.quantidade_atual || 0);
+    const minimo = Number(p.estoque_minimo || 0);
+    return minimo > 0 && atual <= minimo;
+  }).length;
+
+  homeIndexSetTexto('home-premium-os-abertas', abertas);
+  homeIndexSetTexto('home-premium-os-execucao', execucao);
+  homeIndexSetTexto('home-premium-faturamento', homeIndexFormatarMoeda(faturamento));
+  homeIndexSetTexto('home-premium-estoque-baixo', estoqueBaixo);
+  homeIndexSetTexto('home-premium-clientes-veiculos', `${clientes.length} / ${veiculos.length}`);
+
+  const pendentes = orcamentos.filter(o => (o.status || 'pendente') === 'pendente').length;
+
+  let insight = `Você tem ${pendentes} orçamento(s) pendente(s), ${abertas} OS aberta(s), ${execucao} OS em execução e ${estoqueBaixo} item(ns) com estoque baixo.`;
+
+  if (estoqueBaixo > 0) {
+    insight += ' Priorize a reposição de estoque antes de iniciar novas ordens que dependem desses itens.';
+  } else if (execucao > 0) {
+    insight += ' Foque nas OS em execução para finalizar serviços e liberar faturamento.';
+  } else if (pendentes > 0) {
+    insight += ' Faça follow-up dos orçamentos pendentes para aumentar a taxa de aprovação.';
+  } else {
+    insight += ' Sua operação está organizada. Aproveite para cadastrar novos clientes e gerar novas oportunidades.';
+  }
+
+  homeIndexSetTexto('home-premium-insight', insight);
+}
+
+async function atualizarHomePorPlanoIndex() {
+  const contexto = await homeIndexObterContextoPlano();
+  const plano = contexto.plano || 'gratis';
+
+  homeIndexMostrarVisao(plano);
+
+  if (!contexto.userId || plano === 'gratis') {
+    return;
+  }
+
+  const orcamentos = await homeIndexBuscarOrcamentos(contexto.userId);
+  homeIndexPreencherMetricasBasico(orcamentos);
+
+  if (plano === 'premium') {
+    await homeIndexPreencherPremium(contexto.userId, orcamentos);
+  }
+}
+
+window.atualizarHomePorPlanoIndex = atualizarHomePorPlanoIndex;
+
+document.addEventListener('DOMContentLoaded', function() {
+  atualizarHomePorPlanoIndex();
+  setTimeout(atualizarHomePorPlanoIndex, 800);
+  setTimeout(atualizarHomePorPlanoIndex, 1800);
+});
+
+if (window._supabase) {
+  _supabase.auth.onAuthStateChange(() => {
+    setTimeout(atualizarHomePorPlanoIndex, 500);
+    setTimeout(atualizarHomePorPlanoIndex, 1400);
+  });
 }
 </script>
 

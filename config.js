@@ -114,6 +114,7 @@ if (document.readyState === 'loading') {
 
 window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
+ ajustes/dashboard-premium-pdf-orcamentos
 
 /* =========================
    CARREGAMENTO DE AJUSTES POR PÁGINA
@@ -144,3 +145,5 @@ function fsConfigCarregarAjustesPagina() {
 }
 
 fsConfigCarregarAjustesPagina();
+
+ main

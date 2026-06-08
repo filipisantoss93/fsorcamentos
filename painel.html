@@ -37,6 +37,54 @@
       --fs-borda: #e0d6c8;
     }
 
+    /* =========================================================
+   CORREÇÃO: HEADER FIXO NÃO SOBREPOR CONTEÚDO
+   ========================================================= */
+
+body {
+  padding-top: 118px;
+}
+
+#conteudo-protegido {
+  min-height: calc(100vh - 118px);
+}
+
+#area-orcamentos-funcoes .container {
+  padding-top: 12px;
+}
+
+#bloqueio-plano-gratis {
+  padding-top: 12px;
+}
+
+@media (max-width: 850px) {
+  body {
+    padding-top: 104px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 104px);
+  }
+
+  .filtro-flutuante {
+    top: 72px;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    padding-top: 86px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 86px);
+  }
+
+  .filtro-flutuante {
+    top: 0;
+  }
+}
+
     .painel-header {
       display: flex;
       justify-content: space-between;
@@ -56,6 +104,10 @@
       font-size: 14px;
       line-height: 1.4;
     }
+
+
+
+    .painel-topo-acoes{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}.btn-gerar-orcamento-painel{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--fs-amarelo);color:var(--fs-marrom);border:2px solid var(--fs-marrom);border-radius:999px;padding:13px 18px;font-size:14px;font-weight:900;text-decoration:none;box-shadow:0 8px 18px rgba(0,0,0,.18);text-transform:uppercase}.btn-gerar-orcamento-painel:hover{background:#fff;transform:translateY(-1px)}
 
     .painel-card {
       width: 100%;
@@ -227,6 +279,132 @@
     .info-card.full {
       grid-column: 1 / -1;
     }
+
+
+    .painel-os-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .painel-os-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 15px;
+      border-left: 5px solid var(--fs-amarelo);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      min-height: 72px;
+      box-sizing: border-box;
+    }
+
+    .painel-os-card strong {
+      display: block;
+      font-size: 12px;
+      color: #6d4c41;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: .3px;
+    }
+
+    .painel-os-card span {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 24px;
+      line-height: 1.15;
+      font-weight: 900;
+      word-break: break-word;
+    }
+
+    .painel-os-topo {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .painel-os-topo h2 {
+      margin-bottom: 6px;
+    }
+
+    .painel-os-topo p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .btn-ver-ordens-painel {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 8px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .btn-ver-ordens-painel:hover {
+      background: #2c1b17;
+      transform: translateY(-1px);
+    }
+
+
+    .painel-lista-operacional {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .painel-lista-item {
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--fs-marrom);
+    }
+
+    .painel-lista-item strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .painel-lista-item small {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .painel-lista-item span {
+      color: var(--fs-marrom);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .painel-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
 
     .acoes-painel {
       display: flex;
@@ -622,6 +800,21 @@
     }
 
     @media (max-width: 760px) {
+
+      .painel-os-grid,
+      .painel-grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .painel-os-topo {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-ver-ordens-painel {
+        width: 100%;
+      }
+
       .perfil-layout,
       .perfil-dados-grid,
       .grid-painel,
@@ -676,7 +869,893 @@
         font-size: 24px;
       }
     }
+  
+    .painel-premium-atalhos-grid,
+    .painel-premium-resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .painel-premium-atalho {
+      display: block;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 16px;
+      padding: 15px;
+      color: var(--fs-marrom);
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(62,39,35,0.08);
+      transition: .2s ease;
+    }
+
+    .painel-premium-atalho:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(62,39,35,0.14);
+    }
+
+    .painel-premium-atalho strong,
+    .painel-premium-atalho span {
+      display: block;
+    }
+
+    .painel-premium-atalho strong {
+      color: var(--fs-marrom);
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .painel-premium-atalho span {
+      color: #6d5b52;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
+
+
+<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
+<style id="fs-formal-theme-overrides">
+  :root {
+    --fs-marrom: #3e2723;
+    --fs-marrom-2: #5d4037;
+    --fs-fundo-escuro: #f7f2ea;
+    --fs-fundo: #f7f2ea;
+    --fs-page-bg: #f7f2ea;
+    --fs-page-bg-2: #efe3d2;
+    --fs-card: #ffffff;
+    --fs-creme: #f4ece1;
+    --fs-creme-2: #fffaf0;
+    --fs-bege: #f4ece1;
+    --fs-bege-2: #fffaf0;
+    --fs-amarelo: #ffc400;
+    --fs-borda: #e8dccb;
+    --fs-texto: #2f241f;
+    --fs-texto-suave: #6d5b52;
+    --bg-dark: #f7f2ea;
+    --body-brown: #ffffff;
+    --text-dark: #2f241f;
+    --accent-yellow: #ffc400;
+  }
+
+  body:not(.gerando-pdf) {
+    background:
+      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
+    color: #2f241f !important;
+  }
+
+  #header-container,
+  .main-header,
+  .header-topo,
+  .header-menu-linha {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav,
+  .logo-nav span,
+  #usuario-saudacao,
+  .header-menu-linha a,
+  .nav-menu a {
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav strong,
+  .fs-box,
+  .sobre-fs-box {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+  }
+
+  .link-destaque-gerador,
+  .btn-header-entrar,
+  .btn-menu-mobile-entrar,
+  .btn-home-grande,
+  .btn-home-medio,
+  .btn-home-atalho.btn-principal,
+  .btn-gerar-orcamento-home,
+  .btn-previa-profissional,
+  .btn-hero-principal,
+  .btn-ir-planos-home,
+  .btn-home-planos-forte,
+  .btn-add,
+  .btn-extra,
+  .btn-primario,
+  .btn-primary,
+  .btn-salvar,
+  .btn-acao-pdf,
+  .plano-pix-card button,
+  .btn-editar-dados-empresa {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .link-destaque-gerador:hover,
+  .btn-header-entrar:hover,
+  .btn-menu-mobile-entrar:hover,
+  .btn-home-grande:hover,
+  .btn-home-medio:hover,
+  .btn-gerar-orcamento-home:hover,
+  .btn-previa-profissional:hover,
+  .btn-hero-principal:hover,
+  .btn-ir-planos-home:hover,
+  .btn-home-planos-forte:hover,
+  .btn-add:hover,
+  .btn-extra:hover,
+  .btn-primario:hover,
+  .btn-primary:hover,
+  .btn-salvar:hover,
+  .btn-acao-pdf:hover,
+  .plano-pix-card button:hover,
+  .btn-editar-dados-empresa:hover {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+    border-color: #3e2723 !important;
+  }
+
+  .hero-publico,
+  .home-plano-hero,
+  .gerador-hero,
+  .planos-hero,
+  .clientes-hero,
+  .veiculos-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero,
+  .sobre-hero,
+  .manual-hero,
+  .termos-hero,
+  .privacidade-hero,
+  .orcamentos-hero,
+  .painel-hero,
+  .secao-como-funciona,
+  .whatsapp-preview-home,
+  .cliente-aprovacao-home,
+  .comparativo-home,
+  .status-orcamentos-home,
+  .home-story-section,
+  .home-whatsapp-section,
+  .home-aprovacao-section,
+  .home-status-section,
+  .home-comparativo-section,
+  .planos-pix-section,
+  .comparativo-section,
+  .faq-section,
+  .container-sobre,
+  .container-termos,
+  .container-privacidade,
+  .home-premium-showcase {
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+    color: #2f241f !important;
+    border-top-color: #ffc400 !important;
+    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
+  }
+
+  .hero-publico h1,
+  .home-plano-hero h1,
+  .gerador-hero h1,
+  .planos-hero h1,
+  .clientes-hero h1,
+  .veiculos-hero h1,
+  .ordens-hero h1,
+  .ordem-hero h1,
+  .estoque-hero h1,
+  .sobre-hero h1,
+  .manual-hero h1,
+  .home-premium-showcase h2,
+  .container-sobre h1,
+  .container-sobre h2,
+  .container-termos h1,
+  .container-termos h2,
+  .section-topo h2,
+  .dadositens,
+  .card-header h2,
+  .clientes-card-header h2,
+  .veiculos-card-header h2,
+  .ordens-card-header h2,
+  .estoque-card-header h2 {
+    color: #3e2723 !important;
+  }
+
+  .hero-publico p,
+  .home-plano-hero p,
+  .gerador-hero p,
+  .planos-hero p,
+  .clientes-hero p,
+  .veiculos-hero p,
+  .ordens-hero p,
+  .ordem-hero p,
+  .estoque-hero p,
+  .sobre-hero p,
+  .manual-hero p,
+  .home-premium-showcase p,
+  .container-sobre p,
+  .container-termos p,
+  .section-topo p {
+    color: #6d5b52 !important;
+  }
+
+  .container,
+  .card,
+  .clientes-card,
+  .veiculos-card,
+  .ordens-card,
+  .estoque-card,
+  .gerador-card-principal,
+  .sidebar-card,
+  .plano-pix-card,
+  .faq-card,
+  .home-promo-card,
+  .home-metrica-card,
+  .home-relatorio-card,
+  .home-painel-card,
+  .card-sobre,
+  .plano-card,
+  .manual-card,
+  .manual-section,
+  .manual-step,
+  .manual-demo-card,
+  .cliente-item,
+  .veiculo-item,
+  .ordem-item,
+  .estoque-categoria-grupo,
+  .emissor-readonly-card,
+  .cliente-tela-preview,
+  .home-cliente-preview {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #e8dccb !important;
+    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
+  }
+
+  .card-header,
+  .clientes-card-header,
+  .veiculos-card-header,
+  .ordens-card-header,
+  .estoque-card-header,
+  .modal-busca-cliente-header,
+  .modal-busca-produto-header,
+  .modal-pix-topo,
+  .home-cliente-topo,
+  .mock-card-head,
+  .orcamento-whatsapp-header,
+  .home-orcamento-whatsapp-header,
+  .total-container,
+  .cliente-total-demo,
+  .home-cliente-total,
+  .manual-flow div,
+  .mini-dashboard {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .card-body,
+  .clientes-card-body,
+  .veiculos-card-body,
+  .ordens-card-body,
+  .estoque-card-body {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #d8c9b8 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #ffc400 !important;
+    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+    outline: none !important;
+  }
+
+  table,
+  .tabela-comparativo,
+  .home-tabela-comparativo,
+  .manual-table,
+  .comparativo {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  th,
+  .tabela-comparativo th,
+  .home-tabela-comparativo th,
+  .manual-table th,
+  .comparativo th {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+  }
+
+  tr:nth-child(even),
+  tbody tr:nth-child(even) {
+    background: #fffaf0 !important;
+  }
+
+  footer,
+  .sobre-footer {
+    color: #6d5b52 !important;
+  }
+
+  footer a,
+  .sobre-footer a {
+    color: #3e2723 !important;
+    font-weight: 800 !important;
+  }
+
+    .painel-premium-atalhos-grid,
+    .painel-premium-resumo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .painel-premium-atalho {
+      display: block;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 16px;
+      padding: 15px;
+      color: var(--fs-marrom);
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(62,39,35,0.08);
+      transition: .2s ease;
+    }
+
+    .painel-premium-atalho:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(62,39,35,0.14);
+    }
+
+    .painel-premium-atalho strong,
+    .painel-premium-atalho span {
+      display: block;
+    }
+
+    .painel-premium-atalho strong {
+      color: var(--fs-marrom);
+      font-size: 15px;
+      margin-bottom: 7px;
+    }
+
+    .painel-premium-atalho span {
+      color: #6d5b52;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .painel-premium-atalhos-grid,
+      .painel-premium-resumo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+  </style>
+
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
 </head>
 
 <body>
@@ -747,14 +1826,71 @@
       <div>
         <h1>Painel de Controle</h1>
         <p class="painel-subtitulo">
-          Gerencie os dados da empresa, plano e acompanhe o resumo dos orçamentos.
+          Gerencie os dados da empresa, plano, orçamentos, ordens de serviço, estoque e faturamento.
         </p>
+      </div>
+
+      <div class="painel-topo-acoes">
+        <a href="gerador.html" class="btn-gerar-orcamento-painel">🧾 Gerar Orçamento</a>
       </div>
     </div>
 
     <div class="painel-aviso">
       Mantenha seus dados atualizados. Essas informações aparecem no gerador, no PDF e no link enviado ao cliente.
     </div>
+
+
+    <section id="painel-premium-gestao-avancada" class="painel-card painel-premium-gestao-avancada" data-plano-min="premium">
+      <h2>Gestão Premium avançada</h2>
+      <p class="painel-subtitulo">
+        Acesse relatórios mensais e controle manutenções recorrentes para transformar o FS Orçamentos em uma central de gestão.
+      </p>
+
+      <div class="painel-premium-atalhos-grid">
+        <a href="relatorios.html" class="painel-premium-atalho">
+          <strong>📊 Relatórios por serviço</strong>
+          <span>Faturamento, OS concluídas, serviços mais realizados, produtos usados, clientes e veículos.</span>
+        </a>
+
+        <a href="recorrentes.html" class="painel-premium-atalho">
+          <strong>🔁 Manutenção preventiva</strong>
+          <span>Serviços recorrentes, vencidos, próximos 7 dias e próximos 30 dias.</span>
+        </a>
+
+        <a href="agenda.html" class="painel-premium-atalho">
+          <strong>📅 Agenda de serviços</strong>
+          <span>Organize atendimentos por data, status, cliente, veículo e OS vinculada.</span>
+        </a>
+
+        <a href="ordens.html" class="painel-premium-atalho">
+          <strong>🛠️ Ordens de serviço</strong>
+          <span>Acompanhe execução, estoque, pagamento, recibo, garantia e assinatura.</span>
+        </a>
+      </div>
+
+      <div class="painel-premium-resumo-grid">
+        <div class="info-card">
+          <strong>Recorrências vencidas</strong>
+          <span id="painel-recorrentes-vencidas">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Próximos 7 dias</strong>
+          <span id="painel-recorrentes-7">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>Faturado no mês em OS</strong>
+          <span id="painel-relatorio-faturado-mes">-</span>
+        </div>
+
+        <div class="info-card">
+          <strong>OS concluídas no mês</strong>
+          <span id="painel-relatorio-os-mes">-</span>
+        </div>
+      </div>
+    </section>
+
 
     <section class="painel-card">
       <h2>Dados da Empresa</h2>
@@ -819,7 +1955,7 @@
 
       <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
 
-      <div class="perfil-dados-grid">
+      <div class="perfil-dados-grid plano-atual-grid">
         <div class="info-card">
           <strong>Plano</strong>
           <span id="perfil-plano" class="plano-badge">Plano Grátis</span>
@@ -835,7 +1971,7 @@
           <span id="perfil-plano-expira">-</span>
         </div>
 
-        <div class="info-card">
+        <div class="info-card info-card-assinatura full">
           <strong>Assinatura</strong>
           <span>
             <a href="/planos.html" class="btn-plano-painel">
@@ -846,10 +1982,139 @@
       </div>
     </section>
 
+
+    <section id="resumo-ordens-servico-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Ordens de Serviço</h2>
+          <p>
+            Resumo rápido das OS cadastradas, abertas, em execução, concluídas e valores vinculados às ordens de serviço.
+          </p>
+        </div>
+
+        <a href="/ordens.html" class="btn-ver-ordens-painel">
+          🧰 Ver ordens
+        </a>
+      </div>
+
+      <div class="painel-os-grid painel-os-resumo-grid">
+        <div class="painel-os-card">
+          <strong>Total de OS</strong>
+          <span id="painel-total-os">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Abertas</strong>
+          <span id="painel-os-abertas">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Em execução</strong>
+          <span id="painel-os-execucao">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Concluídas</strong>
+          <span id="painel-os-concluidas">0</span>
+        </div>
+
+        <div class="painel-os-card painel-os-card-full">
+          <strong>Total em OS</strong>
+          <span id="painel-total-valor-os">R$ 0,00</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="faturamento-os-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Faturamento por OS</h2>
+          <p>
+            Estes valores devem considerar somente ordens de serviço concluídas e pagas,
+            evitando misturar orçamento aprovado com dinheiro realmente recebido.
+          </p>
+        </div>
+      </div>
+
+      <div class="painel-grid-4 painel-grid-2">
+        <div class="painel-os-card">
+          <strong>Total faturado em OS</strong>
+          <span id="painel-faturamento-os-total">R$ 0,00</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Recebido no mês</strong>
+          <span id="painel-recebido-mes-os">R$ 0,00</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>OS pagas no mês</strong>
+          <span id="painel-os-pagas-mes">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Ticket médio por OS</strong>
+          <span id="painel-ticket-medio-os">R$ 0,00</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="operacional-premium-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Indicadores Operacionais</h2>
+          <p>
+            Acompanhe conversão de orçamentos em OS, pendências de pagamento e produtos com estoque baixo.
+          </p>
+        </div>
+      </div>
+
+      <div class="painel-grid-4 painel-grid-2">
+        <div class="painel-os-card">
+          <strong>Orçamentos aprovados</strong>
+          <span id="painel-orcamentos-aprovados">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Convertidos em OS</strong>
+          <span id="painel-orcamentos-convertidos-os">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>OS pendentes pagamento</strong>
+          <span id="painel-os-pendentes-pagamento">0</span>
+        </div>
+
+        <div class="painel-os-card">
+          <strong>Produtos estoque baixo</strong>
+          <span id="painel-produtos-estoque-baixo">0</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ultimas-os-finalizadas-painel" class="painel-card">
+      <div class="painel-os-topo">
+        <div>
+          <h2>Últimas OS Finalizadas</h2>
+          <p>
+            Lista rápida das últimas ordens concluídas e pagas que entram no faturamento.
+          </p>
+        </div>
+
+        <a href="/ordens.html" class="btn-ver-ordens-painel">
+          🧰 Ver todas
+        </a>
+      </div>
+
+      <div id="lista-ultimas-os-finalizadas-painel" class="painel-lista-operacional">
+        <div class="painel-aviso">Carregando últimas OS finalizadas...</div>
+      </div>
+    </section>
+
     <section id="dashboard-painel" class="painel-card">
       <h2>Resumo dos Orçamentos</h2>
 
-      <div class="perfil-dados-grid">
+      <div class="perfil-dados-grid resumo-orcamentos-grid">
         <div class="info-card">
           <strong>Total de orçamentos</strong>
           <span id="dash-total-orcamentos">0</span>
@@ -1083,6 +2348,7 @@
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script src="ui.js"></script>
+<script src="planos.js"></script>
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 <script src="painel.js"></script>

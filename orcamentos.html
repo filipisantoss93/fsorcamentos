@@ -28,6 +28,54 @@
       --fs-borda: #e0d6c8;
     }
 
+    /* =========================================================
+   CORREÇÃO: HEADER FIXO NÃO SOBREPOR CONTEÚDO
+   ========================================================= */
+
+body {
+  padding-top: 118px;
+}
+
+#conteudo-protegido {
+  min-height: calc(100vh - 118px);
+}
+
+#area-orcamentos-funcoes .container {
+  padding-top: 12px;
+}
+
+#bloqueio-plano-gratis {
+  padding-top: 12px;
+}
+
+@media (max-width: 850px) {
+  body {
+    padding-top: 104px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 104px);
+  }
+
+  .filtro-flutuante {
+    top: 72px;
+  }
+}
+
+@media (max-width: 700px) {
+  body {
+    padding-top: 86px;
+  }
+
+  #conteudo-protegido {
+    min-height: calc(100vh - 86px);
+  }
+
+  .filtro-flutuante {
+    top: 0;
+  }
+}
+
     .orcamentos-header {
       display: flex;
       justify-content: space-between;
@@ -303,6 +351,8 @@
     .btn-ver-link { background: var(--fs-marrom); color: var(--fs-amarelo); }
     .btn-cancelar { background: #777; color: #fff; }
     .btn-salvar-modal { background: #2e7d32; color: #fff; }
+    .btn-gerar-os { background: var(--fs-amarelo); color: var(--fs-marrom); border: 2px solid var(--fs-marrom); }
+    .btn-gerar-os:hover { background: #ffffff; }
 
     .btn-add-item {
       background: #4e342e;
@@ -758,6 +808,774 @@
       }
     }
   </style>
+
+
+<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
+<style id="fs-formal-theme-overrides">
+  :root {
+    --fs-marrom: #3e2723;
+    --fs-marrom-2: #5d4037;
+    --fs-fundo-escuro: #f7f2ea;
+    --fs-fundo: #f7f2ea;
+    --fs-page-bg: #f7f2ea;
+    --fs-page-bg-2: #efe3d2;
+    --fs-card: #ffffff;
+    --fs-creme: #f4ece1;
+    --fs-creme-2: #fffaf0;
+    --fs-bege: #f4ece1;
+    --fs-bege-2: #fffaf0;
+    --fs-amarelo: #ffc400;
+    --fs-borda: #e8dccb;
+    --fs-texto: #2f241f;
+    --fs-texto-suave: #6d5b52;
+    --bg-dark: #f7f2ea;
+    --body-brown: #ffffff;
+    --text-dark: #2f241f;
+    --accent-yellow: #ffc400;
+  }
+
+  body:not(.gerando-pdf) {
+    background:
+      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
+    color: #2f241f !important;
+  }
+
+  #header-container,
+  .main-header,
+  .header-topo,
+  .header-menu-linha {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav,
+  .logo-nav span,
+  #usuario-saudacao,
+  .header-menu-linha a,
+  .nav-menu a {
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav strong,
+  .fs-box,
+  .sobre-fs-box {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+  }
+
+  .link-destaque-gerador,
+  .btn-header-entrar,
+  .btn-menu-mobile-entrar,
+  .btn-home-grande,
+  .btn-home-medio,
+  .btn-home-atalho.btn-principal,
+  .btn-gerar-orcamento-home,
+  .btn-previa-profissional,
+  .btn-hero-principal,
+  .btn-ir-planos-home,
+  .btn-home-planos-forte,
+  .btn-add,
+  .btn-extra,
+  .btn-primario,
+  .btn-primary,
+  .btn-salvar,
+  .btn-acao-pdf,
+  .plano-pix-card button,
+  .btn-editar-dados-empresa {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .link-destaque-gerador:hover,
+  .btn-header-entrar:hover,
+  .btn-menu-mobile-entrar:hover,
+  .btn-home-grande:hover,
+  .btn-home-medio:hover,
+  .btn-gerar-orcamento-home:hover,
+  .btn-previa-profissional:hover,
+  .btn-hero-principal:hover,
+  .btn-ir-planos-home:hover,
+  .btn-home-planos-forte:hover,
+  .btn-add:hover,
+  .btn-extra:hover,
+  .btn-primario:hover,
+  .btn-primary:hover,
+  .btn-salvar:hover,
+  .btn-acao-pdf:hover,
+  .plano-pix-card button:hover,
+  .btn-editar-dados-empresa:hover {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+    border-color: #3e2723 !important;
+  }
+
+  .hero-publico,
+  .home-plano-hero,
+  .gerador-hero,
+  .planos-hero,
+  .clientes-hero,
+  .veiculos-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero,
+  .sobre-hero,
+  .manual-hero,
+  .termos-hero,
+  .privacidade-hero,
+  .orcamentos-hero,
+  .painel-hero,
+  .secao-como-funciona,
+  .whatsapp-preview-home,
+  .cliente-aprovacao-home,
+  .comparativo-home,
+  .status-orcamentos-home,
+  .home-story-section,
+  .home-whatsapp-section,
+  .home-aprovacao-section,
+  .home-status-section,
+  .home-comparativo-section,
+  .planos-pix-section,
+  .comparativo-section,
+  .faq-section,
+  .container-sobre,
+  .container-termos,
+  .container-privacidade,
+  .home-premium-showcase {
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+    color: #2f241f !important;
+    border-top-color: #ffc400 !important;
+    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
+  }
+
+  .hero-publico h1,
+  .home-plano-hero h1,
+  .gerador-hero h1,
+  .planos-hero h1,
+  .clientes-hero h1,
+  .veiculos-hero h1,
+  .ordens-hero h1,
+  .ordem-hero h1,
+  .estoque-hero h1,
+  .sobre-hero h1,
+  .manual-hero h1,
+  .home-premium-showcase h2,
+  .container-sobre h1,
+  .container-sobre h2,
+  .container-termos h1,
+  .container-termos h2,
+  .section-topo h2,
+  .dadositens,
+  .card-header h2,
+  .clientes-card-header h2,
+  .veiculos-card-header h2,
+  .ordens-card-header h2,
+  .estoque-card-header h2 {
+    color: #3e2723 !important;
+  }
+
+  .hero-publico p,
+  .home-plano-hero p,
+  .gerador-hero p,
+  .planos-hero p,
+  .clientes-hero p,
+  .veiculos-hero p,
+  .ordens-hero p,
+  .ordem-hero p,
+  .estoque-hero p,
+  .sobre-hero p,
+  .manual-hero p,
+  .home-premium-showcase p,
+  .container-sobre p,
+  .container-termos p,
+  .section-topo p {
+    color: #6d5b52 !important;
+  }
+
+  .container,
+  .card,
+  .clientes-card,
+  .veiculos-card,
+  .ordens-card,
+  .estoque-card,
+  .gerador-card-principal,
+  .sidebar-card,
+  .plano-pix-card,
+  .faq-card,
+  .home-promo-card,
+  .home-metrica-card,
+  .home-relatorio-card,
+  .home-painel-card,
+  .card-sobre,
+  .plano-card,
+  .manual-card,
+  .manual-section,
+  .manual-step,
+  .manual-demo-card,
+  .cliente-item,
+  .veiculo-item,
+  .ordem-item,
+  .estoque-categoria-grupo,
+  .emissor-readonly-card,
+  .cliente-tela-preview,
+  .home-cliente-preview {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #e8dccb !important;
+    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
+  }
+
+  .card-header,
+  .clientes-card-header,
+  .veiculos-card-header,
+  .ordens-card-header,
+  .estoque-card-header,
+  .modal-busca-cliente-header,
+  .modal-busca-produto-header,
+  .modal-pix-topo,
+  .home-cliente-topo,
+  .mock-card-head,
+  .orcamento-whatsapp-header,
+  .home-orcamento-whatsapp-header,
+  .total-container,
+  .cliente-total-demo,
+  .home-cliente-total,
+  .manual-flow div,
+  .mini-dashboard {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .card-body,
+  .clientes-card-body,
+  .veiculos-card-body,
+  .ordens-card-body,
+  .estoque-card-body {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #d8c9b8 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #ffc400 !important;
+    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+    outline: none !important;
+  }
+
+  table,
+  .tabela-comparativo,
+  .home-tabela-comparativo,
+  .manual-table,
+  .comparativo {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  th,
+  .tabela-comparativo th,
+  .home-tabela-comparativo th,
+  .manual-table th,
+  .comparativo th {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+  }
+
+  tr:nth-child(even),
+  tbody tr:nth-child(even) {
+    background: #fffaf0 !important;
+  }
+
+  footer,
+  .sobre-footer {
+    color: #6d5b52 !important;
+  }
+
+  footer a,
+  .sobre-footer a {
+    color: #3e2723 !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
 </head>
 
 <body>
@@ -768,6 +1586,7 @@
 <script src="config.js"></script>
 <script src="auth.js"></script>
 <script src="ui.js"></script>
+<script src="planos.js"></script>
 <script src="carregar-menu.js"></script>
 <script src="notificacoes.js"></script>
 
@@ -1029,6 +1848,11 @@
         </div>
 
         <div class="visual-card">
+          <strong>ID do cliente cadastrado</strong>
+          <span id="visual-cliente-id">-</span>
+        </div>
+
+        <div class="visual-card">
           <strong>Status</strong>
           <span id="visual-status">-</span>
         </div>
@@ -1070,6 +1894,10 @@
 
         <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="abrirConversaWhatsappVisualizado()">
           WhatsApp
+        </button>
+
+        <button type="button" id="btn-gerar-os-visualizado" class="btn-pequeno btn-gerar-os" onclick="gerarOSOrcamentoVisualizado()" style="display:none;">
+          Gerar OS
         </button>
 
         <button type="button" class="btn-pequeno btn-editar" onclick="editarOrcamentoVisualizado()">
@@ -1172,6 +2000,7 @@ let orcamentosCacheOriginal = [];
 let orcamentoVisualizadoId = null;
 let orcamentosJaCarregados = false;
 let usuarioPodeUsarNuvemOrcamentos = false;
+let usuarioPodeUsarPremiumOrcamentos = false;
 let aberturaOrcamentoUrlJaTentada = false;
 
 let canalOrcamentosTempoReal = null;
@@ -1297,6 +2126,7 @@ async function verificarPlanoEControlarPaginaOrcamentos(session) {
   const plano = await buscarPlanoUsuario(session);
 
   usuarioPodeUsarNuvemOrcamentos = plano === 'basico' || plano === 'premium';
+  usuarioPodeUsarPremiumOrcamentos = plano === 'premium';
 
   if (usuarioPodeUsarNuvemOrcamentos) {
     bloqueio.style.display = 'none';
@@ -1790,6 +2620,7 @@ function renderizarTabelaOrcamentos(orcamentos) {
           <div class="acoes-tabela">
             <button type="button" class="btn-pequeno btn-ver-link" onclick="abrirLinkCliente('${id}')">Ver</button>
             <button type="button" class="btn-pequeno btn-whatsapp-orcamento" onclick="enviarLinkWhatsapp('${id}')">WhatsApp</button>
+            ${status === 'aprovado' && usuarioPodeUsarPremiumOrcamentos ? `<button type="button" class="btn-pequeno btn-gerar-os" onclick="gerarOSDoOrcamento('${id}')">Gerar OS</button>` : ''}
             <button type="button" class="btn-pequeno btn-editar" onclick="abrirModalEditar('${id}')">Editar</button>
           </div>
         </td>
@@ -1847,6 +2678,7 @@ function abrirModalVisualizar(id) {
   const assunto = orcamento.assunto || 'Sem título';
   const clienteNome = orcamento.cliente_nome || 'Não informado';
   const clienteWhatsapp = orcamento.cliente_whatsapp || 'Não informado';
+  const clienteId = obterClienteIdOrcamento(orcamento) || '';
   const status = orcamento.status || 'pendente';
   const dataCriacao = orcamento.criado_em || '';
   const total = orcamento.total || 0;
@@ -1859,6 +2691,12 @@ function abrirModalVisualizar(id) {
   document.getElementById('visual-numero').innerText = numeroOrcamentoFormatado(orcamento);
   document.getElementById('visual-cliente').innerText = clienteNome;
   document.getElementById('visual-whatsapp').innerText = clienteWhatsapp;
+
+  const visualClienteId = document.getElementById('visual-cliente-id');
+  if (visualClienteId) {
+    visualClienteId.innerText = clienteId || 'Não vinculado';
+  }
+
   document.getElementById('visual-status').innerHTML = `<span class="status status-${classeStatus(status)}">${escaparHtml(statusLabel(status))}</span>`;
   document.getElementById('visual-forma-pagamento').innerText = formaPagamentoLabel(pagamento);
   document.getElementById('visual-resposta-em').innerText = formatarDataHora(respostaEm);
@@ -1867,6 +2705,7 @@ function abrirModalVisualizar(id) {
   document.getElementById('visual-link').innerHTML = `<a href="${escaparHtml(linkCliente)}" target="_blank">${escaparHtml(linkCliente)}</a>`;
 
   renderizarItensVisualizacao(orcamento.itens);
+  controlarBotaoGerarOSVisualizado(orcamento);
 
   document.getElementById('modal-visualizar-orcamento').style.display = 'flex';
 }
@@ -1984,6 +2823,140 @@ function renderizarItensVisualizacao(itensOriginais) {
 
   html += '</tbody></table>';
   container.innerHTML = html;
+}
+
+
+function obterClienteIdOrcamento(orcamento) {
+  return (
+    orcamento?.cliente_id ||
+    orcamento?.cliente_id_cadastrado ||
+    orcamento?.id_cliente ||
+    orcamento?.cliente_cadastrado_id ||
+    ''
+  );
+}
+
+function controlarBotaoGerarOSVisualizado(orcamento) {
+  const botao = document.getElementById('btn-gerar-os-visualizado');
+  if (!botao) return;
+
+  const status = normalizarTexto(orcamento?.status || 'pendente');
+
+  if (status === 'aprovado' && usuarioPodeUsarPremiumOrcamentos) {
+    botao.style.display = 'inline-flex';
+  } else {
+    botao.style.display = 'none';
+  }
+}
+
+async function buscarClienteVinculadoAoOrcamento(orcamento, usuarioId) {
+  const clienteId = obterClienteIdOrcamento(orcamento);
+
+  if (clienteId) {
+    return { id: clienteId };
+  }
+
+  const whatsapp = limparTelefoneWhatsapp(orcamento?.cliente_whatsapp || '').replace(/^55/, '');
+  const nome = String(orcamento?.cliente_nome || '').trim();
+
+  if (!whatsapp && !nome) return null;
+
+  let query = _supabase
+    .from('clientes')
+    .select('id, nome, whatsapp')
+    .eq('user_id', usuarioId)
+    .limit(10);
+
+  if (whatsapp) {
+    query = query.ilike('whatsapp', `%${whatsapp}%`);
+  } else if (nome) {
+    query = query.ilike('nome', `%${nome}%`);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Erro ao localizar cliente para gerar OS:', error);
+    return null;
+  }
+
+  if (!Array.isArray(data) || !data.length) return null;
+
+  if (data.length === 1) return data[0];
+
+  const clienteNomeNormalizado = normalizarTexto(nome);
+  const clienteMaisProvavel = data.find(cliente => {
+    const nomeBanco = normalizarTexto(cliente.nome || '');
+    const telefoneBanco = limparTelefoneWhatsapp(cliente.whatsapp || '').replace(/^55/, '');
+
+    return (
+      (clienteNomeNormalizado && nomeBanco === clienteNomeNormalizado) ||
+      (whatsapp && telefoneBanco.includes(whatsapp))
+    );
+  });
+
+  return clienteMaisProvavel || data[0];
+}
+
+function montarUrlOrdensComCliente(clienteId, orcamentoId, veiculoId = '') {
+  const origemUsaHtml = window.location.pathname.includes('.html');
+  const base = origemUsaHtml ? '/ordens.html' : '/ordens';
+  const params = new URLSearchParams();
+
+  params.set('cliente_id', clienteId);
+
+  if (orcamentoId) {
+    params.set('orcamento_id', orcamentoId);
+  }
+
+  if (veiculoId) {
+    params.set('veiculo_id', veiculoId);
+  }
+
+  return `${base}?${params.toString()}`;
+}
+
+async function gerarOSDoOrcamento(id) {
+  const session = await obterSessaoObrigatoria();
+  if (!session || !usuarioPodeUsarNuvemOrcamentos) return;
+
+  if (!usuarioPodeUsarPremiumOrcamentos) {
+    alert('O recurso Gerar OS está disponível somente no Plano Premium.');
+    window.location.href = '/planos.html#assinar-plano-premium';
+    return;
+  }
+
+  const orcamento = orcamentosCacheOriginal.find(o => String(o.id) === String(id));
+
+  if (!orcamento) {
+    alert('Orçamento não encontrado. Atualize a página e tente novamente.');
+    return;
+  }
+
+  const status = normalizarTexto(orcamento.status || 'pendente');
+
+  if (status !== 'aprovado') {
+    alert('A OS só pode ser gerada depois que o orçamento estiver aprovado.');
+    return;
+  }
+
+  const cliente = await buscarClienteVinculadoAoOrcamento(orcamento, session.user.id);
+
+  if (!cliente?.id) {
+    alert('Este orçamento foi aprovado, mas não possui cliente cadastrado vinculado. Vincule/cadastre o cliente primeiro para gerar a OS com os dados preenchidos.');
+    return;
+  }
+
+  window.location.href = montarUrlOrdensComCliente(cliente.id, orcamento.id, orcamento.veiculo_id || '');
+}
+
+function gerarOSOrcamentoVisualizado() {
+  if (!orcamentoVisualizadoId) {
+    alert('Nenhum orçamento selecionado.');
+    return;
+  }
+
+  gerarOSDoOrcamento(orcamentoVisualizadoId);
 }
 
 function editarOrcamentoVisualizado() {

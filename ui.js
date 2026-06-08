@@ -1600,3 +1600,35 @@ window.toggleFrases = toggleFrases;
 window.mascaraTelefone = mascaraTelefone;
 window.toggleAjuda = toggleAjuda;
 window.limparFormulario = limparFormulario;
+// ==================== BUSCA COM ENTER (GLOBAL) ====================
+// Permite usar Enter em campos de busca/filtro como atalho para o botão físico de busca da página.
+document.addEventListener('keydown', function fsBuscaEnterGlobal(event) {
+  const campo = event.target;
+  if (!campo || event.key !== 'Enter') return;
+
+  const tag = (campo.tagName || '').toLowerCase();
+  const tipo = (campo.getAttribute('type') || '').toLowerCase();
+  const idClasse = `${campo.id || ''} ${campo.className || ''}`.toLowerCase();
+
+  const pareceBusca =
+    tipo === 'search' ||
+    idClasse.includes('busca') ||
+    idClasse.includes('filtro') ||
+    (campo.placeholder || '').toLowerCase().includes('buscar');
+
+  if (tag !== 'input' || !pareceBusca) return;
+
+  const form = campo.closest('form');
+  if (form) event.preventDefault();
+
+  const escopo = campo.closest('.ordens-card-body, .clientes-card-body, .veiculos-card-body, .estoque-card-body, .modal-busca-cliente-body, .modal-busca-produto-body, main, body') || document;
+  const botoes = Array.from(escopo.querySelectorAll('button, a'));
+  const botaoBusca = botoes.find((botao) => {
+    const texto = (botao.textContent || '').trim().toLowerCase();
+    return texto.includes('buscar') || texto.includes('filtrar') || texto.includes('atualizar');
+  });
+
+  if (botaoBusca && typeof botaoBusca.click === 'function') {
+    botaoBusca.click();
+  }
+});

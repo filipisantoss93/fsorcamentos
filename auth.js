@@ -26,7 +26,17 @@ const FS_PAGINAS_PROTEGIDAS = [
   'painel.html',
   'painel',
   'orcamentos.html',
-  'orcamentos'
+  'orcamentos',
+  'clientes.html',
+  'clientes',
+  'veiculos.html',
+  'veiculos',
+  'ordens.html',
+  'ordens',
+  'ordem.html',
+  'ordem',
+  'estoque.html',
+  'estoque'
 ];
 
 function fsPathAtualLimpo() {
@@ -44,7 +54,17 @@ function paginaAtualProtegida() {
     path.endsWith('/painel') ||
     path.endsWith('/painel.html') ||
     path.endsWith('/orcamentos') ||
-    path.endsWith('/orcamentos.html')
+    path.endsWith('/orcamentos.html') ||
+    path.endsWith('/clientes') ||
+    path.endsWith('/clientes.html') ||
+    path.endsWith('/veiculos') ||
+    path.endsWith('/veiculos.html') ||
+    path.endsWith('/ordens') ||
+    path.endsWith('/ordens.html') ||
+    path.endsWith('/ordem') ||
+    path.endsWith('/ordem.html') ||
+    path.endsWith('/estoque') ||
+    path.endsWith('/estoque.html')
   );
 }
 
@@ -95,7 +115,7 @@ function fsObterDestinoAposLoginPadrao() {
 
   if (paginaAtualProtegida()) return fsDestinoAtual();
 
-  return '/gerador.html';
+  return '/index.html';
 }
 
 function fsLimparDestinoAposLogin() {
@@ -107,15 +127,12 @@ function fsLimparDestinoAposLogin() {
 }
 
 function fsRedirecionarAposLogin() {
-  const destino = fsObterDestinoAposLoginPadrao();
-
   fsLimparDestinoAposLogin();
 
-  if (!destino) return;
-
+  const destino = '/index.html';
   const atual = fsDestinoAtual();
 
-  if (destino !== atual) {
+  if (!atual.endsWith('/index.html') && atual !== '/' && atual !== '/index') {
     window.location.href = destino;
   }
 }
@@ -149,14 +166,16 @@ function fsPrimeiroNomeDoEmail(email) {
 function fsNomeUsuarioDaSessao(session) {
   const meta = session?.user?.user_metadata || {};
 
-  return (
+  // Não use "Usuário" como fallback automático.
+  // Se o Google/Supabase não entregar nome, deixamos em branco
+  // para o usuário cadastrar o consultor manualmente no Painel.
+  return String(
     meta.nome ||
     meta.full_name ||
     meta.name ||
     meta.user_name ||
-    fsPrimeiroNomeDoEmail(session?.user?.email) ||
-    'Usuário'
-  );
+    ''
+  ).trim();
 }
 
 function fsAvatarUsuarioDaSessao(session) {
@@ -505,28 +524,36 @@ function fsLimparLocalStorageAuth() {
 }
 
 async function garantirResponsavelPrincipal(session, nomeResponsavel) {
-  if (!session?.user?.id || !nomeResponsavel) return;
+  if (!session?.user?.id) return;
+
+  const nomeFinal = String(nomeResponsavel || '').trim();
+  const nomeNormalizado = fsNormalizarTextoAuth(nomeFinal);
+
+  // Não cria responsável automático genérico.
+  if (!nomeFinal || nomeNormalizado === 'usuario' || nomeNormalizado === 'usuário') {
+    return;
+  }
 
   try {
-    const { data: existente, error: erroBusca } = await _supabase
+    // Se já existe qualquer responsável para este usuário, não cria outro.
+    const { data: existentes, error: erroBusca } = await _supabase
       .from('responsaveis_orcamento')
-      .select('id')
+      .select('id, nome')
       .eq('usuario_id', session.user.id)
-      .eq('nome', nomeResponsavel)
-      .maybeSingle();
+      .limit(1);
 
     if (erroBusca) {
       console.warn('Erro ao buscar responsável principal:', erroBusca);
       return;
     }
 
-    if (existente?.id) return;
+    if (Array.isArray(existentes) && existentes.length > 0) return;
 
     const { error } = await _supabase
       .from('responsaveis_orcamento')
       .insert({
         usuario_id: session.user.id,
-        nome: nomeResponsavel,
+        nome: nomeFinal,
         ativo: true
       });
 
@@ -548,7 +575,7 @@ async function garantirPerfilAposLogin(session) {
     const nomeSessao = fsNomeUsuarioDaSessao(session);
     const avatar = fsAvatarUsuarioDaSessao(session);
 
-    const nomeMetadata = meta.nome || nomeSessao || 'Usuário';
+    const nomeMetadata = String(meta.nome || nomeSessao || '').trim();
     const empresaMetadata = meta.nome_empresa || '';
     const telefoneMetadata = meta.telefone_empresa || '';
 
@@ -565,7 +592,7 @@ async function garantirPerfilAposLogin(session) {
 
     const payload = {
       id: userId,
-      nome: perfilExistente?.nome || nomeMetadata || 'Usuário',
+      nome: perfilExistente?.nome || nomeMetadata || '',
       nome_empresa: perfilExistente?.nome_empresa || empresaMetadata || '',
       telefone_empresa: perfilExistente?.telefone_empresa || telefoneMetadata || '',
       endereco_empresa: perfilExistente?.endereco_empresa || '',
@@ -604,10 +631,43 @@ async function garantirPerfilAposLogin(session) {
   }
 }
 
+
+async function verificarExpiracaoTestePremiumAuth() {
+  try {
+    if (!window._supabase) return null;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session?.user?.id) return null;
+
+    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
+
+    if (error) {
+      console.warn('Teste Premium não verificado pelo auth.js:', error);
+      return null;
+    }
+
+    if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
+    if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
+
+    if (data?.plano_expira_em) {
+      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+    } else if (data?.plano === 'basico') {
+      localStorage.removeItem('usuario_plano_expira_em');
+    }
+
+    return data || null;
+  } catch (error) {
+    console.warn('Erro ao verificar expiração do teste Premium no auth.js:', error);
+    return null;
+  }
+}
+
 async function carregarPerfilLocal(session) {
   if (!session?.user?.id) return;
 
   try {
+    await verificarExpiracaoTestePremiumAuth();
+
     localStorage.setItem('id', session.user.id);
     localStorage.setItem('usuario_email', session.user.email || '');
 
@@ -626,7 +686,7 @@ async function carregarPerfilLocal(session) {
       perfil?.nome ||
       perfil?.nome_empresa ||
       fsNomeUsuarioDaSessao(session) ||
-      'Usuário';
+      '';
 
     localStorage.setItem('usuario_nome', nomeFinal);
     localStorage.setItem('usuario_plano', perfil?.plano || 'gratis');
@@ -840,19 +900,31 @@ async function tentarSalvarPerfilAposCadastro(data, dadosCadastro) {
       );
     }
 
-    const { error: erroResponsavel } = await _supabase
-      .from('responsaveis_orcamento')
-      .insert({
-        usuario_id: userId,
-        nome: dadosCadastro.nome,
-        ativo: true
-      });
+    const nomeResponsavelCadastro = String(dadosCadastro.nome || '').trim();
 
-    if (erroResponsavel) {
-      console.warn(
-        'Responsável não foi salvo no cadastro. Será criado após confirmação/login:',
-        erroResponsavel
-      );
+    if (nomeResponsavelCadastro && fsNormalizarTextoAuth(nomeResponsavelCadastro) !== 'usuario') {
+      const { data: responsaveisExistentes } = await _supabase
+        .from('responsaveis_orcamento')
+        .select('id')
+        .eq('usuario_id', userId)
+        .limit(1);
+
+      if (!responsaveisExistentes || responsaveisExistentes.length === 0) {
+        const { error: erroResponsavel } = await _supabase
+          .from('responsaveis_orcamento')
+          .insert({
+            usuario_id: userId,
+            nome: nomeResponsavelCadastro,
+            ativo: true
+          });
+
+        if (erroResponsavel) {
+          console.warn(
+            'Responsável não foi salvo no cadastro. Será criado após confirmação/login:',
+            erroResponsavel
+          );
+        }
+      }
     }
 
   } catch (error) {
@@ -980,11 +1052,10 @@ async function loginComProvider(provider) {
       return;
     }
 
-    const destino = fsObterDestinoAposLoginPadrao();
+    fsLimparDestinoAposLogin();
 
-    fsSalvarDestinoAposLogin(destino);
-
-    const redirectTo = `${window.location.origin}${destino || '/gerador.html'}`;
+    const redirectTo = `${window.location.origin}/index.html`;
+    // Login social sempre retorna para a página inicial após autenticar.
 
     const { error } = await _supabase.auth.signInWithOAuth({
       provider: providerNormalizado,
@@ -1315,6 +1386,7 @@ window.abrirModalGerador = abrirModalGerador;
 window.fecharModalGerador = fecharModalGerador;
 
 window.carregarPerfilLocal = carregarPerfilLocal;
+window.verificarExpiracaoTestePremiumAuth = verificarExpiracaoTestePremiumAuth;
 window.garantirPerfilAposLogin = garantirPerfilAposLogin;
 window.atualizarTelaAutenticacao = atualizarTelaAutenticacao;
 
