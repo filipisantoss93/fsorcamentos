@@ -122,6 +122,8 @@ function fsConfigCarregarScriptUnico(src, id) {
 function fsConfigCarregarAjustesPagina() {
   const path = (window.location.pathname || '/').toLowerCase();
 
+  fsConfigCarregarScriptUnico('/fs-session-cache.js', 'fs-session-cache-js');
+
   if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
     fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
   }
