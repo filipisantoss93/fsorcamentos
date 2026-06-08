@@ -20,11 +20,11 @@
     'foto_url'
   ];
 
-  const CHAVES_MINIMAS_CACHE = ['id', 'usuario_email', 'usuario_nome', 'usuario_plano'];
-  let sessaoConfirmada = false;
   let verificacaoFinalizada = false;
   let patchStorageInstalado = false;
   let patchSignOutInstalado = false;
+  let estiloInicialInstalado = false;
+  let iniciado = false;
 
   function normalizar(valor) {
     return String(valor || '')
@@ -45,6 +45,10 @@
     return normalizar(localStorage.getItem('usuario_plano') || 'gratis');
   }
 
+  function cachePremium() {
+    return cacheTemUsuario() && planoCache() === 'premium';
+  }
+
   function nomeCache() {
     return (
       localStorage.getItem('usuario_nome') ||
@@ -54,10 +58,65 @@
     );
   }
 
+  function aplicarClasseRaizCache() {
+    const root = document.documentElement;
+    if (!root) return;
+
+    root.classList.toggle('fs-cache-logado', cacheTemUsuario());
+    root.classList.toggle('fs-cache-premium', cachePremium());
+    root.classList.toggle('fs-cache-basico', cacheTemUsuario() && planoCache() === 'basico');
+    root.classList.toggle('fs-cache-gratis', !cacheTemUsuario() || planoCache() === 'gratis');
+  }
+
+  function injetarEstiloInicial() {
+    if (estiloInicialInstalado) return;
+    estiloInicialInstalado = true;
+
+    const css = `
+      html.fs-cache-premium .teste-premium-card,
+      html.fs-cache-premium .teste-premium-topo,
+      html.fs-cache-premium .btn-teste-premium,
+      html.fs-cache-premium .teste-gratis-premium,
+      html.fs-cache-premium .fs-teste-premium,
+      html.fs-cache-premium [data-teste-premium],
+      html.fs-cache-premium [data-premium-trial],
+      html.fs-cache-premium #teste-premium-topo,
+      html.fs-cache-premium #bloco-teste-premium,
+      html.fs-cache-premium #card-teste-premium,
+      html.fs-cache-premium #teste-gratis-premium,
+      html.fs-cache-premium #box-teste-gratis-premium {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      html.fs-cache-premium #home-plano-gratis,
+      html.fs-cache-premium #home-plano-basico {
+        display: none !important;
+      }
+
+      html.fs-cache-premium #home-plano-premium {
+        display: block;
+      }
+    `;
+
+    const style = document.createElement('style');
+    style.id = 'fs-session-cache-style';
+    style.textContent = css;
+
+    const alvo = document.head || document.documentElement;
+    alvo.appendChild(style);
+  }
+
+  function inicializarVisualAntesDoDOM() {
+    aplicarClasseRaizCache();
+    injetarEstiloInicial();
+  }
+
   function marcarCacheLogado() {
     if (!localStorage.getItem('id') && !localStorage.getItem('usuario_email')) return;
     localStorage.setItem('fs_usuario_logado', 'true');
     localStorage.setItem('fs_usuario_cache_atualizado_em', new Date().toISOString());
+    aplicarClasseRaizCache();
   }
 
   function permitirLimpezaAgora() {
@@ -77,7 +136,9 @@
           return;
         }
       } catch (_) {}
-      return originalRemove.call(this, key);
+      const retorno = originalRemove.call(this, key);
+      try { aplicarClasseRaizCache(); } catch (_) {}
+      return retorno;
     };
 
     Storage.prototype.setItem = function setItemFSCache(key, value) {
@@ -86,6 +147,7 @@
         if (this === localStorage && CHAVES_USUARIO.includes(String(key))) {
           setTimeout(marcarCacheLogado, 0);
         }
+        aplicarClasseRaizCache();
       } catch (_) {}
       return retorno;
     };
@@ -101,6 +163,7 @@
     localStorage.removeItem('fs_logout_em_andamento');
 
     window.fsSessaoPermitindoLimpeza = false;
+    aplicarClasseRaizCache();
   }
 
   function aplicarHeaderCache() {
@@ -131,6 +194,42 @@
     });
   }
 
+  function ocultarTestePremiumSeCachePremium() {
+    if (!cachePremium()) return;
+
+    const seletores = [
+      '[data-teste-premium]',
+      '[data-premium-trial]',
+      '.teste-premium-card',
+      '.teste-premium-topo',
+      '.btn-teste-premium',
+      '.teste-gratis-premium',
+      '.fs-teste-premium',
+      '#teste-premium-topo',
+      '#bloco-teste-premium',
+      '#card-teste-premium',
+      '#teste-gratis-premium',
+      '#box-teste-gratis-premium'
+    ];
+
+    seletores.forEach(seletor => {
+      document.querySelectorAll(seletor).forEach(el => {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    document.querySelectorAll('a, button').forEach(el => {
+      const texto = (el.textContent || '').toLowerCase();
+      if (texto.includes('teste premium') || texto.includes('testar premium') || texto.includes('teste grátis premium') || texto.includes('teste gratis premium')) {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+        el.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
+
   function aplicarHomeCache() {
     if (!cacheTemUsuario()) return;
     const plano = planoCache();
@@ -152,15 +251,11 @@
       secao.style.display = 'block';
     }
 
-    if (plano === 'premium') {
-      document.querySelectorAll('[data-teste-premium], .teste-gratis-premium, .fs-teste-premium, #teste-premium-topo, #bloco-teste-premium, #card-teste-premium').forEach(el => {
-        el.style.display = 'none';
-        el.setAttribute('aria-hidden', 'true');
-      });
-    }
+    ocultarTestePremiumSeCachePremium();
   }
 
   function aplicarCacheVisual() {
+    aplicarClasseRaizCache();
     aplicarHeaderCache();
     aplicarHomeCache();
   }
@@ -185,6 +280,7 @@
     window._supabase.auth.signOut = async function signOutFSCache(...args) {
       window.fsSessaoPermitindoLimpeza = true;
       localStorage.setItem('fs_logout_em_andamento', '1');
+      aplicarClasseRaizCache();
       return originalSignOut(...args);
     };
   }
@@ -218,7 +314,6 @@
       }
 
       marcarCacheLogado();
-      sessaoConfirmada = true;
       verificacaoFinalizada = false;
       aplicarCacheVisual();
 
@@ -253,12 +348,17 @@
   }
 
   function iniciar() {
+    if (iniciado) return;
+    iniciado = true;
+
     instalarPatchStorage();
     if (cacheTemUsuario()) marcarCacheLogado();
 
     aplicarCacheVisual();
+    setTimeout(aplicarCacheVisual, 20);
     setTimeout(aplicarCacheVisual, 80);
-    setTimeout(aplicarCacheVisual, 250);
+    setTimeout(aplicarCacheVisual, 180);
+    setTimeout(aplicarCacheVisual, 350);
     setTimeout(aplicarCacheVisual, 700);
     setTimeout(aplicarCacheVisual, 1500);
 
@@ -270,6 +370,13 @@
   window.fsAplicarCacheSessaoVisual = aplicarCacheVisual;
   window.fsConfirmarSessaoEmSegundoPlano = confirmarSessaoEmSegundoPlano;
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
-  else iniciar();
+  inicializarVisualAntesDoDOM();
+  iniciar();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      iniciado = false;
+      iniciar();
+    });
+  }
 })();
