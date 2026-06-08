@@ -1,8 +1,11 @@
 /* =========================================================
    FS ORÇAMENTOS - ordem-extras.js
-   Correções: até 5 fotos antes da OS + assinatura desenhável.
-   Persistência principal: Supabase em ordens_servico.
-   Fallback: localStorage, caso as colunas ainda não existam.
+   Correções finais da página ordem.html:
+   - até 5 fotos antes da OS;
+   - assinatura desenhável em celular e computador;
+   - salvamento no Supabase + fallback localStorage;
+   - recuperação correta mesmo quando o banco ainda estiver sem dados;
+   - botões auxiliares da OS com ação segura.
    ========================================================= */
 (function () {
   'use strict';
@@ -18,7 +21,8 @@
   let ctxAssinatura = null;
   let desenhando = false;
   let ultimoPonto = null;
-  let ultimoHashSalvo = '';
+  let eventosCanvasInstalados = false;
+  let salvamentoBancoDisponivel = null;
 
   function obterOrdemId() {
     const params = new URLSearchParams(window.location.search);
@@ -64,15 +68,30 @@
   }
 
   function salvarPayloadLocal(payload) {
-    localStorage.setItem(storageKey(), JSON.stringify(payload || {}));
+    try {
+      localStorage.setItem(storageKey(), JSON.stringify(payload || {}));
+      return true;
+    } catch (erro) {
+      console.error('Não foi possível salvar extras da OS no localStorage:', erro);
+      return false;
+    }
+  }
+
+  async function aguardarSupabase(tentativas = 30) {
+    for (let i = 0; i < tentativas; i++) {
+      if (window._supabase) return true;
+      if (typeof window.inicializarSupabaseFS === 'function') {
+        window.inicializarSupabaseFS();
+        if (window._supabase) return true;
+      }
+      await new Promise(resolve => setTimeout(resolve, 120));
+    }
+    return false;
   }
 
   async function obterUsuarioId() {
     try {
-      if (!window._supabase && typeof window.inicializarSupabaseFS === 'function') {
-        window.inicializarSupabaseFS();
-      }
-
+      await aguardarSupabase();
       if (!window._supabase) return null;
       const { data: { session } } = await window._supabase.auth.getSession();
       return session?.user?.id || null;
@@ -96,12 +115,15 @@
         .maybeSingle();
 
       if (error) {
-        console.warn('Extras da OS ainda sem colunas no Supabase, usando localStorage:', error);
+        salvamentoBancoDisponivel = false;
+        console.warn('Extras da OS sem colunas ou sem permissão no Supabase. Usando localStorage:', error);
         return null;
       }
 
+      salvamentoBancoDisponivel = true;
       return data || null;
     } catch (erro) {
+      salvamentoBancoDisponivel = false;
       console.warn('Erro ao carregar extras da OS:', erro);
       return null;
     }
@@ -111,7 +133,10 @@
     const ordemId = obterOrdemId();
     const userId = await obterUsuarioId();
 
-    if (!ordemId || !userId || !window._supabase) return false;
+    if (!ordemId || !userId || !window._supabase) {
+      salvamentoBancoDisponivel = false;
+      return false;
+    }
 
     try {
       const { error } = await window._supabase
@@ -121,15 +146,43 @@
         .eq('user_id', userId);
 
       if (error) {
+        salvamentoBancoDisponivel = false;
         console.warn('Não foi possível salvar extras no Supabase. Fallback localStorage:', error);
         return false;
       }
 
+      salvamentoBancoDisponivel = true;
       return true;
     } catch (erro) {
+      salvamentoBancoDisponivel = false;
       console.warn('Erro ao salvar extras no Supabase:', erro);
       return false;
     }
+  }
+
+  function normalizarFotos(lista) {
+    if (!Array.isArray(lista)) return [];
+    return lista
+      .filter(foto => foto && (foto.dataUrl || foto.url))
+      .map(foto => ({
+        id: foto.id || uid(),
+        nome: foto.nome || foto.name || 'foto.jpg',
+        dataUrl: foto.dataUrl || foto.url,
+        criado_em: foto.criado_em || foto.created_at || new Date().toISOString()
+      }))
+      .slice(0, MAX_FOTOS);
+  }
+
+  function mesclarDadosExtras(remoto, local) {
+    const fotosRemotas = normalizarFotos(remoto?.fotos_antes);
+    const fotosLocais = normalizarFotos(local?.fotos_antes);
+
+    return {
+      fotos_antes: fotosRemotas.length ? fotosRemotas : fotosLocais,
+      assinatura_cliente_data_url: remoto?.assinatura_cliente_data_url || local?.assinatura_cliente_data_url || '',
+      assinatura_cliente_nome: remoto?.assinatura_cliente_nome || local?.assinatura_cliente_nome || '',
+      assinatura_cliente_em: remoto?.assinatura_cliente_em || local?.assinatura_cliente_em || null
+    };
   }
 
   async function persistirFotos() {
@@ -137,22 +190,36 @@
     local.fotos_antes = fotosAntesOS;
     salvarPayloadLocal(local);
 
-    return await salvarExtrasSupabase({ fotos_antes: fotosAntesOS });
+    const salvoBanco = await salvarExtrasSupabase({ fotos_antes: fotosAntesOS });
+    sincronizarOrdemAtualLocal({ fotos_antes: fotosAntesOS });
+    return salvoBanco;
   }
 
   async function persistirAssinatura() {
     const nome = document.getElementById('assinatura-cliente-nome')?.value?.trim() || '';
-    const local = obterPayloadLocal();
-    local.assinatura_cliente_data_url = assinaturaDataURL || null;
-    local.assinatura_cliente_nome = nome || null;
-    local.assinatura_cliente_em = assinaturaDataURL ? new Date().toISOString() : null;
-    salvarPayloadLocal(local);
+    const agora = assinaturaDataURL ? new Date().toISOString() : null;
 
-    return await salvarExtrasSupabase({
+    const payload = {
       assinatura_cliente_data_url: assinaturaDataURL || null,
       assinatura_cliente_nome: nome || null,
-      assinatura_cliente_em: assinaturaDataURL ? new Date().toISOString() : null
-    });
+      assinatura_cliente_em: agora
+    };
+
+    const local = obterPayloadLocal();
+    Object.assign(local, payload);
+    salvarPayloadLocal(local);
+
+    const salvoBanco = await salvarExtrasSupabase(payload);
+    sincronizarOrdemAtualLocal(payload);
+    return salvoBanco;
+  }
+
+  function sincronizarOrdemAtualLocal(payload) {
+    try {
+      if (window.ordemAtual && typeof window.ordemAtual === 'object') {
+        Object.assign(window.ordemAtual, payload);
+      }
+    } catch (_) {}
   }
 
   function prepararHTMLFotos() {
@@ -160,6 +227,7 @@
     if (input) {
       input.multiple = true;
       input.accept = 'image/*';
+      input.removeAttribute('capture');
     }
 
     const status = document.getElementById('foto-antes-status');
@@ -190,6 +258,7 @@
       .foto-antes-card-os button{min-height:32px;border-radius:9px;border:1px solid #dc2626;background:#fff1f1;color:#991b1b;font-weight:900;cursor:pointer;}
       #canvas-assinatura-cliente{width:100%!important;height:220px!important;display:block;background:#fff;border:2px dashed #8d7a70;border-radius:12px;touch-action:none;cursor:crosshair;}
       .assinatura-canvas-wrap{touch-action:none;user-select:none;-webkit-user-select:none;}
+      .assinatura-preview-img{background:#fff!important;}
       @media(max-width:640px){.fotos-antes-galeria-os{grid-template-columns:1fr;}.foto-antes-card-os img{height:160px;}#canvas-assinatura-cliente{height:260px!important;}}
     `;
 
@@ -220,7 +289,9 @@
     }
 
     if (strong) strong.textContent = `${fotosAntesOS.length} foto(s) salva(s)`;
-    if (span) span.textContent = 'Registro visual antes da execução da OS.';
+    if (span) span.textContent = salvamentoBancoDisponivel === false
+      ? 'Fotos mantidas neste aparelho. Rode o SQL de extras para salvar no banco.'
+      : 'Registro visual antes da execução da OS.';
 
     if (previewAntigo) {
       previewAntigo.src = fotosAntesOS[0]?.dataUrl || '';
@@ -307,10 +378,16 @@
       }
 
       fotosAntesOS = fotosAntesOS.slice(0, MAX_FOTOS);
-      await persistirFotos();
+      const salvoBanco = await persistirFotos();
       renderizarFotos();
-      input.value = '';
-      mostrarMensagem('Foto(s) salva(s) com sucesso.', 'sucesso');
+      if (input) input.value = '';
+
+      mostrarMensagem(
+        salvoBanco
+          ? 'Foto(s) salva(s) com sucesso no banco.'
+          : 'Foto(s) salva(s) neste aparelho. Rode o SQL de extras para salvar definitivamente no Supabase.',
+        salvoBanco ? 'sucesso' : 'info'
+      );
     } catch (erro) {
       console.error('Erro ao salvar foto antes da OS:', erro);
       mostrarMensagem('Não foi possível salvar a foto. Tente outra imagem.', 'erro');
@@ -323,11 +400,13 @@
   }
 
   async function removerFotoAntesOS(index) {
-    if (index === undefined || index === null) return;
-    fotosAntesOS.splice(Number(index), 1);
-    await persistirFotos();
+    const posicao = Number(index);
+    if (!Number.isInteger(posicao) || posicao < 0 || posicao >= fotosAntesOS.length) return;
+
+    fotosAntesOS.splice(posicao, 1);
+    const salvoBanco = await persistirFotos();
     renderizarFotos();
-    mostrarMensagem('Foto removida com sucesso.', 'sucesso');
+    mostrarMensagem(salvoBanco ? 'Foto removida com sucesso.' : 'Foto removida neste aparelho.', salvoBanco ? 'sucesso' : 'info');
   }
 
   async function removerTodasFotosAntesOS() {
@@ -340,9 +419,9 @@
     if (!confirmar) return;
 
     fotosAntesOS = [];
-    await persistirFotos();
+    const salvoBanco = await persistirFotos();
     renderizarFotos();
-    mostrarMensagem('Fotos removidas com sucesso.', 'sucesso');
+    mostrarMensagem(salvoBanco ? 'Fotos removidas com sucesso.' : 'Fotos removidas neste aparelho.', salvoBanco ? 'sucesso' : 'info');
   }
 
   function prepararCanvasAssinatura() {
@@ -352,15 +431,20 @@
     ctxAssinatura = canvasAssinatura.getContext('2d', { willReadFrequently: true });
     redimensionarCanvasAssinatura(false);
 
+    if (eventosCanvasInstalados) return;
+    eventosCanvasInstalados = true;
+
     const iniciar = (event) => {
       event.preventDefault();
+      try { canvasAssinatura.setPointerCapture?.(event.pointerId); } catch (_) {}
       desenhando = true;
       assinaturaDesenhada = true;
       ultimoPonto = pontoCanvas(event);
+      desenharPonto(ultimoPonto);
     };
 
     const mover = (event) => {
-      if (!desenhando || !ctxAssinatura) return;
+      if (!desenhando || !ctxAssinatura || !ultimoPonto) return;
       event.preventDefault();
 
       const ponto = pontoCanvas(event);
@@ -381,11 +465,19 @@
       ultimoPonto = null;
     };
 
-    canvasAssinatura.addEventListener('pointerdown', iniciar);
-    canvasAssinatura.addEventListener('pointermove', mover);
-    canvasAssinatura.addEventListener('pointerup', finalizar);
-    canvasAssinatura.addEventListener('pointercancel', finalizar);
-    canvasAssinatura.addEventListener('pointerleave', finalizar);
+    canvasAssinatura.addEventListener('pointerdown', iniciar, { passive: false });
+    canvasAssinatura.addEventListener('pointermove', mover, { passive: false });
+    canvasAssinatura.addEventListener('pointerup', finalizar, { passive: false });
+    canvasAssinatura.addEventListener('pointercancel', finalizar, { passive: false });
+    canvasAssinatura.addEventListener('pointerleave', finalizar, { passive: false });
+
+    canvasAssinatura.addEventListener('touchstart', (event) => iniciar(event.touches[0] || event), { passive: false });
+    canvasAssinatura.addEventListener('touchmove', (event) => mover(event.touches[0] || event), { passive: false });
+    canvasAssinatura.addEventListener('touchend', finalizar, { passive: false });
+
+    canvasAssinatura.addEventListener('mousedown', iniciar, { passive: false });
+    canvasAssinatura.addEventListener('mousemove', mover, { passive: false });
+    document.addEventListener('mouseup', finalizar, { passive: false });
 
     window.addEventListener('resize', () => redimensionarCanvasAssinatura(true));
   }
@@ -393,7 +485,7 @@
   function redimensionarCanvasAssinatura(preservar = true) {
     if (!canvasAssinatura) return;
 
-    const antigo = preservar && assinaturaDesenhada ? canvasAssinatura.toDataURL('image/png') : '';
+    const antigo = preservar && !canvasVazioSeguro() ? canvasAssinatura.toDataURL('image/png') : '';
     const rect = canvasAssinatura.getBoundingClientRect();
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
     const larguraCss = Math.max(rect.width || canvasAssinatura.clientWidth || 320, 300);
@@ -404,36 +496,70 @@
 
     ctxAssinatura = canvasAssinatura.getContext('2d', { willReadFrequently: true });
     ctxAssinatura.setTransform(ratio, 0, 0, ratio, 0, 0);
-    ctxAssinatura.fillStyle = '#ffffff';
-    ctxAssinatura.fillRect(0, 0, larguraCss, alturaCss);
+    limparCanvasAssinaturaInterno(larguraCss, alturaCss);
 
-    if (antigo) {
-      const img = new Image();
-      img.onload = () => ctxAssinatura.drawImage(img, 0, 0, larguraCss, alturaCss);
-      img.src = antigo;
-    }
+    if (antigo) desenharImagemNoCanvas(antigo);
+    else if (assinaturaDataURL) desenharImagemNoCanvas(assinaturaDataURL);
+  }
+
+  function limparCanvasAssinaturaInterno(larguraCss, alturaCss) {
+    if (!ctxAssinatura || !canvasAssinatura) return;
+    const rect = canvasAssinatura.getBoundingClientRect();
+    const largura = larguraCss || Math.max(rect.width || 320, 300);
+    const altura = alturaCss || Math.max(rect.height || 220, 180);
+    ctxAssinatura.fillStyle = '#ffffff';
+    ctxAssinatura.fillRect(0, 0, largura, altura);
+  }
+
+  function desenharImagemNoCanvas(src) {
+    if (!src || !canvasAssinatura || !ctxAssinatura) return;
+    const rect = canvasAssinatura.getBoundingClientRect();
+    const largura = Math.max(rect.width || 320, 300);
+    const altura = Math.max(rect.height || 220, 180);
+    const img = new Image();
+    img.onload = () => {
+      limparCanvasAssinaturaInterno(largura, altura);
+      ctxAssinatura.drawImage(img, 0, 0, largura, altura);
+      assinaturaDesenhada = true;
+    };
+    img.src = src;
+  }
+
+  function desenharPonto(ponto) {
+    if (!ctxAssinatura || !ponto) return;
+    ctxAssinatura.fillStyle = '#111111';
+    ctxAssinatura.beginPath();
+    ctxAssinatura.arc(ponto.x, ponto.y, 1.6, 0, Math.PI * 2);
+    ctxAssinatura.fill();
   }
 
   function pontoCanvas(event) {
     const rect = canvasAssinatura.getBoundingClientRect();
+    const clientX = event.clientX ?? 0;
+    const clientY = event.clientY ?? 0;
     return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
+      x: clientX - rect.left,
+      y: clientY - rect.top
     };
   }
 
-  function canvasVazio() {
+  function canvasVazioSeguro() {
     if (!canvasAssinatura || !ctxAssinatura) return true;
-    if (assinaturaDesenhada) return false;
 
     try {
       const pixels = ctxAssinatura.getImageData(0, 0, canvasAssinatura.width, canvasAssinatura.height).data;
       for (let i = 0; i < pixels.length; i += 4) {
         if (pixels[i] < 245 || pixels[i + 1] < 245 || pixels[i + 2] < 245) return false;
       }
-    } catch (_) {}
+    } catch (_) {
+      return !assinaturaDesenhada;
+    }
 
     return true;
+  }
+
+  function canvasVazio() {
+    return canvasVazioSeguro();
   }
 
   function renderizarAssinatura() {
@@ -452,7 +578,9 @@
 
       if (assinaturaDataURL) {
         if (strong) strong.textContent = 'Assinatura salva';
-        if (span) span.textContent = nome ? `Assinado por ${nome}.` : 'Assinatura registrada para esta OS.';
+        if (span) span.textContent = salvamentoBancoDisponivel === false
+          ? `Assinado${nome ? ` por ${nome}` : ''}. Salvo neste aparelho; rode o SQL de extras para salvar no banco.`
+          : nome ? `Assinado por ${nome}.` : 'Assinatura registrada para esta OS.';
       } else {
         if (strong) strong.textContent = 'Nenhuma assinatura salva';
         if (span) span.textContent = 'Peça para o cliente assinar e clique em Salvar assinatura.';
@@ -475,16 +603,41 @@
       return;
     }
 
-    assinaturaDataURL = canvasAssinatura.toDataURL('image/png');
-    ultimoHashSalvo = assinaturaDataURL;
-    await persistirAssinatura();
-    renderizarAssinatura();
-    mostrarMensagem('Assinatura salva com sucesso.', 'sucesso');
+    const btn = document.getElementById('btn-salvar-assinatura-cliente');
+    const textoOriginal = btn?.textContent || 'Salvar assinatura';
+
+    try {
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Salvando...';
+      }
+
+      assinaturaDataURL = canvasAssinatura.toDataURL('image/png');
+      const salvoBanco = await persistirAssinatura();
+      renderizarAssinatura();
+
+      mostrarMensagem(
+        salvoBanco
+          ? 'Assinatura salva com sucesso no banco.'
+          : 'Assinatura salva neste aparelho. Rode o SQL de extras para salvar definitivamente no Supabase.',
+        salvoBanco ? 'sucesso' : 'info'
+      );
+    } catch (erro) {
+      console.error('Erro ao salvar assinatura:', erro);
+      mostrarMensagem('Não foi possível salvar a assinatura. Tente novamente.', 'erro');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = textoOriginal;
+      }
+    }
   }
 
   function limparDesenhoAssinaturaClienteOS() {
     assinaturaDesenhada = false;
+    assinaturaDataURL = '';
     redimensionarCanvasAssinatura(false);
+    renderizarAssinatura();
   }
 
   async function removerAssinaturaClienteOS() {
@@ -492,23 +645,22 @@
     if (!confirmar) return;
 
     assinaturaDataURL = '';
-    ultimoHashSalvo = '';
     assinaturaDesenhada = false;
     redimensionarCanvasAssinatura(false);
-    await persistirAssinatura();
+    const salvoBanco = await persistirAssinatura();
     renderizarAssinatura();
-    mostrarMensagem('Assinatura removida com sucesso.', 'sucesso');
+    mostrarMensagem(salvoBanco ? 'Assinatura removida com sucesso.' : 'Assinatura removida neste aparelho.', salvoBanco ? 'sucesso' : 'info');
   }
 
   async function carregarEstadoInicial() {
-    const remoto = await carregarExtrasSupabase();
-    const local = obterPayloadLocal();
-    const dados = remoto || local || {};
+    const [remoto, local] = await Promise.all([
+      carregarExtrasSupabase(),
+      Promise.resolve(obterPayloadLocal())
+    ]);
 
-    fotosAntesOS = Array.isArray(dados.fotos_antes)
-      ? dados.fotos_antes.filter(f => f && f.dataUrl).slice(0, MAX_FOTOS)
-      : [];
+    const dados = mesclarDadosExtras(remoto, local);
 
+    fotosAntesOS = normalizarFotos(dados.fotos_antes);
     assinaturaDataURL = dados.assinatura_cliente_data_url || '';
 
     const nomeInput = document.getElementById('assinatura-cliente-nome');
@@ -518,21 +670,99 @@
 
     renderizarFotos();
     renderizarAssinatura();
+    if (assinaturaDataURL) desenharImagemNoCanvas(assinaturaDataURL);
   }
 
   function instalarEventos() {
-    document.getElementById('btn-salvar-foto-antes')?.addEventListener('click', salvarFotoAntesOS);
-    document.getElementById('btn-remover-foto-antes')?.addEventListener('click', removerTodasFotosAntesOS);
-    document.getElementById('btn-salvar-assinatura-cliente')?.addEventListener('click', salvarAssinaturaClienteOS);
-    document.getElementById('btn-limpar-assinatura-cliente')?.addEventListener('click', limparDesenhoAssinaturaClienteOS);
-    document.getElementById('btn-remover-assinatura-cliente')?.addEventListener('click', removerAssinaturaClienteOS);
+    const mapa = {
+      'btn-salvar-foto-antes': salvarFotoAntesOS,
+      'btn-remover-foto-antes': removerTodasFotosAntesOS,
+      'btn-salvar-assinatura-cliente': salvarAssinaturaClienteOS,
+      'btn-limpar-assinatura-cliente': limparDesenhoAssinaturaClienteOS,
+      'btn-remover-assinatura-cliente': removerAssinaturaClienteOS,
+      'btn-agendar-ordem': abrirAgendaDaOS,
+      'btn-termo-garantia': gerarTermoGarantiaSimples,
+      'btn-recibo-pagamento': gerarReciboPagamentoSimples
+    };
+
+    Object.entries(mapa).forEach(([id, handler]) => {
+      const botao = document.getElementById(id);
+      if (!botao || botao.dataset.fsExtraEvento === '1') return;
+      botao.dataset.fsExtraEvento = '1';
+      botao.addEventListener('click', (event) => {
+        event.preventDefault();
+        handler();
+      });
+    });
 
     const nomeInput = document.getElementById('assinatura-cliente-nome');
-    if (nomeInput) {
-      nomeInput.addEventListener('input', () => {
-        if (assinaturaDataURL && assinaturaDataURL === ultimoHashSalvo) renderizarAssinatura();
-      });
+    if (nomeInput && nomeInput.dataset.fsExtraEvento !== '1') {
+      nomeInput.dataset.fsExtraEvento = '1';
+      nomeInput.addEventListener('input', renderizarAssinatura);
     }
+  }
+
+  function abrirAgendaDaOS() {
+    const ordemId = obterOrdemId();
+    const params = new URLSearchParams();
+    if (ordemId) params.set('ordem_id', ordemId);
+    try {
+      if (window.ordemAtual?.cliente_id) params.set('cliente_id', window.ordemAtual.cliente_id);
+      if (window.ordemAtual?.veiculo_id) params.set('veiculo_id', window.ordemAtual.veiculo_id);
+    } catch (_) {}
+    window.location.href = `agenda.html?${params.toString()}`;
+  }
+
+  function dadosBasicosDocumento() {
+    const numero = document.getElementById('detalhe-numero-os')?.textContent || 'Ordem de Serviço';
+    const cliente = document.getElementById('detalhe-cliente-nome')?.textContent || 'Cliente';
+    const total = document.getElementById('detalhe-valor-total')?.textContent || 'R$ 0,00';
+    const pago = document.getElementById('detalhe-valor-pago')?.textContent || 'R$ 0,00';
+    const saldo = document.getElementById('detalhe-saldo-restante')?.textContent || 'R$ 0,00';
+    const garantia = document.getElementById('detalhe-garantia-dias')?.textContent || '-';
+    const validade = document.getElementById('detalhe-garantia-validade')?.textContent || '-';
+    const servico = document.getElementById('detalhe-titulo-os')?.textContent || 'Serviço';
+    return { numero, cliente, total, pago, saldo, garantia, validade, servico };
+  }
+
+  function gerarDocumentoTexto(titulo, linhas) {
+    const janela = window.open('', '_blank');
+    if (!janela) {
+      mostrarMensagem('Permita pop-ups para gerar o documento.', 'erro');
+      return;
+    }
+
+    janela.document.write(`
+      <!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>${escapar(titulo)}</title>
+      <style>body{font-family:Arial,sans-serif;color:#111;margin:32px;line-height:1.5}.box{border:1px solid #222;padding:24px}.assinatura{margin-top:60px;border-top:1px solid #111;text-align:center;padding-top:8px}</style>
+      </head><body><div class="box"><h1>${escapar(titulo)}</h1>${linhas.map(l => `<p>${escapar(l)}</p>`).join('')}<div class="assinatura">Assinatura do cliente/responsável</div></div><script>window.print();</script></body></html>
+    `);
+    janela.document.close();
+  }
+
+  function gerarTermoGarantiaSimples() {
+    const d = dadosBasicosDocumento();
+    gerarDocumentoTexto('Termo de garantia', [
+      `${d.numero}`,
+      `Cliente: ${d.cliente}`,
+      `Serviço: ${d.servico}`,
+      `Garantia: ${d.garantia}`,
+      `Validade estimada: ${d.validade}`,
+      'Este termo registra a garantia informada na ordem de serviço, conforme condições e observações cadastradas.'
+    ]);
+  }
+
+  function gerarReciboPagamentoSimples() {
+    const d = dadosBasicosDocumento();
+    gerarDocumentoTexto('Recibo de pagamento', [
+      `${d.numero}`,
+      `Cliente: ${d.cliente}`,
+      `Serviço: ${d.servico}`,
+      `Valor total: ${d.total}`,
+      `Valor pago: ${d.pago}`,
+      `Saldo restante: ${d.saldo}`,
+      'Recebemos do cliente/responsável os valores descritos acima, referentes à ordem de serviço informada.'
+    ]);
   }
 
   function iniciar() {
@@ -544,9 +774,15 @@
 
     setTimeout(() => {
       prepararHTMLFotos();
+      instalarEventos();
       renderizarFotos();
       redimensionarCanvasAssinatura(true);
     }, 900);
+
+    setTimeout(() => {
+      instalarEventos();
+      if (assinaturaDataURL) desenharImagemNoCanvas(assinaturaDataURL);
+    }, 1800);
   }
 
   window.salvarFotoAntesOS = salvarFotoAntesOS;
@@ -555,6 +791,9 @@
   window.salvarAssinaturaClienteOS = salvarAssinaturaClienteOS;
   window.limparDesenhoAssinaturaClienteOS = limparDesenhoAssinaturaClienteOS;
   window.removerAssinaturaClienteOS = removerAssinaturaClienteOS;
+  window.abrirAgendaDaOS = abrirAgendaDaOS;
+  window.gerarTermoGarantiaSimples = gerarTermoGarantiaSimples;
+  window.gerarReciboPagamentoSimples = gerarReciboPagamentoSimples;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', iniciar);
