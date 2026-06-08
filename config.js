@@ -129,6 +129,14 @@ function fsConfigCarregarAjustesPagina() {
   if (path.endsWith('/orcamentos') || path.endsWith('/orcamentos.html')) {
     fsConfigCarregarScriptUnico('/orcamentos-pdf.js', 'fs-orcamentos-pdf-js');
   }
+
+  if (
+    path.endsWith('/ordens') || path.endsWith('/ordens.html') ||
+    path.endsWith('/recorrentes') || path.endsWith('/recorrentes.html') ||
+    path.endsWith('/clientes') || path.endsWith('/clientes.html')
+  ) {
+    fsConfigCarregarScriptUnico('/fs-cliente-modal.js', 'fs-cliente-modal-js');
+  }
 }
 
 fsConfigCarregarAjustesPagina();
