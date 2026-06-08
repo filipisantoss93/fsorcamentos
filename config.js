@@ -114,3 +114,36 @@ if (document.readyState === 'loading') {
 
 window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
+ ajustes/dashboard-premium-pdf-orcamentos
+
+/* =========================
+   CARREGAMENTO DE AJUSTES POR PÁGINA
+   - Dashboard Premium no index
+   - PDF profissional em orçamentos
+========================= */
+function fsConfigCarregarScriptUnico(src, id) {
+  if (document.getElementById(id)) return;
+
+  const script = document.createElement('script');
+  script.id = id;
+  script.src = src;
+  script.defer = true;
+  script.onerror = () => console.warn(`Não foi possível carregar ${src}.`);
+  document.head.appendChild(script);
+}
+
+function fsConfigCarregarAjustesPagina() {
+  const path = (window.location.pathname || '/').toLowerCase();
+
+  if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
+    fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
+  }
+
+  if (path.endsWith('/orcamentos') || path.endsWith('/orcamentos.html')) {
+    fsConfigCarregarScriptUnico('/orcamentos-pdf.js', 'fs-orcamentos-pdf-js');
+  }
+}
+
+fsConfigCarregarAjustesPagina();
+
+ main
