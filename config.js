@@ -140,6 +140,7 @@ function fsConfigCarregarAjustesPagina() {
 
   if (path.endsWith('/ordem') || path.endsWith('/ordem.html')) {
     fsConfigCarregarScriptUnico('/ordem-extras.js', 'fs-ordem-extras-js');
+    fsConfigCarregarScriptUnico('/ordem-pdf-extras.js', 'fs-ordem-pdf-extras-js');
   }
 }
 
