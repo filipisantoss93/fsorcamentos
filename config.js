@@ -53,25 +53,19 @@ function fsConfigValidarChaveSupabase() {
   const chave = String(SUPABASE_ANON_KEY || '').trim();
 
   if (!chave || chave.includes('COLE_AQUI')) {
-    console.warn(
-      'SUPABASE_ANON_KEY não configurada. Cole a anon public key em config.js.'
-    );
+    console.warn('SUPABASE_ANON_KEY não configurada. Cole a anon public key em config.js.');
     return false;
   }
 
   const payload = fsConfigDecodificarPayloadJwt(chave);
 
   if (payload?.role === 'service_role') {
-    console.error(
-      'ERRO DE SEGURANÇA: config.js está usando service_role. Troque imediatamente pela anon public key e rotacione a service_role no Supabase.'
-    );
+    console.error('ERRO DE SEGURANÇA: config.js está usando service_role. Troque imediatamente pela anon public key e rotacione a service_role no Supabase.');
     return false;
   }
 
   if (payload?.role && payload.role !== 'anon') {
-    console.warn(
-      `A chave Supabase informada tem role "${payload.role}". No frontend, o recomendado é role "anon".`
-    );
+    console.warn(`A chave Supabase informada tem role "${payload.role}". No frontend, o recomendado é role "anon".`);
   }
 
   return true;
@@ -81,15 +75,11 @@ function inicializarSupabaseFS() {
   if (window._supabase) return window._supabase;
 
   if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-    console.warn(
-      'Biblioteca Supabase ainda não carregada. Verifique se o script @supabase/supabase-js vem antes do config.js.'
-    );
+    console.warn('Biblioteca Supabase ainda não carregada. Verifique se o script @supabase/supabase-js vem antes do config.js.');
     return null;
   }
 
-  if (!fsConfigValidarChaveSupabase()) {
-    return null;
-  }
+  if (!fsConfigValidarChaveSupabase()) return null;
 
   window._supabase = window.supabase.createClient(
     SUPABASE_URL,
@@ -114,12 +104,9 @@ if (document.readyState === 'loading') {
 
 window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
- ajustes/dashboard-premium-pdf-orcamentos
 
 /* =========================
    CARREGAMENTO DE AJUSTES POR PÁGINA
-   - Dashboard Premium no index
-   - PDF profissional em orçamentos
 ========================= */
 function fsConfigCarregarScriptUnico(src, id) {
   if (document.getElementById(id)) return;
@@ -127,7 +114,7 @@ function fsConfigCarregarScriptUnico(src, id) {
   const script = document.createElement('script');
   script.id = id;
   script.src = src;
-  script.defer = true;
+  script.async = false;
   script.onerror = () => console.warn(`Não foi possível carregar ${src}.`);
   document.head.appendChild(script);
 }
@@ -145,5 +132,3 @@ function fsConfigCarregarAjustesPagina() {
 }
 
 fsConfigCarregarAjustesPagina();
-
- main
