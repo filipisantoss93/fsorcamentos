@@ -137,6 +137,10 @@ function fsConfigCarregarAjustesPagina() {
   ) {
     fsConfigCarregarScriptUnico('/fs-cliente-modal.js', 'fs-cliente-modal-js');
   }
+
+  if (path.endsWith('/ordem') || path.endsWith('/ordem.html')) {
+    fsConfigCarregarScriptUnico('/ordem-extras.js', 'fs-ordem-extras-js');
+  }
 }
 
 fsConfigCarregarAjustesPagina();
