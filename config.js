@@ -130,6 +130,7 @@ function fsConfigCarregarAjustesPagina() {
 
   if (path.endsWith('/painel') || path.endsWith('/painel.html')) {
     fsConfigCarregarScriptUnico('/painel-logo-fix.js', 'fs-painel-logo-fix-js');
+    fsConfigCarregarScriptUnico('/painel-perfil-fix.js', 'fs-painel-perfil-fix-js');
   }
 
   if (path.endsWith('/orcamentos') || path.endsWith('/orcamentos.html')) {
