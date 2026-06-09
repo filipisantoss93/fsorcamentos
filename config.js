@@ -126,6 +126,7 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarScriptUnico('/fs-session-cache.js', 'fs-session-cache-js');
   fsConfigCarregarScriptUnico('/fs-menu-close-outside.js', 'fs-menu-close-outside-js');
   fsConfigCarregarScriptUnico('/fs-format-br.js', 'fs-format-br-js');
+  fsConfigCarregarScriptUnico('/fs-footer-legal.js', 'fs-footer-legal-js');
 
   if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
     fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
