@@ -139,6 +139,10 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js');
   }
 
+  if (path.endsWith('/clientes') || path.endsWith('/clientes.html')) {
+    fsConfigCarregarScriptUnico('/clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js');
+  }
+
   if (path.endsWith('/painel') || path.endsWith('/painel.html')) {
     fsConfigCarregarScriptUnico('/painel-logo-fix.js', 'fs-painel-logo-fix-js');
     fsConfigCarregarScriptUnico('/painel-perfil-fix.js', 'fs-painel-perfil-fix-js');
