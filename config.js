@@ -139,10 +139,6 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js');
   }
 
-  if (path.endsWith('/agenda') || path.endsWith('/agenda.html')) {
-    fsConfigCarregarScriptUnico('/agenda-grid-fix.js', 'fs-agenda-grid-fix-js');
-  }
-
   if (path.endsWith('/painel') || path.endsWith('/painel.html')) {
     fsConfigCarregarScriptUnico('/painel-logo-fix.js', 'fs-painel-logo-fix-js');
     fsConfigCarregarScriptUnico('/painel-perfil-fix.js', 'fs-painel-perfil-fix-js');
