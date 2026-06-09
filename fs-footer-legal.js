@@ -1,23 +1,9 @@
 /* =========================================================
    FS ORÇAMENTOS - fs-footer-legal.js
-   Garante links legais somente no footer, fora do header.
+   Garante links legais no rodapé sem duplicar links existentes.
    ========================================================= */
 (function () {
   'use strict';
-
-  function criarFooterSeNaoExistir() {
-    let footer = document.querySelector('footer.fs-footer-legal, footer');
-
-    if (!footer) {
-      footer = document.createElement('footer');
-      footer.className = 'fs-footer-legal';
-      document.body.appendChild(footer);
-      return footer;
-    }
-
-    footer.classList.add('fs-footer-legal');
-    return footer;
-  }
 
   function removerLinksLegaisDoHeader() {
     document.querySelectorAll('#header-container a, .main-header a').forEach((link) => {
@@ -30,10 +16,47 @@
     });
   }
 
-  function garantirLinksNoFooter() {
-    const footer = criarFooterSeNaoExistir();
-    if (!footer) return;
+  function hrefLegal(link) {
+    const href = String(link.getAttribute('href') || '').toLowerCase();
+    return href.includes('privacidade.html') || href.includes('termos.html');
+  }
 
+  function deduplicarLinksLegais() {
+    const links = Array.from(document.querySelectorAll('footer a, .sobre-footer a')).filter(hrefLegal);
+    const vistos = new Set();
+
+    links.forEach((link) => {
+      const chave = String(link.getAttribute('href') || '').toLowerCase().replace(/^\//, '');
+      if (vistos.has(chave)) {
+        const separadorAnterior = link.previousElementSibling;
+        if (separadorAnterior && separadorAnterior.textContent?.trim() === '•') separadorAnterior.remove();
+        const separadorProximo = link.nextElementSibling;
+        if (separadorProximo && separadorProximo.textContent?.trim() === '•') separadorProximo.remove();
+        link.remove();
+      } else {
+        vistos.add(chave);
+      }
+    });
+  }
+
+  function obterFooterPrincipal() {
+    let footer = document.querySelector('footer.fs-footer-legal, footer, .sobre-footer');
+    if (!footer) {
+      footer = document.createElement('footer');
+      document.body.appendChild(footer);
+    }
+    footer.classList.add('fs-footer-legal');
+    return footer;
+  }
+
+  function garantirLinksNoFooter() {
+    deduplicarLinksLegais();
+
+    const existePrivacidade = !!Array.from(document.querySelectorAll('footer a, .sobre-footer a')).find(a => String(a.getAttribute('href') || '').toLowerCase().includes('privacidade.html'));
+    const existeTermos = !!Array.from(document.querySelectorAll('footer a, .sobre-footer a')).find(a => String(a.getAttribute('href') || '').toLowerCase().includes('termos.html'));
+    if (existePrivacidade && existeTermos) return;
+
+    const footer = obterFooterPrincipal();
     let legal = footer.querySelector('.fs-footer-legal-links');
     if (!legal) {
       legal = document.createElement('div');
@@ -55,32 +78,40 @@
     style.id = 'fs-footer-legal-style';
     style.textContent = `
       .fs-footer-legal {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 26px 16px max(26px, env(safe-area-inset-bottom, 0px));
-        text-align: center;
-        color: var(--fs-texto-suave, #6d5b52);
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 18px 16px max(22px, env(safe-area-inset-bottom, 0px)) !important;
+        text-align: center !important;
+        color: var(--fs-texto-suave, #6d5b52) !important;
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
       }
 
       .fs-footer-legal-links {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        font-size: 14px;
-        font-weight: 800;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        opacity: .82 !important;
       }
 
-      .fs-footer-legal-links a {
+      .fs-footer-legal-links a,
+      .fs-footer-legal a[href*="privacidade.html"],
+      .fs-footer-legal a[href*="termos.html"] {
+        color: var(--fs-texto-suave, #6d5b52) !important;
+        text-decoration: none !important;
+        font-weight: 900 !important;
+      }
+
+      .fs-footer-legal-links a:hover,
+      .fs-footer-legal a[href*="privacidade.html"]:hover,
+      .fs-footer-legal a[href*="termos.html"]:hover {
         color: var(--fs-marrom, #3e2723) !important;
-        text-decoration: none;
-        font-weight: 900;
-      }
-
-      .fs-footer-legal-links a:hover {
-        color: var(--fs-amarelo, #ffc400) !important;
-        text-decoration: underline;
+        text-decoration: underline !important;
       }
     `;
     document.head.appendChild(style);
@@ -90,21 +121,10 @@
     injetarEstilo();
     removerLinksLegaisDoHeader();
     garantirLinksNoFooter();
-
-    setTimeout(() => {
-      removerLinksLegaisDoHeader();
-      garantirLinksNoFooter();
-    }, 300);
-
-    setTimeout(() => {
-      removerLinksLegaisDoHeader();
-      garantirLinksNoFooter();
-    }, 1200);
+    setTimeout(() => { removerLinksLegaisDoHeader(); garantirLinksNoFooter(); }, 300);
+    setTimeout(() => { removerLinksLegaisDoHeader(); garantirLinksNoFooter(); }, 1200);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', iniciar);
-  } else {
-    iniciar();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
+  else iniciar();
 })();
