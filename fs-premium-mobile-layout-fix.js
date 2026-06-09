@@ -1,6 +1,7 @@
 /* =========================================================
    FS ORÇAMENTOS - Ajustes Premium Mobile/Layout
    - Agenda: Novo agendamento minimizável.
+   - Agenda: resumo em grid 2 colunas.
    - Clientes: Novo cliente minimizável e cards em 2 colunas.
    - Clientes: lista sempre visível, sem botão Ver/Ocultar e sem botão Buscar duplicado.
    - Ordens: dashboard/resumo em grid 2 colunas.
@@ -93,6 +94,31 @@
       .fs-btn-toggle-card:hover {
         background: #ffffff;
         color: var(--fs-marrom, #3e2723);
+      }
+
+      .agenda-resumo-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+        align-items: stretch !important;
+      }
+
+      .agenda-resumo-grid .agenda-metrica {
+        min-width: 0 !important;
+        min-height: 104px !important;
+        padding: 12px !important;
+        border-radius: 15px !important;
+      }
+
+      .agenda-resumo-grid .agenda-metrica span {
+        font-size: 10px !important;
+        line-height: 1.25 !important;
+        word-break: break-word !important;
+      }
+
+      .agenda-resumo-grid .agenda-metrica strong {
+        font-size: 22px !important;
+        line-height: 1.1 !important;
       }
 
       /* clientes.html: lista sempre aberta e somente botão Buscar cliente */
@@ -204,6 +230,16 @@
       }
 
       @media (max-width: 680px) {
+        .agenda-resumo-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 9px !important;
+        }
+
+        .agenda-resumo-grid .agenda-metrica {
+          padding: 11px !important;
+          min-height: 96px !important;
+        }
+
         .clientes-resumo {
           display: grid !important;
           grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -246,6 +282,16 @@
           padding: 10px;
         }
       }
+
+      @media (max-width: 360px) {
+        .agenda-resumo-grid .agenda-metrica {
+          padding: 10px 9px !important;
+        }
+
+        .agenda-resumo-grid .agenda-metrica strong {
+          font-size: 20px !important;
+        }
+      }
     `;
 
     document.head.appendChild(style);
@@ -284,7 +330,6 @@
       atualizar();
     });
 
-    // Mobile abre recolhido para economizar espaço. Desktop permanece aberto.
     if (window.innerWidth <= 700) {
       card.classList.add('fs-form-card-collapsed');
     }
