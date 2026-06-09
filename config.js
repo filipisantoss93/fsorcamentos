@@ -159,6 +159,7 @@ function fsConfigCarregarAjustesPagina() {
 
   if (path.endsWith('/orcamentos') || path.endsWith('/orcamentos.html')) {
     fsConfigCarregarScriptUnico('/orcamentos-pdf.js', 'fs-orcamentos-pdf-js');
+    fsConfigCarregarScriptUnico('/orcamentos-resumo-grid-fix.js', 'fs-orcamentos-resumo-grid-fix-js');
   }
 
   if (
