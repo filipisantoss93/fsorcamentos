@@ -193,6 +193,19 @@
     }
   }
 
+  function carregarFixPdfGerador() {
+    const path = (window.location.pathname || '').toLowerCase();
+    if (!path.endsWith('/gerador') && !path.endsWith('/gerador.html')) return;
+    if (document.getElementById('fs-gerador-pdf-fix-js')) return;
+
+    const script = document.createElement('script');
+    script.id = 'fs-gerador-pdf-fix-js';
+    script.src = '/gerador-pdf-fix.js';
+    script.async = false;
+    script.onerror = () => console.warn('Não foi possível carregar /gerador-pdf-fix.js');
+    document.head.appendChild(script);
+  }
+
   function formatarTextoConhecido() {
     formatarPainel();
     formatarDashboardIndex();
@@ -215,8 +228,10 @@
   }
 
   function iniciar() {
+    carregarFixPdfGerador();
     formatarTextoConhecido();
     instalarObserver();
+    setTimeout(carregarFixPdfGerador, 250);
     setTimeout(formatarTextoConhecido, 250);
     setTimeout(formatarTextoConhecido, 900);
     setTimeout(formatarTextoConhecido, 1800);
