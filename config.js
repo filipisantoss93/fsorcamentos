@@ -129,6 +129,7 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarScriptUnico('/fs-footer-legal.js', 'fs-footer-legal-js');
 
   if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
+    fsConfigCarregarScriptUnico('/index-empresa-card.js', 'fs-index-empresa-card-js');
     fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
   }
 
