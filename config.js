@@ -131,6 +131,7 @@ function fsConfigCarregarAjustesPagina() {
   if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
     fsConfigCarregarScriptUnico('/index-empresa-card.js', 'fs-index-empresa-card-js');
     fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
+    fsConfigCarregarScriptUnico('/index-dashboard-tag-fix.js', 'fs-index-dashboard-tag-fix-js');
   }
 
   if (
