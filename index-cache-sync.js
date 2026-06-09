@@ -1,6 +1,7 @@
 /* =========================================================
    FS ORÇAMENTOS - index-cache-sync.js
    Usa localStorage primeiro no index e confirma Supabase em segundo plano.
+   - Oculta o card da empresa para visitantes deslogados.
    ========================================================= */
 (function () {
   'use strict';
@@ -19,6 +20,15 @@
   function normalizar(v) { return String(v || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim(); }
   function setText(id, v) { const el = document.getElementById(id); if (el && v !== undefined && v !== null) el.textContent = v; }
   function esc(v) { return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+
+  function possuiSessaoLocal() {
+    return !!(
+      localStorage.getItem('id') ||
+      localStorage.getItem('usuario_email') ||
+      localStorage.getItem('sb-kvjvhoziqcevkzyszdke-auth-token') ||
+      Object.keys(localStorage).some(k => k.startsWith('sb-') && k.includes('auth-token'))
+    );
+  }
 
   function empresaLocal() {
     const c = jsonGet(CACHE_EMPRESA) || {};
@@ -48,6 +58,11 @@
   }
 
   function preencherEmpresaLocal() {
+    if (!possuiSessaoLocal()) {
+      document.getElementById('fs-index-empresa-card')?.remove();
+      return;
+    }
+
     garantirEmpresaCard();
     const e = empresaLocal();
     const nome = e.nome_empresa || e.nome || 'FS Orçamentos';
@@ -71,7 +86,7 @@
   function aplicarDashboardCache() {
     const cache = jsonGet(CACHE_DASH);
     if (!cache) return;
-    if (normalizar(localStorage.getItem('usuario_plano')) === 'premium') {
+    if (normalizar(localStorage.getItem('usuario_plano')) === 'premium' && possuiSessaoLocal()) {
       document.querySelectorAll('.home-visao-plano').forEach(s => { s.classList.remove('ativo'); s.style.display = 'none'; });
       const premium = document.getElementById('home-plano-premium');
       if (premium) { premium.classList.add('ativo'); premium.style.display = 'block'; }
@@ -81,6 +96,7 @@
   }
 
   function salvarCaches() {
+    if (!possuiSessaoLocal()) return;
     const empresa = empresaLocal();
     jsonSet(CACHE_EMPRESA, Object.assign({}, empresa, { atualizado_em: new Date().toISOString() }));
     if (normalizar(localStorage.getItem('usuario_plano')) !== 'premium') return;
