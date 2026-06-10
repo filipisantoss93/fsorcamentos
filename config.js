@@ -127,6 +127,7 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarScriptUnico('/fs-menu-close-outside.js', 'fs-menu-close-outside-js');
   fsConfigCarregarScriptUnico('/fs-format-br.js', 'fs-format-br-js');
   fsConfigCarregarScriptUnico('/fs-footer-legal.js', 'fs-footer-legal-js');
+  fsConfigCarregarScriptUnico('/layout-grid-global-fix.js', 'fs-layout-grid-global-fix-js');
 
   if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
     fsConfigCarregarScriptUnico('/index-cache-sync.js', 'fs-index-cache-sync-js');
@@ -138,6 +139,7 @@ function fsConfigCarregarAjustesPagina() {
   if (path.endsWith('/gerador') || path.endsWith('/gerador.html')) {
     fsConfigCarregarScriptUnico('/gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js');
     fsConfigCarregarScriptUnico('/gerador-acoes-fix.js', 'fs-gerador-acoes-fix-js');
+    fsConfigCarregarScriptUnico('/gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js');
   }
 
   if (
