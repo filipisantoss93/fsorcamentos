@@ -183,8 +183,9 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/ordem-pdf-extras.js', 'fs-ordem-pdf-extras-js');
   }
 
-  // Camada final: deve entrar por último para corrigir contraste sem quebrar funcionalidades.
+  // Camadas finais: devem entrar por último para corrigir visual sem quebrar funcionalidades.
   fsConfigCarregarScriptUnico('/fs-contrast-final.js', 'fs-contrast-final-js');
+  fsConfigCarregarScriptUnico('/fs-header-offset-fix.js', 'fs-header-offset-fix-js');
 }
 
 fsConfigCarregarAjustesPagina();
