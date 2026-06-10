@@ -1,7 +1,7 @@
 /* =========================================================
    FS ORÇAMENTOS - index-empresa-card.js
-   Card global da empresa no index para Grátis, Básico e Premium.
-   Mostra logo, nome, WhatsApp, CPF/CNPJ e selo do plano no canto superior direito.
+   Card global da empresa no index para usuários logados.
+   Visitantes/deslogados não veem esse card para não carregar a home pública.
    ========================================================= */
 (function () {
   'use strict';
@@ -27,6 +27,18 @@
 
   function somenteNumeros(valor) {
     return String(valor || '').replace(/\D/g, '');
+  }
+
+  function temSessaoLocal() {
+    return !!(
+      localStorage.getItem('id') ||
+      localStorage.getItem('usuario_email') ||
+      Object.keys(localStorage).some(k => k.startsWith('sb-') && k.includes('auth-token'))
+    );
+  }
+
+  function removerCard() {
+    document.getElementById('fs-index-empresa-card')?.remove();
   }
 
   function formatarTelefone(valor) {
@@ -106,7 +118,10 @@
 
       const { data: sessaoData } = await window._supabase.auth.getSession();
       const userId = sessaoData?.session?.user?.id;
-      if (!userId) return perfilLocal;
+      if (!userId) {
+        removerCard();
+        return null;
+      }
 
       const { data: perfil, error } = await window._supabase
         .from('perfis')
@@ -193,115 +208,34 @@
         box-sizing: border-box;
       }
 
-      .fs-index-empresa-info {
-        min-width: 0;
-        padding-right: 160px;
-        z-index: 1;
-      }
-
-      .fs-index-empresa-info h2 {
-        margin: 0 0 8px;
-        color: #ffffff !important;
-        font-size: 28px;
-        line-height: 1.12;
-        font-weight: 950;
-        word-break: break-word;
-      }
-
-      .fs-index-empresa-dados {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 7px 12px;
-        align-items: center;
-        color: rgba(255,255,255,.86);
-        font-weight: 800;
-        line-height: 1.4;
-      }
-
-      .fs-index-empresa-dados span {
-        color: rgba(255,255,255,.86);
-      }
-
-      .fs-index-empresa-plano {
-        position: absolute;
-        top: 18px;
-        right: 18px;
-        z-index: 2;
-        min-width: 122px;
-        border-radius: 999px;
-        padding: 10px 14px;
-        text-align: center;
-        font-weight: 950;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: .2px;
-        box-shadow: inset 0 -2px 0 rgba(0,0,0,.14), 0 8px 18px rgba(0,0,0,.18);
-        border: 1px solid rgba(255,255,255,.18);
-      }
-
-      .fs-index-empresa-plano.gratis {
-        background: #ffffff;
-        color: var(--fs-marrom, #3e2723);
-      }
-
-      .fs-index-empresa-plano.basico {
-        background: var(--fs-amarelo, #ffc400);
-        color: var(--fs-marrom, #3e2723);
-      }
-
-      .fs-index-empresa-plano.premium {
-        background: #18b26b;
-        color: #ffffff;
-        border-color: rgba(255,255,255,.35);
-      }
-
-      .premium-dashboard-oficina > .premium-empresa-topo {
-        display: none !important;
-      }
+      .fs-index-empresa-info { min-width: 0; padding-right: 160px; z-index: 1; }
+      .fs-index-empresa-info h2 { margin: 0 0 8px; color: #ffffff !important; font-size: 28px; line-height: 1.12; font-weight: 950; word-break: break-word; }
+      .fs-index-empresa-dados { display: flex; flex-wrap: wrap; gap: 7px 12px; align-items: center; color: rgba(255,255,255,.86); font-weight: 800; line-height: 1.4; }
+      .fs-index-empresa-dados span { color: rgba(255,255,255,.86); }
+      .fs-index-empresa-plano { position: absolute; top: 18px; right: 18px; z-index: 2; min-width: 122px; border-radius: 999px; padding: 10px 14px; text-align: center; font-weight: 950; font-size: 13px; text-transform: uppercase; letter-spacing: .2px; box-shadow: inset 0 -2px 0 rgba(0,0,0,.14), 0 8px 18px rgba(0,0,0,.18); border: 1px solid rgba(255,255,255,.18); }
+      .fs-index-empresa-plano.gratis { background: #ffffff; color: var(--fs-marrom, #3e2723); }
+      .fs-index-empresa-plano.basico { background: var(--fs-amarelo, #ffc400); color: var(--fs-marrom, #3e2723); }
+      .fs-index-empresa-plano.premium { background: #18b26b; color: #ffffff; border-color: rgba(255,255,255,.35); }
+      .premium-dashboard-oficina > .premium-empresa-topo { display: none !important; }
 
       @media (max-width: 640px) {
-        .fs-index-empresa-card {
-          width: min(100% - 24px, 1120px);
-          grid-template-columns: auto 1fr;
-          gap: 12px;
-          padding: 18px 16px 18px;
-          border-radius: 22px;
-          margin-top: 18px;
-        }
-
-        .fs-index-empresa-logo {
-          width: 72px;
-          height: 72px;
-          border-radius: 20px;
-        }
-
-        .fs-index-empresa-info {
-          padding-right: 0;
-          padding-top: 48px;
-        }
-
-        .fs-index-empresa-info h2 {
-          font-size: 24px;
-        }
-
-        .fs-index-empresa-dados {
-          font-size: 15px;
-          gap: 4px 8px;
-        }
-
-        .fs-index-empresa-plano {
-          top: 14px;
-          right: 14px;
-          min-width: 104px;
-          padding: 9px 12px;
-          font-size: 12px;
-        }
+        .fs-index-empresa-card { width: min(100% - 24px, 1120px); grid-template-columns: auto 1fr; gap: 12px; padding: 18px 16px 18px; border-radius: 22px; margin-top: 18px; }
+        .fs-index-empresa-logo { width: 72px; height: 72px; border-radius: 20px; }
+        .fs-index-empresa-info { padding-right: 0; padding-top: 48px; }
+        .fs-index-empresa-info h2 { font-size: 24px; }
+        .fs-index-empresa-dados { font-size: 15px; gap: 4px 8px; }
+        .fs-index-empresa-plano { top: 14px; right: 14px; min-width: 104px; padding: 9px 12px; font-size: 12px; }
       }
     `;
     document.head.appendChild(style);
   }
 
   function garantirCard() {
+    if (!temSessaoLocal()) {
+      removerCard();
+      return null;
+    }
+
     let card = document.getElementById('fs-index-empresa-card');
     if (card) return card;
 
@@ -338,7 +272,7 @@
 
   function preencherCard(perfil) {
     const card = garantirCard();
-    if (!card) return;
+    if (!card || !perfil) return;
 
     const plano = perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis';
     const status = perfil?.plano_status || localStorage.getItem('usuario_plano_status') || 'ativo';
@@ -372,6 +306,11 @@
 
   async function atualizar() {
     if (atualizando) return;
+    if (!temSessaoLocal()) {
+      removerCard();
+      return;
+    }
+
     atualizando = true;
     try {
       injetarEstilo();
