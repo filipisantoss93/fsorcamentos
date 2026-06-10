@@ -186,7 +186,7 @@ function fsConfigCarregarAjustesPagina() {
   // Camadas finais: devem entrar por último para corrigir visual sem quebrar funcionalidades.
   fsConfigCarregarScriptUnico('/fs-contrast-final.js', 'fs-contrast-final-js');
   fsConfigCarregarScriptUnico('/fs-header-offset-fix.js', 'fs-header-offset-fix-js');
-  fsConfigCarregarScriptUnico('/fs-dark-text-grid-fix.js', 'fs-dark-text-grid-fix-js');
+  fsConfigCarregarScriptUnico('/fs-stable-visual-fix.js', 'fs-stable-visual-fix-js');
 }
 
 fsConfigCarregarAjustesPagina();
