@@ -1,29 +1,29 @@
 /* =========================================================
    FS ORÇAMENTOS - index-ads-restore.js
-   Restaura anúncios AdSense na home pública simplificada.
+   Restaura anúncios AdSense na home.
 
-   Por que existe:
-   - index-visitante-lite.js deixa a home de visitantes mais limpa;
-   - a home antiga do plano grátis fica oculta em visitantes;
-   - os blocos AdSense originais estão dentro dessa área oculta;
-   - por isso, apenas trocar display:none por display:block não resolve.
-
-   Esta correção move os blocos de anúncio existentes para dentro da
-   landing simplificada somente quando o usuário é visitante.
-   Usuários logados continuam seguindo o comportamento por plano.
+   Regras:
+   - visitante: move os anúncios para dentro da home simplificada;
+   - usuário logado no Plano Grátis: mantém dois blocos de publicidade;
+   - se o segundo bloco foi removido do index.html, recria o bloco no DOM.
    ========================================================= */
 (function () {
   'use strict';
 
+  const AD_CLIENT = 'ca-pub-5628949951885077';
+  const AD_SLOT_PADRAO = '1739813454';
+
   const ADS_RESTAURADOS = [
     {
       id: 'adsense-gratis-topo',
-      destino: '.fs-visitante-hero',
+      destinoVisitante: '.fs-visitante-hero',
+      destinoGratis: '#home-plano-gratis .home-plano-hero',
       posicao: 'afterend'
     },
     {
       id: 'adsense-gratis-rodape',
-      destino: '.fs-visitante-comparativo-wrapper',
+      destinoVisitante: '.fs-visitante-comparativo-wrapper',
+      destinoGratis: '#home-plano-gratis .home-story-section',
       posicao: 'afterend'
     }
   ];
@@ -34,6 +34,12 @@
     return document.body && document.body.classList.contains('fs-visitante-lite');
   }
 
+  function homeGratisAtiva() {
+    const homeGratis = document.getElementById('home-plano-gratis');
+    if (!homeGratis || visitanteLiteAtivo()) return false;
+    return homeGratis.classList.contains('ativo') || getComputedStyle(homeGratis).display !== 'none';
+  }
+
   function injetarEstilo() {
     if (document.getElementById('fs-index-ads-restore-style')) return;
 
@@ -42,7 +48,9 @@
     style.textContent = `
       body.fs-visitante-lite .bloco-anuncio.fs-adsense-zone.fs-index-ad-restored,
       body.fs-visitante-lite .fs-visitante-home-lite > .bloco-anuncio.fs-adsense-zone,
-      body.fs-visitante-lite .fs-visitante-home-lite .bloco-anuncio.fs-adsense-zone {
+      body.fs-visitante-lite .fs-visitante-home-lite .bloco-anuncio.fs-adsense-zone,
+      body:not(.fs-visitante-lite) #home-plano-gratis.ativo .bloco-anuncio.fs-adsense-zone,
+      body:not(.fs-visitante-lite) #home-plano-gratis .bloco-anuncio.fs-adsense-zone.fs-index-ad-restored {
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
@@ -52,13 +60,45 @@
         margin: 18px auto !important;
       }
 
-      body.fs-visitante-lite .bloco-anuncio.fs-adsense-zone.fs-index-ad-restored ins.adsbygoogle {
+      .bloco-anuncio.fs-adsense-zone.fs-index-ad-restored ins.adsbygoogle,
+      #home-plano-gratis .bloco-anuncio.fs-adsense-zone ins.adsbygoogle {
         display: block !important;
         visibility: visible !important;
         min-height: 90px;
       }
     `;
     document.head.appendChild(style);
+  }
+
+  function criarZonaAnuncio(id) {
+    const zona = document.createElement('div');
+    zona.id = id;
+    zona.className = 'bloco-anuncio fs-adsense-zone fs-anuncio-gratis';
+    zona.setAttribute('aria-label', 'Publicidade');
+    zona.innerHTML = `
+      <span class="adsense-label">Publicidade</span>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="${AD_CLIENT}"
+           data-ad-slot="${AD_SLOT_PADRAO}"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    `;
+    return zona;
+  }
+
+  function obterOuCriarZona(id) {
+    let zona = document.getElementById(id);
+    if (zona) return zona;
+
+    const homeGratis = document.getElementById('home-plano-gratis');
+    const homeLite = document.getElementById('fs-visitante-home-lite');
+    const destinoInicial = homeGratis || homeLite || document.querySelector('main');
+    if (!destinoInicial) return null;
+
+    zona = criarZonaAnuncio(id);
+    destinoInicial.appendChild(zona);
+    return zona;
   }
 
   function guardarLugarOriginal(zona) {
@@ -101,27 +141,36 @@
     });
   }
 
+  function moverParaDestino(zona, seletorDestino, posicao) {
+    const destino = document.querySelector(seletorDestino);
+    if (!destino) return false;
+
+    prepararZona(zona);
+    destino.insertAdjacentElement(posicao, zona);
+    empurrarAdSenseQuandoNecessario(zona);
+    return true;
+  }
+
   function aplicar() {
     injetarEstilo();
 
     ADS_RESTAURADOS.forEach((item) => {
-      const zona = document.getElementById(item.id);
+      const zona = obterOuCriarZona(item.id);
       if (!zona) return;
 
       guardarLugarOriginal(zona);
 
-      if (!visitanteLiteAtivo()) {
-        restaurarLugarOriginal(zona);
+      if (visitanteLiteAtivo()) {
+        moverParaDestino(zona, item.destinoVisitante, item.posicao);
         return;
       }
 
-      const destino = document.querySelector(item.destino);
-      const homeLite = document.getElementById('fs-visitante-home-lite');
-      if (!destino || !homeLite) return;
+      if (homeGratisAtiva()) {
+        moverParaDestino(zona, item.destinoGratis, item.posicao);
+        return;
+      }
 
-      prepararZona(zona);
-      destino.insertAdjacentElement(item.posicao, zona);
-      empurrarAdSenseQuandoNecessario(zona);
+      restaurarLugarOriginal(zona);
     });
   }
 
@@ -136,4 +185,5 @@
   setTimeout(aplicar, 300);
   setTimeout(aplicar, 900);
   setTimeout(aplicar, 1800);
+  setTimeout(aplicar, 3000);
 })();
