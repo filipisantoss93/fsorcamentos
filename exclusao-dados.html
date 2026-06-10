@@ -10,14 +10,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Exclusão de Dados | FS Orçamentos</title>
-  <meta name="description" content="Solicite a exclusão de dados pessoais e conta do FS Orçamentos. Entenda como pedir a remoção dos seus dados da plataforma.">
+  <meta name="description" content="Saiba como excluir sua conta e dados pessoais do FS Orçamentos pelo Painel de Controle ou solicitar suporte caso não consiga acessar sua conta.">
   <meta name="author" content="Filipi Aparecido dos Santos">
   <meta name="robots" content="index, follow">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fsorcamentos.com.br/exclusao-dados.html">
   <meta property="og:title" content="Exclusão de Dados | FS Orçamentos">
-  <meta property="og:description" content="Informações para solicitar exclusão de conta e dados pessoais no FS Orçamentos.">
+  <meta property="og:description" content="Informações para excluir conta e dados pessoais no FS Orçamentos pelo Painel de Controle.">
   <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
 
   <link rel="stylesheet" href="style.css">
@@ -126,6 +126,42 @@
       margin: 18px 0;
     }
 
+    .passos-exclusao {
+      counter-reset: passo;
+      display: grid;
+      gap: 12px;
+      margin: 18px 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .passos-exclusao li {
+      counter-increment: passo;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 14px 14px 14px 54px;
+      position: relative;
+      color: var(--fs-texto-suave);
+    }
+
+    .passos-exclusao li::before {
+      content: counter(passo);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      font-weight: 950;
+    }
+
     .botoes-exclusao {
       display: flex;
       flex-wrap: wrap;
@@ -182,12 +218,27 @@
     <section class="exclusao-hero">
       <span class="exclusao-tag">Privacidade e LGPD</span>
       <h1>Exclusão de dados e conta</h1>
-      <p>Esta página explica como solicitar a exclusão de dados pessoais, dados de perfil e informações vinculadas à sua conta no FS Orçamentos.</p>
+      <p>Esta página explica como excluir sua conta e dados pessoais vinculados ao FS Orçamentos.</p>
     </section>
 
     <section class="exclusao-card">
-      <h2>Como solicitar a exclusão</h2>
-      <p>Para pedir a exclusão dos seus dados, envie uma solicitação pelo canal de contato oficial informando o e-mail usado na conta e, se possível, o nome da empresa ou responsável cadastrado.</p>
+      <h2>Como excluir sua conta pelo Painel</h2>
+      <p>A forma principal de solicitar a exclusão é pelo próprio <strong>Painel de Controle</strong>, usando o botão <strong>Excluir conta</strong>.</p>
+      <ol class="passos-exclusao">
+        <li>Entre na sua conta do FS Orçamentos.</li>
+        <li>Acesse o menu <strong>Painel de Controle</strong>.</li>
+        <li>Localize a opção <strong>Excluir conta</strong>.</li>
+        <li>Confirme a solicitação somente se tiver certeza, pois a remoção pode ser irreversível.</li>
+      </ol>
+      <div class="botoes-exclusao">
+        <a class="btn-exclusao" href="/painel.html">Abrir Painel de Controle</a>
+        <a class="btn-exclusao secundario" href="/privacidade.html">Ver Política de Privacidade</a>
+      </div>
+    </section>
+
+    <section class="exclusao-card">
+      <h2>Se você não consegue acessar a conta</h2>
+      <p>Se perdeu o acesso ao login ou não consegue usar o botão no Painel, envie uma solicitação pelo canal de contato oficial informando o e-mail usado na conta e, se possível, o nome da empresa ou responsável cadastrado.</p>
       <div class="aviso-exclusao">Por segurança, poderemos solicitar confirmação de identidade antes de remover dados da conta.</div>
       <div class="botoes-exclusao">
         <a class="btn-exclusao" href="/contato.html">Abrir página de contato</a>
@@ -206,12 +257,12 @@
 
     <section class="exclusao-card">
       <h2>Prazo de atendimento</h2>
-      <p>Após receber a solicitação com as informações necessárias, o FS Orçamentos analisará e processará o pedido em prazo razoável. Quando houver obrigação legal, fiscal, antifraude ou de segurança, alguns registros poderão ser mantidos pelo período exigido pela legislação aplicável.</p>
+      <p>Após a confirmação da solicitação, o FS Orçamentos analisará e processará o pedido em prazo razoável. Quando houver obrigação legal, fiscal, antifraude ou de segurança, alguns registros poderão ser mantidos pelo período exigido pela legislação aplicável.</p>
     </section>
 
     <section class="exclusao-card">
       <h2>Antes de excluir</h2>
-      <p>A exclusão de conta e dados pode ser irreversível. Antes de solicitar, baixe os orçamentos, PDFs, registros de clientes ou informações que deseje guardar.</p>
+      <p>A exclusão de conta e dados pode ser irreversível. Antes de confirmar, baixe os orçamentos, PDFs, registros de clientes ou informações que deseje guardar.</p>
       <p>Para entender melhor o tratamento de dados, consulte também a <a href="/privacidade.html">Política de Privacidade</a> e os <a href="/termos.html">Termos de Uso</a>.</p>
     </section>
   </main>
