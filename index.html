@@ -425,15 +425,80 @@
     .auth-logo-text strong { background: var(--fs-amarelo); color: var(--fs-marrom); border-radius: 10px; padding: 6px 9px; }
     .auth-logo-box p { margin: 8px 0 0; color: var(--fs-texto-suave); font-weight: 750; }
 
-    footer {
-      text-align: center;
-      padding: 28px 14px;
-      background: var(--fs-marrom);
-      color: #fffaf0;
-      font-weight: 750;
+    footer.fs-footer-index {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px 12px !important;
+      text-align: center !important;
+      padding: 28px 14px !important;
+      background: var(--fs-marrom) !important;
+      color: #fffaf0 !important;
+      font-weight: 850 !important;
+      opacity: 1 !important;
     }
 
-    footer a { color: var(--fs-amarelo); text-decoration: none; font-weight: 950; }
+    footer.fs-footer-index span,
+    footer.fs-footer-index .footer-separador {
+      color: #fffaf0 !important;
+      opacity: 1 !important;
+    }
+
+    footer.fs-footer-index a {
+      color: var(--fs-amarelo) !important;
+      text-decoration: none !important;
+      font-weight: 950 !important;
+      opacity: 1 !important;
+    }
+
+    footer.fs-footer-index a:hover { text-decoration: underline !important; }
+
+    body:not(.gerando-pdf) #box-teste-premium-index.teste-premium-inline-card,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo {
+      background: linear-gradient(135deg, #3e2723, #2c1b17) !important;
+      color: #fffaf0 !important;
+      border: 2px solid #ffc400 !important;
+      border-top: 7px solid #ffc400 !important;
+    }
+
+    body:not(.gerando-pdf) #box-teste-premium-index h1,
+    body:not(.gerando-pdf) #box-teste-premium-index h2,
+    body:not(.gerando-pdf) #box-teste-premium-index h3,
+    body:not(.gerando-pdf) #box-teste-premium-index strong,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo h1,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo h2,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo h3,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo strong {
+      color: #ffc400 !important;
+      opacity: 1 !important;
+      text-shadow: none !important;
+    }
+
+    body:not(.gerando-pdf) #box-teste-premium-index p,
+    body:not(.gerando-pdf) #box-teste-premium-index small,
+    body:not(.gerando-pdf) #box-teste-premium-index span,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo p,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo small,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo span {
+      color: #fffaf0 !important;
+      opacity: 1 !important;
+      text-shadow: none !important;
+    }
+
+    body:not(.gerando-pdf) #box-teste-premium-index #texto-status-teste-premium,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo small {
+      color: #ffe58a !important;
+      opacity: 1 !important;
+    }
+
+    body:not(.gerando-pdf) #box-teste-premium-index .btn-teste-premium,
+    body:not(.gerando-pdf) .teste-premium-inline-card.teste-premium-topo .btn-teste-premium {
+      background: #ffc400 !important;
+      color: #3e2723 !important;
+      border: 2px solid #fffaf0 !important;
+      opacity: 1 !important;
+    }
 
     @media (max-width: 760px) {
       .home-publica { padding: 18px 10px 44px; }
@@ -452,6 +517,7 @@
       .btn-home-planos-secundario { width: 100%; }
       .teste-premium-inline-card { grid-template-columns: 1fr; text-align: center; }
       .btn-teste-premium { width: 100%; }
+      footer.fs-footer-index { padding: 24px 12px !important; font-size: 14px !important; }
     }
   </style>
 </head>
@@ -603,10 +669,13 @@
     </section>
   </main>
 
-  <footer>
-    &copy; 2026 FS Orçamentos |
-    <a href="/privacidade.html">Privacidade</a> |
-    <a href="/termos.html">Termos</a> |
+  <footer class="fs-footer-index">
+    <span>© 2026 FS Orçamentos</span>
+    <span class="footer-separador">|</span>
+    <a href="/privacidade.html">Privacidade</a>
+    <span class="footer-separador">|</span>
+    <a href="/termos.html">Termos</a>
+    <span class="footer-separador">|</span>
     <a href="/contato.html">Contato</a>
   </footer>
 
