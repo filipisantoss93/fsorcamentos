@@ -156,6 +156,10 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js');
   }
 
+  if (path.endsWith('/agenda') || path.endsWith('/agenda.html')) {
+    fsConfigCarregarScriptUnico('/agenda-visual-fix.js', 'fs-agenda-visual-fix-js');
+  }
+
   if (path.endsWith('/clientes') || path.endsWith('/clientes.html')) {
     fsConfigCarregarScriptUnico('/clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js');
   }
