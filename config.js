@@ -130,6 +130,7 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarScriptUnico('/layout-grid-global-fix.js', 'fs-layout-grid-global-fix-js');
 
   if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
+    fsConfigCarregarScriptUnico('/index-visitante-lite.js', 'fs-index-visitante-lite-js');
     fsConfigCarregarScriptUnico('/index-cache-sync.js', 'fs-index-cache-sync-js');
     fsConfigCarregarScriptUnico('/index-empresa-card.js', 'fs-index-empresa-card-js');
     fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
