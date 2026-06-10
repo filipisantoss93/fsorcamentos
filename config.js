@@ -199,6 +199,7 @@ function fsConfigCarregarAjustesPagina() {
 
   if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
     fsConfigCarregarScriptUnico('/index-visual-final-fix.js', 'fs-index-visual-final-fix-js');
+    fsConfigCarregarScriptUnico('/index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js');
   }
 }
 
