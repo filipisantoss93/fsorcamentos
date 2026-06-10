@@ -76,6 +76,47 @@
         color: #6d5b52 !important;
         opacity: 1 !important;
       }
+
+      /* Footer do index: mesmo padrão claro das demais páginas */
+      body:not(.gerando-pdf) footer.fs-footer-index,
+      body:not(.gerando-pdf) footer,
+      body:not(.gerando-pdf) .sobre-footer {
+        background: transparent !important;
+        color: #6d5b52 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+      }
+
+      body:not(.gerando-pdf) footer.fs-footer-index {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px 10px !important;
+        padding: 24px 14px 34px !important;
+        text-align: center !important;
+        font-weight: 800 !important;
+      }
+
+      body:not(.gerando-pdf) footer.fs-footer-index span,
+      body:not(.gerando-pdf) footer.fs-footer-index .footer-separador {
+        color: #6d5b52 !important;
+        opacity: 1 !important;
+      }
+
+      body:not(.gerando-pdf) footer.fs-footer-index a,
+      body:not(.gerando-pdf) footer a,
+      body:not(.gerando-pdf) .sobre-footer a {
+        color: #3e2723 !important;
+        opacity: 1 !important;
+        text-decoration: none !important;
+        font-weight: 950 !important;
+      }
+
+      body:not(.gerando-pdf) footer.fs-footer-index a:hover,
+      body:not(.gerando-pdf) footer a:hover {
+        text-decoration: underline !important;
+      }
     `;
 
     document.head.appendChild(style);
