@@ -175,6 +175,10 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/orcamentos-resumo-grid-fix.js', 'fs-orcamentos-resumo-grid-fix-js');
   }
 
+  if (path.endsWith('/planos') || path.endsWith('/planos.html')) {
+    fsConfigCarregarScriptUnico('/planos-visual-fix.js', 'fs-planos-visual-fix-js');
+  }
+
   if (
     path.endsWith('/ordens') || path.endsWith('/ordens.html') ||
     path.endsWith('/recorrentes') || path.endsWith('/recorrentes.html') ||
