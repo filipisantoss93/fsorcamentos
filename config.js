@@ -137,6 +137,10 @@ function fsConfigCarregarAjustesPagina() {
     fsConfigCarregarScriptUnico('/index-dashboard-tag-fix.js', 'fs-index-dashboard-tag-fix-js');
   }
 
+  if (path.endsWith('/ver') || path.endsWith('/ver.html')) {
+    fsConfigCarregarScriptUnico('/ver-cliente-fix.js', 'fs-ver-cliente-fix-js');
+  }
+
   if (path.endsWith('/gerador') || path.endsWith('/gerador.html')) {
     fsConfigCarregarScriptUnico('/gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js');
     fsConfigCarregarScriptUnico('/gerador-acoes-fix.js', 'fs-gerador-acoes-fix-js');
