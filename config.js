@@ -192,6 +192,10 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarScriptUnico('/fs-contrast-final.js', 'fs-contrast-final-js');
   fsConfigCarregarScriptUnico('/fs-header-offset-fix.js', 'fs-header-offset-fix-js');
   fsConfigCarregarScriptUnico('/fs-stable-visual-fix.js', 'fs-stable-visual-fix-js');
+
+  if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
+    fsConfigCarregarScriptUnico('/index-visual-final-fix.js', 'fs-index-visual-final-fix-js');
+  }
 }
 
 fsConfigCarregarAjustesPagina();
