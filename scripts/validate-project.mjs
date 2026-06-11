@@ -53,16 +53,17 @@ function validarArquivosBasicos() {
   }
 }
 
-function validarScriptsDoConfig() {
+function validarAssetsDoConfig() {
   if (!existe('config.js')) return;
 
   const config = ler('config.js');
   const encontrados = new Set();
 
-  const regexChamadaDireta = /fsConfigCarregarScriptUnico\(['"]\/([^'"]+)['"]/g;
-  const regexListaScript = /\[\s*['"]([^'"]+\.js)['"]\s*,\s*['"][^'"]+['"]\s*\]/g;
+  const regexChamadaScriptDireta = /fsConfigCarregarScriptUnico\(['"]\/([^'"]+)['"]/g;
+  const regexChamadaCssDireta = /fsConfigCarregarCssUnico\(['"]\/([^'"]+)['"]/g;
+  const regexListaAsset = /\[\s*['"]([^'"]+\.(?:js|css))['"]\s*,\s*['"][^'"]+['"]\s*\]/g;
 
-  for (const regex of [regexChamadaDireta, regexListaScript]) {
+  for (const regex of [regexChamadaScriptDireta, regexChamadaCssDireta, regexListaAsset]) {
     let match;
     while ((match = regex.exec(config))) {
       encontrados.add(match[1].replace(/^\//, ''));
@@ -129,7 +130,7 @@ function validarPackageJson() {
 
 validarArquivosBasicos();
 validarPackageJson();
-validarScriptsDoConfig();
+validarAssetsDoConfig();
 validarReferenciasHtml();
 validarVercel();
 
