@@ -108,6 +108,122 @@ window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 /* =========================
    CARREGAMENTO DE AJUSTES POR PÁGINA
 ========================= */
+
+const FS_CONFIG_SCRIPTS_GLOBAIS = [
+  ['fs-no-zoom.js', 'fs-no-zoom-js'],
+  ['fs-session-cache.js', 'fs-session-cache-js'],
+  ['fs-menu-close-outside.js', 'fs-menu-close-outside-js'],
+  ['fs-format-br.js', 'fs-format-br-js'],
+  ['fs-footer-legal.js', 'fs-footer-legal-js'],
+  ['layout-grid-global-fix.js', 'fs-layout-grid-global-fix-js']
+];
+
+const FS_CONFIG_SCRIPTS_FINAIS = [
+  ['fs-contrast-final.js', 'fs-contrast-final-js'],
+  ['fs-header-offset-fix.js', 'fs-header-offset-fix-js'],
+  ['fs-stable-visual-fix.js', 'fs-stable-visual-fix-js']
+];
+
+const FS_CONFIG_SCRIPTS_POR_PAGINA = [
+  {
+    paginas: ['/', '/index', '/index.html'],
+    scripts: [
+      ['index-visitante-lite.js', 'fs-index-visitante-lite-js'],
+      ['index-ads-restore.js', 'fs-index-ads-restore-js'],
+      ['index-cache-sync.js', 'fs-index-cache-sync-js'],
+      ['index-empresa-card.js', 'fs-index-empresa-card-js'],
+      ['index-empresa-contrast-fix.js', 'fs-index-empresa-contrast-fix-js'],
+      ['dashboard-premium-index.js', 'fs-dashboard-premium-index-js'],
+      ['index-dashboard-tag-fix.js', 'fs-index-dashboard-tag-fix-js']
+    ]
+  },
+  {
+    paginas: ['/ver', '/ver.html'],
+    scripts: [
+      ['ver-cliente-fix.js', 'fs-ver-cliente-fix-js']
+    ]
+  },
+  {
+    paginas: ['/gerador', '/gerador.html'],
+    scripts: [
+      ['gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js'],
+      ['gerador-acoes-fix.js', 'fs-gerador-acoes-fix-js'],
+      ['gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js']
+    ]
+  },
+  {
+    paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html'],
+    scripts: [
+      ['fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js']
+    ]
+  },
+  {
+    paginas: ['/agenda', '/agenda.html'],
+    scripts: [
+      ['agenda-visual-fix.js', 'fs-agenda-visual-fix-js']
+    ]
+  },
+  {
+    paginas: ['/clientes', '/clientes.html'],
+    scripts: [
+      ['clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js']
+    ]
+  },
+  {
+    paginas: ['/painel', '/painel.html'],
+    scripts: [
+      ['painel-logo-fix.js', 'fs-painel-logo-fix-js'],
+      ['painel-perfil-fix.js', 'fs-painel-perfil-fix-js']
+    ]
+  },
+  {
+    paginas: ['/orcamentos', '/orcamentos.html'],
+    scripts: [
+      ['orcamentos-pdf.js', 'fs-orcamentos-pdf-js'],
+      ['orcamentos-resumo-grid-fix.js', 'fs-orcamentos-resumo-grid-fix-js']
+    ]
+  },
+  {
+    paginas: ['/planos', '/planos.html'],
+    scripts: [
+      ['planos-visual-fix.js', 'fs-planos-visual-fix-js']
+    ]
+  },
+  {
+    paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'],
+    scripts: [
+      ['fs-cliente-modal.js', 'fs-cliente-modal-js']
+    ]
+  },
+  {
+    paginas: ['/ordem', '/ordem.html'],
+    scripts: [
+      ['ordem-extras.js', 'fs-ordem-extras-js'],
+      ['ordem-pdf-extras.js', 'fs-ordem-pdf-extras-js']
+    ]
+  }
+];
+
+const FS_CONFIG_SCRIPTS_FINAIS_INDEX = [
+  ['index-visual-final-fix.js', 'fs-index-visual-final-fix-js'],
+  ['index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js'],
+  ['index-gratis-dom-cleaner.js', 'fs-index-gratis-dom-cleaner-js']
+];
+
+function fsConfigNormalizarPathAtual() {
+  const path = (window.location.pathname || '/').toLowerCase().replace(/\/$/, '');
+  return path || '/';
+}
+
+function fsConfigPathCorresponde(pathAtual, pagina) {
+  if (pagina === '/') return pathAtual === '/';
+  return pathAtual === pagina || pathAtual.endsWith(pagina);
+}
+
+function fsConfigEhIndex(pathAtual) {
+  return ['/', '/index', '/index.html'].some((pagina) => fsConfigPathCorresponde(pathAtual, pagina));
+}
+
 function fsConfigCarregarScriptUnico(src, id) {
   if (document.getElementById(id)) return;
 
@@ -119,88 +235,30 @@ function fsConfigCarregarScriptUnico(src, id) {
   document.head.appendChild(script);
 }
 
+function fsConfigCarregarListaScripts(scripts) {
+  scripts.forEach(([arquivo, id]) => {
+    fsConfigCarregarScriptUnico(`/${arquivo}`, id);
+  });
+}
+
+function fsConfigCarregarScriptsDaPagina(pathAtual) {
+  FS_CONFIG_SCRIPTS_POR_PAGINA.forEach((grupo) => {
+    const deveCarregar = grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina));
+    if (deveCarregar) fsConfigCarregarListaScripts(grupo.scripts);
+  });
+}
+
 function fsConfigCarregarAjustesPagina() {
-  const path = (window.location.pathname || '/').toLowerCase();
+  const pathAtual = fsConfigNormalizarPathAtual();
 
-  fsConfigCarregarScriptUnico('/fs-no-zoom.js', 'fs-no-zoom-js');
-  fsConfigCarregarScriptUnico('/fs-session-cache.js', 'fs-session-cache-js');
-  fsConfigCarregarScriptUnico('/fs-menu-close-outside.js', 'fs-menu-close-outside-js');
-  fsConfigCarregarScriptUnico('/fs-format-br.js', 'fs-format-br-js');
-  fsConfigCarregarScriptUnico('/fs-footer-legal.js', 'fs-footer-legal-js');
-  fsConfigCarregarScriptUnico('/layout-grid-global-fix.js', 'fs-layout-grid-global-fix-js');
-
-  if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
-    fsConfigCarregarScriptUnico('/index-visitante-lite.js', 'fs-index-visitante-lite-js');
-    fsConfigCarregarScriptUnico('/index-ads-restore.js', 'fs-index-ads-restore-js');
-    fsConfigCarregarScriptUnico('/index-cache-sync.js', 'fs-index-cache-sync-js');
-    fsConfigCarregarScriptUnico('/index-empresa-card.js', 'fs-index-empresa-card-js');
-    fsConfigCarregarScriptUnico('/index-empresa-contrast-fix.js', 'fs-index-empresa-contrast-fix-js');
-    fsConfigCarregarScriptUnico('/dashboard-premium-index.js', 'fs-dashboard-premium-index-js');
-    fsConfigCarregarScriptUnico('/index-dashboard-tag-fix.js', 'fs-index-dashboard-tag-fix-js');
-  }
-
-  if (path.endsWith('/ver') || path.endsWith('/ver.html')) {
-    fsConfigCarregarScriptUnico('/ver-cliente-fix.js', 'fs-ver-cliente-fix-js');
-  }
-
-  if (path.endsWith('/gerador') || path.endsWith('/gerador.html')) {
-    fsConfigCarregarScriptUnico('/gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js');
-    fsConfigCarregarScriptUnico('/gerador-acoes-fix.js', 'fs-gerador-acoes-fix-js');
-    fsConfigCarregarScriptUnico('/gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js');
-  }
-
-  if (
-    path.endsWith('/agenda') || path.endsWith('/agenda.html') ||
-    path.endsWith('/ordens') || path.endsWith('/ordens.html') ||
-    path.endsWith('/clientes') || path.endsWith('/clientes.html')
-  ) {
-    fsConfigCarregarScriptUnico('/fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js');
-  }
-
-  if (path.endsWith('/agenda') || path.endsWith('/agenda.html')) {
-    fsConfigCarregarScriptUnico('/agenda-visual-fix.js', 'fs-agenda-visual-fix-js');
-  }
-
-  if (path.endsWith('/clientes') || path.endsWith('/clientes.html')) {
-    fsConfigCarregarScriptUnico('/clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js');
-  }
-
-  if (path.endsWith('/painel') || path.endsWith('/painel.html')) {
-    fsConfigCarregarScriptUnico('/painel-logo-fix.js', 'fs-painel-logo-fix-js');
-    fsConfigCarregarScriptUnico('/painel-perfil-fix.js', 'fs-painel-perfil-fix-js');
-  }
-
-  if (path.endsWith('/orcamentos') || path.endsWith('/orcamentos.html')) {
-    fsConfigCarregarScriptUnico('/orcamentos-pdf.js', 'fs-orcamentos-pdf-js');
-    fsConfigCarregarScriptUnico('/orcamentos-resumo-grid-fix.js', 'fs-orcamentos-resumo-grid-fix-js');
-  }
-
-  if (path.endsWith('/planos') || path.endsWith('/planos.html')) {
-    fsConfigCarregarScriptUnico('/planos-visual-fix.js', 'fs-planos-visual-fix-js');
-  }
-
-  if (
-    path.endsWith('/ordens') || path.endsWith('/ordens.html') ||
-    path.endsWith('/recorrentes') || path.endsWith('/recorrentes.html') ||
-    path.endsWith('/clientes') || path.endsWith('/clientes.html')
-  ) {
-    fsConfigCarregarScriptUnico('/fs-cliente-modal.js', 'fs-cliente-modal-js');
-  }
-
-  if (path.endsWith('/ordem') || path.endsWith('/ordem.html')) {
-    fsConfigCarregarScriptUnico('/ordem-extras.js', 'fs-ordem-extras-js');
-    fsConfigCarregarScriptUnico('/ordem-pdf-extras.js', 'fs-ordem-pdf-extras-js');
-  }
+  fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS);
+  fsConfigCarregarScriptsDaPagina(pathAtual);
 
   // Camadas finais: devem entrar por último para corrigir visual sem quebrar funcionalidades.
-  fsConfigCarregarScriptUnico('/fs-contrast-final.js', 'fs-contrast-final-js');
-  fsConfigCarregarScriptUnico('/fs-header-offset-fix.js', 'fs-header-offset-fix-js');
-  fsConfigCarregarScriptUnico('/fs-stable-visual-fix.js', 'fs-stable-visual-fix-js');
+  fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS);
 
-  if (path === '/' || path.endsWith('/index') || path.endsWith('/index.html')) {
-    fsConfigCarregarScriptUnico('/index-visual-final-fix.js', 'fs-index-visual-final-fix-js');
-    fsConfigCarregarScriptUnico('/index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js');
-    fsConfigCarregarScriptUnico('/index-gratis-dom-cleaner.js', 'fs-index-gratis-dom-cleaner-js');
+  if (fsConfigEhIndex(pathAtual)) {
+    fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS_INDEX);
   }
 }
 
