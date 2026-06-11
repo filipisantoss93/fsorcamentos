@@ -67,46 +67,46 @@
         <p>Acesse sua conta para gerar orçamentos profissionais</p>
       </div>
 
-      <div id="auth-area" style="display:block;">
-        <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
+      <div id="auth-area" class="auth-area-index">
+        <div id="auth-container" class="auth-container-index">
           <form id="form-autenticacao" onsubmit="return false;">
-            <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #3e2723;">Acesse sua Conta</h3>
+            <h3 id="auth-titulo" class="auth-titulo-index">Acesse sua Conta</h3>
 
-            <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
-              <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #3e2723;">Nome</label>
-              <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 9px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+            <div id="grupo-nome" class="auth-campo-index oculto">
+              <label for="auth-nome">Nome</label>
+              <input type="text" id="auth-nome" placeholder="Seu nome">
             </div>
 
-            <div style="margin-bottom: 15px;">
-              <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #3e2723;">E-mail</label>
-              <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 9px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+            <div class="auth-campo-index">
+              <label for="auth-email">E-mail</label>
+              <input type="email" id="auth-email" placeholder="seu@email.com">
             </div>
 
-            <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
-              <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #3e2723;">Nome da Empresa</label>
-              <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 9px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+            <div id="grupo-nome-empresa" class="auth-campo-index oculto">
+              <label for="reg-nome-empresa">Nome da Empresa</label>
+              <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa">
             </div>
 
-            <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
-              <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #3e2723;">WhatsApp da Empresa</label>
-              <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 9px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto">
+              <label for="reg-telefone-empresa">WhatsApp da Empresa</label>
+              <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa">
             </div>
 
-            <div style="margin-bottom: 15px;">
-              <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #3e2723;">Senha</label>
-              <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 9px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+            <div class="auth-campo-index">
+              <label for="auth-senha">Senha</label>
+              <input type="password" id="auth-senha" placeholder="******">
             </div>
 
-            <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
-              <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #3e2723;">Confirmar Senha</label>
-              <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 9px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;">
+            <div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto">
+              <label for="auth-confirmar-senha">Confirmar Senha</label>
+              <input type="password" id="auth-confirmar-senha" placeholder="******">
             </div>
 
-            <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 12px; background-color: #3e2723; color: #ffc400; border: 2px solid #ffc400; border-radius: 999px; cursor: pointer; font-weight: 950; font-size: 16px;">Entrar</button>
+            <button type="button" id="btn-principal" class="btn-principal-index" onclick="enviarFormulario()">Entrar</button>
           </form>
 
-          <div style="text-align: center; margin-top: 15px;">
-            <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #3e2723; text-decoration: none; font-weight: 850;">Não tem cadastro? Clique aqui.</a>
+          <div class="auth-alternar-index">
+            <a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a>
           </div>
         </div>
       </div>
