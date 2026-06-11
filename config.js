@@ -124,6 +124,15 @@ const FS_CONFIG_SCRIPTS_FINAIS = [
   ['fs-stable-visual-fix.js', 'fs-stable-visual-fix-js']
 ];
 
+const FS_CONFIG_CSS_POR_PAGINA = [
+  {
+    paginas: ['/gerador', '/gerador.html'],
+    estilos: [
+      ['gerador.css', 'fs-gerador-css']
+    ]
+  }
+];
+
 const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   {
     paginas: ['/', '/index', '/index.html'],
@@ -235,9 +244,33 @@ function fsConfigCarregarScriptUnico(src, id) {
   document.head.appendChild(script);
 }
 
+function fsConfigCarregarCssUnico(href, id) {
+  if (document.getElementById(id)) return;
+
+  const link = document.createElement('link');
+  link.id = id;
+  link.rel = 'stylesheet';
+  link.href = href;
+  link.onerror = () => console.warn(`Não foi possível carregar ${href}.`);
+  document.head.appendChild(link);
+}
+
 function fsConfigCarregarListaScripts(scripts) {
   scripts.forEach(([arquivo, id]) => {
     fsConfigCarregarScriptUnico(`/${arquivo}`, id);
+  });
+}
+
+function fsConfigCarregarListaCss(estilos) {
+  estilos.forEach(([arquivo, id]) => {
+    fsConfigCarregarCssUnico(`/${arquivo}`, id);
+  });
+}
+
+function fsConfigCarregarCssDaPagina(pathAtual) {
+  FS_CONFIG_CSS_POR_PAGINA.forEach((grupo) => {
+    const deveCarregar = grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina));
+    if (deveCarregar) fsConfigCarregarListaCss(grupo.estilos);
   });
 }
 
@@ -251,6 +284,7 @@ function fsConfigCarregarScriptsDaPagina(pathAtual) {
 function fsConfigCarregarAjustesPagina() {
   const pathAtual = fsConfigNormalizarPathAtual();
 
+  fsConfigCarregarCssDaPagina(pathAtual);
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS);
   fsConfigCarregarScriptsDaPagina(pathAtual);
 
