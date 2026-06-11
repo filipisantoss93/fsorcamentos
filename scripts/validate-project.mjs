@@ -57,12 +57,16 @@ function validarScriptsDoConfig() {
   if (!existe('config.js')) return;
 
   const config = ler('config.js');
-  const regex = /fsConfigCarregarScriptUnico\(['"]\/([^'"]+)['"]/g;
   const encontrados = new Set();
-  let match;
 
-  while ((match = regex.exec(config))) {
-    encontrados.add(match[1]);
+  const regexChamadaDireta = /fsConfigCarregarScriptUnico\(['"]\/([^'"]+)['"]/g;
+  const regexListaScript = /\[\s*['"]([^'"]+\.js)['"]\s*,\s*['"][^'"]+['"]\s*\]/g;
+
+  for (const regex of [regexChamadaDireta, regexListaScript]) {
+    let match;
+    while ((match = regex.exec(config))) {
+      encontrados.add(match[1].replace(/^\//, ''));
+    }
   }
 
   for (const arquivo of encontrados) {
