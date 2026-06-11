@@ -1,0 +1,39 @@
+# Dependências
+node_modules/
+
+# Builds web / Capacitor
+www/
+dist/
+build/
+
+# Android / Gradle
+android/.gradle/
+android/app/build/
+android/build/
+*.apk
+*.aab
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Ambiente local
+.env
+.env.*
+!.env.example
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Certificados e chaves
+*.p12
+*.keystore
+*.jks
+*.pem
+*.key
