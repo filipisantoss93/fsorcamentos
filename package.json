@@ -4,7 +4,7 @@
   "description": "FS Orçamentos - plataforma de orçamentos e gestão de oficina.",
   "type": "module",
   "scripts": {
-    "check": "node -e \"console.log('FS Orçamentos: checagem simples concluída.')\"",
+    "check": "node scripts/validate-project.mjs",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "android:debug": "cd android && ./gradlew assembleDebug",
