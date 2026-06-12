@@ -130,6 +130,12 @@ const FS_CONFIG_CSS_POR_PAGINA = [
     estilos: [
       ['gerador.css', 'fs-gerador-css']
     ]
+  },
+  {
+    paginas: ['/orcamentos', '/orcamentos.html'],
+    estilos: [
+      ['orcamentos.css', 'fs-orcamentos-css']
+    ]
   }
 ];
 
