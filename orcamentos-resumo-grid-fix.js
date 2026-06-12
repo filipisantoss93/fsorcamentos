@@ -3,7 +3,8 @@
    Página orçamentos:
    - resumo financeiro em grid 2 blocos por linha;
    - lista compacta com Número, Cliente, Total e Status;
-   - linha clicável, sem botões de ação na tabela.
+   - linha clicável, sem botões de ação na tabela;
+   - botões do modal em linha cheia.
    ========================================================= */
 (function () {
   'use strict';
@@ -106,6 +107,62 @@
         font-weight: 900 !important;
         line-height: 1.1 !important;
         white-space: normal !important;
+      }
+
+      #modal-visualizar-orcamento .botoes-modal,
+      #modal-editar-orcamento .botoes-modal {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        width: 100% !important;
+        margin-top: 18px !important;
+      }
+
+      #modal-visualizar-orcamento .botoes-modal .btn-pequeno,
+      #modal-editar-orcamento .botoes-modal .btn-pequeno,
+      #modal-visualizar-orcamento .botoes-modal button,
+      #modal-editar-orcamento .botoes-modal button {
+        width: 100% !important;
+        min-height: 50px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 16px !important;
+        padding: 13px 16px !important;
+        font-size: 15px !important;
+        font-weight: 950 !important;
+        text-align: center !important;
+      }
+
+      #modal-visualizar-orcamento .botoes-modal .btn-cancelar,
+      #modal-editar-orcamento .botoes-modal .btn-cancelar {
+        order: 99 !important;
+      }
+
+      #modal-visualizar-orcamento .botoes-modal .btn-ver-link {
+        background: #ffffff !important;
+        color: var(--fs-marrom, #3e2723) !important;
+        border: 2px solid var(--fs-amarelo, #ffc400) !important;
+      }
+
+      #modal-visualizar-orcamento .botoes-modal .btn-whatsapp-orcamento {
+        background: #25d366 !important;
+        color: #063b1c !important;
+        border: 2px solid #1fb957 !important;
+      }
+
+      #modal-visualizar-orcamento .botoes-modal .btn-editar,
+      #modal-editar-orcamento .botoes-modal .btn-salvar-modal {
+        background: var(--fs-marrom, #3e2723) !important;
+        color: var(--fs-amarelo, #ffc400) !important;
+        border: 2px solid var(--fs-amarelo, #ffc400) !important;
+      }
+
+      #modal-visualizar-orcamento .botoes-modal .btn-excluir {
+        background: #dc2626 !important;
+        color: #ffffff !important;
+        border: 2px solid #b91c1c !important;
       }
 
       @media (max-width: 760px) {
