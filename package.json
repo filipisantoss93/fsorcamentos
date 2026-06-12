@@ -10,6 +10,7 @@
     "cleanup:orcamentos:named-styles": "node scripts/extract-orcamentos-named-styles.mjs",
     "cleanup:orcamentos:auth-inline": "node scripts/cleanup-orcamentos-auth-inline.mjs",
     "cleanup:orcamentos:head": "node scripts/cleanup-orcamentos-head-residue.mjs",
+    "cleanup:gerador:first-style": "node scripts/extract-gerador-first-style.mjs",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "android:debug": "cd android && ./gradlew assembleDebug",
