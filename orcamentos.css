@@ -1,0 +1,296 @@
+/* =========================================================
+   FS ORÇAMENTOS - orcamentos.css
+   Estilos específicos da página de histórico de orçamentos
+   ========================================================= */
+
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #2c1b17;
+  --fs-creme: #f4ece1;
+  --fs-creme-2: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-verde: #25d366;
+  --fs-vermelho: #dc2626;
+  --fs-azul: #2563eb;
+  --fs-borda: #e0d6c8;
+}
+
+body { padding-top: 118px; }
+
+#conteudo-protegido { min-height: calc(100vh - 118px); }
+#area-orcamentos-funcoes .container { padding-top: 12px; }
+#bloqueio-plano-gratis { padding-top: 12px; }
+
+.orcamentos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.orcamentos-header h1 { margin: 0; }
+
+.btn-novo-orcamento-topo {
+  background: var(--fs-amarelo);
+  color: var(--fs-marrom);
+  border: 2px solid var(--fs-marrom);
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+}
+
+.btn-novo-orcamento-topo:hover { background: #ffffff; }
+
+.filtro-flutuante {
+  position: sticky;
+  top: 76px;
+  z-index: 850;
+  background: rgba(244, 236, 225, 0.96);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--fs-borda);
+  border-left: 5px solid var(--fs-amarelo);
+  border-radius: 14px;
+  padding: 12px;
+  margin: 0 0 18px 0;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 190px;
+  flex: 1;
+}
+
+.filtro-grupo label {
+  font-size: 12px;
+  font-weight: 900;
+  color: #5d4037;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+
+.filtro-grupo select,
+.filtro-grupo input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d7ccc8;
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--fs-marrom);
+  font-weight: 700;
+  box-sizing: border-box;
+}
+
+.cards-resumo {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.card-resumo {
+  border-radius: 12px;
+  padding: 14px;
+  background: #f9f9f9;
+  border-left: 5px solid #d7ccc8;
+}
+
+.card-resumo strong {
+  display: block;
+  font-size: 12px;
+  color: #5d4037;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.card-resumo .valor-resumo {
+  display: block;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--fs-marrom);
+}
+
+.card-resumo small { color: #777777; }
+
+.card-pendente { border-left-color: #ffc107; background: #fff8e1; }
+.card-aprovado { border-left-color: #28a745; background: #eaf7ed; }
+.card-recusado { border-left-color: #dc3545; background: #fdecee; }
+.card-em-servico { border-left-color: #2563eb; background: #eff6ff; }
+.card-finalizado { border-left-color: #7c3aed; background: #f3e8ff; }
+.card-total { border-left-color: var(--fs-marrom); background: #efebe9; }
+
+.resumo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: var(--fs-marrom);
+  color: var(--fs-amarelo);
+  padding: 12px 16px;
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  margin-top: 18px;
+}
+
+.resumo-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--fs-amarelo);
+  border: none;
+  padding: 0;
+}
+
+.btn-toggle-resumo {
+  background: var(--fs-amarelo);
+  color: var(--fs-marrom);
+  border: none;
+  border-radius: 20px;
+  padding: 7px 12px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.resumo-financeiro.minimizado .resumo-conteudo { display: none; }
+
+.resumo-conteudo {
+  background: var(--fs-creme);
+  border: 1px solid #d7ccc8;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 15px;
+}
+
+.tabela-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabela-orcamentos {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 1100px;
+}
+
+.tabela-orcamentos th,
+.tabela-orcamentos td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.tabela-orcamentos th {
+  background: var(--fs-marrom);
+  color: var(--fs-amarelo);
+  text-transform: uppercase;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.linha-orcamento {
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.linha-orcamento:hover {
+  filter: brightness(0.97);
+  transform: translateY(-1px);
+}
+
+.linha-orcamento.status-pendente td { background: #fff8e1 !important; }
+.linha-orcamento.status-aprovado td { background: #eaf7ed !important; }
+.linha-orcamento.status-recusado td { background: #fff1f1 !important; }
+.linha-orcamento.status-em-servico td { background: #eff6ff !important; }
+.linha-orcamento.status-finalizado td { background: #f4ece1 !important; }
+
+.linha-orcamento.status-pendente td:first-child { border-left: 7px solid #ffc107 !important; }
+.linha-orcamento.status-aprovado td:first-child { border-left: 7px solid #28a745 !important; }
+.linha-orcamento.status-recusado td:first-child { border-left: 7px solid #dc2626 !important; }
+.linha-orcamento.status-em-servico td:first-child { border-left: 7px solid #2563eb !important; }
+.linha-orcamento.status-finalizado td:first-child { border-left: 7px solid #6d4c41 !important; }
+
+.status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.linha-orcamento .status {
+  background: rgba(255, 255, 255, 0.72) !important;
+  color: var(--fs-marrom) !important;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.status-pendente { background: #fff3cd; color: #856404; }
+.status-aprovado { background: #d4edda; color: #155724; }
+.status-recusado { background: #f8d7da; color: #721c24; }
+.status-em_servico { background: #dbeafe; color: #1e40af; }
+.status-finalizado { background: #ede9fe; color: #5b21b6; }
+
+.tag-pagamento {
+  display: inline-block;
+  background: #ffffff;
+  border: 1px solid #d7ccc8;
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #5d4037;
+  white-space: nowrap;
+}
+
+.tag-pagamento.vazio {
+  opacity: .65;
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .cards-resumo { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 850px) {
+  body { padding-top: 104px; }
+  #conteudo-protegido { min-height: calc(100vh - 104px); }
+  .cards-resumo { grid-template-columns: repeat(2, 1fr); }
+  .filtro-flutuante { top: 64px; }
+}
+
+@media (max-width: 700px) {
+  body { padding-top: 86px; }
+  #conteudo-protegido { min-height: calc(100vh - 86px); }
+  .filtro-flutuante {
+    top: 0;
+    align-items: stretch;
+  }
+  .resumo-header h2 { font-size: 15px; }
+  .btn-toggle-resumo { font-size: 12px; padding: 6px 10px; }
+}
+
+@media (max-width: 520px) {
+  .cards-resumo { grid-template-columns: 1fr; }
+  .tabela-orcamentos { min-width: 1050px; }
+}
