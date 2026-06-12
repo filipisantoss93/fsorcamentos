@@ -13,6 +13,7 @@
     "cleanup:gerador:first-style": "node scripts/extract-gerador-first-style.mjs",
     "cleanup:ordem:first-style": "node scripts/extract-ordem-first-style.mjs",
     "cleanup:painel:first-style": "node scripts/extract-painel-first-style.mjs",
+    "cleanup:estoque:first-style": "node scripts/extract-estoque-first-style.mjs",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "android:debug": "cd android && ./gradlew assembleDebug",
