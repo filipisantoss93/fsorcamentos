@@ -24,6 +24,7 @@
     "cleanup:clientes:first-style": "node scripts/extract-clientes-first-style.mjs",
     "cleanup:ordens:first-style": "node scripts/extract-ordens-first-style.mjs",
     "cleanup:veiculos:first-style": "node scripts/extract-veiculos-first-style.mjs",
+    "cleanup:ver:first-style": "node scripts/extract-ver-first-style.mjs",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "android:debug": "cd android && ./gradlew assembleDebug",
