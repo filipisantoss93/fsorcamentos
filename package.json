@@ -6,6 +6,7 @@
   "scripts": {
     "check": "node scripts/validate-project.mjs",
     "audit": "node scripts/audit-project.mjs",
+    "cleanup:orcamentos:first-style": "node scripts/remove-orcamentos-first-style.mjs",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "android:debug": "cd android && ./gradlew assembleDebug",
