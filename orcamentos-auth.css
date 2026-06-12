@@ -1,0 +1,83 @@
+/* =========================================================
+   FS ORÇAMENTOS - orcamentos-auth.css
+   Login/cadastro protegido da página de orçamentos
+   ========================================================= */
+
+.auth-area-orcamentos {
+  display: none;
+  max-width: 380px;
+  margin: 45px auto;
+  font-family: sans-serif;
+}
+
+.auth-container-orcamentos {
+  padding: 22px;
+  border: 1px solid #e0d6c8;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.auth-titulo-orcamentos {
+  margin-top: 0;
+  text-align: center;
+  color: #ffc400;
+}
+
+.auth-campo-orcamentos {
+  margin-bottom: 15px;
+}
+
+.auth-campo-orcamentos.oculto {
+  display: none;
+}
+
+.auth-campo-confirmar-orcamentos {
+  margin-bottom: 20px;
+}
+
+.auth-campo-orcamentos label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #666666;
+}
+
+.auth-campo-orcamentos input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+.btn-principal-orcamentos {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.auth-alternar-orcamentos {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.auth-alternar-orcamentos a {
+  font-size: 13px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.conteudo-protegido-orcamentos {
+  display: none;
+}
+
+.upgrade-acoes-orcamentos {
+  margin-top: 22px;
+}
