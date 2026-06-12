@@ -195,7 +195,8 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
     paginas: ['/orcamentos', '/orcamentos.html'],
     scripts: [
       ['orcamentos-pdf.js', 'fs-orcamentos-pdf-js'],
-      ['orcamentos-resumo-grid-fix.js', 'fs-orcamentos-resumo-grid-fix-js']
+      ['orcamentos-resumo-grid-fix.js', 'fs-orcamentos-resumo-grid-fix-js'],
+      ['orcamentos-modal-buttons-fix.js', 'fs-orcamentos-modal-buttons-fix-js']
     ]
   },
   {
