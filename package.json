@@ -11,6 +11,7 @@
     "cleanup:orcamentos:auth-inline": "node scripts/cleanup-orcamentos-auth-inline.mjs",
     "cleanup:orcamentos:head": "node scripts/cleanup-orcamentos-head-residue.mjs",
     "cleanup:gerador:first-style": "node scripts/extract-gerador-first-style.mjs",
+    "cleanup:gerador:named-styles": "node scripts/extract-gerador-named-styles.mjs",
     "cleanup:ordem:first-style": "node scripts/extract-ordem-first-style.mjs",
     "cleanup:ordem:named-styles": "node scripts/extract-ordem-named-styles.mjs",
     "cleanup:painel:first-style": "node scripts/extract-painel-first-style.mjs",
