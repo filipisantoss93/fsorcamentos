@@ -17,6 +17,7 @@
     "cleanup:estoque:first-style": "node scripts/extract-estoque-first-style.mjs",
     "cleanup:planos:first-style": "node scripts/extract-planos-first-style.mjs",
     "cleanup:sobre:first-style": "node scripts/extract-sobre-first-style.mjs",
+    "cleanup:exemplos:first-style": "node scripts/extract-exemplos-first-style.mjs",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "android:debug": "cd android && ./gradlew assembleDebug",
