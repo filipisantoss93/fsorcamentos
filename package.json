@@ -20,6 +20,7 @@
     "cleanup:exemplos:first-style": "node scripts/extract-exemplos-first-style.mjs",
     "cleanup:contato:first-style": "node scripts/extract-contato-first-style.mjs",
     "cleanup:clientes:first-style": "node scripts/extract-clientes-first-style.mjs",
+    "cleanup:ordens:first-style": "node scripts/extract-ordens-first-style.mjs",
     "cap:add:android": "npx cap add android",
     "cap:sync": "npx cap sync android",
     "android:debug": "cd android && ./gradlew assembleDebug",
