@@ -1,6 +1,9 @@
 /* =========================================================
    FS ORÇAMENTOS - orcamentos-resumo-grid-fix.js
-   Página orçamentos: resumo financeiro em grid 2 blocos por linha.
+   Página orçamentos:
+   - resumo financeiro em grid 2 blocos por linha;
+   - lista compacta com Número, Cliente, Total e Status;
+   - linha clicável, sem botões de ação na tabela.
    ========================================================= */
 (function () {
   'use strict';
@@ -50,6 +53,91 @@
         line-height: 1.25 !important;
       }
 
+      #lista-orcamentos .tabela-wrapper {
+        width: 100% !important;
+        overflow-x: visible !important;
+        border-radius: 16px !important;
+      }
+
+      #lista-orcamentos .tabela-orcamentos {
+        width: 100% !important;
+        min-width: 0 !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+      }
+
+      #lista-orcamentos .tabela-orcamentos th,
+      #lista-orcamentos .tabela-orcamentos td {
+        padding: 10px 8px !important;
+        line-height: 1.2 !important;
+        vertical-align: middle !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+      }
+
+      #lista-orcamentos .tabela-orcamentos th {
+        font-size: 12px !important;
+        text-transform: uppercase !important;
+        letter-spacing: .2px !important;
+      }
+
+      #lista-orcamentos .tabela-orcamentos td {
+        font-size: 13px !important;
+      }
+
+      #lista-orcamentos .tabela-orcamentos tr.linha-orcamento {
+        min-height: 0 !important;
+        cursor: pointer !important;
+      }
+
+      #lista-orcamentos .tabela-orcamentos tr.linha-orcamento:hover {
+        filter: brightness(.98) !important;
+      }
+
+      #lista-orcamentos .status {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        max-width: 100% !important;
+        min-height: 26px !important;
+        padding: 5px 8px !important;
+        border-radius: 999px !important;
+        font-size: 11px !important;
+        font-weight: 900 !important;
+        line-height: 1.1 !important;
+        white-space: normal !important;
+      }
+
+      @media (max-width: 760px) {
+        #lista-orcamentos .tabela-orcamentos th,
+        #lista-orcamentos .tabela-orcamentos td {
+          padding: 8px 6px !important;
+          font-size: 12px !important;
+        }
+
+        #lista-orcamentos .tabela-orcamentos th:nth-child(1),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(1) {
+          width: 23% !important;
+        }
+
+        #lista-orcamentos .tabela-orcamentos th:nth-child(2),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(2) {
+          width: 34% !important;
+        }
+
+        #lista-orcamentos .tabela-orcamentos th:nth-child(3),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(3) {
+          width: 21% !important;
+          text-align: right !important;
+        }
+
+        #lista-orcamentos .tabela-orcamentos th:nth-child(4),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(4) {
+          width: 22% !important;
+          text-align: center !important;
+        }
+      }
+
       @media (max-width: 420px) {
         body .resumo-financeiro .cards-resumo,
         body .cards-resumo {
@@ -66,14 +154,122 @@
         body .cards-resumo .card-resumo .valor-resumo {
           font-size: 18px !important;
         }
+
+        #lista-orcamentos .tabela-orcamentos th,
+        #lista-orcamentos .tabela-orcamentos td {
+          padding: 7px 5px !important;
+          font-size: 11px !important;
+        }
+
+        #lista-orcamentos .status {
+          padding: 4px 6px !important;
+          font-size: 10px !important;
+        }
       }
     `;
 
     document.head.appendChild(style);
   }
 
+  function moeda(valor) {
+    if (typeof window.formatarMoeda === 'function') return window.formatarMoeda(valor);
+    return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function esc(valor) {
+    if (typeof window.escaparHtml === 'function') return window.escaparHtml(valor);
+    return String(valor || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function numero(orcamento) {
+    if (typeof window.numeroOrcamentoFormatado === 'function') return window.numeroOrcamentoFormatado(orcamento);
+    const n = orcamento?.numero_orcamento || orcamento?.numero || '';
+    return n ? `Nº ${String(n).padStart(6, '0')}` : '-';
+  }
+
+  function statusTexto(status) {
+    if (typeof window.statusLabel === 'function') return window.statusLabel(status);
+    const mapa = { pendente: 'Pendente', aprovado: 'Aprovado', recusado: 'Recusado', em_servico: 'Em serviço', finalizado: 'Finalizado' };
+    return mapa[status] || status || 'Pendente';
+  }
+
+  function statusClasse(status) {
+    if (typeof window.classeStatus === 'function') return window.classeStatus(status);
+    return String(status || 'pendente').replace(/[^a-zA-Z0-9_-]/g, '');
+  }
+
+  function linhaClasse(status) {
+    if (typeof window.classeLinhaPorStatus === 'function') return window.classeLinhaPorStatus(status);
+    return `status-${status || 'pendente'}`;
+  }
+
+  function renderizarTabelaCompacta(orcamentos) {
+    const lista = document.getElementById('lista-orcamentos');
+    if (!lista) return;
+
+    if (!orcamentos || orcamentos.length === 0) {
+      lista.innerHTML = '<div class="msg-vazia">Nenhum orçamento encontrado neste filtro.</div>';
+      return;
+    }
+
+    let html = `
+      <div class="tabela-wrapper tabela-orcamentos-compacta">
+        <table class="tabela-orcamentos">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Cliente</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    orcamentos.forEach((orcamento) => {
+      const id = orcamento.id;
+      const clienteNome = orcamento.cliente_nome || 'Não informado';
+      const total = orcamento.total || 0;
+      const status = orcamento.status || 'pendente';
+
+      html += `
+        <tr class="linha-orcamento ${linhaClasse(status)}" onclick="abrirModalVisualizar('${esc(id)}')" title="Toque para abrir o orçamento">
+          <td><strong>${esc(numero(orcamento))}</strong></td>
+          <td>${esc(clienteNome)}</td>
+          <td><strong>${moeda(total)}</strong></td>
+          <td><span class="status status-${statusClasse(status)}">${esc(statusTexto(status))}</span></td>
+        </tr>
+      `;
+    });
+
+    html += `
+          </tbody>
+        </table>
+      </div>
+    `;
+
+    lista.innerHTML = html;
+  }
+
+  function instalarOverrideTabela() {
+    window.renderizarTabelaOrcamentos = renderizarTabelaCompacta;
+
+    if (Array.isArray(window.orcamentosCache) && window.orcamentosCache.length) {
+      renderizarTabelaCompacta(window.orcamentosCache);
+    }
+  }
+
   function iniciar() {
     injetarEstilo();
+    instalarOverrideTabela();
+    setTimeout(instalarOverrideTabela, 300);
+    setTimeout(instalarOverrideTabela, 900);
+    setTimeout(instalarOverrideTabela, 1800);
   }
 
   if (document.readyState === 'loading') {
