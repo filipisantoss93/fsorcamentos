@@ -24,7 +24,6 @@
       --fs-marrom: #3e2723;
       --fs-marrom-2: #2c1b17;
       --fs-creme: #f4ece1;
-      --fs-creme-2: #fffaf0;
       --fs-amarelo: #ffc400;
       --fs-verde: #16a34a;
       --fs-azul: #2563eb;
@@ -36,16 +35,12 @@
       --fs-card: #ffffff;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       min-height: 100vh;
       margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-        linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+      background: radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%), linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
       color: var(--fs-texto);
       overflow-x: hidden;
     }
@@ -95,10 +90,7 @@
     }
 
     .dashboard-hero-info,
-    .dashboard-hero-acoes {
-      position: relative;
-      z-index: 1;
-    }
+    .dashboard-hero-acoes { position: relative; z-index: 1; }
 
     .dashboard-tag {
       display: inline-flex;
@@ -154,23 +146,9 @@
       text-align: center;
     }
 
-    .dashboard-btn {
-      background: var(--fs-marrom);
-      color: var(--fs-amarelo);
-      border-color: var(--fs-amarelo);
-    }
-
-    .dashboard-btn-secundario {
-      background: #ffffff;
-      color: var(--fs-marrom);
-      border-color: var(--fs-borda);
-    }
-
-    .dashboard-btn-whatsapp {
-      background: #25d366;
-      color: #083b2f;
-      border-color: #128c4a;
-    }
+    .dashboard-btn { background: var(--fs-marrom); color: var(--fs-amarelo); border-color: var(--fs-amarelo); }
+    .dashboard-btn-secundario { background: #ffffff; color: var(--fs-marrom); border-color: var(--fs-borda); }
+    .dashboard-btn-whatsapp { background: #25d366; color: #083b2f; border-color: #128c4a; }
 
     .dashboard-btn:hover,
     .dashboard-btn-secundario:hover,
@@ -181,7 +159,7 @@
 
     .dashboard-grid-metricas {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
       margin-bottom: 22px;
     }
@@ -232,10 +210,7 @@
       align-items: start;
     }
 
-    .dashboard-coluna {
-      display: grid;
-      gap: 18px;
-    }
+    .dashboard-coluna { display: grid; gap: 18px; }
 
     .dashboard-card {
       background: var(--fs-creme);
@@ -245,11 +220,7 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.24);
     }
 
-    .dashboard-card.branco {
-      background: #ffffff;
-      border: 1px solid var(--fs-borda);
-      border-top: 6px solid var(--fs-amarelo);
-    }
+    .dashboard-card.branco { background: #ffffff; border: 1px solid var(--fs-borda); border-top: 6px solid var(--fs-amarelo); }
 
     .dashboard-card-topo {
       display: flex;
@@ -260,11 +231,7 @@
     }
 
     .dashboard-card h2,
-    .dashboard-card h3 {
-      margin: 0;
-      color: var(--fs-marrom);
-      line-height: 1.2;
-    }
+    .dashboard-card h3 { margin: 0; color: var(--fs-marrom); line-height: 1.2; }
 
     .dashboard-card p {
       margin: 7px 0 0;
@@ -273,7 +240,8 @@
       font-weight: 650;
     }
 
-    .dashboard-mini-grid {
+    .dashboard-mini-grid,
+    .dashboard-acoes-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
@@ -295,21 +263,9 @@
       text-transform: uppercase;
     }
 
-    .dashboard-mini-card strong {
-      color: var(--fs-marrom);
-      font-size: 22px;
-    }
+    .dashboard-mini-card strong { color: var(--fs-marrom); font-size: 22px; }
 
-    .dashboard-acoes-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .dashboard-lista {
-      display: grid;
-      gap: 10px;
-    }
+    .dashboard-lista { display: grid; gap: 10px; }
 
     .dashboard-lista-item {
       display: grid;
@@ -324,11 +280,7 @@
       color: var(--fs-marrom);
     }
 
-    .dashboard-lista-item strong {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--fs-marrom);
-    }
+    .dashboard-lista-item strong { display: block; margin-bottom: 4px; color: var(--fs-marrom); }
 
     .dashboard-lista-item span {
       display: block;
@@ -371,15 +323,8 @@
       border: 1px solid rgba(255,196,0,0.55);
     }
 
-    .dashboard-premium-box h3 {
-      color: var(--fs-amarelo);
-      margin: 0 0 8px;
-    }
-
-    .dashboard-premium-box p {
-      color: #f4ece1;
-      margin: 0 0 14px;
-    }
+    .dashboard-premium-box h3 { color: var(--fs-amarelo); margin: 0 0 8px; }
+    .dashboard-premium-box p { color: #f4ece1; margin: 0 0 14px; }
 
     .dashboard-footer {
       margin-top: 34px;
@@ -389,57 +334,84 @@
       font-size: 14px;
     }
 
-    .dashboard-footer a {
-      color: var(--fs-amarelo);
-      font-weight: 900;
-      text-decoration: none;
-    }
-
-    .dashboard-footer a:hover {
-      text-decoration: underline;
-    }
+    .dashboard-footer a { color: var(--fs-amarelo); font-weight: 900; text-decoration: none; }
+    .dashboard-footer a:hover { text-decoration: underline; }
 
     @media (max-width: 980px) {
       .dashboard-hero,
-      .dashboard-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .dashboard-grid-metricas {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .dashboard-hero-acoes {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+      .dashboard-layout { grid-template-columns: 1fr; }
+      .dashboard-hero-acoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 640px) {
-      .dashboard-page {
-        width: min(100% - 18px, 1180px);
-        padding-top: 16px;
-      }
+      .dashboard-page { width: min(100% - 12px, 1180px); padding-top: 14px; }
 
       .dashboard-hero,
-      .dashboard-card {
-        border-radius: 18px;
-        padding: 17px;
-      }
+      .dashboard-card { border-radius: 18px; padding: 15px; }
+
+      .dashboard-hero { gap: 14px; }
+      .dashboard-hero h1 { font-size: clamp(24px, 8vw, 31px); }
+      .dashboard-hero p { font-size: 13px; line-height: 1.45; }
 
       .dashboard-grid-metricas,
       .dashboard-mini-grid,
       .dashboard-acoes-grid,
       .dashboard-hero-acoes {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
       }
 
-      .dashboard-lista-item {
-        grid-template-columns: 1fr;
+      .dashboard-metrica-card {
+        min-height: 104px;
+        padding: 12px 10px;
+        border-radius: 14px;
+        border-left-width: 5px;
+      }
+
+      .dashboard-metrica-card span,
+      .dashboard-mini-card span {
+        font-size: 10px;
+        line-height: 1.15;
+        margin-bottom: 7px;
       }
 
       .dashboard-metrica-card strong {
-        font-size: 25px;
+        font-size: clamp(18px, 5.5vw, 24px);
+        word-break: break-word;
+        line-height: 1.08;
       }
+
+      .dashboard-metrica-card small {
+        font-size: 10.5px;
+        line-height: 1.22;
+      }
+
+      .dashboard-mini-card {
+        padding: 11px 9px;
+        border-radius: 13px;
+      }
+
+      .dashboard-mini-card strong {
+        font-size: clamp(15px, 4.8vw, 20px);
+        word-break: break-word;
+        line-height: 1.1;
+      }
+
+      .dashboard-btn,
+      .dashboard-btn-secundario,
+      .dashboard-btn-whatsapp {
+        min-height: 40px;
+        padding: 9px 8px;
+        font-size: 12px;
+        border-radius: 10px;
+      }
+
+      .dashboard-card-topo {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .dashboard-lista-item { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -448,19 +420,14 @@
   <div id="header-container"></div>
 
   <main id="dashboard-conteudo" class="dashboard-page" style="display:none;">
-    <div id="dashboard-loading" class="dashboard-loading">
-      Carregando Dashboard...
-    </div>
-
+    <div id="dashboard-loading" class="dashboard-loading">Carregando Dashboard...</div>
     <div id="dashboard-alerta" class="dashboard-alerta" style="display:none;"></div>
 
     <section class="dashboard-hero">
       <div class="dashboard-hero-info">
         <span class="dashboard-tag">📊 Dashboard</span>
         <h1 id="dashboard-titulo">Central da sua gestão</h1>
-        <p id="dashboard-subtitulo">
-          Acompanhe orçamentos, clientes, ordens de serviço e indicadores importantes do FS Orçamentos em uma visão única.
-        </p>
+        <p id="dashboard-subtitulo">Acompanhe orçamentos, clientes, ordens de serviço e indicadores importantes do FS Orçamentos em uma visão única.</p>
       </div>
 
       <div class="dashboard-hero-acoes">
@@ -470,53 +437,14 @@
     </section>
 
     <section class="dashboard-grid-metricas" aria-label="Indicadores principais">
-      <div class="dashboard-metrica-card azul">
-        <span>Orçamentos</span>
-        <strong id="dash-total-orcamentos">0</strong>
-        <small>Total registrado na conta</small>
-      </div>
-
-      <div class="dashboard-metrica-card verde">
-        <span>Aprovados</span>
-        <strong id="dash-orcamentos-aprovados">0</strong>
-        <small>Propostas aprovadas ou em serviço</small>
-      </div>
-
-      <div class="dashboard-metrica-card laranja">
-        <span>Pendentes</span>
-        <strong id="dash-orcamentos-pendentes">0</strong>
-        <small>Aguardando retorno do cliente</small>
-      </div>
-
-      <div class="dashboard-metrica-card verde">
-        <span>Total aprovado</span>
-        <strong id="dash-valor-aprovado">R$ 0,00</strong>
-        <small>Soma dos orçamentos aprovados</small>
-      </div>
-
-      <div class="dashboard-metrica-card">
-        <span>Clientes</span>
-        <strong id="dash-total-clientes">0</strong>
-        <small>Base de clientes cadastrados</small>
-      </div>
-
-      <div class="dashboard-metrica-card azul">
-        <span>OS abertas</span>
-        <strong id="dash-os-abertas">0</strong>
-        <small>Ordens aguardando execução</small>
-      </div>
-
-      <div class="dashboard-metrica-card verde">
-        <span>OS concluídas</span>
-        <strong id="dash-os-concluidas">0</strong>
-        <small>Serviços finalizados</small>
-      </div>
-
-      <div class="dashboard-metrica-card vermelho">
-        <span>Estoque baixo</span>
-        <strong id="dash-estoque-baixo">0</strong>
-        <small>Itens abaixo do mínimo</small>
-      </div>
+      <div class="dashboard-metrica-card azul"><span>Orçamentos</span><strong id="dash-total-orcamentos">0</strong><small>Total registrado na conta</small></div>
+      <div class="dashboard-metrica-card verde"><span>Aprovados</span><strong id="dash-orcamentos-aprovados">0</strong><small>Propostas aprovadas ou em serviço</small></div>
+      <div class="dashboard-metrica-card laranja"><span>Pendentes</span><strong id="dash-orcamentos-pendentes">0</strong><small>Aguardando retorno do cliente</small></div>
+      <div class="dashboard-metrica-card verde"><span>Total aprovado</span><strong id="dash-valor-aprovado">R$ 0,00</strong><small>Soma dos orçamentos aprovados</small></div>
+      <div class="dashboard-metrica-card"><span>Clientes</span><strong id="dash-total-clientes">0</strong><small>Base de clientes cadastrados</small></div>
+      <div class="dashboard-metrica-card azul"><span>OS abertas</span><strong id="dash-os-abertas">0</strong><small>Ordens aguardando execução</small></div>
+      <div class="dashboard-metrica-card verde"><span>OS concluídas</span><strong id="dash-os-concluidas">0</strong><small>Serviços finalizados</small></div>
+      <div class="dashboard-metrica-card vermelho"><span>Estoque baixo</span><strong id="dash-estoque-baixo">0</strong><small>Itens abaixo do mínimo</small></div>
     </section>
 
     <section class="dashboard-layout">
@@ -531,25 +459,10 @@
           </div>
 
           <div class="dashboard-mini-grid">
-            <div class="dashboard-mini-card">
-              <span>Valor pendente</span>
-              <strong id="dash-valor-pendente">R$ 0,00</strong>
-            </div>
-
-            <div class="dashboard-mini-card">
-              <span>Valor recusado</span>
-              <strong id="dash-valor-recusado">R$ 0,00</strong>
-            </div>
-
-            <div class="dashboard-mini-card">
-              <span>Ticket médio</span>
-              <strong id="dash-ticket-medio">R$ 0,00</strong>
-            </div>
-
-            <div class="dashboard-mini-card">
-              <span>Taxa de aprovação</span>
-              <strong id="dash-taxa-aprovacao">0%</strong>
-            </div>
+            <div class="dashboard-mini-card"><span>Valor pendente</span><strong id="dash-valor-pendente">R$ 0,00</strong></div>
+            <div class="dashboard-mini-card"><span>Valor recusado</span><strong id="dash-valor-recusado">R$ 0,00</strong></div>
+            <div class="dashboard-mini-card"><span>Ticket médio</span><strong id="dash-ticket-medio">R$ 0,00</strong></div>
+            <div class="dashboard-mini-card"><span>Taxa de aprovação</span><strong id="dash-taxa-aprovacao">0%</strong></div>
           </div>
         </article>
 
@@ -561,10 +474,7 @@
             </div>
             <a href="/orcamentos.html" class="dashboard-btn-secundario">Ver todos</a>
           </div>
-
-          <div id="dashboard-lista-orcamentos" class="dashboard-lista">
-            <div class="dashboard-vazio">Nenhum orçamento carregado ainda.</div>
-          </div>
+          <div id="dashboard-lista-orcamentos" class="dashboard-lista"><div class="dashboard-vazio">Nenhum orçamento carregado ainda.</div></div>
         </article>
 
         <article class="dashboard-card branco">
@@ -575,10 +485,7 @@
             </div>
             <a href="/ordens.html" class="dashboard-btn-secundario">Ver OS</a>
           </div>
-
-          <div id="dashboard-lista-os" class="dashboard-lista">
-            <div class="dashboard-vazio">Nenhuma ordem de serviço carregada ainda.</div>
-          </div>
+          <div id="dashboard-lista-os" class="dashboard-lista"><div class="dashboard-vazio">Nenhuma ordem de serviço carregada ainda.</div></div>
         </article>
       </div>
 
@@ -590,7 +497,6 @@
               <p>Atalhos para as principais rotinas.</p>
             </div>
           </div>
-
           <div class="dashboard-acoes-grid">
             <a href="/gerador.html" class="dashboard-btn">Orçamento</a>
             <a href="/clientes.html" class="dashboard-btn-secundario">Cliente</a>
@@ -609,17 +515,12 @@
             </div>
             <a href="/clientes.html" class="dashboard-btn-secundario">Abrir</a>
           </div>
-
-          <div id="dashboard-lista-clientes" class="dashboard-lista">
-            <div class="dashboard-vazio">Nenhum cliente carregado ainda.</div>
-          </div>
+          <div id="dashboard-lista-clientes" class="dashboard-lista"><div class="dashboard-vazio">Nenhum cliente carregado ainda.</div></div>
         </article>
 
         <article id="dashboard-premium-box" class="dashboard-premium-box">
           <h3>Gestão Premium</h3>
-          <p id="dashboard-premium-texto">
-            Clientes, ordens de serviço, veículos, estoque, agenda e relatórios avançados fazem parte da evolução Premium.
-          </p>
+          <p id="dashboard-premium-texto">Clientes, ordens de serviço, veículos, estoque, agenda e relatórios avançados fazem parte da evolução Premium.</p>
           <a href="/planos.html" class="dashboard-btn">Ver planos</a>
         </article>
       </aside>
