@@ -36,6 +36,31 @@
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
+  <style id="fs-home-adsense-review-cleanup">
+    body:not(.gerando-pdf) #home-publica .bloco-anuncio,
+    body:not(.gerando-pdf) #home-publica .ad-area,
+    body:not(.gerando-pdf) #home-publica .adsbygoogle,
+    body:not(.gerando-pdf) #home-publica .adsense-label,
+    body:not(.gerando-pdf) #home-publica .fs-adsense-zone,
+    body:not(.gerando-pdf) #home-publica [aria-label="Publicidade"],
+    body:not(.gerando-pdf) #home-publica [id*="adsense"],
+    body:not(.gerando-pdf) #home-publica [class*="adsense"],
+    body:not(.gerando-pdf) #home-publica [id*="anuncio"],
+    body:not(.gerando-pdf) #home-publica [class*="anuncio"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      max-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      overflow: hidden !important;
+      pointer-events: none !important;
+    }
+  </style>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
