@@ -39,9 +39,12 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
+    "@type": "SoftwareApplication",
     "name": "FS Orçamentos",
-    "url": "https://fsorcamentos.com.br/"
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "url": "https://fsorcamentos.com.br/",
+    "description": "Plataforma para criar orçamentos profissionais em PDF, organizar propostas e apoiar a rotina de prestadores de serviço."
   }
   </script>
 
@@ -129,20 +132,11 @@
   </div>
 
   <main id="home-publica" class="home-publica">
-    <section class="teste-premium-inline-card teste-premium-topo" id="box-teste-premium-index">
-      <div>
-        <h3>Teste Premium grátis por 7 dias</h3>
-        <p>Disponível para usuários do Plano Grátis e Básico. Experimente clientes, veículos, OS, estoque e gestão completa.</p>
-        <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
-      </div>
-      <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>Verificando...</button>
-    </section>
-
     <section id="home-plano-gratis" class="home-visao-plano ativo">
       <div class="home-plano-hero">
-        <span class="home-plano-tag">Plano Grátis</span>
-        <h1>Gere seu orçamento em PDF agora, rápido e profissional.</h1>
-        <p>No Plano Grátis você cria a prévia, baixa o PDF e usa a plataforma com anúncios. É perfeito para começar sem custo e testar o FS Orçamentos na prática.</p>
+        <span class="home-plano-tag">Gerador de orçamento profissional</span>
+        <h1>Crie orçamento em PDF com aparência profissional em poucos minutos.</h1>
+        <p>O FS Orçamentos ajuda MEIs, oficinas e prestadores de serviço a montar propostas organizadas, com dados da empresa, cliente, itens, observações, total e visual confiável para enviar ao cliente.</p>
 
         <div class="home-plano-acoes">
           <button type="button" class="btn-home-grande" onclick="abrirGeradorHomeProtegido()">🧾 Gerar orçamento grátis</button>
@@ -152,53 +146,61 @@
         <div id="index-aviso-login" class="index-aviso-login">Faça login ou crie sua conta para acessar o gerador de orçamento.</div>
       </div>
 
-      <div id="adsense-gratis-topo" class="bloco-anuncio fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
-        <span class="adsense-label">Publicidade</span>
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5628949951885077" data-ad-slot="1739813454" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      </div>
-
       <section class="home-story-section">
         <div class="home-section-topo">
           <span class="home-section-tag">Como funciona</span>
-          <h2>Comece pelo PDF e evolua para gestão quando precisar</h2>
-          <p>O FS Orçamentos foi pensado para acompanhar o crescimento do seu negócio: primeiro você gera um PDF profissional, depois passa a controlar status, aprovação online, clientes, veículos, ordens de serviço e estoque.</p>
+          <h2>Do preenchimento ao PDF pronto para enviar</h2>
+          <p>A plataforma organiza as principais informações de uma proposta comercial em uma estrutura simples: dados do cliente, descrição dos serviços, produtos, quantidades, valores, condições e observações. Depois, o usuário gera um PDF com aparência mais profissional do que uma mensagem comum enviada no WhatsApp.</p>
         </div>
 
         <div class="home-passos-grid">
-          <div class="home-passo-card"><strong>1</strong><h3>Preencha os dados</h3><p>Informe cliente, itens, valores, observações e condições do orçamento.</p></div>
-          <div class="home-passo-card"><strong>2</strong><h3>Gere o PDF</h3><p>No Grátis, você já baixa um orçamento profissional com a identidade da sua empresa.</p></div>
-          <div class="home-passo-card"><strong>3</strong><h3>Ative a gestão</h3><p>No Básico ou Premium, você salva, acompanha, envia link e organiza sua rotina.</p></div>
+          <div class="home-passo-card"><strong>1</strong><h3>Informe os dados</h3><p>Preencha empresa, cliente, serviços, produtos, valores, validade da proposta e condições de pagamento.</p></div>
+          <div class="home-passo-card"><strong>2</strong><h3>Revise a proposta</h3><p>Confira o resumo antes de enviar, evitando erros de digitação, valores incompletos ou informações soltas.</p></div>
+          <div class="home-passo-card"><strong>3</strong><h3>Gere o PDF</h3><p>Baixe um documento organizado para apresentar ao cliente com mais clareza e profissionalismo.</p></div>
         </div>
       </section>
-    </section>
 
-    <section id="home-plano-basico" class="home-visao-plano">
-      <div class="home-basico-dashboard">
-        <span class="home-plano-tag">Plano Básico ativo</span>
-        <h1>Dashboard de orçamentos</h1>
-        <p>Acompanhe seus orçamentos salvos, pendentes, aprovados e o valor convertido em vendas.</p>
-
-        <div class="home-basico-metricas">
-          <div class="home-basico-card"><span>Total</span><strong id="home-basico-total">0</strong><small>Orçamentos salvos</small></div>
-          <div class="home-basico-card"><span>Pendentes</span><strong id="home-basico-pendentes">0</strong><small>Aguardando cliente</small></div>
-          <div class="home-basico-card"><span>Aprovados</span><strong id="home-basico-aprovados">0</strong><small>Propostas aceitas</small></div>
-          <div class="home-basico-card"><span>Valor aprovado</span><strong id="home-basico-valor">R$ 0,00</strong><small>Potencial convertido</small></div>
+      <section class="home-story-section">
+        <div class="home-section-topo">
+          <span class="home-section-tag">Para quem serve</span>
+          <h2>Uma ferramenta para quem precisa vender serviço com clareza</h2>
+          <p>O FS Orçamentos foi criado para profissionais que precisam apresentar valores de forma objetiva, sem depender de textos improvisados. Ele pode ser usado por oficinas mecânicas, eletricistas, encanadores, instaladores, técnicos, autônomos, pequenos comércios e prestadores de serviço em geral.</p>
         </div>
 
-        <div class="home-basico-acoes">
-          <button type="button" class="btn-home-medio" onclick="abrirGeradorHomeProtegido()">🧾 Novo orçamento</button>
-          <a href="/orcamentos.html" class="btn-home-atalho">Abrir orçamentos</a>
-          <a href="/planos.html#assinar-plano-premium" class="btn-home-atalho">Conhecer Premium</a>
+        <div class="home-passos-grid">
+          <div class="home-passo-card"><strong>MEI</strong><h3>Mais organização</h3><p>Ajuda a padronizar propostas e transmitir mais confiança mesmo em negócios pequenos ou recém-iniciados.</p></div>
+          <div class="home-passo-card"><strong>Oficinas</strong><h3>Peças e mão de obra</h3><p>Permite separar itens, serviços, observações e totais para reduzir dúvidas no fechamento.</p></div>
+          <div class="home-passo-card"><strong>Serviços</strong><h3>Proposta documentada</h3><p>Facilita registrar escopo, preço, prazo e condições antes de iniciar o atendimento.</p></div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="home-plano-premium" class="home-visao-plano">
-      <div class="home-plano-hero">
-        <span class="home-plano-tag">Plano Premium</span>
-        <h1>Carregando dashboard da oficina...</h1>
-        <p>OSs, orçamentos, clientes, veículos, estoque e faturamento aparecem aqui para usuários Premium.</p>
-      </div>
+      <section class="home-story-section">
+        <div class="home-section-topo">
+          <span class="home-section-tag">Benefícios</span>
+          <h2>Por que usar um orçamento profissional?</h2>
+          <p>Um orçamento bem apresentado melhora a comunicação com o cliente, reduz mal-entendidos e ajuda o profissional a demonstrar valor. Em vez de enviar apenas uma lista solta de preços, o documento reúne as informações essenciais em formato mais claro e fácil de consultar.</p>
+        </div>
+
+        <div class="home-passos-grid">
+          <div class="home-passo-card"><strong>✓</strong><h3>Clareza</h3><p>O cliente entende melhor o que está sendo cobrado e quais itens fazem parte da proposta.</p></div>
+          <div class="home-passo-card"><strong>✓</strong><h3>Confiança</h3><p>Um PDF organizado passa mais seriedade do que mensagens informais ou prints de conversa.</p></div>
+          <div class="home-passo-card"><strong>✓</strong><h3>Controle</h3><p>Planos pagos permitem evoluir para histórico, status, clientes, veículos e gestão operacional.</p></div>
+        </div>
+      </section>
+
+      <section class="home-story-section">
+        <div class="home-section-topo">
+          <span class="home-section-tag">Segurança e transparência</span>
+          <h2>Dados, privacidade e responsabilidade</h2>
+          <p>O FS Orçamentos possui páginas públicas de Termos de Uso, Política de Privacidade e Contato para explicar como a plataforma funciona, quais dados podem ser informados e como o usuário pode solicitar suporte. O objetivo é oferecer uma ferramenta simples, transparente e adequada para uso profissional.</p>
+        </div>
+
+        <div class="home-plano-acoes">
+          <a href="/privacidade.html" class="btn-home-atalho">Política de Privacidade</a>
+          <a href="/termos.html" class="btn-home-atalho">Termos de Uso</a>
+          <a href="/contato.html" class="btn-home-atalho">Contato</a>
+        </div>
+      </section>
     </section>
   </main>
 
