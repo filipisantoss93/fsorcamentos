@@ -60,10 +60,6 @@
       "destination": "/contato.html"
     },
     {
-      "source": "/exemplos",
-      "destination": "/exemplos.html"
-    },
-    {
       "source": "/privacidade",
       "destination": "/privacidade.html"
     },
