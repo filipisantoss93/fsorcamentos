@@ -29,6 +29,26 @@ async function usuarioTemSessaoAtivaFS() {
   }
 }
 
+async function redirecionarUsuarioLogadoParaDashboardIndex() {
+  try {
+    if (!window._supabase) return false;
+
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('abrirGerador') === '1') return false;
+
+    const { data: { session } } = await _supabase.auth.getSession();
+
+    if (!session?.user?.id) return false;
+
+    window.location.href = '/dashboard.html';
+    return true;
+  } catch (error) {
+    console.warn('Não foi possível redirecionar para o Dashboard:', error);
+    return false;
+  }
+}
+
 function mostrarAvisoLoginIndex() {
   const aviso = document.getElementById('index-aviso-login');
   if (!aviso) return;
@@ -172,10 +192,14 @@ async function homeIndexAplicarPlano() {
   }
 }
 
-function inicializarIndexFS() {
+async function inicializarIndexFS() {
   esconderSplashIndex();
 
   const params = new URLSearchParams(window.location.search);
+
+  if (await redirecionarUsuarioLogadoParaDashboardIndex()) {
+    return;
+  }
 
   if (params.get('login') === '1') {
     setTimeout(() => {
@@ -204,3 +228,4 @@ window.addEventListener('storage', homeIndexAplicarPlano);
 window.abrirGeradorGlobal = abrirGeradorGlobal;
 window.abrirGeradorHomeProtegido = abrirGeradorHomeProtegido;
 window.homeIndexAplicarPlano = homeIndexAplicarPlano;
+window.redirecionarUsuarioLogadoParaDashboardIndex = redirecionarUsuarioLogadoParaDashboardIndex;
