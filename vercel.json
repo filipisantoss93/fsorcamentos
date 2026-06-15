@@ -2,6 +2,38 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/dicas",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/dicas.html",
+      "destination": "/sobre.html",
+      "permanent": true
+    },
+    {
+      "source": "/comunidade",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/comunidade.html",
+      "destination": "/sobre.html",
+      "permanent": true
+    },
+    {
+      "source": "/exemplos",
+      "destination": "/sobre",
+      "permanent": true
+    },
+    {
+      "source": "/exemplos.html",
+      "destination": "/sobre.html",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/gerador",
