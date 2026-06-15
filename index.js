@@ -29,9 +29,14 @@ async function usuarioTemSessaoAtivaFS() {
   }
 }
 
+function indexEstaNaHome() {
+  const path = String(window.location.pathname || '').toLowerCase().replace(/\/$/, '');
+  return path === '' || path === '/' || path.endsWith('/index') || path.endsWith('/index.html');
+}
+
 async function redirecionarUsuarioLogadoParaDashboardIndex() {
   try {
-    if (!window._supabase) return false;
+    if (!window._supabase || !indexEstaNaHome()) return false;
 
     const params = new URLSearchParams(window.location.search);
 
@@ -47,6 +52,20 @@ async function redirecionarUsuarioLogadoParaDashboardIndex() {
     console.warn('Não foi possível redirecionar para o Dashboard:', error);
     return false;
   }
+}
+
+function configurarRedirecionamentoAposLoginIndex() {
+  if (!window._supabase || window.fsIndexRedirectLoginConfigurado === true) return;
+
+  window.fsIndexRedirectLoginConfigurado = true;
+
+  _supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session?.user?.id && indexEstaNaHome()) {
+      setTimeout(() => {
+        window.location.href = '/dashboard.html';
+      }, 650);
+    }
+  });
 }
 
 function mostrarAvisoLoginIndex() {
@@ -194,6 +213,7 @@ async function homeIndexAplicarPlano() {
 
 async function inicializarIndexFS() {
   esconderSplashIndex();
+  configurarRedirecionamentoAposLoginIndex();
 
   const params = new URLSearchParams(window.location.search);
 
@@ -229,3 +249,4 @@ window.abrirGeradorGlobal = abrirGeradorGlobal;
 window.abrirGeradorHomeProtegido = abrirGeradorHomeProtegido;
 window.homeIndexAplicarPlano = homeIndexAplicarPlano;
 window.redirecionarUsuarioLogadoParaDashboardIndex = redirecionarUsuarioLogadoParaDashboardIndex;
+window.configurarRedirecionamentoAposLoginIndex = configurarRedirecionamentoAposLoginIndex;
