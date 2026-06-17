@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3e2723">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Comunidade - Fórum de Dúvidas Técnicas | FS Orçamentos</title>
+  <meta name="description" content="Comunidade do FS Orçamentos para dúvidas técnicas, gestão de orçamentos, ordens de serviço, clientes, cobrança, garantia e rotina profissional.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <style>
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #2c1b17;
+      --fs-creme: #f4ece1;
+      --fs-creme-2: #fffaf0;
+      --fs-amarelo: #ffc400;
+      --fs-verde: #16a34a;
+      --fs-azul: #2563eb;
+      --fs-vermelho: #dc2626;
+      --fs-laranja: #f59e0b;
+      --fs-borda: #e0d6c8;
+      --fs-texto: #3e2723;
+      --fs-muted: #6d4c41;
+      --fs-card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: radial-gradient(circle at top left, rgba(255,196,0,.16), transparent 32%), linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+      color: var(--fs-texto);
+      overflow-x: hidden;
+    }
+
+    .forum-page {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 26px 0 46px;
+    }
+
+    .forum-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      background: linear-gradient(135deg, #fff7df, var(--fs-creme));
+      border-radius: 28px;
+      border-top: 7px solid var(--fs-amarelo);
+      padding: 28px;
+      box-shadow: 0 18px 48px rgba(0,0,0,.28);
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .forum-hero::after {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      top: -110px;
+      right: -75px;
+      background: rgba(255,196,0,.2);
+    }
+
+    .forum-hero > * { position: relative; z-index: 1; }
+
+    .forum-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .forum-hero h1 {
+      margin: 0 0 10px;
+      color: var(--fs-marrom);
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.08;
+    }
+
+    .forum-hero p {
+      margin: 0;
+      color: var(--fs-muted);
+      line-height: 1.55;
+      max-width: 780px;
+      font-weight: 650;
+    }
+
+    .forum-hero-acoes {
+      display: grid;
+      gap: 10px;
+      min-width: 210px;
+    }
+
+    .forum-btn,
+    .forum-btn-secundario,
+    .forum-btn-perigo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      border-radius: 12px;
+      padding: 11px 16px;
+      border: 2px solid transparent;
+      text-decoration: none;
+      font-weight: 900;
+      cursor: pointer;
+      text-align: center;
+      transition: .2s ease;
+      font-family: inherit;
+    }
+
+    .forum-btn { background: var(--fs-marrom); color: var(--fs-amarelo); border-color: var(--fs-amarelo); }
+    .forum-btn-secundario { background: #fff; color: var(--fs-marrom); border-color: var(--fs-borda); }
+    .forum-btn-perigo { background: #fff5f5; color: var(--fs-vermelho); border-color: #fecaca; }
+
+    .forum-btn:hover,
+    .forum-btn-secundario:hover,
+    .forum-btn-perigo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    }
+
+    .forum-alerta {
+      display: none;
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border-left: 7px solid var(--fs-amarelo);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin: 14px 0 18px;
+      font-weight: 850;
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    }
+
+    .forum-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, .75fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .forum-coluna { display: grid; gap: 16px; }
+
+    .forum-card {
+      background: var(--fs-creme);
+      border-radius: 22px;
+      border-top: 6px solid var(--fs-amarelo);
+      padding: 20px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.24);
+    }
+
+    .forum-card.branco {
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-top: 6px solid var(--fs-amarelo);
+    }
+
+    .forum-card h2,
+    .forum-card h3 {
+      margin: 0;
+      color: var(--fs-marrom);
+      line-height: 1.2;
+    }
+
+    .forum-card p {
+      margin: 7px 0 0;
+      color: var(--fs-muted);
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .forum-card-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .forum-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .forum-form label {
+      display: grid;
+      gap: 6px;
+      color: var(--fs-marrom);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .forum-form input,
+    .forum-form select,
+    .forum-form textarea,
+    .forum-filtros input,
+    .forum-filtros select {
+      width: 100%;
+      border: 1px solid #d7ccc8;
+      border-radius: 12px;
+      padding: 12px;
+      font: inherit;
+      color: var(--fs-marrom);
+      background: #fff;
+      outline: none;
+    }
+
+    .forum-form textarea { min-height: 120px; resize: vertical; }
+
+    .forum-filtros {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px 160px;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .forum-lista {
+      display: grid;
+      gap: 12px;
+    }
+
+    .forum-topico {
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 18px;
+      padding: 15px;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .forum-topico:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(0,0,0,.12);
+    }
+
+    .forum-topico-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .forum-topico h3 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      line-height: 1.25;
+    }
+
+    .forum-topico p {
+      margin: 0;
+      color: var(--fs-muted);
+      font-weight: 650;
+      line-height: 1.42;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .forum-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .forum-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 6px 9px;
+      background: #fff8e1;
+      color: var(--fs-marrom);
+      border: 1px solid var(--fs-amarelo);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .forum-badge.verde { background: #ecfdf3; color: #166534; border-color: #bbf7d0; }
+    .forum-badge.azul { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .forum-badge.vermelho { background: #fff5f5; color: #b91c1c; border-color: #fecaca; }
+
+    .forum-vazio {
+      background: #fffaf0;
+      border: 1px dashed #d7ccc8;
+      border-radius: 16px;
+      padding: 16px;
+      color: var(--fs-muted);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .forum-detalhe {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.68);
+      z-index: 18000;
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .forum-detalhe-card {
+      width: min(920px, 100%);
+      margin: 28px auto;
+      background: var(--fs-creme);
+      border-radius: 22px;
+      border-top: 7px solid var(--fs-amarelo);
+      box-shadow: 0 22px 60px rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+
+    .forum-detalhe-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px 20px;
+      background: #fff7df;
+      border-bottom: 1px solid var(--fs-borda);
+    }
+
+    .forum-detalhe-topo h2 {
+      margin: 0 0 8px;
+      color: var(--fs-marrom);
+      line-height: 1.2;
+    }
+
+    .forum-fechar {
+      border: 0;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .forum-detalhe-corpo { padding: 18px 20px 22px; display: grid; gap: 16px; }
+
+    .forum-descricao,
+    .forum-resposta {
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-radius: 16px;
+      padding: 15px;
+      color: var(--fs-marrom);
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .forum-resposta.solucao {
+      border-left: 6px solid var(--fs-verde);
+      background: #f0fdf4;
+    }
+
+    .forum-resposta-topo {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      color: var(--fs-muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .forum-resposta-acoes,
+    .forum-topico-acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .forum-link-btn {
+      border: 1px solid var(--fs-borda);
+      background: #fff;
+      color: var(--fs-marrom);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .forum-link-btn:hover { background: #fff8e1; border-color: var(--fs-amarelo); }
+
+    .forum-mini-lista {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .forum-mini-item {
+      background: #fff;
+      border: 1px solid var(--fs-borda);
+      border-left: 5px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--fs-marrom);
+      font-weight: 750;
+    }
+
+    .forum-footer {
+      margin-top: 34px;
+      padding: 22px 12px;
+      text-align: center;
+      color: #f4ece1;
+      font-size: 14px;
+    }
+
+    .forum-footer a { color: var(--fs-amarelo); font-weight: 900; text-decoration: none; }
+    .forum-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 980px) {
+      .forum-hero,
+      .forum-layout,
+      .forum-filtros { grid-template-columns: 1fr; }
+      .forum-hero-acoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .forum-page { width: min(100% - 12px, 1180px); padding-top: 14px; }
+      .forum-hero,
+      .forum-card { border-radius: 18px; padding: 15px; }
+      .forum-hero h1 { font-size: clamp(25px, 8vw, 32px); }
+      .forum-hero p { font-size: 13px; line-height: 1.45; }
+      .forum-hero-acoes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .forum-btn, .forum-btn-secundario, .forum-btn-perigo { min-height: 40px; padding: 9px 8px; font-size: 12px; border-radius: 10px; }
+      .forum-card-topo, .forum-topico-topo { flex-direction: column; }
+      .forum-detalhe { padding: 8px; }
+      .forum-detalhe-card { margin: 10px auto; border-radius: 18px; }
+      .forum-detalhe-topo, .forum-detalhe-corpo { padding: 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+
+  <main id="forum-conteudo" class="forum-page" style="display:none;">
+    <section class="forum-hero">
+      <div>
+        <span class="forum-tag">👥 Comunidade</span>
+        <h1>Fórum de Dúvidas Técnicas</h1>
+        <p>Espaço para trocar experiências sobre orçamentos, ordens de serviço, clientes, cobrança, garantia, oficina e rotina de prestação de serviços.</p>
+      </div>
+
+      <div class="forum-hero-acoes">
+        <button type="button" class="forum-btn" onclick="forumMostrarFormularioNovoTopico()">+ Nova dúvida</button>
+        <button type="button" class="forum-btn-secundario" onclick="forumCarregarTopicos()">Atualizar</button>
+      </div>
+    </section>
+
+    <div id="forum-alerta" class="forum-alerta"></div>
+
+    <section class="forum-layout">
+      <div class="forum-coluna">
+        <article id="forum-form-card" class="forum-card" style="display:none;">
+          <div class="forum-card-topo">
+            <div>
+              <h2>Publicar nova dúvida</h2>
+              <p>Descreva o problema com clareza. Evite expor dados pessoais de clientes.</p>
+            </div>
+            <button type="button" class="forum-btn-secundario" onclick="forumOcultarFormularioNovoTopico()">Fechar</button>
+          </div>
+
+          <form id="forum-form-topico" class="forum-form" onsubmit="forumCriarTopico(event)">
+            <label>
+              Título da dúvida
+              <input id="forum-topico-titulo" type="text" maxlength="120" placeholder="Ex: Como cobrar diagnóstico antes do orçamento?" required>
+            </label>
+
+            <label>
+              Categoria
+              <select id="forum-topico-categoria" required></select>
+            </label>
+
+            <label>
+              Descrição
+              <textarea id="forum-topico-descricao" maxlength="4000" placeholder="Explique o contexto, o que você já tentou e qual resultado espera." required></textarea>
+            </label>
+
+            <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar dúvida</button>
+          </form>
+        </article>
+
+        <article class="forum-card branco">
+          <div class="forum-card-topo">
+            <div>
+              <h2>Dúvidas recentes</h2>
+              <p>Pesquise por assunto ou filtre por categoria/status.</p>
+            </div>
+          </div>
+
+          <div class="forum-filtros">
+            <input id="forum-busca" type="search" placeholder="Buscar no fórum..." oninput="forumFiltrarTopicosLocal()">
+            <select id="forum-filtro-categoria" onchange="forumFiltrarTopicosLocal()"></select>
+            <select id="forum-filtro-status" onchange="forumFiltrarTopicosLocal()">
+              <option value="todos">Todos</option>
+              <option value="aberto">Aberto</option>
+              <option value="respondido">Respondido</option>
+              <option value="resolvido">Resolvido</option>
+              <option value="fechado">Fechado</option>
+            </select>
+          </div>
+
+          <div id="forum-lista-topicos" class="forum-lista">
+            <div class="forum-vazio">Carregando tópicos...</div>
+          </div>
+        </article>
+      </div>
+
+      <aside class="forum-coluna">
+        <article class="forum-card branco">
+          <h3>Categorias</h3>
+          <p>Use categorias para organizar dúvidas e facilitar respostas.</p>
+          <div id="forum-lista-categorias" class="forum-mini-lista"></div>
+        </article>
+
+        <article class="forum-card branco">
+          <h3>Boas práticas</h3>
+          <div class="forum-mini-lista">
+            <div class="forum-mini-item">Não publique dados pessoais de clientes.</div>
+            <div class="forum-mini-item">Explique o contexto técnico com detalhes.</div>
+            <div class="forum-mini-item">Marque como resolvido quando receber uma boa solução.</div>
+            <div class="forum-mini-item">Denuncie spam, ofensas ou conteúdo inadequado.</div>
+          </div>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <div id="forum-detalhe" class="forum-detalhe" aria-hidden="true">
+    <div class="forum-detalhe-card">
+      <div class="forum-detalhe-topo">
+        <div>
+          <h2 id="forum-detalhe-titulo">Tópico</h2>
+          <div id="forum-detalhe-badges" class="forum-badges"></div>
+        </div>
+        <button type="button" class="forum-fechar" onclick="forumFecharTopico()">×</button>
+      </div>
+
+      <div class="forum-detalhe-corpo">
+        <div id="forum-detalhe-descricao" class="forum-descricao"></div>
+        <div id="forum-topico-acoes" class="forum-topico-acoes"></div>
+
+        <article class="forum-card branco">
+          <h3>Respostas</h3>
+          <div id="forum-lista-respostas" class="forum-lista" style="margin-top:12px;"></div>
+        </article>
+
+        <article class="forum-card branco">
+          <h3>Responder</h3>
+          <form class="forum-form" onsubmit="forumCriarResposta(event)">
+            <label>
+              Sua resposta
+              <textarea id="forum-resposta-texto" maxlength="4000" placeholder="Compartilhe sua orientação, experiência ou solução." required></textarea>
+            </label>
+            <button id="forum-btn-responder" type="submit" class="forum-btn">Enviar resposta</button>
+          </form>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <footer class="forum-footer">
+    <span>© 2026 FS Orçamentos</span>
+    <span> | </span>
+    <a href="/privacidade.html">Privacidade</a>
+    <span> | </span>
+    <a href="/termos.html">Termos</a>
+    <span> | </span>
+    <a href="/contato.html">Contato</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
+  <script src="forum.js"></script>
+</body>
+</html>
