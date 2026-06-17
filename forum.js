@@ -36,7 +36,12 @@ function forumNormalizarTexto(valor) {
 }
 
 function forumEscaparHtml(valor) {
-  return String(valor || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  return String(valor || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function forumTextoLimpo(valor) {
@@ -82,6 +87,10 @@ function forumSetBotao(id, texto, disabled = false) {
   if (!btn) return;
   btn.textContent = texto;
   btn.disabled = disabled;
+}
+
+function forumEhDonoTopico(topico = forumTopicoAtual) {
+  return !!(topico?.usuario_id && forumSessaoAtual?.user?.id === topico.usuario_id);
 }
 
 function forumAutorAtualPayload() {
@@ -166,11 +175,14 @@ function forumFotosHtml(topico) {
 function forumValidarArquivosFotos(files) {
   const lista = Array.from(files || []);
   if (lista.length > FORUM_LIMITE_FOTOS) throw new Error(`Selecione no máximo ${FORUM_LIMITE_FOTOS} fotos por tópico.`);
-  for (const arquivo of lista) {
-    if (!FORUM_MIMES_FOTO.includes(arquivo.type)) throw new Error('Use apenas imagens JPG, PNG ou WEBP.');
-    if (arquivo.size > FORUM_LIMITE_FOTO_BYTES) throw new Error('Cada foto deve ter no máximo 2 MB.');
-  }
+  for (const arquivo of lista) forumValidarArquivoFotoUnica(arquivo);
   return lista;
+}
+
+function forumValidarArquivoFotoUnica(arquivo) {
+  if (!arquivo) throw new Error('Nenhuma imagem selecionada.');
+  if (!FORUM_MIMES_FOTO.includes(arquivo.type)) throw new Error('Use apenas imagens JPG, PNG ou WEBP.');
+  if (arquivo.size > FORUM_LIMITE_FOTO_BYTES) throw new Error('Cada foto deve ter no máximo 2 MB.');
 }
 
 function forumValidarFotosSelecionadas() {
@@ -186,22 +198,63 @@ function forumValidarFotosSelecionadas() {
   }
 }
 
+async function forumUploadArquivoFotoTopico(arquivo) {
+  forumValidarArquivoFotoUnica(arquivo);
+  if (!forumSessaoAtual?.user?.id) throw new Error('Faça login para enviar fotos.');
+  const extensao = arquivo.type === 'image/png' ? 'png' : arquivo.type === 'image/webp' ? 'webp' : 'jpg';
+  const caminho = `${forumSessaoAtual.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${extensao}`;
+  const { error } = await _supabase.storage.from(FORUM_BUCKET_IMAGENS).upload(caminho, arquivo, {
+    cacheControl: '3600',
+    upsert: false,
+    contentType: arquivo.type
+  });
+  if (error) throw error;
+  const { data } = _supabase.storage.from(FORUM_BUCKET_IMAGENS).getPublicUrl(caminho);
+  if (!data?.publicUrl) throw new Error('Não foi possível gerar a URL pública da foto.');
+  return data.publicUrl;
+}
+
 async function forumUploadFotosTopico() {
   const input = document.getElementById('forum-topico-fotos');
   const arquivos = forumValidarArquivosFotos(input?.files || []);
   const urls = [];
-  if (!arquivos.length) return urls;
-  if (!forumSessaoAtual?.user?.id) throw new Error('Faça login para enviar fotos.');
-  for (let i = 0; i < arquivos.length; i++) {
-    const arquivo = arquivos[i];
-    const extensao = arquivo.type === 'image/png' ? 'png' : arquivo.type === 'image/webp' ? 'webp' : 'jpg';
-    const caminho = `${forumSessaoAtual.user.id}/${Date.now()}-${i + 1}-${Math.random().toString(36).slice(2)}.${extensao}`;
-    const { error } = await _supabase.storage.from(FORUM_BUCKET_IMAGENS).upload(caminho, arquivo, { cacheControl: '3600', upsert: false, contentType: arquivo.type });
-    if (error) throw error;
-    const { data } = _supabase.storage.from(FORUM_BUCKET_IMAGENS).getPublicUrl(caminho);
-    if (data?.publicUrl) urls.push(data.publicUrl);
-  }
+  for (const arquivo of arquivos) urls.push(await forumUploadArquivoFotoTopico(arquivo));
   return urls;
+}
+
+function forumSelecionarUmaFoto() {
+  return new Promise(resolve => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = FORUM_MIMES_FOTO.join(',');
+    input.onchange = () => resolve(input.files?.[0] || null);
+    input.click();
+  });
+}
+
+function forumCampoFoto(posicao) {
+  return Number(posicao) === 2 ? 'foto_2_url' : 'foto_1_url';
+}
+
+function forumCaminhoStorageDaUrl(url) {
+  if (!url) return '';
+  try {
+    const parsed = new URL(url);
+    const marcador = `/object/public/${FORUM_BUCKET_IMAGENS}/`;
+    const idx = parsed.pathname.indexOf(marcador);
+    if (idx >= 0) return decodeURIComponent(parsed.pathname.slice(idx + marcador.length));
+  } catch (_) {}
+  const marcadorSimples = `${FORUM_BUCKET_IMAGENS}/`;
+  const idx = String(url).indexOf(marcadorSimples);
+  return idx >= 0 ? String(url).slice(idx + marcadorSimples.length) : '';
+}
+
+async function forumRemoverArquivoStorageSeForDoUsuario(url) {
+  const caminho = forumCaminhoStorageDaUrl(url);
+  const userId = forumSessaoAtual?.user?.id;
+  if (!caminho || !userId || !caminho.startsWith(`${userId}/`)) return;
+  const { error } = await _supabase.storage.from(FORUM_BUCKET_IMAGENS).remove([caminho]);
+  if (error) console.warn('Não foi possível remover a imagem antiga do Storage:', error);
 }
 
 async function forumExecutarRPCNotificacao(nomeFuncao, parametros) {
@@ -429,60 +482,98 @@ function forumFecharTopico() {
   forumRespostasCache = [];
 }
 
+function forumBotoesEdicaoImagemHtml(topico) {
+  if (!forumEhDonoTopico(topico)) return '';
+  const botoes = [];
+  [1, 2].forEach(posicao => {
+    const campo = forumCampoFoto(posicao);
+    const existeFoto = !!topico[campo];
+    botoes.push(`<button type="button" class="forum-link-btn" onclick="forumTrocarFotoTopico(${posicao})">${existeFoto ? 'Trocar' : 'Adicionar'} foto ${posicao}</button>`);
+    if (existeFoto) botoes.push(`<button type="button" class="forum-link-btn" onclick="forumRemoverFotoTopico(${posicao})">Remover foto ${posicao}</button>`);
+  });
+  return botoes.join('');
+}
+
 function forumRenderizarAcoesTopico(topico) {
   const box = document.getElementById('forum-topico-acoes');
   if (!box) return;
-  const dono = forumSessaoAtual?.user?.id === topico.usuario_id;
+  const dono = forumEhDonoTopico(topico);
   const resolvido = forumStatusTopico(topico) === 'resolvido';
-  box.innerHTML = `${forumBotaoCurtirTopico(topico)}${dono ? '<button type="button" class="forum-link-btn" onclick="forumEditarTopico()">Editar tópico</button>' : ''}${dono && !resolvido ? '<button type="button" class="forum-link-btn" onclick="forumMarcarTopicoResolvido()">Marcar como resolvido</button>' : ''}${dono ? '<button type="button" class="forum-link-btn" onclick="forumExcluirTopico()">Excluir tópico</button>' : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarTopico(\'${topico.id}\')">Denunciar</button>`;
+  box.innerHTML = `${forumBotaoCurtirTopico(topico)}${dono ? '<button type="button" class="forum-link-btn" onclick="forumEditarTopico()">Editar tópico</button>' : ''}${forumBotoesEdicaoImagemHtml(topico)}${dono && !resolvido ? '<button type="button" class="forum-link-btn" onclick="forumMarcarTopicoResolvido()">Marcar como resolvido</button>' : ''}${dono ? '<button type="button" class="forum-link-btn" onclick="forumExcluirTopico()">Excluir tópico</button>' : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarTopico('${topico.id}')">Denunciar</button>`;
+}
+
+function forumAtualizarTopicoLocal(patch) {
+  if (!forumTopicoAtual?.id) return;
+  forumTopicoAtual = { ...forumTopicoAtual, ...patch };
+  const idx = forumTopicosCache.findIndex(t => t.id === forumTopicoAtual.id);
+  if (idx >= 0) forumTopicosCache[idx] = { ...forumTopicosCache[idx], ...patch };
+  forumRenderizarDetalheTopico(forumTopicoAtual);
+  forumFiltrarTopicosLocal();
 }
 
 async function forumEditarTopico() {
-  if (!forumTopicoAtual?.id || forumSessaoAtual?.user?.id !== forumTopicoAtual.usuario_id) return;
-
-  const tituloAtual = forumTopicoAtual.titulo || '';
-  const categoriaAtual = forumTopicoAtual.categoria || 'Dúvidas da Plataforma';
-  const descricaoAtual = forumTextoLimpo(forumTopicoAtual.descricao || '');
-
-  const novoTitulo = prompt('Editar título do tópico:', tituloAtual);
+  if (!forumTopicoAtual?.id || !forumEhDonoTopico()) return;
+  const novoTitulo = prompt('Editar título do tópico:', forumTopicoAtual.titulo || '');
   if (novoTitulo === null) return;
-
-  const novaCategoria = prompt(`Editar categoria:\n\nCategorias disponíveis:\n${FORUM_CATEGORIAS.join('\n')}`, categoriaAtual);
+  const novaCategoria = prompt(`Editar categoria:\n\nCategorias disponíveis:\n${FORUM_CATEGORIAS.join('\n')}`, forumTopicoAtual.categoria || 'Dúvidas da Plataforma');
   if (novaCategoria === null) return;
-
-  const novaDescricao = prompt('Editar descrição do tópico:', descricaoAtual);
+  const novaDescricao = prompt('Editar descrição do tópico:', forumTextoLimpo(forumTopicoAtual.descricao || ''));
   if (novaDescricao === null) return;
 
   const titulo = novoTitulo.trim();
-  const categoria = novaCategoria.trim() || categoriaAtual;
+  const categoria = novaCategoria.trim() || forumTopicoAtual.categoria || 'Dúvidas da Plataforma';
   const descricao = novaDescricao.trim();
-
   if (titulo.length < 8) return alert('O título precisa ter pelo menos 8 caracteres.');
   if (descricao.length < 20) return alert('A descrição precisa ter pelo menos 20 caracteres.');
   if (!FORUM_CATEGORIAS.includes(categoria)) return alert('Categoria inválida. Escolha uma das categorias disponíveis.');
 
   try {
-    const { error } = await _supabase
-      .from('forum_topicos')
-      .update({ titulo, categoria, descricao })
-      .eq('id', forumTopicoAtual.id)
-      .eq('usuario_id', forumSessaoAtual.user.id);
-
+    const { error } = await _supabase.from('forum_topicos').update({ titulo, categoria, descricao }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
     if (error) throw error;
-
-    forumTopicoAtual.titulo = titulo;
-    forumTopicoAtual.categoria = categoria;
-    forumTopicoAtual.descricao = descricao;
-
-    const idx = forumTopicosCache.findIndex(t => t.id === forumTopicoAtual.id);
-    if (idx >= 0) forumTopicosCache[idx] = { ...forumTopicosCache[idx], titulo, categoria, descricao };
-
-    forumRenderizarDetalheTopico(forumTopicoAtual);
-    forumFiltrarTopicosLocal();
+    forumAtualizarTopicoLocal({ titulo, categoria, descricao });
     forumMostrarAlerta('Tópico atualizado com sucesso.', 'ok');
   } catch (error) {
     console.error('Erro ao editar tópico:', error);
     alert('Não foi possível editar o tópico.');
+  }
+}
+
+async function forumTrocarFotoTopico(posicao) {
+  if (!forumTopicoAtual?.id || !forumEhDonoTopico()) return;
+  const campo = forumCampoFoto(posicao);
+  const fotoAntiga = forumTopicoAtual[campo] || '';
+  const arquivo = await forumSelecionarUmaFoto();
+  if (!arquivo) return;
+
+  try {
+    const novaUrl = await forumUploadArquivoFotoTopico(arquivo);
+    const { error } = await _supabase.from('forum_topicos').update({ [campo]: novaUrl }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
+    if (error) throw error;
+    if (fotoAntiga) await forumRemoverArquivoStorageSeForDoUsuario(fotoAntiga);
+    forumAtualizarTopicoLocal({ [campo]: novaUrl });
+    forumMostrarAlerta(`Foto ${posicao} atualizada com sucesso.`, 'ok');
+  } catch (error) {
+    console.error('Erro ao trocar foto do tópico:', error);
+    alert(error.message || 'Não foi possível trocar a foto.');
+  }
+}
+
+async function forumRemoverFotoTopico(posicao) {
+  if (!forumTopicoAtual?.id || !forumEhDonoTopico()) return;
+  const campo = forumCampoFoto(posicao);
+  const fotoAntiga = forumTopicoAtual[campo] || '';
+  if (!fotoAntiga) return;
+  if (!confirm(`Remover a foto ${posicao} deste tópico?`)) return;
+
+  try {
+    const { error } = await _supabase.from('forum_topicos').update({ [campo]: null }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
+    if (error) throw error;
+    await forumRemoverArquivoStorageSeForDoUsuario(fotoAntiga);
+    forumAtualizarTopicoLocal({ [campo]: null });
+    forumMostrarAlerta(`Foto ${posicao} removida com sucesso.`, 'ok');
+  } catch (error) {
+    console.error('Erro ao remover foto do tópico:', error);
+    alert(error.message || 'Não foi possível remover a foto.');
   }
 }
 
@@ -518,22 +609,14 @@ function forumRenderizarRespostas() {
 async function forumEditarResposta(respostaId) {
   const resposta = forumRespostasCache.find(r => r.id === respostaId);
   if (!resposta || forumSessaoAtual?.user?.id !== resposta.usuario_id) return;
-
   const novoTexto = prompt('Editar comentário:', forumTextoLimpo(resposta.resposta || ''));
   if (novoTexto === null) return;
-
   const texto = novoTexto.trim();
   if (texto.length < 8) return alert('O comentário precisa ter pelo menos 8 caracteres.');
 
   try {
-    const { error } = await _supabase
-      .from('forum_respostas')
-      .update({ resposta: texto })
-      .eq('id', respostaId)
-      .eq('usuario_id', forumSessaoAtual.user.id);
-
+    const { error } = await _supabase.from('forum_respostas').update({ resposta: texto }).eq('id', respostaId).eq('usuario_id', forumSessaoAtual.user.id);
     if (error) throw error;
-
     resposta.resposta = texto;
     forumRenderizarRespostas();
     forumMostrarAlerta('Comentário atualizado com sucesso.', 'ok');
@@ -571,9 +654,7 @@ async function forumMarcarTopicoResolvido() {
   try {
     const { error } = await _supabase.from('forum_topicos').update({ resolvido: true, status: 'resolvido' }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
     if (error) throw error;
-    forumTopicoAtual.resolvido = true;
-    forumTopicoAtual.status = 'resolvido';
-    forumRenderizarDetalheTopico(forumTopicoAtual);
+    forumAtualizarTopicoLocal({ resolvido: true, status: 'resolvido' });
     await forumCarregarTopicos();
   } catch (error) {
     console.error('Erro ao marcar resolvido:', error);
@@ -589,9 +670,7 @@ async function forumMarcarRespostaSolucao(respostaId) {
     const { error } = await _supabase.from('forum_respostas').update({ marcada_como_solucao: true }).eq('id', respostaId);
     if (error) throw error;
     await _supabase.from('forum_topicos').update({ resolvido: true, status: 'resolvido' }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
-    forumTopicoAtual.resolvido = true;
-    forumTopicoAtual.status = 'resolvido';
-    forumRenderizarDetalheTopico(forumTopicoAtual);
+    forumAtualizarTopicoLocal({ resolvido: true, status: 'resolvido' });
     await forumCarregarRespostas(forumTopicoAtual.id);
     await forumCarregarTopicos();
   } catch (error) {
@@ -611,7 +690,7 @@ async function forumCurtirTopico(topicoId, event) {
     forumCurtidasTopicos.add(topicoId);
     const topico = forumTopicosCache.find(t => t.id === topicoId);
     if (topico) topico.total_curtidas = Number(topico.total_curtidas || 0) + 1;
-    if (forumTopicoAtual?.id === topicoId && topico) { forumTopicoAtual = topico; forumRenderizarDetalheTopico(topico); }
+    if (forumTopicoAtual?.id === topicoId && topico) forumAtualizarTopicoLocal({ total_curtidas: topico.total_curtidas });
     forumFiltrarTopicosLocal();
   } catch (error) {
     console.error('Erro ao curtir tópico:', error);
@@ -728,6 +807,8 @@ window.forumCriarTopico = forumCriarTopico;
 window.forumAbrirTopico = forumAbrirTopico;
 window.forumFecharTopico = forumFecharTopico;
 window.forumEditarTopico = forumEditarTopico;
+window.forumTrocarFotoTopico = forumTrocarFotoTopico;
+window.forumRemoverFotoTopico = forumRemoverFotoTopico;
 window.forumCriarResposta = forumCriarResposta;
 window.forumEditarResposta = forumEditarResposta;
 window.forumMarcarTopicoResolvido = forumMarcarTopicoResolvido;
