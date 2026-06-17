@@ -23,22 +23,29 @@ let forumPerfilAtual = null;
 let forumTopicosCache = [];
 let forumTopicoAtual = null;
 let forumRespostasCache = [];
+let forumCurtidasTopicos = new Set();
+let forumCurtidasRespostas = new Set();
 
 function forumNormalizarTexto(valor) {
-  return String(valor || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
+  return String(valor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 }
 
 function forumEscaparHtml(valor) {
-  return String(valor || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return String(valor || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function forumTextoLimpo(valor) {
+  return String(valor || '').replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n').replace(/\r\n/g, '\n');
+}
+
+function forumTextoHtml(valor) {
+  const texto = forumTextoLimpo(valor).trim();
+  if (!texto) return '';
+
+  return texto.split(/\n{2,}/).map(bloco => {
+    const linhas = bloco.split('\n').map(linha => forumEscaparHtml(linha)).join('<br>');
+    return `<p>${linhas}</p>`;
+  }).join('');
 }
 
 function forumFormatarData(valor) {
@@ -92,21 +99,16 @@ function forumNomeAutor(registro, opcoes = {}) {
   const autorNome = typeof registro === 'object' ? (registro?.autor_nome || '') : '';
   const autorEmpresa = typeof registro === 'object' ? (registro?.autor_empresa || '') : '';
   const ehAutorAtual = forumSessaoAtual?.user?.id && usuarioId === forumSessaoAtual.user.id;
-
   let nome = String(autorNome || '').trim();
   const empresa = String(autorEmpresa || '').trim();
 
   if (!nome) {
-    nome = ehAutorAtual
-      ? (forumPerfilAtual?.nome || localStorage.getItem('usuario_nome') || 'Você')
-      : 'Membro da comunidade';
+    nome = ehAutorAtual ? (forumPerfilAtual?.nome || localStorage.getItem('usuario_nome') || 'Você') : 'Membro da comunidade';
   }
 
-  if (ehAutorAtual && opcoes.usarVoce !== false) {
-    nome = 'Você';
-  }
+  if (ehAutorAtual && opcoes.usarVoce !== false) nome = 'Você';
 
-  return empresa ? `${nome} · ${empresa}` : nome;
+  return empresa ? `${nome} - ${empresa}` : nome;
 }
 
 function forumStatusClasse(status) {
@@ -117,18 +119,17 @@ function forumStatusClasse(status) {
   return '';
 }
 
+function forumStatusTopico(topico) {
+  return topico?.resolvido ? 'resolvido' : (topico?.status || 'aberto');
+}
+
 function forumResumo(texto, limite = 180) {
-  const valor = String(texto || '').replace(/\s+/g, ' ').trim();
-  if (valor.length <= limite) return valor;
-  return valor.slice(0, limite).trim() + '...';
+  const valor = forumTextoLimpo(texto).replace(/\s+/g, ' ').trim();
+  return valor.length <= limite ? valor : valor.slice(0, limite).trim() + '...';
 }
 
 function forumPreencherCategorias() {
-  const selects = [
-    document.getElementById('forum-topico-categoria'),
-    document.getElementById('forum-filtro-categoria')
-  ];
-
+  const selects = [document.getElementById('forum-topico-categoria'), document.getElementById('forum-filtro-categoria')];
   selects.forEach(select => {
     if (!select) return;
     const ehFiltro = select.id === 'forum-filtro-categoria';
@@ -138,11 +139,7 @@ function forumPreencherCategorias() {
 
   const lista = document.getElementById('forum-lista-categorias');
   if (lista) {
-    lista.innerHTML = FORUM_CATEGORIAS.map(cat => `
-      <button type="button" class="forum-mini-item" onclick="forumFiltrarCategoria('${forumEscaparHtml(cat)}')">
-        ${forumEscaparHtml(cat)}
-      </button>
-    `).join('');
+    lista.innerHTML = FORUM_CATEGORIAS.map(cat => `<button type="button" class="forum-mini-item" onclick="forumFiltrarCategoria('${forumEscaparHtml(cat)}')">${forumEscaparHtml(cat)}</button>`).join('');
   }
 }
 
@@ -165,19 +162,34 @@ async function forumObterSessao() {
 
 async function forumBuscarPerfil(userId) {
   if (!window._supabase || !userId) return null;
-
-  const { data, error } = await _supabase
-    .from('perfis')
-    .select('nome, nome_empresa, plano')
-    .eq('id', userId)
-    .maybeSingle();
-
+  const { data, error } = await _supabase.from('perfis').select('nome, nome_empresa, plano').eq('id', userId).maybeSingle();
   if (error) {
     console.warn('Não foi possível carregar perfil no fórum:', error);
     return null;
   }
-
   return data || null;
+}
+
+async function forumCarregarCurtidasUsuario() {
+  forumCurtidasTopicos = new Set();
+  forumCurtidasRespostas = new Set();
+  if (!forumSessaoAtual?.user?.id || !window._supabase) return;
+
+  const { data, error } = await _supabase
+    .from('forum_curtidas')
+    .select('topico_id, resposta_id')
+    .eq('usuario_id', forumSessaoAtual.user.id)
+    .limit(1000);
+
+  if (error) {
+    console.warn('Não foi possível carregar curtidas do usuário:', error);
+    return;
+  }
+
+  (data || []).forEach(curtida => {
+    if (curtida.topico_id) forumCurtidasTopicos.add(curtida.topico_id);
+    if (curtida.resposta_id) forumCurtidasRespostas.add(curtida.resposta_id);
+  });
 }
 
 async function forumCarregarTopicos() {
@@ -196,6 +208,7 @@ async function forumCarregarTopicos() {
     if (error) throw error;
 
     forumTopicosCache = Array.isArray(data) ? data : [];
+    await forumCarregarCurtidasUsuario();
     forumFiltrarTopicosLocal();
     forumMostrarAlerta('', 'info');
   } catch (error) {
@@ -211,55 +224,54 @@ function forumFiltrarTopicosLocal() {
   const status = document.getElementById('forum-filtro-status')?.value || 'todos';
 
   let topicos = [...forumTopicosCache];
-
-  if (categoria !== 'todos') {
-    topicos = topicos.filter(t => t.categoria === categoria);
-  }
-
-  if (status !== 'todos') {
-    topicos = topicos.filter(t => forumNormalizarTexto(t.status) === status);
-  }
-
+  if (categoria !== 'todos') topicos = topicos.filter(t => t.categoria === categoria);
+  if (status !== 'todos') topicos = topicos.filter(t => forumNormalizarTexto(t.status) === status);
   if (busca) {
-    topicos = topicos.filter(t => {
-      const texto = forumNormalizarTexto(`${t.titulo} ${t.descricao} ${t.categoria} ${t.status} ${t.autor_nome} ${t.autor_empresa}`);
-      return texto.includes(busca);
-    });
+    topicos = topicos.filter(t => forumNormalizarTexto(`${t.titulo} ${t.descricao} ${t.categoria} ${t.status} ${t.autor_nome} ${t.autor_empresa}`).includes(busca));
   }
 
   forumRenderizarTopicos(topicos);
 }
 
+function forumBotaoCurtirTopico(topico) {
+  const curtido = forumCurtidasTopicos.has(topico.id);
+  const total = Number(topico.total_curtidas || 0);
+  return `<button type="button" class="forum-like-btn ${curtido ? 'curtido' : ''}" onclick="forumCurtirTopico('${topico.id}', event)" title="Curtir tópico">${total} 👍</button>`;
+}
+
+function forumBotaoCurtirResposta(resposta) {
+  const curtido = forumCurtidasRespostas.has(resposta.id);
+  const total = Number(resposta.total_curtidas || 0);
+  return `<button type="button" class="forum-like-btn ${curtido ? 'curtido' : ''}" onclick="forumCurtirResposta('${resposta.id}')" title="Curtir resposta">${total} 👍</button>`;
+}
+
 function forumRenderizarTopicos(topicos) {
   const lista = document.getElementById('forum-lista-topicos');
   if (!lista) return;
-
   if (!topicos.length) {
     lista.innerHTML = '<div class="forum-vazio">Nenhum tópico encontrado. Publique a primeira dúvida ou ajuste os filtros.</div>';
     return;
   }
 
   lista.innerHTML = topicos.map(topico => {
-    const status = topico.resolvido ? 'resolvido' : (topico.status || 'aberto');
+    const status = forumStatusTopico(topico);
     const autor = forumNomeAutor(topico);
     return `
       <article class="forum-topico" onclick="forumAbrirTopico('${topico.id}')">
         <div class="forum-topico-topo">
           <div>
-            <h3>${forumEscaparHtml(topico.titulo)}</h3>
+            <h3>${forumEscaparHtml(topico.titulo)} - <small>${forumEscaparHtml(status)}</small></h3>
             <p>${forumEscaparHtml(forumResumo(topico.descricao))}</p>
           </div>
-          <span class="forum-badge ${forumStatusClasse(status)}">${forumEscaparHtml(status)}</span>
+          ${forumBotaoCurtirTopico(topico)}
         </div>
         <div class="forum-badges">
-          <span class="forum-badge azul">Por ${forumEscaparHtml(autor)}</span>
-          <span class="forum-badge">${forumEscaparHtml(topico.categoria || 'Categoria')}</span>
+          <span class="forum-badge azul">Autor: ${forumEscaparHtml(autor)}</span>
+          <span class="forum-badge">Categoria: ${forumEscaparHtml(topico.categoria || 'Categoria')}</span>
           <span class="forum-badge azul">${Number(topico.total_respostas || 0)} respostas</span>
-          <span class="forum-badge">${Number(topico.total_curtidas || 0)} curtidas</span>
-          <span class="forum-badge">${forumFormatarData(topico.atualizado_em || topico.criado_em)}</span>
+          <span class="forum-badge ${forumStatusClasse(status)}">${forumEscaparHtml(status)}</span>
         </div>
-      </article>
-    `;
+      </article>`;
   }).join('');
 }
 
@@ -276,7 +288,6 @@ function forumOcultarFormularioNovoTopico() {
 
 async function forumCriarTopico(event) {
   event.preventDefault();
-
   if (!forumSessaoAtual?.user?.id) {
     forumMostrarAlerta('Faça login para publicar na Comunidade.', 'erro');
     return;
@@ -286,35 +297,23 @@ async function forumCriarTopico(event) {
   const categoria = document.getElementById('forum-topico-categoria')?.value?.trim();
   const descricao = document.getElementById('forum-topico-descricao')?.value?.trim();
 
-  if (!titulo || titulo.length < 8) {
-    forumMostrarAlerta('Informe um título mais claro para sua dúvida.', 'erro');
-    return;
-  }
-
-  if (!descricao || descricao.length < 20) {
-    forumMostrarAlerta('Descreva melhor sua dúvida antes de publicar.', 'erro');
-    return;
-  }
+  if (!titulo || titulo.length < 8) return forumMostrarAlerta('Informe um título mais claro para sua dúvida.', 'erro');
+  if (!descricao || descricao.length < 20) return forumMostrarAlerta('Descreva melhor sua dúvida antes de publicar.', 'erro');
 
   forumSetBotao('forum-btn-criar', 'Publicando...', true);
-
   try {
     const autor = forumAutorAtualPayload();
-    const { error } = await _supabase
-      .from('forum_topicos')
-      .insert({
-        usuario_id: forumSessaoAtual.user.id,
-        autor_nome: autor.autor_nome,
-        autor_empresa: autor.autor_empresa,
-        titulo,
-        categoria: categoria || 'Dúvidas da Plataforma',
-        descricao,
-        status: 'aberto',
-        resolvido: false
-      });
-
+    const { error } = await _supabase.from('forum_topicos').insert({
+      usuario_id: forumSessaoAtual.user.id,
+      autor_nome: autor.autor_nome,
+      autor_empresa: autor.autor_empresa,
+      titulo,
+      categoria: categoria || 'Dúvidas da Plataforma',
+      descricao,
+      status: 'aberto',
+      resolvido: false
+    });
     if (error) throw error;
-
     document.getElementById('forum-form-topico')?.reset();
     forumOcultarFormularioNovoTopico();
     forumMostrarAlerta('Dúvida publicada com sucesso.', 'ok');
@@ -330,16 +329,29 @@ async function forumCriarTopico(event) {
 async function forumAbrirTopico(topicoId) {
   const topico = forumTopicosCache.find(t => t.id === topicoId);
   if (!topico) return;
-
   forumTopicoAtual = topico;
-
-  document.getElementById('forum-detalhe-titulo').textContent = topico.titulo || 'Tópico';
-  document.getElementById('forum-detalhe-descricao').textContent = topico.descricao || '';
-
-  forumRenderizarBadgesDetalhe(topico);
-  forumRenderizarAcoesTopico(topico);
+  forumRenderizarDetalheTopico(topico);
   forumAbrirModalDetalhe();
   await forumCarregarRespostas(topico.id);
+}
+
+function forumRenderizarDetalheTopico(topico) {
+  const status = forumStatusTopico(topico);
+  const titulo = document.getElementById('forum-detalhe-titulo');
+  const descricao = document.getElementById('forum-detalhe-descricao');
+  const info = document.getElementById('forum-detalhe-info');
+
+  if (titulo) titulo.textContent = `${topico.titulo || 'Tópico'} - ${status}`;
+  if (descricao) descricao.innerHTML = forumTextoHtml(topico.descricao || '');
+  if (info) {
+    info.innerHTML = `
+      <div class="forum-info-linha"><strong>Autor:</strong><span>${forumEscaparHtml(forumNomeAutor(topico))}</span></div>
+      <div class="forum-info-linha"><strong>Categoria:</strong><span>${forumEscaparHtml(topico.categoria || 'Categoria')}</span></div>
+      <div class="forum-info-linha"><strong>Data da publicação:</strong><span>${forumEscaparHtml(forumFormatarData(topico.criado_em))}</span></div>
+      <div class="forum-info-linha"><strong>Respostas:</strong><span>${Number(topico.total_respostas || 0)} respostas</span></div>`;
+  }
+
+  forumRenderizarAcoesTopico(topico);
 }
 
 function forumAbrirModalDetalhe() {
@@ -360,42 +372,21 @@ function forumFecharTopico() {
   forumRespostasCache = [];
 }
 
-function forumRenderizarBadgesDetalhe(topico) {
-  const box = document.getElementById('forum-detalhe-badges');
-  if (!box) return;
-
-  const status = topico.resolvido ? 'resolvido' : (topico.status || 'aberto');
-  const autor = forumNomeAutor(topico);
-
-  box.innerHTML = `
-    <span class="forum-badge azul">Por ${forumEscaparHtml(autor)}</span>
-    <span class="forum-badge ${forumStatusClasse(status)}">${forumEscaparHtml(status)}</span>
-    <span class="forum-badge">${forumEscaparHtml(topico.categoria || 'Categoria')}</span>
-    <span class="forum-badge azul">${Number(topico.total_respostas || 0)} respostas</span>
-    <span class="forum-badge">${Number(topico.total_curtidas || 0)} curtidas</span>
-    <span class="forum-badge">${forumFormatarData(topico.criado_em)}</span>
-  `;
-}
-
 function forumRenderizarAcoesTopico(topico) {
   const box = document.getElementById('forum-topico-acoes');
   if (!box) return;
-
   const dono = forumSessaoAtual?.user?.id === topico.usuario_id;
-  const resolvido = !!topico.resolvido || forumNormalizarTexto(topico.status) === 'resolvido';
-
+  const resolvido = forumStatusTopico(topico) === 'resolvido';
   box.innerHTML = `
-    <button type="button" class="forum-link-btn" onclick="forumCurtirTopico('${topico.id}')">Curtir tópico</button>
+    ${forumBotaoCurtirTopico(topico)}
     ${dono && !resolvido ? '<button type="button" class="forum-link-btn" onclick="forumMarcarTopicoResolvido()">Marcar como resolvido</button>' : ''}
     ${dono ? '<button type="button" class="forum-link-btn" onclick="forumExcluirTopico()">Excluir tópico</button>' : ''}
-    <button type="button" class="forum-link-btn" onclick="forumDenunciarTopico('${topico.id}')">Denunciar</button>
-  `;
+    <button type="button" class="forum-link-btn" onclick="forumDenunciarTopico('${topico.id}')">Denunciar</button>`;
 }
 
 async function forumCarregarRespostas(topicoId) {
   const lista = document.getElementById('forum-lista-respostas');
   if (lista) lista.innerHTML = '<div class="forum-vazio">Carregando respostas...</div>';
-
   try {
     const { data, error } = await _supabase
       .from('forum_respostas')
@@ -403,10 +394,9 @@ async function forumCarregarRespostas(topicoId) {
       .eq('topico_id', topicoId)
       .order('marcada_como_solucao', { ascending: false })
       .order('criado_em', { ascending: true });
-
     if (error) throw error;
-
     forumRespostasCache = Array.isArray(data) ? data : [];
+    await forumCarregarCurtidasUsuario();
     forumRenderizarRespostas();
   } catch (error) {
     console.error('Erro ao carregar respostas:', error);
@@ -417,63 +407,46 @@ async function forumCarregarRespostas(topicoId) {
 function forumRenderizarRespostas() {
   const lista = document.getElementById('forum-lista-respostas');
   if (!lista) return;
-
   if (!forumRespostasCache.length) {
     lista.innerHTML = '<div class="forum-vazio">Ainda não há respostas. Seja o primeiro a ajudar.</div>';
     return;
   }
 
   const donoTopico = forumTopicoAtual && forumSessaoAtual?.user?.id === forumTopicoAtual.usuario_id;
-
   lista.innerHTML = forumRespostasCache.map(resposta => {
     const donoResposta = forumSessaoAtual?.user?.id === resposta.usuario_id;
     const autor = forumNomeAutor(resposta);
-
     return `
       <article class="forum-resposta ${resposta.marcada_como_solucao ? 'solucao' : ''}">
-        <div class="forum-resposta-topo">
-          <span>${resposta.marcada_como_solucao ? `✓ Solução marcada · ${forumEscaparHtml(autor)}` : forumEscaparHtml(autor)}</span>
-          <span>${forumFormatarData(resposta.criado_em)}</span>
-        </div>
-        <div>${forumEscaparHtml(resposta.resposta)}</div>
+        <div class="forum-resposta-topo"><span>${resposta.marcada_como_solucao ? `✓ Solução marcada · ${forumEscaparHtml(autor)}` : forumEscaparHtml(autor)}</span><span>${forumFormatarData(resposta.criado_em)}</span></div>
+        <div>${forumTextoHtml(resposta.resposta)}</div>
         <div class="forum-resposta-acoes">
-          <button type="button" class="forum-link-btn" onclick="forumCurtirResposta('${resposta.id}')">Curtir (${Number(resposta.total_curtidas || 0)})</button>
+          ${forumBotaoCurtirResposta(resposta)}
           ${donoTopico && !resposta.marcada_como_solucao ? `<button type="button" class="forum-link-btn" onclick="forumMarcarRespostaSolucao('${resposta.id}')">Marcar solução</button>` : ''}
           ${donoResposta ? `<button type="button" class="forum-link-btn" onclick="forumExcluirResposta('${resposta.id}')">Excluir</button>` : ''}
           <button type="button" class="forum-link-btn" onclick="forumDenunciarResposta('${resposta.id}')">Denunciar</button>
         </div>
-      </article>
-    `;
+      </article>`;
   }).join('');
 }
 
 async function forumCriarResposta(event) {
   event.preventDefault();
-
   if (!forumSessaoAtual?.user?.id || !forumTopicoAtual?.id) return;
-
   const texto = document.getElementById('forum-resposta-texto')?.value?.trim();
-  if (!texto || texto.length < 8) {
-    alert('Escreva uma resposta mais completa.');
-    return;
-  }
+  if (!texto || texto.length < 8) return alert('Escreva uma resposta mais completa.');
 
   forumSetBotao('forum-btn-responder', 'Enviando...', true);
-
   try {
     const autor = forumAutorAtualPayload();
-    const { error } = await _supabase
-      .from('forum_respostas')
-      .insert({
-        topico_id: forumTopicoAtual.id,
-        usuario_id: forumSessaoAtual.user.id,
-        autor_nome: autor.autor_nome,
-        autor_empresa: autor.autor_empresa,
-        resposta: texto
-      });
-
+    const { error } = await _supabase.from('forum_respostas').insert({
+      topico_id: forumTopicoAtual.id,
+      usuario_id: forumSessaoAtual.user.id,
+      autor_nome: autor.autor_nome,
+      autor_empresa: autor.autor_empresa,
+      resposta: texto
+    });
     if (error) throw error;
-
     document.getElementById('forum-resposta-texto').value = '';
     await forumCarregarRespostas(forumTopicoAtual.id);
     await forumCarregarTopicos();
@@ -488,20 +461,12 @@ async function forumCriarResposta(event) {
 async function forumMarcarTopicoResolvido() {
   if (!forumTopicoAtual?.id) return;
   if (!confirm('Marcar este tópico como resolvido?')) return;
-
   try {
-    const { error } = await _supabase
-      .from('forum_topicos')
-      .update({ resolvido: true, status: 'resolvido' })
-      .eq('id', forumTopicoAtual.id)
-      .eq('usuario_id', forumSessaoAtual.user.id);
-
+    const { error } = await _supabase.from('forum_topicos').update({ resolvido: true, status: 'resolvido' }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
     if (error) throw error;
-
     forumTopicoAtual.resolvido = true;
     forumTopicoAtual.status = 'resolvido';
-    forumRenderizarBadgesDetalhe(forumTopicoAtual);
-    forumRenderizarAcoesTopico(forumTopicoAtual);
+    forumRenderizarDetalheTopico(forumTopicoAtual);
     await forumCarregarTopicos();
   } catch (error) {
     console.error('Erro ao marcar resolvido:', error);
@@ -512,30 +477,14 @@ async function forumMarcarTopicoResolvido() {
 async function forumMarcarRespostaSolucao(respostaId) {
   if (!forumTopicoAtual?.id || !respostaId) return;
   if (!confirm('Marcar esta resposta como solução?')) return;
-
   try {
-    await _supabase
-      .from('forum_respostas')
-      .update({ marcada_como_solucao: false })
-      .eq('topico_id', forumTopicoAtual.id);
-
-    const { error } = await _supabase
-      .from('forum_respostas')
-      .update({ marcada_como_solucao: true })
-      .eq('id', respostaId);
-
+    await _supabase.from('forum_respostas').update({ marcada_como_solucao: false }).eq('topico_id', forumTopicoAtual.id);
+    const { error } = await _supabase.from('forum_respostas').update({ marcada_como_solucao: true }).eq('id', respostaId);
     if (error) throw error;
-
-    await _supabase
-      .from('forum_topicos')
-      .update({ resolvido: true, status: 'resolvido' })
-      .eq('id', forumTopicoAtual.id)
-      .eq('usuario_id', forumSessaoAtual.user.id);
-
+    await _supabase.from('forum_topicos').update({ resolvido: true, status: 'resolvido' }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
     forumTopicoAtual.resolvido = true;
     forumTopicoAtual.status = 'resolvido';
-    forumRenderizarBadgesDetalhe(forumTopicoAtual);
-    forumRenderizarAcoesTopico(forumTopicoAtual);
+    forumRenderizarDetalheTopico(forumTopicoAtual);
     await forumCarregarRespostas(forumTopicoAtual.id);
     await forumCarregarTopicos();
   } catch (error) {
@@ -544,31 +493,22 @@ async function forumMarcarRespostaSolucao(respostaId) {
   }
 }
 
-async function forumCurtirTopico(topicoId) {
-  if (!forumSessaoAtual?.user?.id) return;
+async function forumCurtirTopico(topicoId, event) {
+  if (event) event.stopPropagation();
+  if (!forumSessaoAtual?.user?.id || !topicoId) return;
+  if (forumCurtidasTopicos.has(topicoId)) return;
 
   try {
-    const { error } = await _supabase
-      .from('forum_curtidas')
-      .insert({ usuario_id: forumSessaoAtual.user.id, topico_id: topicoId });
-
-    if (error) {
-      if (String(error.message || '').toLowerCase().includes('duplicate')) {
-        alert('Você já curtiu este tópico.');
-        return;
-      }
-      throw error;
+    const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: forumSessaoAtual.user.id, topico_id: topicoId });
+    if (error && !String(error.message || '').toLowerCase().includes('duplicate')) throw error;
+    forumCurtidasTopicos.add(topicoId);
+    const topico = forumTopicosCache.find(t => t.id === topicoId);
+    if (topico) topico.total_curtidas = Number(topico.total_curtidas || 0) + 1;
+    if (forumTopicoAtual?.id === topicoId && topico) {
+      forumTopicoAtual = topico;
+      forumRenderizarDetalheTopico(topico);
     }
-
-    await forumCarregarTopicos();
-    if (forumTopicoAtual?.id === topicoId) {
-      const atualizado = forumTopicosCache.find(t => t.id === topicoId);
-      if (atualizado) {
-        forumTopicoAtual = atualizado;
-        forumRenderizarBadgesDetalhe(atualizado);
-        forumRenderizarAcoesTopico(atualizado);
-      }
-    }
+    forumFiltrarTopicosLocal();
   } catch (error) {
     console.error('Erro ao curtir tópico:', error);
     alert('Não foi possível curtir.');
@@ -576,22 +516,16 @@ async function forumCurtirTopico(topicoId) {
 }
 
 async function forumCurtirResposta(respostaId) {
-  if (!forumSessaoAtual?.user?.id) return;
+  if (!forumSessaoAtual?.user?.id || !respostaId) return;
+  if (forumCurtidasRespostas.has(respostaId)) return;
 
   try {
-    const { error } = await _supabase
-      .from('forum_curtidas')
-      .insert({ usuario_id: forumSessaoAtual.user.id, resposta_id: respostaId });
-
-    if (error) {
-      if (String(error.message || '').toLowerCase().includes('duplicate')) {
-        alert('Você já curtiu esta resposta.');
-        return;
-      }
-      throw error;
-    }
-
-    await forumCarregarRespostas(forumTopicoAtual.id);
+    const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: forumSessaoAtual.user.id, resposta_id: respostaId });
+    if (error && !String(error.message || '').toLowerCase().includes('duplicate')) throw error;
+    forumCurtidasRespostas.add(respostaId);
+    const resposta = forumRespostasCache.find(r => r.id === respostaId);
+    if (resposta) resposta.total_curtidas = Number(resposta.total_curtidas || 0) + 1;
+    forumRenderizarRespostas();
   } catch (error) {
     console.error('Erro ao curtir resposta:', error);
     alert('Não foi possível curtir.');
@@ -601,12 +535,8 @@ async function forumCurtirResposta(respostaId) {
 async function forumDenunciarTopico(topicoId) {
   const motivo = prompt('Informe o motivo da denúncia:');
   if (!motivo?.trim()) return;
-
   try {
-    const { error } = await _supabase
-      .from('forum_denuncias')
-      .insert({ usuario_id: forumSessaoAtual.user.id, topico_id: topicoId, motivo: motivo.trim() });
-
+    const { error } = await _supabase.from('forum_denuncias').insert({ usuario_id: forumSessaoAtual.user.id, topico_id: topicoId, motivo: motivo.trim() });
     if (error) throw error;
     alert('Denúncia registrada para análise.');
   } catch (error) {
@@ -618,12 +548,8 @@ async function forumDenunciarTopico(topicoId) {
 async function forumDenunciarResposta(respostaId) {
   const motivo = prompt('Informe o motivo da denúncia:');
   if (!motivo?.trim()) return;
-
   try {
-    const { error } = await _supabase
-      .from('forum_denuncias')
-      .insert({ usuario_id: forumSessaoAtual.user.id, resposta_id: respostaId, motivo: motivo.trim() });
-
+    const { error } = await _supabase.from('forum_denuncias').insert({ usuario_id: forumSessaoAtual.user.id, resposta_id: respostaId, motivo: motivo.trim() });
     if (error) throw error;
     alert('Denúncia registrada para análise.');
   } catch (error) {
@@ -635,16 +561,9 @@ async function forumDenunciarResposta(respostaId) {
 async function forumExcluirTopico() {
   if (!forumTopicoAtual?.id) return;
   if (!confirm('Excluir este tópico e todas as respostas?')) return;
-
   try {
-    const { error } = await _supabase
-      .from('forum_topicos')
-      .delete()
-      .eq('id', forumTopicoAtual.id)
-      .eq('usuario_id', forumSessaoAtual.user.id);
-
+    const { error } = await _supabase.from('forum_topicos').delete().eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
     if (error) throw error;
-
     forumFecharTopico();
     await forumCarregarTopicos();
   } catch (error) {
@@ -656,16 +575,9 @@ async function forumExcluirTopico() {
 async function forumExcluirResposta(respostaId) {
   if (!respostaId) return;
   if (!confirm('Excluir esta resposta?')) return;
-
   try {
-    const { error } = await _supabase
-      .from('forum_respostas')
-      .delete()
-      .eq('id', respostaId)
-      .eq('usuario_id', forumSessaoAtual.user.id);
-
+    const { error } = await _supabase.from('forum_respostas').delete().eq('id', respostaId).eq('usuario_id', forumSessaoAtual.user.id);
     if (error) throw error;
-
     await forumCarregarRespostas(forumTopicoAtual.id);
     await forumCarregarTopicos();
   } catch (error) {
@@ -677,25 +589,20 @@ async function forumExcluirResposta(respostaId) {
 async function inicializarForumFS() {
   forumMostrarConteudo();
   forumPreencherCategorias();
-
   try {
     if (!window._supabase) {
       forumMostrarAlerta('Supabase não carregou. Atualize a página e tente novamente.', 'erro');
       return;
     }
-
     forumSessaoAtual = await forumObterSessao();
-
     if (!forumSessaoAtual?.user?.id) {
       try { localStorage.setItem('fs_destino_apos_login', '/forum.html'); } catch (_) {}
       window.location.href = '/index.html?login=1';
       return;
     }
-
     forumPerfilAtual = await forumBuscarPerfil(forumSessaoAtual.user.id);
     if (forumPerfilAtual?.nome) localStorage.setItem('usuario_nome', forumPerfilAtual.nome);
     if (forumPerfilAtual?.nome_empresa) localStorage.setItem('nome_empresa', forumPerfilAtual.nome_empresa);
-
     await forumCarregarTopicos();
   } catch (error) {
     console.error('Erro ao inicializar fórum:', error);
@@ -703,11 +610,8 @@ async function inicializarForumFS() {
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', inicializarForumFS);
-} else {
-  inicializarForumFS();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inicializarForumFS);
+else inicializarForumFS();
 
 window.forumCarregarTopicos = forumCarregarTopicos;
 window.forumFiltrarTopicosLocal = forumFiltrarTopicosLocal;
