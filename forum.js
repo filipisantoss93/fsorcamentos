@@ -14,7 +14,8 @@ const FORUM_CATEGORIAS = [
   'Cobrança e Pagamento',
   'Garantia',
   'Dicas de Atendimento',
-  'Dúvidas da Plataforma'
+  'Dúvidas da Plataforma',
+  'Outros'
 ];
 
 let forumSessaoAtual = null;
