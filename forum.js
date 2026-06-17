@@ -128,6 +128,16 @@ function forumResumo(texto, limite = 180) {
   return valor.length <= limite ? valor : valor.slice(0, limite).trim() + '...';
 }
 
+async function forumExecutarRPCNotificacao(nomeFuncao, parametros) {
+  try {
+    if (!window._supabase || !nomeFuncao) return;
+    const { error } = await _supabase.rpc(nomeFuncao, parametros || {});
+    if (error) console.warn(`Não foi possível criar notificação do fórum (${nomeFuncao}):`, error);
+  } catch (error) {
+    console.warn(`Erro inesperado ao criar notificação do fórum (${nomeFuncao}):`, error);
+  }
+}
+
 function forumPreencherCategorias() {
   const selects = [document.getElementById('forum-topico-categoria'), document.getElementById('forum-filtro-categoria')];
   selects.forEach(select => {
@@ -439,14 +449,20 @@ async function forumCriarResposta(event) {
   forumSetBotao('forum-btn-responder', 'Enviando...', true);
   try {
     const autor = forumAutorAtualPayload();
-    const { error } = await _supabase.from('forum_respostas').insert({
+    const { data, error } = await _supabase.from('forum_respostas').insert({
       topico_id: forumTopicoAtual.id,
       usuario_id: forumSessaoAtual.user.id,
       autor_nome: autor.autor_nome,
       autor_empresa: autor.autor_empresa,
       resposta: texto
-    });
+    }).select('id').single();
     if (error) throw error;
+
+    await forumExecutarRPCNotificacao('fs_forum_notificar_resposta', {
+      p_topico_id: forumTopicoAtual.id,
+      p_resposta_id: data?.id
+    });
+
     document.getElementById('forum-resposta-texto').value = '';
     await forumCarregarRespostas(forumTopicoAtual.id);
     await forumCarregarTopicos();
@@ -501,6 +517,11 @@ async function forumCurtirTopico(topicoId, event) {
   try {
     const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: forumSessaoAtual.user.id, topico_id: topicoId });
     if (error && !String(error.message || '').toLowerCase().includes('duplicate')) throw error;
+
+    await forumExecutarRPCNotificacao('fs_forum_notificar_curtida_topico', {
+      p_topico_id: topicoId
+    });
+
     forumCurtidasTopicos.add(topicoId);
     const topico = forumTopicosCache.find(t => t.id === topicoId);
     if (topico) topico.total_curtidas = Number(topico.total_curtidas || 0) + 1;
@@ -522,6 +543,11 @@ async function forumCurtirResposta(respostaId) {
   try {
     const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: forumSessaoAtual.user.id, resposta_id: respostaId });
     if (error && !String(error.message || '').toLowerCase().includes('duplicate')) throw error;
+
+    await forumExecutarRPCNotificacao('fs_forum_notificar_curtida_resposta', {
+      p_resposta_id: respostaId
+    });
+
     forumCurtidasRespostas.add(respostaId);
     const resposta = forumRespostasCache.find(r => r.id === respostaId);
     if (resposta) resposta.total_curtidas = Number(resposta.total_curtidas || 0) + 1;
