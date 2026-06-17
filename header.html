@@ -1,3 +1,192 @@
+<style>
+  /* =========================================================
+     FS ORÇAMENTOS - OVERRIDE GLOBAL DE BOTÕES
+     Menos botões soltos/arredondados, mais padrão de sistema
+     ========================================================= */
+
+  :root {
+    --fs-btn-radius: 8px;
+    --fs-btn-height: 38px;
+  }
+
+  button,
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .fs-btn,
+  .fs-btn-primary,
+  .fs-btn-secondary,
+  .fs-btn-danger,
+  .btn-add,
+  .btn-extra,
+  .btn-limpar,
+  .btn-generate,
+  .forum-btn,
+  .forum-btn-secundario,
+  .forum-btn-perigo,
+  .forum-link-btn,
+  .forum-like-btn,
+  .menu-mobile-btn,
+  .btn-header-entrar,
+  .btn-header-sair,
+  .btn-menu-mobile-entrar,
+  .btn-menu-mobile-sair,
+  .btn-notificacoes-header {
+    border-radius: var(--fs-btn-radius) !important;
+    min-height: var(--fs-btn-height);
+    box-shadow: none !important;
+    transform: none !important;
+    letter-spacing: 0 !important;
+  }
+
+  button:hover,
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .fs-btn:hover,
+  .fs-btn-primary:hover,
+  .fs-btn-secondary:hover,
+  .fs-btn-danger:hover,
+  .forum-btn:hover,
+  .forum-btn-secundario:hover,
+  .forum-link-btn:hover,
+  .forum-like-btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    filter: brightness(0.98);
+  }
+
+  .btn-notificacoes-header {
+    width: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+  }
+
+  .contador-notificacoes {
+    border-radius: 6px !important;
+  }
+
+  .nav-menu a,
+  .nav-menu summary {
+    border-radius: 8px !important;
+  }
+
+  .nav-menu .link-destaque-gerador {
+    border-radius: 8px !important;
+  }
+
+  .nav-dropdown-menu {
+    border-radius: 10px !important;
+  }
+
+  .nav-dropdown-menu a {
+    border-radius: 7px !important;
+  }
+
+  .fs-actions,
+  .actions,
+  .acoes,
+  .botoes-acoes,
+  .form-actions,
+  .fs-form-actions,
+  .forum-topico-acoes,
+  .forum-resposta-acoes,
+  .forum-hero-acoes {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px !important;
+    padding: 10px !important;
+    background: #fffaf0;
+    border: 1px solid #e0d6c8;
+    border-radius: 10px !important;
+  }
+
+  .forum-hero-acoes {
+    display: grid !important;
+    padding: 10px !important;
+  }
+
+  .forum-topico-acoes,
+  .forum-resposta-acoes {
+    margin-top: 12px !important;
+    justify-content: flex-start;
+  }
+
+  .forum-link-btn,
+  .forum-like-btn {
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    border: 1px solid #d7ccc8 !important;
+    color: #3e2723 !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .forum-like-btn.curtido {
+    background: #fff8e1 !important;
+    border-color: #ffc400 !important;
+    color: #8a5a00 !important;
+  }
+
+  .forum-btn,
+  .forum-btn-secundario,
+  .fs-btn-primary,
+  .btn-primary,
+  .btn-add,
+  .btn-extra,
+  .btn-generate {
+    border-radius: 8px !important;
+  }
+
+  .fs-card,
+  .card,
+  .dashboard-card,
+  .resumo-card,
+  .plano-card,
+  .forum-card,
+  .forum-topico,
+  .forum-resposta,
+  .container {
+    border-radius: 12px !important;
+  }
+
+  .fs-badge,
+  .badge,
+  .status-badge,
+  .forum-badge {
+    border-radius: 6px !important;
+  }
+
+  @media (max-width: 640px) {
+    .fs-actions,
+    .actions,
+    .acoes,
+    .botoes-acoes,
+    .form-actions,
+    .fs-form-actions,
+    .forum-topico-acoes,
+    .forum-resposta-acoes {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    .fs-actions > *,
+    .actions > *,
+    .acoes > *,
+    .botoes-acoes > *,
+    .form-actions > *,
+    .fs-form-actions > *,
+    .forum-topico-acoes > *,
+    .forum-resposta-acoes > * {
+      width: 100% !important;
+      justify-content: center !important;
+    }
+  }
+</style>
+
 <header class="main-header">
   <div class="header-topo">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos">
