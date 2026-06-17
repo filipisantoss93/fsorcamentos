@@ -18,9 +18,10 @@ const FORUM_CATEGORIAS = [
   'Outros'
 ];
 
-const FORUM_BUCKET_FOTOS = 'forum-fotos';
-const FORUM_MAX_FOTOS_TOPICO = 2;
-const FORUM_MAX_MB_FOTO = 3;
+const FORUM_BUCKET_IMAGENS = 'forum-imagens';
+const FORUM_LIMITE_FOTOS = 2;
+const FORUM_LIMITE_FOTO_BYTES = 2 * 1024 * 1024;
+const FORUM_MIMES_FOTO = ['image/jpeg', 'image/png', 'image/webp'];
 
 let forumSessaoAtual = null;
 let forumPerfilAtual = null;
@@ -110,27 +111,25 @@ function forumNomeAutor(registro, opcoes = {}) {
 
 function forumIniciaisAutor(registro) {
   const nome = String(registro?.autor_nome || forumNomeAutor(registro, { usarVoce: false }) || 'FS').trim();
-  const partes = nome.split(/\s+/).filter(Boolean).slice(0, 2);
-  return (partes.map(p => p[0]).join('') || 'FS').toUpperCase();
+  return nome.split(/\s+/).slice(0, 2).map(p => p[0] || '').join('').toUpperCase() || 'FS';
 }
 
 function forumAvatarHtml(registro) {
   const foto = String(registro?.autor_foto_url || '').trim();
-  if (foto) {
-    return `<img class="forum-avatar" src="${forumEscaparHtml(foto)}" alt="Foto do autor" loading="lazy">`;
-  }
+  if (foto) return `<span class="forum-avatar"><img src="${forumEscaparHtml(foto)}" alt="Foto do autor" loading="lazy"></span>`;
   return `<span class="forum-avatar-placeholder">${forumEscaparHtml(forumIniciaisAutor(registro))}</span>`;
 }
 
-function forumAutorLinhaHtml(registro) {
+function forumAutorLinhaHtml(registro, subtitulo = '') {
   return `
     <div class="forum-autor-linha">
       ${forumAvatarHtml(registro)}
       <div class="forum-autor-texto">
         <strong>${forumEscaparHtml(forumNomeAutor(registro))}</strong>
-        <small>${forumEscaparHtml(registro?.autor_empresa || '')}</small>
+        ${subtitulo ? `<small>${forumEscaparHtml(subtitulo)}</small>` : ''}
       </div>
-    </div>`;
+    </div>
+  `;
 }
 
 function forumStatusClasse(status) {
@@ -150,6 +149,61 @@ function forumResumo(texto, limite = 180) {
   return valor.length <= limite ? valor : valor.slice(0, limite).trim() + '...';
 }
 
+function forumFotosTopico(topico) {
+  return [topico?.foto_1_url, topico?.foto_2_url].filter(Boolean);
+}
+
+function forumFotosHtml(topico) {
+  const fotos = forumFotosTopico(topico);
+  if (!fotos.length) return '';
+  return `<div class="forum-fotos-grid">${fotos.map(url => `
+    <a href="${forumEscaparHtml(url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+      <img class="forum-foto" src="${forumEscaparHtml(url)}" alt="Foto anexada ao tópico" loading="lazy">
+    </a>
+  `).join('')}</div>`;
+}
+
+function forumValidarArquivosFotos(files) {
+  const lista = Array.from(files || []);
+  if (lista.length > FORUM_LIMITE_FOTOS) throw new Error(`Selecione no máximo ${FORUM_LIMITE_FOTOS} fotos por tópico.`);
+  for (const arquivo of lista) {
+    if (!FORUM_MIMES_FOTO.includes(arquivo.type)) throw new Error('Use apenas imagens JPG, PNG ou WEBP.');
+    if (arquivo.size > FORUM_LIMITE_FOTO_BYTES) throw new Error('Cada foto deve ter no máximo 2 MB.');
+  }
+  return lista;
+}
+
+function forumValidarFotosSelecionadas() {
+  const input = document.getElementById('forum-topico-fotos');
+  const preview = document.getElementById('forum-preview-fotos');
+  try {
+    const arquivos = forumValidarArquivosFotos(input?.files || []);
+    if (preview) preview.innerHTML = arquivos.map(arquivo => `<img src="${URL.createObjectURL(arquivo)}" alt="Prévia da foto">`).join('');
+  } catch (error) {
+    if (input) input.value = '';
+    if (preview) preview.innerHTML = '';
+    alert(error.message || 'Fotos inválidas.');
+  }
+}
+
+async function forumUploadFotosTopico() {
+  const input = document.getElementById('forum-topico-fotos');
+  const arquivos = forumValidarArquivosFotos(input?.files || []);
+  const urls = [];
+  if (!arquivos.length) return urls;
+  if (!forumSessaoAtual?.user?.id) throw new Error('Faça login para enviar fotos.');
+  for (let i = 0; i < arquivos.length; i++) {
+    const arquivo = arquivos[i];
+    const extensao = arquivo.type === 'image/png' ? 'png' : arquivo.type === 'image/webp' ? 'webp' : 'jpg';
+    const caminho = `${forumSessaoAtual.user.id}/${Date.now()}-${i + 1}-${Math.random().toString(36).slice(2)}.${extensao}`;
+    const { error } = await _supabase.storage.from(FORUM_BUCKET_IMAGENS).upload(caminho, arquivo, { cacheControl: '3600', upsert: false, contentType: arquivo.type });
+    if (error) throw error;
+    const { data } = _supabase.storage.from(FORUM_BUCKET_IMAGENS).getPublicUrl(caminho);
+    if (data?.publicUrl) urls.push(data.publicUrl);
+  }
+  return urls;
+}
+
 async function forumExecutarRPCNotificacao(nomeFuncao, parametros) {
   try {
     if (!window._supabase || !nomeFuncao) return;
@@ -165,8 +219,7 @@ function forumPreencherCategorias() {
   selects.forEach(select => {
     if (!select) return;
     const ehFiltro = select.id === 'forum-filtro-categoria';
-    select.innerHTML = `${ehFiltro ? '<option value="todos">Todas as categorias</option>' : ''}` +
-      FORUM_CATEGORIAS.map(cat => `<option value="${forumEscaparHtml(cat)}">${forumEscaparHtml(cat)}</option>`).join('');
+    select.innerHTML = `${ehFiltro ? '<option value="todos">Todas as categorias</option>' : ''}` + FORUM_CATEGORIAS.map(cat => `<option value="${forumEscaparHtml(cat)}">${forumEscaparHtml(cat)}</option>`).join('');
   });
   const lista = document.getElementById('forum-lista-categorias');
   if (lista) lista.innerHTML = FORUM_CATEGORIAS.map(cat => `<button type="button" class="forum-mini-item" onclick="forumFiltrarCategoria('${forumEscaparHtml(cat)}')">${forumEscaparHtml(cat)}</button>`).join('');
@@ -214,57 +267,6 @@ async function forumCarregarCurtidasUsuario() {
   });
 }
 
-function forumValidarFotosSelecionadas() {
-  const input = document.getElementById('forum-topico-fotos');
-  if (!input) return [];
-  const arquivos = Array.from(input.files || []);
-  if (arquivos.length > FORUM_MAX_FOTOS_TOPICO) {
-    forumMostrarAlerta(`Selecione no máximo ${FORUM_MAX_FOTOS_TOPICO} fotos por tópico.`, 'erro');
-    input.value = '';
-    return [];
-  }
-  const limiteBytes = FORUM_MAX_MB_FOTO * 1024 * 1024;
-  const invalido = arquivos.find(arq => !arq.type.startsWith('image/') || arq.size > limiteBytes);
-  if (invalido) {
-    forumMostrarAlerta(`Cada foto deve ser uma imagem de até ${FORUM_MAX_MB_FOTO} MB.`, 'erro');
-    input.value = '';
-    return [];
-  }
-  forumMostrarAlerta('', 'info');
-  return arquivos;
-}
-
-function forumExtensaoArquivo(nome) {
-  const ext = String(nome || '').split('.').pop()?.toLowerCase() || 'jpg';
-  return ext.replace(/[^a-z0-9]/g, '').slice(0, 5) || 'jpg';
-}
-
-async function forumUploadFotosTopico() {
-  const arquivos = forumValidarFotosSelecionadas();
-  if (!arquivos.length) return [];
-  if (!window._supabase || !forumSessaoAtual?.user?.id) throw new Error('Sessão inválida para upload.');
-  const urls = [];
-  for (const [index, arquivo] of arquivos.entries()) {
-    const ext = forumExtensaoArquivo(arquivo.name);
-    const caminho = `${forumSessaoAtual.user.id}/${Date.now()}-${index}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { error } = await _supabase.storage.from(FORUM_BUCKET_FOTOS).upload(caminho, arquivo, {
-      cacheControl: '3600',
-      upsert: false,
-      contentType: arquivo.type || 'image/jpeg'
-    });
-    if (error) throw error;
-    const { data } = _supabase.storage.from(FORUM_BUCKET_FOTOS).getPublicUrl(caminho);
-    if (data?.publicUrl) urls.push(data.publicUrl);
-  }
-  return urls;
-}
-
-function forumFotosHtml(fotos) {
-  const lista = Array.isArray(fotos) ? fotos.filter(Boolean).slice(0, FORUM_MAX_FOTOS_TOPICO) : [];
-  if (!lista.length) return '';
-  return lista.map(url => `<a href="${forumEscaparHtml(url)}" target="_blank" rel="noopener"><img class="forum-foto" src="${forumEscaparHtml(url)}" alt="Foto anexada ao tópico" loading="lazy"></a>`).join('');
-}
-
 async function forumCarregarTopicos() {
   const lista = document.getElementById('forum-lista-topicos');
   if (lista) lista.innerHTML = '<div class="forum-vazio">Carregando tópicos...</div>';
@@ -289,7 +291,7 @@ function forumFiltrarTopicosLocal() {
   const status = document.getElementById('forum-filtro-status')?.value || 'todos';
   let topicos = [...forumTopicosCache];
   if (categoria !== 'todos') topicos = topicos.filter(t => t.categoria === categoria);
-  if (status !== 'todos') topicos = topicos.filter(t => forumNormalizarTexto(forumStatusTopico(t)) === status);
+  if (status !== 'todos') topicos = topicos.filter(t => forumNormalizarTexto(t.status) === status);
   if (busca) topicos = topicos.filter(t => forumNormalizarTexto(`${t.titulo} ${t.descricao} ${t.categoria} ${t.status} ${t.autor_nome} ${t.autor_empresa}`).includes(busca));
   forumRenderizarTopicos(topicos);
 }
@@ -315,23 +317,18 @@ function forumRenderizarTopicos(topicos) {
   }
   lista.innerHTML = topicos.map(topico => {
     const status = forumStatusTopico(topico);
-    const temFotos = Array.isArray(topico.fotos) && topico.fotos.length;
     return `
       <article class="forum-topico" onclick="forumAbrirTopico('${topico.id}')">
         <div class="forum-topico-topo">
-          <div style="min-width:0;">
-            ${forumAutorLinhaHtml(topico)}
+          <div>
+            ${forumAutorLinhaHtml(topico, forumFormatarData(topico.criado_em))}
             <h3 style="margin-top:10px;">${forumEscaparHtml(topico.titulo)} - <small>${forumEscaparHtml(status)}</small></h3>
             <p>${forumEscaparHtml(forumResumo(topico.descricao))}</p>
           </div>
           ${forumBotaoCurtirTopico(topico)}
         </div>
-        <div class="forum-badges">
-          <span class="forum-badge">Categoria: ${forumEscaparHtml(topico.categoria || 'Categoria')}</span>
-          <span class="forum-badge azul">${Number(topico.total_respostas || 0)} respostas</span>
-          ${temFotos ? '<span class="forum-badge azul">📷 fotos</span>' : ''}
-          <span class="forum-badge ${forumStatusClasse(status)}">${forumEscaparHtml(status)}</span>
-        </div>
+        ${forumFotosHtml(topico)}
+        <div class="forum-badges"><span class="forum-badge">Categoria: ${forumEscaparHtml(topico.categoria || 'Categoria')}</span><span class="forum-badge azul">${Number(topico.total_respostas || 0)} respostas</span><span class="forum-badge ${forumStatusClasse(status)}">${forumEscaparHtml(status)}</span></div>
       </article>`;
   }).join('');
 }
@@ -360,30 +357,31 @@ async function forumCriarTopico(event) {
   if (!descricao || descricao.length < 20) return forumMostrarAlerta('Descreva melhor sua dúvida antes de publicar.', 'erro');
   forumSetBotao('forum-btn-criar', 'Publicando...', true);
   try {
-    const autor = forumAutorAtualPayload();
     const fotos = await forumUploadFotosTopico();
+    const autor = forumAutorAtualPayload();
     const { error } = await _supabase.from('forum_topicos').insert({
       usuario_id: forumSessaoAtual.user.id,
       autor_nome: autor.autor_nome,
       autor_empresa: autor.autor_empresa,
       autor_foto_url: autor.autor_foto_url,
+      foto_1_url: fotos[0] || null,
+      foto_2_url: fotos[1] || null,
       titulo,
       categoria: categoria || 'Dúvidas da Plataforma',
       descricao,
-      fotos,
       status: 'aberto',
       resolvido: false
     });
     if (error) throw error;
     document.getElementById('forum-form-topico')?.reset();
-    const inputFotos = document.getElementById('forum-topico-fotos');
-    if (inputFotos) inputFotos.value = '';
+    const preview = document.getElementById('forum-preview-fotos');
+    if (preview) preview.innerHTML = '';
     forumOcultarFormularioNovoTopico();
     forumMostrarAlerta('Dúvida publicada com sucesso.', 'ok');
     await forumCarregarTopicos();
   } catch (error) {
     console.error('Erro ao criar tópico:', error);
-    forumMostrarAlerta('Não foi possível publicar sua dúvida. Verifique as fotos e tente novamente.', 'erro');
+    forumMostrarAlerta(error.message || 'Não foi possível publicar sua dúvida.', 'erro');
   } finally {
     forumSetBotao('forum-btn-criar', 'Publicar dúvida', false);
   }
@@ -402,17 +400,13 @@ function forumRenderizarDetalheTopico(topico) {
   const status = forumStatusTopico(topico);
   const titulo = document.getElementById('forum-detalhe-titulo');
   const descricao = document.getElementById('forum-detalhe-descricao');
+  const fotos = document.getElementById('forum-detalhe-fotos');
   const info = document.getElementById('forum-detalhe-info');
-  const fotosBox = document.getElementById('forum-detalhe-fotos');
   if (titulo) titulo.textContent = `${topico.titulo || 'Tópico'} - ${status}`;
   if (descricao) descricao.innerHTML = forumTextoHtml(topico.descricao || '');
-  if (fotosBox) fotosBox.innerHTML = forumFotosHtml(topico.fotos || []);
+  if (fotos) fotos.innerHTML = forumFotosHtml(topico).replace('forum-fotos-grid', '');
   if (info) {
-    info.innerHTML = `
-      <div class="forum-info-linha"><strong>Autor:</strong><span>${forumAutorLinhaHtml(topico)}</span></div>
-      <div class="forum-info-linha"><strong>Categoria:</strong><span>${forumEscaparHtml(topico.categoria || 'Categoria')}</span></div>
-      <div class="forum-info-linha"><strong>Data da publicação:</strong><span>${forumEscaparHtml(forumFormatarData(topico.criado_em))}</span></div>
-      <div class="forum-info-linha"><strong>Respostas:</strong><span>${Number(topico.total_respostas || 0)} respostas</span></div>`;
+    info.innerHTML = `<div class="forum-info-linha"><strong>Autor:</strong><span>${forumAutorLinhaHtml(topico)}</span></div><div class="forum-info-linha"><strong>Categoria:</strong><span>${forumEscaparHtml(topico.categoria || 'Categoria')}</span></div><div class="forum-info-linha"><strong>Data da publicação:</strong><span>${forumEscaparHtml(forumFormatarData(topico.criado_em))}</span></div><div class="forum-info-linha"><strong>Respostas:</strong><span>${Number(topico.total_respostas || 0)} respostas</span></div>`;
   }
   forumRenderizarAcoesTopico(topico);
 }
@@ -440,11 +434,7 @@ function forumRenderizarAcoesTopico(topico) {
   if (!box) return;
   const dono = forumSessaoAtual?.user?.id === topico.usuario_id;
   const resolvido = forumStatusTopico(topico) === 'resolvido';
-  box.innerHTML = `
-    ${forumBotaoCurtirTopico(topico)}
-    ${dono && !resolvido ? '<button type="button" class="forum-link-btn" onclick="forumMarcarTopicoResolvido()">Marcar como resolvido</button>' : ''}
-    ${dono ? '<button type="button" class="forum-link-btn" onclick="forumExcluirTopico()">Excluir tópico</button>' : ''}
-    <button type="button" class="forum-link-btn" onclick="forumDenunciarTopico('${topico.id}')">Denunciar</button>`;
+  box.innerHTML = `${forumBotaoCurtirTopico(topico)}${dono && !resolvido ? '<button type="button" class="forum-link-btn" onclick="forumMarcarTopicoResolvido()">Marcar como resolvido</button>' : ''}${dono ? '<button type="button" class="forum-link-btn" onclick="forumExcluirTopico()">Excluir tópico</button>' : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarTopico('${topico.id}')">Denunciar</button>`;
 }
 
 async function forumCarregarRespostas(topicoId) {
@@ -472,18 +462,7 @@ function forumRenderizarRespostas() {
   const donoTopico = forumTopicoAtual && forumSessaoAtual?.user?.id === forumTopicoAtual.usuario_id;
   lista.innerHTML = forumRespostasCache.map(resposta => {
     const donoResposta = forumSessaoAtual?.user?.id === resposta.usuario_id;
-    return `
-      <article class="forum-resposta ${resposta.marcada_como_solucao ? 'solucao' : ''}">
-        <div class="forum-resposta-topo"><span>${resposta.marcada_como_solucao ? '✓ Solução marcada' : ''}</span><span>${forumFormatarData(resposta.criado_em)}</span></div>
-        ${forumAutorLinhaHtml(resposta)}
-        <div style="margin-top:10px;">${forumTextoHtml(resposta.resposta)}</div>
-        <div class="forum-resposta-acoes">
-          ${forumBotaoCurtirResposta(resposta)}
-          ${donoTopico && !resposta.marcada_como_solucao ? `<button type="button" class="forum-link-btn" onclick="forumMarcarRespostaSolucao('${resposta.id}')">Marcar solução</button>` : ''}
-          ${donoResposta ? `<button type="button" class="forum-link-btn" onclick="forumExcluirResposta('${resposta.id}')">Excluir</button>` : ''}
-          <button type="button" class="forum-link-btn" onclick="forumDenunciarResposta('${resposta.id}')">Denunciar</button>
-        </div>
-      </article>`;
+    return `<article class="forum-resposta ${resposta.marcada_como_solucao ? 'solucao' : ''}"><div class="forum-resposta-topo"><span>${resposta.marcada_como_solucao ? '✓ Solução marcada' : 'Resposta'}</span><span>${forumFormatarData(resposta.criado_em)}</span></div>${forumAutorLinhaHtml(resposta)}<div style="margin-top:12px;">${forumTextoHtml(resposta.resposta)}</div><div class="forum-resposta-acoes">${forumBotaoCurtirResposta(resposta)}${donoTopico && !resposta.marcada_como_solucao ? `<button type="button" class="forum-link-btn" onclick="forumMarcarRespostaSolucao('${resposta.id}')">Marcar solução</button>` : ''}${donoResposta ? `<button type="button" class="forum-link-btn" onclick="forumExcluirResposta('${resposta.id}')">Excluir</button>` : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarResposta('${resposta.id}')">Denunciar</button></div></article>`;
   }).join('');
 }
 
@@ -495,14 +474,7 @@ async function forumCriarResposta(event) {
   forumSetBotao('forum-btn-responder', 'Enviando...', true);
   try {
     const autor = forumAutorAtualPayload();
-    const { data, error } = await _supabase.from('forum_respostas').insert({
-      topico_id: forumTopicoAtual.id,
-      usuario_id: forumSessaoAtual.user.id,
-      autor_nome: autor.autor_nome,
-      autor_empresa: autor.autor_empresa,
-      autor_foto_url: autor.autor_foto_url,
-      resposta: texto
-    }).select('id').single();
+    const { data, error } = await _supabase.from('forum_respostas').insert({ topico_id: forumTopicoAtual.id, usuario_id: forumSessaoAtual.user.id, autor_nome: autor.autor_nome, autor_empresa: autor.autor_empresa, autor_foto_url: autor.autor_foto_url, resposta: texto }).select('id').single();
     if (error) throw error;
     await forumExecutarRPCNotificacao('fs_forum_notificar_resposta', { p_topico_id: forumTopicoAtual.id, p_resposta_id: data?.id });
     document.getElementById('forum-resposta-texto').value = '';
@@ -562,10 +534,7 @@ async function forumCurtirTopico(topicoId, event) {
     forumCurtidasTopicos.add(topicoId);
     const topico = forumTopicosCache.find(t => t.id === topicoId);
     if (topico) topico.total_curtidas = Number(topico.total_curtidas || 0) + 1;
-    if (forumTopicoAtual?.id === topicoId && topico) {
-      forumTopicoAtual = topico;
-      forumRenderizarDetalheTopico(topico);
-    }
+    if (forumTopicoAtual?.id === topicoId && topico) { forumTopicoAtual = topico; forumRenderizarDetalheTopico(topico); }
     forumFiltrarTopicosLocal();
   } catch (error) {
     console.error('Erro ao curtir tópico:', error);
@@ -677,6 +646,7 @@ window.forumFiltrarTopicosLocal = forumFiltrarTopicosLocal;
 window.forumFiltrarCategoria = forumFiltrarCategoria;
 window.forumMostrarFormularioNovoTopico = forumMostrarFormularioNovoTopico;
 window.forumOcultarFormularioNovoTopico = forumOcultarFormularioNovoTopico;
+window.forumValidarFotosSelecionadas = forumValidarFotosSelecionadas;
 window.forumCriarTopico = forumCriarTopico;
 window.forumAbrirTopico = forumAbrirTopico;
 window.forumFecharTopico = forumFecharTopico;
@@ -689,4 +659,3 @@ window.forumDenunciarTopico = forumDenunciarTopico;
 window.forumDenunciarResposta = forumDenunciarResposta;
 window.forumExcluirTopico = forumExcluirTopico;
 window.forumExcluirResposta = forumExcluirResposta;
-window.forumValidarFotosSelecionadas = forumValidarFotosSelecionadas;
