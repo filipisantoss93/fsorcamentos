@@ -74,6 +74,54 @@ function forumSetBotao(id, texto, disabled = false) {
   btn.disabled = disabled;
 }
 
+function forumAutorAtualPayload() {
+  const nomePerfil = forumPerfilAtual?.nome || localStorage.getItem('usuario_nome') || '';
+  const empresaPerfil = forumPerfilAtual?.nome_empresa || localStorage.getItem('nome_empresa') || '';
+  const email = forumSessaoAtual?.user?.email || '';
+  const nomeFallback = email ? email.split('@')[0] : 'Membro da comunidade';
+
+  return {
+    autor_nome: String(nomePerfil || nomeFallback).trim(),
+    autor_empresa: String(empresaPerfil || '').trim()
+  };
+}
+
+function forumNomeAutor(registro, opcoes = {}) {
+  const usuarioId = typeof registro === 'string' ? registro : registro?.usuario_id;
+  const autorNome = typeof registro === 'object' ? (registro?.autor_nome || '') : '';
+  const autorEmpresa = typeof registro === 'object' ? (registro?.autor_empresa || '') : '';
+  const ehAutorAtual = forumSessaoAtual?.user?.id && usuarioId === forumSessaoAtual.user.id;
+
+  let nome = String(autorNome || '').trim();
+  const empresa = String(autorEmpresa || '').trim();
+
+  if (!nome) {
+    nome = ehAutorAtual
+      ? (forumPerfilAtual?.nome || localStorage.getItem('usuario_nome') || 'Você')
+      : 'Membro da comunidade';
+  }
+
+  if (ehAutorAtual && opcoes.usarVoce !== false) {
+    nome = 'Você';
+  }
+
+  return empresa ? `${nome} · ${empresa}` : nome;
+}
+
+function forumStatusClasse(status) {
+  const normalizado = forumNormalizarTexto(status);
+  if (normalizado === 'resolvido') return 'verde';
+  if (normalizado === 'fechado') return 'vermelho';
+  if (normalizado === 'respondido') return 'azul';
+  return '';
+}
+
+function forumResumo(texto, limite = 180) {
+  const valor = String(texto || '').replace(/\s+/g, ' ').trim();
+  if (valor.length <= limite) return valor;
+  return valor.slice(0, limite).trim() + '...';
+}
+
 function forumPreencherCategorias() {
   const selects = [
     document.getElementById('forum-topico-categoria'),
@@ -131,25 +179,6 @@ async function forumBuscarPerfil(userId) {
   return data || null;
 }
 
-function forumNomeAutor(usuarioId) {
-  if (forumSessaoAtual?.user?.id === usuarioId) return 'Você';
-  return 'Membro da comunidade';
-}
-
-function forumStatusClasse(status) {
-  const normalizado = forumNormalizarTexto(status);
-  if (normalizado === 'resolvido') return 'verde';
-  if (normalizado === 'fechado') return 'vermelho';
-  if (normalizado === 'respondido') return 'azul';
-  return '';
-}
-
-function forumResumo(texto, limite = 180) {
-  const valor = String(texto || '').replace(/\s+/g, ' ').trim();
-  if (valor.length <= limite) return valor;
-  return valor.slice(0, limite).trim() + '...';
-}
-
 async function forumCarregarTopicos() {
   const lista = document.getElementById('forum-lista-topicos');
   if (lista) lista.innerHTML = '<div class="forum-vazio">Carregando tópicos...</div>';
@@ -192,7 +221,7 @@ function forumFiltrarTopicosLocal() {
 
   if (busca) {
     topicos = topicos.filter(t => {
-      const texto = forumNormalizarTexto(`${t.titulo} ${t.descricao} ${t.categoria} ${t.status}`);
+      const texto = forumNormalizarTexto(`${t.titulo} ${t.descricao} ${t.categoria} ${t.status} ${t.autor_nome} ${t.autor_empresa}`);
       return texto.includes(busca);
     });
   }
@@ -211,6 +240,7 @@ function forumRenderizarTopicos(topicos) {
 
   lista.innerHTML = topicos.map(topico => {
     const status = topico.resolvido ? 'resolvido' : (topico.status || 'aberto');
+    const autor = forumNomeAutor(topico);
     return `
       <article class="forum-topico" onclick="forumAbrirTopico('${topico.id}')">
         <div class="forum-topico-topo">
@@ -221,6 +251,7 @@ function forumRenderizarTopicos(topicos) {
           <span class="forum-badge ${forumStatusClasse(status)}">${forumEscaparHtml(status)}</span>
         </div>
         <div class="forum-badges">
+          <span class="forum-badge azul">Por ${forumEscaparHtml(autor)}</span>
           <span class="forum-badge">${forumEscaparHtml(topico.categoria || 'Categoria')}</span>
           <span class="forum-badge azul">${Number(topico.total_respostas || 0)} respostas</span>
           <span class="forum-badge">${Number(topico.total_curtidas || 0)} curtidas</span>
@@ -267,10 +298,13 @@ async function forumCriarTopico(event) {
   forumSetBotao('forum-btn-criar', 'Publicando...', true);
 
   try {
+    const autor = forumAutorAtualPayload();
     const { error } = await _supabase
       .from('forum_topicos')
       .insert({
         usuario_id: forumSessaoAtual.user.id,
+        autor_nome: autor.autor_nome,
+        autor_empresa: autor.autor_empresa,
         titulo,
         categoria: categoria || 'Dúvidas da Plataforma',
         descricao,
@@ -330,7 +364,10 @@ function forumRenderizarBadgesDetalhe(topico) {
   if (!box) return;
 
   const status = topico.resolvido ? 'resolvido' : (topico.status || 'aberto');
+  const autor = forumNomeAutor(topico);
+
   box.innerHTML = `
+    <span class="forum-badge azul">Por ${forumEscaparHtml(autor)}</span>
     <span class="forum-badge ${forumStatusClasse(status)}">${forumEscaparHtml(status)}</span>
     <span class="forum-badge">${forumEscaparHtml(topico.categoria || 'Categoria')}</span>
     <span class="forum-badge azul">${Number(topico.total_respostas || 0)} respostas</span>
@@ -389,10 +426,12 @@ function forumRenderizarRespostas() {
 
   lista.innerHTML = forumRespostasCache.map(resposta => {
     const donoResposta = forumSessaoAtual?.user?.id === resposta.usuario_id;
+    const autor = forumNomeAutor(resposta);
+
     return `
       <article class="forum-resposta ${resposta.marcada_como_solucao ? 'solucao' : ''}">
         <div class="forum-resposta-topo">
-          <span>${resposta.marcada_como_solucao ? '✓ Solução marcada' : forumNomeAutor(resposta.usuario_id)}</span>
+          <span>${resposta.marcada_como_solucao ? `✓ Solução marcada · ${forumEscaparHtml(autor)}` : forumEscaparHtml(autor)}</span>
           <span>${forumFormatarData(resposta.criado_em)}</span>
         </div>
         <div>${forumEscaparHtml(resposta.resposta)}</div>
@@ -421,11 +460,14 @@ async function forumCriarResposta(event) {
   forumSetBotao('forum-btn-responder', 'Enviando...', true);
 
   try {
+    const autor = forumAutorAtualPayload();
     const { error } = await _supabase
       .from('forum_respostas')
       .insert({
         topico_id: forumTopicoAtual.id,
         usuario_id: forumSessaoAtual.user.id,
+        autor_nome: autor.autor_nome,
+        autor_empresa: autor.autor_empresa,
         resposta: texto
       });
 
@@ -650,6 +692,9 @@ async function inicializarForumFS() {
     }
 
     forumPerfilAtual = await forumBuscarPerfil(forumSessaoAtual.user.id);
+    if (forumPerfilAtual?.nome) localStorage.setItem('usuario_nome', forumPerfilAtual.nome);
+    if (forumPerfilAtual?.nome_empresa) localStorage.setItem('nome_empresa', forumPerfilAtual.nome_empresa);
+
     await forumCarregarTopicos();
   } catch (error) {
     console.error('Erro ao inicializar fórum:', error);
