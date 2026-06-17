@@ -434,7 +434,56 @@ function forumRenderizarAcoesTopico(topico) {
   if (!box) return;
   const dono = forumSessaoAtual?.user?.id === topico.usuario_id;
   const resolvido = forumStatusTopico(topico) === 'resolvido';
-  box.innerHTML = `${forumBotaoCurtirTopico(topico)}${dono && !resolvido ? '<button type="button" class="forum-link-btn" onclick="forumMarcarTopicoResolvido()">Marcar como resolvido</button>' : ''}${dono ? '<button type="button" class="forum-link-btn" onclick="forumExcluirTopico()">Excluir tópico</button>' : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarTopico('${topico.id}')">Denunciar</button>`;
+  box.innerHTML = `${forumBotaoCurtirTopico(topico)}${dono ? '<button type="button" class="forum-link-btn" onclick="forumEditarTopico()">Editar tópico</button>' : ''}${dono && !resolvido ? '<button type="button" class="forum-link-btn" onclick="forumMarcarTopicoResolvido()">Marcar como resolvido</button>' : ''}${dono ? '<button type="button" class="forum-link-btn" onclick="forumExcluirTopico()">Excluir tópico</button>' : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarTopico(\'${topico.id}\')">Denunciar</button>`;
+}
+
+async function forumEditarTopico() {
+  if (!forumTopicoAtual?.id || forumSessaoAtual?.user?.id !== forumTopicoAtual.usuario_id) return;
+
+  const tituloAtual = forumTopicoAtual.titulo || '';
+  const categoriaAtual = forumTopicoAtual.categoria || 'Dúvidas da Plataforma';
+  const descricaoAtual = forumTextoLimpo(forumTopicoAtual.descricao || '');
+
+  const novoTitulo = prompt('Editar título do tópico:', tituloAtual);
+  if (novoTitulo === null) return;
+
+  const novaCategoria = prompt(`Editar categoria:\n\nCategorias disponíveis:\n${FORUM_CATEGORIAS.join('\n')}`, categoriaAtual);
+  if (novaCategoria === null) return;
+
+  const novaDescricao = prompt('Editar descrição do tópico:', descricaoAtual);
+  if (novaDescricao === null) return;
+
+  const titulo = novoTitulo.trim();
+  const categoria = novaCategoria.trim() || categoriaAtual;
+  const descricao = novaDescricao.trim();
+
+  if (titulo.length < 8) return alert('O título precisa ter pelo menos 8 caracteres.');
+  if (descricao.length < 20) return alert('A descrição precisa ter pelo menos 20 caracteres.');
+  if (!FORUM_CATEGORIAS.includes(categoria)) return alert('Categoria inválida. Escolha uma das categorias disponíveis.');
+
+  try {
+    const { error } = await _supabase
+      .from('forum_topicos')
+      .update({ titulo, categoria, descricao })
+      .eq('id', forumTopicoAtual.id)
+      .eq('usuario_id', forumSessaoAtual.user.id);
+
+    if (error) throw error;
+
+    forumTopicoAtual.titulo = titulo;
+    forumTopicoAtual.categoria = categoria;
+    forumTopicoAtual.descricao = descricao;
+
+    const idx = forumTopicosCache.findIndex(t => t.id === forumTopicoAtual.id);
+    if (idx >= 0) forumTopicosCache[idx] = { ...forumTopicosCache[idx], titulo, categoria, descricao };
+
+    forumRenderizarDetalheTopico(forumTopicoAtual);
+    forumFiltrarTopicosLocal();
+    forumMostrarAlerta('Tópico atualizado com sucesso.', 'ok');
+  } catch (error) {
+    console.error('Erro ao editar tópico:', error);
+    alert('Não foi possível editar o tópico.');
+  }
 }
 
 async function forumCarregarRespostas(topicoId) {
@@ -462,8 +511,36 @@ function forumRenderizarRespostas() {
   const donoTopico = forumTopicoAtual && forumSessaoAtual?.user?.id === forumTopicoAtual.usuario_id;
   lista.innerHTML = forumRespostasCache.map(resposta => {
     const donoResposta = forumSessaoAtual?.user?.id === resposta.usuario_id;
-    return `<article class="forum-resposta ${resposta.marcada_como_solucao ? 'solucao' : ''}"><div class="forum-resposta-topo"><span>${resposta.marcada_como_solucao ? '✓ Solução marcada' : 'Resposta'}</span><span>${forumFormatarData(resposta.criado_em)}</span></div>${forumAutorLinhaHtml(resposta)}<div style="margin-top:12px;">${forumTextoHtml(resposta.resposta)}</div><div class="forum-resposta-acoes">${forumBotaoCurtirResposta(resposta)}${donoTopico && !resposta.marcada_como_solucao ? `<button type="button" class="forum-link-btn" onclick="forumMarcarRespostaSolucao('${resposta.id}')">Marcar solução</button>` : ''}${donoResposta ? `<button type="button" class="forum-link-btn" onclick="forumExcluirResposta('${resposta.id}')">Excluir</button>` : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarResposta('${resposta.id}')">Denunciar</button></div></article>`;
+    return `<article class="forum-resposta ${resposta.marcada_como_solucao ? 'solucao' : ''}"><div class="forum-resposta-topo"><span>${resposta.marcada_como_solucao ? '✓ Solução marcada' : 'Resposta'}</span><span>${forumFormatarData(resposta.criado_em)}</span></div>${forumAutorLinhaHtml(resposta)}<div style="margin-top:12px;">${forumTextoHtml(resposta.resposta)}</div><div class="forum-resposta-acoes">${forumBotaoCurtirResposta(resposta)}${donoTopico && !resposta.marcada_como_solucao ? `<button type="button" class="forum-link-btn" onclick="forumMarcarRespostaSolucao('${resposta.id}')">Marcar solução</button>` : ''}${donoResposta ? `<button type="button" class="forum-link-btn" onclick="forumEditarResposta('${resposta.id}')">Editar</button><button type="button" class="forum-link-btn" onclick="forumExcluirResposta('${resposta.id}')">Excluir</button>` : ''}<button type="button" class="forum-link-btn" onclick="forumDenunciarResposta('${resposta.id}')">Denunciar</button></div></article>`;
   }).join('');
+}
+
+async function forumEditarResposta(respostaId) {
+  const resposta = forumRespostasCache.find(r => r.id === respostaId);
+  if (!resposta || forumSessaoAtual?.user?.id !== resposta.usuario_id) return;
+
+  const novoTexto = prompt('Editar comentário:', forumTextoLimpo(resposta.resposta || ''));
+  if (novoTexto === null) return;
+
+  const texto = novoTexto.trim();
+  if (texto.length < 8) return alert('O comentário precisa ter pelo menos 8 caracteres.');
+
+  try {
+    const { error } = await _supabase
+      .from('forum_respostas')
+      .update({ resposta: texto })
+      .eq('id', respostaId)
+      .eq('usuario_id', forumSessaoAtual.user.id);
+
+    if (error) throw error;
+
+    resposta.resposta = texto;
+    forumRenderizarRespostas();
+    forumMostrarAlerta('Comentário atualizado com sucesso.', 'ok');
+  } catch (error) {
+    console.error('Erro ao editar comentário:', error);
+    alert('Não foi possível editar o comentário.');
+  }
 }
 
 async function forumCriarResposta(event) {
@@ -650,7 +727,9 @@ window.forumValidarFotosSelecionadas = forumValidarFotosSelecionadas;
 window.forumCriarTopico = forumCriarTopico;
 window.forumAbrirTopico = forumAbrirTopico;
 window.forumFecharTopico = forumFecharTopico;
+window.forumEditarTopico = forumEditarTopico;
 window.forumCriarResposta = forumCriarResposta;
+window.forumEditarResposta = forumEditarResposta;
 window.forumMarcarTopicoResolvido = forumMarcarTopicoResolvido;
 window.forumMarcarRespostaSolucao = forumMarcarRespostaSolucao;
 window.forumCurtirTopico = forumCurtirTopico;
