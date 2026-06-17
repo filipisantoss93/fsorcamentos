@@ -8,533 +8,125 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Dashboard - FS Orçamentos</title>
-
   <meta name="description" content="Dashboard do FS Orçamentos com visão geral de orçamentos, clientes, ordens de serviço, financeiro e gestão profissional.">
   <meta name="robots" content="noindex, nofollow">
-
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-  <style>
-    :root {
-      --fs-marrom: #3e2723;
-      --fs-marrom-2: #2c1b17;
-      --fs-creme: #f4ece1;
-      --fs-amarelo: #ffc400;
-      --fs-verde: #16a34a;
-      --fs-azul: #2563eb;
-      --fs-vermelho: #dc2626;
-      --fs-laranja: #f59e0b;
-      --fs-borda: #e0d6c8;
-      --fs-texto: #3e2723;
-      --fs-muted: #6d4c41;
-      --fs-card: #ffffff;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      background: radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%), linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
-      color: var(--fs-texto);
-      overflow-x: hidden;
-    }
-
-    .dashboard-page {
-      width: min(1180px, calc(100% - 28px));
-      margin: 0 auto;
-      padding: 26px 0 46px;
-    }
-
-    .dashboard-loading,
-    .dashboard-alerta {
-      background: #fff8e1;
-      border-left: 7px solid var(--fs-amarelo);
-      color: var(--fs-marrom);
-      border-radius: 16px;
-      padding: 16px;
-      margin: 18px 0;
-      font-weight: 800;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.18);
-    }
-
-    .dashboard-hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 18px;
-      align-items: center;
-      background: linear-gradient(135deg, #fff7df, var(--fs-creme));
-      border-radius: 28px;
-      border-top: 7px solid var(--fs-amarelo);
-      padding: 28px;
-      box-shadow: 0 18px 48px rgba(0,0,0,0.28);
-      margin-bottom: 22px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .dashboard-hero::after {
-      content: "";
-      position: absolute;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      top: -110px;
-      right: -80px;
-      background: rgba(255,196,0,0.2);
-    }
-
-    .dashboard-hero-info,
-    .dashboard-hero-acoes { position: relative; z-index: 1; }
-
-    .dashboard-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--fs-marrom);
-      color: var(--fs-amarelo);
-      border: 1px solid var(--fs-amarelo);
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .dashboard-hero h1 {
-      margin: 0 0 10px;
-      color: var(--fs-marrom);
-      font-size: clamp(28px, 4vw, 42px);
-      line-height: 1.08;
-    }
-
-    .dashboard-hero p {
-      margin: 0;
-      color: var(--fs-muted);
-      line-height: 1.55;
-      max-width: 760px;
-      font-weight: 650;
-    }
-
-    .dashboard-hero-acoes {
-      display: grid;
-      gap: 10px;
-      min-width: 210px;
-    }
-
-    .dashboard-btn,
-    .dashboard-btn-secundario,
-    .dashboard-btn-whatsapp {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      border-radius: 12px;
-      padding: 11px 16px;
-      text-decoration: none;
-      font-weight: 900;
-      cursor: pointer;
-      transition: .2s ease;
-      border: 2px solid transparent;
-      text-align: center;
-    }
-
-    .dashboard-btn { background: var(--fs-marrom); color: var(--fs-amarelo); border-color: var(--fs-amarelo); }
-    .dashboard-btn-secundario { background: #ffffff; color: var(--fs-marrom); border-color: var(--fs-borda); }
-    .dashboard-btn-whatsapp { background: #25d366; color: #083b2f; border-color: #128c4a; }
-
-    .dashboard-btn:hover,
-    .dashboard-btn-secundario:hover,
-    .dashboard-btn-whatsapp:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-    }
-
-    .dashboard-grid-metricas {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .dashboard-metrica-card {
-      background: var(--fs-card);
-      border: 1px solid var(--fs-borda);
-      border-left: 7px solid var(--fs-amarelo);
-      border-radius: 18px;
-      padding: 17px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.18);
-      min-height: 122px;
-    }
-
-    .dashboard-metrica-card.verde { border-left-color: var(--fs-verde); }
-    .dashboard-metrica-card.azul { border-left-color: var(--fs-azul); }
-    .dashboard-metrica-card.vermelho { border-left-color: var(--fs-vermelho); }
-    .dashboard-metrica-card.laranja { border-left-color: var(--fs-laranja); }
-
-    .dashboard-metrica-card span {
-      display: block;
-      color: var(--fs-muted);
-      font-size: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .dashboard-metrica-card strong {
-      display: block;
-      color: var(--fs-marrom);
-      font-size: 29px;
-      line-height: 1.05;
-      margin-bottom: 8px;
-    }
-
-    .dashboard-metrica-card small {
-      display: block;
-      color: #8d6e63;
-      font-weight: 750;
-      line-height: 1.35;
-    }
-
-    .dashboard-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(320px, .75fr);
-      gap: 20px;
-      align-items: start;
-    }
-
-    .dashboard-coluna { display: grid; gap: 18px; }
-
-    .dashboard-card {
-      background: var(--fs-creme);
-      border-radius: 22px;
-      border-top: 6px solid var(--fs-amarelo);
-      padding: 20px;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.24);
-    }
-
-    .dashboard-card.branco { background: #ffffff; border: 1px solid var(--fs-borda); border-top: 6px solid var(--fs-amarelo); }
-
-    .dashboard-card-topo {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .dashboard-card h2,
-    .dashboard-card h3 { margin: 0; color: var(--fs-marrom); line-height: 1.2; }
-
-    .dashboard-card p {
-      margin: 7px 0 0;
-      color: var(--fs-muted);
-      line-height: 1.45;
-      font-weight: 650;
-    }
-
-    .dashboard-mini-grid,
-    .dashboard-acoes-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .dashboard-mini-card {
-      background: #ffffff;
-      border: 1px solid var(--fs-borda);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .dashboard-mini-card span {
-      display: block;
-      color: var(--fs-muted);
-      font-size: 12px;
-      font-weight: 900;
-      margin-bottom: 7px;
-      text-transform: uppercase;
-    }
-
-    .dashboard-mini-card strong { color: var(--fs-marrom); font-size: 22px; }
-
-    .dashboard-lista { display: grid; gap: 10px; }
-
-    .dashboard-lista-item {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-      background: #ffffff;
-      border: 1px solid var(--fs-borda);
-      border-left: 5px solid var(--fs-amarelo);
-      border-radius: 14px;
-      padding: 12px;
-      color: var(--fs-marrom);
-    }
-
-    .dashboard-lista-item strong { display: block; margin-bottom: 4px; color: var(--fs-marrom); }
-
-    .dashboard-lista-item span {
-      display: block;
-      color: var(--fs-muted);
-      font-size: 13px;
-      line-height: 1.35;
-      font-weight: 650;
-    }
-
-    .dashboard-status {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-      border-radius: 999px;
-      padding: 7px 10px;
-      background: #fff8e1;
-      color: var(--fs-marrom);
-      border: 1px solid var(--fs-amarelo);
-      font-size: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-    }
-
-    .dashboard-vazio {
-      background: #fffaf0;
-      border: 1px dashed #d7ccc8;
-      border-radius: 16px;
-      padding: 16px;
-      color: var(--fs-muted);
-      font-weight: 800;
-      line-height: 1.45;
-    }
-
-    .dashboard-premium-box {
-      background: linear-gradient(135deg, var(--fs-marrom), var(--fs-marrom-2));
-      color: #fff;
-      border-radius: 20px;
-      padding: 18px;
-      border: 1px solid rgba(255,196,0,0.55);
-    }
-
-    .dashboard-premium-box h3 { color: var(--fs-amarelo); margin: 0 0 8px; }
-    .dashboard-premium-box p { color: #f4ece1; margin: 0 0 14px; }
-
-    .dashboard-footer {
-      margin-top: 34px;
-      padding: 22px 12px;
-      text-align: center;
-      color: #f4ece1;
-      font-size: 14px;
-    }
-
-    .dashboard-footer a { color: var(--fs-amarelo); font-weight: 900; text-decoration: none; }
-    .dashboard-footer a:hover { text-decoration: underline; }
-
-    @media (max-width: 980px) {
-      .dashboard-hero,
-      .dashboard-layout { grid-template-columns: 1fr; }
-      .dashboard-hero-acoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 640px) {
-      .dashboard-page { width: min(100% - 12px, 1180px); padding-top: 14px; }
-
-      .dashboard-hero,
-      .dashboard-card { border-radius: 18px; padding: 15px; }
-
-      .dashboard-hero { gap: 14px; }
-      .dashboard-hero h1 { font-size: clamp(24px, 8vw, 31px); }
-      .dashboard-hero p { font-size: 13px; line-height: 1.45; }
-
-      .dashboard-grid-metricas,
-      .dashboard-mini-grid,
-      .dashboard-acoes-grid,
-      .dashboard-hero-acoes {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-      }
-
-      .dashboard-metrica-card {
-        min-height: 104px;
-        padding: 12px 10px;
-        border-radius: 14px;
-        border-left-width: 5px;
-      }
-
-      .dashboard-metrica-card span,
-      .dashboard-mini-card span {
-        font-size: 10px;
-        line-height: 1.15;
-        margin-bottom: 7px;
-      }
-
-      .dashboard-metrica-card strong {
-        font-size: clamp(18px, 5.5vw, 24px);
-        word-break: break-word;
-        line-height: 1.08;
-      }
-
-      .dashboard-metrica-card small {
-        font-size: 10.5px;
-        line-height: 1.22;
-      }
-
-      .dashboard-mini-card {
-        padding: 11px 9px;
-        border-radius: 13px;
-      }
-
-      .dashboard-mini-card strong {
-        font-size: clamp(15px, 4.8vw, 20px);
-        word-break: break-word;
-        line-height: 1.1;
-      }
-
-      .dashboard-btn,
-      .dashboard-btn-secundario,
-      .dashboard-btn-whatsapp {
-        min-height: 40px;
-        padding: 9px 8px;
-        font-size: 12px;
-        border-radius: 10px;
-      }
-
-      .dashboard-card-topo {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      .dashboard-lista-item { grid-template-columns: 1fr; }
-    }
-  </style>
 </head>
 
 <body>
   <div id="header-container"></div>
 
-  <main id="dashboard-conteudo" class="dashboard-page" style="display:none;">
-    <div id="dashboard-loading" class="dashboard-loading">Carregando Dashboard...</div>
-    <div id="dashboard-alerta" class="dashboard-alerta" style="display:none;"></div>
+  <main id="dashboard-conteudo" class="fs-page" style="display:none;">
+    <div id="dashboard-loading" class="fs-card">Carregando Dashboard...</div>
+    <div id="dashboard-alerta" class="fs-card" style="display:none;"></div>
 
-    <section class="dashboard-hero">
-      <div class="dashboard-hero-info">
-        <span class="dashboard-tag">📊 Dashboard</span>
+    <section class="fs-page-header">
+      <div>
+        <span class="fs-badge">📊 Dashboard</span>
         <h1 id="dashboard-titulo">Central da sua gestão</h1>
         <p id="dashboard-subtitulo">Acompanhe orçamentos, clientes, ordens de serviço e indicadores importantes do FS Orçamentos em uma visão única.</p>
       </div>
-
-      <div class="dashboard-hero-acoes">
-        <a href="/gerador.html" class="dashboard-btn">+ Novo orçamento</a>
-        <a href="/orcamentos.html" class="dashboard-btn-secundario">Ver orçamentos</a>
+      <div class="fs-actions" style="margin-top:0;">
+        <a href="/gerador.html" class="fs-btn-primary">+ Novo orçamento</a>
+        <a href="/orcamentos.html" class="fs-btn-secondary">Ver orçamentos</a>
       </div>
     </section>
 
-    <section class="dashboard-grid-metricas" aria-label="Indicadores principais">
-      <div class="dashboard-metrica-card azul"><span>Orçamentos</span><strong id="dash-total-orcamentos">0</strong><small>Total registrado na conta</small></div>
-      <div class="dashboard-metrica-card verde"><span>Aprovados</span><strong id="dash-orcamentos-aprovados">0</strong><small>Propostas aprovadas ou em serviço</small></div>
-      <div class="dashboard-metrica-card laranja"><span>Pendentes</span><strong id="dash-orcamentos-pendentes">0</strong><small>Aguardando retorno do cliente</small></div>
-      <div class="dashboard-metrica-card verde"><span>Total aprovado</span><strong id="dash-valor-aprovado">R$ 0,00</strong><small>Soma dos orçamentos aprovados</small></div>
-      <div class="dashboard-metrica-card"><span>Clientes</span><strong id="dash-total-clientes">0</strong><small>Base de clientes cadastrados</small></div>
-      <div class="dashboard-metrica-card azul"><span>OS abertas</span><strong id="dash-os-abertas">0</strong><small>Ordens aguardando execução</small></div>
-      <div class="dashboard-metrica-card verde"><span>OS concluídas</span><strong id="dash-os-concluidas">0</strong><small>Serviços finalizados</small></div>
-      <div class="dashboard-metrica-card vermelho"><span>Estoque baixo</span><strong id="dash-estoque-baixo">0</strong><small>Itens abaixo do mínimo</small></div>
+    <section class="fs-grid-2" aria-label="Indicadores principais">
+      <div class="fs-card"><span class="fs-badge-info fs-badge">Orçamentos</span><h2 id="dash-total-orcamentos">0</h2><p>Total registrado na conta</p></div>
+      <div class="fs-card"><span class="fs-badge-success fs-badge">Aprovados</span><h2 id="dash-orcamentos-aprovados">0</h2><p>Propostas aprovadas ou em serviço</p></div>
+      <div class="fs-card"><span class="fs-badge">Pendentes</span><h2 id="dash-orcamentos-pendentes">0</h2><p>Aguardando retorno do cliente</p></div>
+      <div class="fs-card"><span class="fs-badge-success fs-badge">Total aprovado</span><h2 id="dash-valor-aprovado">R$ 0,00</h2><p>Soma dos orçamentos aprovados</p></div>
+      <div class="fs-card"><span class="fs-badge">Clientes</span><h2 id="dash-total-clientes">0</h2><p>Base de clientes cadastrados</p></div>
+      <div class="fs-card"><span class="fs-badge-info fs-badge">OS abertas</span><h2 id="dash-os-abertas">0</h2><p>Ordens aguardando execução</p></div>
+      <div class="fs-card"><span class="fs-badge-success fs-badge">OS concluídas</span><h2 id="dash-os-concluidas">0</h2><p>Serviços finalizados</p></div>
+      <div class="fs-card"><span class="fs-badge-danger fs-badge">Estoque baixo</span><h2 id="dash-estoque-baixo">0</h2><p>Itens abaixo do mínimo</p></div>
     </section>
 
-    <section class="dashboard-layout">
-      <div class="dashboard-coluna">
-        <article class="dashboard-card">
-          <div class="dashboard-card-topo">
+    <section class="fs-grid" style="align-items:start; margin-top:18px;">
+      <div class="fs-list">
+        <article class="fs-card">
+          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
             <div>
               <h2>Resumo financeiro</h2>
               <p>Visão rápida do que foi aprovado, pendente e recusado.</p>
             </div>
-            <a href="/orcamentos.html" class="dashboard-btn-secundario">Abrir</a>
+            <a href="/orcamentos.html" class="fs-btn-secondary">Abrir</a>
           </div>
-
-          <div class="dashboard-mini-grid">
-            <div class="dashboard-mini-card"><span>Valor pendente</span><strong id="dash-valor-pendente">R$ 0,00</strong></div>
-            <div class="dashboard-mini-card"><span>Valor recusado</span><strong id="dash-valor-recusado">R$ 0,00</strong></div>
-            <div class="dashboard-mini-card"><span>Ticket médio</span><strong id="dash-ticket-medio">R$ 0,00</strong></div>
-            <div class="dashboard-mini-card"><span>Taxa de aprovação</span><strong id="dash-taxa-aprovacao">0%</strong></div>
+          <div class="fs-grid-2">
+            <div class="fs-list-item"><span>Valor pendente</span><strong id="dash-valor-pendente">R$ 0,00</strong></div>
+            <div class="fs-list-item"><span>Valor recusado</span><strong id="dash-valor-recusado">R$ 0,00</strong></div>
+            <div class="fs-list-item"><span>Ticket médio</span><strong id="dash-ticket-medio">R$ 0,00</strong></div>
+            <div class="fs-list-item"><span>Taxa de aprovação</span><strong id="dash-taxa-aprovacao">0%</strong></div>
           </div>
         </article>
 
-        <article class="dashboard-card branco">
-          <div class="dashboard-card-topo">
+        <article class="fs-card">
+          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
             <div>
               <h2>Últimos orçamentos</h2>
               <p>Acompanhe os registros mais recentes.</p>
             </div>
-            <a href="/orcamentos.html" class="dashboard-btn-secundario">Ver todos</a>
+            <a href="/orcamentos.html" class="fs-btn-secondary">Ver todos</a>
           </div>
-          <div id="dashboard-lista-orcamentos" class="dashboard-lista"><div class="dashboard-vazio">Nenhum orçamento carregado ainda.</div></div>
+          <div id="dashboard-lista-orcamentos" class="fs-list"><div class="fs-list-item">Nenhum orçamento carregado ainda.</div></div>
         </article>
 
-        <article class="dashboard-card branco">
-          <div class="dashboard-card-topo">
+        <article class="fs-card">
+          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
             <div>
               <h2>Ordens de serviço</h2>
               <p>Resumo operacional para o plano Premium.</p>
             </div>
-            <a href="/ordens.html" class="dashboard-btn-secundario">Ver OS</a>
+            <a href="/ordens.html" class="fs-btn-secondary">Ver OS</a>
           </div>
-          <div id="dashboard-lista-os" class="dashboard-lista"><div class="dashboard-vazio">Nenhuma ordem de serviço carregada ainda.</div></div>
+          <div id="dashboard-lista-os" class="fs-list"><div class="fs-list-item">Nenhuma ordem de serviço carregada ainda.</div></div>
         </article>
       </div>
 
-      <aside class="dashboard-coluna">
-        <article class="dashboard-card branco">
-          <div class="dashboard-card-topo">
-            <div>
-              <h3>Ações rápidas</h3>
-              <p>Atalhos para as principais rotinas.</p>
-            </div>
-          </div>
-          <div class="dashboard-acoes-grid">
-            <a href="/gerador.html" class="dashboard-btn">Orçamento</a>
-            <a href="/clientes.html" class="dashboard-btn-secundario">Cliente</a>
-            <a href="/ordens.html" class="dashboard-btn-secundario">OS</a>
-            <a href="/estoque.html" class="dashboard-btn-secundario">Estoque</a>
-            <a href="/veiculos.html" class="dashboard-btn-secundario">Veículos</a>
-            <a href="/painel.html" class="dashboard-btn-secundario">Painel</a>
+      <aside class="fs-list">
+        <article class="fs-card">
+          <h3>Ações rápidas</h3>
+          <p>Atalhos para as principais rotinas.</p>
+          <div class="fs-grid-2" style="margin-top:14px;">
+            <a href="/gerador.html" class="fs-btn-primary">Orçamento</a>
+            <a href="/clientes.html" class="fs-btn-secondary">Cliente</a>
+            <a href="/ordens.html" class="fs-btn-secondary">OS</a>
+            <a href="/estoque.html" class="fs-btn-secondary">Estoque</a>
+            <a href="/veiculos.html" class="fs-btn-secondary">Veículos</a>
+            <a href="/painel.html" class="fs-btn-secondary">Painel</a>
           </div>
         </article>
 
-        <article class="dashboard-card branco">
-          <div class="dashboard-card-topo">
+        <article class="fs-card">
+          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
             <div>
               <h3>Clientes recentes</h3>
               <p>Últimos contatos cadastrados.</p>
             </div>
-            <a href="/clientes.html" class="dashboard-btn-secundario">Abrir</a>
+            <a href="/clientes.html" class="fs-btn-secondary">Abrir</a>
           </div>
-          <div id="dashboard-lista-clientes" class="dashboard-lista"><div class="dashboard-vazio">Nenhum cliente carregado ainda.</div></div>
+          <div id="dashboard-lista-clientes" class="fs-list"><div class="fs-list-item">Nenhum cliente carregado ainda.</div></div>
         </article>
 
-        <article id="dashboard-premium-box" class="dashboard-premium-box">
+        <article id="dashboard-premium-box" class="fs-card">
           <h3>Gestão Premium</h3>
           <p id="dashboard-premium-texto">Clientes, ordens de serviço, veículos, estoque, agenda e relatórios avançados fazem parte da evolução Premium.</p>
-          <a href="/planos.html" class="dashboard-btn">Ver planos</a>
+          <a href="/planos.html" class="fs-btn-primary">Ver planos</a>
         </article>
       </aside>
     </section>
   </main>
 
-  <footer class="dashboard-footer">
+  <footer>
     <span>© 2026 FS Orçamentos</span>
-    <span> | </span>
-    <a href="/privacidade.html">Privacidade</a>
-    <span> | </span>
-    <a href="/termos.html">Termos</a>
-    <span> | </span>
-    <a href="/contato.html">Contato</a>
+    <span> | </span><a href="/privacidade.html">Privacidade</a>
+    <span> | </span><a href="/termos.html">Termos</a>
+    <span> | </span><a href="/contato.html">Contato</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
