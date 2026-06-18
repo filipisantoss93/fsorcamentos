@@ -1,12 +1,17 @@
 let headerJaCarregado = false;
 let fsMenuInicializado = false;
 
+function garantirCssHeaderFS() {
+  if (document.getElementById('fs-header-clean-css')) return;
+  const link = document.createElement('link');
+  link.id = 'fs-header-clean-css';
+  link.rel = 'stylesheet';
+  link.href = '/header-clean.css?v=20260617-1';
+  document.head.appendChild(link);
+}
+
 function fsNormalizarTextoMenu(valor) {
-  return String(valor || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
+  return String(valor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 }
 
 function fsPaginaAtual() {
@@ -28,13 +33,9 @@ async function obterSessaoAtualMenu() {
   try {
     if (!window._supabase) return null;
     const { data, error } = await _supabase.auth.getSession();
-    if (error) {
-      console.warn('Erro ao buscar sessão no menu:', error);
-      return null;
-    }
+    if (error) return null;
     return data?.session || null;
-  } catch (error) {
-    console.warn('Não foi possível verificar sessão no menu:', error);
+  } catch (_) {
     return null;
   }
 }
@@ -42,7 +43,6 @@ async function obterSessaoAtualMenu() {
 async function carregarHeaderHtmlMenu() {
   const caminhos = ['/header.html', 'header.html', './header.html'];
   let ultimoErro = null;
-
   for (const caminho of caminhos) {
     try {
       const response = await fetch(caminho, { cache: 'no-cache' });
@@ -52,61 +52,46 @@ async function carregarHeaderHtmlMenu() {
       ultimoErro = error;
     }
   }
-
   throw ultimoErro || new Error('Não foi possível carregar header.html.');
 }
 
 function fecharMenuMobileSeAberto() {
   const menuLinha = document.querySelector('.header-menu-linha');
   const header = document.querySelector('.main-header');
-
   if (menuLinha) menuLinha.classList.remove('menu-aberto');
   if (header) header.classList.remove('menu-aberto');
-
-  document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
-    details.removeAttribute('open');
-  });
+  document.querySelectorAll('.nav-dropdown details[open]').forEach(details => details.removeAttribute('open'));
 }
 
 function toggleMenuMobile() {
   const menuLinha = document.querySelector('.header-menu-linha');
   const header = document.querySelector('.main-header');
-
   if (menuLinha) menuLinha.classList.toggle('menu-aberto');
   if (header) header.classList.toggle('menu-aberto', menuLinha?.classList.contains('menu-aberto'));
 }
 
 function configurarLinksDoHeader() {
-  document.querySelectorAll('.header-menu-linha a').forEach(link => {
-    link.addEventListener('click', fecharMenuMobileSeAberto);
-  });
+  document.querySelectorAll('.header-menu-linha a').forEach(link => link.addEventListener('click', fecharMenuMobileSeAberto));
 }
 
 function configurarDropdownsHeader() {
+  if (window.fsDropdownsHeaderConfigurados) return;
+  window.fsDropdownsHeaderConfigurados = true;
   document.addEventListener('click', event => {
     const clicouDentroDropdown = event.target.closest('.nav-dropdown');
     const clicouNoMenuMobile = event.target.closest('.menu-mobile-btn');
-
     if (clicouDentroDropdown || clicouNoMenuMobile) return;
-
-    document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
-      details.removeAttribute('open');
-    });
+    document.querySelectorAll('.nav-dropdown details[open]').forEach(details => details.removeAttribute('open'));
   });
 }
 
 function marcarLinkAtivoHeader() {
   const paginaAtual = fsPaginaAtual();
-
   document.querySelectorAll('.header-menu-linha a').forEach(link => {
     const href = link.getAttribute('href') || '';
     const hrefNormalizado = href === '/' ? '/index.html' : href;
-
     link.classList.remove('ativo');
-
-    if (hrefNormalizado && (paginaAtual === hrefNormalizado || paginaAtual.endsWith(hrefNormalizado))) {
-      link.classList.add('ativo');
-    }
+    if (hrefNormalizado && (paginaAtual === hrefNormalizado || paginaAtual.endsWith(hrefNormalizado))) link.classList.add('ativo');
   });
 }
 
@@ -122,14 +107,11 @@ function fsPlanoMenuOrdem(plano) {
 }
 
 function aplicarVisibilidadeMenuPorPlano() {
-  const plano = fsPlanoMenuAtual();
-  const nivelAtual = fsPlanoMenuOrdem(plano);
-
+  const nivelAtual = fsPlanoMenuOrdem(fsPlanoMenuAtual());
   document.querySelectorAll('[data-plano-min]').forEach(link => {
     const minimo = link.getAttribute('data-plano-min') || 'gratis';
     const permitido = nivelAtual >= fsPlanoMenuOrdem(minimo);
     const li = link.closest('li');
-
     if (li) li.style.display = permitido ? '' : 'none';
     else link.style.display = permitido ? '' : 'none';
   });
@@ -140,23 +122,15 @@ async function verificarExpiracaoTestePremiumMenu() {
     if (!window._supabase) return null;
     const { data: { session } } = await _supabase.auth.getSession();
     if (!session?.user?.id) return null;
-
     const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
-    if (error) {
-      console.warn('Teste Premium não verificado pelo menu:', error);
-      return null;
-    }
-
+    if (error) return null;
     if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
     if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
     else localStorage.removeItem('usuario_plano_status');
-
     if (data?.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
     else if (data?.plano === 'basico') localStorage.removeItem('usuario_plano_expira_em');
-
     return data || null;
-  } catch (error) {
-    console.warn('Erro ao verificar expiração do teste Premium no menu:', error);
+  } catch (_) {
     return null;
   }
 }
@@ -169,7 +143,6 @@ async function atualizarHeaderUsuario(session) {
   const btnSairMobile = document.getElementById('btn-menu-mobile-sair');
   const btnNotificacoes = document.getElementById('btn-notificacoes');
   const contadorNotificacoes = document.getElementById('contador-notificacoes');
-
   if (!saudacao) return;
 
   if (!session?.user?.id) {
@@ -187,40 +160,24 @@ async function atualizarHeaderUsuario(session) {
     return;
   }
 
-  let nomeFinal =
-    localStorage.getItem('usuario_nome') ||
-    session.user.user_metadata?.nome ||
-    session.user.user_metadata?.full_name ||
-    session.user.user_metadata?.name ||
-    session.user.email?.split('@')[0] ||
-    'Visitante';
+  let nomeFinal = localStorage.getItem('usuario_nome') || session.user.user_metadata?.nome || session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'Visitante';
 
   try {
     await verificarExpiracaoTestePremiumMenu();
-
     if (window._supabase) {
-      const { data: perfil, error } = await _supabase
-        .from('perfis')
-        .select('nome, nome_empresa, plano, plano_status, plano_expira_em')
-        .eq('id', session.user.id)
-        .maybeSingle();
-
+      const { data: perfil, error } = await _supabase.from('perfis').select('nome, nome_empresa, plano, plano_status, plano_expira_em').eq('id', session.user.id).maybeSingle();
       if (!error && perfil) {
         nomeFinal = perfil.nome || perfil.nome_empresa || nomeFinal;
         localStorage.setItem('usuario_nome', nomeFinal);
         localStorage.setItem('usuario_email', session.user.email || '');
         localStorage.setItem('usuario_plano', perfil.plano || 'gratis');
-
         if (perfil.plano_status) localStorage.setItem('usuario_plano_status', perfil.plano_status);
         else localStorage.removeItem('usuario_plano_status');
-
         if (perfil.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', perfil.plano_expira_em);
         else localStorage.removeItem('usuario_plano_expira_em');
       }
     }
-  } catch (error) {
-    console.warn('Não foi possível atualizar perfil no header:', error);
-  }
+  } catch (_) {}
 
   saudacao.innerText = `Olá, ${nomeFinal}`;
   if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'none';
@@ -228,29 +185,20 @@ async function atualizarHeaderUsuario(session) {
   if (btnEntrarMobile) btnEntrarMobile.style.display = 'none';
   if (btnSairMobile) btnSairMobile.style.display = 'inline-flex';
   if (btnNotificacoes) btnNotificacoes.style.display = 'inline-flex';
-
   aplicarVisibilidadeMenuPorPlano();
 }
 
 function irParaLogin() {
   fecharMenuMobileSeAberto();
-
-  if (typeof abrirModalLogin === 'function') {
-    abrirModalLogin();
-    return;
-  }
-
+  if (typeof abrirModalLogin === 'function') return abrirModalLogin();
   window.location.href = '/index.html?login=1';
 }
 
 async function deslogar() {
   try {
     fecharMenuMobileSeAberto();
-
     if (window._supabase) await _supabase.auth.signOut();
-
-    ['id', 'usuario_nome', 'usuario_email', 'usuario_plano', 'usuario_plano_status', 'usuario_plano_expira_em', 'nome_empresa', 'telefone_empresa', 'endereco_empresa', 'cnpj_empresa', 'foto_url'].forEach(chave => localStorage.removeItem(chave));
-
+    ['id','usuario_nome','usuario_email','usuario_plano','usuario_plano_status','usuario_plano_expira_em','nome_empresa','telefone_empresa','endereco_empresa','cnpj_empresa','foto_url'].forEach(chave => localStorage.removeItem(chave));
     removerBotaoFlutuanteGeradorGlobal();
     await atualizarHeaderUsuario(null);
     window.location.href = '/index.html';
@@ -263,18 +211,12 @@ async function deslogar() {
 async function controlarBotaoFlutuanteGeradorGlobal(sessionRecebida = undefined) {
   let session = sessionRecebida;
   if (session === undefined) session = await obterSessaoAtualMenu();
-
-  if (!session?.user?.id || fsEstaNaPaginaGerador()) {
-    removerBotaoFlutuanteGeradorGlobal();
-    return;
-  }
-
+  if (!session?.user?.id || fsEstaNaPaginaGerador()) return removerBotaoFlutuanteGeradorGlobal();
   criarBotaoFlutuanteGeradorGlobal();
 }
 
 function criarBotaoFlutuanteGeradorGlobal() {
   if (document.getElementById('btn-flutuante-gerador-global')) return;
-
   const botao = document.createElement('button');
   botao.type = 'button';
   botao.id = 'btn-flutuante-gerador-global';
@@ -286,24 +228,18 @@ function criarBotaoFlutuanteGeradorGlobal() {
 }
 
 function removerBotaoFlutuanteGeradorGlobal() {
-  const botao = document.getElementById('btn-flutuante-gerador-global');
-  if (botao) botao.remove();
+  document.getElementById('btn-flutuante-gerador-global')?.remove();
   document.body.classList.remove('gerador-aberto');
 }
 
 async function abrirGeradorGlobal() {
   const session = await obterSessaoAtualMenu();
-
   if (!session?.user?.id) {
     removerBotaoFlutuanteGeradorGlobal();
-    if (fsEstaNaHome() && typeof abrirModalLogin === 'function') {
-      abrirModalLogin();
-      return;
-    }
+    if (fsEstaNaHome() && typeof abrirModalLogin === 'function') return abrirModalLogin();
     window.location.href = '/index.html?login=1';
     return;
   }
-
   window.location.href = '/gerador.html';
 }
 
@@ -315,7 +251,6 @@ function removerParametrosUrlMenu() {
 function abrirLoginAutomaticamenteSeSolicitado() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('login') !== '1') return;
-
   setTimeout(() => {
     if (typeof abrirModalLogin === 'function') abrirModalLogin();
     removerParametrosUrlMenu();
@@ -325,16 +260,13 @@ function abrirLoginAutomaticamenteSeSolicitado() {
 async function abrirGeradorAutomaticamenteSeSolicitado() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('abrirGerador') !== '1') return;
-
   const session = await obterSessaoAtualMenu();
   removerParametrosUrlMenu();
-
   if (!session?.user?.id) {
     if (typeof abrirModalLogin === 'function') abrirModalLogin();
     else window.location.href = '/index.html?login=1';
     return;
   }
-
   window.location.href = '/gerador.html';
 }
 
@@ -350,6 +282,7 @@ function controlarHeaderInteligente() {
 }
 
 async function carregarMenu(sessionRecebida = undefined) {
+  garantirCssHeaderFS();
   const headerContainer = document.getElementById('header-container');
   if (!headerContainer) return;
 
@@ -377,7 +310,7 @@ async function carregarMenu(sessionRecebida = undefined) {
 async function inicializarMenuFS() {
   if (fsMenuInicializado) return;
   fsMenuInicializado = true;
-
+  garantirCssHeaderFS();
   await carregarMenu();
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
