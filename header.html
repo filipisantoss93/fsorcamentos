@@ -1,77 +1,27 @@
-<link rel="stylesheet" href="/fs-layout-fix.css">
-
 <header class="main-header">
   <div class="header-topo">
-    <a href="/index.html" class="logo-nav" title="FS Orçamentos">
-      FS<span>Orçamentos</span>
-    </a>
+    <a href="/index.html" class="logo-nav" title="FS Orçamentos">FS<span>Orçamentos</span></a>
 
     <div class="header-usuario">
       <span id="usuario-saudacao">Olá, Convidado</span>
 
-      <button
-        type="button"
-        id="btn-notificacoes"
-        class="btn-notificacoes-header"
-        onclick="abrirModalNotificacoes()"
-        style="display:none;"
-        title="Notificações">
+      <button type="button" id="btn-notificacoes" class="btn-notificacoes-header" onclick="abrirModalNotificacoes()" style="display:none;" title="Notificações">
         🔔
-        <span
-          id="contador-notificacoes"
-          class="contador-notificacoes"
-          style="display:none;">
-          0
-        </span>
+        <span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span>
       </button>
 
-      <button
-        type="button"
-        id="btn-header-entrar"
-        class="btn-header-entrar"
-        onclick="irParaLogin()"
-        style="display:none;">
-        ENTRAR
-      </button>
-
-      <button
-        type="button"
-        id="btn-header-sair"
-        class="btn-header-sair"
-        onclick="deslogar()"
-        style="display:none;">
-        SAIR
-      </button>
-
-      <button
-        type="button"
-        class="menu-mobile-btn"
-        onclick="toggleMenuMobile()"
-        aria-label="Abrir menu">
-        ☰
-      </button>
+      <button type="button" id="btn-header-entrar" class="btn-header-entrar" onclick="irParaLogin()" style="display:none;">ENTRAR</button>
+      <button type="button" id="btn-header-sair" class="btn-header-sair" onclick="deslogar()" style="display:none;">SAIR</button>
+      <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile()" aria-label="Abrir menu">☰</button>
     </div>
   </div>
 
   <nav class="header-menu-linha">
     <ul class="nav-menu nav-menu-compacto">
-      <li>
-        <a href="/dashboard.html">Dashboard</a>
-      </li>
-
-      <li>
-        <a href="/gerador.html" class="link-destaque-gerador">
-          Gerar Orçamento
-        </a>
-      </li>
-
-      <li>
-        <a href="/orcamentos.html" data-plano-min="basico">Orçamentos</a>
-      </li>
-
-      <li>
-        <a href="/forum.html">Comunidade</a>
-      </li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/gerador.html" class="link-destaque-gerador">Gerar Orçamento</a></li>
+      <li><a href="/orcamentos.html" data-plano-min="basico">Orçamentos</a></li>
+      <li><a href="/forum.html">Comunidade</a></li>
 
       <li class="nav-dropdown" data-plano-min="premium">
         <details>
@@ -102,23 +52,8 @@
       </li>
 
       <li class="menu-mobile-auth">
-        <button
-          type="button"
-          id="btn-menu-mobile-entrar"
-          class="btn-menu-mobile-entrar"
-          onclick="irParaLogin()"
-          style="display:none;">
-          ENTRAR
-        </button>
-
-        <button
-          type="button"
-          id="btn-menu-mobile-sair"
-          class="btn-menu-mobile-sair"
-          onclick="deslogar()"
-          style="display:none;">
-          SAIR
-        </button>
+        <button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;">ENTRAR</button>
+        <button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;">SAIR</button>
       </li>
     </ul>
   </nav>
