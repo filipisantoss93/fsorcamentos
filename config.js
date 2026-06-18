@@ -120,7 +120,6 @@ const FS_CONFIG_SCRIPTS_GLOBAIS = [
 
 const FS_CONFIG_SCRIPTS_FINAIS = [
   ['fs-contrast-final.js', 'fs-contrast-final-js'],
-  ['fs-header-offset-fix.js', 'fs-header-offset-fix-js'],
   ['fs-stable-visual-fix.js', 'fs-stable-visual-fix-js']
 ];
 
