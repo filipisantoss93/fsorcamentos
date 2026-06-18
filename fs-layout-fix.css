@@ -1,0 +1,77 @@
+/* FS ORCAMENTOS - ajuste global de layout
+   Camada carregada depois dos estilos antigos. */
+
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #2c1b17;
+  --fs-amarelo: #ffc400;
+  --fs-creme: #f7f2ea;
+  --fs-creme-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-borda: #e0d6c8;
+  --fs-texto: #2f241f;
+  --fs-muted: #6d4c41;
+  --fs-danger: #dc2626;
+  --fs-radius: 10px;
+  --fs-radius-sm: 6px;
+  --fs-shadow-soft: 0 6px 18px rgba(62,39,35,.08);
+}
+
+html, body { overflow-x: hidden; }
+body:not(.pdf-body) {
+  background: linear-gradient(180deg, var(--fs-creme), var(--fs-creme-2));
+  color: var(--fs-texto);
+}
+
+.main-header { background: linear-gradient(135deg, var(--fs-marrom-2), var(--fs-marrom)); border-bottom: 3px solid var(--fs-amarelo); }
+.header-topo, .nav-menu, .nav-menu-compacto { box-sizing: border-box; }
+.nav-menu a, .nav-menu summary, .btn-header-entrar, .btn-header-sair, .menu-mobile-btn, .btn-menu-mobile-entrar, .btn-menu-mobile-sair, .btn-notificacoes-header { border-radius: var(--fs-radius-sm); }
+.nav-dropdown-menu { border-radius: var(--fs-radius); }
+
+.fs-page, .page, .dashboard-page, .forum-page, .painel-page, .clientes-page, .veiculos-page, .ordens-page, .estoque-page, .agenda-page, .relatorios-page, .recorrentes-page, .container, .painel-container {
+  width: min(1180px, calc(100% - 24px));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container, .painel-container {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  background: var(--fs-card);
+  color: var(--fs-texto);
+  border: 1px solid var(--fs-borda);
+  border-top: 4px solid var(--fs-amarelo);
+  border-radius: 14px;
+  box-shadow: var(--fs-shadow-soft);
+}
+
+.fs-page-header, .page-header, .dashboard-hero, .forum-hero, .painel-header, .clientes-header, .veiculos-header, .ordens-header, .estoque-header, .agenda-header, .relatorios-header, .recorrentes-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, #fff7df, var(--fs-creme));
+  border: 1px solid var(--fs-borda);
+  border-top: 4px solid var(--fs-amarelo);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: var(--fs-shadow-soft);
+}
+
+.fs-card, .card, .dashboard-card, .resumo-card, .plano-card, .forum-card, .painel-card, .info-card, .cliente-card, .veiculo-card, .ordem-card, .estoque-card, .agenda-card, .relatorio-card, .recorrente-card, .perfil-logo-card, .dashboard-metrica-card, .dashboard-mini-card, .dashboard-lista-item, .forum-topico, .forum-resposta, .forum-mini-item, .painel-premium-atalho {
+  background: var(--fs-card);
+  color: var(--fs-texto);
+  border: 1px solid var(--fs-borda);
+  border-top: 4px solid var(--fs-amarelo);
+  border-radius: 14px;
+  box-shadow: var(--fs-shadow-soft);
+}
+
+.info-card, .dashboard-mini-card, .dashboard-lista-item, .forum-mini-item, .forum-topico, .forum-resposta, .painel-premium-atalho {
+  border-top: 1px solid var(--fs-borda);
+  border-left: 4px solid var(--fs-amarelo);
+}
+
+.painel-card, .dashboard-card, .forum-card, .card, .fs-card { padding: 18px; }
+.info-card, .dashboard-mini-card, .dashboard-lista-item, .forum-mini-item, .painel-premium-atalho { padding: 14px; }
