@@ -1,0 +1,67 @@
+/* =========================================================
+   FS ORÇAMENTOS — ESPAÇAMENTO DO HEADER FIXO
+   Evita que o header sobreponha o topo das páginas.
+   ========================================================= */
+
+:root {
+  --fs-header-real-desktop: 74px;
+  --fs-header-real-mobile: 92px;
+}
+
+html,
+body {
+  scroll-padding-top: var(--fs-header-real-desktop) !important;
+}
+
+body:not(.gerando-pdf):not(.modo-embed-gestao) {
+  padding-top: var(--fs-header-real-desktop) !important;
+}
+
+#header-container,
+.main-header {
+  box-sizing: border-box !important;
+}
+
+.main-header {
+  min-height: var(--fs-header-real-desktop) !important;
+}
+
+.header-shell {
+  min-height: var(--fs-header-real-desktop) !important;
+  height: var(--fs-header-real-desktop) !important;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --fs-header-real-mobile: 92px;
+  }
+
+  html,
+  body {
+    scroll-padding-top: var(--fs-header-real-mobile) !important;
+  }
+
+  body:not(.gerando-pdf):not(.modo-embed-gestao) {
+    padding-top: var(--fs-header-real-mobile) !important;
+  }
+
+  .main-header {
+    min-height: var(--fs-header-real-mobile) !important;
+  }
+
+  .header-shell {
+    height: var(--fs-header-real-mobile) !important;
+    min-height: var(--fs-header-real-mobile) !important;
+    align-items: center !important;
+  }
+
+  .header-menu-linha {
+    top: var(--fs-header-real-mobile) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  :root {
+    --fs-header-real-mobile: 92px;
+  }
+}
