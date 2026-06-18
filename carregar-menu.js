@@ -25,13 +25,18 @@ function aplicarModoEmbedGestao() {
   return true;
 }
 
-function garantirCssHeaderFS() {
-  if (document.getElementById('fs-header-clean-css')) return;
+function fsGarantirCss(id, href) {
+  if (document.getElementById(id)) return;
   const link = document.createElement('link');
-  link.id = 'fs-header-clean-css';
+  link.id = id;
   link.rel = 'stylesheet';
-  link.href = '/header-clean.css?v=20260617-2';
+  link.href = href;
   document.head.appendChild(link);
+}
+
+function garantirCssHeaderFS() {
+  fsGarantirCss('fs-header-clean-css', '/header-clean.css?v=20260617-3');
+  fsGarantirCss('fs-card-grid-css', '/fs-card-grid.css?v=20260617-1');
 }
 
 function fsNormalizarTextoMenu(valor) {
