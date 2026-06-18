@@ -1,0 +1,239 @@
+/* =========================================================
+   FS ORÇAMENTOS — GRID GLOBAL DE CARDS
+   Mantém cards em 2 blocos por linha no mobile quando a página usa grids de cards.
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .fs-grid,
+  .fs-grid-2,
+  .fs-grid-3,
+  .dashboard-grid-metricas,
+  .dashboard-mini-grid,
+  .dashboard-acoes-grid,
+  .painel-premium-atalhos-grid,
+  .painel-premium-resumo-grid,
+  .perfil-dados-grid,
+  .painel-os-grid,
+  .painel-os-resumo-grid,
+  .clientes-grid,
+  .veiculos-grid,
+  .ordens-grid,
+  .estoque-grid,
+  .agenda-grid,
+  .relatorios-grid,
+  .recorrentes-grid,
+  .home-passos-grid,
+  .home-basico-metricas {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .fs-card,
+  .card,
+  .dashboard-card,
+  .resumo-card,
+  .plano-card,
+  .forum-card,
+  .painel-card,
+  .info-card,
+  .cliente-card,
+  .veiculo-card,
+  .ordem-card,
+  .estoque-card,
+  .agenda-card,
+  .relatorio-card,
+  .recorrente-card,
+  .perfil-logo-card,
+  .dashboard-metrica-card,
+  .dashboard-mini-card,
+  .dashboard-lista-item,
+  .forum-mini-item,
+  .painel-premium-atalho,
+  .painel-os-card,
+  .manual-card,
+  .sobre-card,
+  .contato-card,
+  .home-passo-card,
+  .home-basico-card,
+  .sidebar-card {
+    padding: 12px !important;
+    border-radius: 11px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .fs-card h2,
+  .fs-card h3,
+  .card h2,
+  .card h3,
+  .dashboard-card h2,
+  .dashboard-card h3,
+  .dashboard-metrica-card h2,
+  .dashboard-metrica-card h3,
+  .resumo-card h2,
+  .resumo-card h3,
+  .plano-card h2,
+  .plano-card h3,
+  .painel-card h2,
+  .painel-card h3,
+  .home-passo-card h3,
+  .home-basico-card h3 {
+    font-size: clamp(16px, 4vw, 20px) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .fs-card p,
+  .card p,
+  .dashboard-card p,
+  .dashboard-metrica-card p,
+  .resumo-card p,
+  .plano-card p,
+  .painel-card p,
+  .home-passo-card p,
+  .home-basico-card p,
+  .home-basico-card small {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+
+  .fs-badge,
+  .badge,
+  .status-badge,
+  .forum-badge,
+  .plano-badge {
+    font-size: 11px !important;
+    padding: 5px 7px !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+
+  .fs-page-header,
+  .page-header,
+  .dashboard-hero,
+  .forum-hero,
+  .painel-header,
+  .clientes-header,
+  .veiculos-header,
+  .ordens-header,
+  .estoque-header,
+  .agenda-header,
+  .relatorios-header,
+  .recorrentes-header,
+  .gerador-hero,
+  .painel-os-topo {
+    padding: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .fs-page-header h1,
+  .page-header h1,
+  .dashboard-hero h1,
+  .forum-hero h1,
+  .painel-header h1,
+  .gerador-hero h1 {
+    font-size: clamp(24px, 8vw, 34px) !important;
+  }
+
+  .fs-actions,
+  .actions-bar,
+  .form-actions,
+  .fs-form-actions,
+  .painel-topo-acoes,
+  .acoes-painel,
+  .dashboard-hero-acoes,
+  .forum-hero-acoes {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .fs-actions > *,
+  .actions-bar > *,
+  .form-actions > *,
+  .fs-form-actions > *,
+  .painel-topo-acoes > *,
+  .acoes-painel > *,
+  .dashboard-hero-acoes > *,
+  .forum-hero-acoes > * {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .fs-grid,
+  .fs-grid-2,
+  .fs-grid-3,
+  .dashboard-grid-metricas,
+  .dashboard-mini-grid,
+  .dashboard-acoes-grid,
+  .painel-premium-atalhos-grid,
+  .painel-premium-resumo-grid,
+  .perfil-dados-grid,
+  .painel-os-grid,
+  .painel-os-resumo-grid,
+  .clientes-grid,
+  .veiculos-grid,
+  .ordens-grid,
+  .estoque-grid,
+  .agenda-grid,
+  .relatorios-grid,
+  .recorrentes-grid,
+  .home-passos-grid,
+  .home-basico-metricas {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .fs-card,
+  .card,
+  .dashboard-card,
+  .resumo-card,
+  .plano-card,
+  .forum-card,
+  .painel-card,
+  .info-card,
+  .cliente-card,
+  .veiculo-card,
+  .ordem-card,
+  .estoque-card,
+  .agenda-card,
+  .relatorio-card,
+  .recorrente-card,
+  .perfil-logo-card,
+  .dashboard-metrica-card,
+  .dashboard-mini-card,
+  .dashboard-lista-item,
+  .forum-mini-item,
+  .painel-premium-atalho,
+  .painel-os-card,
+  .manual-card,
+  .sobre-card,
+  .contato-card,
+  .home-passo-card,
+  .home-basico-card,
+  .sidebar-card {
+    padding: 10px !important;
+  }
+
+  .dashboard-metrica-card h2,
+  .dashboard-card h2,
+  .fs-card h2,
+  .card h2 {
+    font-size: 28px !important;
+    line-height: 1 !important;
+  }
+
+  .fs-card p,
+  .card p,
+  .dashboard-card p,
+  .dashboard-metrica-card p,
+  .resumo-card p,
+  .plano-card p,
+  .painel-card p {
+    font-size: 12px !important;
+  }
+}
