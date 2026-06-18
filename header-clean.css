@@ -34,9 +34,7 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
   visibility: visible !important;
 }
 
-#header-container:empty {
-  display: none !important;
-}
+#header-container:empty { display: none !important; }
 
 .main-header {
   width: 100% !important;
@@ -70,16 +68,10 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
   white-space: nowrap !important;
   min-width: 0 !important;
 }
-
 .logo-nav .logo-fs,
-.logo-nav > span:first-child {
-  color: #fff !important;
-}
-
+.logo-nav > span:first-child { color: #fff !important; }
 .logo-nav .logo-orcamentos,
-.logo-nav > span:last-child {
-  color: #ffc400 !important;
-}
+.logo-nav > span:last-child { color: #ffc400 !important; }
 
 .header-menu-linha {
   display: block !important;
@@ -101,9 +93,7 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
   min-width: 0 !important;
 }
 
-.nav-menu li {
-  min-width: 0 !important;
-}
+.nav-menu li { min-width: 0 !important; }
 
 .nav-menu a,
 .nav-menu summary {
@@ -142,9 +132,7 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
 .nav-dropdown,
 .nav-dropdown details,
 .nav-dropdown summary,
-.nav-dropdown-menu {
-  display: none !important;
-}
+.nav-dropdown-menu { display: none !important; }
 
 .header-usuario {
   display: flex !important;
@@ -152,6 +140,7 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
   justify-content: flex-end !important;
   gap: 7px !important;
   min-width: 0 !important;
+  white-space: nowrap !important;
 }
 
 #usuario-saudacao {
@@ -181,6 +170,7 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
   font-family: inherit !important;
   box-shadow: none !important;
   text-transform: none !important;
+  flex: 0 0 auto !important;
 }
 
 .btn-header-entrar,
@@ -217,35 +207,18 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
   font-size: 20px !important;
   line-height: 1 !important;
 }
-
-.menu-mobile-auth {
-  display: none !important;
-}
+.menu-mobile-auth { display: none !important; }
 
 body.gerando-pdf,
-body.modo-embed-gestao {
-  padding-top: 0 !important;
-}
-
+body.modo-embed-gestao { padding-top: 0 !important; }
 body.gerando-pdf #header-container,
-body.modo-embed-gestao #header-container {
-  display: none !important;
-}
+body.modo-embed-gestao #header-container { display: none !important; }
 
 @media (max-width: 1140px) {
-  .header-shell {
-    gap: 8px !important;
-  }
-
+  .header-shell { gap: 8px !important; }
   .nav-menu a,
-  .nav-menu summary {
-    font-size: 11px !important;
-    padding: 7px 6px !important;
-  }
-
-  #usuario-saudacao {
-    max-width: 105px !important;
-  }
+  .nav-menu summary { font-size: 11px !important; padding: 7px 6px !important; }
+  #usuario-saudacao { max-width: 105px !important; }
 }
 
 @media (max-width: 900px) {
@@ -254,25 +227,67 @@ body.modo-embed-gestao #header-container {
   }
 
   .header-shell {
-    width: min(100% - 18px, 1180px) !important;
+    width: min(100% - 14px, 1180px) !important;
     height: var(--fs-header-altura-mobile) !important;
     display: grid !important;
-    grid-template-columns: minmax(0,1fr) auto auto !important;
-    gap: 8px !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 6px !important;
   }
 
   .logo-nav {
-    font-size: 19px !important;
+    font-size: 18px !important;
+    max-width: 152px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .header-usuario {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 4px !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 170px) !important;
+  }
+
+  #usuario-saudacao {
+    max-width: 92px !important;
+    min-width: 0 !important;
+    font-size: 12px !important;
+    flex: 1 1 auto !important;
+  }
+
+  .btn-notificacoes-header {
+    width: 36px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    font-size: 18px !important;
+  }
+
+  .menu-mobile-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    font-size: 18px !important;
+  }
+
+  .btn-header-entrar,
+  .btn-header-sair {
+    display: none !important;
   }
 
   .header-menu-linha {
     display: none !important;
     position: absolute !important;
     top: var(--fs-header-altura-mobile) !important;
-    right: 8px !important;
+    right: 7px !important;
     left: auto !important;
-    width: min(62vw, 286px) !important;
-    max-width: calc(100vw - 16px) !important;
+    width: min(64vw, 270px) !important;
+    max-width: calc(100vw - 14px) !important;
     background: #3e2723 !important;
     border: 1px solid rgba(255,196,0,.45) !important;
     border-top: 4px solid #ffc400 !important;
@@ -281,9 +296,7 @@ body.modo-embed-gestao #header-container {
     overflow: hidden !important;
   }
 
-  .header-menu-linha.menu-aberto {
-    display: block !important;
-  }
+  .header-menu-linha.menu-aberto { display: block !important; }
 
   .nav-menu,
   .nav-menu-compacto {
@@ -297,10 +310,7 @@ body.modo-embed-gestao #header-container {
     gap: 5px !important;
   }
 
-  .nav-menu li {
-    width: 100% !important;
-    min-width: 0 !important;
-  }
+  .nav-menu li { width: 100% !important; min-width: 0 !important; }
 
   .nav-menu a,
   .nav-menu summary {
@@ -322,64 +332,54 @@ body.modo-embed-gestao #header-container {
     border-color: rgba(255,196,0,.85) !important;
   }
 
-  .menu-mobile-auth {
-    display: block !important;
-  }
-
-  .menu-mobile-btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 46px !important;
-    height: 46px !important;
-    padding: 0 !important;
-  }
-
-  .header-usuario {
-    display: contents !important;
-  }
-
-  #usuario-saudacao {
-    justify-self: end !important;
-    align-self: center !important;
-    max-width: 132px !important;
-    font-size: 13px !important;
-  }
-
-  .btn-notificacoes-header,
-  .btn-header-entrar,
-  .btn-header-sair {
-    justify-self: end !important;
-  }
-
-  .btn-header-entrar,
-  .btn-header-sair {
-    display: none !important;
-  }
+  .menu-mobile-auth { display: block !important; }
 }
 
 @media (max-width: 430px) {
   .header-shell {
-    width: min(100% - 14px, 1180px) !important;
-    gap: 7px !important;
+    width: min(100% - 12px, 1180px) !important;
+    gap: 4px !important;
   }
 
   .logo-nav {
-    font-size: 18px !important;
+    font-size: 17px !important;
+    max-width: 142px !important;
+  }
+
+  .header-usuario {
+    max-width: calc(100vw - 154px) !important;
+    gap: 3px !important;
   }
 
   #usuario-saudacao {
-    max-width: 106px !important;
-    font-size: 12px !important;
+    max-width: 76px !important;
+    font-size: 11px !important;
   }
 
+  .btn-notificacoes-header,
   .menu-mobile-btn {
-    width: 42px !important;
-    height: 42px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
   }
 
   .header-menu-linha {
-    right: 7px !important;
-    width: min(64vw, 270px) !important;
+    right: 6px !important;
+    width: min(66vw, 260px) !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .logo-nav {
+    font-size: 16px !important;
+    max-width: 126px !important;
+  }
+
+  .header-usuario {
+    max-width: calc(100vw - 138px) !important;
+  }
+
+  #usuario-saudacao {
+    display: none !important;
   }
 }
