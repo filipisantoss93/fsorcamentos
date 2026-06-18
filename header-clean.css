@@ -129,6 +129,38 @@ body:not(.gerando-pdf):not(.modo-embed-gestao) {
   font-weight: 950 !important;
 }
 
+.nav-menu .link-destaque-gestao {
+  position: relative !important;
+  background: linear-gradient(135deg, rgba(255,196,0,.18), rgba(255,255,255,.08)) !important;
+  color: #ffc400 !important;
+  border-color: rgba(255,196,0,.75) !important;
+  font-weight: 950 !important;
+  box-shadow: 0 0 0 1px rgba(255,196,0,.15), 0 0 14px rgba(255,196,0,.18) !important;
+}
+
+.nav-menu .link-destaque-gestao::after {
+  content: 'Premium' !important;
+  position: absolute !important;
+  top: -10px !important;
+  right: -8px !important;
+  background: #ffc400 !important;
+  color: #3e2723 !important;
+  border-radius: 5px !important;
+  padding: 2px 4px !important;
+  font-size: 8px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  letter-spacing: .02em !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18) !important;
+}
+
+.nav-menu .link-destaque-gestao:hover,
+.nav-menu .link-destaque-gestao.ativo {
+  background: #ffc400 !important;
+  color: #3e2723 !important;
+  border-color: #ffc400 !important;
+}
+
 .nav-dropdown,
 .nav-dropdown details,
 .nav-dropdown summary,
@@ -293,7 +325,7 @@ body.modo-embed-gestao #header-container { display: none !important; }
     border-top: 4px solid #ffc400 !important;
     border-radius: 0 0 12px 12px !important;
     box-shadow: 0 18px 34px rgba(0,0,0,.28) !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
   .header-menu-linha.menu-aberto { display: block !important; }
@@ -322,7 +354,7 @@ body.modo-embed-gestao #header-container { display: none !important; }
     font-size: 12px !important;
     background: rgba(255,255,255,.07) !important;
     color: #fffaf0 !important;
-    overflow: hidden !important;
+    overflow: visible !important;
     text-overflow: ellipsis !important;
   }
 
@@ -330,6 +362,19 @@ body.modo-embed-gestao #header-container { display: none !important; }
     background: transparent !important;
     color: #fffaf0 !important;
     border-color: rgba(255,196,0,.85) !important;
+  }
+
+  .nav-menu .link-destaque-gestao {
+    background: rgba(255,196,0,.16) !important;
+    color: #ffc400 !important;
+    border-color: rgba(255,196,0,.85) !important;
+  }
+
+  .nav-menu .link-destaque-gestao::after {
+    top: 50% !important;
+    right: 8px !important;
+    transform: translateY(-50%) !important;
+    font-size: 8px !important;
   }
 
   .menu-mobile-auth { display: block !important; }
