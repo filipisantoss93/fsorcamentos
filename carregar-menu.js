@@ -1,8 +1,5 @@
 let headerJaCarregado = false;
-
-/* =========================
-   HELPERS GERAIS
-========================= */
+let fsMenuInicializado = false;
 
 function fsNormalizarTextoMenu(valor) {
   return String(valor || '')
@@ -14,42 +11,27 @@ function fsNormalizarTextoMenu(valor) {
 
 function fsPaginaAtual() {
   const path = window.location.pathname || '/';
-
-  if (path === '/') return '/index.html';
-
-  return path;
+  return path === '/' ? '/index.html' : path;
 }
 
 function fsEstaNaPaginaGerador() {
   const path = fsPaginaAtual();
-
-  return (
-    path.endsWith('/gerador.html') ||
-    path.endsWith('gerador.html')
-  );
+  return path.endsWith('/gerador.html') || path.endsWith('gerador.html');
 }
 
 function fsEstaNaHome() {
   const path = fsPaginaAtual();
-
-  return (
-    path === '/index.html' ||
-    path.endsWith('/index.html') ||
-    path.endsWith('index.html')
-  );
+  return path === '/index.html' || path.endsWith('/index.html') || path.endsWith('index.html');
 }
 
 async function obterSessaoAtualMenu() {
   try {
     if (!window._supabase) return null;
-
     const { data, error } = await _supabase.auth.getSession();
-
     if (error) {
       console.warn('Erro ao buscar sessão no menu:', error);
       return null;
     }
-
     return data?.session || null;
   } catch (error) {
     console.warn('Não foi possível verificar sessão no menu:', error);
@@ -57,34 +39,14 @@ async function obterSessaoAtualMenu() {
   }
 }
 
-function fecharMenuMobileSeAberto() {
-  const menuLinha = document.querySelector('.header-menu-linha');
-
-  if (menuLinha) {
-    menuLinha.classList.remove('menu-aberto');
-  }
-
-  document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
-    details.removeAttribute('open');
-  });
-}
-
-/* =========================
-   CARREGAR HEADER / MENU
-========================= */
-
 async function carregarHeaderHtmlMenu() {
-  const caminhos = ['header.html', './header.html', '/header.html'];
+  const caminhos = ['/header.html', 'header.html', './header.html'];
   let ultimoErro = null;
 
   for (const caminho of caminhos) {
     try {
       const response = await fetch(caminho, { cache: 'no-cache' });
-
-      if (response.ok) {
-        return await response.text();
-      }
-
+      if (response.ok) return await response.text();
       ultimoErro = new Error(`Falha ao carregar ${caminho}: ${response.status}`);
     } catch (error) {
       ultimoErro = error;
@@ -94,188 +56,59 @@ async function carregarHeaderHtmlMenu() {
   throw ultimoErro || new Error('Não foi possível carregar header.html.');
 }
 
-async function carregarMenu(sessionRecebida = undefined) {
-  const headerContainer = document.getElementById('header-container');
+function fecharMenuMobileSeAberto() {
+  const menuLinha = document.querySelector('.header-menu-linha');
+  const header = document.querySelector('.main-header');
 
-  if (!headerContainer) return;
+  if (menuLinha) menuLinha.classList.remove('menu-aberto');
+  if (header) header.classList.remove('menu-aberto');
 
-  try {
-    if (!headerJaCarregado) {
-      const html = await carregarHeaderHtmlMenu();
-
-      headerContainer.innerHTML = html;
-      headerContainer.style.display = 'block';
-      headerJaCarregado = true;
-
-      configurarLinksDoHeader();
-      configurarDropdownsHeader();
-      marcarLinkAtivoHeader();
-
-      setTimeout(() => {
-        configurarHeaderInteligente();
-      }, 150);
-    }
-
-    let session = sessionRecebida;
-
-    if (session === undefined) {
-      session = await obterSessaoAtualMenu();
-    }
-
-    await atualizarHeaderUsuario(session || null);
-    aplicarVisibilidadeMenuPorPlano();
-    await controlarBotaoFlutuanteGeradorGlobal(session || null);
-
-    setTimeout(() => {
-      configurarHeaderInteligente();
-    }, 150);
-
-  } catch (error) {
-    console.error('Erro ao carregar menu:', error);
-  }
+  document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
+    details.removeAttribute('open');
+  });
 }
 
-/* =========================
-   HEADER USUÁRIO
-========================= */
+function toggleMenuMobile() {
+  const menuLinha = document.querySelector('.header-menu-linha');
+  const header = document.querySelector('.main-header');
 
-
-async function verificarExpiracaoTestePremiumMenu() {
-  try {
-    if (!window._supabase) return null;
-
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (!session?.user?.id) return null;
-
-    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
-
-    if (error) {
-      console.warn('Teste Premium não verificado pelo menu:', error);
-      return null;
-    }
-
-    if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
-    if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
-
-    if (data?.plano_expira_em) {
-      localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
-    } else if (data?.plano === 'basico') {
-      localStorage.removeItem('usuario_plano_expira_em');
-    }
-
-    return data || null;
-  } catch (error) {
-    console.warn('Erro ao verificar expiração do teste Premium no menu:', error);
-    return null;
-  }
+  if (menuLinha) menuLinha.classList.toggle('menu-aberto');
+  if (header) header.classList.toggle('menu-aberto', menuLinha?.classList.contains('menu-aberto'));
 }
 
-async function atualizarHeaderUsuario(session) {
-  const saudacao = document.getElementById('usuario-saudacao');
-
-  const btnEntrarDesktop = document.getElementById('btn-header-entrar');
-  const btnSairDesktop = document.getElementById('btn-header-sair');
-
-  const btnEntrarMobile = document.getElementById('btn-menu-mobile-entrar');
-  const btnSairMobile = document.getElementById('btn-menu-mobile-sair');
-
-  const btnNotificacoes = document.getElementById('btn-notificacoes');
-  const contadorNotificacoes = document.getElementById('contador-notificacoes');
-
-  if (!saudacao) return;
-
-  function mostrarDeslogado() {
-    saudacao.innerText = 'Olá, Convidado';
-
-    if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'inline-block';
-    if (btnSairDesktop) btnSairDesktop.style.display = 'none';
-
-    if (btnEntrarMobile) btnEntrarMobile.style.display = 'block';
-    if (btnSairMobile) btnSairMobile.style.display = 'none';
-
-    if (btnNotificacoes) btnNotificacoes.style.display = 'none';
-    if (contadorNotificacoes) contadorNotificacoes.style.display = 'none';
-
-    localStorage.removeItem('usuario_nome');
-    localStorage.removeItem('usuario_email');
-    localStorage.removeItem('usuario_plano');
-  }
-
-  function mostrarLogado(nomeFinal) {
-    saudacao.innerText = `Olá, ${nomeFinal}`;
-
-    if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'none';
-    if (btnSairDesktop) btnSairDesktop.style.display = 'inline-block';
-
-    if (btnEntrarMobile) btnEntrarMobile.style.display = 'none';
-    if (btnSairMobile) btnSairMobile.style.display = 'block';
-
-    if (btnNotificacoes) btnNotificacoes.style.display = 'inline-flex';
-  }
-
-  if (!session?.user?.id) {
-    mostrarDeslogado();
-    aplicarVisibilidadeMenuPorPlano();
-    return;
-  }
-
-  let nomeFinal =
-    localStorage.getItem('usuario_nome') ||
-    session.user.user_metadata?.nome ||
-    session.user.user_metadata?.full_name ||
-    session.user.user_metadata?.name ||
-    session.user.email?.split('@')[0] ||
-    'Visitante';
-
-  try {
-    await verificarExpiracaoTestePremiumMenu();
-
-    if (window._supabase) {
-      const { data: perfil, error } = await _supabase
-        .from('perfis')
-        .select('nome, nome_empresa, plano, plano_status, plano_expira_em')
-        .eq('id', session.user.id)
-        .maybeSingle();
-
-      if (!error && perfil) {
-        nomeFinal =
-          perfil.nome ||
-          perfil.nome_empresa ||
-          nomeFinal;
-
-        localStorage.setItem('usuario_nome', nomeFinal);
-        localStorage.setItem('usuario_email', session.user.email || '');
-        localStorage.setItem('usuario_plano', perfil.plano || 'gratis');
-
-        if (perfil.plano_status) {
-          localStorage.setItem('usuario_plano_status', perfil.plano_status);
-        } else {
-          localStorage.removeItem('usuario_plano_status');
-        }
-
-        if (perfil.plano_expira_em) {
-          localStorage.setItem('usuario_plano_expira_em', perfil.plano_expira_em);
-        } else {
-          localStorage.removeItem('usuario_plano_expira_em');
-        }
-      } else {
-        localStorage.setItem('usuario_nome', nomeFinal);
-        localStorage.setItem('usuario_email', session.user.email || '');
-      }
-    }
-  } catch (error) {
-    console.warn('Não foi possível atualizar perfil no header:', error);
-  }
-
-  mostrarLogado(nomeFinal);
-  aplicarVisibilidadeMenuPorPlano();
+function configurarLinksDoHeader() {
+  document.querySelectorAll('.header-menu-linha a').forEach(link => {
+    link.addEventListener('click', fecharMenuMobileSeAberto);
+  });
 }
 
+function configurarDropdownsHeader() {
+  document.addEventListener('click', event => {
+    const clicouDentroDropdown = event.target.closest('.nav-dropdown');
+    const clicouNoMenuMobile = event.target.closest('.menu-mobile-btn');
 
+    if (clicouDentroDropdown || clicouNoMenuMobile) return;
 
-/* =========================
-   VISIBILIDADE POR PLANO
-========================= */
+    document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
+      details.removeAttribute('open');
+    });
+  });
+}
+
+function marcarLinkAtivoHeader() {
+  const paginaAtual = fsPaginaAtual();
+
+  document.querySelectorAll('.header-menu-linha a').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    const hrefNormalizado = href === '/' ? '/index.html' : href;
+
+    link.classList.remove('ativo');
+
+    if (hrefNormalizado && (paginaAtual === hrefNormalizado || paginaAtual.endsWith(hrefNormalizado))) {
+      link.classList.add('ativo');
+    }
+  });
+}
 
 function fsPlanoMenuAtual() {
   return fsNormalizarTextoMenu(localStorage.getItem('usuario_plano') || 'gratis');
@@ -302,9 +135,102 @@ function aplicarVisibilidadeMenuPorPlano() {
   });
 }
 
-/* =========================
-   LOGIN / LOGOUT / MENU MOBILE
-========================= */
+async function verificarExpiracaoTestePremiumMenu() {
+  try {
+    if (!window._supabase) return null;
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session?.user?.id) return null;
+
+    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
+    if (error) {
+      console.warn('Teste Premium não verificado pelo menu:', error);
+      return null;
+    }
+
+    if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
+    if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
+    else localStorage.removeItem('usuario_plano_status');
+
+    if (data?.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+    else if (data?.plano === 'basico') localStorage.removeItem('usuario_plano_expira_em');
+
+    return data || null;
+  } catch (error) {
+    console.warn('Erro ao verificar expiração do teste Premium no menu:', error);
+    return null;
+  }
+}
+
+async function atualizarHeaderUsuario(session) {
+  const saudacao = document.getElementById('usuario-saudacao');
+  const btnEntrarDesktop = document.getElementById('btn-header-entrar');
+  const btnSairDesktop = document.getElementById('btn-header-sair');
+  const btnEntrarMobile = document.getElementById('btn-menu-mobile-entrar');
+  const btnSairMobile = document.getElementById('btn-menu-mobile-sair');
+  const btnNotificacoes = document.getElementById('btn-notificacoes');
+  const contadorNotificacoes = document.getElementById('contador-notificacoes');
+
+  if (!saudacao) return;
+
+  if (!session?.user?.id) {
+    saudacao.innerText = 'Olá, Convidado';
+    if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'inline-flex';
+    if (btnSairDesktop) btnSairDesktop.style.display = 'none';
+    if (btnEntrarMobile) btnEntrarMobile.style.display = 'inline-flex';
+    if (btnSairMobile) btnSairMobile.style.display = 'none';
+    if (btnNotificacoes) btnNotificacoes.style.display = 'none';
+    if (contadorNotificacoes) contadorNotificacoes.style.display = 'none';
+    localStorage.removeItem('usuario_nome');
+    localStorage.removeItem('usuario_email');
+    localStorage.removeItem('usuario_plano');
+    aplicarVisibilidadeMenuPorPlano();
+    return;
+  }
+
+  let nomeFinal =
+    localStorage.getItem('usuario_nome') ||
+    session.user.user_metadata?.nome ||
+    session.user.user_metadata?.full_name ||
+    session.user.user_metadata?.name ||
+    session.user.email?.split('@')[0] ||
+    'Visitante';
+
+  try {
+    await verificarExpiracaoTestePremiumMenu();
+
+    if (window._supabase) {
+      const { data: perfil, error } = await _supabase
+        .from('perfis')
+        .select('nome, nome_empresa, plano, plano_status, plano_expira_em')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (!error && perfil) {
+        nomeFinal = perfil.nome || perfil.nome_empresa || nomeFinal;
+        localStorage.setItem('usuario_nome', nomeFinal);
+        localStorage.setItem('usuario_email', session.user.email || '');
+        localStorage.setItem('usuario_plano', perfil.plano || 'gratis');
+
+        if (perfil.plano_status) localStorage.setItem('usuario_plano_status', perfil.plano_status);
+        else localStorage.removeItem('usuario_plano_status');
+
+        if (perfil.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', perfil.plano_expira_em);
+        else localStorage.removeItem('usuario_plano_expira_em');
+      }
+    }
+  } catch (error) {
+    console.warn('Não foi possível atualizar perfil no header:', error);
+  }
+
+  saudacao.innerText = `Olá, ${nomeFinal}`;
+  if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'none';
+  if (btnSairDesktop) btnSairDesktop.style.display = 'inline-flex';
+  if (btnEntrarMobile) btnEntrarMobile.style.display = 'none';
+  if (btnSairMobile) btnSairMobile.style.display = 'inline-flex';
+  if (btnNotificacoes) btnNotificacoes.style.display = 'inline-flex';
+
+  aplicarVisibilidadeMenuPorPlano();
+}
 
 function irParaLogin() {
   fecharMenuMobileSeAberto();
@@ -317,38 +243,16 @@ function irParaLogin() {
   window.location.href = '/index.html?login=1';
 }
 
-function toggleMenuMobile() {
-  const menuLinha = document.querySelector('.header-menu-linha');
-
-  if (menuLinha) {
-    menuLinha.classList.toggle('menu-aberto');
-  }
-}
-
 async function deslogar() {
   try {
     fecharMenuMobileSeAberto();
 
-    if (window._supabase) {
-      await _supabase.auth.signOut();
-    }
+    if (window._supabase) await _supabase.auth.signOut();
 
-    localStorage.removeItem('id');
-    localStorage.removeItem('usuario_nome');
-    localStorage.removeItem('usuario_email');
-    localStorage.removeItem('usuario_plano');
-    localStorage.removeItem('usuario_plano_status');
-    localStorage.removeItem('usuario_plano_expira_em');
-    localStorage.removeItem('nome_empresa');
-    localStorage.removeItem('telefone_empresa');
-    localStorage.removeItem('endereco_empresa');
-    localStorage.removeItem('cnpj_empresa');
-    localStorage.removeItem('foto_url');
+    ['id', 'usuario_nome', 'usuario_email', 'usuario_plano', 'usuario_plano_status', 'usuario_plano_expira_em', 'nome_empresa', 'telefone_empresa', 'endereco_empresa', 'cnpj_empresa', 'foto_url'].forEach(chave => localStorage.removeItem(chave));
 
     removerBotaoFlutuanteGeradorGlobal();
-
     await atualizarHeaderUsuario(null);
-
     window.location.href = '/index.html';
   } catch (error) {
     console.error('Erro ao sair:', error);
@@ -356,73 +260,11 @@ async function deslogar() {
   }
 }
 
-/* =========================
-   LINKS DO HEADER
-========================= */
-
-function configurarLinksDoHeader() {
-  const links = document.querySelectorAll('.header-menu-linha a');
-
-  links.forEach(link => {
-    link.addEventListener('click', () => {
-      fecharMenuMobileSeAberto();
-    });
-  });
-}
-
-function configurarDropdownsHeader() {
-  document.addEventListener('click', (event) => {
-    const clicouDentroDropdown = event.target.closest('.nav-dropdown');
-    const clicouNoMenuMobile = event.target.closest('.menu-mobile-btn');
-
-    if (clicouDentroDropdown || clicouNoMenuMobile) return;
-
-    document.querySelectorAll('.nav-dropdown details[open]').forEach(details => {
-      details.removeAttribute('open');
-    });
-  });
-}
-
-
-function marcarLinkAtivoHeader() {
-  const paginaAtual = fsPaginaAtual();
-  const links = document.querySelectorAll('.header-menu-linha a');
-
-  links.forEach(link => {
-    const href = link.getAttribute('href') || '';
-
-    link.classList.remove('ativo');
-
-    if (!href) return;
-
-    const hrefNormalizado = href === '/' ? '/index.html' : href;
-
-    if (
-      paginaAtual === hrefNormalizado ||
-      paginaAtual.endsWith(hrefNormalizado)
-    ) {
-      link.classList.add('ativo');
-    }
-  });
-}
-
-/* =========================
-   BOTÃO FLUTUANTE GLOBAL
-========================= */
-
 async function controlarBotaoFlutuanteGeradorGlobal(sessionRecebida = undefined) {
   let session = sessionRecebida;
+  if (session === undefined) session = await obterSessaoAtualMenu();
 
-  if (session === undefined) {
-    session = await obterSessaoAtualMenu();
-  }
-
-  if (!session?.user?.id) {
-    removerBotaoFlutuanteGeradorGlobal();
-    return;
-  }
-
-  if (fsEstaNaPaginaGerador()) {
+  if (!session?.user?.id || fsEstaNaPaginaGerador()) {
     removerBotaoFlutuanteGeradorGlobal();
     return;
   }
@@ -434,24 +276,18 @@ function criarBotaoFlutuanteGeradorGlobal() {
   if (document.getElementById('btn-flutuante-gerador-global')) return;
 
   const botao = document.createElement('button');
-
   botao.type = 'button';
   botao.id = 'btn-flutuante-gerador-global';
   botao.innerHTML = '🧾 <span>Gerar orçamento</span>';
   botao.title = 'Gerar orçamento';
   botao.setAttribute('aria-label', 'Gerar orçamento');
   botao.onclick = abrirGeradorGlobal;
-
   document.body.appendChild(botao);
 }
 
 function removerBotaoFlutuanteGeradorGlobal() {
   const botao = document.getElementById('btn-flutuante-gerador-global');
-
-  if (botao) {
-    botao.remove();
-  }
-
+  if (botao) botao.remove();
   document.body.classList.remove('gerador-aberto');
 }
 
@@ -460,12 +296,10 @@ async function abrirGeradorGlobal() {
 
   if (!session?.user?.id) {
     removerBotaoFlutuanteGeradorGlobal();
-
     if (fsEstaNaHome() && typeof abrirModalLogin === 'function') {
       abrirModalLogin();
       return;
     }
-
     window.location.href = '/index.html?login=1';
     return;
   }
@@ -473,174 +307,94 @@ async function abrirGeradorGlobal() {
   window.location.href = '/gerador.html';
 }
 
-/* =========================
-   PARÂMETROS DA URL
-========================= */
-
 function removerParametrosUrlMenu() {
   const novaUrl = window.location.origin + window.location.pathname;
-
   window.history.replaceState({}, document.title, novaUrl);
 }
 
 function abrirLoginAutomaticamenteSeSolicitado() {
   const params = new URLSearchParams(window.location.search);
-
   if (params.get('login') !== '1') return;
 
-  setTimeout(function() {
-    if (typeof abrirModalLogin === 'function') {
-      abrirModalLogin();
-    }
-
+  setTimeout(() => {
+    if (typeof abrirModalLogin === 'function') abrirModalLogin();
     removerParametrosUrlMenu();
   }, 600);
 }
 
 async function abrirGeradorAutomaticamenteSeSolicitado() {
   const params = new URLSearchParams(window.location.search);
-
   if (params.get('abrirGerador') !== '1') return;
 
   const session = await obterSessaoAtualMenu();
+  removerParametrosUrlMenu();
 
   if (!session?.user?.id) {
-    removerParametrosUrlMenu();
-
-    if (typeof abrirModalLogin === 'function') {
-      abrirModalLogin();
-    } else {
-      window.location.href = '/index.html?login=1';
-    }
-
+    if (typeof abrirModalLogin === 'function') abrirModalLogin();
+    else window.location.href = '/index.html?login=1';
     return;
   }
 
-  removerParametrosUrlMenu();
   window.location.href = '/gerador.html';
 }
 
-/* =========================
-   HEADER INTELIGENTE AO ROLAR
-========================= */
-/*
-  Regra:
-  - Header fixo pelo CSS.
-  - Mostra quando rola para baixo.
-  - Oculta quando rola para cima.
-  - Sempre mostra no topo.
-*/
-
-let fsUltimaPosicaoScroll = window.scrollY || 0;
-let fsHeaderScrollConfigurado = false;
-let fsHeaderTick = false;
-
 function configurarHeaderInteligente() {
   const headerContainer = document.getElementById('header-container');
-
   if (!headerContainer) return;
-
-  headerContainer.classList.add('header-visivel');
   headerContainer.classList.remove('header-oculto');
-
-  if (fsHeaderScrollConfigurado) return;
-
-  fsHeaderScrollConfigurado = true;
-  fsUltimaPosicaoScroll = window.scrollY || 0;
-
-  window.addEventListener('scroll', () => {
-    if (fsHeaderTick) return;
-
-    fsHeaderTick = true;
-
-    window.requestAnimationFrame(() => {
-      controlarHeaderInteligente();
-      fsHeaderTick = false;
-    });
-  }, { passive: true });
+  headerContainer.classList.add('header-visivel');
 }
 
 function controlarHeaderInteligente() {
-  const headerContainer = document.getElementById('header-container');
-
-  if (!headerContainer) return;
-
-  const posicaoAtual =
-    window.scrollY ||
-    document.documentElement.scrollTop ||
-    0;
-
-  const diferenca = posicaoAtual - fsUltimaPosicaoScroll;
-
-  if (posicaoAtual <= 10) {
-    headerContainer.classList.add('header-visivel');
-    headerContainer.classList.remove('header-oculto');
-    fsUltimaPosicaoScroll = posicaoAtual;
-    return;
-  }
-
-  if (Math.abs(diferenca) < 6) {
-    return;
-  }
-
-  if (diferenca > 0) {
-    // Rolando para baixo: mostra header
-    headerContainer.classList.add('header-oculto');
-    headerContainer.classList.remove('header-visivel');
-  } else {
-    // Rolando para cima: oculta header
-    headerContainer.classList.add('header-visivel');
-    headerContainer.classList.remove('header-oculto');
-  }
-
-  fsUltimaPosicaoScroll = posicaoAtual;
+  configurarHeaderInteligente();
 }
 
-/* =========================
-   INICIALIZAÇÃO
-========================= */
+async function carregarMenu(sessionRecebida = undefined) {
+  const headerContainer = document.getElementById('header-container');
+  if (!headerContainer) return;
 
-let fsMenuInicializado = false;
+  try {
+    if (!headerJaCarregado) {
+      headerContainer.innerHTML = await carregarHeaderHtmlMenu();
+      headerContainer.style.display = 'block';
+      headerJaCarregado = true;
+      configurarLinksDoHeader();
+      configurarDropdownsHeader();
+      marcarLinkAtivoHeader();
+      configurarHeaderInteligente();
+    }
+
+    const session = sessionRecebida === undefined ? await obterSessaoAtualMenu() : sessionRecebida;
+    await atualizarHeaderUsuario(session || null);
+    aplicarVisibilidadeMenuPorPlano();
+    await controlarBotaoFlutuanteGeradorGlobal(session || null);
+    configurarHeaderInteligente();
+  } catch (error) {
+    console.error('Erro ao carregar menu:', error);
+  }
+}
 
 async function inicializarMenuFS() {
   if (fsMenuInicializado) return;
   fsMenuInicializado = true;
 
   await carregarMenu();
-
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
-
-  setTimeout(() => {
-    configurarHeaderInteligente();
-  }, 500);
 
   if (window._supabase) {
     _supabase.auth.onAuthStateChange(async (event, session) => {
       await atualizarHeaderUsuario(session || null);
       aplicarVisibilidadeMenuPorPlano();
       await controlarBotaoFlutuanteGeradorGlobal(session || null);
-
-      if (!session) {
-        removerBotaoFlutuanteGeradorGlobal();
-      }
-
-      setTimeout(() => {
-        configurarHeaderInteligente();
-      }, 150);
+      if (!session) removerBotaoFlutuanteGeradorGlobal();
+      configurarHeaderInteligente();
     });
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', inicializarMenuFS);
-} else {
-  inicializarMenuFS();
-}
-
-/* =========================
-   EXPORTAR FUNÇÕES GLOBAIS
-========================= */
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inicializarMenuFS);
+else inicializarMenuFS();
 
 window.carregarMenu = carregarMenu;
 window.verificarExpiracaoTestePremiumMenu = verificarExpiracaoTestePremiumMenu;
