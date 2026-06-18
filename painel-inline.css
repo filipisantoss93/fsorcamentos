@@ -1,2 +1,4 @@
-/* CSS do painel migrado para style.css.
-   Mantido vazio para compatibilidade com o link existente em painel.html. */
+/* Compatibilidade temporaria: o painel.html ja carrega este arquivo.
+   Enquanto a consolidacao nao remove este link do HTML, os estilos do painel
+   ficam aqui e nao no header global. */
+@import url("/painel-clean.css?v=20260618-1");
