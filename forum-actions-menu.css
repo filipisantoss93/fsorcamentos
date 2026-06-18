@@ -1,0 +1,175 @@
+/* =========================================================
+   FS ORÇAMENTOS — MENU COMPACTO DE AÇÕES DO FÓRUM
+   ========================================================= */
+
+.forum-topico-acoes {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  margin-top: 16px !important;
+  flex-wrap: nowrap !important;
+}
+
+.forum-acoes-compactas {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  position: relative !important;
+  max-width: 100% !important;
+}
+
+.forum-curtir-slot {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.forum-curtir-slot .forum-like-btn,
+.forum-topico-acoes .forum-like-btn {
+  min-width: 64px !important;
+  min-height: 38px !important;
+  padding: 8px 11px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e0d6c8 !important;
+  background: #f1f5f9 !important;
+  color: #2563eb !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  box-shadow: none !important;
+}
+
+.forum-curtir-slot .forum-like-btn.curtido,
+.forum-curtir-slot .forum-like-btn.ativo,
+.forum-curtir-slot .forum-like-btn[aria-pressed="true"] {
+  background: #fff8e1 !important;
+  color: #3e2723 !important;
+  border-color: #ffc400 !important;
+}
+
+.forum-acoes-menu-wrap {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  z-index: 30 !important;
+}
+
+.forum-menu-trigger {
+  width: 40px !important;
+  height: 38px !important;
+  min-width: 40px !important;
+  min-height: 38px !important;
+  border: 1px solid #e0d6c8 !important;
+  background: #f1f5f9 !important;
+  color: #3e2723 !important;
+  border-radius: 8px !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+
+.forum-acoes-menu-wrap.aberto .forum-menu-trigger {
+  background: #3e2723 !important;
+  color: #ffc400 !important;
+  border-color: #ffc400 !important;
+}
+
+.forum-acoes-menu {
+  display: none !important;
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 0 !important;
+  width: min(260px, calc(100vw - 36px)) !important;
+  background: #ffffff !important;
+  border: 1px solid #e0d6c8 !important;
+  border-top: 4px solid #ffc400 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 18px 42px rgba(0,0,0,.22) !important;
+  padding: 7px !important;
+  z-index: 9999 !important;
+}
+
+.forum-acoes-menu-wrap.aberto .forum-acoes-menu {
+  display: grid !important;
+  gap: 5px !important;
+}
+
+.forum-menu-item {
+  width: 100% !important;
+  min-height: 38px !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  background: #f8fafc !important;
+  color: #3e2723 !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  text-align: left !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 9px 10px !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+}
+
+.forum-menu-item:hover {
+  background: #fff8e1 !important;
+}
+
+.forum-menu-item.destaque {
+  background: #fff8e1 !important;
+  color: #3e2723 !important;
+  border: 1px solid #ffc400 !important;
+  font-weight: 950 !important;
+}
+
+.forum-menu-item.perigo {
+  background: #fff5f5 !important;
+  color: #b91c1c !important;
+  font-weight: 950 !important;
+}
+
+@media (max-width: 520px) {
+  .forum-topico-acoes {
+    margin-top: 12px !important;
+    gap: 6px !important;
+  }
+
+  .forum-acoes-compactas {
+    gap: 6px !important;
+  }
+
+  .forum-curtir-slot .forum-like-btn,
+  .forum-topico-acoes .forum-like-btn {
+    min-width: 58px !important;
+    min-height: 36px !important;
+    padding: 7px 9px !important;
+    font-size: 13px !important;
+  }
+
+  .forum-menu-trigger {
+    width: 38px !important;
+    height: 36px !important;
+    min-width: 38px !important;
+    min-height: 36px !important;
+    font-size: 22px !important;
+  }
+
+  .forum-acoes-menu {
+    width: min(245px, calc(100vw - 32px)) !important;
+  }
+
+  .forum-menu-item {
+    min-height: 36px !important;
+    font-size: 12px !important;
+    padding: 8px 9px !important;
+  }
+}
