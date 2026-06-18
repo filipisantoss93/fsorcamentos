@@ -167,6 +167,62 @@
   }
 }
 
+/* =========================================================
+   FÓRUM — IMAGENS DO TÓPICO EM FORMATO REAL
+   ========================================================= */
+
+#forum-detalhe-fotos,
+.forum-detalhe #forum-detalhe-fotos,
+.forum-detalhe .forum-fotos-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 10px !important;
+  overflow: visible !important;
+}
+
+#forum-detalhe-fotos a,
+.forum-detalhe #forum-detalhe-fotos a,
+.forum-detalhe .forum-fotos-grid a {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  border-radius: 10px !important;
+  background: #fffaf0 !important;
+  border: 1px solid #e0d6c8 !important;
+}
+
+#forum-detalhe-fotos .forum-foto,
+.forum-detalhe #forum-detalhe-fotos .forum-foto,
+.forum-detalhe .forum-fotos-grid .forum-foto {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: block !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  border-radius: 10px !important;
+  border: 0 !important;
+  background: #fffaf0 !important;
+}
+
+.forum-topico .forum-fotos-grid {
+  grid-template-columns: repeat(2, minmax(0, 86px)) !important;
+  gap: 7px !important;
+}
+
+.forum-topico .forum-foto {
+  width: 86px !important;
+  height: 64px !important;
+  object-fit: contain !important;
+  background: #fffaf0 !important;
+}
+
 @media (max-width: 520px) {
   .fs-grid,
   .fs-grid-2,
@@ -231,5 +287,12 @@
   .plano-card p,
   .painel-card p {
     font-size: 11px !important;
+  }
+
+  #forum-detalhe-fotos,
+  .forum-detalhe #forum-detalhe-fotos,
+  .forum-detalhe .forum-fotos-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
   }
 }
