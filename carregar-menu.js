@@ -37,6 +37,9 @@ function fsGarantirCss(id, href) {
 function garantirCssHeaderFS() {
   fsGarantirCss('fs-header-clean-css', '/header-clean.css?v=20260617-3');
   fsGarantirCss('fs-card-grid-css', '/fs-card-grid.css?v=20260617-1');
+  fsGarantirCss('fs-auth-clean-css', '/auth-clean.css?v=20260618-4');
+  fsGarantirCss('fs-brand-contrast-css', '/brand-contrast-fix.css?v=20260618-1');
+  fsGarantirCss('fs-login-modal-behavior-css', '/login-modal-behavior.css?v=20260618-1');
 }
 
 function fsNormalizarTextoMenu(valor) {
