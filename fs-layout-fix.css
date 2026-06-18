@@ -75,3 +75,90 @@ body:not(.pdf-body) {
 
 .painel-card, .dashboard-card, .forum-card, .card, .fs-card { padding: 18px; }
 .info-card, .dashboard-mini-card, .dashboard-lista-item, .forum-mini-item, .painel-premium-atalho { padding: 14px; }
+
+.fs-grid, .painel-premium-atalhos-grid, .painel-premium-resumo-grid, .perfil-dados-grid, .dashboard-grid-metricas, .dashboard-mini-grid, .dashboard-acoes-grid, .clientes-grid, .veiculos-grid, .ordens-grid, .estoque-grid, .agenda-grid, .relatorios-grid, .recorrentes-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.painel-premium-atalhos-grid, .perfil-dados-grid, .dashboard-grid-metricas, .dashboard-mini-grid, .dashboard-acoes-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.painel-premium-resumo-grid, .clientes-grid, .veiculos-grid, .ordens-grid, .estoque-grid, .agenda-grid, .relatorios-grid, .recorrentes-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.perfil-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, .45fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+button, .btn, .btn-primary, .btn-secondary, .fs-btn, .fs-btn-primary, .fs-btn-secondary, .fs-btn-danger, .dashboard-btn, .dashboard-btn-secundario, .dashboard-btn-whatsapp, .forum-btn, .forum-btn-secundario, .forum-btn-perigo, .forum-link-btn, .forum-like-btn, .btn-add, .btn-extra, .btn-limpar, .btn-remove, .btn-editar-perfil, .btn-senha, .btn-excluir-conta, .btn-gerar-orcamento-painel, .cliente-btn, .veiculo-btn, .ordem-btn, .estoque-btn, .agenda-btn, .relatorio-btn, .recorrente-btn {
+  border-radius: var(--fs-radius-sm);
+  box-shadow: none;
+  font-family: inherit;
+}
+
+.fs-btn-primary, .btn-primary, .dashboard-btn, .forum-btn, .btn-add, .btn-extra, .btn-gerar-orcamento-painel, .btn-editar-perfil {
+  background: var(--fs-marrom);
+  color: var(--fs-amarelo);
+  border: 1px solid var(--fs-amarelo);
+}
+
+.fs-btn-secondary, .btn-secondary, .dashboard-btn-secundario, .forum-btn-secundario, .btn-limpar, .btn-senha {
+  background: #fff;
+  color: var(--fs-marrom);
+  border: 1px solid #d7ccc8;
+}
+
+.fs-btn-danger, .forum-btn-perigo, .btn-remove, .btn-excluir-conta {
+  background: #fff5f5;
+  color: var(--fs-danger);
+  border: 1px solid #fecaca;
+}
+
+.fs-btn-primary, .fs-btn-secondary, .fs-btn-danger, .dashboard-btn, .dashboard-btn-secundario, .dashboard-btn-whatsapp, .forum-btn, .forum-btn-secundario, .forum-link-btn, .forum-like-btn, .btn-add, .btn-extra, .btn-limpar, .btn-remove, .btn-editar-perfil, .btn-senha, .btn-excluir-conta, .btn-gerar-orcamento-painel, .cliente-btn, .veiculo-btn, .ordem-btn, .estoque-btn, .agenda-btn, .relatorio-btn, .recorrente-btn {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 13px;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.painel-topo-acoes, .acoes-painel, .fs-actions, .form-actions, .fs-form-actions, .dashboard-hero-acoes, .forum-hero-acoes, .forum-topico-acoes, .forum-resposta-acoes, .clientes-acoes, .veiculos-acoes, .ordens-acoes, .estoque-acoes, .agenda-acoes, .relatorios-acoes, .recorrentes-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.forum-topico-acoes, .forum-resposta-acoes { justify-content: flex-start; }
+
+label { color: var(--fs-marrom); font-weight: 900; }
+input, select, textarea { border: 1px solid #d7ccc8; border-radius: var(--fs-radius-sm); color: var(--fs-texto); background: #fff; }
+input:focus, select:focus, textarea:focus { border-color: var(--fs-amarelo); box-shadow: 0 0 0 3px rgba(255,196,0,.16); outline: none; }
+
+.forum-avatar, .forum-avatar-placeholder { width: 34px; height: 34px; min-width: 34px; max-width: 34px; max-height: 34px; border-radius: 50%; overflow: hidden; }
+.forum-avatar img { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 50%; }
+.forum-topico .forum-foto { width: 96px; height: 72px; object-fit: cover; }
+.forum-foto { object-fit: cover; }
+
+@media (max-width: 900px) {
+  .fs-page, .page, .dashboard-page, .forum-page, .painel-page, .container, .painel-container { width: min(100% - 12px, 1180px); }
+  .fs-page-header, .page-header, .dashboard-hero, .forum-hero, .painel-header, .clientes-header, .veiculos-header, .ordens-header, .estoque-header, .agenda-header, .relatorios-header, .recorrentes-header, .perfil-layout { display: grid; grid-template-columns: 1fr; }
+  .painel-premium-atalhos-grid, .painel-premium-resumo-grid, .perfil-dados-grid, .dashboard-grid-metricas, .dashboard-mini-grid, .dashboard-acoes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .painel-premium-atalhos-grid, .painel-premium-resumo-grid, .perfil-dados-grid, .dashboard-grid-metricas, .dashboard-mini-grid, .dashboard-acoes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .fs-card, .card, .dashboard-card, .resumo-card, .plano-card, .forum-card, .painel-card, .container, .painel-container { padding: 14px; }
+  .fs-btn-primary, .fs-btn-secondary, .fs-btn-danger, .dashboard-btn, .dashboard-btn-secundario, .forum-btn, .forum-btn-secundario, .forum-link-btn, .forum-like-btn, .btn-editar-perfil, .btn-senha, .btn-excluir-conta, .btn-gerar-orcamento-painel { font-size: 12px; padding: 8px 9px; }
+}
