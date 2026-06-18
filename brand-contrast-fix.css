@@ -1,6 +1,6 @@
 /* =========================================================
-   FS ORÇAMENTOS — CORREÇÃO GLOBAL DA MARCA E AUTH
-   Corrige contraste da palavra Orçamentos e padroniza o topo de login.
+   FS ORÇAMENTOS — CONTRASTE GLOBAL DA MARCA E AUTH
+   Mantém a palavra "Orçamentos" legível em header, Sobre e modal de login.
    ========================================================= */
 
 .logo-nav {
@@ -18,17 +18,17 @@
   align-items: center !important;
   justify-content: center !important;
   flex: 0 0 auto !important;
-  width: 42px !important;
-  height: 36px !important;
-  min-width: 42px !important;
-  min-height: 36px !important;
+  width: 40px !important;
+  height: 32px !important;
+  min-width: 40px !important;
+  min-height: 32px !important;
   padding: 0 !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   background: #ffc400 !important;
-  color: #3e2723 !important;
+  color: #2c1b17 !important;
   font-weight: 950 !important;
   line-height: 1 !important;
-  box-shadow: 0 8px 18px rgba(0,0,0,.22) !important;
+  box-shadow: none !important;
 }
 
 .logo-nav .logo-orcamentos {
@@ -36,20 +36,24 @@
   color: #fffaf0 !important;
   opacity: 1 !important;
   font-weight: 950 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,.28) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.32) !important;
   max-width: none !important;
   overflow: visible !important;
   text-overflow: clip !important;
 }
 
-.auth-logo-box {
-  background: #3e2723 !important;
+.auth-logo-box,
+.modal-login-box .auth-logo-box,
+#modal-login .auth-logo-box {
+  background: #2c1b17 !important;
   color: #fffaf0 !important;
   border-bottom: 2px solid #ffc400 !important;
-  padding: 16px 18px !important;
+  padding: 14px 16px !important;
 }
 
-.auth-logo-box .auth-logo-text {
+.auth-logo-box .auth-logo-text,
+.modal-login-box .auth-logo-text,
+#modal-login .auth-logo-text {
   display: inline-flex !important;
   align-items: center !important;
   gap: 7px !important;
@@ -60,40 +64,46 @@
 
 .auth-logo-box .auth-logo-text strong,
 .auth-logo-box .auth-logo-text .auth-logo-fs,
-.auth-logo-box .auth-logo-text .fs-box {
+.auth-logo-box .auth-logo-text .fs-box,
+.modal-login-box .auth-logo-text strong,
+#modal-login .auth-logo-text strong {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 42px !important;
-  height: 36px !important;
-  min-width: 42px !important;
-  min-height: 36px !important;
+  width: 40px !important;
+  height: 32px !important;
+  min-width: 40px !important;
+  min-height: 32px !important;
   padding: 0 !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   background: #ffc400 !important;
-  color: #3e2723 !important;
+  color: #2c1b17 !important;
   font-weight: 950 !important;
-  box-shadow: 0 8px 18px rgba(0,0,0,.22) !important;
+  box-shadow: none !important;
 }
 
 .auth-logo-box .auth-logo-text span,
 .auth-logo-box .auth-logo-text .logo-orcamentos,
-.auth-logo-box .auth-logo-text .auth-logo-orcamentos {
+.auth-logo-box .auth-logo-text .auth-logo-orcamentos,
+.modal-login-box .auth-logo-text span,
+#modal-login .auth-logo-text span {
   color: #fffaf0 !important;
   opacity: 1 !important;
   font-weight: 950 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,.28) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.32) !important;
 }
 
-.auth-logo-box p {
+.auth-logo-box p,
+.modal-login-box .auth-logo-box p,
+#modal-login .auth-logo-box p {
   color: #fffaf0 !important;
   opacity: 1 !important;
-  font-weight: 750 !important;
+  font-weight: 700 !important;
 }
 
 .sobre-hero-logo,
 .contato-hero-logo {
-  color: #3e2723 !important;
+  color: #2c1b17 !important;
 }
 
 .sobre-hero-logo .sobre-fs-text,
@@ -101,7 +111,7 @@
 .contato-hero-logo .contato-fs-text,
 .contato-fs-text,
 .contato-hero-logo .sobre-fs-text {
-  color: #3e2723 !important;
+  color: #2c1b17 !important;
   opacity: 1 !important;
   font-weight: 950 !important;
   text-shadow: none !important;
@@ -113,15 +123,16 @@
 .contato-fs-box,
 .contato-hero-logo .sobre-fs-box {
   background: #ffc400 !important;
-  color: #3e2723 !important;
+  color: #2c1b17 !important;
   opacity: 1 !important;
+  border-radius: 6px !important;
 }
 
 /* Corrige banners legados de login que apareciam como faixa marrom simples. */
 .banner-topo,
 .login-banner,
 .auth-banner {
-  background: #3e2723 !important;
+  background: #2c1b17 !important;
   color: #fffaf0 !important;
   border-bottom: 2px solid #ffc400 !important;
 }
@@ -130,7 +141,8 @@
 .login-banner .logo-fs,
 .auth-banner .logo-fs {
   background: #ffc400 !important;
-  color: #3e2723 !important;
+  color: #2c1b17 !important;
+  border-radius: 6px !important;
 }
 
 .banner-topo .logo-orcamentos,
@@ -138,6 +150,7 @@
 .auth-banner .logo-orcamentos {
   color: #fffaf0 !important;
   opacity: 1 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.32) !important;
 }
 
 @media (max-width: 520px) {
@@ -147,14 +160,14 @@
 
   .logo-nav .logo-fs {
     width: 34px !important;
-    height: 30px !important;
+    height: 28px !important;
     min-width: 34px !important;
-    min-height: 30px !important;
-    font-size: 17px !important;
+    min-height: 28px !important;
+    font-size: 16px !important;
   }
 
   .logo-nav .logo-orcamentos {
-    font-size: 18px !important;
+    font-size: 17px !important;
     max-width: 132px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -162,10 +175,12 @@
 
   .auth-logo-box .auth-logo-text strong,
   .auth-logo-box .auth-logo-text .auth-logo-fs,
-  .auth-logo-box .auth-logo-text .fs-box {
-    width: 38px !important;
-    height: 32px !important;
-    min-width: 38px !important;
-    min-height: 32px !important;
+  .auth-logo-box .auth-logo-text .fs-box,
+  .modal-login-box .auth-logo-text strong,
+  #modal-login .auth-logo-text strong {
+    width: 36px !important;
+    height: 30px !important;
+    min-width: 36px !important;
+    min-height: 30px !important;
   }
 }
