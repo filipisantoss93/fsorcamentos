@@ -1,0 +1,299 @@
+/* =========================================================
+   FS ORÇAMENTOS — HEADER DEFINITIVO
+   Este arquivo existe para impedir que CSS interno das páginas empurre o header.
+   Carregado no <head> via carregar-menu.js.
+   ========================================================= */
+
+:root {
+  --fs-header-altura-mobile: 72px;
+  --fs-header-altura-desktop: 107px;
+}
+
+html,
+body {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  overflow-x: hidden !important;
+}
+
+body:not(.gerando-pdf) {
+  padding-top: var(--fs-header-altura-desktop) !important;
+}
+
+#header-container {
+  display: block !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 30000 !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#header-container:empty {
+  display: none !important;
+}
+
+.main-header {
+  width: 100% !important;
+  margin: 0 !important;
+  background: linear-gradient(135deg, #2c1b17, #3e2723) !important;
+  color: #fff !important;
+  border-bottom: 3px solid #ffc400 !important;
+  box-shadow: 0 8px 22px rgba(0,0,0,.18) !important;
+}
+
+.header-topo {
+  width: min(1180px, calc(100% - 24px)) !important;
+  min-height: 58px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+}
+
+.logo-nav {
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 22px !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+}
+
+.logo-nav span {
+  color: #ffc400 !important;
+}
+
+.header-usuario {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+#usuario-saudacao {
+  color: #fff8e1 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  max-width: 240px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.btn-notificacoes-header,
+.btn-header-entrar,
+.btn-header-sair,
+.menu-mobile-btn,
+.btn-menu-mobile-entrar,
+.btn-menu-mobile-sair {
+  min-height: 36px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(255,196,0,.65) !important;
+  background: rgba(255,255,255,.08) !important;
+  color: #ffc400 !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  padding: 7px 10px !important;
+  font-family: inherit !important;
+  box-shadow: none !important;
+}
+
+.btn-notificacoes-header {
+  position: relative !important;
+  width: 38px !important;
+  padding: 0 !important;
+}
+
+.menu-mobile-btn {
+  display: none !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+}
+
+.header-menu-linha {
+  border-top: 1px solid rgba(255,255,255,.08) !important;
+}
+
+.nav-menu,
+.nav-menu-compacto {
+  width: min(1180px, calc(100% - 24px)) !important;
+  min-height: 46px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  list-style: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+.nav-menu a,
+.nav-menu summary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 34px !important;
+  padding: 8px 11px !important;
+  border-radius: 6px !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.nav-menu a:hover,
+.nav-menu summary:hover,
+.nav-menu a.ativo,
+.nav-menu .link-destaque-gerador {
+  background: #ffc400 !important;
+  color: #3e2723 !important;
+}
+
+.nav-dropdown {
+  position: relative !important;
+}
+
+.nav-dropdown summary {
+  list-style: none !important;
+}
+
+.nav-dropdown summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.nav-dropdown-menu {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  min-width: 220px !important;
+  padding: 8px !important;
+  background: #fff !important;
+  border: 1px solid #e0d6c8 !important;
+  border-top: 4px solid #ffc400 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 18px 40px rgba(0,0,0,.22) !important;
+  display: grid !important;
+  gap: 4px !important;
+}
+
+.nav-dropdown-menu a {
+  color: #3e2723 !important;
+  justify-content: flex-start !important;
+  border-radius: 6px !important;
+  min-height: 36px !important;
+}
+
+.menu-mobile-auth {
+  display: none !important;
+}
+
+body.gerando-pdf {
+  padding-top: 0 !important;
+}
+
+body.gerando-pdf #header-container {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  body:not(.gerando-pdf) {
+    padding-top: var(--fs-header-altura-mobile) !important;
+  }
+
+  .menu-mobile-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .header-topo {
+    width: min(100% - 20px, 1180px) !important;
+    min-height: var(--fs-header-altura-mobile) !important;
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) auto auto !important;
+    gap: 10px !important;
+    padding: 0 !important;
+  }
+
+  .logo-nav {
+    font-size: 20px !important;
+    min-width: 0 !important;
+  }
+
+  .header-usuario {
+    display: contents !important;
+  }
+
+  #usuario-saudacao {
+    justify-self: end !important;
+    align-self: center !important;
+    max-width: 145px !important;
+    font-size: 13px !important;
+  }
+
+  .header-menu-linha {
+    display: none !important;
+  }
+
+  .header-menu-linha.menu-aberto {
+    display: block !important;
+  }
+
+  .nav-menu,
+  .nav-menu-compacto {
+    width: min(100% - 20px, 1180px) !important;
+    min-height: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 8px !important;
+    padding: 12px 0 14px !important;
+  }
+
+  .nav-menu li {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .nav-menu a,
+  .nav-menu summary {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    min-height: 44px !important;
+    padding: 12px 14px !important;
+    background: rgba(255,255,255,.08) !important;
+  }
+
+  .nav-dropdown-menu {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 8px !important;
+    box-shadow: none !important;
+  }
+
+  .menu-mobile-auth {
+    display: block !important;
+  }
+
+  .btn-header-entrar,
+  .btn-header-sair {
+    display: none !important;
+  }
+}
