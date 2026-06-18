@@ -1,4 +1,4 @@
-/* FS Orcamentos - correcao visual estavel sem detector automatico */
+/* FS Orcamentos - camada visual final estavel e mais profissional */
 (function () {
   'use strict';
 
@@ -11,18 +11,38 @@
     style.id = STYLE_ID;
     style.textContent = `
       :root {
-        --fs-marrom: #3e2723;
+        --fs-marrom: #2f211d;
+        --fs-marrom-2: #3e2723;
         --fs-amarelo: #ffc400;
         --fs-card: #ffffff;
-        --fs-borda: #e8dccb;
-        --fs-texto: #2f241f;
-        --fs-texto-suave: #6d5b52;
+        --fs-card-soft: #fffaf0;
+        --fs-page-bg: #f5efe6;
+        --fs-borda: #e3d6c6;
+        --fs-borda-2: #d7c8b8;
+        --fs-texto: #2b211d;
+        --fs-texto-suave: #65554c;
+        --fs-radius-sm: 5px;
+        --fs-radius: 8px;
+        --fs-shadow-soft: 0 4px 14px rgba(62,39,35,.08);
+      }
+
+      body:not(.gerando-pdf) {
+        background: linear-gradient(180deg, #f8f4ee 0%, #f1e7da 100%) !important;
+        color: var(--fs-texto) !important;
       }
 
       body:not(.gerando-pdf) .fs-bg-escuro-auto {
         color: inherit !important;
       }
 
+      body:not(.gerando-pdf) .container,
+      body:not(.gerando-pdf) .card,
+      body:not(.gerando-pdf) .clientes-card,
+      body:not(.gerando-pdf) .veiculos-card,
+      body:not(.gerando-pdf) .ordens-card,
+      body:not(.gerando-pdf) .estoque-card,
+      body:not(.gerando-pdf) .painel-card,
+      body:not(.gerando-pdf) .forum-card,
       body:not(.gerando-pdf) .card-resumo,
       body:not(.gerando-pdf) .agenda-metrica,
       body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque),
@@ -44,21 +64,26 @@
         background: #ffffff !important;
         color: var(--fs-texto) !important;
         border-color: var(--fs-borda) !important;
+        box-shadow: var(--fs-shadow-soft) !important;
+      }
+
+      body:not(.gerando-pdf) .card-resumo,
+      body:not(.gerando-pdf) .agenda-metrica,
+      body:not(.gerando-pdf) .info-item,
+      body:not(.gerando-pdf) .painel-os-card,
+      body:not(.gerando-pdf) .cliente-item,
+      body:not(.gerando-pdf) .veiculo-item,
+      body:not(.gerando-pdf) .estoque-produto-bloco,
+      body:not(.gerando-pdf) .forum-topico,
+      body:not(.gerando-pdf) .forum-resposta {
+        border-radius: 7px !important;
       }
 
       body:not(.gerando-pdf) .card-resumo h1,
       body:not(.gerando-pdf) .card-resumo h2,
       body:not(.gerando-pdf) .card-resumo h3,
       body:not(.gerando-pdf) .card-resumo strong,
-      body:not(.gerando-pdf) .card-resumo b,
-      body:not(.gerando-pdf) .card-resumo .valor-resumo,
-      body:not(.gerando-pdf) .agenda-metrica h1,
-      body:not(.gerando-pdf) .agenda-metrica h2,
-      body:not(.gerando-pdf) .agenda-metrica h3,
       body:not(.gerando-pdf) .agenda-metrica strong,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) h1,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) h2,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) h3,
       body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) strong,
       body:not(.gerando-pdf) .home-metrica-card strong,
       body:not(.gerando-pdf) .home-relatorio-card strong,
@@ -70,10 +95,9 @@
       body:not(.gerando-pdf) .ordem-item strong,
       body:not(.gerando-pdf) .estoque-item strong,
       body:not(.gerando-pdf) .info-item strong,
-      body:not(.gerando-pdf) .home-premium-recurso-card strong,
-      body:not(.gerando-pdf) .home-basico-recurso-card strong,
-      body:not(.gerando-pdf) .home-premium-mini-linha strong,
-      body:not(.gerando-pdf) .home-basico-mini-linha strong {
+      body:not(.gerando-pdf) .forum-topico h3,
+      body:not(.gerando-pdf) .forum-card h2,
+      body:not(.gerando-pdf) .forum-card h3 {
         color: var(--fs-marrom) !important;
         opacity: 1 !important;
         text-shadow: none !important;
@@ -88,70 +112,38 @@
       body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) p,
       body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) span,
       body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) small,
-      body:not(.gerando-pdf) .home-metrica-card p,
-      body:not(.gerando-pdf) .home-metrica-card span,
-      body:not(.gerando-pdf) .home-metrica-card small,
-      body:not(.gerando-pdf) .home-relatorio-card p,
-      body:not(.gerando-pdf) .home-relatorio-card span,
-      body:not(.gerando-pdf) .home-relatorio-card small,
-      body:not(.gerando-pdf) .home-promo-card p,
-      body:not(.gerando-pdf) .home-promo-card span,
-      body:not(.gerando-pdf) .home-promo-card small,
-      body:not(.gerando-pdf) .home-painel-card p,
-      body:not(.gerando-pdf) .home-painel-card span,
-      body:not(.gerando-pdf) .home-painel-card small,
-      body:not(.gerando-pdf) .status-card p,
-      body:not(.gerando-pdf) .status-card span,
-      body:not(.gerando-pdf) .status-card small,
       body:not(.gerando-pdf) .cliente-item span,
       body:not(.gerando-pdf) .veiculo-item span,
       body:not(.gerando-pdf) .ordem-item span,
       body:not(.gerando-pdf) .estoque-item span,
       body:not(.gerando-pdf) .info-item span,
       body:not(.gerando-pdf) .texto-bloco,
-      body:not(.gerando-pdf) .home-premium-recurso-card span,
-      body:not(.gerando-pdf) .home-basico-recurso-card span,
-      body:not(.gerando-pdf) .home-premium-mini-linha span,
-      body:not(.gerando-pdf) .home-basico-mini-linha span {
+      body:not(.gerando-pdf) .forum-card p,
+      body:not(.gerando-pdf) .forum-topico p,
+      body:not(.gerando-pdf) .forum-detalhe-info,
+      body:not(.gerando-pdf) .forum-mini-item {
         color: var(--fs-texto-suave) !important;
         opacity: 1 !important;
         text-shadow: none !important;
       }
 
-      body:not(.gerando-pdf) .resumo-header,
+      /* Cabeçalhos internos claros: mais cara de sistema, menos bloco pesado. */
       body:not(.gerando-pdf) .card-header,
       body:not(.gerando-pdf) .clientes-card-header,
       body:not(.gerando-pdf) .veiculos-card-header,
       body:not(.gerando-pdf) .ordens-card-header,
       body:not(.gerando-pdf) .estoque-card-header,
+      body:not(.gerando-pdf) .forum-card-topo,
       body:not(.gerando-pdf) .modal-busca-cliente-header,
       body:not(.gerando-pdf) .modal-busca-produto-header,
-      body:not(.gerando-pdf) .modal-pix-topo,
-      body:not(.gerando-pdf) .modal-notificacoes-topo,
-      body:not(.gerando-pdf) .mini-dashboard,
-      body:not(.gerando-pdf) .home-cliente-topo,
-      body:not(.gerando-pdf) .mock-card-head,
-      body:not(.gerando-pdf) .total-container,
-      body:not(.gerando-pdf) .valor-total,
-      body:not(.gerando-pdf) .total-itens-ordem-box,
-      body:not(.gerando-pdf) .resumo-total-itens-ordem,
-      body:not(.gerando-pdf) .os-total-box,
-      body:not(.gerando-pdf) .card-total-os,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque,
-      body:not(.gerando-pdf) .home-orcamento-whatsapp-header,
-      body:not(.gerando-pdf) .orcamento-whatsapp-header,
-      body:not(.gerando-pdf) .plano-pix-beneficios,
-      body:not(.gerando-pdf) .home-preco-destaque,
-      body:not(.gerando-pdf) .fs-visitante-preco {
-        background: var(--fs-marrom) !important;
-        color: #fffaf0 !important;
-        border-color: var(--fs-amarelo) !important;
+      body:not(.gerando-pdf) .modal-notificacoes-topo {
+        background: #fffaf0 !important;
+        color: var(--fs-marrom) !important;
+        border-color: var(--fs-borda) !important;
+        border-top: 3px solid var(--fs-amarelo) !important;
+        box-shadow: none !important;
       }
 
-      body:not(.gerando-pdf) .resumo-header h1,
-      body:not(.gerando-pdf) .resumo-header h2,
-      body:not(.gerando-pdf) .resumo-header h3,
-      body:not(.gerando-pdf) .resumo-header strong,
       body:not(.gerando-pdf) .card-header h1,
       body:not(.gerando-pdf) .card-header h2,
       body:not(.gerando-pdf) .card-header h3,
@@ -172,20 +164,14 @@
       body:not(.gerando-pdf) .estoque-card-header h2,
       body:not(.gerando-pdf) .estoque-card-header h3,
       body:not(.gerando-pdf) .estoque-card-header strong,
-      body:not(.gerando-pdf) .total-container strong,
-      body:not(.gerando-pdf) .valor-total strong,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque strong,
-      body:not(.gerando-pdf) .home-preco-destaque,
-      body:not(.gerando-pdf) .home-preco-destaque *,
-      body:not(.gerando-pdf) .fs-visitante-preco,
-      body:not(.gerando-pdf) .fs-visitante-preco * {
-        color: var(--fs-amarelo) !important;
+      body:not(.gerando-pdf) .forum-card-topo h2,
+      body:not(.gerando-pdf) .forum-card-topo h3,
+      body:not(.gerando-pdf) .modal-busca-cliente-header h3,
+      body:not(.gerando-pdf) .modal-busca-produto-header h3 {
+        color: var(--fs-marrom) !important;
         opacity: 1 !important;
       }
 
-      body:not(.gerando-pdf) .resumo-header p,
-      body:not(.gerando-pdf) .resumo-header span,
-      body:not(.gerando-pdf) .resumo-header small,
       body:not(.gerando-pdf) .card-header p,
       body:not(.gerando-pdf) .card-header span,
       body:not(.gerando-pdf) .card-header small,
@@ -201,19 +187,67 @@
       body:not(.gerando-pdf) .estoque-card-header p,
       body:not(.gerando-pdf) .estoque-card-header span,
       body:not(.gerando-pdf) .estoque-card-header small,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque span,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque small,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque p,
-      body:not(.gerando-pdf) .plano-pix-beneficios span,
-      body:not(.gerando-pdf) .plano-pix-beneficios p,
-      body:not(.gerando-pdf) .plano-pix-beneficios small {
+      body:not(.gerando-pdf) .forum-card-topo p,
+      body:not(.gerando-pdf) .modal-busca-cliente-header p,
+      body:not(.gerando-pdf) .modal-busca-produto-header p {
+        color: var(--fs-texto-suave) !important;
+        opacity: 1 !important;
+      }
+
+      /* Elementos que devem continuar escuros para destaque financeiro/status. */
+      body:not(.gerando-pdf) .resumo-header,
+      body:not(.gerando-pdf) .mini-dashboard,
+      body:not(.gerando-pdf) .total-container,
+      body:not(.gerando-pdf) .valor-total,
+      body:not(.gerando-pdf) .total-itens-ordem-box,
+      body:not(.gerando-pdf) .resumo-total-itens-ordem,
+      body:not(.gerando-pdf) .os-total-box,
+      body:not(.gerando-pdf) .card-total-os,
+      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque,
+      body:not(.gerando-pdf) .home-preco-destaque,
+      body:not(.gerando-pdf) .fs-visitante-preco {
+        background: var(--fs-marrom) !important;
         color: #fffaf0 !important;
-        opacity: 0.98 !important;
+        border-color: var(--fs-amarelo) !important;
+      }
+
+      body:not(.gerando-pdf) .resumo-header strong,
+      body:not(.gerando-pdf) .total-container strong,
+      body:not(.gerando-pdf) .valor-total strong,
+      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque strong,
+      body:not(.gerando-pdf) .home-preco-destaque,
+      body:not(.gerando-pdf) .home-preco-destaque *,
+      body:not(.gerando-pdf) .fs-visitante-preco,
+      body:not(.gerando-pdf) .fs-visitante-preco * {
+        color: var(--fs-amarelo) !important;
+        opacity: 1 !important;
+      }
+
+      body:not(.gerando-pdf) input,
+      body:not(.gerando-pdf) select,
+      body:not(.gerando-pdf) textarea {
+        border-radius: 5px !important;
+        border-color: var(--fs-borda-2) !important;
+        background: #ffffff !important;
+        color: var(--fs-texto) !important;
+      }
+
+      body:not(.gerando-pdf) button,
+      body:not(.gerando-pdf) .btn,
+      body:not(.gerando-pdf) a[class*="btn"] {
+        border-radius: 6px !important;
+      }
+
+      body:not(.gerando-pdf) .tag,
+      body:not(.gerando-pdf) .forum-badge,
+      body:not(.gerando-pdf) .plano-badge {
+        border-radius: 5px !important;
       }
 
       @media (max-width: 760px) {
         body:not(.gerando-pdf) .estoque-resumo,
         body:not(.gerando-pdf) .clientes-resumo,
+        body:not(.gerando-pdf) .veiculos-resumo,
         body:not(.gerando-pdf) .cards-resumo,
         body:not(.gerando-pdf) .agenda-resumo-grid,
         body:not(.gerando-pdf) .fs-ordens-dashboard-grid,
@@ -233,6 +267,7 @@
 
         body:not(.gerando-pdf) .estoque-resumo > *,
         body:not(.gerando-pdf) .clientes-resumo > *,
+        body:not(.gerando-pdf) .veiculos-resumo > *,
         body:not(.gerando-pdf) .cards-resumo > *,
         body:not(.gerando-pdf) .agenda-resumo-grid > *,
         body:not(.gerando-pdf) .fs-ordens-dashboard-grid > *,
