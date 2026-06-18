@@ -254,6 +254,25 @@ button.btn-google span {
   opacity: 1 !important;
 }
 
+#modal-login.modal-login-overlay {
+  display: none !important;
+}
+
+body.login-modal-aberto #modal-login.modal-login-overlay,
+#modal-login.modal-login-overlay.ativo,
+#modal-login.modal-login-overlay.active {
+  display: flex !important;
+}
+
+#modal-login.modal-login-overlay .modal-login-box {
+  margin: 0 auto !important;
+}
+
+#modal-login.modal-login-overlay #auth-area,
+#modal-login.modal-login-overlay #auth-container {
+  display: block !important;
+}
+
 @media (max-width: 520px) {
   #auth-container,
   .auth-container-index {
