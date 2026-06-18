@@ -1,1 +1,3 @@
-/* Compatibilidade temporaria: estilos do painel centralizados em style.css. */
+/* Compatibilidade temporaria: o painel.html ja carrega este arquivo.
+   Mantem os estilos do painel restritos ao painel, sem poluir o header global. */
+@import url("/painel-clean.css?v=20260618-1");
