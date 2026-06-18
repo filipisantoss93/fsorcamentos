@@ -196,6 +196,64 @@ button.btn-google span {
   font-weight: 800 !important;
 }
 
+/* =========================================================
+   MARCA FS ORÇAMENTOS — contraste definitivo
+   ========================================================= */
+
+.logo-nav {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  color: #fffaf0 !important;
+  text-decoration: none !important;
+  font-weight: 950 !important;
+}
+
+.logo-nav .logo-fs,
+.auth-logo-fs,
+.auth-fs-box,
+.auth-logo-box .auth-logo-fs,
+.auth-logo-box .fs-box {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 42px !important;
+  min-height: 36px !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  background: #ffc400 !important;
+  color: #3e2723 !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.04em !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,.22) !important;
+}
+
+.logo-nav .logo-orcamentos,
+.auth-logo-orcamentos,
+.auth-logo-box .auth-logo-orcamentos,
+.auth-logo-box .logo-orcamentos {
+  color: #fffaf0 !important;
+  opacity: 1 !important;
+  font-weight: 950 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.22) !important;
+}
+
+.sobre-hero-logo .sobre-fs-text,
+.sobre-fs-text {
+  color: #3e2723 !important;
+  opacity: 1 !important;
+  font-weight: 950 !important;
+  text-shadow: none !important;
+}
+
+.sobre-hero-logo .sobre-fs-box,
+.sobre-fs-box {
+  background: #ffc400 !important;
+  color: #3e2723 !important;
+  opacity: 1 !important;
+}
+
 @media (max-width: 520px) {
   #auth-container,
   .auth-container-index {
@@ -208,5 +266,16 @@ button.btn-google span {
   .auth-container-index input {
     height: 42px !important;
     font-size: 14px !important;
+  }
+
+  .logo-nav .logo-fs {
+    min-width: 34px !important;
+    min-height: 30px !important;
+    padding: 3px 8px !important;
+    font-size: 18px !important;
+  }
+
+  .logo-nav .logo-orcamentos {
+    font-size: 20px !important;
   }
 }
