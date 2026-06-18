@@ -18,12 +18,30 @@
 }
 
 html, body { overflow-x: hidden; }
+html { margin: 0; padding: 0; }
 body:not(.pdf-body) {
+  margin: 0;
+  padding-top: 0;
   background: linear-gradient(180deg, var(--fs-creme), var(--fs-creme-2));
   color: var(--fs-texto);
 }
 
-.main-header { background: linear-gradient(135deg, var(--fs-marrom-2), var(--fs-marrom)); border-bottom: 3px solid var(--fs-amarelo); }
+#header-container {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+#header-container:empty {
+  display: none;
+}
+
+.main-header {
+  width: 100%;
+  margin: 0;
+  background: linear-gradient(135deg, var(--fs-marrom-2), var(--fs-marrom));
+  border-bottom: 3px solid var(--fs-amarelo);
+}
 .header-topo, .nav-menu, .nav-menu-compacto { box-sizing: border-box; }
 .nav-menu a, .nav-menu summary, .btn-header-entrar, .btn-header-sair, .menu-mobile-btn, .btn-menu-mobile-entrar, .btn-menu-mobile-sair, .btn-notificacoes-header { border-radius: var(--fs-radius-sm); }
 .nav-dropdown-menu { border-radius: var(--fs-radius); }
@@ -174,12 +192,110 @@ input:focus, select:focus, textarea:focus { border-color: var(--fs-amarelo); box
 .forum-foto { object-fit: cover; }
 
 @media (max-width: 900px) {
+  body:not(.pdf-body) {
+    padding-top: 0;
+  }
+
+  #header-container {
+    margin-top: 0;
+  }
+
+  .main-header {
+    position: relative;
+    top: auto;
+    margin-top: 0;
+  }
+
+  .header-topo {
+    width: min(100% - 24px, 1180px);
+    min-height: 72px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .logo-nav {
+    font-size: 20px;
+    min-width: 0;
+  }
+
+  .header-usuario {
+    display: contents;
+  }
+
+  #usuario-saudacao {
+    justify-self: end;
+    align-self: center;
+    max-width: 150px;
+    white-space: nowrap;
+  }
+
+  .menu-mobile-btn {
+    justify-self: end;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(255,196,0,.75);
+    background: rgba(255,255,255,.06);
+    color: var(--fs-amarelo);
+  }
+
+  .btn-notificacoes-header,
+  .btn-header-entrar,
+  .btn-header-sair {
+    justify-self: end;
+  }
+
+  .header-menu-linha {
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+
+  .nav-menu,
+  .nav-menu-compacto {
+    width: min(100% - 24px, 1180px);
+    padding: 12px 0 14px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .nav-menu li {
+    min-width: 0;
+  }
+
+  .nav-menu a,
+  .nav-menu summary {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 12px 14px;
+    min-height: 44px;
+    background: rgba(255,255,255,.08);
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-top: 8px;
+    box-shadow: none;
+  }
+
   .fs-page, .page, .dashboard-page, .forum-page, .painel-page, .container, .painel-container { width: min(100% - 12px, 1180px); }
+  .container, .painel-container, .fs-page, .forum-page { margin-top: 12px; }
   .fs-page-header, .page-header, .dashboard-hero, .forum-hero, .painel-header, .clientes-header, .veiculos-header, .ordens-header, .estoque-header, .agenda-header, .relatorios-header, .recorrentes-header, .perfil-layout, .painel-os-topo { display: grid; grid-template-columns: 1fr; }
   .painel-premium-atalhos-grid, .painel-premium-resumo-grid, .perfil-dados-grid, .dashboard-grid-metricas, .dashboard-mini-grid, .dashboard-acoes-grid, .painel-os-grid, .painel-os-resumo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 520px) {
+  .header-topo {
+    width: min(100% - 20px, 1180px);
+  }
+
+  #usuario-saudacao {
+    max-width: 118px;
+    font-size: 13px;
+  }
+
   .painel-premium-atalhos-grid, .painel-premium-resumo-grid, .perfil-dados-grid, .dashboard-grid-metricas, .dashboard-mini-grid, .dashboard-acoes-grid, .painel-os-grid, .painel-os-resumo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .fs-card, .card, .dashboard-card, .resumo-card, .plano-card, .forum-card, .painel-card, .container, .painel-container { padding: 14px; }
   .fs-btn-primary, .fs-btn-secondary, .fs-btn-danger, .dashboard-btn, .dashboard-btn-secundario, .forum-btn, .forum-btn-secundario, .forum-link-btn, .forum-like-btn, .btn-editar-perfil, .btn-senha, .btn-excluir-conta, .btn-gerar-orcamento-painel, .btn-plano-painel, .btn-ver-ordens-painel { font-size: 12px; padding: 8px 9px; }
