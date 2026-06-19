@@ -166,7 +166,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
     ]
   },
   {
-    paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html'],
+    paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html'],
     scripts: [
       ['fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js']
     ]
