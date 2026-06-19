@@ -204,4 +204,67 @@
   .upgrade-beneficio p {
     font-size: 14px !important;
   }
+
+  #area-orcamentos-funcoes .orcamentos-lista-card,
+  #area-orcamentos-funcoes .lista-orcamentos,
+  #area-orcamentos-funcoes .tabela-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos th,
+  #area-orcamentos-funcoes .tabela-orcamentos td {
+    padding: 6px 4px !important;
+    font-size: 10.5px !important;
+    line-height: 1.15 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(1),
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(1) {
+    width: 21% !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(2),
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(2) {
+    width: 35% !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(3),
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(3) {
+    width: 22% !important;
+    text-align: right !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(4),
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(4) {
+    width: 22% !important;
+    text-align: center !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos td small {
+    display: block !important;
+    margin-top: 2px !important;
+    font-size: 9.5px !important;
+    line-height: 1.1 !important;
+    max-height: 22px !important;
+    overflow: hidden !important;
+  }
+
+  #area-orcamentos-funcoes .tabela-orcamentos .status {
+    min-height: 18px !important;
+    padding: 2px 3px !important;
+    font-size: 8.8px !important;
+    line-height: 1 !important;
+    max-width: 100% !important;
+  }
 }
