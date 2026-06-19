@@ -1,10 +1,6 @@
 /* =========================================================
    FS ORÇAMENTOS - orcamentos-resumo-grid-fix.js
-   Página orçamentos:
-   - resumo financeiro em grid 2 blocos por linha;
-   - lista compacta com Número, Cliente, Total e Status;
-   - linha clicável, sem botões de ação na tabela;
-   - botões do modal em linha cheia.
+   Renderiza orçamentos como tabela compacta e clicável.
    ========================================================= */
 (function () {
   'use strict';
@@ -19,45 +15,44 @@
       body .cards-resumo {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 12px !important;
+        gap: 8px !important;
         align-items: stretch !important;
       }
 
       body .resumo-financeiro .card-resumo,
       body .cards-resumo .card-resumo {
         min-width: 0 !important;
-        min-height: 108px !important;
+        min-height: 74px !important;
         box-sizing: border-box !important;
-        border-radius: 16px !important;
-        padding: 14px !important;
+        border-radius: 6px !important;
+        padding: 9px 10px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
+        border: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        box-shadow: none !important;
       }
 
       body .resumo-financeiro .card-resumo strong,
       body .cards-resumo .card-resumo strong {
         font-size: 11px !important;
-        line-height: 1.25 !important;
+        line-height: 1.2 !important;
         word-break: break-word !important;
       }
 
       body .resumo-financeiro .card-resumo .valor-resumo,
       body .cards-resumo .card-resumo .valor-resumo {
-        font-size: 20px !important;
-        line-height: 1.12 !important;
+        font-size: 18px !important;
+        line-height: 1.1 !important;
         word-break: break-word !important;
-      }
-
-      body .resumo-financeiro .card-resumo small,
-      body .cards-resumo .card-resumo small {
-        line-height: 1.25 !important;
       }
 
       #lista-orcamentos .tabela-wrapper {
         width: 100% !important;
-        overflow-x: visible !important;
-        border-radius: 16px !important;
+        overflow-x: auto !important;
+        border-radius: 6px !important;
+        border: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        background: #ffffff !important;
       }
 
       #lista-orcamentos .tabela-orcamentos {
@@ -65,25 +60,31 @@
         min-width: 0 !important;
         table-layout: fixed !important;
         border-collapse: collapse !important;
+        background: #ffffff !important;
       }
 
       #lista-orcamentos .tabela-orcamentos th,
       #lista-orcamentos .tabela-orcamentos td {
-        padding: 10px 8px !important;
+        padding: 8px 9px !important;
         line-height: 1.2 !important;
         vertical-align: middle !important;
         white-space: normal !important;
         word-break: break-word !important;
+        border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
       }
 
       #lista-orcamentos .tabela-orcamentos th {
-        font-size: 12px !important;
+        background: #f8f4ee !important;
+        color: var(--fs-marrom, #2f211d) !important;
+        font-size: 11px !important;
         text-transform: uppercase !important;
         letter-spacing: .2px !important;
+        font-weight: 950 !important;
       }
 
       #lista-orcamentos .tabela-orcamentos td {
-        font-size: 13px !important;
+        color: var(--fs-texto, #2b211d) !important;
+        font-size: 12px !important;
       }
 
       #lista-orcamentos .tabela-orcamentos tr.linha-orcamento {
@@ -91,8 +92,13 @@
         cursor: pointer !important;
       }
 
+      #lista-orcamentos .tabela-orcamentos tr.linha-orcamento:nth-child(even) {
+        background: #fbf8f4 !important;
+      }
+
       #lista-orcamentos .tabela-orcamentos tr.linha-orcamento:hover {
-        filter: brightness(.98) !important;
+        background: #f8f4ee !important;
+        filter: none !important;
       }
 
       #lista-orcamentos .status {
@@ -100,39 +106,43 @@
         align-items: center !important;
         justify-content: center !important;
         max-width: 100% !important;
-        min-height: 26px !important;
-        padding: 5px 8px !important;
-        border-radius: 999px !important;
-        font-size: 11px !important;
+        min-height: 22px !important;
+        padding: 3px 6px !important;
+        border-radius: 3px !important;
+        font-size: 10px !important;
         font-weight: 900 !important;
         line-height: 1.1 !important;
         white-space: normal !important;
+        border: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
       }
 
       #modal-visualizar-orcamento .botoes-modal,
       #modal-editar-orcamento .botoes-modal {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        gap: 10px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
         width: 100% !important;
-        margin-top: 18px !important;
+        margin-top: 12px !important;
+        padding-top: 10px !important;
+        border-top: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
       }
 
       #modal-visualizar-orcamento .botoes-modal .btn-pequeno,
       #modal-editar-orcamento .botoes-modal .btn-pequeno,
       #modal-visualizar-orcamento .botoes-modal button,
       #modal-editar-orcamento .botoes-modal button {
-        width: 100% !important;
-        min-height: 50px !important;
+        width: auto !important;
+        min-height: 32px !important;
         box-sizing: border-box !important;
-        display: flex !important;
+        display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        border-radius: 16px !important;
-        padding: 13px 16px !important;
-        font-size: 15px !important;
-        font-weight: 950 !important;
+        border-radius: 4px !important;
+        padding: 7px 10px !important;
+        font-size: 12px !important;
+        font-weight: 900 !important;
         text-align: center !important;
+        box-shadow: none !important;
       }
 
       #modal-visualizar-orcamento .botoes-modal .btn-cancelar,
@@ -142,85 +152,49 @@
 
       #modal-visualizar-orcamento .botoes-modal .btn-ver-link {
         background: #ffffff !important;
-        color: var(--fs-marrom, #3e2723) !important;
-        border: 2px solid var(--fs-amarelo, #ffc400) !important;
+        color: var(--fs-marrom, #2f211d) !important;
+        border: 1px solid var(--fs-borda, #ded3c5) !important;
       }
 
       #modal-visualizar-orcamento .botoes-modal .btn-whatsapp-orcamento {
-        background: #25d366 !important;
-        color: #063b1c !important;
-        border: 2px solid #1fb957 !important;
+        background: #e9fbf0 !important;
+        color: #166534 !important;
+        border: 1px solid #bbf7d0 !important;
       }
 
       #modal-visualizar-orcamento .botoes-modal .btn-editar,
       #modal-editar-orcamento .botoes-modal .btn-salvar-modal {
-        background: var(--fs-marrom, #3e2723) !important;
+        background: var(--fs-marrom, #2f211d) !important;
         color: var(--fs-amarelo, #ffc400) !important;
-        border: 2px solid var(--fs-amarelo, #ffc400) !important;
+        border: 1px solid var(--fs-marrom, #2f211d) !important;
       }
 
       #modal-visualizar-orcamento .botoes-modal .btn-excluir {
-        background: #dc2626 !important;
-        color: #ffffff !important;
-        border: 2px solid #b91c1c !important;
+        background: #fff5f5 !important;
+        color: #b91c1c !important;
+        border: 1px solid #fecaca !important;
       }
 
       @media (max-width: 760px) {
-        #lista-orcamentos .tabela-orcamentos th,
-        #lista-orcamentos .tabela-orcamentos td {
-          padding: 8px 6px !important;
-          font-size: 12px !important;
-        }
-
-        #lista-orcamentos .tabela-orcamentos th:nth-child(1),
-        #lista-orcamentos .tabela-orcamentos td:nth-child(1) {
-          width: 23% !important;
-        }
-
-        #lista-orcamentos .tabela-orcamentos th:nth-child(2),
-        #lista-orcamentos .tabela-orcamentos td:nth-child(2) {
-          width: 34% !important;
-        }
-
-        #lista-orcamentos .tabela-orcamentos th:nth-child(3),
-        #lista-orcamentos .tabela-orcamentos td:nth-child(3) {
-          width: 21% !important;
-          text-align: right !important;
-        }
-
-        #lista-orcamentos .tabela-orcamentos th:nth-child(4),
-        #lista-orcamentos .tabela-orcamentos td:nth-child(4) {
-          width: 22% !important;
-          text-align: center !important;
-        }
-      }
-
-      @media (max-width: 420px) {
-        body .resumo-financeiro .cards-resumo,
-        body .cards-resumo {
-          gap: 9px !important;
-        }
-
-        body .resumo-financeiro .card-resumo,
-        body .cards-resumo .card-resumo {
-          min-height: 100px !important;
-          padding: 12px 10px !important;
-        }
-
-        body .resumo-financeiro .card-resumo .valor-resumo,
-        body .cards-resumo .card-resumo .valor-resumo {
-          font-size: 18px !important;
-        }
-
         #lista-orcamentos .tabela-orcamentos th,
         #lista-orcamentos .tabela-orcamentos td {
           padding: 7px 5px !important;
           font-size: 11px !important;
         }
 
-        #lista-orcamentos .status {
-          padding: 4px 6px !important;
-          font-size: 10px !important;
+        #lista-orcamentos .tabela-orcamentos th:nth-child(1),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(1) { width: 23% !important; }
+        #lista-orcamentos .tabela-orcamentos th:nth-child(2),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(2) { width: 34% !important; }
+        #lista-orcamentos .tabela-orcamentos th:nth-child(3),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(3) { width: 21% !important; text-align: right !important; }
+        #lista-orcamentos .tabela-orcamentos th:nth-child(4),
+        #lista-orcamentos .tabela-orcamentos td:nth-child(4) { width: 22% !important; text-align: center !important; }
+
+        #modal-visualizar-orcamento .botoes-modal,
+        #modal-editar-orcamento .botoes-modal {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         }
       }
     `;
@@ -295,7 +269,7 @@
       const status = orcamento.status || 'pendente';
 
       html += `
-        <tr class="linha-orcamento ${linhaClasse(status)}" onclick="abrirModalVisualizar('${esc(id)}')" title="Toque para abrir o orçamento">
+        <tr class="linha-orcamento ${linhaClasse(status)}" onclick="abrirModalVisualizar('${esc(id)}')" title="Abrir orçamento">
           <td><strong>${esc(numero(orcamento))}</strong></td>
           <td>${esc(clienteNome)}</td>
           <td><strong>${moeda(total)}</strong></td>
