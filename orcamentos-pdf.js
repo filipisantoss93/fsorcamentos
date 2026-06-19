@@ -92,10 +92,6 @@
     return ['basico', 'premium', 'gestao', 'pago'].includes(normalizar(plano));
   }
 
-  function donoDoOrcamento(orcamento) {
-    return orcamento?.usuario_id || orcamento?.user_id || orcamento?.id_usuario || orcamento?.perfil_id || '';
-  }
-
   function linkPublicoOrcamento(orcamento) {
     if (orcamento?.link_publico || orcamento?.link_cliente || orcamento?.url_publica) {
       return orcamento.link_publico || orcamento.link_cliente || orcamento.url_publica;
@@ -248,21 +244,46 @@
     };
   }
 
+  function ordenarOrcamentosLocalmente(lista) {
+    return [...(Array.isArray(lista) ? lista : [])].sort((a, b) => {
+      const dataA = new Date(a?.created_at || a?.data_criacao || a?.criado_em || a?.data || a?.updated_at || 0).getTime() || 0;
+      const dataB = new Date(b?.created_at || b?.data_criacao || b?.criado_em || b?.data || b?.updated_at || 0).getTime() || 0;
+      return dataB - dataA;
+    });
+  }
+
+  async function tentarConsultaOrcamentos(campo, userId, ordem) {
+    let consulta = window._supabase
+      .from('orcamentos')
+      .select('*')
+      .eq(campo, userId)
+      .limit(200);
+
+    if (ordem) {
+      consulta = consulta.order(ordem, { ascending: false });
+    }
+
+    return await consulta;
+  }
+
   async function buscarOrcamentos(userId) {
+    const camposDono = ['usuario_id', 'user_id', 'id_usuario', 'perfil_id'];
+    const camposOrdem = ['created_at', 'criado_em', 'data_criacao', 'updated_at', 'data', null];
     let ultimoErro = null;
-    for (const campo of ['usuario_id', 'user_id', 'id_usuario', 'perfil_id']) {
-      try {
-        const { data, error } = await window._supabase
-          .from('orcamentos')
-          .select('*')
-          .eq(campo, userId)
-          .order('created_at', { ascending: false });
-        if (!error) return Array.isArray(data) ? data : [];
-        ultimoErro = error;
-      } catch (erro) {
-        ultimoErro = erro;
+
+    for (const campo of camposDono) {
+      for (const ordem of camposOrdem) {
+        try {
+          const { data, error } = await tentarConsultaOrcamentos(campo, userId, ordem);
+          if (!error) return ordenarOrcamentosLocalmente(data);
+          ultimoErro = error;
+        } catch (erro) {
+          ultimoErro = erro;
+        }
       }
     }
+
+    console.error('Falha ao consultar orçamentos. Último erro:', ultimoErro);
     throw ultimoErro || new Error('Consulta de orçamentos falhou.');
   }
 
@@ -370,7 +391,7 @@
       renderizarTabelaOrcamentos(estado.orcamentos);
     } catch (erro) {
       console.error('Erro ao carregar orçamentos:', erro);
-      if (listaEl) listaEl.innerHTML = '<div class="msg-erro">Não foi possível carregar os orçamentos. Verifique a tabela `orcamentos`, o campo de vínculo do usuário e as políticas RLS.</div>';
+      if (listaEl) listaEl.innerHTML = '<div class="msg-erro">Não foi possível carregar os orçamentos. Verifique se a tabela está exposta ao usuário logado, se existe política SELECT e se o campo de vínculo é usuario_id/user_id.</div>';
       setTexto('orcamentos-status-label', 'Erro ao carregar dados');
     }
   }
