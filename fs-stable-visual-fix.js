@@ -1,306 +1,252 @@
-/* FS Orcamentos - camada visual final estavel e mais profissional */
+/* FS Orçamentos - comportamento final estável de sistema */
 (function () {
   'use strict';
 
-  const STYLE_ID = 'fs-stable-visual-fix-style';
+  const path = (window.location.pathname || '').toLowerCase();
 
-  function addStyle() {
-    if (document.getElementById(STYLE_ID)) return;
-
+  function injetarEstilo() {
+    if (document.getElementById('fs-stable-visual-fix-style')) return;
     const style = document.createElement('style');
-    style.id = STYLE_ID;
+    style.id = 'fs-stable-visual-fix-style';
     style.textContent = `
-      :root {
-        --fs-marrom: #2f211d;
-        --fs-marrom-2: #3e2723;
-        --fs-amarelo: #ffc400;
-        --fs-card: #ffffff;
-        --fs-card-soft: #fffaf0;
-        --fs-page-bg: #f5efe6;
-        --fs-borda: #e3d6c6;
-        --fs-borda-2: #d7c8b8;
-        --fs-texto: #2b211d;
-        --fs-texto-suave: #65554c;
-        --fs-radius-sm: 5px;
-        --fs-radius: 8px;
-        --fs-shadow-soft: 0 4px 14px rgba(62,39,35,.08);
-      }
-
-      body:not(.gerando-pdf) {
-        background: linear-gradient(180deg, #f8f4ee 0%, #f1e7da 100%) !important;
-        color: var(--fs-texto) !important;
-      }
-
-      body:not(.gerando-pdf) .fs-bg-escuro-auto {
-        color: inherit !important;
-      }
-
-      body:not(.gerando-pdf) .container,
+      body:not(.gerando-pdf) .fs-sem-borda-amarela,
       body:not(.gerando-pdf) .card,
       body:not(.gerando-pdf) .clientes-card,
       body:not(.gerando-pdf) .veiculos-card,
       body:not(.gerando-pdf) .ordens-card,
       body:not(.gerando-pdf) .estoque-card,
-      body:not(.gerando-pdf) .painel-card,
-      body:not(.gerando-pdf) .forum-card,
-      body:not(.gerando-pdf) .card-resumo,
-      body:not(.gerando-pdf) .agenda-metrica,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque),
-      body:not(.gerando-pdf) .home-metrica-card,
-      body:not(.gerando-pdf) .home-relatorio-card,
-      body:not(.gerando-pdf) .home-promo-card,
-      body:not(.gerando-pdf) .home-painel-card,
-      body:not(.gerando-pdf) .status-card,
-      body:not(.gerando-pdf) .cliente-item,
-      body:not(.gerando-pdf) .veiculo-item,
-      body:not(.gerando-pdf) .ordem-item,
-      body:not(.gerando-pdf) .estoque-item,
-      body:not(.gerando-pdf) .info-item,
-      body:not(.gerando-pdf) .texto-bloco,
-      body:not(.gerando-pdf) .home-premium-recurso-card,
-      body:not(.gerando-pdf) .home-basico-recurso-card,
-      body:not(.gerando-pdf) .home-premium-mini-linha,
-      body:not(.gerando-pdf) .home-basico-mini-linha {
-        background: #ffffff !important;
-        color: var(--fs-texto) !important;
-        border-color: var(--fs-borda) !important;
-        box-shadow: var(--fs-shadow-soft) !important;
+      body:not(.gerando-pdf) .agenda-card,
+      body:not(.gerando-pdf) .forum-card {
+        border-top-color: var(--fs-borda, #ded3c5) !important;
       }
 
-      body:not(.gerando-pdf) .card-resumo,
-      body:not(.gerando-pdf) .agenda-metrica,
-      body:not(.gerando-pdf) .info-item,
-      body:not(.gerando-pdf) .painel-os-card,
-      body:not(.gerando-pdf) .cliente-item,
-      body:not(.gerando-pdf) .veiculo-item,
-      body:not(.gerando-pdf) .estoque-produto-bloco,
-      body:not(.gerando-pdf) .forum-topico,
-      body:not(.gerando-pdf) .forum-resposta {
-        border-radius: 7px !important;
-      }
-
-      body:not(.gerando-pdf) .card-resumo h1,
-      body:not(.gerando-pdf) .card-resumo h2,
-      body:not(.gerando-pdf) .card-resumo h3,
-      body:not(.gerando-pdf) .card-resumo strong,
-      body:not(.gerando-pdf) .agenda-metrica strong,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) strong,
-      body:not(.gerando-pdf) .home-metrica-card strong,
-      body:not(.gerando-pdf) .home-relatorio-card strong,
-      body:not(.gerando-pdf) .home-promo-card strong,
-      body:not(.gerando-pdf) .home-painel-card strong,
-      body:not(.gerando-pdf) .status-card strong,
-      body:not(.gerando-pdf) .cliente-item strong,
-      body:not(.gerando-pdf) .veiculo-item strong,
-      body:not(.gerando-pdf) .ordem-item strong,
-      body:not(.gerando-pdf) .estoque-item strong,
-      body:not(.gerando-pdf) .info-item strong,
-      body:not(.gerando-pdf) .forum-topico h3,
-      body:not(.gerando-pdf) .forum-card h2,
-      body:not(.gerando-pdf) .forum-card h3 {
-        color: var(--fs-marrom) !important;
-        opacity: 1 !important;
-        text-shadow: none !important;
-      }
-
-      body:not(.gerando-pdf) .card-resumo p,
-      body:not(.gerando-pdf) .card-resumo span,
-      body:not(.gerando-pdf) .card-resumo small,
-      body:not(.gerando-pdf) .agenda-metrica p,
-      body:not(.gerando-pdf) .agenda-metrica span,
-      body:not(.gerando-pdf) .agenda-metrica small,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) p,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) span,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card:not(.destaque) small,
-      body:not(.gerando-pdf) .cliente-item span,
-      body:not(.gerando-pdf) .veiculo-item span,
-      body:not(.gerando-pdf) .ordem-item span,
-      body:not(.gerando-pdf) .estoque-item span,
-      body:not(.gerando-pdf) .info-item span,
-      body:not(.gerando-pdf) .texto-bloco,
-      body:not(.gerando-pdf) .forum-card p,
-      body:not(.gerando-pdf) .forum-topico p,
-      body:not(.gerando-pdf) .forum-detalhe-info,
-      body:not(.gerando-pdf) .forum-mini-item {
-        color: var(--fs-texto-suave) !important;
-        opacity: 1 !important;
-        text-shadow: none !important;
-      }
-
-      /* Cabeçalhos internos claros: mais cara de sistema, menos bloco pesado. */
-      body:not(.gerando-pdf) .card-header,
-      body:not(.gerando-pdf) .clientes-card-header,
-      body:not(.gerando-pdf) .veiculos-card-header,
-      body:not(.gerando-pdf) .ordens-card-header,
-      body:not(.gerando-pdf) .estoque-card-header,
-      body:not(.gerando-pdf) .forum-card-topo,
-      body:not(.gerando-pdf) .modal-busca-cliente-header,
-      body:not(.gerando-pdf) .modal-busca-produto-header,
-      body:not(.gerando-pdf) .modal-notificacoes-topo {
-        background: #fffaf0 !important;
-        color: var(--fs-marrom) !important;
-        border-color: var(--fs-borda) !important;
-        border-top: 3px solid var(--fs-amarelo) !important;
+      body:not(.gerando-pdf) #card-form-ordem,
+      body:not(.gerando-pdf) #card-form-agendamento,
+      body:not(.gerando-pdf) .card-form-agendamento {
+        background: transparent !important;
+        border: 0 !important;
         box-shadow: none !important;
+        margin: 0 0 10px !important;
       }
 
-      body:not(.gerando-pdf) .card-header h1,
-      body:not(.gerando-pdf) .card-header h2,
-      body:not(.gerando-pdf) .card-header h3,
-      body:not(.gerando-pdf) .card-header strong,
-      body:not(.gerando-pdf) .clientes-card-header h1,
-      body:not(.gerando-pdf) .clientes-card-header h2,
-      body:not(.gerando-pdf) .clientes-card-header h3,
-      body:not(.gerando-pdf) .clientes-card-header strong,
-      body:not(.gerando-pdf) .veiculos-card-header h1,
-      body:not(.gerando-pdf) .veiculos-card-header h2,
-      body:not(.gerando-pdf) .veiculos-card-header h3,
-      body:not(.gerando-pdf) .veiculos-card-header strong,
-      body:not(.gerando-pdf) .ordens-card-header h1,
-      body:not(.gerando-pdf) .ordens-card-header h2,
-      body:not(.gerando-pdf) .ordens-card-header h3,
-      body:not(.gerando-pdf) .ordens-card-header strong,
-      body:not(.gerando-pdf) .estoque-card-header h1,
-      body:not(.gerando-pdf) .estoque-card-header h2,
-      body:not(.gerando-pdf) .estoque-card-header h3,
-      body:not(.gerando-pdf) .estoque-card-header strong,
-      body:not(.gerando-pdf) .forum-card-topo h2,
-      body:not(.gerando-pdf) .forum-card-topo h3,
-      body:not(.gerando-pdf) .modal-busca-cliente-header h3,
-      body:not(.gerando-pdf) .modal-busca-produto-header h3 {
-        color: var(--fs-marrom) !important;
-        opacity: 1 !important;
+      body:not(.gerando-pdf) #card-form-ordem:not(.fs-modal-form-aberto) .ordens-card-body,
+      body:not(.gerando-pdf) #card-form-agendamento:not(.fs-modal-form-aberto) .agenda-card-body,
+      body:not(.gerando-pdf) .card-form-agendamento:not(.fs-modal-form-aberto) .agenda-card-body {
+        display: none !important;
       }
 
-      body:not(.gerando-pdf) .card-header p,
-      body:not(.gerando-pdf) .card-header span,
-      body:not(.gerando-pdf) .card-header small,
-      body:not(.gerando-pdf) .clientes-card-header p,
-      body:not(.gerando-pdf) .clientes-card-header span,
-      body:not(.gerando-pdf) .clientes-card-header small,
-      body:not(.gerando-pdf) .veiculos-card-header p,
-      body:not(.gerando-pdf) .veiculos-card-header span,
-      body:not(.gerando-pdf) .veiculos-card-header small,
-      body:not(.gerando-pdf) .ordens-card-header p,
-      body:not(.gerando-pdf) .ordens-card-header span,
-      body:not(.gerando-pdf) .ordens-card-header small,
-      body:not(.gerando-pdf) .estoque-card-header p,
-      body:not(.gerando-pdf) .estoque-card-header span,
-      body:not(.gerando-pdf) .estoque-card-header small,
-      body:not(.gerando-pdf) .forum-card-topo p,
-      body:not(.gerando-pdf) .modal-busca-cliente-header p,
-      body:not(.gerando-pdf) .modal-busca-produto-header p {
-        color: var(--fs-texto-suave) !important;
-        opacity: 1 !important;
+      body:not(.gerando-pdf) #card-form-ordem > .ordens-card-header,
+      body:not(.gerando-pdf) #card-form-agendamento > .agenda-card-header,
+      body:not(.gerando-pdf) .card-form-agendamento > .agenda-card-header {
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        background: transparent !important;
+        border: 0 !important;
+        padding: 0 !important;
       }
 
-      /* Elementos que devem continuar escuros para destaque financeiro/status. */
-      body:not(.gerando-pdf) .resumo-header,
-      body:not(.gerando-pdf) .mini-dashboard,
-      body:not(.gerando-pdf) .total-container,
-      body:not(.gerando-pdf) .valor-total,
-      body:not(.gerando-pdf) .total-itens-ordem-box,
-      body:not(.gerando-pdf) .resumo-total-itens-ordem,
-      body:not(.gerando-pdf) .os-total-box,
-      body:not(.gerando-pdf) .card-total-os,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque,
-      body:not(.gerando-pdf) .home-preco-destaque,
-      body:not(.gerando-pdf) .fs-visitante-preco {
-        background: var(--fs-marrom) !important;
-        color: #fffaf0 !important;
-        border-color: var(--fs-amarelo) !important;
+      body:not(.gerando-pdf) #card-form-ordem:not(.fs-modal-form-aberto) > .ordens-card-header > div,
+      body:not(.gerando-pdf) #card-form-agendamento:not(.fs-modal-form-aberto) > .agenda-card-header > div,
+      body:not(.gerando-pdf) .card-form-agendamento:not(.fs-modal-form-aberto) > .agenda-card-header > div,
+      body:not(.gerando-pdf) #card-form-ordem:not(.fs-modal-form-aberto) .fs-modal-fechar,
+      body:not(.gerando-pdf) #card-form-agendamento:not(.fs-modal-form-aberto) .fs-modal-fechar,
+      body:not(.gerando-pdf) .card-form-agendamento:not(.fs-modal-form-aberto) .fs-modal-fechar {
+        display: none !important;
       }
 
-      body:not(.gerando-pdf) .resumo-header strong,
-      body:not(.gerando-pdf) .total-container strong,
-      body:not(.gerando-pdf) .valor-total strong,
-      body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque strong,
-      body:not(.gerando-pdf) .home-preco-destaque,
-      body:not(.gerando-pdf) .home-preco-destaque *,
-      body:not(.gerando-pdf) .fs-visitante-preco,
-      body:not(.gerando-pdf) .fs-visitante-preco * {
-        color: var(--fs-amarelo) !important;
-        opacity: 1 !important;
+      body:not(.gerando-pdf) #card-form-ordem.fs-modal-form-aberto,
+      body:not(.gerando-pdf) #card-form-agendamento.fs-modal-form-aberto,
+      body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 57000 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: 14px !important;
+        background: rgba(20, 13, 11, .62) !important;
+        overflow-y: auto !important;
       }
 
-      body:not(.gerando-pdf) input,
-      body:not(.gerando-pdf) select,
-      body:not(.gerando-pdf) textarea {
-        border-radius: 5px !important;
-        border-color: var(--fs-borda-2) !important;
+      body:not(.gerando-pdf) #card-form-ordem.fs-modal-form-aberto > .ordens-card-header,
+      body:not(.gerando-pdf) #card-form-ordem.fs-modal-form-aberto > .ordens-card-body,
+      body:not(.gerando-pdf) #card-form-agendamento.fs-modal-form-aberto > .agenda-card-header,
+      body:not(.gerando-pdf) #card-form-agendamento.fs-modal-form-aberto > .agenda-card-body,
+      body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-header,
+      body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-body {
+        width: min(820px, 100%) !important;
         background: #ffffff !important;
-        color: var(--fs-texto) !important;
+        border-left: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-right: 1px solid var(--fs-borda, #ded3c5) !important;
       }
 
-      body:not(.gerando-pdf) button,
-      body:not(.gerando-pdf) .btn,
-      body:not(.gerando-pdf) a[class*="btn"] {
-        border-radius: 6px !important;
+      body:not(.gerando-pdf) #card-form-ordem.fs-modal-form-aberto > .ordens-card-header,
+      body:not(.gerando-pdf) #card-form-agendamento.fs-modal-form-aberto > .agenda-card-header,
+      body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-header {
+        margin-top: 18px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        padding: 12px 14px !important;
+        border-top: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border-radius: 7px 7px 0 0 !important;
+        box-shadow: 0 12px 28px rgba(0,0,0,.16) !important;
       }
 
-      body:not(.gerando-pdf) .tag,
-      body:not(.gerando-pdf) .forum-badge,
-      body:not(.gerando-pdf) .plano-badge {
-        border-radius: 5px !important;
+      body:not(.gerando-pdf) #card-form-ordem.fs-modal-form-aberto > .ordens-card-body,
+      body:not(.gerando-pdf) #card-form-agendamento.fs-modal-form-aberto > .agenda-card-body,
+      body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-body {
+        display: block !important;
+        padding: 14px !important;
+        border-bottom: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-radius: 0 0 7px 7px !important;
+        box-shadow: 0 18px 38px rgba(0,0,0,.18) !important;
       }
 
-      @media (max-width: 760px) {
-        body:not(.gerando-pdf) .estoque-resumo,
-        body:not(.gerando-pdf) .clientes-resumo,
-        body:not(.gerando-pdf) .veiculos-resumo,
-        body:not(.gerando-pdf) .cards-resumo,
-        body:not(.gerando-pdf) .agenda-resumo-grid,
-        body:not(.gerando-pdf) .fs-ordens-dashboard-grid,
-        body:not(.gerando-pdf) .status-home-grid,
-        body:not(.gerando-pdf) .home-metricas-grid,
-        body:not(.gerando-pdf) .home-resumo-grid,
-        body:not(.gerando-pdf) .home-dashboard-grid,
-        body:not(.gerando-pdf) .home-premium-recursos-grid,
-        body:not(.gerando-pdf) .home-basico-recursos-grid,
-        body:not(.gerando-pdf) .home-premium-mini-dashboard,
-        body:not(.gerando-pdf) .home-basico-mini-dashboard {
-          display: grid !important;
-          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          gap: 10px !important;
-          align-items: stretch !important;
-        }
-
-        body:not(.gerando-pdf) .estoque-resumo > *,
-        body:not(.gerando-pdf) .clientes-resumo > *,
-        body:not(.gerando-pdf) .veiculos-resumo > *,
-        body:not(.gerando-pdf) .cards-resumo > *,
-        body:not(.gerando-pdf) .agenda-resumo-grid > *,
-        body:not(.gerando-pdf) .fs-ordens-dashboard-grid > *,
-        body:not(.gerando-pdf) .status-home-grid > *,
-        body:not(.gerando-pdf) .home-metricas-grid > *,
-        body:not(.gerando-pdf) .home-resumo-grid > *,
-        body:not(.gerando-pdf) .home-dashboard-grid > *,
-        body:not(.gerando-pdf) .home-premium-recursos-grid > *,
-        body:not(.gerando-pdf) .home-basico-recursos-grid > * {
-          min-width: 0 !important;
-          width: auto !important;
-          margin: 0 !important;
-          box-sizing: border-box !important;
-        }
+      body:not(.gerando-pdf) .fs-modal-fechar {
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 4px !important;
+        border: 1px solid #d6c8ba !important;
+        background: #ffffff !important;
+        color: #7f1d1d !important;
+        font-size: 20px !important;
+        font-weight: 900 !important;
+        cursor: pointer !important;
       }
     `;
-
     document.head.appendChild(style);
   }
 
-  function cleanupOldClass() {
-    document.querySelectorAll('.fs-bg-escuro-auto').forEach((el) => el.classList.remove('fs-bg-escuro-auto'));
+  function normalizar(texto) {
+    return String(texto || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   }
 
-  function apply() {
-    cleanupOldClass();
-    addStyle();
+  function executarQuandoExistir(nomeFuncao, tentativas = 16) {
+    let i = 0;
+    const tentar = () => {
+      i += 1;
+      if (typeof window[nomeFuncao] === 'function') {
+        try { window[nomeFuncao](true); } catch (_) { try { window[nomeFuncao](); } catch (e) {} }
+        return;
+      }
+      if (i < tentativas) setTimeout(tentar, 180);
+    };
+    tentar();
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
-  else apply();
+  function precargarListasRecentes() {
+    if (path.endsWith('/ordens') || path.endsWith('/ordens.html')) executarQuandoExistir('carregarOrdens');
+    if (path.endsWith('/veiculos') || path.endsWith('/veiculos.html')) executarQuandoExistir('carregarVeiculos');
+    if (path.endsWith('/estoque') || path.endsWith('/estoque.html')) executarQuandoExistir('carregarProdutosEstoque');
+  }
 
-  window.addEventListener('load', apply);
-  setTimeout(apply, 200);
-  setTimeout(apply, 1000);
+  function prepararModalPorCard(cfg) {
+    const card = document.getElementById(cfg.cardId) || document.querySelector(cfg.cardSelector || '');
+    if (!card || card.dataset.fsModalPadrao === '1') return;
+
+    const header = card.querySelector(cfg.headerSelector);
+    const body = card.querySelector(cfg.bodySelector);
+    if (!header || !body) return;
+
+    card.dataset.fsModalPadrao = '1';
+    card.classList.add('fs-form-card-collapsed', 'form-fechado');
+    card.setAttribute('aria-hidden', 'true');
+
+    let botao = document.getElementById(cfg.toggleId);
+    if (!botao) {
+      botao = document.createElement('button');
+      botao.type = 'button';
+      botao.id = cfg.toggleId;
+      header.appendChild(botao);
+    }
+
+    botao.textContent = cfg.botaoTexto;
+    botao.setAttribute('aria-expanded', 'false');
+
+    let fechar = header.querySelector('.fs-modal-fechar');
+    if (!fechar) {
+      fechar = document.createElement('button');
+      fechar.type = 'button';
+      fechar.className = 'fs-modal-fechar';
+      fechar.innerHTML = '×';
+      fechar.setAttribute('aria-label', 'Fechar');
+      header.appendChild(fechar);
+    }
+
+    function abrir() {
+      card.classList.add('fs-modal-form-aberto');
+      card.classList.remove('fs-form-card-collapsed', 'form-fechado');
+      card.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('fs-modal-form-lock');
+      setTimeout(() => card.querySelector('input:not([type="hidden"]), select, textarea')?.focus(), 80);
+    }
+
+    function fecharModal() {
+      card.classList.remove('fs-modal-form-aberto');
+      card.classList.add('fs-form-card-collapsed', 'form-fechado');
+      card.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('fs-modal-form-lock');
+      botao.setAttribute('aria-expanded', 'false');
+    }
+
+    botao.onclick = abrir;
+    fechar.onclick = fecharModal;
+    card.addEventListener('click', (event) => { if (event.target === card) fecharModal(); });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') fecharModal(); });
+
+    const form = card.querySelector('form');
+    if (form) {
+      form.addEventListener('submit', () => {
+        let tentativas = 0;
+        const checar = () => {
+          tentativas += 1;
+          const msgErro = card.querySelector('.erro, .mensagem.erro, [class*="erro"]');
+          const btnSalvar = card.querySelector('button[type="submit"], .btn-salvar, .btn-primary');
+          const processando = !!btnSalvar?.disabled || normalizar(btnSalvar?.textContent).includes('salvando');
+          const idPreenchido = !!card.querySelector('input[type="hidden"]')?.value;
+          if (!processando && !msgErro && !idPreenchido) fecharModal();
+          else if (tentativas < 14) setTimeout(checar, 250);
+        };
+        setTimeout(checar, 400);
+      });
+    }
+  }
+
+  function instalarModaisRestantes() {
+    if (path.endsWith('/ordens') || path.endsWith('/ordens.html')) {
+      prepararModalPorCard({
+        cardId: 'card-form-ordem',
+        headerSelector: '.ordens-card-header',
+        bodySelector: '.ordens-card-body',
+        toggleId: 'btn-toggle-form-ordem',
+        botaoTexto: '+ Nova OS'
+      });
+    }
+
+    if (path.endsWith('/agenda') || path.endsWith('/agenda.html')) {
+      prepararModalPorCard({
+        cardId: 'card-form-agendamento',
+        cardSelector: '.agenda-card',
+        headerSelector: '.agenda-card-header',
+        bodySelector: '.agenda-card-body',
+        toggleId: 'btn-toggle-form-agendamento',
+        botaoTexto: '+ Novo agendamento'
+      });
+    }
+  }
+
+  function iniciar() {
+    injetarEstilo();
+    precargarListasRecentes();
+    instalarModaisRestantes();
+    setTimeout(() => { precargarListasRecentes(); instalarModaisRestantes(); }, 600);
+    setTimeout(() => { instalarModaisRestantes(); }, 1600);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
+  else iniciar();
 })();
