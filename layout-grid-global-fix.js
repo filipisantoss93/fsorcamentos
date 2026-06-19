@@ -1,7 +1,7 @@
 /* =========================================================
    FS ORÇAMENTOS - layout-grid-global-fix.js
-   Padroniza grids e formulários principais em modal.
-   Visual neutro e compacto, sem bordas amarelas repetitivas.
+   Padroniza botões "Novo ..." e modais das páginas de gestão.
+   Não cria arquivos novos; aplica camada profissional única.
    ========================================================= */
 (function () {
   'use strict';
@@ -14,6 +14,8 @@
     const style = document.createElement('style');
     style.id = 'fs-layout-grid-global-fix-style';
     style.textContent = `
+      body.fs-modal-form-lock { overflow: hidden !important; }
+
       .cards-resumo,
       .clientes-resumo,
       .veiculos-resumo,
@@ -36,36 +38,20 @@
         align-items: stretch !important;
       }
 
-      .cards-resumo > *,
-      .clientes-resumo > *,
-      .veiculos-resumo > *,
-      .agenda-resumo-grid > *,
-      .fs-ordens-dashboard-grid > *,
-      .premium-metricas-grid > *,
-      .painel-resumo-grid > *,
-      .painel-metricas-grid > *,
-      .dashboard-grid > *,
-      .metricas-grid > *,
-      .resumo-grid > *,
-      .indicadores-grid > *,
-      .financeiro-grid > *,
-      .ordens-resumo-grid > *,
-      .estoque-resumo-grid > *,
-      .recorrentes-resumo-grid > * {
-        min-width: 0 !important;
-        box-sizing: border-box !important;
-      }
-
-      body.fs-modal-form-lock { overflow: hidden !important; }
-
       .clientes-grid,
       .veiculos-grid,
-      .estoque-grid {
+      .estoque-grid,
+      .agenda-layout,
+      .ordens-grid {
         grid-template-columns: 1fr !important;
       }
 
+      #card-form-cliente,
       #card-form-veiculo,
-      #card-form-produto {
+      #card-form-produto,
+      #card-form-ordem,
+      #card-form-agendamento,
+      #forum-form-card {
         background: transparent !important;
         border: 0 !important;
         box-shadow: none !important;
@@ -73,8 +59,12 @@
         margin: 0 0 8px !important;
       }
 
+      #card-form-cliente > .clientes-card-header,
       #card-form-veiculo > .veiculos-card-header,
-      #card-form-produto > .estoque-card-header {
+      #card-form-produto > .estoque-card-header,
+      #card-form-ordem > .ordens-card-header,
+      #card-form-agendamento > .agenda-card-header,
+      #forum-form-card > .forum-card-topo {
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
@@ -85,15 +75,36 @@
         box-shadow: none !important;
       }
 
-      #card-form-veiculo > .veiculos-card-header > div,
-      #card-form-produto > .estoque-card-header > div,
-      #card-form-veiculo .fs-modal-fechar,
-      #card-form-produto .fs-modal-fechar {
+      #card-form-cliente:not(.fs-modal-form-aberto) > .clientes-card-header > div,
+      #card-form-veiculo:not(.fs-modal-form-aberto) > .veiculos-card-header > div,
+      #card-form-produto:not(.fs-modal-form-aberto) > .estoque-card-header > div,
+      #card-form-ordem:not(.fs-modal-form-aberto) > .ordens-card-header > div,
+      #card-form-agendamento:not(.fs-modal-form-aberto) > .agenda-card-header > div,
+      #forum-form-card:not(.fs-modal-form-aberto) > .forum-card-topo > div,
+      #card-form-cliente:not(.fs-modal-form-aberto) .fs-modal-fechar,
+      #card-form-veiculo:not(.fs-modal-form-aberto) .fs-modal-fechar,
+      #card-form-produto:not(.fs-modal-form-aberto) .fs-modal-fechar,
+      #card-form-ordem:not(.fs-modal-form-aberto) .fs-modal-fechar,
+      #card-form-agendamento:not(.fs-modal-form-aberto) .fs-modal-fechar,
+      #forum-form-card:not(.fs-modal-form-aberto) .fs-modal-fechar {
         display: none !important;
       }
 
+      #card-form-cliente:not(.fs-modal-form-aberto) .clientes-card-body,
+      #card-form-veiculo:not(.fs-modal-form-aberto) .veiculos-card-body,
+      #card-form-produto:not(.fs-modal-form-aberto) .estoque-card-body,
+      #card-form-ordem:not(.fs-modal-form-aberto) .ordens-card-body,
+      #card-form-agendamento:not(.fs-modal-form-aberto) .agenda-card-body,
+      #forum-form-card:not(.fs-modal-form-aberto) .forum-form {
+        display: none !important;
+      }
+
+      #btn-toggle-form-cliente,
       #btn-toggle-form-veiculo,
-      #btn-toggle-form-produto {
+      #btn-toggle-form-produto,
+      #btn-toggle-form-ordem,
+      #btn-toggle-form-agendamento,
+      .fs-btn-novo-padrao {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -104,30 +115,34 @@
         background: var(--fs-marrom, #2f211d) !important;
         color: var(--fs-amarelo, #ffc400) !important;
         font-size: 12px !important;
-        font-weight: 900 !important;
-        text-transform: uppercase !important;
+        font-weight: 950 !important;
+        text-transform: none !important;
         box-shadow: none !important;
-        padding: 7px 10px !important;
+        padding: 7px 11px !important;
         cursor: pointer !important;
+        text-decoration: none !important;
+        line-height: 1 !important;
       }
 
+      #btn-toggle-form-cliente:hover,
       #btn-toggle-form-veiculo:hover,
-      #btn-toggle-form-produto:hover {
+      #btn-toggle-form-produto:hover,
+      #btn-toggle-form-ordem:hover,
+      #btn-toggle-form-agendamento:hover,
+      .fs-btn-novo-padrao:hover {
         background: #ffffff !important;
         color: var(--fs-marrom, #2f211d) !important;
       }
 
-      #card-form-veiculo:not(.fs-modal-form-aberto) .veiculos-card-body,
-      #card-form-produto:not(.fs-modal-form-aberto) .estoque-card-body {
-        display: none !important;
-      }
-
+      #card-form-cliente.fs-modal-form-aberto,
       #card-form-veiculo.fs-modal-form-aberto,
       #card-form-produto.fs-modal-form-aberto,
+      #card-form-ordem.fs-modal-form-aberto,
+      #card-form-agendamento.fs-modal-form-aberto,
       #forum-form-card.fs-modal-form-aberto {
         position: fixed !important;
         inset: 0 !important;
-        z-index: 56000 !important;
+        z-index: 61000 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -137,13 +152,19 @@
         overflow-y: auto !important;
       }
 
+      #card-form-cliente.fs-modal-form-aberto > .clientes-card-header,
+      #card-form-cliente.fs-modal-form-aberto > .clientes-card-body,
       #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-header,
       #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-body,
       #card-form-produto.fs-modal-form-aberto > .estoque-card-header,
       #card-form-produto.fs-modal-form-aberto > .estoque-card-body,
+      #card-form-ordem.fs-modal-form-aberto > .ordens-card-header,
+      #card-form-ordem.fs-modal-form-aberto > .ordens-card-body,
+      #card-form-agendamento.fs-modal-form-aberto > .agenda-card-header,
+      #card-form-agendamento.fs-modal-form-aberto > .agenda-card-body,
       #forum-form-card.fs-modal-form-aberto > .forum-card-topo,
       #forum-form-card.fs-modal-form-aberto > .forum-form {
-        width: min(780px, 100%) !important;
+        width: min(820px, 100%) !important;
         margin-left: auto !important;
         margin-right: auto !important;
         background: #ffffff !important;
@@ -152,8 +173,11 @@
         border-right: 1px solid var(--fs-borda, #ded3c5) !important;
       }
 
+      #card-form-cliente.fs-modal-form-aberto > .clientes-card-header,
       #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-header,
       #card-form-produto.fs-modal-form-aberto > .estoque-card-header,
+      #card-form-ordem.fs-modal-form-aberto > .ordens-card-header,
+      #card-form-agendamento.fs-modal-form-aberto > .agenda-card-header,
       #forum-form-card.fs-modal-form-aberto > .forum-card-topo {
         margin-top: 18px !important;
         display: flex !important;
@@ -168,26 +192,42 @@
         box-shadow: 0 12px 28px rgba(0,0,0,.16) !important;
       }
 
+      #card-form-cliente.fs-modal-form-aberto > .clientes-card-header > div,
       #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-header > div,
       #card-form-produto.fs-modal-form-aberto > .estoque-card-header > div,
+      #card-form-ordem.fs-modal-form-aberto > .ordens-card-header > div,
+      #card-form-agendamento.fs-modal-form-aberto > .agenda-card-header > div,
+      #forum-form-card.fs-modal-form-aberto > .forum-card-topo > div,
+      #card-form-cliente.fs-modal-form-aberto .fs-modal-fechar,
       #card-form-veiculo.fs-modal-form-aberto .fs-modal-fechar,
-      #card-form-produto.fs-modal-form-aberto .fs-modal-fechar {
+      #card-form-produto.fs-modal-form-aberto .fs-modal-fechar,
+      #card-form-ordem.fs-modal-form-aberto .fs-modal-fechar,
+      #card-form-agendamento.fs-modal-form-aberto .fs-modal-fechar,
+      #forum-form-card.fs-modal-form-aberto .fs-modal-fechar {
         display: block !important;
       }
 
+      #card-form-cliente.fs-modal-form-aberto #btn-toggle-form-cliente,
       #card-form-veiculo.fs-modal-form-aberto #btn-toggle-form-veiculo,
-      #card-form-produto.fs-modal-form-aberto #btn-toggle-form-produto {
+      #card-form-produto.fs-modal-form-aberto #btn-toggle-form-produto,
+      #card-form-ordem.fs-modal-form-aberto #btn-toggle-form-ordem,
+      #card-form-agendamento.fs-modal-form-aberto #btn-toggle-form-agendamento {
         display: none !important;
       }
 
+      #card-form-cliente.fs-modal-form-aberto > .clientes-card-body,
       #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-body,
       #card-form-produto.fs-modal-form-aberto > .estoque-card-body,
+      #card-form-ordem.fs-modal-form-aberto > .ordens-card-body,
+      #card-form-agendamento.fs-modal-form-aberto > .agenda-card-body,
       #forum-form-card.fs-modal-form-aberto > .forum-form {
         display: grid !important;
         padding: 13px !important;
         border-bottom: 1px solid var(--fs-borda, #ded3c5) !important;
         border-radius: 0 0 7px 7px !important;
         box-shadow: 0 18px 38px rgba(0,0,0,.18) !important;
+        max-height: calc(100vh - 128px) !important;
+        overflow-y: auto !important;
       }
 
       .fs-modal-fechar {
@@ -203,12 +243,21 @@
         cursor: pointer !important;
       }
 
+      #card-form-cliente.fs-modal-form-aberto input,
+      #card-form-cliente.fs-modal-form-aberto select,
+      #card-form-cliente.fs-modal-form-aberto textarea,
       #card-form-veiculo.fs-modal-form-aberto input,
       #card-form-veiculo.fs-modal-form-aberto select,
       #card-form-veiculo.fs-modal-form-aberto textarea,
       #card-form-produto.fs-modal-form-aberto input,
       #card-form-produto.fs-modal-form-aberto select,
       #card-form-produto.fs-modal-form-aberto textarea,
+      #card-form-ordem.fs-modal-form-aberto input,
+      #card-form-ordem.fs-modal-form-aberto select,
+      #card-form-ordem.fs-modal-form-aberto textarea,
+      #card-form-agendamento.fs-modal-form-aberto input,
+      #card-form-agendamento.fs-modal-form-aberto select,
+      #card-form-agendamento.fs-modal-form-aberto textarea,
       #forum-form-card.fs-modal-form-aberto input,
       #forum-form-card.fs-modal-form-aberto select,
       #forum-form-card.fs-modal-form-aberto textarea {
@@ -222,14 +271,20 @@
       }
 
       @media (max-width: 680px) {
+        #card-form-cliente.fs-modal-form-aberto,
         #card-form-veiculo.fs-modal-form-aberto,
         #card-form-produto.fs-modal-form-aberto,
+        #card-form-ordem.fs-modal-form-aberto,
+        #card-form-agendamento.fs-modal-form-aberto,
         #forum-form-card.fs-modal-form-aberto {
           padding: 10px !important;
         }
 
+        #card-form-cliente.fs-modal-form-aberto > .clientes-card-header,
         #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-header,
         #card-form-produto.fs-modal-form-aberto > .estoque-card-header,
+        #card-form-ordem.fs-modal-form-aberto > .ordens-card-header,
+        #card-form-agendamento.fs-modal-form-aberto > .agenda-card-header,
         #forum-form-card.fs-modal-form-aberto > .forum-card-topo {
           margin-top: 8px !important;
         }
@@ -239,39 +294,37 @@
     document.head.appendChild(style);
   }
 
+  function eh(pagina) {
+    return path.endsWith('/' + pagina) || path.endsWith('/' + pagina + '.html');
+  }
+
+  function resolverCardAgenda() {
+    let card = document.getElementById('card-form-agendamento');
+    if (card) return card;
+    card = document.querySelector('.agenda-layout > aside.agenda-card') || document.querySelector('aside.agenda-card');
+    if (!card) return null;
+    card.id = 'card-form-agendamento';
+    card.classList.add('card-form-agendamento');
+    return card;
+  }
+
   function modalConfigAtual() {
-    if (path.endsWith('/veiculos') || path.endsWith('/veiculos.html')) {
-      return {
-        cardId: 'card-form-veiculo',
-        headerSelector: '.veiculos-card-header',
-        bodySelector: '.veiculos-card-body',
-        toggleId: 'btn-toggle-form-veiculo',
-        titleId: 'titulo-form-veiculo',
-        saveId: 'btn-salvar-veiculo',
-        editFn: 'editarVeiculo',
-        clearFn: 'limparFormularioVeiculo',
-        newText: '+ Novo veículo',
-        titleNew: 'Novo veículo',
-        saveNew: 'Salvar veículo'
-      };
+    if (eh('clientes')) {
+      return { cardId: 'card-form-cliente', headerSelector: '.clientes-card-header', bodySelector: '.clientes-card-body', toggleId: 'btn-toggle-form-cliente', titleId: 'titulo-form-cliente', saveId: 'btn-salvar-cliente', editFn: 'editarCliente', clearFn: 'limparFormularioCliente', newText: '+ Novo cliente', titleNew: 'Novo cliente', saveNew: 'Salvar cliente' };
     }
-
-    if (path.endsWith('/estoque') || path.endsWith('/estoque.html')) {
-      return {
-        cardId: 'card-form-produto',
-        headerSelector: '.estoque-card-header',
-        bodySelector: '.estoque-card-body',
-        toggleId: 'btn-toggle-form-produto',
-        titleId: 'titulo-form-produto',
-        saveId: 'btn-salvar-produto',
-        editFn: 'editarProdutoEstoque',
-        clearFn: 'limparFormularioProdutoEstoque',
-        newText: '+ Novo produto',
-        titleNew: 'Novo produto',
-        saveNew: 'Salvar produto'
-      };
+    if (eh('veiculos')) {
+      return { cardId: 'card-form-veiculo', headerSelector: '.veiculos-card-header', bodySelector: '.veiculos-card-body', toggleId: 'btn-toggle-form-veiculo', titleId: 'titulo-form-veiculo', saveId: 'btn-salvar-veiculo', editFn: 'editarVeiculo', clearFn: 'limparFormularioVeiculo', newText: '+ Novo veículo', titleNew: 'Novo veículo', saveNew: 'Salvar veículo' };
     }
-
+    if (eh('estoque')) {
+      return { cardId: 'card-form-produto', headerSelector: '.estoque-card-header', bodySelector: '.estoque-card-body', toggleId: 'btn-toggle-form-produto', titleId: 'titulo-form-produto', saveId: 'btn-salvar-produto', editFn: 'editarProdutoEstoque', clearFn: 'limparFormularioProdutoEstoque', newText: '+ Novo produto', titleNew: 'Novo produto', saveNew: 'Salvar produto' };
+    }
+    if (eh('ordens')) {
+      return { cardId: 'card-form-ordem', headerSelector: '.ordens-card-header', bodySelector: '.ordens-card-body', toggleId: 'btn-toggle-form-ordem', titleId: 'titulo-form-ordem', saveId: 'btn-salvar-ordem', editFn: 'editarOrdem', clearFn: 'limparFormularioOrdem', newText: '+ Nova OS', titleNew: 'Nova ordem de serviço', saveNew: 'Salvar OS' };
+    }
+    if (eh('agenda')) {
+      resolverCardAgenda();
+      return { cardId: 'card-form-agendamento', headerSelector: '.agenda-card-header', bodySelector: '.agenda-card-body', toggleId: 'btn-toggle-form-agendamento', titleId: 'titulo-form-agenda', saveId: 'btn-salvar-agenda', editFn: 'editarAgendamento', clearFn: 'limparFormularioAgenda', newText: '+ Novo agendamento', titleNew: 'Novo agendamento', saveNew: 'Salvar agendamento' };
+    }
     return null;
   }
 
@@ -295,6 +348,7 @@
     const btn = document.getElementById(cfg.toggleId);
     if (btn) {
       btn.textContent = cfg.newText;
+      btn.classList.add('fs-btn-novo-padrao');
       btn.setAttribute('aria-expanded', 'false');
     }
   }
@@ -324,6 +378,8 @@
       btn.id = cfg.toggleId;
     }
 
+    btn.classList.add('fs-btn-novo-padrao');
+
     if (!header.querySelector('.fs-modal-fechar')) {
       const btnFechar = document.createElement('button');
       btnFechar.type = 'button';
@@ -334,7 +390,7 @@
       header.appendChild(btnFechar);
     }
 
-    if (!btn.parentNode) header.appendChild(btn);
+    if (!btn.parentNode || btn.parentNode !== header) header.appendChild(btn);
     btn.textContent = cfg.newText;
     btn.setAttribute('aria-expanded', 'false');
     btn.onclick = () => abrirNovoFormulario(cfg);
@@ -363,7 +419,7 @@
   }
 
   function configurarForumModal() {
-    if (!path.endsWith('/forum') && !path.endsWith('/forum.html')) return;
+    if (!eh('forum')) return;
     const card = document.getElementById('forum-form-card');
     if (!card) return;
 
@@ -406,6 +462,7 @@
     setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 300);
     setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 1000);
     setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 2000);
+    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 3500);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
