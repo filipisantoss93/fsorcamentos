@@ -1,44 +1,175 @@
 /* =========================================================
    FS ORÇAMENTOS — perfil social no fórum
-   Liga autor/avatar ao perfil.html?id=usuario_id sem alterar schema.
+   Liga autor/avatar ao perfil.html?id=usuario_id e exibe selo do plano.
    ========================================================= */
 (function () {
   'use strict';
 
-  function obterIdAutorDoCard(card) {
-    if (!card) return '';
-    const direto = card.dataset.usuarioId || card.dataset.userId || card.dataset.autorId || card.getAttribute('data-usuario-id') || card.getAttribute('data-user-id') || card.getAttribute('data-autor-id');
-    if (direto) return direto;
-
-    const link = card.querySelector('a[href*="perfil.html?id="]');
-    if (link) {
-      try { return new URL(link.href).searchParams.get('id') || ''; } catch (_) {}
-    }
-
-    const onclick = card.getAttribute('onclick') || '';
-    const match = onclick.match(/usuario_id['"]?\s*[:=]\s*['"]([^'"]+)/i) || onclick.match(/user_id['"]?\s*[:=]\s*['"]([^'"]+)/i);
-    return match?.[1] || '';
+  function escapar(valor) {
+    return String(valor || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
-  function normalizarAutorCard(card) {
-    if (!card || card.dataset.fsPerfilSocial === '1') return;
+  function normalizar(valor) {
+    return String(valor || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
+  }
 
-    const autorLinha = card.querySelector('.forum-autor-linha, .forum-autor, .autor-topico, .topico-autor');
-    if (!autorLinha) return;
+  function planoFinal(valor) {
+    const plano = normalizar(valor || 'gratis');
+    if (plano === 'premium' || plano === 'gestao' || plano === 'gestão') return 'premium';
+    if (plano === 'basico' || plano === 'básico') return 'basico';
+    return 'gratis';
+  }
 
-    let userId = obterIdAutorDoCard(card) || autorLinha.dataset.usuarioId || autorLinha.dataset.userId || autorLinha.getAttribute('data-usuario-id') || autorLinha.getAttribute('data-user-id') || '';
+  function planoLabel(valor) {
+    const plano = planoFinal(valor);
+    if (plano === 'premium') return 'Premium / Gestão';
+    if (plano === 'basico') return 'Básico';
+    return 'Grátis';
+  }
 
-    if (!userId && window.forumTopicosCache instanceof Array) {
-      const titulo = card.querySelector('h3, .forum-topico-titulo')?.textContent?.trim();
-      const topico = window.forumTopicosCache.find(t => titulo && String(t.titulo || '').trim() === titulo);
-      userId = topico?.usuario_id || topico?.user_id || '';
-      if (topico?.id) card.dataset.topicoId = topico.id;
-    }
+  function inserirCss() {
+    if (document.getElementById('fs-forum-social-planos-css')) return;
+    const style = document.createElement('style');
+    style.id = 'fs-forum-social-planos-css';
+    style.textContent = `
+      .forum-autor-linha {
+        cursor: pointer !important;
+        border-radius: 6px !important;
+        padding: 3px !important;
+        transition: background .15s ease, box-shadow .15s ease !important;
+      }
+      .forum-autor-linha:hover {
+        background: rgba(255,196,0,.12) !important;
+        box-shadow: inset 0 0 0 1px rgba(47,33,29,.10) !important;
+      }
+      .forum-autor-texto strong {
+        display: inline-flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+      }
+      .forum-plano-selo {
+        display: inline-flex !important;
+        width: fit-content !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 18px !important;
+        padding: 3px 6px !important;
+        border-radius: 4px !important;
+        border: 1px solid #e4d8cc !important;
+        background: #f8f4ee !important;
+        color: #3e2723 !important;
+        font-size: 9.5px !important;
+        line-height: 1 !important;
+        font-weight: 950 !important;
+        text-transform: uppercase !important;
+        letter-spacing: .02em !important;
+        vertical-align: middle !important;
+      }
+      .forum-plano-selo.basico {
+        background: #e0f2fe !important;
+        color: #075985 !important;
+        border-color: #bae6fd !important;
+      }
+      .forum-plano-selo.premium {
+        background: #ffc400 !important;
+        color: #2f211d !important;
+        border-color: #2f211d !important;
+        box-shadow: 0 0 0 1px rgba(47,33,29,.08) !important;
+      }
+      .forum-topico:has(.forum-plano-selo.premium) {
+        border-color: #d6a900 !important;
+        box-shadow: 0 5px 16px rgba(47,33,29,.09) !important;
+      }
+      .forum-social-perfil-link {
+        text-decoration: none !important;
+        color: inherit !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
 
-    if (!userId) return;
+  function obterTopicosCache() {
+    try {
+      if (typeof forumTopicosCache !== 'undefined' && Array.isArray(forumTopicosCache)) return forumTopicosCache;
+    } catch (_) {}
+    return [];
+  }
 
-    card.dataset.fsPerfilSocial = '1';
-    card.dataset.usuarioId = userId;
+  function obterTopicoAtual() {
+    try {
+      if (typeof forumTopicoAtual !== 'undefined' && forumTopicoAtual) return forumTopicoAtual;
+    } catch (_) {}
+    return null;
+  }
+
+  function obterPerfilAtual() {
+    try {
+      if (typeof forumPerfilAtual !== 'undefined' && forumPerfilAtual) return forumPerfilAtual;
+    } catch (_) {}
+    return null;
+  }
+
+  function acharTopicoDoCard(card) {
+    if (!card) return null;
+    const id = card.dataset.topicoId || card.getAttribute('data-topico-id') || '';
+    const topicos = obterTopicosCache();
+    if (id) return topicos.find(t => String(t.id) === String(id)) || null;
+
+    const tituloTexto = card.querySelector('h3, .forum-topico-titulo')?.textContent || '';
+    const tituloLimpo = tituloTexto.split(' - ')[0].trim();
+    return topicos.find(t => tituloLimpo && String(t.titulo || '').trim() === tituloLimpo) || null;
+  }
+
+  function obterRegistroPorAutorLinha(autorLinha) {
+    const card = autorLinha?.closest?.('.forum-topico');
+    if (card) return acharTopicoDoCard(card);
+    const atual = obterTopicoAtual();
+    if (autorLinha?.closest?.('#forum-detalhe') && atual) return atual;
+    return null;
+  }
+
+  function obterIdAutor(registro, autorLinha) {
+    return registro?.usuario_id || registro?.user_id || autorLinha?.dataset?.usuarioId || autorLinha?.getAttribute?.('data-usuario-id') || '';
+  }
+
+  function obterPlanoAutor(registro) {
+    if (registro?.autor_plano) return registro.autor_plano;
+    const userId = registro?.usuario_id || registro?.user_id || '';
+    const perfilAtual = obterPerfilAtual();
+    try {
+      if (typeof forumSessaoAtual !== 'undefined' && forumSessaoAtual?.user?.id === userId && perfilAtual?.plano) return perfilAtual.plano;
+    } catch (_) {}
+    return registro?.plano || 'gratis';
+  }
+
+  function aplicarSelo(autorLinha, registro) {
+    if (!autorLinha || !registro) return;
+    const texto = autorLinha.querySelector('.forum-autor-texto');
+    const strong = texto?.querySelector('strong');
+    if (!strong || strong.querySelector('.forum-plano-selo')) return;
+
+    const plano = planoFinal(obterPlanoAutor(registro));
+    const selo = document.createElement('span');
+    selo.className = `forum-plano-selo ${plano}`;
+    selo.textContent = planoLabel(plano);
+    strong.appendChild(selo);
+  }
+
+  function aplicarLinkPerfil(autorLinha, registro) {
+    const userId = obterIdAutor(registro, autorLinha);
+    if (!autorLinha || !userId || autorLinha.dataset.fsPerfilSocial === '1') return;
+
+    autorLinha.dataset.fsPerfilSocial = '1';
     autorLinha.dataset.usuarioId = userId;
     autorLinha.setAttribute('role', 'link');
     autorLinha.setAttribute('tabindex', '0');
@@ -56,12 +187,60 @@
     });
   }
 
-  function aplicar() {
-    document.querySelectorAll('.forum-topico').forEach(normalizarAutorCard);
+  async function enriquecerPlanosDoCache() {
+    try {
+      if (!window._supabase) return;
+      const topicos = obterTopicosCache();
+      const ids = [...new Set(topicos.map(t => t?.usuario_id).filter(Boolean))];
+      const faltando = ids.filter(id => {
+        const t = topicos.find(item => item.usuario_id === id);
+        return !t?.autor_plano;
+      });
+      if (!faltando.length) return;
+
+      const { data, error } = await _supabase
+        .from('perfis')
+        .select('id, plano')
+        .in('id', faltando);
+
+      if (error || !Array.isArray(data)) return;
+      const mapa = new Map(data.map(p => [p.id, p.plano || 'gratis']));
+      topicos.forEach(t => {
+        if (t?.usuario_id && mapa.has(t.usuario_id)) t.autor_plano = mapa.get(t.usuario_id);
+      });
+    } catch (error) {
+      console.warn('Não foi possível enriquecer planos no social:', error);
+    }
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', aplicar);
-  else aplicar();
+  async function aplicar() {
+    inserirCss();
+    await enriquecerPlanosDoCache();
 
-  setInterval(aplicar, 1800);
+    document.querySelectorAll('.forum-topico').forEach(card => {
+      const registro = acharTopicoDoCard(card);
+      if (registro?.id) card.dataset.topicoId = registro.id;
+      const autorLinha = card.querySelector('.forum-autor-linha, .forum-autor, .autor-topico, .topico-autor');
+      if (!autorLinha || !registro) return;
+      aplicarSelo(autorLinha, registro);
+      aplicarLinkPerfil(autorLinha, registro);
+    });
+
+    document.querySelectorAll('#forum-detalhe .forum-autor-linha').forEach(autorLinha => {
+      const registro = obterRegistroPorAutorLinha(autorLinha);
+      if (!registro) return;
+      aplicarSelo(autorLinha, registro);
+      aplicarLinkPerfil(autorLinha, registro);
+    });
+  }
+
+  const aplicarComAtraso = () => setTimeout(aplicar, 80);
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', aplicarComAtraso);
+  else aplicarComAtraso();
+
+  const observer = new MutationObserver(() => aplicarComAtraso());
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  setInterval(aplicar, 2500);
 })();
