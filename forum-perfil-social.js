@@ -1,6 +1,7 @@
 /* =========================================================
    FS ORÇAMENTOS — perfil social no fórum
-   Liga autor/avatar ao perfil.html?id=usuario_id e exibe selo do plano.
+   Liga autor/avatar ao perfil.html?id=usuario_id, exibe selo do plano
+   e abre tópico automaticamente quando vier de /forum.html#topico=ID.
    ========================================================= */
 (function () {
   'use strict';
@@ -213,6 +214,25 @@
     }
   }
 
+  function obterTopicoHash() {
+    const hash = String(window.location.hash || '');
+    const match = hash.match(/^#topico=([^&]+)/i);
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
+  function tentarAbrirTopicoDoHash() {
+    const topicoId = obterTopicoHash();
+    if (!topicoId || tentarAbrirTopicoDoHash.aberto === topicoId) return;
+    if (typeof window.forumAbrirTopico !== 'function') return;
+
+    const existeCard = !!document.querySelector(`.forum-topico[data-topico-id="${CSS.escape(topicoId)}"]`);
+    const existeCache = obterTopicosCache().some(t => String(t.id) === String(topicoId));
+    if (!existeCard && !existeCache) return;
+
+    tentarAbrirTopicoDoHash.aberto = topicoId;
+    setTimeout(() => window.forumAbrirTopico(topicoId), 120);
+  }
+
   async function aplicar() {
     inserirCss();
     await enriquecerPlanosDoCache();
@@ -232,6 +252,8 @@
       aplicarSelo(autorLinha, registro);
       aplicarLinkPerfil(autorLinha, registro);
     });
+
+    tentarAbrirTopicoDoHash();
   }
 
   const aplicarComAtraso = () => setTimeout(aplicar, 80);
@@ -241,6 +263,11 @@
 
   const observer = new MutationObserver(() => aplicarComAtraso());
   observer.observe(document.documentElement, { childList: true, subtree: true });
+
+  window.addEventListener('hashchange', () => {
+    tentarAbrirTopicoDoHash.aberto = '';
+    aplicarComAtraso();
+  });
 
   setInterval(aplicar, 2500);
 })();
