@@ -207,7 +207,6 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
 ];
 
 const FS_CONFIG_SCRIPTS_FINAIS_INDEX = [
-  ['index-visual-final-fix.js', 'fs-index-visual-final-fix-js'],
   ['index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js'],
   ['index-gratis-dom-cleaner.js', 'fs-index-gratis-dom-cleaner-js']
 ];
