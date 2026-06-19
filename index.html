@@ -9,10 +9,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>FS Orçamentos - Gerador de Orçamento Profissional</title>
+  <title>FS Orçamentos - Sistema profissional para orçamentos e gestão</title>
 
-  <meta name="description" content="Crie orçamentos profissionais em PDF de forma rápida e gratuita. Ideal para MEI, oficinas mecânicas e prestadores de serviços.">
-  <meta name="keywords" content="gerador de orçamento, orçamento pdf grátis, fsorçamentos, orçamento mecânica, orçamento prestador de serviço">
+  <meta name="description" content="Crie orçamentos profissionais em PDF, acompanhe aprovações, clientes, veículos, ordens de serviço, estoque e rotina da empresa em uma plataforma simples e organizada.">
+  <meta name="keywords" content="sistema de orçamento, gerador de orçamento profissional, orçamento pdf, gestão de oficina, ordem de serviço, micro saas orçamento">
   <meta name="author" content="Filipi Aparecido dos Santos">
 
   <meta name="google-site-verification" content="AUNalSg35UWE0CFzVlqgXE57TMekeSRBmlmvdMhNT9M">
@@ -20,14 +20,14 @@
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fsorcamentos.com.br/">
-  <meta property="og:title" content="FS Orçamentos - Profissionalize suas propostas">
-  <meta property="og:description" content="Gere orçamentos profissionais em PDF gratuitamente em segundos.">
+  <meta property="og:title" content="FS Orçamentos - Plataforma profissional para prestadores de serviço">
+  <meta property="og:description" content="Gere orçamentos em PDF, organize clientes e acompanhe serviços com aparência profissional.">
   <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
 
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://fsorcamentos.com.br/">
-  <meta property="twitter:title" content="FS Orçamentos - Gerador de Orçamento PDF">
-  <meta property="twitter:description" content="A ferramenta ideal para o profissional autônomo gerar orçamentos em PDF.">
+  <meta property="twitter:title" content="FS Orçamentos - Sistema de orçamento e gestão">
+  <meta property="twitter:description" content="Orçamentos profissionais, histórico, aprovação do cliente e gestão para pequenos negócios.">
   <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
 
   <link rel="stylesheet" href="style.css">
@@ -58,6 +58,249 @@
       border: 0 !important;
       overflow: hidden !important;
       pointer-events: none !important;
+    }
+  </style>
+
+  <style id="fs-home-professional-image">
+    body:not(.gerando-pdf) {
+      background: linear-gradient(180deg, #f6f1ea 0%, #efe6da 100%) !important;
+      color: #2b211d !important;
+    }
+
+    #home-publica.home-publica {
+      width: min(1180px, calc(100% - 16px)) !important;
+      margin: 12px auto 26px !important;
+      padding: 0 !important;
+    }
+
+    #home-plano-gratis {
+      display: grid !important;
+      gap: 10px !important;
+    }
+
+    .home-plano-hero {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1.05fr) minmax(330px, .95fr) !important;
+      align-items: stretch !important;
+      gap: 14px !important;
+      background: #ffffff !important;
+      border: 1px solid #e3d7ca !important;
+      border-radius: 8px !important;
+      box-shadow: 0 5px 18px rgba(47,33,29,.08) !important;
+      padding: 14px !important;
+      color: #2b211d !important;
+      overflow: hidden !important;
+    }
+
+    .home-plano-hero::after {
+      content: "";
+      display: block;
+      grid-column: 2;
+      grid-row: 1 / span 5;
+      min-height: 340px;
+      border: 1px solid #ded3c5;
+      border-radius: 7px;
+      background:
+        linear-gradient(180deg, rgba(47,33,29,.96), rgba(47,33,29,.96)) top/100% 52px no-repeat,
+        linear-gradient(90deg, transparent 0 58%, rgba(255,196,0,.18) 58% 100%),
+        linear-gradient(180deg, #ffffff 0%, #fbf8f4 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.5), 0 8px 22px rgba(47,33,29,.12);
+      position: relative;
+    }
+
+    .home-plano-tag,
+    .home-section-tag {
+      display: inline-flex !important;
+      width: fit-content !important;
+      align-items: center !important;
+      min-height: 24px !important;
+      padding: 4px 8px !important;
+      border-radius: 4px !important;
+      background: #f8f4ee !important;
+      border: 1px solid #e3d7ca !important;
+      color: #3e2723 !important;
+      font-size: 10.5px !important;
+      line-height: 1 !important;
+      font-weight: 950 !important;
+      letter-spacing: .02em !important;
+      text-transform: uppercase !important;
+      margin: 0 0 8px !important;
+    }
+
+    .home-plano-hero h1 {
+      margin: 0 !important;
+      color: #2f211d !important;
+      font-size: clamp(26px, 4vw, 43px) !important;
+      line-height: 1.08 !important;
+      font-weight: 950 !important;
+      letter-spacing: -.02em !important;
+      max-width: 720px !important;
+    }
+
+    .home-plano-hero p {
+      margin: 8px 0 0 !important;
+      color: #62554d !important;
+      font-size: 15px !important;
+      line-height: 1.48 !important;
+      font-weight: 720 !important;
+      max-width: 710px !important;
+    }
+
+    .home-plano-acoes {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 7px !important;
+      align-items: center !important;
+      margin-top: 12px !important;
+    }
+
+    .btn-home-grande,
+    .btn-home-atalho {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-height: 36px !important;
+      border-radius: 4px !important;
+      padding: 8px 12px !important;
+      border: 1px solid #2f211d !important;
+      box-shadow: none !important;
+      font-size: 12px !important;
+      font-weight: 950 !important;
+      text-decoration: none !important;
+      cursor: pointer !important;
+      text-transform: none !important;
+    }
+
+    .btn-home-grande {
+      background: #2f211d !important;
+      color: #ffc400 !important;
+    }
+
+    .btn-home-atalho {
+      background: #ffffff !important;
+      color: #2f211d !important;
+      border-color: #d7ccc8 !important;
+    }
+
+    .index-aviso-login {
+      margin-top: 8px !important;
+      padding: 8px 10px !important;
+      border-radius: 5px !important;
+      background: #fff7ed !important;
+      border: 1px solid #fed7aa !important;
+      color: #9a3412 !important;
+      font-size: 12px !important;
+      font-weight: 850 !important;
+    }
+
+    .home-professional-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      grid-column: 1 / -1;
+      margin-top: 12px;
+    }
+
+    .home-professional-strip article,
+    .home-passo-card {
+      background: #ffffff !important;
+      color: #2b211d !important;
+      border: 1px solid #e3d7ca !important;
+      border-radius: 7px !important;
+      padding: 10px !important;
+      box-shadow: 0 3px 10px rgba(47,33,29,.06) !important;
+    }
+
+    .home-professional-strip span,
+    .home-passo-card strong {
+      display: block !important;
+      color: #62554d !important;
+      font-size: 10px !important;
+      line-height: 1.1 !important;
+      text-transform: uppercase !important;
+      font-weight: 950 !important;
+      margin-bottom: 5px !important;
+    }
+
+    .home-professional-strip strong,
+    .home-passo-card h3 {
+      display: block !important;
+      margin: 0 !important;
+      color: #2f211d !important;
+      font-size: 16px !important;
+      line-height: 1.15 !important;
+      font-weight: 950 !important;
+    }
+
+    .home-professional-strip small,
+    .home-passo-card p {
+      display: block !important;
+      margin: 4px 0 0 !important;
+      color: #62554d !important;
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+      font-weight: 700 !important;
+    }
+
+    .home-story-section {
+      background: #ffffff !important;
+      border: 1px solid #e3d7ca !important;
+      border-radius: 8px !important;
+      box-shadow: 0 4px 14px rgba(47,33,29,.07) !important;
+      padding: 12px !important;
+      margin: 0 !important;
+      color: #2b211d !important;
+    }
+
+    .home-section-topo {
+      border-bottom: 1px solid #ebe2d7 !important;
+      padding-bottom: 9px !important;
+      margin-bottom: 10px !important;
+    }
+
+    .home-section-topo h2 {
+      margin: 0 !important;
+      color: #2f211d !important;
+      font-size: 20px !important;
+      line-height: 1.14 !important;
+      font-weight: 950 !important;
+    }
+
+    .home-section-topo p {
+      margin: 5px 0 0 !important;
+      color: #62554d !important;
+      font-size: 13px !important;
+      line-height: 1.42 !important;
+      font-weight: 700 !important;
+    }
+
+    .home-passos-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 8px !important;
+    }
+
+    .fs-footer-index {
+      width: min(1180px, calc(100% - 16px)) !important;
+      margin: 0 auto 18px !important;
+      padding: 12px !important;
+      border-top: 1px solid #e3d7ca !important;
+      color: #62554d !important;
+      font-size: 12px !important;
+    }
+
+    @media (max-width: 900px) {
+      .home-plano-hero { grid-template-columns: 1fr !important; }
+      .home-plano-hero::after { grid-column: 1 !important; grid-row: auto !important; min-height: 220px !important; }
+      .home-professional-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .home-passos-grid { grid-template-columns: 1fr !important; }
+    }
+
+    @media (max-width: 620px) {
+      #home-publica.home-publica { width: min(100% - 10px, 1180px) !important; margin-top: 8px !important; }
+      .home-plano-hero { padding: 10px !important; }
+      .home-professional-strip { grid-template-columns: 1fr; }
+      .home-plano-hero h1 { font-size: 27px !important; }
     }
   </style>
 
@@ -159,29 +402,37 @@
   <main id="home-publica" class="home-publica">
     <section id="home-plano-gratis" class="home-visao-plano ativo">
       <div class="home-plano-hero">
-        <span class="home-plano-tag">Gerador de orçamento profissional</span>
-        <h1>Crie orçamento em PDF com aparência profissional em poucos minutos.</h1>
-        <p>O FS Orçamentos ajuda MEIs, oficinas e prestadores de serviço a montar propostas organizadas, com dados da empresa, cliente, itens, observações, total e visual confiável para enviar ao cliente.</p>
+        <span class="home-plano-tag">Sistema para prestadores de serviço</span>
+        <h1>Orçamentos profissionais e gestão da rotina em uma plataforma simples.</h1>
+        <p>O FS Orçamentos ajuda oficinas, MEIs e prestadores de serviço a sair do improviso: cria PDF com identidade da empresa, registra clientes, acompanha aprovações e prepara o caminho para ordens de serviço, estoque e agenda.</p>
 
         <div class="home-plano-acoes">
-          <button type="button" class="btn-home-grande" onclick="abrirGeradorHomeProtegido()">🧾 Gerar orçamento grátis</button>
+          <button type="button" class="btn-home-grande" onclick="abrirGeradorHomeProtegido()">Gerar orçamento grátis</button>
           <a href="/planos.html" class="btn-home-atalho">Ver planos</a>
+          <a href="/sobre.html" class="btn-home-atalho">Conhecer a plataforma</a>
         </div>
 
         <div id="index-aviso-login" class="index-aviso-login">Faça login ou crie sua conta para acessar o gerador de orçamento.</div>
+
+        <div class="home-professional-strip" aria-label="Resumo da plataforma">
+          <article><span>Comercial</span><strong>PDF profissional</strong><small>Proposta organizada com dados da empresa, cliente, itens e total.</small></article>
+          <article><span>Controle</span><strong>Status e histórico</strong><small>Acompanhe pendentes, aprovados, recusados e finalizados.</small></article>
+          <article><span>Operação</span><strong>Gestão premium</strong><small>Clientes, veículos, OS, estoque e agenda em uma rotina conectada.</small></article>
+          <article><span>Cliente</span><strong>Link de aprovação</strong><small>Envio pelo WhatsApp com página para aprovar ou recusar.</small></article>
+        </div>
       </div>
 
       <section class="home-story-section">
         <div class="home-section-topo">
-          <span class="home-section-tag">Como funciona</span>
-          <h2>Do preenchimento ao PDF pronto para enviar</h2>
-          <p>A plataforma organiza as principais informações de uma proposta comercial em uma estrutura simples: dados do cliente, descrição dos serviços, produtos, quantidades, valores, condições e observações. Depois, o usuário gera um PDF com aparência mais profissional do que uma mensagem comum enviada no WhatsApp.</p>
+          <span class="home-section-tag">Fluxo profissional</span>
+          <h2>Do primeiro contato ao serviço concluído</h2>
+          <p>A plataforma foi organizada para acompanhar o trabalho real: cliente, orçamento, aprovação, ordem de serviço, execução, conclusão e histórico. O objetivo é reduzir procura por informações e deixar a empresa mais confiável para vender.</p>
         </div>
 
         <div class="home-passos-grid">
-          <div class="home-passo-card"><strong>1</strong><h3>Informe os dados</h3><p>Preencha empresa, cliente, serviços, produtos, valores, validade da proposta e condições de pagamento.</p></div>
-          <div class="home-passo-card"><strong>2</strong><h3>Revise a proposta</h3><p>Confira o resumo antes de enviar, evitando erros de digitação, valores incompletos ou informações soltas.</p></div>
-          <div class="home-passo-card"><strong>3</strong><h3>Gere o PDF</h3><p>Baixe um documento organizado para apresentar ao cliente com mais clareza e profissionalismo.</p></div>
+          <div class="home-passo-card"><strong>1</strong><h3>Cadastre e orce</h3><p>Registre o cliente, informe os serviços/produtos e gere uma proposta com apresentação padronizada.</p></div>
+          <div class="home-passo-card"><strong>2</strong><h3>Envie e acompanhe</h3><p>Compartilhe o link pelo WhatsApp e acompanhe status de aprovação, recusa ou pendência.</p></div>
+          <div class="home-passo-card"><strong>3</strong><h3>Execute e controle</h3><p>Transforme orçamentos aprovados em OS e acompanhe a rotina no Dashboard de saúde da empresa.</p></div>
         </div>
       </section>
 
@@ -217,7 +468,7 @@
         <div class="home-section-topo">
           <span class="home-section-tag">Comunidade técnica</span>
           <h2>Um espaço para tirar dúvidas sobre orçamentos e rotina profissional</h2>
-          <p>A Comunidade FS Orçamentos é um fórum para reunir dúvidas práticas sobre orçamento, ordem de serviço, atendimento ao cliente, cobrança, garantia, oficina e organização de pequenos negócios. A proposta é transformar perguntas frequentes em respostas úteis para outros profissionais que passam pelos mesmos problemas.</p>
+          <p>A Comunidade FS Orçamentos é um fórum para reunir dúvidas práticas sobre orçamento, ordem de serviço, atendimento ao cliente, cobrança, garantia, oficina e organização de pequenos negócios.</p>
         </div>
 
         <div class="home-passos-grid">
@@ -235,7 +486,7 @@
         <div class="home-section-topo">
           <span class="home-section-tag">Segurança e transparência</span>
           <h2>Dados, privacidade e responsabilidade</h2>
-          <p>O FS Orçamentos possui páginas públicas de Termos de Uso, Política de Privacidade e Contato para explicar como a plataforma funciona, quais dados podem ser informados e como o usuário pode solicitar suporte. O objetivo é oferecer uma ferramenta simples, transparente e adequada para uso profissional.</p>
+          <p>O FS Orçamentos possui páginas públicas de Termos de Uso, Política de Privacidade e Contato para explicar como a plataforma funciona, quais dados podem ser informados e como o usuário pode solicitar suporte.</p>
         </div>
 
         <div class="home-plano-acoes">
