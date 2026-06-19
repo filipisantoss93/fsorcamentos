@@ -2,1233 +2,311 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#3e2723">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#3e2723">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Planos - FS Orçamentos</title>
-
   <meta name="description" content="Conheça os planos do FS Orçamentos: Grátis para PDF, Básico para gestão de orçamentos e Premium para clientes, veículos, ordens de serviço e estoque.">
-  <meta name="keywords" content="planos fs orçamentos, plano básico orçamento, gerar orçamento PDF, orçamento online">
+  <meta name="keywords" content="planos fs orçamentos, plano básico orçamento, gerar orçamento PDF, orçamento online, gestão de oficina">
   <meta name="author" content="Filipi Aparecido dos Santos">
-
   <meta name="google-adsense-account" content="ca-pub-5628949951885077">
 
   <link rel="stylesheet" href="style.css">
+  <link id="fs-planos-inline-css" rel="stylesheet" href="planos-inline.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'AW-17435932696');
-</script>
-  <link id="fs-planos-inline-css" rel="stylesheet" href="planos-inline.css">
-
-<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
-<style id="fs-formal-theme-overrides">
-  :root {
-    --fs-marrom: #3e2723;
-    --fs-marrom-2: #5d4037;
-    --fs-fundo-escuro: #f7f2ea;
-    --fs-fundo: #f7f2ea;
-    --fs-page-bg: #f7f2ea;
-    --fs-page-bg-2: #efe3d2;
-    --fs-card: #ffffff;
-    --fs-creme: #f4ece1;
-    --fs-creme-2: #fffaf0;
-    --fs-bege: #f4ece1;
-    --fs-bege-2: #fffaf0;
-    --fs-amarelo: #ffc400;
-    --fs-borda: #e8dccb;
-    --fs-texto: #2f241f;
-    --fs-texto-suave: #6d5b52;
-    --bg-dark: #f7f2ea;
-    --body-brown: #ffffff;
-    --text-dark: #2f241f;
-    --accent-yellow: #ffc400;
-  }
-
-  body:not(.gerando-pdf) {
-    background:
-      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
-    color: #2f241f !important;
-  }
-
-  #header-container,
-  .main-header,
-  .header-topo,
-  .header-menu-linha {
-    background: #3e2723 !important;
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav,
-  .logo-nav span,
-  #usuario-saudacao,
-  .header-menu-linha a,
-  .nav-menu a {
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav strong,
-  .fs-box,
-  .sobre-fs-box {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-  }
-
-  .link-destaque-gerador,
-  .btn-header-entrar,
-  .btn-menu-mobile-entrar,
-  .btn-home-grande,
-  .btn-home-medio,
-  .btn-home-atalho.btn-principal,
-  .btn-gerar-orcamento-home,
-  .btn-previa-profissional,
-  .btn-hero-principal,
-  .btn-ir-planos-home,
-  .btn-home-planos-forte,
-  .btn-add,
-  .btn-extra,
-  .btn-primario,
-  .btn-primary,
-  .btn-salvar,
-  .btn-acao-pdf,
-  .plano-pix-card button,
-  .btn-editar-dados-empresa {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .link-destaque-gerador:hover,
-  .btn-header-entrar:hover,
-  .btn-menu-mobile-entrar:hover,
-  .btn-home-grande:hover,
-  .btn-home-medio:hover,
-  .btn-gerar-orcamento-home:hover,
-  .btn-previa-profissional:hover,
-  .btn-hero-principal:hover,
-  .btn-ir-planos-home:hover,
-  .btn-home-planos-forte:hover,
-  .btn-add:hover,
-  .btn-extra:hover,
-  .btn-primario:hover,
-  .btn-primary:hover,
-  .btn-salvar:hover,
-  .btn-acao-pdf:hover,
-  .plano-pix-card button:hover,
-  .btn-editar-dados-empresa:hover {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-    border-color: #3e2723 !important;
-  }
-
-  .hero-publico,
-  .home-plano-hero,
-  .gerador-hero,
-  .planos-hero,
-  .clientes-hero,
-  .veiculos-hero,
-  .ordens-hero,
-  .ordem-hero,
-  .estoque-hero,
-  .sobre-hero,
-  .manual-hero,
-  .termos-hero,
-  .privacidade-hero,
-  .orcamentos-hero,
-  .painel-hero,
-  .secao-como-funciona,
-  .whatsapp-preview-home,
-  .cliente-aprovacao-home,
-  .comparativo-home,
-  .status-orcamentos-home,
-  .home-story-section,
-  .home-whatsapp-section,
-  .home-aprovacao-section,
-  .home-status-section,
-  .home-comparativo-section,
-  .planos-pix-section,
-  .comparativo-section,
-  .faq-section,
-  .container-sobre,
-  .container-termos,
-  .container-privacidade,
-  .home-premium-showcase {
-    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-    color: #2f241f !important;
-    border-top-color: #ffc400 !important;
-    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
-  }
-
-  .hero-publico h1,
-  .home-plano-hero h1,
-  .gerador-hero h1,
-  .planos-hero h1,
-  .clientes-hero h1,
-  .veiculos-hero h1,
-  .ordens-hero h1,
-  .ordem-hero h1,
-  .estoque-hero h1,
-  .sobre-hero h1,
-  .manual-hero h1,
-  .home-premium-showcase h2,
-  .container-sobre h1,
-  .container-sobre h2,
-  .container-termos h1,
-  .container-termos h2,
-  .section-topo h2,
-  .dadositens,
-  .card-header h2,
-  .clientes-card-header h2,
-  .veiculos-card-header h2,
-  .ordens-card-header h2,
-  .estoque-card-header h2 {
-    color: #3e2723 !important;
-  }
-
-  .hero-publico p,
-  .home-plano-hero p,
-  .gerador-hero p,
-  .planos-hero p,
-  .clientes-hero p,
-  .veiculos-hero p,
-  .ordens-hero p,
-  .ordem-hero p,
-  .estoque-hero p,
-  .sobre-hero p,
-  .manual-hero p,
-  .home-premium-showcase p,
-  .container-sobre p,
-  .container-termos p,
-  .section-topo p {
-    color: #6d5b52 !important;
-  }
-
-  .container,
-  .card,
-  .clientes-card,
-  .veiculos-card,
-  .ordens-card,
-  .estoque-card,
-  .gerador-card-principal,
-  .sidebar-card,
-  .plano-pix-card,
-  .faq-card,
-  .home-promo-card,
-  .home-metrica-card,
-  .home-relatorio-card,
-  .home-painel-card,
-  .card-sobre,
-  .plano-card,
-  .manual-card,
-  .manual-section,
-  .manual-step,
-  .manual-demo-card,
-  .cliente-item,
-  .veiculo-item,
-  .ordem-item,
-  .estoque-categoria-grupo,
-  .emissor-readonly-card,
-  .cliente-tela-preview,
-  .home-cliente-preview {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #e8dccb !important;
-    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
-  }
-
-  .card-header,
-  .clientes-card-header,
-  .veiculos-card-header,
-  .ordens-card-header,
-  .estoque-card-header,
-  .modal-busca-cliente-header,
-  .modal-busca-produto-header,
-  .modal-pix-topo,
-  .home-cliente-topo,
-  .mock-card-head,
-  .orcamento-whatsapp-header,
-  .home-orcamento-whatsapp-header,
-  .total-container,
-  .cliente-total-demo,
-  .home-cliente-total,
-  .manual-flow div,
-  .mini-dashboard {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .card-body,
-  .clientes-card-body,
-  .veiculos-card-body,
-  .ordens-card-body,
-  .estoque-card-body {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  input,
-  select,
-  textarea {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #d8c9b8 !important;
-  }
-
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #ffc400 !important;
-    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-    outline: none !important;
-  }
-
-  table,
-  .tabela-comparativo,
-  .home-tabela-comparativo,
-  .manual-table,
-  .comparativo {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  th,
-  .tabela-comparativo th,
-  .home-tabela-comparativo th,
-  .manual-table th,
-  .comparativo th {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-  }
-
-  tr:nth-child(even),
-  tbody tr:nth-child(even) {
-    background: #fffaf0 !important;
-  }
-
-  footer,
-  .sobre-footer {
-    color: #6d5b52 !important;
-  }
-
-  footer a,
-  .sobre-footer a {
-    color: #3e2723 !important;
-    font-weight: 800 !important;
-  }
-</style>
-
-
-<style id="fs-contrast-fix-final">
-
-/* =========================================================
-   FS CONTRAST FIX - textos legíveis no tema claro profissional
-   Mantém marrom no header/títulos principais e corrige textos
-   que estavam ficando da mesma cor do fundo.
-   ========================================================= */
-:root {
-  --fs-marrom: #3e2723;
-  --fs-marrom-2: #5d4037;
-  --fs-fundo: #f7f2ea;
-  --fs-fundo-2: #efe3d2;
-  --fs-card: #ffffff;
-  --fs-creme: #fffaf0;
-  --fs-amarelo: #ffc400;
-  --fs-borda: #e8dccb;
-  --fs-texto: #2f241f;
-  --fs-texto-suave: #6d5b52;
-}
-
-html,
-body {
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) {
-  background:
-    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
-}
-
-main,
-section,
-.container,
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box,
-.modal-login-box,
-.modal-responsavel-card,
-.modal-busca-produto-box,
-.modal-busca-cliente-box,
-.modal-pix-card {
-  color: var(--fs-texto) !important;
-}
-
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.container,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box {
-  background: #ffffff !important;
-  border-color: var(--fs-borda) !important;
-}
-
-/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
-.card-header,
-.clientes-card-header,
-.veiculos-card-header,
-.ordens-card-header,
-.estoque-card-header,
-.modal-busca-cliente-header,
-.modal-busca-produto-header,
-.modal-pix-topo,
-.home-cliente-topo,
-.mock-card-head,
-.orcamento-whatsapp-header,
-.home-orcamento-whatsapp-header,
-.total-container,
-.valor-total,
-.cliente-total-demo,
-.home-cliente-total,
-.manual-flow div,
-.mini-dashboard,
-.auth-logo-box,
-.banner-topo {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.card-header h1,
-.card-header h2,
-.card-header h3,
-.card-header strong,
-.clientes-card-header h1,
-.clientes-card-header h2,
-.clientes-card-header h3,
-.clientes-card-header strong,
-.veiculos-card-header h1,
-.veiculos-card-header h2,
-.veiculos-card-header h3,
-.veiculos-card-header strong,
-.ordens-card-header h1,
-.ordens-card-header h2,
-.ordens-card-header h3,
-.ordens-card-header strong,
-.estoque-card-header h1,
-.estoque-card-header h2,
-.estoque-card-header h3,
-.estoque-card-header strong,
-.modal-busca-cliente-header h1,
-.modal-busca-cliente-header h2,
-.modal-busca-cliente-header h3,
-.modal-busca-cliente-header strong,
-.modal-busca-produto-header h1,
-.modal-busca-produto-header h2,
-.modal-busca-produto-header h3,
-.modal-busca-produto-header strong,
-.modal-pix-topo h1,
-.modal-pix-topo h2,
-.modal-pix-topo h3,
-.modal-pix-topo strong,
-.total-container strong,
-.valor-total strong,
-.valor-total span,
-.cliente-total-demo,
-.home-cliente-total,
-.auth-logo-box .auth-logo-text span,
-.auth-logo-box strong,
-.banner-topo h1,
-.banner-topo h2,
-.banner-topo h3,
-.banner-topo strong {
-  color: var(--fs-amarelo) !important;
-}
-
-.card-header p,
-.card-header span,
-.card-header small,
-.clientes-card-header p,
-.clientes-card-header span,
-.clientes-card-header small,
-.veiculos-card-header p,
-.veiculos-card-header span,
-.veiculos-card-header small,
-.ordens-card-header p,
-.ordens-card-header span,
-.ordens-card-header small,
-.estoque-card-header p,
-.estoque-card-header span,
-.estoque-card-header small,
-.modal-busca-cliente-header p,
-.modal-busca-cliente-header span,
-.modal-busca-cliente-header small,
-.modal-busca-produto-header p,
-.modal-busca-produto-header span,
-.modal-busca-produto-header small,
-.modal-pix-topo p,
-.modal-pix-topo span,
-.modal-pix-topo small,
-.auth-logo-box p {
-  color: #fffaf0 !important;
-}
-
-/* Heróis/seções claras */
-.hero-publico,
-.home-plano-hero,
-.gerador-hero,
-.planos-hero,
-.clientes-hero,
-.veiculos-hero,
-.ordens-hero,
-.ordem-hero,
-.estoque-hero,
-.sobre-hero,
-.manual-hero,
-.termos-hero,
-.privacidade-hero,
-.orcamentos-hero,
-.painel-hero,
-.secao-como-funciona,
-.whatsapp-preview-home,
-.cliente-aprovacao-home,
-.comparativo-home,
-.status-orcamentos-home,
-.home-story-section,
-.home-whatsapp-section,
-.home-aprovacao-section,
-.home-status-section,
-.home-comparativo-section,
-.planos-pix-section,
-.comparativo-section,
-.faq-section,
-.container-sobre,
-.container-termos,
-.container-privacidade {
-  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
-.hero-publico h1,
-.home-plano-hero h1,
-.gerador-hero h1,
-.planos-hero h1,
-.clientes-hero h1,
-.veiculos-hero h1,
-.ordens-hero h1,
-.ordem-hero h1,
-.estoque-hero h1,
-.sobre-hero h1,
-.manual-hero h1,
-.termos-hero h1,
-.privacidade-hero h1,
-.orcamentos-hero h1,
-.painel-hero h1,
-.section-topo h2,
-.container-sobre h1,
-.container-sobre h2,
-.container-termos h1,
-.container-termos h2,
-.container-privacidade h1,
-.container-privacidade h2,
-.dadositens,
-.campo label,
-label {
-  color: var(--fs-marrom) !important;
-}
-
-.hero-publico p,
-.home-plano-hero p,
-.gerador-hero p,
-.planos-hero p,
-.clientes-hero p,
-.veiculos-hero p,
-.ordens-hero p,
-.ordem-hero p,
-.estoque-hero p,
-.sobre-hero p,
-.manual-hero p,
-.termos-hero p,
-.privacidade-hero p,
-.orcamentos-hero p,
-.painel-hero p,
-.section-topo p,
-.info-item span,
-.texto-bloco,
-.campo small,
-small,
-.help-item,
-.valor-linha span,
-.home-metrica-card span,
-.home-relatorio-card span,
-.home-promo-card p,
-.home-painel-card p {
-  color: var(--fs-texto-suave) !important;
-}
-
-.info-item strong,
-.valor-linha strong,
-.home-metrica-card strong,
-.home-relatorio-card strong,
-.card strong,
-.card h1,
-.card h2,
-.card h3,
-.cliente-item strong,
-.veiculo-item strong,
-.ordem-item strong,
-.estoque-item strong {
-  color: var(--fs-marrom) !important;
-}
-
-input,
-select,
-textarea {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border-color: #d8c9b8 !important;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #8a7a70 !important;
-  opacity: 1 !important;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--fs-amarelo) !important;
-  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-  outline: none !important;
-}
-
-/* Header e menus */
-#header-container,
-.main-header,
-.header-topo,
-.header-menu-linha,
-.header-dropdown-menu {
-  background: var(--fs-marrom) !important;
-  color: #fffaf0 !important;
-}
-
-.logo-nav,
-.logo-nav span,
-#usuario-saudacao,
-.header-menu-linha a,
-.nav-menu a,
-.header-dropdown-toggle,
-.header-dropdown-menu a {
-  color: #fffaf0 !important;
-}
-
-.header-menu-linha a:hover,
-.nav-menu a:hover,
-.header-dropdown-toggle:hover,
-.header-dropdown-menu a:hover,
-.header-menu-linha a.ativo,
-.nav-menu a.ativo {
-  color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador,
-.btn-header-entrar,
-.btn-menu-mobile-entrar,
-.btn-primario,
-.btn-primary,
-.btn-salvar,
-.btn-add,
-.btn-extra,
-.btn-download,
-.btn-acao-pdf,
-.btn-gerar-orcamento-home,
-.btn-home-grande,
-.btn-home-medio,
-.btn-ir-planos-home,
-.btn-home-planos-forte,
-.plano-pix-card button {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador:hover,
-.btn-header-entrar:hover,
-.btn-menu-mobile-entrar:hover,
-.btn-primario:hover,
-.btn-primary:hover,
-.btn-salvar:hover,
-.btn-add:hover,
-.btn-extra:hover,
-.btn-download:hover,
-.btn-acao-pdf:hover,
-.btn-gerar-orcamento-home:hover,
-.btn-home-grande:hover,
-.btn-home-medio:hover,
-.btn-ir-planos-home:hover,
-.btn-home-planos-forte:hover,
-.plano-pix-card button:hover {
-  background: var(--fs-amarelo) !important;
-  color: var(--fs-marrom) !important;
-  border-color: var(--fs-marrom) !important;
-}
-
-/* Tabelas */
-table,
-.tabela-comparativo,
-.home-tabela-comparativo,
-.manual-table,
-.comparativo {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-}
-
-th,
-.tabela-comparativo th,
-.home-tabela-comparativo th,
-.manual-table th,
-.comparativo th {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-td,
-.tabela-comparativo td,
-.home-tabela-comparativo td,
-.manual-table td,
-.comparativo td {
-  color: var(--fs-texto) !important;
-}
-
-tr:nth-child(even),
-tbody tr:nth-child(even) {
-  background: #fffaf0 !important;
-}
-
-/* Estados e tags mantêm contraste */
-.tag,
-.cliente-status,
-.home-cliente-status,
-.home-preco-destaque,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home,
-.tag-plano-pix {
-  color: var(--fs-marrom) !important;
-}
-
-.tag-plano-pix,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
-.btn-whatsapp,
-.btn-verde {
-  background: #25D366 !important;
-  color: #083b2f !important;
-  border-color: #128c4a !important;
-}
-
-.btn-whatsapp:hover,
-.btn-verde:hover {
-  background: #20ba5a !important;
-  color: #ffffff !important;
-}
-
-/* PDF deve continuar preto e branco quando gerando */
-body.gerando-pdf,
-body.gerando-pdf * {
-  color: inherit;
-}
-
-</style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17435932696');
+  </script>
 </head>
-
 <body>
+  <div id="header-container"></div>
 
-<div id="header-container"></div>
-
-<div id="modal-login" class="modal-login-overlay">
-  <div class="modal-login-box">
-    <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button>
-
-    <div class="auth-logo-box">
-      <div class="auth-logo-text">
-        <strong>FS</strong><span>Orçamentos</span>
+  <div id="modal-login" class="modal-login-overlay">
+    <div class="modal-login-box">
+      <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button>
+      <div class="auth-logo-box">
+        <div class="auth-logo-text"><strong>FS</strong><span>Orçamentos</span></div>
+        <p>Acesse sua conta para assinar ou gerenciar seu plano</p>
       </div>
-      <p>Acesse sua conta para assinar ou gerenciar seu plano</p>
-    </div>
-
-    <div id="auth-area" style="display:block;">
-      <div id="auth-container" style="padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
-        <form id="form-autenticacao" onsubmit="return false;">
-          <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
-            Acesse sua Conta
-          </h3>
-
-          <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
-            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome</label>
-            <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      <div id="auth-area" class="auth-area-index">
+        <div id="auth-container" class="auth-container-index">
+          <form id="form-autenticacao" onsubmit="return false;">
+            <h3 id="auth-titulo" class="auth-titulo-index">Acesse sua Conta</h3>
+            <div id="grupo-nome" class="auth-campo-index oculto">
+              <label for="auth-nome">Nome</label>
+              <input type="text" id="auth-nome" placeholder="Seu nome">
+            </div>
+            <div class="auth-campo-index">
+              <label for="auth-email">E-mail</label>
+              <input type="email" id="auth-email" placeholder="seu@email.com">
+            </div>
+            <div id="grupo-nome-empresa" class="auth-campo-index oculto">
+              <label for="reg-nome-empresa">Nome da Empresa</label>
+              <input type="text" id="reg-nome-empresa" placeholder="Nome da sua empresa">
+            </div>
+            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto">
+              <label for="reg-telefone-empresa">WhatsApp da Empresa</label>
+              <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da empresa">
+            </div>
+            <div class="auth-campo-index">
+              <label for="auth-senha">Senha</label>
+              <input type="password" id="auth-senha" placeholder="******">
+            </div>
+            <div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto">
+              <label for="auth-confirmar-senha">Confirmar Senha</label>
+              <input type="password" id="auth-confirmar-senha" placeholder="******">
+            </div>
+            <button type="button" id="btn-principal" class="btn-principal-index" onclick="enviarFormulario()">Entrar</button>
+          </form>
+          <div class="auth-alternar-index">
+            <a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a>
           </div>
-
-          <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">E-mail</label>
-            <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
-          </div>
-
-          <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
-            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome da Empresa</label>
-            <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
-          </div>
-
-          <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
-            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">WhatsApp da Empresa</label>
-            <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
-          </div>
-
-          <div style="margin-bottom: 15px;">
-            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Senha</label>
-            <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
-          </div>
-
-          <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
-            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Confirmar Senha</label>
-            <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
-          </div>
-
-          <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">
-            Entrar
-          </button>
-        </form>
-
-        <div style="text-align: center; margin-top: 15px;">
-          <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #007bff; text-decoration: none;">
-            Não tem cadastro? Clique aqui.
-          </a>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<main class="pagina-planos">
-
-
-  <section class="teste-premium-card teste-premium-topo" id="box-teste-premium">
-    <div>
-      <h3>Teste Premium grátis por 7 dias</h3>
-      <p>
-        Disponível para usuários do Plano Grátis e Básico. Libere clientes, veículos, ordens de serviço,
-        estoque e gestão completa por 7 dias. Ao vencer, sua conta volta automaticamente para o Plano Básico.
-      </p>
-      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
-    </div>
-
-    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
-      Verificando...
-    </button>
-  </section>
-
-  <section class="planos-hero">
-    <div class="planos-hero-conteudo">
-      <span class="tag-planos">⭐ Planos FS Orçamentos</span>
-
-      <h1>Escolha o plano ideal para profissionalizar seus orçamentos.</h1>
-
-      <p>
-        Comece grátis gerando PDFs profissionais. Ative o Básico para salvar orçamentos, enviar link pelo WhatsApp e acompanhar status. Use o Premium para liberar clientes, veículos, ordens de serviço e estoque.
-      </p>
-
-      <div class="planos-acoes-hero">
-        <a href="/gerador.html" class="btn-hero-planos btn-hero-principal">
-          🧾 Começar agora
-        </a>
-
-        <a href="#assinar-plano-basico" class="btn-hero-planos btn-hero-secundario">
-          Ver Básico
-        </a>
-
-        <a href="#assinar-plano-premium" class="btn-hero-planos btn-hero-secundario">
-          Ver Premium
-        </a>
+  <main class="pagina-planos">
+    <section class="planos-hero planos-venda-hero">
+      <div class="planos-hero-conteudo">
+        <span class="tag-planos">Planos FS Orçamentos</span>
+        <h1>Escolha o plano para transformar orçamento em gestão.</h1>
+        <p>Comece grátis gerando PDF. Evolua para o Básico quando precisar salvar, acompanhar e enviar link de aprovação. Use o Premium para controlar clientes, veículos, ordens de serviço, estoque e rotina da empresa.</p>
+        <div class="planos-acoes-hero">
+          <a href="/gerador.html" class="btn-hero-planos btn-hero-principal">Começar grátis</a>
+          <a href="#assinar-plano-basico" class="btn-hero-planos btn-hero-secundario">Ver Básico</a>
+          <a href="#assinar-plano-premium" class="btn-hero-planos btn-hero-secundario premium-link">Ver Premium</a>
+        </div>
       </div>
-    </div>
-  </section>
+      <aside class="planos-hero-destaque">
+        <span>Mais indicado</span>
+        <strong>Premium / Gestão</strong>
+        <p>Para quem quer sair do orçamento solto e controlar o serviço inteiro: cliente, veículo, OS, estoque, pagamento e histórico.</p>
+      </aside>
+    </section>
 
-  <div id="status-plano-box" class="status-plano-box">
-    Verificando seu plano atual...
-  </div>
-<section class="comparativo-section">
-    <div class="section-topo">
-      <h2>Comparativo dos planos</h2>
-      <p>
-        O Grátis é para gerar PDF com anúncios. O Básico é para vender e acompanhar orçamentos.
-        O Premium é o sistema completo para oficina e prestadores com clientes, veículos, OS e estoque.
-      </p>
-    </div>
-
-    <div class="comparativo-wrapper">
-      <table class="tabela-comparativo">
-        <thead>
-          <tr>
-            <th>Recurso</th>
-            <th>Grátis</th>
-            <th>Básico</th>
-            <th>Premium</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr><td>Gerar orçamento</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Pré-visualizar orçamento</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Baixar PDF</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Anúncios na plataforma</td><td class="sim">Sim</td><td class="nao">Não</td><td class="nao">Não</td></tr>
-          <tr><td>Salvar orçamento na nuvem</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Histórico e gestão de orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>WhatsApp com link do orçamento</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Cliente aprova ou recusa online</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Notificações de status</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Resumo financeiro de orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim">Sim</td></tr>
-          <tr><td>Cadastro de clientes</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
-          <tr><td>Cadastro de veículos</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
-          <tr><td>Ordens de serviço</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
-          <tr><td>PDF profissional da OS</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
-          <tr><td>Controle de estoque</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
-          <tr><td>Orçamento aprovado virar OS</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
-          <tr><td>Histórico por cliente e veículo</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim">Sim</td></tr>
-          <tr><td>Consultores Técnicos</td><td>Até 2</td><td>Até 5</td><td>Até 5</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <section id="assinar-plano-basico" class="planos-pix-section">
-    <div class="planos-pix-topo">
-      <span class="tag-plano-pix">Plano Básico</span>
-
-      <h2 id="titulo-assinatura-basico">Ative o Plano Básico via Pix</h2>
-
-      <p id="texto-assinatura-basico">
-        Escolha o período desejado, gere o Pix e libere os recursos pagos assim que
-        o pagamento for confirmado pela Efí.
-      </p>
-    </div>
-
-    <div class="planos-pix-grid">
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">1 mês</div>
-        <div class="plano-pix-preco">R$ 19,90</div>
-        <p>Ideal para testar todos os recursos pagos por 30 dias.</p>
-
-        <button type="button" data-botao-pix data-plano="basico" data-periodo="mensal" onclick="gerarPixPlanoBasico('mensal')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card destaque">
-        <div class="plano-pix-selo">Mais escolhido</div>
-        <div class="plano-pix-periodo">6 meses</div>
-        <div class="plano-pix-preco">R$ 109,90</div>
-        <span class="plano-pix-economia">Economia no período</span>
-        <p>Melhor equilíbrio para usar por mais tempo pagando menos que mensalmente.</p>
-
-        <button type="button" data-botao-pix data-plano="basico" data-periodo="semestral" onclick="gerarPixPlanoBasico('semestral')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">12 meses</div>
-        <div class="plano-pix-preco">R$ 209,90</div>
-        <span class="plano-pix-economia">Melhor custo-benefício</span>
-        <p>Perfeito para usar o FS Orçamentos durante o ano todo.</p>
-
-        <button type="button" data-botao-pix data-plano="basico" data-periodo="anual" onclick="gerarPixPlanoBasico('anual')">
-          Gerar Pix
-        </button>
-      </div>
-    </div>
-
-    <div class="plano-pix-beneficios">
-      <strong>O Plano Básico inclui:</strong>
-      <span>Salvar orçamentos na nuvem</span>
-      <span>Histórico de orçamentos</span>
-      <span>Envio por WhatsApp com link</span>
-      <span>Aprovação/recusa do cliente com notificação</span>
-      <span>Status dos orçamentos</span>
-      <span>Lembrete de orçamento pendente</span>
-      <span>Resumo financeiro</span>
-      <span>Até 5 responsáveis</span>
-      <span>Sem anúncios</span>
-    </div>
-  </section>
-
-
-
-  <section id="assinar-plano-premium" class="planos-pix-section premium-section">
-    <div class="planos-pix-topo">
-      <span class="tag-plano-pix">Plano Premium</span>
-
-      <h2 id="titulo-assinatura-premium">Ative o Plano Premium via Pix</h2>
-
-      <p id="texto-assinatura-premium">
-        O Premium transforma o FS Orçamentos em um sistema completo de gestão para oficinas e prestadores:
-        clientes, veículos, ordens de serviço, estoque, PDF da OS e controle financeiro por serviço.
-      </p>
-    </div>
-
-    <div class="planos-pix-grid">
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">1 mês</div>
-        <div class="plano-pix-preco">R$ 69,90</div>
-        <p>Ideal para testar a gestão completa com clientes, veículos, OS e estoque por 30 dias.</p>
-
-        <button type="button" data-botao-pix data-plano="premium" data-periodo="mensal" onclick="gerarPixPlanoPremium('mensal')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card destaque">
-        <div class="plano-pix-selo">Mais indicado</div>
-        <div class="plano-pix-periodo">6 meses</div>
-        <div class="plano-pix-preco">R$ 399,90</div>
-        <span class="plano-pix-economia">Gestão por semestre</span>
-        <p>Perfeito para oficinas que querem organizar atendimentos, veículos, OS e estoque.</p>
-
-        <button type="button" data-botao-pix data-plano="premium" data-periodo="semestral" onclick="gerarPixPlanoPremium('semestral')">
-          Gerar Pix
-        </button>
-      </div>
-
-      <div class="plano-pix-card">
-        <div class="plano-pix-periodo">12 meses</div>
-        <div class="plano-pix-preco">R$ 599,90</div>
-        <span class="plano-pix-economia">Melhor custo-benefício</span>
-        <p>Melhor opção para usar o sistema completo durante o ano todo pagando menos por mês.</p>
-
-        <button type="button" data-botao-pix data-plano="premium" data-periodo="anual" onclick="gerarPixPlanoPremium('anual')">
-          Gerar Pix
-        </button>
-      </div>
-    </div>
-
-    <div class="plano-pix-beneficios">
-      <strong>O Plano Premium inclui:</strong>
-      <span>Tudo do Plano Básico</span>
-      <span>Cadastro de clientes</span>
-      <span>Cadastro de veículos</span>
-      <span>Ordens de serviço</span>
-      <span>PDF profissional da OS</span>
-      <span>Controle de estoque</span>
-      <span>Orçamento vinculado ao cliente e veículo</span>
-      <span>Converter orçamento aprovado em OS</span>
-      <span>Histórico por cliente</span>
-      <span>Histórico por veículo</span>
-      <span>Controle financeiro por OS</span>
-      <span>Gestão completa para oficina/prestador</span>
-    </div>
-
-    <div class="premium-aviso">
-      O Premium é indicado para quem precisa controlar o atendimento completo:
-      cliente → veículo → orçamento → aprovação → ordem de serviço → estoque → pagamento → histórico.
-    </div>
-  </section>
-
-  <section class="faq-section">
-    <div class="section-topo">
-      <h2>Dúvidas frequentes</h2>
-      <p>
-        Informações importantes sobre os planos Grátis, Básico, Premium, pagamento via Pix e liberação dos recursos.
-      </p>
-    </div>
-
-    <div class="faq-grid">
-      <div class="faq-card">
-        <strong>O Plano Grátis continua existindo?</strong>
-        <p>
-          Sim. Você pode gerar prévia e baixar PDF no Plano Grátis. A diferença é que o Plano Grátis não salva na nuvem e exibe anúncios.
-        </p>
-      </div>
-
-      <div class="faq-card">
-        <strong>Quando o plano pago é liberado?</strong>
-        <p>
-          A liberação acontece automaticamente quando o pagamento Pix for confirmado pela Efí e registrado no sistema.
-        </p>
-      </div>
-
-      <div class="faq-card">
-        <strong>O cliente consegue aprovar pelo link?</strong>
-        <p>
-          Sim. No Plano Básico, o orçamento salvo gera um link para o cliente visualizar, aprovar ou recusar.
-        </p>
-      </div>
-
-      <div class="faq-card">
-        <strong>O que acontece quando o plano expira?</strong>
-        <p>
-          Os recursos pagos ficam bloqueados até a renovação. O sistema continua permitindo o uso dos recursos gratuitos.
-        </p>
-      </div>
-
-      <div class="faq-card">
-        <strong>Posso acompanhar meus orçamentos?</strong>
-        <p>
-          Sim. O Plano Básico libera a página de orçamentos com histórico, status e resumo financeiro.
-        </p>
-      </div>
-
-      <div class="faq-card">
-        <strong>Tem contrato ou fidelidade?</strong>
-        <p>
-          Não. Você escolhe o período desejado e renova quando quiser.
-        </p>
-      </div>
-
-
-      <div class="faq-card">
-        <strong>Qual a diferença entre Básico e Premium?</strong>
-        <p>
-          O Básico gerencia orçamentos. O Premium gerencia o fluxo completo com clientes, veículos, ordem de serviço, estoque e histórico.
-        </p>
-      </div>
-
-      <div class="faq-card">
-        <strong>O Premium é para oficina?</strong>
-        <p>
-          Sim. Ele foi pensado para oficinas e prestadores que precisam registrar cliente, veículo, serviço, peças, pagamento e histórico.
-        </p>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<div id="modal-pix-basico" class="modal-pix-overlay">
-  <div class="modal-pix-card">
-    <div class="modal-pix-topo">
+    <section class="teste-premium-card teste-premium-topo" id="box-teste-premium">
       <div>
-        <strong>Pagamento via Pix</strong>
-        <span id="pix-modal-subtitulo">Plano Básico</span>
+        <span class="valor-promocional">Teste grátis</span>
+        <h3>Teste Premium grátis por 7 dias</h3>
+        <p>Libere clientes, veículos, ordens de serviço, estoque e gestão completa por 7 dias. Ao vencer, sua conta volta automaticamente ao plano anterior.</p>
+        <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
       </div>
+      <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>Verificando...</button>
+    </section>
 
-      <button type="button" onclick="fecharModalPixBasico()">×</button>
-    </div>
+    <div id="status-plano-box" class="status-plano-box">Verificando seu plano atual...</div>
 
-    <div id="pix-loading" class="pix-loading">
-      Gerando Pix, aguarde...
-    </div>
+    <section class="planos-resumo-section">
+      <div class="section-topo">
+        <span class="tag-plano-pix">Resumo dos planos</span>
+        <h2>O grátis mostra a ferramenta. Os pagos organizam sua empresa.</h2>
+        <p>O destaque fica no Premium porque ele entrega a ideia principal do produto: gestão completa para prestadores e oficinas.</p>
+      </div>
+      <div class="planos-grid planos-resumo-grid">
+        <article class="plano-card plano-gratis-card">
+          <span class="plano-tag">Entrada</span>
+          <h3>Grátis</h3>
+          <div class="plano-preco">R$ 0</div>
+          <p>Para experimentar o gerador e criar PDFs profissionais com limitações.</p>
+          <ul class="planos-lista">
+            <li>Gerador de orçamento</li>
+            <li>Prévia e PDF</li>
+            <li>Anúncios na plataforma</li>
+          </ul>
+        </article>
+        <article class="plano-card plano-basico-card recomendado">
+          <span class="plano-tag">Comercial</span>
+          <h3>Básico</h3>
+          <div class="plano-preco">R$ 19,90 <small>/mês</small></div>
+          <p>Para vender melhor, salvar histórico e acompanhar aprovação do cliente.</p>
+          <ul class="planos-lista">
+            <li>Orçamentos salvos</li>
+            <li>Status e histórico</li>
+            <li>Link de aprovação</li>
+          </ul>
+        </article>
+        <article class="plano-card plano-premium-card destaque mais-escolhido-card">
+          <span class="plano-pix-selo">Mais escolhido</span>
+          <h3>Premium / Gestão</h3>
+          <div class="plano-preco">R$ 69,90 <small>/mês</small></div>
+          <p>Para controlar a operação completa da empresa, da venda ao serviço finalizado.</p>
+          <ul class="planos-lista">
+            <li>Clientes, veículos e OS</li>
+            <li>Estoque e agenda</li>
+            <li>Dashboard e histórico</li>
+          </ul>
+        </article>
+      </div>
+    </section>
 
-    <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
-      <div class="pix-resumo">
-        <div>
-          <small>Plano</small>
-          <strong id="pix-plano-label">Plano Básico</strong>
+    <section class="comparativo-section">
+      <div class="section-topo">
+        <span class="tag-plano-pix">Comparativo</span>
+        <h2>Compare antes de escolher</h2>
+        <p>Básico resolve o controle comercial. Premium resolve a operação completa.</p>
+      </div>
+      <div class="comparativo-wrapper">
+        <table class="tabela-comparativo">
+          <thead>
+            <tr><th>Recurso</th><th>Grátis</th><th>Básico</th><th>Premium</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Gerar orçamento em PDF</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Anúncios na plataforma</td><td class="sim">Sim</td><td class="nao">Não</td><td class="nao premium-coluna">Não</td></tr>
+            <tr><td>Salvar orçamento na nuvem</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Histórico e status dos orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Link para cliente aprovar/recusar</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Notificações de status</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Resumo financeiro de orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Cadastro de clientes</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Cadastro de veículos</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Ordens de serviço</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Controle de estoque</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Orçamento aprovado virar OS</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Histórico por cliente e veículo</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
+            <tr><td>Consultores Técnicos</td><td>Até 2</td><td>Até 5</td><td class="premium-coluna">Até 5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="assinar-plano-basico" class="planos-pix-section basico-section">
+      <div class="planos-pix-topo">
+        <span class="tag-plano-pix">Plano Básico</span>
+        <h2 id="titulo-assinatura-basico">Ative o Básico via Pix</h2>
+        <p id="texto-assinatura-basico">Escolha o período, gere o Pix e libere os recursos pagos assim que o pagamento for confirmado.</p>
+      </div>
+      <div class="planos-pix-grid">
+        <div class="plano-pix-card">
+          <div class="plano-pix-periodo">1 mês</div>
+          <div class="plano-pix-preco">R$ 19,90</div>
+          <p>Ideal para testar todos os recursos pagos por 30 dias.</p>
+          <button type="button" data-botao-pix data-plano="basico" data-periodo="mensal" onclick="gerarPixPlanoBasico('mensal')">Gerar Pix</button>
         </div>
-
-        <div>
-          <small>Valor</small>
-          <strong id="pix-valor">R$ 0,00</strong>
+        <div class="plano-pix-card destaque">
+          <div class="plano-pix-selo">Mais escolhido</div>
+          <div class="plano-pix-periodo">6 meses</div>
+          <div class="plano-pix-preco">R$ 109,90</div>
+          <span class="plano-pix-economia">Economia no período</span>
+          <p>Melhor equilíbrio para usar por mais tempo pagando menos que mensalmente.</p>
+          <button type="button" data-botao-pix data-plano="basico" data-periodo="semestral" onclick="gerarPixPlanoBasico('semestral')">Gerar Pix</button>
+        </div>
+        <div class="plano-pix-card">
+          <div class="plano-pix-periodo">12 meses</div>
+          <div class="plano-pix-preco">R$ 209,90</div>
+          <span class="plano-pix-economia">Melhor custo-benefício</span>
+          <p>Perfeito para usar o FS Orçamentos durante o ano todo.</p>
+          <button type="button" data-botao-pix data-plano="basico" data-periodo="anual" onclick="gerarPixPlanoBasico('anual')">Gerar Pix</button>
         </div>
       </div>
-
-      <div class="pix-qrcode-box">
-        <img id="pix-qrcode-img" src="" alt="QR Code Pix">
+      <div class="plano-pix-beneficios">
+        <strong>O Básico inclui:</strong>
+        <span>Salvar orçamentos na nuvem</span><span>Histórico de orçamentos</span><span>Envio por WhatsApp com link</span><span>Aprovação/recusa do cliente</span><span>Status dos orçamentos</span><span>Lembrete de orçamento pendente</span><span>Resumo financeiro</span><span>Até 5 responsáveis</span><span>Sem anúncios</span>
       </div>
+    </section>
 
-      <label class="pix-label">Pix copia e cola</label>
-
-      <textarea id="pix-copia-cola" readonly></textarea>
-
-      <div class="pix-acoes">
-        <button type="button" onclick="copiarPixCopiaCola()">
-          Copiar Pix
-        </button>
-
-        <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">
-          Já paguei, verificar
-        </button>
+    <section id="assinar-plano-premium" class="planos-pix-section premium-section plano-premium-venda">
+      <div class="planos-pix-topo">
+        <span class="tag-plano-pix premium-tag">Premium / Gestão</span>
+        <h2 id="titulo-assinatura-premium">Ative o Premium via Pix</h2>
+        <p id="texto-assinatura-premium">O Premium transforma o FS Orçamentos em um sistema completo de gestão para oficinas e prestadores: clientes, veículos, ordens de serviço, estoque, agenda, histórico e financeiro por serviço.</p>
       </div>
+      <div class="planos-pix-grid">
+        <div class="plano-pix-card premium-card-pagamento">
+          <div class="plano-pix-periodo">1 mês</div>
+          <div class="plano-pix-preco">R$ 69,90</div>
+          <p>Ideal para testar a gestão completa por 30 dias.</p>
+          <button type="button" data-botao-pix data-plano="premium" data-periodo="mensal" onclick="gerarPixPlanoPremium('mensal')">Gerar Pix Premium</button>
+        </div>
+        <div class="plano-pix-card destaque premium-card-pagamento premium-mais-escolhido">
+          <div class="plano-pix-selo">Mais escolhido</div>
+          <div class="plano-pix-periodo">6 meses</div>
+          <div class="plano-pix-preco">R$ 399,90</div>
+          <span class="plano-pix-economia">Gestão por semestre</span>
+          <p>Melhor opção para oficinas que querem organizar atendimentos, veículos, OS e estoque.</p>
+          <button type="button" data-botao-pix data-plano="premium" data-periodo="semestral" onclick="gerarPixPlanoPremium('semestral')">Gerar Pix Premium</button>
+        </div>
+        <div class="plano-pix-card premium-card-pagamento">
+          <div class="plano-pix-periodo">12 meses</div>
+          <div class="plano-pix-preco">R$ 599,90</div>
+          <span class="plano-pix-economia">Melhor custo-benefício</span>
+          <p>Use o sistema completo durante o ano todo pagando menos por mês.</p>
+          <button type="button" data-botao-pix data-plano="premium" data-periodo="anual" onclick="gerarPixPlanoPremium('anual')">Gerar Pix Premium</button>
+        </div>
+      </div>
+      <div class="plano-pix-beneficios premium-beneficios">
+        <strong>O Premium inclui:</strong>
+        <span>Tudo do Básico</span><span>Cadastro de clientes</span><span>Cadastro de veículos</span><span>Ordens de serviço</span><span>PDF profissional da OS</span><span>Controle de estoque</span><span>Orçamento aprovado vira OS</span><span>Histórico por cliente</span><span>Histórico por veículo</span><span>Controle financeiro por OS</span><span>Dashboard da empresa</span><span>Selo Premium na comunidade</span>
+      </div>
+      <div class="premium-aviso">Indicado para controlar o atendimento completo: cliente → veículo → orçamento → aprovação → ordem de serviço → estoque → pagamento → histórico.</div>
+    </section>
 
-      <p class="pix-aviso">
-        Após o pagamento, seu plano será liberado automaticamente quando a Efí confirmar o Pix.
-      </p>
+    <section class="faq-section">
+      <div class="section-topo">
+        <span class="tag-plano-pix">Dúvidas frequentes</span>
+        <h2>Antes de assinar</h2>
+        <p>Informações importantes sobre os planos, pagamento via Pix e liberação dos recursos.</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-card"><strong>O Plano Grátis continua existindo?</strong><p>Sim. Você pode gerar prévia e baixar PDF no Plano Grátis, com limitações e anúncios.</p></div>
+        <div class="faq-card"><strong>Quando o plano pago é liberado?</strong><p>A liberação acontece automaticamente quando o pagamento Pix for confirmado e registrado no sistema.</p></div>
+        <div class="faq-card"><strong>Qual a diferença entre Básico e Premium?</strong><p>O Básico gerencia orçamentos. O Premium gerencia o fluxo completo com clientes, veículos, OS, estoque e histórico.</p></div>
+        <div class="faq-card"><strong>Tem contrato ou fidelidade?</strong><p>Não. Você escolhe o período desejado e renova quando quiser.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal-pix-basico" class="modal-pix-overlay">
+    <div class="modal-pix-card">
+      <div class="modal-pix-topo">
+        <div><strong>Pagamento via Pix</strong><span id="pix-modal-subtitulo">Plano Básico</span></div>
+        <button type="button" onclick="fecharModalPixBasico()">×</button>
+      </div>
+      <div id="pix-loading" class="pix-loading">Gerando Pix, aguarde...</div>
+      <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
+        <div class="pix-resumo">
+          <div><small>Plano</small><strong id="pix-plano-label">Plano Básico</strong></div>
+          <div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div>
+        </div>
+        <div class="pix-qrcode-box"><img id="pix-qrcode-img" src="" alt="QR Code Pix"></div>
+        <label class="pix-label">Pix copia e cola</label>
+        <textarea id="pix-copia-cola" readonly></textarea>
+        <div class="pix-acoes">
+          <button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button>
+          <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button>
+        </div>
+        <p class="pix-aviso">Após o pagamento, seu plano será liberado automaticamente quando a confirmação chegar.</p>
+      </div>
+      <div id="pix-erro" class="pix-erro" style="display:none;"></div>
     </div>
-
-    <div id="pix-erro" class="pix-erro" style="display:none;"></div>
   </div>
-</div>
 
-<footer>
-  &copy; 2026 FS Orçamentos |
-  <a href="/privacidade.html">Privacidade</a> |
-  <a href="/termos.html">Termos</a>
-</footer>
+  <footer>
+    &copy; 2026 FS Orçamentos |
+    <a href="/privacidade.html">Privacidade</a> |
+    <a href="/termos.html">Termos</a> |
+    <a href="/contato.html">Contato</a>
+  </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script src="auth.js"></script>
-<script src="ui.js"></script>
-<script src="pagamentos.js"></script>
-<script src="planos.js"></script>
-<script src="carregar-menu.js"></script>
-<script src="notificacoes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="pagamentos.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
 </body>
 </html>
