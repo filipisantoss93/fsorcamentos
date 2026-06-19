@@ -1,6 +1,7 @@
 /* =========================================================
    FS ORÇAMENTOS - layout-grid-global-fix.js
    Padroniza grids e formulários principais em modal.
+   Visual neutro e compacto, sem bordas amarelas repetitivas.
    ========================================================= */
 (function () {
   'use strict';
@@ -31,7 +32,7 @@
       .recorrentes-resumo-grid {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 10px !important;
+        gap: 8px !important;
         align-items: stretch !important;
       }
 
@@ -55,9 +56,7 @@
         box-sizing: border-box !important;
       }
 
-      body.fs-modal-form-lock {
-        overflow: hidden !important;
-      }
+      body.fs-modal-form-lock { overflow: hidden !important; }
 
       .clientes-grid,
       .veiculos-grid,
@@ -71,7 +70,7 @@
         border: 0 !important;
         box-shadow: none !important;
         overflow: visible !important;
-        margin: 0 0 10px !important;
+        margin: 0 0 8px !important;
       }
 
       #card-form-veiculo > .veiculos-card-header,
@@ -79,7 +78,7 @@
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
-        gap: 8px !important;
+        gap: 6px !important;
         background: transparent !important;
         border: 0 !important;
         padding: 0 !important;
@@ -98,18 +97,24 @@
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        min-width: 132px !important;
-        min-height: 36px !important;
-        border-radius: 6px !important;
-        border: 1px solid var(--fs-amarelo, #ffc400) !important;
-        background: var(--fs-marrom, #3e2723) !important;
+        min-width: 122px !important;
+        min-height: 34px !important;
+        border-radius: 4px !important;
+        border: 1px solid var(--fs-marrom, #2f211d) !important;
+        background: var(--fs-marrom, #2f211d) !important;
         color: var(--fs-amarelo, #ffc400) !important;
         font-size: 12px !important;
         font-weight: 900 !important;
         text-transform: uppercase !important;
         box-shadow: none !important;
-        padding: 8px 12px !important;
+        padding: 7px 10px !important;
         cursor: pointer !important;
+      }
+
+      #btn-toggle-form-veiculo:hover,
+      #btn-toggle-form-produto:hover {
+        background: #ffffff !important;
+        color: var(--fs-marrom, #2f211d) !important;
       }
 
       #card-form-veiculo:not(.fs-modal-form-aberto) .veiculos-card-body,
@@ -127,8 +132,8 @@
         flex-direction: column !important;
         align-items: center !important;
         justify-content: flex-start !important;
-        padding: 16px !important;
-        background: rgba(20, 13, 11, .68) !important;
+        padding: 14px !important;
+        background: rgba(20, 13, 11, .62) !important;
         overflow-y: auto !important;
       }
 
@@ -142,24 +147,25 @@
         margin-left: auto !important;
         margin-right: auto !important;
         background: #ffffff !important;
-        color: var(--fs-texto, #2f241f) !important;
-        border-left: 1px solid var(--fs-borda, #d7ccc8) !important;
-        border-right: 1px solid var(--fs-borda, #d7ccc8) !important;
+        color: var(--fs-texto, #2b211d) !important;
+        border-left: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-right: 1px solid var(--fs-borda, #ded3c5) !important;
       }
 
       #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-header,
       #card-form-produto.fs-modal-form-aberto > .estoque-card-header,
       #forum-form-card.fs-modal-form-aberto > .forum-card-topo {
-        margin-top: 24px !important;
+        margin-top: 18px !important;
         display: flex !important;
         align-items: flex-start !important;
         justify-content: space-between !important;
         gap: 10px !important;
-        padding: 12px 14px !important;
-        border-top: 4px solid var(--fs-amarelo, #ffc400) !important;
-        border-bottom: 1px solid var(--fs-borda, #d7ccc8) !important;
-        border-radius: 8px 8px 0 0 !important;
-        box-shadow: 0 16px 34px rgba(0,0,0,.18) !important;
+        padding: 11px 13px !important;
+        background: #f8f4ee !important;
+        border-top: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border-radius: 7px 7px 0 0 !important;
+        box-shadow: 0 12px 28px rgba(0,0,0,.16) !important;
       }
 
       #card-form-veiculo.fs-modal-form-aberto > .veiculos-card-header > div,
@@ -178,20 +184,20 @@
       #card-form-produto.fs-modal-form-aberto > .estoque-card-body,
       #forum-form-card.fs-modal-form-aberto > .forum-form {
         display: grid !important;
-        padding: 14px !important;
-        border-bottom: 1px solid var(--fs-borda, #d7ccc8) !important;
-        border-radius: 0 0 8px 8px !important;
-        box-shadow: 0 20px 44px rgba(0,0,0,.20) !important;
+        padding: 13px !important;
+        border-bottom: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-radius: 0 0 7px 7px !important;
+        box-shadow: 0 18px 38px rgba(0,0,0,.18) !important;
       }
 
       .fs-modal-fechar {
-        width: 34px !important;
-        height: 34px !important;
-        border-radius: 6px !important;
-        border: 1px solid #fecaca !important;
-        background: #fff5f5 !important;
-        color: #b91c1c !important;
-        font-size: 22px !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 4px !important;
+        border: 1px solid #d6c8ba !important;
+        background: #ffffff !important;
+        color: #7f1d1d !important;
+        font-size: 20px !important;
         line-height: 1 !important;
         font-weight: 900 !important;
         cursor: pointer !important;
@@ -206,8 +212,8 @@
       #forum-form-card.fs-modal-form-aberto input,
       #forum-form-card.fs-modal-form-aberto select,
       #forum-form-card.fs-modal-form-aberto textarea {
-        border-radius: 5px !important;
-        padding: 9px 10px !important;
+        border-radius: 4px !important;
+        padding: 8px 9px !important;
         font-size: 13px !important;
       }
 
@@ -228,27 +234,6 @@
           margin-top: 8px !important;
         }
       }
-
-      @media (max-width: 360px) {
-        .cards-resumo,
-        .clientes-resumo,
-        .veiculos-resumo,
-        .agenda-resumo-grid,
-        .fs-ordens-dashboard-grid,
-        .premium-metricas-grid,
-        .painel-resumo-grid,
-        .painel-metricas-grid,
-        .dashboard-grid,
-        .metricas-grid,
-        .resumo-grid,
-        .indicadores-grid,
-        .financeiro-grid,
-        .ordens-resumo-grid,
-        .estoque-resumo-grid,
-        .recorrentes-resumo-grid {
-          gap: 8px !important;
-        }
-      }
     `;
 
     document.head.appendChild(style);
@@ -261,9 +246,7 @@
         headerSelector: '.veiculos-card-header',
         bodySelector: '.veiculos-card-body',
         toggleId: 'btn-toggle-form-veiculo',
-        formId: 'form-veiculo',
         titleId: 'titulo-form-veiculo',
-        inputId: 'veiculo-id',
         saveId: 'btn-salvar-veiculo',
         editFn: 'editarVeiculo',
         clearFn: 'limparFormularioVeiculo',
@@ -279,9 +262,7 @@
         headerSelector: '.estoque-card-header',
         bodySelector: '.estoque-card-body',
         toggleId: 'btn-toggle-form-produto',
-        formId: 'form-produto-estoque',
         titleId: 'titulo-form-produto',
-        inputId: 'produto-id',
         saveId: 'btn-salvar-produto',
         editFn: 'editarProdutoEstoque',
         clearFn: 'limparFormularioProdutoEstoque',
@@ -294,7 +275,7 @@
     return null;
   }
 
-  function abrirModalFormulario(cfg, modo = 'novo') {
+  function abrirModalFormulario(cfg) {
     const card = document.getElementById(cfg.cardId);
     if (!card) return;
     card.classList.add('fs-modal-form-aberto');
@@ -324,7 +305,7 @@
     const salvar = document.getElementById(cfg.saveId);
     if (titulo) titulo.textContent = cfg.titleNew;
     if (salvar) salvar.textContent = cfg.saveNew;
-    abrirModalFormulario(cfg, 'novo');
+    abrirModalFormulario(cfg);
   }
 
   function configurarModalFormulario() {
@@ -353,6 +334,7 @@
       header.appendChild(btnFechar);
     }
 
+    if (!btn.parentNode) header.appendChild(btn);
     btn.textContent = cfg.newText;
     btn.setAttribute('aria-expanded', 'false');
     btn.onclick = () => abrirNovoFormulario(cfg);
@@ -374,7 +356,7 @@
       const original = window[cfg.editFn];
       window[cfg.editFn] = function (...args) {
         original.apply(this, args);
-        abrirModalFormulario(cfg, 'editar');
+        abrirModalFormulario(cfg);
       };
       window[cfg.editFn].__fsModalInterceptado = true;
     }
@@ -413,16 +395,8 @@
 
     window.fsAbrirForumModal = abrirForumModal;
     window.fsFecharForumModal = fecharForumModal;
-
-    if (typeof window.forumMostrarFormularioNovoTopico === 'function' && !window.forumMostrarFormularioNovoTopico.__fsModalInterceptado) {
-      window.forumMostrarFormularioNovoTopico = abrirForumModal;
-      window.forumMostrarFormularioNovoTopico.__fsModalInterceptado = true;
-    }
-
-    if (typeof window.forumOcultarFormularioNovoTopico === 'function' && !window.forumOcultarFormularioNovoTopico.__fsModalInterceptado) {
-      window.forumOcultarFormularioNovoTopico = fecharForumModal;
-      window.forumOcultarFormularioNovoTopico.__fsModalInterceptado = true;
-    }
+    window.forumMostrarFormularioNovoTopico = abrirForumModal;
+    window.forumOcultarFormularioNovoTopico = fecharForumModal;
   }
 
   function iniciar() {
