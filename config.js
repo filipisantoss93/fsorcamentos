@@ -283,3 +283,91 @@ function fsConfigCarregarAjustesPagina() {
 }
 
 fsConfigCarregarAjustesPagina();
+
+(function fsConfigAjusteOrdens() {
+  const pathAtual = fsConfigNormalizarPathAtual();
+  const ehOrdens = fsConfigPathCorresponde(pathAtual, '/ordens') || fsConfigPathCorresponde(pathAtual, '/ordens.html');
+  if (!ehOrdens) return;
+
+  function cssOrdens() {
+    if (document.getElementById('fs-config-ordens-modal-css')) return;
+    const style = document.createElement('style');
+    style.id = 'fs-config-ordens-modal-css';
+    style.textContent = `
+      body.fs-ordens-modal-mode .ordens-grid { display:block !important; }
+      body.fs-ordens-modal-mode #card-form-ordem { position:fixed !important; inset:0 !important; z-index:62000 !important; display:none !important; width:100% !important; max-width:none !important; height:100vh !important; margin:0 !important; padding:16px !important; background:rgba(20,13,11,.64) !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; overflow-y:auto !important; }
+      body.fs-ordens-modal-mode #card-form-ordem.fs-modal-os-aberto { display:block !important; }
+      body.fs-ordens-modal-mode #card-form-ordem .ordens-card-header,
+      body.fs-ordens-modal-mode #card-form-ordem .ordens-card-body { width:min(760px,100%) !important; margin-left:auto !important; margin-right:auto !important; background:#ffffff !important; }
+      body.fs-ordens-modal-mode #card-form-ordem .ordens-card-header { margin-top:18px !important; border-radius:7px 7px 0 0 !important; border:1px solid #ded3c5 !important; border-bottom:0 !important; background:var(--fs-marrom,#2f211d) !important; }
+      body.fs-ordens-modal-mode #card-form-ordem .ordens-card-body { border-radius:0 0 7px 7px !important; border:1px solid #ded3c5 !important; border-top:0 !important; max-height:calc(100vh - 130px) !important; overflow-y:auto !important; }
+      body.fs-ordens-modal-mode #btn-toggle-form-ordem { display:inline-flex !important; }
+      .fs-btn-nova-os-topo { display:inline-flex !important; align-items:center !important; justify-content:center !important; min-height:34px !important; padding:8px 11px !important; border-radius:4px !important; background:var(--fs-marrom,#2f211d) !important; color:var(--fs-amarelo,#ffc400) !important; border:1px solid var(--fs-marrom,#2f211d) !important; font-size:12px !important; font-weight:950 !important; cursor:pointer !important; text-decoration:none !important; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function abrirModalOS() {
+    const card = document.getElementById('card-form-ordem');
+    if (!card) return;
+    card.classList.add('fs-modal-os-aberto');
+    setTimeout(() => document.getElementById('ordem-titulo')?.focus(), 80);
+  }
+
+  function fecharModalOS() {
+    document.getElementById('card-form-ordem')?.classList.remove('fs-modal-os-aberto');
+  }
+
+  function configurarModalOS() {
+    const card = document.getElementById('card-form-ordem');
+    if (!card || card.dataset.fsModalOs === '1') return;
+    card.dataset.fsModalOs = '1';
+    document.body.classList.add('fs-ordens-modal-mode');
+
+    const btnToggle = document.getElementById('btn-toggle-form-ordem');
+    if (btnToggle) {
+      btnToggle.textContent = 'Fechar';
+      btnToggle.onclick = fecharModalOS;
+    }
+
+    const topo = document.querySelector('.ordens-topo-acoes');
+    if (topo && !document.getElementById('fs-btn-nova-os-topo')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'fs-btn-nova-os-topo';
+      btn.className = 'fs-btn-nova-os-topo';
+      btn.textContent = '+ Nova OS';
+      btn.addEventListener('click', () => {
+        if (typeof window.limparFormularioOrdem === 'function') window.limparFormularioOrdem();
+        abrirModalOS();
+      });
+      topo.appendChild(btn);
+    }
+
+    card.addEventListener('click', (event) => {
+      if (event.target === card) fecharModalOS();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') fecharModalOS();
+    });
+
+    if (new URLSearchParams(window.location.search).get('orcamento_id')) abrirModalOS();
+  }
+
+  function autoCarregarOrdens() {
+    if (window.__fsOrdensAutoLoad) return;
+    if (typeof window.carregarOrdens !== 'function') return;
+    window.__fsOrdensAutoLoad = true;
+    window.carregarOrdens(true);
+  }
+
+  let tentativas = 0;
+  const timer = setInterval(() => {
+    cssOrdens();
+    configurarModalOS();
+    autoCarregarOrdens();
+    tentativas += 1;
+    if (tentativas > 30) clearInterval(timer);
+  }, 300);
+})();
