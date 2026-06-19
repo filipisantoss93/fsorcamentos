@@ -1,1 +1,2 @@
-/* Compatibilidade temporaria: manter ate o link ser removido de painel.html. */
+/* Obsoleto: mantido temporariamente porque painel.html ainda referencia este arquivo.
+   Não adicionar novas regras aqui. Consolidar ajustes em painel-inline.css/style.css. */
