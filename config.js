@@ -207,8 +207,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
 ];
 
 const FS_CONFIG_SCRIPTS_FINAIS_INDEX = [
-  ['index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js'],
-  ['index-gratis-dom-cleaner.js', 'fs-index-gratis-dom-cleaner-js']
+  ['index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js']
 ];
 
 function fsConfigNormalizarPathAtual() {
