@@ -1,8 +1,9 @@
 /* =========================================================
-   FS ORÇAMENTOS — MENU COMPACTO DE AÇÕES DO FÓRUM
+   FS ORÇAMENTOS — FÓRUM LIMPO
+   Lista sem botões; ações aparecem no modal de detalhe.
    ========================================================= */
 
-/* O filtro de categoria ja existe no campo de busca.
+/* O filtro de categoria já existe no campo de busca.
    Qualquer bloco/card legado de categorias deve ficar oculto. */
 #forum-lista-categorias,
 .forum-lista-categorias,
@@ -21,38 +22,42 @@
   overflow: hidden !important;
 }
 
-.forum-topico-acoes {
+/* Na lista principal, a linha/tópico é o botão. */
+.forum-topico:not(.fs-item-modal-clone) .forum-topico-acoes,
+.forum-topico:not(.fs-item-modal-clone) .forum-acoes-compactas,
+.forum-topico:not(.fs-item-modal-clone) .forum-acoes-menu-wrap {
+  display: none !important;
+}
+
+.fs-item-modal-corpo .forum-topico-acoes,
+.fs-item-modal-corpo .forum-acoes-compactas {
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  gap: 8px !important;
+  gap: 6px !important;
   margin-top: 12px !important;
-  flex-wrap: nowrap !important;
+  padding-top: 10px !important;
+  border-top: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+  flex-wrap: wrap !important;
 }
 
-.forum-acoes-compactas {
+.fs-item-modal-corpo .forum-curtir-slot,
+.fs-item-modal-corpo .forum-acoes-menu-wrap {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 8px !important;
   position: relative !important;
-  max-width: 100% !important;
 }
 
-.forum-curtir-slot {
-  display: inline-flex !important;
-  align-items: center !important;
-}
-
-.forum-curtir-slot .forum-like-btn,
-.forum-topico-acoes .forum-like-btn {
-  min-width: 58px !important;
-  min-height: 34px !important;
-  padding: 7px 10px !important;
-  border-radius: 6px !important;
-  border: 1px solid #d7ccc8 !important;
-  background: #f8fafc !important;
+.fs-item-modal-corpo .forum-curtir-slot .forum-like-btn,
+.fs-item-modal-corpo .forum-topico-acoes .forum-like-btn {
+  min-width: 52px !important;
+  min-height: 31px !important;
+  padding: 7px 9px !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--fs-borda, #ded3c5) !important;
+  background: #ffffff !important;
   color: #1d4ed8 !important;
-  font-size: 13px !important;
+  font-size: 12px !important;
   font-weight: 850 !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -61,31 +66,24 @@
   box-shadow: none !important;
 }
 
-.forum-curtir-slot .forum-like-btn.curtido,
-.forum-curtir-slot .forum-like-btn.ativo,
-.forum-curtir-slot .forum-like-btn[aria-pressed="true"] {
-  background: #fff8e1 !important;
-  color: #3e2723 !important;
-  border-color: #d49b00 !important;
+.fs-item-modal-corpo .forum-curtir-slot .forum-like-btn.curtido,
+.fs-item-modal-corpo .forum-curtir-slot .forum-like-btn.ativo,
+.fs-item-modal-corpo .forum-curtir-slot .forum-like-btn[aria-pressed="true"] {
+  background: #f8f4ee !important;
+  color: var(--fs-marrom, #2f211d) !important;
+  border-color: var(--fs-borda, #ded3c5) !important;
 }
 
-.forum-acoes-menu-wrap {
-  position: relative !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  z-index: 30 !important;
-}
-
-.forum-menu-trigger {
-  width: 36px !important;
-  height: 34px !important;
-  min-width: 36px !important;
-  min-height: 34px !important;
-  border: 1px solid #d7ccc8 !important;
-  background: #f8fafc !important;
-  color: #3e2723 !important;
-  border-radius: 6px !important;
-  font-size: 22px !important;
+.fs-item-modal-corpo .forum-menu-trigger {
+  width: 32px !important;
+  height: 31px !important;
+  min-width: 32px !important;
+  min-height: 31px !important;
+  border: 1px solid var(--fs-borda, #ded3c5) !important;
+  background: #ffffff !important;
+  color: var(--fs-marrom, #2f211d) !important;
+  border-radius: 4px !important;
+  font-size: 19px !important;
   line-height: 1 !important;
   font-weight: 950 !important;
   cursor: pointer !important;
@@ -95,100 +93,85 @@
   padding: 0 !important;
 }
 
-.forum-acoes-menu-wrap.aberto .forum-menu-trigger {
-  background: #3e2723 !important;
-  color: #ffc400 !important;
-  border-color: #ffc400 !important;
+.fs-item-modal-corpo .forum-acoes-menu-wrap.aberto .forum-menu-trigger {
+  background: var(--fs-marrom, #2f211d) !important;
+  color: var(--fs-amarelo, #ffc400) !important;
+  border-color: var(--fs-marrom, #2f211d) !important;
 }
 
-.forum-acoes-menu {
+.fs-item-modal-corpo .forum-acoes-menu {
   display: none !important;
   position: absolute !important;
-  top: calc(100% + 6px) !important;
+  top: calc(100% + 5px) !important;
   left: 0 !important;
-  width: min(250px, calc(100vw - 36px)) !important;
+  width: min(230px, calc(100vw - 36px)) !important;
   background: #ffffff !important;
-  border: 1px solid #d7ccc8 !important;
-  border-top: 3px solid #ffc400 !important;
-  border-radius: 8px !important;
-  box-shadow: 0 16px 34px rgba(0,0,0,.18) !important;
-  padding: 6px !important;
+  border: 1px solid var(--fs-borda, #ded3c5) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 12px 26px rgba(0,0,0,.16) !important;
+  padding: 5px !important;
   z-index: 9999 !important;
 }
 
-.forum-acoes-menu-wrap.aberto .forum-acoes-menu {
+.fs-item-modal-corpo .forum-acoes-menu-wrap.aberto .forum-acoes-menu {
   display: grid !important;
   gap: 4px !important;
 }
 
-.forum-menu-item {
+.fs-item-modal-corpo .forum-menu-item {
   width: 100% !important;
-  min-height: 34px !important;
+  min-height: 32px !important;
   border: 0 !important;
-  border-radius: 5px !important;
-  background: #f8fafc !important;
-  color: #3e2723 !important;
+  border-radius: 4px !important;
+  background: #ffffff !important;
+  color: var(--fs-marrom, #2f211d) !important;
   font-size: 12px !important;
   font-weight: 800 !important;
   text-align: left !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  padding: 8px 9px !important;
+  padding: 7px 8px !important;
   cursor: pointer !important;
   font-family: inherit !important;
 }
 
-.forum-menu-item:hover {
-  background: #fff8e1 !important;
+.fs-item-modal-corpo .forum-menu-item:hover {
+  background: #f8f4ee !important;
 }
 
-.forum-menu-item.destaque {
-  background: #fff8e1 !important;
-  color: #3e2723 !important;
-  border: 1px solid #d49b00 !important;
+.fs-item-modal-corpo .forum-menu-item.destaque {
+  background: #f8f4ee !important;
+  color: var(--fs-marrom, #2f211d) !important;
+  border: 1px solid var(--fs-borda, #ded3c5) !important;
   font-weight: 900 !important;
 }
 
-.forum-menu-item.perigo {
+.fs-item-modal-corpo .forum-menu-item.perigo {
   background: #fff5f5 !important;
   color: #b91c1c !important;
   font-weight: 900 !important;
 }
 
 @media (max-width: 520px) {
-  .forum-topico-acoes {
-    margin-top: 10px !important;
+  .fs-item-modal-corpo .forum-topico-acoes,
+  .fs-item-modal-corpo .forum-acoes-compactas {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 6px !important;
   }
 
-  .forum-acoes-compactas {
-    gap: 6px !important;
+  .fs-item-modal-corpo .forum-acoes-menu-wrap,
+  .fs-item-modal-corpo .forum-curtir-slot,
+  .fs-item-modal-corpo .forum-like-btn {
+    width: 100% !important;
   }
 
-  .forum-curtir-slot .forum-like-btn,
-  .forum-topico-acoes .forum-like-btn {
-    min-width: 54px !important;
-    min-height: 32px !important;
-    padding: 6px 8px !important;
-    font-size: 12px !important;
+  .fs-item-modal-corpo .forum-menu-trigger {
+    width: 100% !important;
   }
 
-  .forum-menu-trigger {
-    width: 34px !important;
-    height: 32px !important;
-    min-width: 34px !important;
-    min-height: 32px !important;
-    font-size: 20px !important;
-  }
-
-  .forum-acoes-menu {
+  .fs-item-modal-corpo .forum-acoes-menu {
     width: min(235px, calc(100vw - 32px)) !important;
-  }
-
-  .forum-menu-item {
-    min-height: 32px !important;
-    font-size: 12px !important;
-    padding: 7px 8px !important;
   }
 }
