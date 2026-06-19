@@ -22,6 +22,7 @@
     .perfil-card,.perfil-section { background:#fff; border:1px solid var(--fs-borda); border-radius:8px; box-shadow:0 4px 14px rgba(47,33,29,.07); overflow:hidden; }
     .perfil-capa { height:132px; background:linear-gradient(135deg,#2f211d,#5d4037); background-size:cover; background-position:center; border-bottom:5px solid var(--fs-amarelo); position:relative; }
     .perfil-capa::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(47,33,29,.42),rgba(47,33,29,.06)); pointer-events:none; }
+    .perfil-capa-btn { position:absolute; right:10px; bottom:10px; z-index:3; display:none; align-items:center; justify-content:center; min-height:30px; padding:6px 9px; border-radius:4px; border:1px solid rgba(255,255,255,.45); background:rgba(47,33,29,.88); color:#ffc400; font-size:11px; font-weight:950; cursor:pointer; box-shadow:none; }
     .perfil-topo { display:grid; grid-template-columns:96px minmax(0,1fr) auto; gap:12px; align-items:end; padding:0 14px 13px; margin-top:-46px; position:relative; z-index:2; }
     .perfil-avatar { width:96px; height:96px; border-radius:999px; border:4px solid #fff; background:#2f211d; color:var(--fs-amarelo); display:inline-flex; align-items:center; justify-content:center; font-size:28px; font-weight:950; overflow:hidden; }
     .perfil-avatar img { width:100%; height:100%; object-fit:cover; display:block; }
@@ -67,7 +68,9 @@
     <div id="perfil-alerta" class="perfil-alerta"></div>
 
     <section class="perfil-card">
-      <div id="perfil-capa" class="perfil-capa"></div>
+      <div id="perfil-capa" class="perfil-capa">
+        <button id="btn-alterar-capa" type="button" class="perfil-capa-btn" onclick="perfilAbrirEditorSocial()">Alterar capa</button>
+      </div>
       <div class="perfil-topo">
         <div id="perfil-avatar" class="perfil-avatar">FS</div>
         <div class="perfil-identidade">
@@ -164,9 +167,7 @@
         capa_url: FS_PERFIL.social?.capa_url || '',
         atualizado_em: new Date().toISOString()
       };
-      try {
-        await _supabase.from('forum_perfis_publicos').upsert(payload, { onConflict: 'user_id' });
-      } catch (e) { console.warn('Não foi possível sincronizar perfil público:', e); }
+      try { await _supabase.from('forum_perfis_publicos').upsert(payload, { onConflict: 'user_id' }); } catch (e) { console.warn('Não foi possível sincronizar perfil público:', e); }
     }
 
     function perfilAplicarDados(){
@@ -190,55 +191,17 @@
 
       const btnSeguir = document.getElementById('btn-seguir');
       const btnEditar = document.getElementById('btn-editar-social');
+      const btnCapa = document.getElementById('btn-alterar-capa');
       if (btnSeguir) btnSeguir.style.display = perfilSouEu() ? 'none' : 'inline-flex';
       if (btnEditar) btnEditar.style.display = perfilSouEu() ? 'inline-flex' : 'none';
+      if (btnCapa) btnCapa.style.display = perfilSouEu() ? 'inline-flex' : 'none';
     }
 
     function perfilStatusTopico(t){ return t?.resolvido ? 'resolvido' : (t?.status || 'aberto'); }
+    function perfilRenderPosts(){ const box=document.getElementById('perfil-lista-posts'); if(!box) return; if(!FS_PERFIL.posts.length){ box.innerHTML='<div class="perfil-vazio">Nenhuma publicação encontrada.</div>'; return; } box.innerHTML=FS_PERFIL.posts.map(post=>`<article class="perfil-post" onclick="location.href='/forum.html#topico=${perfilEsc(post.id)}'"><strong>${perfilEsc(post.titulo || 'Publicação')}</strong><p>${perfilEsc(String(post.descricao || '').slice(0,220))}</p><div class="perfil-post-meta"><span class="perfil-tag">${perfilEsc(post.categoria || 'Geral')}</span><span class="perfil-tag">${perfilEsc(perfilStatusTopico(post))}</span><span class="perfil-tag">${Number(post.total_respostas || 0)} comentários</span><span class="perfil-tag">${Number(post.total_curtidas || 0)} curtidas</span><span class="perfil-tag">${perfilEsc(perfilData(post.criado_em || post.created_at))}</span></div></article>`).join(''); }
+    function perfilRenderRespostas(){ const box=document.getElementById('perfil-lista-respostas'); if(!box) return; if(!FS_PERFIL.respostas.length){ box.innerHTML='<div class="perfil-vazio">Nenhuma resposta encontrada.</div>'; return; } box.innerHTML=FS_PERFIL.respostas.map(resp=>`<article class="perfil-post" onclick="${resp.topico_id ? `location.href='/forum.html#topico=${perfilEsc(resp.topico_id)}'` : ''}"><strong>Comentário</strong><p>${perfilEsc(String(resp.texto || resp.conteudo || resp.resposta || '').slice(0,220))}</p><div class="perfil-post-meta"><span class="perfil-tag">${Number(resp.total_curtidas || 0)} curtidas</span><span class="perfil-tag">${perfilEsc(perfilData(resp.criado_em || resp.created_at))}</span></div></article>`).join(''); }
 
-    function perfilRenderPosts(){
-      const box=document.getElementById('perfil-lista-posts'); if(!box) return;
-      if(!FS_PERFIL.posts.length){ box.innerHTML='<div class="perfil-vazio">Nenhuma publicação encontrada.</div>'; return; }
-      box.innerHTML=FS_PERFIL.posts.map(post=>`
-        <article class="perfil-post" onclick="location.href='/forum.html#topico=${perfilEsc(post.id)}'">
-          <strong>${perfilEsc(post.titulo || 'Publicação')}</strong>
-          <p>${perfilEsc(String(post.descricao || '').slice(0,220))}</p>
-          <div class="perfil-post-meta">
-            <span class="perfil-tag">${perfilEsc(post.categoria || 'Geral')}</span>
-            <span class="perfil-tag">${perfilEsc(perfilStatusTopico(post))}</span>
-            <span class="perfil-tag">${Number(post.total_respostas || 0)} comentários</span>
-            <span class="perfil-tag">${Number(post.total_curtidas || 0)} curtidas</span>
-            <span class="perfil-tag">${perfilEsc(perfilData(post.criado_em || post.created_at))}</span>
-          </div>
-        </article>`).join('');
-    }
-
-    function perfilRenderRespostas(){
-      const box=document.getElementById('perfil-lista-respostas'); if(!box) return;
-      if(!FS_PERFIL.respostas.length){ box.innerHTML='<div class="perfil-vazio">Nenhuma resposta encontrada.</div>'; return; }
-      box.innerHTML=FS_PERFIL.respostas.map(resp=>`
-        <article class="perfil-post" onclick="${resp.topico_id ? `location.href='/forum.html#topico=${perfilEsc(resp.topico_id)}'` : ''}">
-          <strong>Comentário</strong>
-          <p>${perfilEsc(String(resp.texto || resp.conteudo || resp.resposta || '').slice(0,220))}</p>
-          <div class="perfil-post-meta">
-            <span class="perfil-tag">${Number(resp.total_curtidas || 0)} curtidas</span>
-            <span class="perfil-tag">${perfilEsc(perfilData(resp.criado_em || resp.created_at))}</span>
-          </div>
-        </article>`).join('');
-    }
-
-    async function perfilCarregarSeguidores(){
-      try {
-        const [{ count: seguidores }, { data: seguindo }] = await Promise.all([
-          _supabase.from('forum_seguidores').select('*', { count:'exact', head:true }).eq('seguido_id', FS_PERFIL.userId),
-          FS_PERFIL.viewerId ? _supabase.from('forum_seguidores').select('id').eq('seguidor_id', FS_PERFIL.viewerId).eq('seguido_id', FS_PERFIL.userId).maybeSingle() : Promise.resolve({ data:null })
-        ]);
-        FS_PERFIL.seguindo = !!seguindo;
-        perfilSet('perfil-total-seguidores', Number(seguidores || 0));
-        const btn = document.getElementById('btn-seguir');
-        if (btn) btn.textContent = FS_PERFIL.seguindo ? 'Seguindo' : 'Seguir';
-      } catch (e) { console.warn('Não foi possível carregar seguidores:', e); }
-    }
+    async function perfilCarregarSeguidores(){ try { const [{ count: seguidores }, { data: seguindo }] = await Promise.all([_supabase.from('forum_seguidores').select('*', { count:'exact', head:true }).eq('seguido_id', FS_PERFIL.userId), FS_PERFIL.viewerId ? _supabase.from('forum_seguidores').select('id').eq('seguidor_id', FS_PERFIL.viewerId).eq('seguido_id', FS_PERFIL.userId).maybeSingle() : Promise.resolve({ data:null })]); FS_PERFIL.seguindo = !!seguindo; perfilSet('perfil-total-seguidores', Number(seguidores || 0)); const btn = document.getElementById('btn-seguir'); if (btn) btn.textContent = FS_PERFIL.seguindo ? 'Seguindo' : 'Seguir'; } catch (e) { console.warn('Não foi possível carregar seguidores:', e); } }
 
     async function perfilBuscarDados(){
       if(!window._supabase) throw new Error('Supabase não carregou.');
@@ -246,73 +209,18 @@
       FS_PERFIL.viewerId = sessaoData?.session?.user?.id || null;
       FS_PERFIL.userId = perfilParamId() || FS_PERFIL.viewerId;
       if(!FS_PERFIL.userId){ location.href='/index.html?login=1'; return; }
-
-      const [painel, social, postsResp, respostasResp] = await Promise.all([
-        perfilBuscarPainel(FS_PERFIL.userId),
-        perfilBuscarSocial(FS_PERFIL.userId),
-        _supabase.from('forum_topicos').select('*').eq('usuario_id', FS_PERFIL.userId).order('criado_em', { ascending:false }).limit(30),
-        _supabase.from('forum_respostas').select('*').eq('usuario_id', FS_PERFIL.userId).order('criado_em', { ascending:false }).limit(20)
-      ]);
-      FS_PERFIL.painel = painel || {};
-      FS_PERFIL.social = social || {};
-      FS_PERFIL.posts = Array.isArray(postsResp?.data) ? postsResp.data : [];
-      FS_PERFIL.respostas = Array.isArray(respostasResp?.data) ? respostasResp.data : [];
-      await perfilSincronizarMeuPerfilPublico();
-      perfilAplicarDados();
-      perfilSet('perfil-total-posts', FS_PERFIL.posts.length);
-      perfilSet('perfil-total-respostas', FS_PERFIL.respostas.length);
-      perfilSet('perfil-total-curtidas', FS_PERFIL.posts.reduce((s,p)=>s+Number(p.total_curtidas || 0),0) + FS_PERFIL.respostas.reduce((s,r)=>s+Number(r.total_curtidas || 0),0));
-      await perfilCarregarSeguidores();
-      perfilRenderPosts();
-      perfilRenderRespostas();
+      const [painel, social, postsResp, respostasResp] = await Promise.all([perfilBuscarPainel(FS_PERFIL.userId), perfilBuscarSocial(FS_PERFIL.userId), _supabase.from('forum_topicos').select('*').eq('usuario_id', FS_PERFIL.userId).order('criado_em', { ascending:false }).limit(30), _supabase.from('forum_respostas').select('*').eq('usuario_id', FS_PERFIL.userId).order('criado_em', { ascending:false }).limit(20)]);
+      FS_PERFIL.painel = painel || {}; FS_PERFIL.social = social || {}; FS_PERFIL.posts = Array.isArray(postsResp?.data) ? postsResp.data : []; FS_PERFIL.respostas = Array.isArray(respostasResp?.data) ? respostasResp.data : [];
+      await perfilSincronizarMeuPerfilPublico(); perfilAplicarDados(); perfilSet('perfil-total-posts', FS_PERFIL.posts.length); perfilSet('perfil-total-respostas', FS_PERFIL.respostas.length); perfilSet('perfil-total-curtidas', FS_PERFIL.posts.reduce((s,p)=>s+Number(p.total_curtidas || 0),0) + FS_PERFIL.respostas.reduce((s,r)=>s+Number(r.total_curtidas || 0),0)); await perfilCarregarSeguidores(); perfilRenderPosts(); perfilRenderRespostas();
     }
 
-    async function perfilAlternarSeguir(){
-      if(!FS_PERFIL.userId) return;
-      if(!FS_PERFIL.viewerId){ location.href='/index.html?login=1'; return; }
-      if(perfilSouEu()) return;
-      try {
-        if(FS_PERFIL.seguindo){
-          const { error } = await _supabase.from('forum_seguidores').delete().eq('seguidor_id', FS_PERFIL.viewerId).eq('seguido_id', FS_PERFIL.userId);
-          if(error) throw error;
-        } else {
-          const { error } = await _supabase.from('forum_seguidores').insert({ seguidor_id: FS_PERFIL.viewerId, seguido_id: FS_PERFIL.userId });
-          if(error) throw error;
-        }
-        await perfilCarregarSeguidores();
-      } catch(e){ console.warn('Erro ao seguir:', e); perfilMostrarAlerta('Não foi possível atualizar o vínculo de seguir.'); }
-    }
-
-    function perfilAbrirEditorSocial(){
-      document.getElementById('perfil-editor-social').style.display='grid';
-      document.getElementById('perfil-bio-texto').value = FS_PERFIL.social?.bio || '';
-      document.getElementById('perfil-capa-url').value = FS_PERFIL.social?.capa_url || '';
-    }
+    async function perfilAlternarSeguir(){ if(!FS_PERFIL.userId) return; if(!FS_PERFIL.viewerId){ location.href='/index.html?login=1'; return; } if(perfilSouEu()) return; try { if(FS_PERFIL.seguindo){ const { error } = await _supabase.from('forum_seguidores').delete().eq('seguidor_id', FS_PERFIL.viewerId).eq('seguido_id', FS_PERFIL.userId); if(error) throw error; } else { const { error } = await _supabase.from('forum_seguidores').insert({ seguidor_id: FS_PERFIL.viewerId, seguido_id: FS_PERFIL.userId }); if(error) throw error; } await perfilCarregarSeguidores(); } catch(e){ console.warn('Erro ao seguir:', e); perfilMostrarAlerta('Não foi possível atualizar o vínculo de seguir.'); } }
+    function perfilAbrirEditorSocial(){ document.getElementById('perfil-editor-social').style.display='grid'; document.getElementById('perfil-bio-texto').value = FS_PERFIL.social?.bio || ''; document.getElementById('perfil-capa-url').value = FS_PERFIL.social?.capa_url || ''; document.getElementById('perfil-editor-social').scrollIntoView({ behavior:'smooth', block:'center' }); }
     function perfilFecharEditorSocial(){ document.getElementById('perfil-editor-social').style.display='none'; }
-
-    async function perfilSalvarSocial(){
-      try{
-        if(!perfilSouEu()) return;
-        const bio = document.getElementById('perfil-bio-texto')?.value?.trim() || '';
-        const capa_url = document.getElementById('perfil-capa-url')?.value?.trim() || '';
-        const painel = FS_PERFIL.painel || {};
-        const payload = { user_id:FS_PERFIL.userId, nome_publico:painel.nome || '', empresa_publica:painel.nome_empresa || '', foto_url:painel.foto_url || '', bio, capa_url, atualizado_em:new Date().toISOString() };
-        const { error } = await _supabase.from('forum_perfis_publicos').upsert(payload, { onConflict:'user_id' });
-        if(error) throw error;
-        FS_PERFIL.social = { ...FS_PERFIL.social, ...payload };
-        perfilAplicarDados();
-        perfilFecharEditorSocial();
-        perfilMostrarAlerta('Perfil social atualizado com sucesso.');
-        setTimeout(()=>perfilMostrarAlerta(''),3500);
-      } catch(e){ console.warn('Erro ao salvar perfil social:', e); perfilMostrarAlerta('Não foi possível salvar o perfil social.'); }
-    }
-
+    async function perfilSalvarSocial(){ try{ if(!perfilSouEu()) return; const bio = document.getElementById('perfil-bio-texto')?.value?.trim() || ''; const capa_url = document.getElementById('perfil-capa-url')?.value?.trim() || ''; const painel = FS_PERFIL.painel || {}; const payload = { user_id:FS_PERFIL.userId, nome_publico:painel.nome || '', empresa_publica:painel.nome_empresa || '', foto_url:painel.foto_url || '', bio, capa_url, atualizado_em:new Date().toISOString() }; const { error } = await _supabase.from('forum_perfis_publicos').upsert(payload, { onConflict:'user_id' }); if(error) throw error; FS_PERFIL.social = { ...FS_PERFIL.social, ...payload }; perfilAplicarDados(); perfilFecharEditorSocial(); perfilMostrarAlerta('Perfil social atualizado com sucesso.'); setTimeout(()=>perfilMostrarAlerta(''),3500); } catch(e){ console.warn('Erro ao salvar perfil social:', e); perfilMostrarAlerta('Não foi possível salvar o perfil social.'); } }
     async function perfilIniciar(){ try{ await perfilBuscarDados(); } catch(e){ console.error('Erro ao carregar perfil:', e); perfilMostrarAlerta('Não foi possível carregar este perfil.'); } }
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', perfilIniciar); else perfilIniciar();
-    window.perfilAlternarSeguir = perfilAlternarSeguir;
-    window.perfilAbrirEditorSocial = perfilAbrirEditorSocial;
-    window.perfilFecharEditorSocial = perfilFecharEditorSocial;
-    window.perfilSalvarSocial = perfilSalvarSocial;
+    window.perfilAlternarSeguir = perfilAlternarSeguir; window.perfilAbrirEditorSocial = perfilAbrirEditorSocial; window.perfilFecharEditorSocial = perfilFecharEditorSocial; window.perfilSalvarSocial = perfilSalvarSocial;
   </script>
 </body>
 </html>
