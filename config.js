@@ -171,12 +171,6 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
     ]
   },
   {
-    paginas: ['/agenda', '/agenda.html'],
-    scripts: [
-      ['agenda-visual-fix.js', 'fs-agenda-visual-fix-js']
-    ]
-  },
-  {
     paginas: ['/clientes', '/clientes.html'],
     scripts: [
       ['clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js']
