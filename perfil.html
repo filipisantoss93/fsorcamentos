@@ -56,9 +56,24 @@
     .perfil-editor-acoes { display:flex; flex-wrap:wrap; gap:6px; }
     .perfil-nota-painel { margin:0; color:var(--fs-suave); font-size:11.5px; line-height:1.35; font-weight:750; }
     .perfil-upload-status { display:none; margin:0; color:#166534; font-size:11.5px; line-height:1.35; font-weight:850; }
+    .perfil-crop-overlay { position:fixed; inset:0; z-index:90000; display:none; align-items:flex-start; justify-content:center; padding:14px; background:rgba(18,12,10,.72); backdrop-filter:blur(3px); overflow-y:auto; box-sizing:border-box; }
+    .perfil-crop-card { width:min(760px,100%); margin:18px auto; background:#fff; border:1px solid #d7ccc8; border-radius:8px; box-shadow:0 22px 52px rgba(0,0,0,.28); overflow:hidden; }
+    .perfil-crop-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; background:#2f211d; color:#ffc400; padding:10px 12px; }
+    .perfil-crop-topo strong { display:block; color:#ffc400; font-size:15px; font-weight:950; }
+    .perfil-crop-topo span { display:block; color:#fffaf0; font-size:11.5px; font-weight:720; margin-top:2px; }
+    .perfil-crop-fechar { width:30px; height:30px; border-radius:4px; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.08); color:#fffaf0; font-size:20px; font-weight:950; cursor:pointer; }
+    .perfil-crop-body { padding:12px; display:grid; gap:10px; }
+    .perfil-crop-area { width:100%; background:#2f211d; border-radius:7px; border:1px solid #d7ccc8; overflow:hidden; touch-action:none; }
+    #perfil-crop-canvas { width:100%; aspect-ratio:10/3; display:block; cursor:grab; background:#2f211d; }
+    #perfil-crop-canvas:active { cursor:grabbing; }
+    .perfil-crop-controles { display:grid; gap:6px; }
+    .perfil-crop-controles label { color:#2f211d; font-size:11px; font-weight:950; text-transform:uppercase; }
+    .perfil-crop-controles input { width:100%; accent-color:#3e2723; }
+    .perfil-crop-acoes { display:flex; flex-wrap:wrap; gap:7px; justify-content:flex-end; }
+    .perfil-crop-info { margin:0; color:#62554d; font-size:11.5px; line-height:1.35; font-weight:750; }
     footer { width:min(980px,calc(100% - 16px)); margin:10px auto 20px; color:var(--fs-suave); font-size:12px; }
     footer a { color:#2f211d; font-weight:850; }
-    @media (max-width:720px) { .perfil-page{width:min(100% - 10px,980px);margin-top:8px;} .perfil-topo{grid-template-columns:78px minmax(0,1fr);align-items:end;} .perfil-avatar{width:78px;height:78px;font-size:22px;} .perfil-acoes{grid-column:1 / -1;justify-content:stretch;} .perfil-acoes>*{flex:1 1 auto;} .perfil-identidade strong{font-size:20px;} .perfil-metricas{grid-template-columns:repeat(2,minmax(0,1fr));} }
+    @media (max-width:720px) { .perfil-page{width:min(100% - 10px,980px);margin-top:8px;} .perfil-topo{grid-template-columns:78px minmax(0,1fr);align-items:end;} .perfil-avatar{width:78px;height:78px;font-size:22px;} .perfil-acoes{grid-column:1 / -1;justify-content:stretch;} .perfil-acoes>*{flex:1 1 auto;} .perfil-identidade strong{font-size:20px;} .perfil-metricas{grid-template-columns:repeat(2,minmax(0,1fr));} .perfil-crop-overlay{padding:8px;} .perfil-crop-card{margin:8px auto;} }
   </style>
 </head>
 <body>
@@ -87,7 +102,7 @@
       <div class="perfil-corpo">
         <p id="perfil-bio" class="perfil-bio">Este usuário ainda não escreveu uma bio.</p>
         <div id="perfil-editor-social" class="perfil-editor">
-          <p class="perfil-nota-painel">Nome, empresa e foto do perfil vêm do Painel. A capa é enviada da galeria, redimensionada e comprimida antes de salvar.</p>
+          <p class="perfil-nota-painel">Nome, empresa e foto do perfil vêm do Painel. A capa é recortada, redimensionada e comprimida antes de salvar.</p>
           <label>Bio social
             <textarea id="perfil-bio-texto" maxlength="280" placeholder="Escreva uma descrição curta sobre você, sua empresa ou área de atuação."></textarea>
           </label>
@@ -118,6 +133,27 @@
     </section>
   </main>
 
+  <div id="perfil-crop-modal" class="perfil-crop-overlay" aria-hidden="true">
+    <div class="perfil-crop-card">
+      <div class="perfil-crop-topo">
+        <div><strong>Recortar capa</strong><span>Arraste a imagem, ajuste o zoom e confirme antes de enviar.</span></div>
+        <button type="button" class="perfil-crop-fechar" onclick="perfilCancelarRecorteCapa()">×</button>
+      </div>
+      <div class="perfil-crop-body">
+        <div class="perfil-crop-area"><canvas id="perfil-crop-canvas" width="700" height="210"></canvas></div>
+        <div class="perfil-crop-controles">
+          <label for="perfil-crop-zoom">Zoom da imagem</label>
+          <input id="perfil-crop-zoom" type="range" min="1" max="3" step="0.01" value="1" oninput="perfilAtualizarZoomCapa(this.value)">
+        </div>
+        <p class="perfil-crop-info">A área visível será salva no formato da capa, sem bordas brancas, com limite final de 700 KB.</p>
+        <div class="perfil-crop-acoes">
+          <button type="button" class="perfil-btn" onclick="perfilCancelarRecorteCapa()">Cancelar</button>
+          <button type="button" id="perfil-btn-confirmar-capa" class="perfil-btn primario" onclick="perfilConfirmarRecorteCapa()">Usar capa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <span>© 2026 FS Orçamentos</span>
     <span> | </span><a href="/forum.html">Comunidade</a>
@@ -137,6 +173,9 @@
     const FS_CAPA_MAX_BYTES = 700 * 1024;
     const FS_CAPA_W = 1400;
     const FS_CAPA_H = 420;
+    const FS_CROP_W = 700;
+    const FS_CROP_H = 210;
+    const FS_CROP = { img:null, zoom:1, x:0, y:0, dragging:false, startX:0, startY:0, baseX:0, baseY:0 };
 
     function perfilParamId(){ const p = new URLSearchParams(location.search); return p.get('id') || p.get('user_id') || p.get('usuario_id') || ''; }
     function perfilEsc(v){ return String(v || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
@@ -169,14 +208,12 @@
       const capa = social.capa_url || '';
       const avatar = document.getElementById('perfil-avatar');
       const capaEl = document.getElementById('perfil-capa');
-
       perfilSet('perfil-nome', nome);
       perfilSet('perfil-subtitulo', empresa + (painel.plano ? ` • Plano ${painel.plano}` : ''));
       perfilSet('perfil-bio', bio);
       document.title = `${nome} - Comunidade FS`;
       if (avatar) avatar.innerHTML = foto ? `<img src="${perfilEsc(foto)}" alt="${perfilEsc(nome)}">` : perfilIniciais(nome);
       if (capaEl) capaEl.style.backgroundImage = capa ? `linear-gradient(90deg,rgba(47,33,29,.42),rgba(47,33,29,.06)), url('${perfilEsc(capa)}')` : '';
-
       const btnSeguir = document.getElementById('btn-seguir');
       const btnEditar = document.getElementById('btn-editar-social');
       const btnCapa = document.getElementById('btn-alterar-capa');
@@ -208,60 +245,77 @@
     function perfilFecharEditorSocial(){ document.getElementById('perfil-editor-social').style.display='none'; }
     async function perfilSalvarBioSocial(){ try{ if(!perfilSouEu()) return; const bio = document.getElementById('perfil-bio-texto')?.value?.trim() || ''; await perfilSalvarSocial({ bio, capa_url: FS_PERFIL.social?.capa_url || '' }); perfilFecharEditorSocial(); } catch(e){ console.warn('Erro ao salvar bio:', e); perfilMostrarAlerta('Não foi possível salvar a bio.'); } }
 
-    function perfilSelecionarCapa(){
-      if(!perfilSouEu()) return;
+    function perfilSelecionarCapa(){ if(!perfilSouEu()) return; document.getElementById('perfil-capa-file')?.click(); }
+    function perfilCarregarImagem(file){ return new Promise((resolve, reject) => { const url = URL.createObjectURL(file); const img = new Image(); img.onload = () => { URL.revokeObjectURL(url); resolve(img); }; img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Imagem inválida.')); }; img.src = url; }); }
+    function perfilCanvasToBlob(canvas, quality){ return new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality)); }
+
+    function perfilLimitarCrop(){
+      if(!FS_CROP.img) return;
+      const escalaBase = Math.max(FS_CROP_W / FS_CROP.img.width, FS_CROP_H / FS_CROP.img.height);
+      const drawW = FS_CROP.img.width * escalaBase * FS_CROP.zoom;
+      const drawH = FS_CROP.img.height * escalaBase * FS_CROP.zoom;
+      if(drawW <= FS_CROP_W) FS_CROP.x = (FS_CROP_W - drawW) / 2;
+      else FS_CROP.x = Math.min(0, Math.max(FS_CROP_W - drawW, FS_CROP.x));
+      if(drawH <= FS_CROP_H) FS_CROP.y = (FS_CROP_H - drawH) / 2;
+      else FS_CROP.y = Math.min(0, Math.max(FS_CROP_H - drawH, FS_CROP.y));
+    }
+
+    function perfilDesenharCrop(){
+      const canvas = document.getElementById('perfil-crop-canvas');
+      if(!canvas || !FS_CROP.img) return;
+      const ctx = canvas.getContext('2d', { alpha:false });
+      ctx.fillStyle = '#2f211d';
+      ctx.fillRect(0, 0, FS_CROP_W, FS_CROP_H);
+      perfilLimitarCrop();
+      const escalaBase = Math.max(FS_CROP_W / FS_CROP.img.width, FS_CROP_H / FS_CROP.img.height);
+      const drawW = FS_CROP.img.width * escalaBase * FS_CROP.zoom;
+      const drawH = FS_CROP.img.height * escalaBase * FS_CROP.zoom;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(FS_CROP.img, FS_CROP.x, FS_CROP.y, drawW, drawH);
+    }
+
+    function perfilAbrirModalCrop(img){
+      FS_CROP.img = img;
+      FS_CROP.zoom = 1;
+      const escalaBase = Math.max(FS_CROP_W / img.width, FS_CROP_H / img.height);
+      FS_CROP.x = (FS_CROP_W - img.width * escalaBase) / 2;
+      FS_CROP.y = (FS_CROP_H - img.height * escalaBase) / 2;
+      const zoom = document.getElementById('perfil-crop-zoom');
+      if(zoom) zoom.value = '1';
+      const modal = document.getElementById('perfil-crop-modal');
+      if(modal){ modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
+      perfilDesenharCrop();
+      perfilConfigurarCanvasCrop();
+    }
+
+    function perfilCancelarRecorteCapa(){
+      const modal = document.getElementById('perfil-crop-modal');
+      if(modal){ modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
       const input = document.getElementById('perfil-capa-file');
-      if(input) input.click();
+      if(input) input.value = '';
     }
 
-    function perfilCarregarImagem(file){
-      return new Promise((resolve, reject) => {
-        const url = URL.createObjectURL(file);
-        const img = new Image();
-        img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
-        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Imagem inválida.')); };
-        img.src = url;
-      });
+    function perfilAtualizarZoomCapa(valor){
+      if(!FS_CROP.img) return;
+      const antigoZoom = FS_CROP.zoom || 1;
+      const novoZoom = Number(valor || 1);
+      const cx = FS_CROP_W / 2;
+      const cy = FS_CROP_H / 2;
+      FS_CROP.x = cx - (cx - FS_CROP.x) * (novoZoom / antigoZoom);
+      FS_CROP.y = cy - (cy - FS_CROP.y) * (novoZoom / antigoZoom);
+      FS_CROP.zoom = novoZoom;
+      perfilDesenharCrop();
     }
 
-    function perfilCanvasToBlob(canvas, quality){
-      return new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
-    }
-
-    async function perfilProcessarCapa(file){
-      if(!file || !file.type.startsWith('image/')) throw new Error('Selecione uma imagem válida.');
-      const img = await perfilCarregarImagem(file);
-      let width = FS_CAPA_W;
-      let height = FS_CAPA_H;
-      let quality = 0.86;
-      let blob = null;
-
-      for(let tentativa = 0; tentativa < 10; tentativa++){
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d', { alpha:false });
-        ctx.fillStyle = '#2f211d';
-        ctx.fillRect(0, 0, width, height);
-
-        const targetRatio = width / height;
-        const sourceRatio = img.width / img.height;
-        let sx = 0, sy = 0, sw = img.width, sh = img.height;
-        if(sourceRatio > targetRatio){
-          sw = img.height * targetRatio;
-          sx = (img.width - sw) / 2;
-        } else {
-          sh = img.width / targetRatio;
-          sy = (img.height - sh) / 2;
-        }
-        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, width, height);
-        blob = await perfilCanvasToBlob(canvas, quality);
-        if(blob && blob.size <= FS_CAPA_MAX_BYTES) return blob;
-        if(quality > 0.58) quality -= 0.08;
-        else { width = Math.round(width * 0.88); height = Math.round(height * 0.88); quality = 0.72; }
-      }
-      if(!blob || blob.size > FS_CAPA_MAX_BYTES) throw new Error('Não foi possível reduzir a imagem para menos de 700 KB.');
-      return blob;
+    function perfilConfigurarCanvasCrop(){
+      const canvas = document.getElementById('perfil-crop-canvas');
+      if(!canvas || canvas.dataset.cropOk === '1') return;
+      canvas.dataset.cropOk = '1';
+      canvas.addEventListener('pointerdown', e => { FS_CROP.dragging = true; FS_CROP.startX = e.clientX; FS_CROP.startY = e.clientY; FS_CROP.baseX = FS_CROP.x; FS_CROP.baseY = FS_CROP.y; canvas.setPointerCapture?.(e.pointerId); });
+      canvas.addEventListener('pointermove', e => { if(!FS_CROP.dragging) return; const rect = canvas.getBoundingClientRect(); const scale = FS_CROP_W / rect.width; FS_CROP.x = FS_CROP.baseX + (e.clientX - FS_CROP.startX) * scale; FS_CROP.y = FS_CROP.baseY + (e.clientY - FS_CROP.startY) * scale; perfilDesenharCrop(); });
+      canvas.addEventListener('pointerup', e => { FS_CROP.dragging = false; canvas.releasePointerCapture?.(e.pointerId); });
+      canvas.addEventListener('pointercancel', () => { FS_CROP.dragging = false; });
     }
 
     async function perfilUploadCapaSelecionada(event){
@@ -269,8 +323,52 @@
         if(!perfilSouEu()) return;
         const file = event?.target?.files?.[0];
         if(!file) return;
-        perfilUploadStatus('Processando imagem para capa...');
-        const blob = await perfilProcessarCapa(file);
+        if(!file.type.startsWith('image/')) throw new Error('Selecione uma imagem válida.');
+        perfilUploadStatus('Imagem carregada. Ajuste o recorte antes de enviar.');
+        const img = await perfilCarregarImagem(file);
+        perfilAbrirModalCrop(img);
+      } catch(e){
+        console.warn('Erro ao abrir recorte da capa:', e);
+        perfilUploadStatus(e?.message || 'Não foi possível abrir a imagem.', true);
+      }
+    }
+
+    async function perfilGerarBlobCapaRecortada(){
+      if(!FS_CROP.img) throw new Error('Nenhuma imagem para recortar.');
+      let quality = 0.86;
+      let width = FS_CAPA_W;
+      let height = FS_CAPA_H;
+      let blob = null;
+      for(let tentativa = 0; tentativa < 12; tentativa++){
+        const factor = width / FS_CROP_W;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d', { alpha:false });
+        ctx.fillStyle = '#2f211d';
+        ctx.fillRect(0, 0, width, height);
+        const escalaBase = Math.max(FS_CROP_W / FS_CROP.img.width, FS_CROP_H / FS_CROP.img.height);
+        const drawW = FS_CROP.img.width * escalaBase * FS_CROP.zoom * factor;
+        const drawH = FS_CROP.img.height * escalaBase * FS_CROP.zoom * factor;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(FS_CROP.img, FS_CROP.x * factor, FS_CROP.y * factor, drawW, drawH);
+        blob = await perfilCanvasToBlob(canvas, quality);
+        if(blob && blob.size <= FS_CAPA_MAX_BYTES) return blob;
+        if(quality > 0.56) quality -= 0.08;
+        else { width = Math.round(width * 0.9); height = Math.round(height * 0.9); quality = 0.72; }
+      }
+      if(!blob || blob.size > FS_CAPA_MAX_BYTES) throw new Error('Não foi possível reduzir a imagem para menos de 700 KB.');
+      return blob;
+    }
+
+    async function perfilConfirmarRecorteCapa(){
+      const btn = document.getElementById('perfil-btn-confirmar-capa');
+      try{
+        if(!perfilSouEu()) return;
+        if(btn){ btn.disabled = true; btn.textContent = 'Enviando...'; }
+        perfilUploadStatus('Processando recorte da capa...');
+        const blob = await perfilGerarBlobCapaRecortada();
         perfilUploadStatus(`Enviando capa (${Math.round(blob.size / 1024)} KB)...`);
         const path = `${FS_PERFIL.userId}/capa-${Date.now()}.jpg`;
         const { error } = await _supabase.storage.from(FS_CAPA_BUCKET).upload(path, blob, { contentType:'image/jpeg', upsert:true, cacheControl:'3600' });
@@ -280,11 +378,13 @@
         if(!capa_url) throw new Error('URL pública da capa não retornada.');
         await perfilSalvarSocial({ bio: FS_PERFIL.social?.bio || '', capa_url });
         perfilUploadStatus(`Capa atualizada com sucesso. Imagem final: ${Math.round(blob.size / 1024)} KB.`);
-        event.target.value = '';
+        perfilCancelarRecorteCapa();
       } catch(e){
         console.warn('Erro no upload da capa:', e);
         perfilUploadStatus(e?.message || 'Não foi possível enviar a capa.', true);
-        perfilMostrarAlerta('Não foi possível enviar a capa. Verifique o tamanho/formato e tente novamente.');
+        perfilMostrarAlerta('Não foi possível enviar a capa. Ajuste o recorte e tente novamente.');
+      } finally {
+        if(btn){ btn.disabled = false; btn.textContent = 'Usar capa'; }
       }
     }
 
@@ -308,6 +408,9 @@
     window.perfilSalvarBioSocial = perfilSalvarBioSocial;
     window.perfilSelecionarCapa = perfilSelecionarCapa;
     window.perfilUploadCapaSelecionada = perfilUploadCapaSelecionada;
+    window.perfilAtualizarZoomCapa = perfilAtualizarZoomCapa;
+    window.perfilCancelarRecorteCapa = perfilCancelarRecorteCapa;
+    window.perfilConfirmarRecorteCapa = perfilConfirmarRecorteCapa;
   </script>
 </body>
 </html>
