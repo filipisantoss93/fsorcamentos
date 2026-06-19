@@ -192,12 +192,6 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
     ]
   },
   {
-    paginas: ['/planos', '/planos.html'],
-    scripts: [
-      ['planos-visual-fix.js', 'fs-planos-visual-fix-js']
-    ]
-  },
-  {
     paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'],
     scripts: [
       ['fs-cliente-modal.js', 'fs-cliente-modal-js']
