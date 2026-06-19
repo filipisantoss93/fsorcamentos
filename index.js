@@ -39,11 +39,9 @@ async function redirecionarUsuarioLogadoParaDashboardIndex() {
     if (!window._supabase || !indexEstaNaHome()) return false;
 
     const params = new URLSearchParams(window.location.search);
-
     if (params.get('abrirGerador') === '1') return false;
 
     const { data: { session } } = await _supabase.auth.getSession();
-
     if (!session?.user?.id) return false;
 
     window.location.href = '/dashboard.html';
@@ -56,7 +54,6 @@ async function redirecionarUsuarioLogadoParaDashboardIndex() {
 
 function configurarRedirecionamentoAposLoginIndex() {
   if (!window._supabase || window.fsIndexRedirectLoginConfigurado === true) return;
-
   window.fsIndexRedirectLoginConfigurado = true;
 
   _supabase.auth.onAuthStateChange((event, session) => {
@@ -125,10 +122,10 @@ function homeIndexMostrarVisao(plano) {
       ? 'home-plano-basico'
       : 'home-plano-gratis';
 
-  const secao = document.getElementById(id);
+  const secao = document.getElementById(id) || document.getElementById('home-plano-gratis');
   if (secao) {
     secao.classList.add('ativo');
-    secao.style.display = 'block';
+    secao.style.display = 'grid';
   }
 }
 
@@ -174,14 +171,29 @@ function homeIndexPreencherMetricasBasico(orcamentos) {
   homeIndexSetTexto('home-basico-valor', homeIndexFormatarMoeda(valorAprovado));
 }
 
+function fsHomeVendedoraAplicar() {
+  if (!indexEstaNaHome()) return;
+
+  document.querySelectorAll('#fs-home-planos-pagos-venda, #fs-home-desejo-produto, #fs-home-forum-social').forEach(el => el.remove());
+
+  const linksForum = document.querySelectorAll('a[href="/social.html"]');
+  linksForum.forEach(link => {
+    link.href = '/forum.html';
+  });
+}
+
 async function homeIndexAplicarPlano() {
   try {
-    if (!window._supabase) return;
+    if (!window._supabase) {
+      fsHomeVendedoraAplicar();
+      return;
+    }
 
     const { data: { session } } = await _supabase.auth.getSession();
 
     if (!session?.user?.id) {
       homeIndexMostrarVisao('gratis');
+      fsHomeVendedoraAplicar();
       return;
     }
 
@@ -201,6 +213,7 @@ async function homeIndexAplicarPlano() {
     if (data?.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
 
     homeIndexMostrarVisao(plano);
+    fsHomeVendedoraAplicar();
 
     if (plano === 'basico') {
       const orcamentos = await homeIndexBuscarOrcamentos(session.user.id);
@@ -208,12 +221,14 @@ async function homeIndexAplicarPlano() {
     }
   } catch (error) {
     console.warn('Erro ao aplicar home por plano:', error);
+    fsHomeVendedoraAplicar();
   }
 }
 
 async function inicializarIndexFS() {
   esconderSplashIndex();
   configurarRedirecionamentoAposLoginIndex();
+  fsHomeVendedoraAplicar();
 
   const params = new URLSearchParams(window.location.search);
 

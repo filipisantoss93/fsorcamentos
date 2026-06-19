@@ -1,4 +1,4 @@
-/* FS Orçamentos - simplifica anúncios de planos na home do Plano Grátis */
+/* FS Orçamentos - cards de planos na home do Plano Grátis */
 (function () {
   'use strict';
 
@@ -25,24 +25,24 @@
       body:not(.gerando-pdf) #${BLOCO_ID} {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px;
-        margin: 26px auto 28px;
-        max-width: 1150px;
+        gap: 12px;
+        margin: 16px auto 18px;
+        max-width: 1120px;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} .fs-plano-card-simples {
         background: #ffffff !important;
-        color: #3e2723 !important;
-        border: 1px solid #e8dccb;
-        border-left: 7px solid #ffc400;
-        border-radius: 24px;
-        padding: 24px;
-        box-shadow: 0 14px 34px rgba(62,39,35,.13);
+        color: #2b211d !important;
+        border: 1px solid #ebe2d7;
+        border-radius: 7px;
+        padding: 14px;
+        box-shadow: 0 3px 10px rgba(47,33,29,.07);
         min-width: 0;
       }
 
-      body:not(.gerando-pdf) #${BLOCO_ID} .fs-plano-card-simples.premium {
-        border-left-color: #18b26b;
+      body:not(.gerando-pdf) #${BLOCO_ID} .fs-plano-card-simples:hover {
+        background: #fbf8f4 !important;
+        border-color: #ded3c5;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} .fs-plano-tag {
@@ -51,55 +51,57 @@
         justify-content: center;
         width: fit-content;
         max-width: 100%;
-        background: #3e2723 !important;
-        color: #ffc400 !important;
-        border: 1px solid #ffc400 !important;
-        border-radius: 999px;
-        padding: 8px 13px;
-        font-size: 13px;
+        background: #f8f4ee !important;
+        color: #2f211d !important;
+        border: 1px solid #ded3c5 !important;
+        border-radius: 4px;
+        padding: 4px 7px;
+        font-size: 11px;
         font-weight: 950;
         line-height: 1.2;
-        margin-bottom: 16px;
+        margin-bottom: 9px;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} h2 {
-        color: #3e2723 !important;
-        margin: 0 0 12px;
-        font-size: clamp(24px, 4vw, 34px);
+        color: #2f211d !important;
+        margin: 0 0 7px;
+        font-size: clamp(18px, 2.5vw, 24px);
         line-height: 1.15;
         font-weight: 950;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} p {
-        color: #6d5b52 !important;
-        margin: 0 0 18px;
-        font-size: 16px;
-        line-height: 1.5;
-        font-weight: 780;
+        color: #62554d !important;
+        margin: 0 0 10px;
+        font-size: 13px;
+        line-height: 1.38;
+        font-weight: 700;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} ul {
-        margin: 0 0 22px;
-        padding-left: 20px;
+        margin: 0 0 12px;
+        padding-left: 17px;
         display: grid;
-        gap: 7px;
-        color: #3e2723 !important;
-        font-weight: 850;
-        line-height: 1.38;
+        gap: 4px;
+        color: #2b211d !important;
+        font-size: 12px;
+        font-weight: 760;
+        line-height: 1.32;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} li {
-        color: #3e2723 !important;
+        color: #2b211d !important;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} li::marker {
-        color: #6d4c41;
+        color: #62554d;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} .fs-plano-card-acoes {
-        display: grid;
-        gap: 12px;
-        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} .fs-btn-conhecer,
@@ -107,44 +109,36 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 52px;
-        border-radius: 999px;
-        padding: 13px 18px;
+        min-height: 34px;
+        border-radius: 4px;
+        padding: 8px 11px;
         text-decoration: none;
+        font-size: 12px;
         font-weight: 950;
-        letter-spacing: .3px;
-        text-transform: uppercase;
         box-sizing: border-box;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} .fs-btn-conhecer {
-        background: #3e2723 !important;
+        background: #2f211d !important;
         color: #ffc400 !important;
-        border: 2px solid #ffc400 !important;
+        border: 1px solid #2f211d !important;
       }
 
       body:not(.gerando-pdf) #${BLOCO_ID} .fs-btn-como-funciona {
-        width: fit-content;
         background: #ffffff !important;
-        color: #3e2723 !important;
-        border: 2px solid #d8c9b8 !important;
-        padding-inline: 24px;
+        color: #2f211d !important;
+        border: 1px solid #d7ccc8 !important;
       }
 
       @media (max-width: 760px) {
         body:not(.gerando-pdf) #${BLOCO_ID} {
           grid-template-columns: 1fr;
-          gap: 16px;
+          gap: 10px;
         }
 
         body:not(.gerando-pdf) #${BLOCO_ID} .fs-plano-card-simples {
-          padding: 22px 18px;
-          border-radius: 22px;
-        }
-
-        body:not(.gerando-pdf) #${BLOCO_ID} .fs-btn-conhecer,
-        body:not(.gerando-pdf) #${BLOCO_ID} .fs-btn-como-funciona {
-          width: 100%;
+          padding: 12px;
+          border-radius: 7px;
         }
       }
     `;
@@ -161,7 +155,11 @@
       '.home-whatsapp-section',
       '.home-aprovacao-section',
       '.home-status-section',
-      '.home-comparativo-section'
+      '.home-comparativo-section',
+      '.whatsapp-preview-home',
+      '.cliente-aprovacao-home',
+      '.status-orcamentos-home',
+      '.comparativo-home:not(.fs-visitante-comparativo-wrapper)'
     ];
 
     seletores.forEach((seletor) => {
@@ -173,19 +171,24 @@
     });
   }
 
+  function removerDuplicados() {
+    const novos = Array.from(document.querySelectorAll(`#${BLOCO_ID}`));
+    novos.slice(1).forEach((el) => el.remove());
+  }
+
   function criarCards() {
     const bloco = document.createElement('section');
     bloco.id = BLOCO_ID;
     bloco.setAttribute('aria-label', 'Planos recomendados do FS Orçamentos');
     bloco.innerHTML = `
       <article class="fs-plano-card-simples basico">
-        <span class="fs-plano-tag">⭐ Básico a partir de R$ 19,90/mês</span>
+        <span class="fs-plano-tag">Básico • R$ 19,90/mês</span>
         <h2>Venda com link pelo WhatsApp</h2>
-        <p>O Plano Básico é para quem quer salvar orçamentos, enviar link para o cliente e acompanhar status.</p>
+        <p>Para salvar orçamentos, enviar link para o cliente e acompanhar status.</p>
         <ul>
           <li>PDF profissional sem anúncios</li>
           <li>Histórico e gestão de orçamentos</li>
-          <li>Link para aprovação ou recusa do cliente</li>
+          <li>Link de aprovação ou recusa</li>
           <li>Resumo financeiro de orçamentos</li>
         </ul>
         <div class="fs-plano-card-acoes">
@@ -195,9 +198,9 @@
       </article>
 
       <article class="fs-plano-card-simples premium">
-        <span class="fs-plano-tag">🚀 Premium a partir de R$ 69,90/mês</span>
+        <span class="fs-plano-tag">Gestão • R$ 69,90/mês</span>
         <h2>Gestão completa para oficina e serviços</h2>
-        <p>O Premium libera clientes, veículos, ordens de serviço, estoque e controle profissional da execução.</p>
+        <p>Clientes, veículos, OS, estoque e controle profissional da execução.</p>
         <ul>
           <li>Cadastro de clientes e veículos</li>
           <li>Ordens de serviço com PDF</li>
@@ -205,7 +208,7 @@
           <li>Histórico por cliente, veículo e OS</li>
         </ul>
         <div class="fs-plano-card-acoes">
-          <a href="/planos.html#assinar-plano-premium" class="fs-btn-conhecer">Conhecer Premium</a>
+          <a href="/planos.html#assinar-plano-premium" class="fs-btn-conhecer">Conhecer Gestão</a>
           <a href="/manual-premium.html" class="fs-btn-como-funciona">Ver como funciona</a>
         </div>
       </article>
@@ -233,6 +236,7 @@
 
     bloco.style.display = '';
     bloco.removeAttribute('aria-hidden');
+    removerDuplicados();
   }
 
   function aplicar() {

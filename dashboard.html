@@ -15,108 +15,529 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    body {
+      background: #f4efe8 !important;
+      color: #2b211d !important;
+    }
+
+    #dashboard-conteudo.dashboard-page {
+      width: min(1180px, calc(100% - 16px));
+      margin: 10px auto 24px;
+      padding: 0;
+    }
+
+    .dash-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e4d8cc;
+      border-radius: 7px;
+      padding: 12px 14px;
+      box-shadow: 0 3px 10px rgba(47, 33, 29, .07);
+      margin-bottom: 10px;
+    }
+
+    .dash-header h1 {
+      margin: 0;
+      color: #2f211d;
+      font-size: 24px;
+      line-height: 1.1;
+      font-weight: 950;
+    }
+
+    .dash-header p {
+      margin: 4px 0 0;
+      color: #62554d;
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 750;
+    }
+
+    .dash-chip {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 7px;
+      border-radius: 4px;
+      background: #f8f4ee;
+      border: 1px solid #e4d8cc;
+      color: #3e2723;
+      font-size: 10.5px;
+      font-weight: 950;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .dash-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .dash-btn,
+    .dash-btn-secondary {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 950;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid #2f211d;
+    }
+
+    .dash-btn {
+      background: #2f211d;
+      color: #ffc400;
+    }
+
+    .dash-btn-secondary {
+      background: #ffffff;
+      color: #2f211d;
+      border-color: #d7ccc8;
+    }
+
+    .dash-alerta {
+      display: none;
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+      border-left: 4px solid #f97316;
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-size: 12px;
+      font-weight: 850;
+      margin-bottom: 10px;
+    }
+
+    .dash-loading {
+      background: #ffffff;
+      border: 1px solid #e4d8cc;
+      border-radius: 7px;
+      padding: 10px 12px;
+      color: #62554d;
+      font-weight: 850;
+      margin-bottom: 10px;
+    }
+
+    .dash-section {
+      background: #ffffff;
+      border: 1px solid #e4d8cc;
+      border-radius: 7px;
+      box-shadow: 0 3px 10px rgba(47, 33, 29, .07);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .dash-section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      background: #f8f4ee;
+      border-bottom: 1px solid #e9ded3;
+    }
+
+    .dash-section-head h2,
+    .dash-section-head h3 {
+      margin: 0;
+      color: #2f211d;
+      font-size: 17px;
+      line-height: 1.15;
+      font-weight: 950;
+    }
+
+    .dash-section-head p {
+      margin: 3px 0 0;
+      color: #62554d;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .dash-body {
+      padding: 10px;
+    }
+
+    .dash-grid-2,
+    .dash-main-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      align-items: start;
+    }
+
+    .dash-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .dash-card {
+      min-width: 0;
+      background: #ffffff;
+      border: 1px solid #e4d8cc;
+      border-radius: 6px;
+      padding: 8px 9px;
+      box-shadow: none;
+    }
+
+    .dash-card:nth-child(even) {
+      background: #fbf8f4;
+    }
+
+    .dash-card strong,
+    .dash-card h2 {
+      display: block;
+      margin: 0;
+      color: #2f211d;
+      font-size: 20px;
+      line-height: 1.08;
+      font-weight: 950;
+      word-break: break-word;
+    }
+
+    .dash-card span {
+      display: block;
+      margin-bottom: 4px;
+      color: #62554d;
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 950;
+      line-height: 1.15;
+    }
+
+    .dash-card p,
+    .dash-card small {
+      display: block;
+      margin: 3px 0 0;
+      color: #62554d;
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .dash-card.destaque {
+      background: #2f211d;
+      border-color: #2f211d;
+    }
+
+    .dash-card.destaque span,
+    .dash-card.destaque p,
+    .dash-card.destaque small {
+      color: #fffaf0;
+    }
+
+    .dash-card.destaque strong,
+    .dash-card.destaque h2 {
+      color: #ffc400;
+    }
+
+    .dash-list-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .dash-table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #e4d8cc;
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .dash-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      background: #ffffff;
+    }
+
+    .dash-table th,
+    .dash-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid #ebe2d7;
+      text-align: left;
+      vertical-align: middle;
+      color: #2b211d;
+      font-size: 11.5px;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .dash-table th {
+      background: #f8f4ee;
+      color: #2f211d;
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 950;
+    }
+
+    .dash-table tbody tr:nth-child(even) {
+      background: #fbf8f4;
+    }
+
+    .dash-table small {
+      display: block;
+      color: #62554d;
+      font-size: 9.5px;
+      line-height: 1.1;
+      margin-top: 2px;
+      font-weight: 700;
+    }
+
+    .dash-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid #e4d8cc;
+      background: #f3eee7;
+      color: #2f211d;
+      font-size: 9px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .dash-status.aprovado,
+    .dash-status.concluida,
+    .dash-status.ativo,
+    .dash-status.pago {
+      background: #ecfdf5;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .dash-status.pendente,
+    .dash-status.aberta,
+    .dash-status.em_execucao,
+    .dash-status.baixo {
+      background: #fff7ed;
+      color: #9a3412;
+      border-color: #fed7aa;
+    }
+
+    .dash-status.recusado,
+    .dash-status.cancelado,
+    .dash-status.inativo {
+      background: #fff5f5;
+      color: #b91c1c;
+      border-color: #fecaca;
+    }
+
+    .dash-vazio {
+      padding: 10px;
+      color: #62554d;
+      font-size: 12px;
+      font-weight: 750;
+      text-align: center;
+    }
+
+    .dash-health-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .dash-health-item {
+      border: 1px solid #e4d8cc;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 8px 9px;
+    }
+
+    .dash-health-item strong {
+      display: block;
+      color: #2f211d;
+      font-size: 13px;
+      line-height: 1.2;
+      margin-bottom: 3px;
+    }
+
+    .dash-health-item span {
+      display: block;
+      color: #62554d;
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .dash-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    footer {
+      margin-top: 10px !important;
+    }
+
+    @media (max-width: 920px) {
+      .dash-metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .dash-main-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 680px) {
+      #dashboard-conteudo.dashboard-page { width: min(100% - 10px, 1180px); margin-top: 8px; }
+      .dash-header { grid-template-columns: 1fr; padding: 10px; }
+      .dash-header h1 { font-size: 21px; }
+      .dash-actions { justify-content: stretch; }
+      .dash-actions .dash-btn,
+      .dash-actions .dash-btn-secondary { flex: 1 1 auto; }
+      .dash-section-head { padding: 9px 10px; }
+      .dash-body { padding: 8px; }
+      .dash-card { padding: 7px; }
+      .dash-card strong,
+      .dash-card h2 { font-size: 17px; }
+      .dash-table th,
+      .dash-table td { padding: 6px 4px; font-size: 10px; line-height: 1.15; }
+      .dash-table small { font-size: 8.8px; max-height: 20px; overflow: hidden; }
+      .dash-status { font-size: 8px; padding: 2px 3px; }
+      .dash-health-list { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 
 <body>
   <div id="header-container"></div>
 
-  <main id="dashboard-conteudo" class="fs-page" style="display:none;">
-    <div id="dashboard-loading" class="fs-card">Carregando Dashboard...</div>
-    <div id="dashboard-alerta" class="fs-card" style="display:none;"></div>
+  <main id="dashboard-conteudo" class="dashboard-page" style="display:none;">
+    <div id="dashboard-loading" class="dash-loading">Carregando Dashboard...</div>
+    <div id="dashboard-alerta" class="dash-alerta"></div>
 
-    <section class="fs-page-header">
+    <section class="dash-header">
       <div>
-        <span class="fs-badge">📊 Dashboard</span>
-        <h1 id="dashboard-titulo">Central da sua gestão</h1>
-        <p id="dashboard-subtitulo">Acompanhe orçamentos, clientes, ordens de serviço e indicadores importantes do FS Orçamentos em uma visão única.</p>
+        <span class="dash-chip">Dashboard</span>
+        <h1 id="dashboard-titulo">Saúde da empresa</h1>
+        <p id="dashboard-subtitulo">Acompanhe o que está em aberto, faturamento, estoque e pendências operacionais.</p>
       </div>
-      <div class="fs-actions" style="margin-top:0;">
-        <a href="/gerador.html" class="fs-btn-primary">+ Novo orçamento</a>
-        <a href="/orcamentos.html" class="fs-btn-secondary">Ver orçamentos</a>
+      <div class="dash-actions">
+        <a href="/gerador.html" class="dash-btn">+ Orçamento</a>
+        <a href="/gestao.html#ordens" class="dash-btn-secondary">Gestão</a>
+        <a href="/orcamentos.html" class="dash-btn-secondary">Orçamentos</a>
       </div>
     </section>
 
-    <section class="fs-grid-2" aria-label="Indicadores principais">
-      <div class="fs-card"><span class="fs-badge-info fs-badge">Orçamentos</span><h2 id="dash-total-orcamentos">0</h2><p>Total registrado na conta</p></div>
-      <div class="fs-card"><span class="fs-badge-success fs-badge">Aprovados</span><h2 id="dash-orcamentos-aprovados">0</h2><p>Propostas aprovadas ou em serviço</p></div>
-      <div class="fs-card"><span class="fs-badge">Pendentes</span><h2 id="dash-orcamentos-pendentes">0</h2><p>Aguardando retorno do cliente</p></div>
-      <div class="fs-card"><span class="fs-badge-success fs-badge">Total aprovado</span><h2 id="dash-valor-aprovado">R$ 0,00</h2><p>Soma dos orçamentos aprovados</p></div>
-      <div class="fs-card"><span class="fs-badge">Clientes</span><h2 id="dash-total-clientes">0</h2><p>Base de clientes cadastrados</p></div>
-      <div class="fs-card"><span class="fs-badge-info fs-badge">OS abertas</span><h2 id="dash-os-abertas">0</h2><p>Ordens aguardando execução</p></div>
-      <div class="fs-card"><span class="fs-badge-success fs-badge">OS concluídas</span><h2 id="dash-os-concluidas">0</h2><p>Serviços finalizados</p></div>
-      <div class="fs-card"><span class="fs-badge-danger fs-badge">Estoque baixo</span><h2 id="dash-estoque-baixo">0</h2><p>Itens abaixo do mínimo</p></div>
+    <section class="dash-section" aria-label="Indicadores principais">
+      <div class="dash-section-head">
+        <div>
+          <h2>Indicadores principais</h2>
+          <p>Visão rápida comercial, operacional e financeira.</p>
+        </div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-metrics-grid">
+          <div class="dash-card"><span>Orçamentos</span><strong id="dash-total-orcamentos">0</strong><small>Total registrado</small></div>
+          <div class="dash-card"><span>Aprovados</span><strong id="dash-orcamentos-aprovados">0</strong><small>Propostas ganhas</small></div>
+          <div class="dash-card"><span>Pendentes</span><strong id="dash-orcamentos-pendentes">0</strong><small>Aguardando retorno</small></div>
+          <div class="dash-card destaque"><span>Total aprovado</span><strong id="dash-valor-aprovado">R$ 0,00</strong><small>Receita potencial</small></div>
+          <div class="dash-card"><span>Clientes</span><strong id="dash-total-clientes">0</strong><small>Base cadastrada</small></div>
+          <div class="dash-card"><span>OS abertas</span><strong id="dash-os-abertas">0</strong><small>Em aberto</small></div>
+          <div class="dash-card"><span>OS concluídas</span><strong id="dash-os-concluidas">0</strong><small>Finalizadas</small></div>
+          <div class="dash-card"><span>Estoque baixo</span><strong id="dash-estoque-baixo">0</strong><small>Itens críticos</small></div>
+        </div>
+      </div>
     </section>
 
-    <section class="fs-grid" style="align-items:start; margin-top:18px;">
-      <div class="fs-list">
-        <article class="fs-card">
-          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
-            <div>
-              <h2>Resumo financeiro</h2>
-              <p>Visão rápida do que foi aprovado, pendente e recusado.</p>
-            </div>
-            <a href="/orcamentos.html" class="fs-btn-secondary">Abrir</a>
+    <section class="dash-main-grid">
+      <div class="dash-list-grid">
+        <article class="dash-section">
+          <div class="dash-section-head">
+            <div><h2>Saúde financeira</h2><p>Valores em aprovação, recusas e eficiência comercial.</p></div>
+            <a href="/orcamentos.html" class="dash-btn-secondary">Abrir</a>
           </div>
-          <div class="fs-grid-2">
-            <div class="fs-list-item"><span>Valor pendente</span><strong id="dash-valor-pendente">R$ 0,00</strong></div>
-            <div class="fs-list-item"><span>Valor recusado</span><strong id="dash-valor-recusado">R$ 0,00</strong></div>
-            <div class="fs-list-item"><span>Ticket médio</span><strong id="dash-ticket-medio">R$ 0,00</strong></div>
-            <div class="fs-list-item"><span>Taxa de aprovação</span><strong id="dash-taxa-aprovacao">0%</strong></div>
+          <div class="dash-body">
+            <div class="dash-grid-2">
+              <div class="dash-card"><span>Valor pendente</span><strong id="dash-valor-pendente">R$ 0,00</strong><small>Orçamentos aguardando resposta</small></div>
+              <div class="dash-card"><span>Valor recusado</span><strong id="dash-valor-recusado">R$ 0,00</strong><small>Oportunidades perdidas</small></div>
+              <div class="dash-card"><span>Ticket médio</span><strong id="dash-ticket-medio">R$ 0,00</strong><small>Média dos aprovados</small></div>
+              <div class="dash-card"><span>Taxa aprovação</span><strong id="dash-taxa-aprovacao">0%</strong><small>Conversão de propostas</small></div>
+            </div>
           </div>
         </article>
 
-        <article class="fs-card">
-          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
-            <div>
-              <h2>Últimos orçamentos</h2>
-              <p>Acompanhe os registros mais recentes.</p>
-            </div>
-            <a href="/orcamentos.html" class="fs-btn-secondary">Ver todos</a>
+        <article class="dash-section">
+          <div class="dash-section-head">
+            <div><h2>O que exige atenção</h2><p>Pendências que afetam a operação e o dinheiro a receber.</p></div>
           </div>
-          <div id="dashboard-lista-orcamentos" class="fs-list"><div class="fs-list-item">Nenhum orçamento carregado ainda.</div></div>
+          <div class="dash-body">
+            <div id="dashboard-saude-operacional" class="dash-health-list">
+              <div class="dash-health-item"><strong>Carregando...</strong><span>Calculando alertas da empresa.</span></div>
+            </div>
+          </div>
         </article>
 
-        <article class="fs-card">
-          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
-            <div>
-              <h2>Ordens de serviço</h2>
-              <p>Resumo operacional para o plano Premium.</p>
-            </div>
-            <a href="/ordens.html" class="fs-btn-secondary">Ver OS</a>
+        <article class="dash-section">
+          <div class="dash-section-head">
+            <div><h2>Últimos orçamentos</h2><p>Registros recentes para acompanhar venda e aprovação.</p></div>
+            <a href="/orcamentos.html" class="dash-btn-secondary">Ver todos</a>
           </div>
-          <div id="dashboard-lista-os" class="fs-list"><div class="fs-list-item">Nenhuma ordem de serviço carregada ainda.</div></div>
+          <div class="dash-body">
+            <div id="dashboard-lista-orcamentos"><div class="dash-vazio">Nenhum orçamento carregado ainda.</div></div>
+          </div>
+        </article>
+
+        <article class="dash-section">
+          <div class="dash-section-head">
+            <div><h2>Ordens de serviço</h2><p>OS recentes e status de execução.</p></div>
+            <a href="/gestao.html#ordens" class="dash-btn-secondary">Ver OS</a>
+          </div>
+          <div class="dash-body">
+            <div id="dashboard-lista-os"><div class="dash-vazio">Nenhuma ordem carregada ainda.</div></div>
+          </div>
         </article>
       </div>
 
-      <aside class="fs-list">
-        <article class="fs-card">
-          <h3>Ações rápidas</h3>
-          <p>Atalhos para as principais rotinas.</p>
-          <div class="fs-grid-2" style="margin-top:14px;">
-            <a href="/gerador.html" class="fs-btn-primary">Orçamento</a>
-            <a href="/clientes.html" class="fs-btn-secondary">Cliente</a>
-            <a href="/ordens.html" class="fs-btn-secondary">OS</a>
-            <a href="/estoque.html" class="fs-btn-secondary">Estoque</a>
-            <a href="/veiculos.html" class="fs-btn-secondary">Veículos</a>
-            <a href="/painel.html" class="fs-btn-secondary">Painel</a>
+      <aside class="dash-list-grid">
+        <article class="dash-section">
+          <div class="dash-section-head">
+            <div><h3>Ações rápidas</h3><p>Atalhos para operar sem procurar no menu.</p></div>
           </div>
-        </article>
-
-        <article class="fs-card">
-          <div class="fs-page-header" style="box-shadow:none; margin:0 0 14px;">
-            <div>
-              <h3>Clientes recentes</h3>
-              <p>Últimos contatos cadastrados.</p>
+          <div class="dash-body">
+            <div class="dash-actions-grid">
+              <a href="/gerador.html" class="dash-btn">Orçamento</a>
+              <a href="/gestao.html#clientes" class="dash-btn-secondary">Cliente</a>
+              <a href="/gestao.html#ordens" class="dash-btn-secondary">OS</a>
+              <a href="/gestao.html#estoque" class="dash-btn-secondary">Estoque</a>
+              <a href="/gestao.html#agenda" class="dash-btn-secondary">Agenda</a>
+              <a href="/painel.html" class="dash-btn-secondary">Painel</a>
             </div>
-            <a href="/clientes.html" class="fs-btn-secondary">Abrir</a>
           </div>
-          <div id="dashboard-lista-clientes" class="fs-list"><div class="fs-list-item">Nenhum cliente carregado ainda.</div></div>
         </article>
 
-        <article id="dashboard-premium-box" class="fs-card">
-          <h3>Gestão Premium</h3>
-          <p id="dashboard-premium-texto">Clientes, ordens de serviço, veículos, estoque, agenda e relatórios avançados fazem parte da evolução Premium.</p>
-          <a href="/planos.html" class="fs-btn-primary">Ver planos</a>
+        <article class="dash-section">
+          <div class="dash-section-head">
+            <div><h3>Clientes recentes</h3><p>Últimos contatos cadastrados.</p></div>
+            <a href="/gestao.html#clientes" class="dash-btn-secondary">Abrir</a>
+          </div>
+          <div class="dash-body">
+            <div id="dashboard-lista-clientes"><div class="dash-vazio">Nenhum cliente carregado ainda.</div></div>
+          </div>
+        </article>
+
+        <article class="dash-section">
+          <div class="dash-section-head">
+            <div><h3>Operação Premium</h3><p>Resumo do módulo de gestão.</p></div>
+          </div>
+          <div class="dash-body">
+            <div class="dash-grid-2">
+              <div class="dash-card"><span>Veículos</span><strong id="dash-total-veiculos">0</strong><small>Cadastrados</small></div>
+              <div class="dash-card"><span>Produtos</span><strong id="dash-total-produtos">0</strong><small>No estoque</small></div>
+              <div class="dash-card"><span>Agenda</span><strong id="dash-agenda-aberta">0</strong><small>Compromissos abertos</small></div>
+              <div class="dash-card"><span>A receber</span><strong id="dash-os-a-receber">R$ 0,00</strong><small>OS sem pagamento</small></div>
+            </div>
+          </div>
         </article>
       </aside>
     </section>

@@ -1,6 +1,7 @@
 /* =========================================================
-   FS ORÇAMENTOS — AÇÕES DO TÓPICO EM MENU
-   Agrupa ações do fórum em menu de 3 pontinhos.
+   FS ORÇAMENTOS — AÇÕES DO TÓPICO EM MENU + PERFIL SOCIAL
+   - Agrupa ações do fórum em menu de 3 pontinhos.
+   - Torna nome/avatar do autor clicável para perfil.html?id=...
    ========================================================= */
 
 (function () {
@@ -14,6 +15,56 @@
       menu.classList.remove('aberto');
     });
   }
+
+  function fsForumInstalarCssPerfil() {
+    if (document.getElementById('fs-forum-perfil-social-css')) return;
+    const style = document.createElement('style');
+    style.id = 'fs-forum-perfil-social-css';
+    style.textContent = `
+      .forum-autor-linha.fs-autor-clicavel {
+        cursor: pointer !important;
+        border-radius: 6px !important;
+        padding: 2px !important;
+        margin: -2px !important;
+        transition: background .15s ease !important;
+      }
+
+      .forum-autor-linha.fs-autor-clicavel:hover {
+        background: #f8f4ee !important;
+      }
+
+      .forum-autor-linha.fs-autor-clicavel .forum-autor-texto strong {
+        text-decoration: none !important;
+      }
+
+      .forum-autor-linha.fs-autor-clicavel:hover .forum-autor-texto strong {
+        text-decoration: underline !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function fsForumIrPerfilAutor(usuarioId, event) {
+    if (event) event.stopPropagation();
+    if (!usuarioId) return;
+    window.location.href = `/perfil.html?id=${encodeURIComponent(usuarioId)}`;
+  }
+
+  function fsForumInstalarPerfilAutor() {
+    if (typeof window.forumAutorLinhaHtml !== 'function') return;
+    if (window.forumAutorLinhaHtml.__fsPerfilSocial) return;
+
+    const original = window.forumAutorLinhaHtml;
+    window.forumAutorLinhaHtml = function forumAutorLinhaHtmlComPerfil(registro, subtitulo = '') {
+      const html = original(registro, subtitulo);
+      const usuarioId = typeof registro === 'string' ? registro : registro?.usuario_id;
+      if (!usuarioId) return html;
+      return html.replace('class="forum-autor-linha"', `class="forum-autor-linha fs-autor-clicavel" onclick="fsForumIrPerfilAutor('${fsForumEsc(usuarioId)}', event)" title="Ver perfil"`);
+    };
+    window.forumAutorLinhaHtml.__fsPerfilSocial = true;
+  }
+
+  window.fsForumIrPerfilAutor = fsForumIrPerfilAutor;
 
   window.forumToggleMenuAcoes = function forumToggleMenuAcoes(event) {
     if (event) event.stopPropagation();
@@ -50,6 +101,10 @@
 
     const itens = [];
 
+    if (topico.usuario_id) {
+      itens.push(`<button type="button" class="forum-menu-item destaque" onclick="fsForumIrPerfilAutor('${fsForumEsc(topico.usuario_id)}', event)">👤 Ver perfil</button>`);
+    }
+
     if (dono && !resolvido) {
       itens.push('<button type="button" class="forum-menu-item destaque" onclick="forumExecutarAcaoMenuTopico(\'resolver\')">✅ Marcar como resolvido</button>');
     }
@@ -79,4 +134,9 @@
   document.addEventListener('click', event => {
     if (!event.target.closest('.forum-acoes-menu-wrap')) fsForumFecharMenusAcoes();
   });
+
+  fsForumInstalarCssPerfil();
+  fsForumInstalarPerfilAutor();
+  setTimeout(fsForumInstalarPerfilAutor, 300);
+  setTimeout(fsForumInstalarPerfilAutor, 1000);
 })();

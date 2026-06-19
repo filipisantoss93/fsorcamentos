@@ -119,8 +119,6 @@ const FS_CONFIG_SCRIPTS_GLOBAIS = [
 ];
 
 const FS_CONFIG_SCRIPTS_FINAIS = [
-  ['fs-contrast-final.js', 'fs-contrast-final-js'],
-  ['fs-header-offset-fix.js', 'fs-header-offset-fix-js'],
   ['fs-stable-visual-fix.js', 'fs-stable-visual-fix-js']
 ];
 
@@ -147,9 +145,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
       ['index-ads-restore.js', 'fs-index-ads-restore-js'],
       ['index-cache-sync.js', 'fs-index-cache-sync-js'],
       ['index-empresa-card.js', 'fs-index-empresa-card-js'],
-      ['index-empresa-contrast-fix.js', 'fs-index-empresa-contrast-fix-js'],
-      ['dashboard-premium-index.js', 'fs-dashboard-premium-index-js'],
-      ['index-dashboard-tag-fix.js', 'fs-index-dashboard-tag-fix-js']
+      ['dashboard-premium-index.js', 'fs-dashboard-premium-index-js']
     ]
   },
   {
@@ -162,20 +158,13 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
     paginas: ['/gerador', '/gerador.html'],
     scripts: [
       ['gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js'],
-      ['gerador-acoes-fix.js', 'fs-gerador-acoes-fix-js'],
       ['gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js']
     ]
   },
   {
-    paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html'],
+    paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html'],
     scripts: [
       ['fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js']
-    ]
-  },
-  {
-    paginas: ['/agenda', '/agenda.html'],
-    scripts: [
-      ['agenda-visual-fix.js', 'fs-agenda-visual-fix-js']
     ]
   },
   {
@@ -194,15 +183,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   {
     paginas: ['/orcamentos', '/orcamentos.html'],
     scripts: [
-      ['orcamentos-pdf.js', 'fs-orcamentos-pdf-js'],
-      ['orcamentos-resumo-grid-fix.js', 'fs-orcamentos-resumo-grid-fix-js'],
-      ['orcamentos-modal-buttons-fix.js', 'fs-orcamentos-modal-buttons-fix-js']
-    ]
-  },
-  {
-    paginas: ['/planos', '/planos.html'],
-    scripts: [
-      ['planos-visual-fix.js', 'fs-planos-visual-fix-js']
+      ['orcamentos-pdf.js', 'fs-orcamentos-pdf-js']
     ]
   },
   {
@@ -221,9 +202,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
 ];
 
 const FS_CONFIG_SCRIPTS_FINAIS_INDEX = [
-  ['index-visual-final-fix.js', 'fs-index-visual-final-fix-js'],
-  ['index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js'],
-  ['index-gratis-dom-cleaner.js', 'fs-index-gratis-dom-cleaner-js']
+  ['index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js']
 ];
 
 function fsConfigNormalizarPathAtual() {
@@ -295,7 +274,6 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS);
   fsConfigCarregarScriptsDaPagina(pathAtual);
 
-  // Camadas finais: devem entrar por último para corrigir visual sem quebrar funcionalidades.
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS);
 
   if (fsConfigEhIndex(pathAtual)) {

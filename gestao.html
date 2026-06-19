@@ -16,51 +16,66 @@
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #f4efe8;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #header-container {
+      flex: 0 0 auto;
+      position: relative;
+      z-index: 100;
+    }
+
     .gestao-page {
-      width: min(1180px, calc(100% - 16px));
-      margin: 0 auto;
-      padding: 16px 0 24px;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      margin: 0;
+      padding: 6px 0 0;
+      display: flex;
+      flex-direction: column;
+      background: #f4efe8;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     .gestao-topo {
-      background: linear-gradient(135deg, #fff7df, #f7f2ea);
-      border: 1px solid #e0d6c8;
-      border-top: 5px solid #ffc400;
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 6px 18px rgba(62, 39, 35, 0.08);
-      margin-bottom: 12px;
-    }
-
-    .gestao-topo h1 {
-      margin: 0;
-      color: #3e2723;
-      font-size: clamp(24px, 4vw, 36px);
-      line-height: 1.1;
-    }
-
-    .gestao-topo p {
-      margin: 6px 0 0;
-      color: #6d4c41;
-      font-weight: 700;
+      display: none !important;
     }
 
     .gestao-tabs-wrap {
-      background: #ffffff;
-      border: 1px solid #e0d6c8;
-      border-radius: 12px;
-      padding: 10px;
-      box-shadow: 0 6px 18px rgba(62, 39, 35, 0.08);
-      margin-bottom: 12px;
+      flex: 0 0 auto;
       position: sticky;
-      top: 78px;
-      z-index: 50;
+      top: 0;
+      z-index: 80;
+      width: 100%;
+      background: #ffffff;
+      border: 0;
+      border-top: 1px solid #eadfd2;
+      border-bottom: 1px solid #d8ccc0;
+      border-radius: 0;
+      padding: 5px 6px;
+      box-shadow: 0 2px 8px rgba(47, 33, 29, .08);
+      margin: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      box-sizing: border-box;
     }
 
     .gestao-tabs {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 6px;
+      border-spacing: 4px;
       table-layout: fixed;
     }
 
@@ -72,51 +87,63 @@
 
     .gestao-tab {
       width: 100%;
-      min-height: 38px;
+      min-height: 32px;
       border: 1px solid #d7ccc8;
       background: #fffaf0;
       color: #3e2723;
-      border-radius: 8px;
+      border-radius: 4px;
       font-weight: 900;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 8px 7px;
-      line-height: 1.1;
+      gap: 4px;
+      padding: 6px 7px;
+      line-height: 1.05;
       text-align: center;
+      white-space: nowrap;
+      box-shadow: none;
     }
 
     .gestao-tab.ativo {
       background: #3e2723;
       color: #ffc400;
-      border-color: #ffc400;
+      border-color: #3e2723;
     }
 
     .gestao-frame-box {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
       background: #ffffff;
-      border: 1px solid #e0d6c8;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(62, 39, 35, 0.08);
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
       overflow: hidden;
-      min-height: 70vh;
+      margin: 0;
+      position: relative;
     }
 
     #gestao-frame {
       width: 100%;
-      height: calc(100vh - 230px);
-      min-height: 680px;
+      height: 100%;
+      min-height: 0;
       border: 0;
       display: block;
       background: #f7f2ea;
     }
 
     .gestao-loading {
-      padding: 12px;
-      color: #6d4c41;
-      font-weight: 800;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      padding: 7px 10px;
+      color: #3e2723;
+      font-size: 12px;
+      font-weight: 900;
       background: #fff8e1;
       border-bottom: 1px solid #e0d6c8;
       display: none;
@@ -126,42 +153,28 @@
       display: block;
     }
 
+    body > footer {
+      display: none !important;
+    }
+
     @media (max-width: 760px) {
       .gestao-page {
-        width: min(100% - 10px, 1180px);
-        padding-top: 10px;
-      }
-
-      .gestao-topo {
-        padding: 12px;
-        margin-bottom: 8px;
-      }
-
-      .gestao-topo p {
-        font-size: 13px;
+        padding-top: 5px;
       }
 
       .gestao-tabs-wrap {
-        top: 72px;
-        padding: 6px;
-        margin-bottom: 8px;
-        overflow-x: auto;
+        padding: 4px;
       }
 
       .gestao-tabs {
         min-width: 620px;
-        border-spacing: 5px;
+        border-spacing: 4px;
       }
 
       .gestao-tab {
-        min-height: 34px;
+        min-height: 30px;
         font-size: 11px;
-        padding: 6px 5px;
-      }
-
-      #gestao-frame {
-        height: calc(100vh - 190px);
-        min-height: 560px;
+        padding: 5px 6px;
       }
     }
   </style>
@@ -170,11 +183,6 @@
   <div id="header-container"></div>
 
   <main class="gestao-page">
-    <section class="gestao-topo">
-      <h1>Central de Gestão</h1>
-      <p>Acesse clientes, veículos, ordens de serviço, estoque, agenda, relatórios e recorrentes em um só lugar.</p>
-    </section>
-
     <section class="gestao-tabs-wrap" aria-label="Menu da gestão">
       <table class="gestao-tabs">
         <tr>
@@ -194,13 +202,6 @@
       <iframe id="gestao-frame" title="Módulo de gestão" src="clientes.html?embed=1"></iframe>
     </section>
   </main>
-
-  <footer>
-    <span>© 2026 FS Orçamentos</span>
-    <span> | </span><a href="/privacidade.html">Privacidade</a>
-    <span> | </span><a href="/termos.html">Termos</a>
-    <span> | </span><a href="/contato.html">Contato</a>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
