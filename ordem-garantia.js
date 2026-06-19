@@ -36,7 +36,7 @@
     if(!id)return null;
     const {data,error}=await _supabase
       .from('ordens_servico')
-      .select('id,user_id,numero_os,titulo,cliente_id,veiculo_id,data_abertura,data_conclusao,descricao_servico,garantia_dias,garantia_observacoes,termo_garantia_texto,clientes(nome,cpf_cnpj,whatsapp,email),veiculos(placa,marca,modelo,ano)')
+      .select('id,user_id,numero_os,titulo,cliente_id,veiculo_id,data_abertura,data_conclusao,descricao_servico,valor_total,garantia_dias,garantia_observacoes,termo_garantia_texto,clientes(nome,cpf_cnpj,whatsapp,email),veiculos(placa,marca,modelo,ano)')
       .eq('id',id)
       .eq('user_id',session.user.id)
       .maybeSingle();
@@ -90,7 +90,7 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
       <div class="fs-garantia-campo"><label for="garantia-observacoes-os">Observações da garantia</label><textarea id="garantia-observacoes-os" placeholder="Ex: garantia não cobre mau uso, peças de desgaste natural ou serviços feitos por terceiros."></textarea></div>
       <div class="fs-garantia-campo"><label for="garantia-termo-os">Texto do termo de garantia</label><textarea id="garantia-termo-os"></textarea></div>
       <div class="fs-garantia-termo-preview" id="garantia-termo-preview-os">Termo ainda não gerado.</div>
-      <div class="fs-garantia-acoes"><button type="button" id="btn-salvar-garantia-os">Salvar garantia</button><button type="button" id="btn-gerar-texto-garantia-os" class="sec">Gerar texto automático</button></div>
+      <div class="fs-garantia-acoes"><button type="button" id="btn-salvar-garantia-os">Salvar garantia</button><button type="button" id="btn-gerar-texto-garantia-os" class="sec">Gerar texto automático</button><button type="button" id="btn-pdf-garantia-os" class="sec">Baixar PDF</button></div>
     `;
     body.appendChild(form);
     setVal('garantia-dias-os',dias||'');
@@ -102,6 +102,7 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     document.getElementById('garantia-termo-os')?.addEventListener('input',atualizarPreview);
     document.getElementById('btn-salvar-garantia-os')?.addEventListener('click',salvarGarantia);
     document.getElementById('btn-gerar-texto-garantia-os')?.addEventListener('click',()=>{setVal('garantia-termo-os',textoTermoPadrao({...ordemGarantiaAtual,garantia_dias:Number(val('garantia-dias-os')||0),garantia_observacoes:val('garantia-observacoes-os')}));atualizarPreview();});
+    document.getElementById('btn-pdf-garantia-os')?.addEventListener('click',gerarTermoGarantiaPDF);
   }
 
   function atualizarValidade(){
@@ -128,11 +129,7 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     try{
       const id=obterOrdemId();
       if(!id||!usuarioIdGarantia||!window._supabase)return mostrar('Não foi possível identificar a OS para salvar a garantia.','erro');
-      const payload={
-        garantia_dias:Number(val('garantia-dias-os')||0),
-        garantia_observacoes:val('garantia-observacoes-os')||null,
-        termo_garantia_texto:val('garantia-termo-os')||null
-      };
+      const payload={garantia_dias:Number(val('garantia-dias-os')||0),garantia_observacoes:val('garantia-observacoes-os')||null,termo_garantia_texto:val('garantia-termo-os')||null};
       const btn=document.getElementById('btn-salvar-garantia-os');
       if(btn){btn.disabled=true;btn.textContent='Salvando...'}
       const {error}=await _supabase.from('ordens_servico').update(payload).eq('id',id).eq('user_id',usuarioIdGarantia);
@@ -144,17 +141,43 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     finally{const btn=document.getElementById('btn-salvar-garantia-os');if(btn){btn.disabled=false;btn.textContent='Salvar garantia'}}
   }
 
+  function nomeArquivoGarantia(){
+    const numero=ordemGarantiaAtual?.numero_os?String(ordemGarantiaAtual.numero_os).padStart(6,'0'):'os';
+    return `termo-garantia-os-${numero}.pdf`;
+  }
+
+  function imprimirFallback(texto){
+    const w=window.open('','_blank');
+    if(!w)return alert('Permita pop-ups para gerar o termo.');
+    w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Termo de Garantia</title><style>body{font-family:Arial,sans-serif;color:#000;margin:32px;line-height:1.45}h1{text-align:center;font-size:20px;border-bottom:2px solid #000;padding-bottom:10px}.box{border:1px solid #000;padding:14px;white-space:pre-wrap}.assinatura{margin-top:60px;text-align:center;border-top:1px solid #000;padding-top:8px}</style></head><body><h1>TERMO DE GARANTIA</h1><div class="box">${html(texto)}</div><div class="assinatura">Assinatura do cliente/responsável</div><script>window.print()<\/script></body></html>`);
+    w.document.close();
+  }
+
+  function gerarTermoGarantiaPDF(){
+    const texto=val('garantia-termo-os')||ordemGarantiaAtual?.termo_garantia_texto||textoTermoPadrao(ordemGarantiaAtual||{});
+    if(!window.jspdf||!window.jspdf.jsPDF){imprimirFallback(texto);return;}
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const W=doc.internal.pageSize.getWidth();
+    const H=doc.internal.pageSize.getHeight();
+    const m=14;
+    let y=16;
+    function page(need=16){if(y+need<=H-16)return;rodape();doc.addPage();y=16;}
+    function rodape(){doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(90);doc.text('Gerado pelo FS Orçamentos',m,H-8);doc.text(String(doc.internal.getNumberOfPages()),W-m,H-8,{align:'right'});}
+    doc.setFillColor(0,0,0);doc.rect(0,0,W,12,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('FS Orçamentos • Termo de Garantia',m,8);
+    doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('TERMO DE GARANTIA',m,y);y+=10;
+    doc.setFont('helvetica','normal');doc.setFontSize(9);
+    doc.splitTextToSize(texto,W-m*2).forEach(l=>{page(5);doc.text(l,m,y);y+=4.8;});
+    y+=18;page(28);doc.line(m,y,W-m,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Assinatura do cliente/responsável',W/2,y,{align:'center'});
+    rodape();
+    doc.save(nomeArquivoGarantia());
+  }
+
   function instalarBotaoTermo(){
     const btn=document.getElementById('btn-termo-garantia');
     if(!btn||btn.dataset.fsGarantiaOk==='1')return;
     btn.dataset.fsGarantiaOk='1';
-    btn.addEventListener('click',()=>{
-      const texto=val('garantia-termo-os')||ordemGarantiaAtual?.termo_garantia_texto||textoTermoPadrao(ordemGarantiaAtual||{});
-      const w=window.open('','_blank');
-      if(!w)return alert('Permita pop-ups para gerar o termo.');
-      w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Termo de Garantia</title><style>body{font-family:Arial,sans-serif;color:#000;margin:32px;line-height:1.45}h1{text-align:center;font-size:20px;border-bottom:2px solid #000;padding-bottom:10px}.box{border:1px solid #000;padding:14px;white-space:pre-wrap}.assinatura{margin-top:60px;text-align:center;border-top:1px solid #000;padding-top:8px}</style></head><body><h1>TERMO DE GARANTIA</h1><div class="box">${html(texto)}</div><div class="assinatura">Assinatura do cliente/responsável</div><script>window.print()<\/script></body></html>`);
-      w.document.close();
-    });
+    btn.addEventListener('click',gerarTermoGarantiaPDF);
   }
 
   async function iniciar(){
@@ -164,6 +187,9 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     instalarBotaoTermo();
     setTimeout(instalarBotaoTermo,1200);
   }
+
+  window.fsSalvarGarantiaOS=salvarGarantia;
+  window.fsGerarTermoGarantiaPDF=gerarTermoGarantiaPDF;
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(iniciar,900));
   else setTimeout(iniciar,900);
