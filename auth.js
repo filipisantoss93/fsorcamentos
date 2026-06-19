@@ -91,6 +91,32 @@ function fsResetarBotaoPrincipal() {
   fsDefinirTextoBotao(modoAtual === 'login' ? 'Entrar' : 'Cadastrar', false);
 }
 
+function fsAplicarModoAuth(modo = 'login') {
+  ocultarAreaConfirmacaoEmail();
+
+  const modoFinal = modo === 'cadastro' ? 'cadastro' : 'login';
+  modoAtual = modoFinal;
+
+  const cadastro = modoFinal === 'cadastro';
+  const titulo = document.getElementById('auth-titulo');
+  const linkAlternar = document.getElementById('link-alternar');
+  const grupoConfirmar = document.getElementById('grupo-confirmar-senha');
+  const grupoNome = document.getElementById('grupo-nome');
+  const grupoEmpresa = document.getElementById('grupo-nome-empresa');
+  const grupoWhatsapp = document.getElementById('grupo-whatsapp-empresa');
+
+  if (titulo) titulo.innerText = cadastro ? 'Crie sua Conta' : 'Acesse sua Conta';
+  if (linkAlternar) linkAlternar.innerText = cadastro ? 'Já é cadastrado? Clique aqui.' : 'Não tem cadastro? Clique aqui.';
+
+  [grupoConfirmar, grupoNome, grupoEmpresa, grupoWhatsapp].forEach(el => {
+    if (!el) return;
+    el.style.display = cadastro ? 'block' : 'none';
+    el.classList.toggle('oculto', !cadastro);
+  });
+
+  fsResetarBotaoPrincipal();
+}
+
 function fsEmailRedirectTo() {
   return `${window.location.origin}/index.html?login=1`;
 }
@@ -285,30 +311,14 @@ async function carregarPerfilLocal(session) {
     if (perfil?.plano_status) localStorage.setItem('usuario_plano_status', perfil.plano_status); else localStorage.removeItem('usuario_plano_status');
     if (perfil?.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', perfil.plano_expira_em); else localStorage.removeItem('usuario_plano_expira_em');
     ['nome_empresa','telefone_empresa','endereco_empresa','cnpj_empresa','foto_url'].forEach(campo => {
-      if (perfil?.[campo]) localStorage.setItem(campo, perfil[campo]);
-      else localStorage.removeItem(campo);
+      if (perfil?.[campo] !== undefined && perfil?.[campo] !== null) localStorage.setItem(campo, perfil[campo]);
     });
   } catch (err) { console.error('Erro inesperado ao carregar perfil local:', err); }
 }
 
 function alternarModo(event) {
   if (event) event.preventDefault();
-  ocultarAreaConfirmacaoEmail();
-
-  const titulo = document.getElementById('auth-titulo');
-  const linkAlternar = document.getElementById('link-alternar');
-  const grupoConfirmar = document.getElementById('grupo-confirmar-senha');
-  const grupoNome = document.getElementById('grupo-nome');
-  const grupoEmpresa = document.getElementById('grupo-nome-empresa');
-  const grupoWhatsapp = document.getElementById('grupo-whatsapp-empresa');
-  if (!titulo || !linkAlternar) return;
-
-  const cadastro = modoAtual === 'login';
-  modoAtual = cadastro ? 'cadastro' : 'login';
-  titulo.innerText = cadastro ? 'Crie sua Conta' : 'Acesse sua Conta';
-  linkAlternar.innerText = cadastro ? 'Já é cadastrado? Clique aqui.' : 'Não tem cadastro? Clique aqui.';
-  [grupoConfirmar, grupoNome, grupoEmpresa, grupoWhatsapp].forEach(el => { if (el) el.style.display = cadastro ? 'block' : 'none'; });
-  fsResetarBotaoPrincipal();
+  fsAplicarModoAuth(modoAtual === 'login' ? 'cadastro' : 'login');
 }
 
 async function enviarFormulario() {
@@ -434,6 +444,8 @@ function abrirModalLogin() {
     return;
   }
 
+  fsAplicarModoAuth('login');
+
   if (authArea) authArea.style.display = 'block';
   if (authContainer) authContainer.style.display = 'block';
   modal.style.display = 'flex';
@@ -488,6 +500,7 @@ function inserirBotoesSociaisLogin() {
 function configurarEventosModais() {
   const modalLogin = document.getElementById('modal-login');
   inserirBotoesSociaisLogin();
+  fsAplicarModoAuth('login');
   if (modalLogin && modalLogin.dataset.eventosConfigurados !== 'sim') {
     modalLogin.dataset.eventosConfigurados = 'sim';
     modalLogin.addEventListener('click', event => {
@@ -532,3 +545,4 @@ window.usuarioPodeSalvarOrcamento = usuarioPodeSalvarOrcamento;
 window.usuarioPodeSalvarOrcamentoLocal = usuarioPodeSalvarOrcamentoLocal;
 window.usuarioPremium = usuarioPremium;
 window.reenviarEmailConfirmacao = reenviarEmailConfirmacao;
+window.fsAplicarModoAuth = fsAplicarModoAuth;
