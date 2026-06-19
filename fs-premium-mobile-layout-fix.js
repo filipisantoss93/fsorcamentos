@@ -1,10 +1,9 @@
 /* =========================================================
-   FS ORÇAMENTOS - Ajustes Premium Mobile/Layout
-   - Agenda: Novo agendamento minimizável.
-   - Agenda: resumo em grid 2 colunas.
-   - Clientes: Novo cliente minimizável e cards em 2 colunas.
-   - Clientes: lista sempre visível, sem botão Ver/Ocultar e sem botão Buscar duplicado.
-   - Ordens: dashboard/resumo em grid 2 colunas.
+   FS ORÇAMENTOS - fs-premium-mobile-layout-fix.js
+   Funções essenciais das páginas de gestão:
+   - mantém listas sempre visíveis;
+   - remove botões antigos de ocultar lista;
+   - cria dashboard compacto de ordens.
    ========================================================= */
 (function () {
   'use strict';
@@ -53,243 +52,146 @@
     const style = document.createElement('style');
     style.id = 'fs-premium-mobile-layout-fix-style';
     style.textContent = `
-      .fs-form-card-collapsed .fs-collapsible-body,
-      .fs-form-card-collapsed .agenda-card-body,
-      .fs-form-card-collapsed .clientes-card-body,
-      .fs-form-card-collapsed .corpo-form-mobile {
-        display: none !important;
-      }
-
-      .fs-form-card-collapsed .agenda-card-header,
-      .fs-form-card-collapsed .clientes-card-header {
-        border-bottom: none !important;
-      }
-
-      .fs-card-header-toggle {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 12px;
-      }
-
-      .fs-card-header-toggle > div {
-        min-width: 0;
-      }
-
-      .fs-btn-toggle-card {
-        flex: 0 0 auto;
-        border: 2px solid var(--fs-amarelo, #ffc400);
-        background: var(--fs-amarelo, #ffc400);
-        color: var(--fs-marrom, #3e2723);
-        border-radius: 999px;
-        padding: 8px 13px;
-        min-height: 38px;
-        font-size: 12px;
-        font-weight: 950;
-        cursor: pointer;
-        text-transform: uppercase;
-        white-space: nowrap;
-      }
-
-      .fs-btn-toggle-card:hover {
-        background: #ffffff;
-        color: var(--fs-marrom, #3e2723);
-      }
-
-      .agenda-resumo-grid {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 10px !important;
-        align-items: stretch !important;
-      }
-
-      .agenda-resumo-grid .agenda-metrica {
-        min-width: 0 !important;
-        min-height: 104px !important;
-        padding: 12px !important;
-        border-radius: 15px !important;
-      }
-
-      .agenda-resumo-grid .agenda-metrica span {
-        font-size: 10px !important;
-        line-height: 1.25 !important;
-        word-break: break-word !important;
-      }
-
-      .agenda-resumo-grid .agenda-metrica strong {
-        font-size: 22px !important;
-        line-height: 1.1 !important;
-      }
-
-      /* clientes.html: lista sempre aberta e somente botão Buscar cliente */
       body .clientes-lista-toggle-mobile,
+      body .veiculos-lista-toggle-mobile,
+      body .ordens-lista-toggle-mobile,
+      body .estoque-lista-toggle-mobile,
       body #btn-toggle-lista-clientes,
+      body #btn-toggle-lista-veiculos,
+      body #btn-toggle-lista-ordens,
+      body #btn-toggle-lista-produtos,
       body #btn-atualizar-clientes {
         display: none !important;
       }
 
+      body #lista-clientes,
+      body #lista-veiculos,
+      body #lista-ordens,
+      body #lista-produtos,
+      body #lista-estoque,
       body #lista-clientes.lista-clientes-mobile-fechada,
-      body #lista-clientes {
+      body #lista-veiculos.lista-veiculos-mobile-fechada,
+      body #lista-ordens.lista-ordens-mobile-fechada,
+      body #lista-estoque.lista-estoque-mobile-fechada {
         display: grid !important;
       }
 
       body #btn-buscar-cliente-modal-clientes {
         display: inline-flex !important;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 34px !important;
       }
 
       .fs-ordens-dashboard {
-        background: linear-gradient(135deg, #fffaf0, #ffffff);
-        color: var(--fs-texto, #2f241f);
-        border: 1px solid var(--fs-borda, #e8dccb);
-        border-top: 6px solid var(--fs-amarelo, #ffc400);
-        border-radius: 20px;
-        box-shadow: var(--fs-shadow, 0 10px 26px rgba(62,39,35,.10));
-        padding: 16px;
-        margin: 0 0 18px;
+        background: #ffffff !important;
+        color: var(--fs-texto, #2b211d) !important;
+        border: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border-radius: 7px !important;
+        box-shadow: 0 3px 10px rgba(47, 33, 29, .07) !important;
+        padding: 12px !important;
+        margin: 0 0 10px !important;
       }
 
       .fs-ordens-dashboard-topo {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 14px;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        margin-bottom: 10px !important;
       }
 
       .fs-ordens-dashboard-topo h2 {
-        margin: 0 0 4px;
-        color: var(--fs-marrom, #3e2723);
-        font-size: 22px;
+        margin: 0 0 3px !important;
+        color: var(--fs-marrom, #2f211d) !important;
+        font-size: 18px !important;
+        line-height: 1.15 !important;
+        font-weight: 950 !important;
       }
 
       .fs-ordens-dashboard-topo p {
-        margin: 0;
-        color: var(--fs-texto-suave, #6d5b52);
-        font-weight: 700;
-        line-height: 1.45;
+        margin: 0 !important;
+        color: var(--fs-texto-suave, #62554d) !important;
+        font-weight: 700 !important;
+        line-height: 1.35 !important;
+        font-size: 12px !important;
       }
 
       .fs-ordens-dashboard-grid {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 10px !important;
+        gap: 8px !important;
       }
 
       .fs-ordens-dashboard-card {
-        min-width: 0;
-        min-height: 104px;
-        background: #ffffff;
-        border: 1px solid var(--fs-borda, #e8dccb);
-        border-left: 6px solid var(--fs-amarelo, #ffc400);
-        border-radius: 15px;
-        padding: 12px;
-        box-shadow: 0 8px 18px rgba(0,0,0,.08);
+        min-width: 0 !important;
+        min-height: 72px !important;
+        background: #ffffff !important;
+        border: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border-radius: 6px !important;
+        padding: 8px 9px !important;
+        box-shadow: none !important;
+      }
+
+      .fs-ordens-dashboard-card:nth-child(even) {
+        background: #fbf8f4 !important;
       }
 
       .fs-ordens-dashboard-card span {
-        display: block;
-        color: var(--fs-texto-suave, #6d5b52);
-        font-size: 10px;
-        font-weight: 950;
-        text-transform: uppercase;
-        line-height: 1.25;
-        margin-bottom: 7px;
+        display: block !important;
+        color: var(--fs-texto-suave, #62554d) !important;
+        font-size: 10px !important;
+        font-weight: 950 !important;
+        text-transform: uppercase !important;
+        line-height: 1.15 !important;
+        margin-bottom: 4px !important;
       }
 
       .fs-ordens-dashboard-card strong {
-        display: block;
-        color: var(--fs-marrom, #3e2723);
-        font-size: 21px;
-        line-height: 1.08;
-        word-break: break-word;
+        display: block !important;
+        color: var(--fs-marrom, #2f211d) !important;
+        font-size: 18px !important;
+        line-height: 1.08 !important;
+        word-break: break-word !important;
       }
 
       .fs-ordens-dashboard-card small {
-        display: block;
-        color: var(--fs-texto-suave, #6d5b52);
-        font-weight: 700;
-        line-height: 1.35;
-        margin-top: 5px;
+        display: block !important;
+        color: var(--fs-texto-suave, #62554d) !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin-top: 3px !important;
+        font-size: 10.5px !important;
       }
 
       .fs-ordens-dashboard-card.destaque {
-        background: var(--fs-marrom, #3e2723);
-        border-color: var(--fs-amarelo, #ffc400);
+        background: var(--fs-marrom, #2f211d) !important;
+        border-color: var(--fs-marrom, #2f211d) !important;
       }
 
       .fs-ordens-dashboard-card.destaque span,
       .fs-ordens-dashboard-card.destaque small {
-        color: #fffaf0;
+        color: #fffaf0 !important;
       }
 
       .fs-ordens-dashboard-card.destaque strong {
-        color: var(--fs-amarelo, #ffc400);
+        color: var(--fs-amarelo, #ffc400) !important;
       }
 
       @media (max-width: 680px) {
-        .agenda-resumo-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          gap: 9px !important;
-        }
-
-        .agenda-resumo-grid .agenda-metrica {
-          padding: 11px !important;
-          min-height: 96px !important;
-        }
-
-        .clientes-resumo {
-          display: grid !important;
-          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          gap: 9px !important;
-        }
-
-        .clientes-resumo .card-resumo {
-          min-width: 0 !important;
-          min-height: 96px !important;
-          padding: 11px !important;
-          border-radius: 15px !important;
-        }
-
-        .clientes-resumo .card-resumo span {
-          font-size: 10px !important;
-          line-height: 1.25 !important;
-        }
-
-        .clientes-resumo .card-resumo strong {
-          font-size: 21px !important;
-          line-height: 1.1 !important;
-        }
-
         .fs-ordens-dashboard {
-          padding: 13px;
-          border-radius: 18px;
-        }
-
-        .fs-ordens-dashboard-topo h2 {
-          font-size: 20px;
+          padding: 10px !important;
+          border-radius: 7px !important;
         }
 
         .fs-ordens-dashboard-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          gap: 9px !important;
+          gap: 7px !important;
         }
 
         .fs-ordens-dashboard-card {
-          min-height: 96px;
-          padding: 10px;
-        }
-      }
-
-      @media (max-width: 360px) {
-        .agenda-resumo-grid .agenda-metrica {
-          padding: 10px 9px !important;
-        }
-
-        .agenda-resumo-grid .agenda-metrica strong {
-          font-size: 20px !important;
+          min-height: 68px !important;
+          padding: 7px !important;
         }
       }
     `;
@@ -297,76 +199,17 @@
     document.head.appendChild(style);
   }
 
-  function prepararHeaderCard(card, tituloBotaoAberto, tituloBotaoFechado) {
-    if (!card || card.dataset.fsMinimizavel === '1') return;
-
-    const header = card.querySelector('.agenda-card-header, .clientes-card-header, .ordens-card-header');
-    const body = card.querySelector('.agenda-card-body, .clientes-card-body, .ordens-card-body, .corpo-form-mobile');
-    if (!header || !body) return;
-
-    card.dataset.fsMinimizavel = '1';
-    body.classList.add('fs-collapsible-body');
-
-    const conteudo = document.createElement('div');
-    while (header.firstChild) conteudo.appendChild(header.firstChild);
-    header.appendChild(conteudo);
-    header.classList.add('fs-card-header-toggle');
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'fs-btn-toggle-card';
-    btn.textContent = tituloBotaoAberto || 'Fechar';
-    btn.setAttribute('aria-expanded', 'true');
-    header.appendChild(btn);
-
-    function atualizar() {
-      const fechado = card.classList.contains('fs-form-card-collapsed');
-      btn.textContent = fechado ? (tituloBotaoFechado || 'Abrir') : (tituloBotaoAberto || 'Fechar');
-      btn.setAttribute('aria-expanded', fechado ? 'false' : 'true');
-    }
-
-    btn.addEventListener('click', () => {
-      card.classList.toggle('fs-form-card-collapsed');
-      atualizar();
+  function manterListasSempreVisiveis() {
+    const ids = ['lista-clientes', 'lista-veiculos', 'lista-ordens', 'lista-produtos', 'lista-estoque'];
+    ids.forEach((id) => {
+      const lista = document.getElementById(id);
+      if (!lista) return;
+      lista.classList.remove('lista-clientes-mobile-fechada', 'lista-veiculos-mobile-fechada', 'lista-ordens-mobile-fechada', 'lista-estoque-mobile-fechada');
+      lista.style.display = 'grid';
     });
 
-    if (window.innerWidth <= 700) {
-      card.classList.add('fs-form-card-collapsed');
-    }
-
-    atualizar();
-  }
-
-  function instalarAgendaMinimizavel() {
-    if (!path.endsWith('/agenda') && !path.endsWith('/agenda.html')) return;
-
-    const cards = Array.from(document.querySelectorAll('.agenda-card'));
-    const novoAgendamento = cards.find(card => /novo agendamento/i.test(card.textContent || '')) || cards[0];
-    prepararHeaderCard(novoAgendamento, 'Fechar', 'Abrir');
-  }
-
-  function instalarClientesMinimizavel() {
-    if (!path.endsWith('/clientes') && !path.endsWith('/clientes.html')) return;
-
-    const cards = Array.from(document.querySelectorAll('.clientes-card'));
-    const novoCliente = cards.find(card => /novo cliente|cadastrar cliente|dados do cliente/i.test(card.textContent || '')) || cards[0];
-    prepararHeaderCard(novoCliente, 'Fechar', 'Abrir');
-  }
-
-  function ajustarListaClientesSempreVisivel() {
-    if (!path.endsWith('/clientes') && !path.endsWith('/clientes.html')) return;
-
-    const lista = document.getElementById('lista-clientes');
-    if (lista) {
-      lista.classList.remove('lista-clientes-mobile-fechada');
-      lista.style.display = 'grid';
-    }
-
-    const toggleLista = document.querySelector('.clientes-lista-toggle-mobile');
-    if (toggleLista) toggleLista.remove();
-
-    const btnToggle = document.getElementById('btn-toggle-lista-clientes');
-    if (btnToggle) btnToggle.remove();
+    document.querySelectorAll('.clientes-lista-toggle-mobile, .veiculos-lista-toggle-mobile, .ordens-lista-toggle-mobile, .estoque-lista-toggle-mobile').forEach((el) => el.remove());
+    ['btn-toggle-lista-clientes', 'btn-toggle-lista-veiculos', 'btn-toggle-lista-ordens', 'btn-toggle-lista-produtos'].forEach((id) => document.getElementById(id)?.remove());
 
     const btnBuscarAntigo = document.getElementById('btn-atualizar-clientes');
     if (btnBuscarAntigo) {
@@ -490,22 +333,16 @@
 
   function iniciar() {
     injetarEstilo();
-    instalarAgendaMinimizavel();
-    instalarClientesMinimizavel();
-    ajustarListaClientesSempreVisivel();
+    manterListasSempreVisiveis();
     preencherDashboardOrdens();
 
     setTimeout(() => {
-      instalarAgendaMinimizavel();
-      instalarClientesMinimizavel();
-      ajustarListaClientesSempreVisivel();
+      manterListasSempreVisiveis();
       preencherDashboardOrdens();
     }, 800);
 
     setTimeout(() => {
-      instalarAgendaMinimizavel();
-      instalarClientesMinimizavel();
-      ajustarListaClientesSempreVisivel();
+      manterListasSempreVisiveis();
       preencherDashboardOrdens();
     }, 1800);
   }
