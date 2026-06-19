@@ -101,6 +101,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   { paginas: ['/recorrentes', '/recorrentes.html'], scripts: [['recorrentes-pro.js', 'fs-recorrentes-pro-js']] },
   { paginas: ['/painel', '/painel.html'], scripts: [['painel-logo-fix.js', 'fs-painel-logo-fix-js'], ['painel-perfil-fix.js', 'fs-painel-perfil-fix-js']] },
   { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js', 'fs-orcamentos-pdf-js']] },
+  { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js', 'fs-ordens-recorrente-prefill-js']] },
   { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js', 'fs-cliente-modal-js']] },
   { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js', 'fs-ordem-extras-js'], ['ordem-pdf-extras.js', 'fs-ordem-pdf-extras-js'], ['ordem-garantia.js', 'fs-ordem-garantia-js'], ['ordem-recibo.js', 'fs-ordem-recibo-js'], ['ordem-pagamento-controle.js', 'fs-ordem-pagamento-controle-js']] }
 ];
