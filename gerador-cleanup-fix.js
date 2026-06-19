@@ -6,7 +6,8 @@
    - garante opção rosa;
    - busca por Enter no modal de cliente;
    - inicializa blocos AdSense visíveis;
-   - corrige layout quebrado no celular/tablet.
+   - corrige layout quebrado no celular/tablet;
+   - padroniza o JSON de itens salvo em orçamentos.itens.
    ========================================================= */
 (function () {
   'use strict';
@@ -199,18 +200,61 @@
     });
   }
 
+  function fsNumeroItem(valor) {
+    if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
+    const texto = String(valor || '').replace(/\./g, '').replace(',', '.').replace(/[^0-9.-]/g, '');
+    const numero = Number(texto);
+    return Number.isFinite(numero) ? numero : 0;
+  }
+
+  function instalarPadraoItensOrcamento() {
+    if (window.__fsGeradorItensSchemaReal) return;
+
+    window.fsColetarItensParaSalvar = function fsColetarItensParaSalvarSchemaReal() {
+      const itens = [];
+
+      document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach((row) => {
+        const inputs = Array.from(row.querySelectorAll('input'));
+        const descricao = String(row.querySelector('.desc-cell')?.value || row.querySelector('.desc')?.value || inputs[0]?.value || '').trim();
+        const qtd = fsNumeroItem((row.querySelector('.qtd') || inputs[1])?.value || 0);
+        const valor = fsNumeroItem((row.querySelector('.valor') || inputs[2])?.value || 0);
+        const subtotalInformado = fsNumeroItem((row.querySelector('.subtotal') || inputs[3])?.value || 0);
+        const subtotal = subtotalInformado || (qtd * valor);
+
+        if (!descricao || qtd <= 0) return;
+
+        itens.push({
+          descricao,
+          nome: descricao,
+          qtd,
+          quantidade: qtd,
+          valor,
+          valor_unitario: valor,
+          subtotal,
+          total: subtotal
+        });
+      });
+
+      return itens;
+    };
+
+    window.__fsGeradorItensSchemaReal = true;
+  }
+
   function iniciar() {
     injetarEstilo();
     removerBlocoIntro();
     corrigirCoresPdf();
     instalarEnterBuscaCliente();
     inicializarAdsense();
+    instalarPadraoItensOrcamento();
 
     setTimeout(() => {
       removerBlocoIntro();
       corrigirCoresPdf();
       instalarEnterBuscaCliente();
       inicializarAdsense();
+      instalarPadraoItensOrcamento();
     }, 500);
 
     setTimeout(() => {
@@ -218,6 +262,7 @@
       corrigirCoresPdf();
       instalarEnterBuscaCliente();
       inicializarAdsense();
+      instalarPadraoItensOrcamento();
     }, 1600);
   }
 
