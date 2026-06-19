@@ -170,6 +170,12 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
     ]
   },
   {
+    paginas: ['/estoque', '/estoque.html'],
+    scripts: [
+      ['estoque-compra-caixa.js', 'fs-estoque-compra-caixa-js']
+    ]
+  },
+  {
     paginas: ['/painel', '/painel.html'],
     scripts: [
       ['painel-logo-fix.js', 'fs-painel-logo-fix-js'],
