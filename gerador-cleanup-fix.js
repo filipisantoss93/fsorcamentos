@@ -7,7 +7,8 @@
    - busca por Enter no modal de cliente;
    - inicializa blocos AdSense visíveis;
    - corrige layout quebrado no celular/tablet;
-   - padroniza o JSON de itens salvo em orçamentos.itens.
+   - padroniza o JSON de itens salvo em orçamentos.itens;
+   - aplica imagem visual de ferramenta profissional.
    ========================================================= */
 (function () {
   'use strict';
@@ -34,6 +35,11 @@
         overflow-x: hidden !important;
       }
 
+      body:not(.gerando-pdf) {
+        background: linear-gradient(180deg, #f6f1ea 0%, #eee4d8 100%) !important;
+        color: #2b211d !important;
+      }
+
       #conteudo-gerador,
       .pagina-gerador,
       .gerador-layout,
@@ -48,6 +54,383 @@
         max-width: 100% !important;
         min-width: 0 !important;
         box-sizing: border-box !important;
+      }
+
+      .pagina-gerador {
+        max-width: 1180px !important;
+        padding: 10px 10px 28px !important;
+      }
+
+      .gerador-hero {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        gap: 12px !important;
+        align-items: center !important;
+        background: #ffffff !important;
+        color: #2b211d !important;
+        border: 1px solid #e3d7ca !important;
+        border-radius: 8px !important;
+        border-top: 0 !important;
+        padding: 12px 14px !important;
+        margin: 0 0 10px !important;
+        box-shadow: 0 4px 14px rgba(47,33,29,.07) !important;
+        overflow: hidden !important;
+      }
+
+      .gerador-hero::before {
+        display: none !important;
+      }
+
+      .gerador-hero-conteudo {
+        max-width: none !important;
+      }
+
+      .gerador-tag {
+        min-height: 24px !important;
+        padding: 4px 8px !important;
+        border-radius: 4px !important;
+        background: #f8f4ee !important;
+        color: #3e2723 !important;
+        border: 1px solid #e3d7ca !important;
+        font-size: 10.5px !important;
+        line-height: 1 !important;
+        margin-bottom: 7px !important;
+      }
+
+      .gerador-hero h1 {
+        color: #2f211d !important;
+        margin: 0 !important;
+        font-size: clamp(22px, 3vw, 30px) !important;
+        line-height: 1.1 !important;
+        font-weight: 950 !important;
+        letter-spacing: -.01em !important;
+      }
+
+      .gerador-hero p {
+        color: #62554d !important;
+        margin: 5px 0 0 !important;
+        font-size: 13px !important;
+        line-height: 1.38 !important;
+        font-weight: 720 !important;
+        max-width: 760px !important;
+      }
+
+      .gerador-layout {
+        gap: 10px !important;
+        grid-template-columns: minmax(0, 1fr) 286px !important;
+      }
+
+      .gerador-card-principal,
+      .sidebar-card,
+      .emissor-readonly-card,
+      .calc-expansivel,
+      .color-selector,
+      #itens-lista {
+        background: #ffffff !important;
+        color: #2b211d !important;
+        border: 1px solid #e3d7ca !important;
+        border-radius: 7px !important;
+        border-left: 0 !important;
+        border-top: 0 !important;
+        box-shadow: 0 3px 10px rgba(47,33,29,.07) !important;
+      }
+
+      .gerador-card-principal {
+        padding: 12px !important;
+      }
+
+      .sidebar-card {
+        padding: 10px !important;
+      }
+
+      .sidebar-card h3 {
+        margin: 0 0 5px !important;
+        color: #2f211d !important;
+        font-size: 14px !important;
+        font-weight: 950 !important;
+      }
+
+      .sidebar-card p,
+      .sidebar-lista li {
+        color: #62554d !important;
+        font-size: 11.5px !important;
+        line-height: 1.32 !important;
+        font-weight: 700 !important;
+      }
+
+      .sidebar-lista {
+        gap: 5px !important;
+        margin-top: 7px !important;
+      }
+
+      .sidebar-lista li {
+        border-left: 0 !important;
+        border: 1px solid #ebe2d7 !important;
+        border-radius: 5px !important;
+        padding: 7px !important;
+        background: #fbf8f4 !important;
+      }
+
+      .emissor-readonly-card {
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+      }
+
+      .emissor-readonly-topo {
+        grid-template-columns: 76px minmax(0, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 9px !important;
+      }
+
+      .emissor-logo-mini {
+        width: 76px !important;
+        height: 60px !important;
+        border: 1px solid #d7ccc8 !important;
+        border-radius: 5px !important;
+        background: #f8f4ee !important;
+      }
+
+      .emissor-info-principal strong {
+        color: #2f211d !important;
+        font-size: 17px !important;
+        line-height: 1.15 !important;
+      }
+
+      .emissor-info-principal span,
+      .emissor-readonly-grid span,
+      .campo-form label,
+      .color-selector label,
+      .header-labels {
+        color: #62554d !important;
+        font-size: 10.5px !important;
+        line-height: 1.1 !important;
+        font-weight: 950 !important;
+        letter-spacing: .01em !important;
+      }
+
+      .emissor-info-principal small {
+        color: #62554d !important;
+        font-size: 11px !important;
+      }
+
+      .emissor-readonly-grid {
+        gap: 7px !important;
+      }
+
+      .emissor-readonly-grid div {
+        background: #fbf8f4 !important;
+        border: 1px solid #ebe2d7 !important;
+        border-left: 0 !important;
+        border-radius: 5px !important;
+        padding: 7px !important;
+      }
+
+      .emissor-readonly-grid strong {
+        color: #2f211d !important;
+        font-size: 12px !important;
+      }
+
+      .btn-editar-dados-empresa,
+      .btn-add,
+      .btn-extra,
+      .btn-previa-profissional,
+      .btn-novo-profissional,
+      .btn-acao-orcamento,
+      .btn-executar-busca-cliente {
+        border-radius: 4px !important;
+        box-shadow: none !important;
+        text-transform: none !important;
+        letter-spacing: 0 !important;
+      }
+
+      .btn-editar-dados-empresa,
+      .btn-add,
+      .btn-extra {
+        min-height: 31px !important;
+        padding: 7px 10px !important;
+        background: #2f211d !important;
+        color: #ffc400 !important;
+        border: 1px solid #2f211d !important;
+        font-size: 11.5px !important;
+      }
+
+      .dadositens {
+        text-align: left !important;
+        background: #f8f4ee !important;
+        color: #2f211d !important;
+        border: 1px solid #e3d7ca !important;
+        border-left: 0 !important;
+        border-bottom: 1px solid #e3d7ca !important;
+        border-radius: 5px !important;
+        box-shadow: none !important;
+        padding: 8px 10px !important;
+        margin: 12px 0 8px !important;
+        font-size: 13px !important;
+        font-weight: 950 !important;
+      }
+
+      .grid-duplo-gerador {
+        gap: 7px !important;
+      }
+
+      .campo-form input,
+      .campo-form textarea,
+      .campo-form select,
+      .item-row input,
+      .extra-field input,
+      .busca-cliente-linha input {
+        min-height: 34px !important;
+        padding: 7px 8px !important;
+        border-radius: 4px !important;
+        background: #ffffff !important;
+        color: #2b211d !important;
+        border: 1px solid #d7ccc8 !important;
+        font-size: 12.5px !important;
+        box-shadow: none !important;
+      }
+
+      .campo-form textarea {
+        min-height: 78px !important;
+      }
+
+      #itens-lista {
+        padding: 8px !important;
+      }
+
+      .item-row {
+        gap: 6px !important;
+        margin-bottom: 6px !important;
+        align-items: end !important;
+      }
+
+      .btn-remove {
+        min-height: 34px !important;
+        border-radius: 4px !important;
+        padding: 7px 9px !important;
+        box-shadow: none !important;
+      }
+
+      .total-container {
+        background: #2f211d !important;
+        color: #ffc400 !important;
+        border: 1px solid #2f211d !important;
+        border-radius: 5px !important;
+        padding: 10px 12px !important;
+        margin-top: 10px !important;
+        font-size: 18px !important;
+        box-shadow: none !important;
+      }
+
+      .calc-header {
+        background: #f8f4ee !important;
+        color: #2f211d !important;
+        padding: 9px 10px !important;
+        font-size: 12px !important;
+      }
+
+      .calc-content {
+        padding: 10px !important;
+      }
+
+      .color-selector {
+        margin: 10px 0 !important;
+        padding: 10px !important;
+      }
+
+      .theme-options {
+        gap: 8px !important;
+      }
+
+      .theme-dot {
+        width: 24px !important;
+        height: 24px !important;
+        border-width: 2px !important;
+        box-shadow: none !important;
+      }
+
+      .acoes-gerador-principal {
+        margin: 12px auto 10px !important;
+        gap: 8px !important;
+      }
+
+      .btn-previa-profissional,
+      .btn-novo-profissional {
+        min-height: 38px !important;
+        padding: 9px 10px !important;
+        font-size: 13px !important;
+        border-width: 1px !important;
+      }
+
+      .btn-previa-profissional {
+        background: #2f211d !important;
+        color: #ffc400 !important;
+        border-color: #2f211d !important;
+      }
+
+      .btn-novo-profissional {
+        background: #ffffff !important;
+        color: #2f211d !important;
+        border-color: #d7ccc8 !important;
+      }
+
+      #area-previa {
+        background: #ffffff !important;
+        border: 1px solid #e3d7ca !important;
+        border-radius: 7px !important;
+        padding: 10px !important;
+        margin-top: 10px !important;
+      }
+
+      .acoes-profissionais-orcamento {
+        background: #ffffff !important;
+        color: #2b211d !important;
+        border: 1px solid #e3d7ca !important;
+        border-radius: 7px !important;
+        box-shadow: 0 3px 10px rgba(47,33,29,.07) !important;
+        padding: 10px !important;
+      }
+
+      .acoes-profissionais-orcamento-topo strong {
+        color: #2f211d !important;
+        font-size: 15px !important;
+      }
+
+      .acoes-profissionais-orcamento-topo span {
+        color: #62554d !important;
+        font-size: 12px !important;
+      }
+
+      .btn-acao-orcamento {
+        min-height: 38px !important;
+        padding: 9px 10px !important;
+        font-size: 12px !important;
+      }
+
+      .modal-busca-cliente-box,
+      .modal-content,
+      .modal-login-box {
+        border-radius: 7px !important;
+        border-top: 0 !important;
+        background: #ffffff !important;
+      }
+
+      .modal-busca-cliente-header,
+      .modal-header {
+        background: #f8f4ee !important;
+        color: #2f211d !important;
+        border-bottom: 1px solid #e3d7ca !important;
+      }
+
+      .modal-busca-cliente-header h3,
+      .modal-busca-cliente-header p {
+        color: #2f211d !important;
+      }
+
+      .cliente-busca-item {
+        border-left: 0 !important;
+        border-radius: 5px !important;
+        padding: 9px !important;
+        box-shadow: none !important;
       }
 
       @media (max-width: 1180px) {
@@ -68,7 +451,7 @@
         .gerador-card-principal {
           width: 100% !important;
           margin: 0 !important;
-          padding: 14px !important;
+          padding: 12px !important;
           overflow: visible !important;
         }
 
@@ -76,7 +459,7 @@
           position: static !important;
           width: 100% !important;
           max-width: 100% !important;
-          margin-top: 18px !important;
+          margin-top: 10px !important;
           display: grid !important;
           grid-template-columns: 1fr !important;
           overflow: visible !important;
@@ -115,13 +498,27 @@
       }
 
       @media (max-width: 760px) {
+        .pagina-gerador {
+          padding: 8px 6px 22px !important;
+        }
+
         .gerador-sidebar {
           display: none !important;
         }
 
         .gerador-hero {
+          grid-template-columns: 1fr !important;
           margin-left: 0 !important;
           margin-right: 0 !important;
+          padding: 10px !important;
+        }
+
+        .gerador-hero h1 {
+          font-size: 22px !important;
+        }
+
+        .gerador-hero p {
+          font-size: 12.5px !important;
         }
 
         #conteudo-pdf {
