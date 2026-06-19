@@ -139,16 +139,6 @@ const FS_CONFIG_CSS_POR_PAGINA = [
 
 const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   {
-    paginas: ['/', '/index', '/index.html'],
-    scripts: [
-      ['index-visitante-lite.js', 'fs-index-visitante-lite-js'],
-      ['index-ads-restore.js', 'fs-index-ads-restore-js'],
-      ['index-cache-sync.js', 'fs-index-cache-sync-js'],
-      ['index-empresa-card.js', 'fs-index-empresa-card-js'],
-      ['dashboard-premium-index.js', 'fs-dashboard-premium-index-js']
-    ]
-  },
-  {
     paginas: ['/ver', '/ver.html'],
     scripts: [
       ['ver-cliente-fix.js', 'fs-ver-cliente-fix-js']
@@ -201,10 +191,6 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   }
 ];
 
-const FS_CONFIG_SCRIPTS_FINAIS_INDEX = [
-  ['index-gratis-planos-simplify.js', 'fs-index-gratis-planos-simplify-js']
-];
-
 function fsConfigNormalizarPathAtual() {
   const path = (window.location.pathname || '/').toLowerCase().replace(/\/$/, '');
   return path || '/';
@@ -213,10 +199,6 @@ function fsConfigNormalizarPathAtual() {
 function fsConfigPathCorresponde(pathAtual, pagina) {
   if (pagina === '/') return pathAtual === '/';
   return pathAtual === pagina || pathAtual.endsWith(pagina);
-}
-
-function fsConfigEhIndex(pathAtual) {
-  return ['/', '/index', '/index.html'].some((pagina) => fsConfigPathCorresponde(pathAtual, pagina));
 }
 
 function fsConfigCarregarScriptUnico(src, id) {
@@ -273,12 +255,7 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarCssDaPagina(pathAtual);
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS);
   fsConfigCarregarScriptsDaPagina(pathAtual);
-
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS);
-
-  if (fsConfigEhIndex(pathAtual)) {
-    fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS_INDEX);
-  }
 }
 
 fsConfigCarregarAjustesPagina();
