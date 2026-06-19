@@ -119,7 +119,6 @@ const FS_CONFIG_SCRIPTS_GLOBAIS = [
 ];
 
 const FS_CONFIG_SCRIPTS_FINAIS = [
-  ['fs-contrast-final.js', 'fs-contrast-final-js'],
   ['fs-stable-visual-fix.js', 'fs-stable-visual-fix-js']
 ];
 
@@ -294,7 +293,7 @@ function fsConfigCarregarAjustesPagina() {
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS);
   fsConfigCarregarScriptsDaPagina(pathAtual);
 
-  // Camadas finais: devem entrar por último para corrigir visual sem quebrar funcionalidades.
+  // Camada final única: regras de comportamento visual consolidado.
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS);
 
   if (fsConfigEhIndex(pathAtual)) {
