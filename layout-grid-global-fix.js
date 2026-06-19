@@ -8,12 +8,8 @@
 
   const path = (window.location.pathname || '').toLowerCase();
 
-  function injetarEstilo() {
-    if (document.getElementById('fs-layout-grid-global-fix-style')) return;
-
-    const style = document.createElement('style');
-    style.id = 'fs-layout-grid-global-fix-style';
-    style.textContent = `
+  function cssBase() {
+    return `
       body.fs-modal-form-lock { overflow: hidden !important; }
 
       .cards-resumo,
@@ -290,7 +286,21 @@
         }
       }
     `;
+  }
 
+  function injetarEstilo() {
+    if (document.getElementById('fs-layout-grid-global-fix-style')) return;
+    const style = document.createElement('style');
+    style.id = 'fs-layout-grid-global-fix-style';
+    style.textContent = cssBase();
+    document.head.appendChild(style);
+  }
+
+  function injetarEstiloFinal() {
+    document.getElementById('fs-layout-grid-global-final-style')?.remove();
+    const style = document.createElement('style');
+    style.id = 'fs-layout-grid-global-final-style';
+    style.textContent = cssBase();
     document.head.appendChild(style);
   }
 
@@ -309,22 +319,11 @@
   }
 
   function modalConfigAtual() {
-    if (eh('clientes')) {
-      return { cardId: 'card-form-cliente', headerSelector: '.clientes-card-header', bodySelector: '.clientes-card-body', toggleId: 'btn-toggle-form-cliente', titleId: 'titulo-form-cliente', saveId: 'btn-salvar-cliente', editFn: 'editarCliente', clearFn: 'limparFormularioCliente', newText: '+ Novo cliente', titleNew: 'Novo cliente', saveNew: 'Salvar cliente' };
-    }
-    if (eh('veiculos')) {
-      return { cardId: 'card-form-veiculo', headerSelector: '.veiculos-card-header', bodySelector: '.veiculos-card-body', toggleId: 'btn-toggle-form-veiculo', titleId: 'titulo-form-veiculo', saveId: 'btn-salvar-veiculo', editFn: 'editarVeiculo', clearFn: 'limparFormularioVeiculo', newText: '+ Novo veículo', titleNew: 'Novo veículo', saveNew: 'Salvar veículo' };
-    }
-    if (eh('estoque')) {
-      return { cardId: 'card-form-produto', headerSelector: '.estoque-card-header', bodySelector: '.estoque-card-body', toggleId: 'btn-toggle-form-produto', titleId: 'titulo-form-produto', saveId: 'btn-salvar-produto', editFn: 'editarProdutoEstoque', clearFn: 'limparFormularioProdutoEstoque', newText: '+ Novo produto', titleNew: 'Novo produto', saveNew: 'Salvar produto' };
-    }
-    if (eh('ordens')) {
-      return { cardId: 'card-form-ordem', headerSelector: '.ordens-card-header', bodySelector: '.ordens-card-body', toggleId: 'btn-toggle-form-ordem', titleId: 'titulo-form-ordem', saveId: 'btn-salvar-ordem', editFn: 'editarOrdem', clearFn: 'limparFormularioOrdem', newText: '+ Nova OS', titleNew: 'Nova ordem de serviço', saveNew: 'Salvar OS' };
-    }
-    if (eh('agenda')) {
-      resolverCardAgenda();
-      return { cardId: 'card-form-agendamento', headerSelector: '.agenda-card-header', bodySelector: '.agenda-card-body', toggleId: 'btn-toggle-form-agendamento', titleId: 'titulo-form-agenda', saveId: 'btn-salvar-agenda', editFn: 'editarAgendamento', clearFn: 'limparFormularioAgenda', newText: '+ Novo agendamento', titleNew: 'Novo agendamento', saveNew: 'Salvar agendamento' };
-    }
+    if (eh('clientes')) return { cardId: 'card-form-cliente', headerSelector: '.clientes-card-header', bodySelector: '.clientes-card-body', toggleId: 'btn-toggle-form-cliente', titleId: 'titulo-form-cliente', saveId: 'btn-salvar-cliente', editFn: 'editarCliente', clearFn: 'limparFormularioCliente', newText: '+ Novo cliente', titleNew: 'Novo cliente', saveNew: 'Salvar cliente' };
+    if (eh('veiculos')) return { cardId: 'card-form-veiculo', headerSelector: '.veiculos-card-header', bodySelector: '.veiculos-card-body', toggleId: 'btn-toggle-form-veiculo', titleId: 'titulo-form-veiculo', saveId: 'btn-salvar-veiculo', editFn: 'editarVeiculo', clearFn: 'limparFormularioVeiculo', newText: '+ Novo veículo', titleNew: 'Novo veículo', saveNew: 'Salvar veículo' };
+    if (eh('estoque')) return { cardId: 'card-form-produto', headerSelector: '.estoque-card-header', bodySelector: '.estoque-card-body', toggleId: 'btn-toggle-form-produto', titleId: 'titulo-form-produto', saveId: 'btn-salvar-produto', editFn: 'editarProdutoEstoque', clearFn: 'limparFormularioProdutoEstoque', newText: '+ Novo produto', titleNew: 'Novo produto', saveNew: 'Salvar produto' };
+    if (eh('ordens')) return { cardId: 'card-form-ordem', headerSelector: '.ordens-card-header', bodySelector: '.ordens-card-body', toggleId: 'btn-toggle-form-ordem', titleId: 'titulo-form-ordem', saveId: 'btn-salvar-ordem', editFn: 'editarOrdem', clearFn: 'limparFormularioOrdem', newText: '+ Nova OS', titleNew: 'Nova ordem de serviço', saveNew: 'Salvar OS' };
+    if (eh('agenda')) { resolverCardAgenda(); return { cardId: 'card-form-agendamento', headerSelector: '.agenda-card-header', bodySelector: '.agenda-card-body', toggleId: 'btn-toggle-form-agendamento', titleId: 'titulo-form-agenda', saveId: 'btn-salvar-agenda', editFn: 'editarAgendamento', clearFn: 'limparFormularioAgenda', newText: '+ Novo agendamento', titleNew: 'Novo agendamento', saveNew: 'Salvar agendamento' }; }
     return null;
   }
 
@@ -400,12 +399,8 @@
 
     if (!card.dataset.fsModalEventos) {
       card.dataset.fsModalEventos = '1';
-      card.addEventListener('click', (event) => {
-        if (event.target === card) fecharModalFormulario(cfg);
-      });
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') fecharModalFormulario(cfg);
-      });
+      card.addEventListener('click', (event) => { if (event.target === card) fecharModalFormulario(cfg); });
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') fecharModalFormulario(cfg); });
     }
 
     if (typeof window[cfg.editFn] === 'function' && !window[cfg.editFn].__fsModalInterceptado) {
@@ -459,10 +454,10 @@
     injetarEstilo();
     configurarModalFormulario();
     configurarForumModal();
-    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 300);
-    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 1000);
-    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 2000);
-    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); }, 3500);
+    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); injetarEstiloFinal(); }, 300);
+    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); injetarEstiloFinal(); }, 1000);
+    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); injetarEstiloFinal(); }, 2200);
+    setTimeout(() => { configurarModalFormulario(); configurarForumModal(); injetarEstiloFinal(); }, 3800);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
