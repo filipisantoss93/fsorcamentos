@@ -1,6 +1,6 @@
 /* =========================================================
-   FS ORÇAMENTOS — CONTRASTE GLOBAL DA MARCA E AUTH
-   Mantém a palavra "Orçamentos" legível em header, Sobre e modal de login.
+   FS ORÇAMENTOS — CONTRASTE GLOBAL DA MARCA E PADRÃO SISTEMA
+   Mantém a marca legível e compacta listas/telas internas.
    ========================================================= */
 
 .logo-nav {
@@ -23,7 +23,7 @@
   min-width: 40px !important;
   min-height: 32px !important;
   padding: 0 !important;
-  border-radius: 6px !important;
+  border-radius: 5px !important;
   background: #ffc400 !important;
   color: #2c1b17 !important;
   font-weight: 950 !important;
@@ -40,6 +40,11 @@
   max-width: none !important;
   overflow: visible !important;
   text-overflow: clip !important;
+}
+
+.nav-menu .link-destaque-gestao::after {
+  content: 'Gestão' !important;
+  border-radius: 4px !important;
 }
 
 .auth-logo-box,
@@ -75,7 +80,7 @@
   min-width: 40px !important;
   min-height: 32px !important;
   padding: 0 !important;
-  border-radius: 6px !important;
+  border-radius: 5px !important;
   background: #ffc400 !important;
   color: #2c1b17 !important;
   font-weight: 950 !important;
@@ -125,10 +130,9 @@
   background: #ffc400 !important;
   color: #2c1b17 !important;
   opacity: 1 !important;
-  border-radius: 6px !important;
+  border-radius: 5px !important;
 }
 
-/* Corrige banners legados de login que apareciam como faixa marrom simples. */
 .banner-topo,
 .login-banner,
 .auth-banner {
@@ -142,7 +146,7 @@
 .auth-banner .logo-fs {
   background: #ffc400 !important;
   color: #2c1b17 !important;
-  border-radius: 6px !important;
+  border-radius: 5px !important;
 }
 
 .banner-topo .logo-orcamentos,
@@ -151,6 +155,212 @@
   color: #fffaf0 !important;
   opacity: 1 !important;
   text-shadow: 0 1px 2px rgba(0,0,0,.32) !important;
+}
+
+/* =========================================================
+   ACABAMENTO DE SISTEMA PROFISSIONAL
+   ========================================================= */
+
+body:not(.gerando-pdf) .pagina-clientes,
+body:not(.gerando-pdf) .pagina-veiculos,
+body:not(.gerando-pdf) .pagina-estoque,
+body:not(.gerando-pdf) .pagina-ordens,
+body:not(.gerando-pdf) .forum-page,
+body:not(.gerando-pdf) .pagina-painel,
+body:not(.gerando-pdf) main {
+  font-size: 13px !important;
+}
+
+body:not(.gerando-pdf) .clientes-hero,
+body:not(.gerando-pdf) .veiculos-hero,
+body:not(.gerando-pdf) .estoque-hero,
+body:not(.gerando-pdf) .ordens-hero,
+body:not(.gerando-pdf) .forum-hero,
+body:not(.gerando-pdf) .painel-hero {
+  padding: 16px 18px !important;
+  border-radius: 8px !important;
+  margin-bottom: 12px !important;
+  box-shadow: 0 4px 14px rgba(62,39,35,.08) !important;
+}
+
+body:not(.gerando-pdf) .clientes-hero h1,
+body:not(.gerando-pdf) .veiculos-hero h1,
+body:not(.gerando-pdf) .estoque-hero h1,
+body:not(.gerando-pdf) .ordens-hero h1,
+body:not(.gerando-pdf) .forum-hero h1,
+body:not(.gerando-pdf) .painel-hero h1 {
+  font-size: 22px !important;
+  margin-bottom: 4px !important;
+}
+
+body:not(.gerando-pdf) .clientes-hero p,
+body:not(.gerando-pdf) .veiculos-hero p,
+body:not(.gerando-pdf) .estoque-hero p,
+body:not(.gerando-pdf) .ordens-hero p,
+body:not(.gerando-pdf) .forum-hero p,
+body:not(.gerando-pdf) .painel-hero p {
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+body:not(.gerando-pdf) .card-resumo,
+body:not(.gerando-pdf) .agenda-metrica,
+body:not(.gerando-pdf) .fs-ordens-dashboard-card,
+body:not(.gerando-pdf) .home-metrica-card {
+  min-height: 74px !important;
+  padding: 10px 12px !important;
+  border-radius: 7px !important;
+}
+
+body:not(.gerando-pdf) .card-resumo span,
+body:not(.gerando-pdf) .agenda-metrica span,
+body:not(.gerando-pdf) .fs-ordens-dashboard-card span {
+  font-size: 10px !important;
+  margin-bottom: 4px !important;
+  line-height: 1.15 !important;
+}
+
+body:not(.gerando-pdf) .card-resumo strong,
+body:not(.gerando-pdf) .agenda-metrica strong,
+body:not(.gerando-pdf) .fs-ordens-dashboard-card strong {
+  font-size: 20px !important;
+  line-height: 1.1 !important;
+}
+
+body:not(.gerando-pdf) .clientes-card-body,
+body:not(.gerando-pdf) .veiculos-card-body,
+body:not(.gerando-pdf) .estoque-card-body,
+body:not(.gerando-pdf) .ordens-card-body,
+body:not(.gerando-pdf) .forum-card {
+  padding: 12px !important;
+}
+
+body:not(.gerando-pdf) .clientes-filtros,
+body:not(.gerando-pdf) .veiculos-filtros,
+body:not(.gerando-pdf) .estoque-filtros,
+body:not(.gerando-pdf) .ordens-filtros,
+body:not(.gerando-pdf) .forum-filtros {
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+body:not(.gerando-pdf) .campo {
+  gap: 4px !important;
+}
+
+body:not(.gerando-pdf) .campo label,
+body:not(.gerando-pdf) label {
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+}
+
+body:not(.gerando-pdf) input,
+body:not(.gerando-pdf) select,
+body:not(.gerando-pdf) textarea {
+  min-height: 34px !important;
+  padding: 7px 9px !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+}
+
+body:not(.gerando-pdf) textarea {
+  min-height: 66px !important;
+}
+
+body:not(.gerando-pdf) .btn,
+body:not(.gerando-pdf) button,
+body:not(.gerando-pdf) a[class*="btn"] {
+  min-height: 32px !important;
+  padding: 7px 10px !important;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  line-height: 1.1 !important;
+  box-shadow: none !important;
+}
+
+body:not(.gerando-pdf) .cliente-item,
+body:not(.gerando-pdf) .veiculo-item,
+body:not(.gerando-pdf) .ordem-item,
+body:not(.gerando-pdf) .estoque-produto-bloco,
+body:not(.gerando-pdf) .forum-topico,
+body:not(.gerando-pdf) .forum-resposta {
+  padding: 9px 10px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+body:not(.gerando-pdf) .cliente-linha-topo,
+body:not(.gerando-pdf) .veiculo-linha-topo,
+body:not(.gerando-pdf) .ordem-linha-topo,
+body:not(.gerando-pdf) .forum-topico-topo {
+  margin-bottom: 6px !important;
+  gap: 8px !important;
+}
+
+body:not(.gerando-pdf) .cliente-info h3,
+body:not(.gerando-pdf) .veiculo-info h3,
+body:not(.gerando-pdf) .ordem-info h3,
+body:not(.gerando-pdf) .forum-topico h3 {
+  font-size: 15px !important;
+  margin: 0 0 3px !important;
+  line-height: 1.2 !important;
+}
+
+body:not(.gerando-pdf) .cliente-info p,
+body:not(.gerando-pdf) .veiculo-info p,
+body:not(.gerando-pdf) .ordem-info p,
+body:not(.gerando-pdf) .forum-topico p {
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+}
+
+body:not(.gerando-pdf) .cliente-tags,
+body:not(.gerando-pdf) .veiculo-tags,
+body:not(.gerando-pdf) .ordem-tags,
+body:not(.gerando-pdf) .forum-badges {
+  gap: 5px !important;
+  margin: 6px 0 !important;
+}
+
+body:not(.gerando-pdf) .tag,
+body:not(.gerando-pdf) .forum-badge,
+body:not(.gerando-pdf) .status-badge {
+  border-radius: 4px !important;
+  padding: 3px 6px !important;
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+}
+
+body:not(.gerando-pdf) .cliente-acoes,
+body:not(.gerando-pdf) .veiculo-acoes,
+body:not(.gerando-pdf) .ordem-acoes,
+body:not(.gerando-pdf) .estoque-produto-acoes,
+body:not(.gerando-pdf) .forum-topico-acoes,
+body:not(.gerando-pdf) .forum-resposta-acoes {
+  gap: 5px !important;
+  margin-top: 7px !important;
+}
+
+body:not(.gerando-pdf) .estado-vazio {
+  padding: 18px 14px !important;
+  border-radius: 7px !important;
+}
+
+body:not(.gerando-pdf) .estoque-categoria-grupo,
+body:not(.gerando-pdf) .estoque-subcategoria-grupo,
+body:not(.gerando-pdf) .estoque-aplicacao-grupo {
+  border-radius: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+body:not(.gerando-pdf) .estoque-categoria-titulo,
+body:not(.gerando-pdf) .estoque-subcategoria-titulo,
+body:not(.gerando-pdf) .estoque-aplicacao-titulo,
+body:not(.gerando-pdf) .estoque-grade-cabecalho {
+  min-height: 30px !important;
+  padding: 7px 9px !important;
+  font-size: 12px !important;
 }
 
 @media (max-width: 520px) {
