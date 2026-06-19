@@ -9,335 +9,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfil - Comunidade FS</title>
-  <meta name="description" content="Perfil social da Comunidade FS Orçamentos com publicações, bio, dados básicos e interação entre usuários.">
+  <meta name="description" content="Perfil social da Comunidade FS Orçamentos com publicações, bio, seguidores e interação entre prestadores de serviço.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
-    body {
-      background: linear-gradient(180deg, #f6f1ea 0%, #eee4d8 100%) !important;
-      color: #2b211d !important;
-    }
-
-    .perfil-page {
-      width: min(980px, calc(100% - 16px));
-      margin: 10px auto 24px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .perfil-card,
-    .perfil-section {
-      background: #ffffff;
-      border: 1px solid #e4d8cc;
-      border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(47,33,29,.07);
-      overflow: hidden;
-    }
-
-    .perfil-capa {
-      height: 126px;
-      background: linear-gradient(135deg, #2f211d, #5d4037);
-      border-bottom: 5px solid #ffc400;
-    }
-
-    .perfil-topo {
-      display: grid;
-      grid-template-columns: 96px minmax(0, 1fr) auto;
-      gap: 12px;
-      align-items: end;
-      padding: 0 14px 13px;
-      margin-top: -46px;
-    }
-
-    .perfil-avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 999px;
-      border: 4px solid #ffffff;
-      background: #2f211d;
-      color: #ffc400;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      font-weight: 950;
-      overflow: hidden;
-    }
-
-    .perfil-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .perfil-identidade strong {
-      display: block;
-      color: #2f211d;
-      font-size: 24px;
-      line-height: 1.08;
-      font-weight: 950;
-      word-break: break-word;
-    }
-
-    .perfil-identidade span {
-      display: block;
-      color: #62554d;
-      font-size: 12.5px;
-      font-weight: 750;
-      line-height: 1.3;
-      margin-top: 4px;
-    }
-
-    .perfil-acoes {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 6px;
-    }
-
-    .perfil-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 34px;
-      padding: 7px 11px;
-      border-radius: 4px;
-      border: 1px solid #d7ccc8;
-      background: #ffffff;
-      color: #2f211d;
-      font-size: 12px;
-      font-weight: 950;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: none;
-    }
-
-    .perfil-btn.seguir,
-    .perfil-btn.primario {
-      background: #2f211d;
-      color: #ffc400;
-      border-color: #2f211d;
-    }
-
-    .perfil-corpo {
-      padding: 0 14px 14px;
-    }
-
-    .perfil-bio {
-      margin: 0 0 10px;
-      color: #4b403b;
-      font-size: 13.5px;
-      line-height: 1.45;
-      font-weight: 720;
-    }
-
-    .perfil-metricas {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .perfil-metrica {
-      background: #fbf8f4;
-      border: 1px solid #ebe2d7;
-      border-radius: 6px;
-      padding: 8px;
-    }
-
-    .perfil-metrica strong {
-      display: block;
-      color: #2f211d;
-      font-size: 21px;
-      line-height: 1;
-      font-weight: 950;
-    }
-
-    .perfil-metrica span {
-      display: block;
-      color: #62554d;
-      font-size: 10px;
-      font-weight: 950;
-      line-height: 1.1;
-      text-transform: uppercase;
-      margin-top: 4px;
-    }
-
-    .perfil-section-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      background: #f8f4ee;
-      border-bottom: 1px solid #ebe2d7;
-      padding: 10px 12px;
-    }
-
-    .perfil-section-head h2 {
-      margin: 0;
-      color: #2f211d;
-      font-size: 18px;
-      line-height: 1.15;
-      font-weight: 950;
-    }
-
-    .perfil-section-head p {
-      margin: 3px 0 0;
-      color: #62554d;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-
-    .perfil-section-body {
-      padding: 10px;
-    }
-
-    .perfil-posts {
-      display: grid;
-      gap: 8px;
-    }
-
-    .perfil-post {
-      display: grid;
-      gap: 6px;
-      border: 1px solid #e4d8cc;
-      border-radius: 7px;
-      background: #ffffff;
-      padding: 10px;
-      text-decoration: none;
-      color: #2b211d;
-      cursor: pointer;
-    }
-
-    .perfil-post:nth-child(even) {
-      background: #fbf8f4;
-    }
-
-    .perfil-post strong {
-      color: #2f211d;
-      font-size: 15px;
-      line-height: 1.2;
-      font-weight: 950;
-    }
-
-    .perfil-post p {
-      margin: 0;
-      color: #4b403b;
-      font-size: 12.5px;
-      line-height: 1.38;
-      font-weight: 700;
-    }
-
-    .perfil-post-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      align-items: center;
-      padding-top: 6px;
-      border-top: 1px solid #ebe2d7;
-    }
-
-    .perfil-tag {
-      display: inline-flex;
-      align-items: center;
-      min-height: 22px;
-      padding: 4px 6px;
-      border-radius: 999px;
-      background: #f8f4ee;
-      border: 1px solid #e4d8cc;
-      color: #2f211d;
-      font-size: 10px;
-      font-weight: 850;
-      line-height: 1;
-    }
-
-    .perfil-alerta {
-      display: none;
-      background: #fff7ed;
-      color: #9a3412;
-      border: 1px solid #fed7aa;
-      border-left: 4px solid #f97316;
-      border-radius: 6px;
-      padding: 9px 11px;
-      font-size: 12px;
-      font-weight: 850;
-    }
-
-    .perfil-vazio {
-      padding: 12px;
-      color: #62554d;
-      font-size: 12.5px;
-      font-weight: 750;
-      text-align: center;
-    }
-
-    .perfil-bio-editor {
-      display: none;
-      gap: 7px;
-      margin-top: 10px;
-    }
-
-    .perfil-bio-editor textarea {
-      width: 100%;
-      min-height: 74px;
-      border: 1px solid #d7ccc8;
-      border-radius: 4px;
-      padding: 8px 9px;
-      color: #2b211d;
-      font-size: 12.5px;
-      box-sizing: border-box;
-    }
-
-    footer {
-      width: min(980px, calc(100% - 16px));
-      margin: 10px auto 20px;
-      color: #62554d;
-      font-size: 12px;
-    }
-
-    footer a {
-      color: #2f211d;
-      font-weight: 850;
-    }
-
-    @media (max-width: 720px) {
-      .perfil-page {
-        width: min(100% - 10px, 980px);
-        margin-top: 8px;
-      }
-
-      .perfil-topo {
-        grid-template-columns: 78px minmax(0, 1fr);
-        align-items: end;
-      }
-
-      .perfil-avatar {
-        width: 78px;
-        height: 78px;
-        font-size: 22px;
-      }
-
-      .perfil-acoes {
-        grid-column: 1 / -1;
-        justify-content: stretch;
-      }
-
-      .perfil-acoes > * {
-        flex: 1 1 auto;
-      }
-
-      .perfil-identidade strong {
-        font-size: 20px;
-      }
-
-      .perfil-metricas {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
+    :root { --fs-marrom:#3e2723; --fs-marrom-2:#2f211d; --fs-amarelo:#ffc400; --fs-borda:#e4d8cc; --fs-texto:#2b211d; --fs-suave:#62554d; }
+    body { background: linear-gradient(180deg,#f6f1ea 0%,#eee4d8 100%) !important; color: var(--fs-texto) !important; }
+    .perfil-page { width:min(980px,calc(100% - 16px)); margin:10px auto 24px; display:grid; gap:10px; }
+    .perfil-card,.perfil-section { background:#fff; border:1px solid var(--fs-borda); border-radius:8px; box-shadow:0 4px 14px rgba(47,33,29,.07); overflow:hidden; }
+    .perfil-capa { height:132px; background:linear-gradient(135deg,#2f211d,#5d4037); background-size:cover; background-position:center; border-bottom:5px solid var(--fs-amarelo); position:relative; }
+    .perfil-capa::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(47,33,29,.42),rgba(47,33,29,.06)); pointer-events:none; }
+    .perfil-topo { display:grid; grid-template-columns:96px minmax(0,1fr) auto; gap:12px; align-items:end; padding:0 14px 13px; margin-top:-46px; position:relative; z-index:2; }
+    .perfil-avatar { width:96px; height:96px; border-radius:999px; border:4px solid #fff; background:#2f211d; color:var(--fs-amarelo); display:inline-flex; align-items:center; justify-content:center; font-size:28px; font-weight:950; overflow:hidden; }
+    .perfil-avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+    .perfil-identidade strong { display:block; color:#2f211d; font-size:24px; line-height:1.08; font-weight:950; word-break:break-word; }
+    .perfil-identidade span { display:block; color:var(--fs-suave); font-size:12.5px; font-weight:750; line-height:1.3; margin-top:4px; }
+    .perfil-acoes { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px; }
+    .perfil-btn { display:inline-flex; align-items:center; justify-content:center; min-height:34px; padding:7px 11px; border-radius:4px; border:1px solid #d7ccc8; background:#fff; color:#2f211d; font-size:12px; font-weight:950; cursor:pointer; text-decoration:none; box-shadow:none; }
+    .perfil-btn.seguir,.perfil-btn.primario { background:#2f211d; color:var(--fs-amarelo); border-color:#2f211d; }
+    .perfil-corpo { padding:0 14px 14px; }
+    .perfil-bio { margin:0 0 10px; color:#4b403b; font-size:13.5px; line-height:1.45; font-weight:720; }
+    .perfil-metricas { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+    .perfil-metrica { background:#fbf8f4; border:1px solid #ebe2d7; border-radius:6px; padding:8px; }
+    .perfil-metrica strong { display:block; color:#2f211d; font-size:21px; line-height:1; font-weight:950; }
+    .perfil-metrica span { display:block; color:var(--fs-suave); font-size:10px; font-weight:950; line-height:1.1; text-transform:uppercase; margin-top:4px; }
+    .perfil-section-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; background:#f8f4ee; border-bottom:1px solid #ebe2d7; padding:10px 12px; }
+    .perfil-section-head h2 { margin:0; color:#2f211d; font-size:18px; line-height:1.15; font-weight:950; }
+    .perfil-section-head p { margin:3px 0 0; color:var(--fs-suave); font-size:12px; font-weight:700; line-height:1.3; }
+    .perfil-section-body { padding:10px; }
+    .perfil-posts { display:grid; gap:8px; }
+    .perfil-post { display:grid; gap:6px; border:1px solid var(--fs-borda); border-radius:7px; background:#fff; padding:10px; text-decoration:none; color:#2b211d; cursor:pointer; }
+    .perfil-post:nth-child(even) { background:#fbf8f4; }
+    .perfil-post strong { color:#2f211d; font-size:15px; line-height:1.2; font-weight:950; }
+    .perfil-post p { margin:0; color:#4b403b; font-size:12.5px; line-height:1.38; font-weight:700; }
+    .perfil-post-meta { display:flex; flex-wrap:wrap; gap:5px; align-items:center; padding-top:6px; border-top:1px solid #ebe2d7; }
+    .perfil-tag { display:inline-flex; align-items:center; min-height:22px; padding:4px 6px; border-radius:999px; background:#f8f4ee; border:1px solid var(--fs-borda); color:#2f211d; font-size:10px; font-weight:850; line-height:1; }
+    .perfil-alerta { display:none; background:#fff7ed; color:#9a3412; border:1px solid #fed7aa; border-left:4px solid #f97316; border-radius:6px; padding:9px 11px; font-size:12px; font-weight:850; }
+    .perfil-vazio { padding:12px; color:var(--fs-suave); font-size:12.5px; font-weight:750; text-align:center; }
+    .perfil-editor { display:none; gap:7px; margin-top:10px; background:#fbf8f4; border:1px solid #ebe2d7; border-radius:7px; padding:9px; }
+    .perfil-editor label { display:grid; gap:4px; color:#2f211d; font-size:11px; font-weight:950; text-transform:uppercase; }
+    .perfil-editor textarea,.perfil-editor input { width:100%; border:1px solid #d7ccc8; border-radius:4px; padding:8px 9px; color:#2b211d; font-size:12.5px; box-sizing:border-box; background:#fff; }
+    .perfil-editor textarea { min-height:74px; resize:vertical; }
+    .perfil-editor-acoes { display:flex; flex-wrap:wrap; gap:6px; }
+    .perfil-nota-painel { margin:0; color:var(--fs-suave); font-size:11.5px; line-height:1.35; font-weight:750; }
+    footer { width:min(980px,calc(100% - 16px)); margin:10px auto 20px; color:var(--fs-suave); font-size:12px; }
+    footer a { color:#2f211d; font-weight:850; }
+    @media (max-width:720px) { .perfil-page{width:min(100% - 10px,980px);margin-top:8px;} .perfil-topo{grid-template-columns:78px minmax(0,1fr);align-items:end;} .perfil-avatar{width:78px;height:78px;font-size:22px;} .perfil-acoes{grid-column:1 / -1;justify-content:stretch;} .perfil-acoes>*{flex:1 1 auto;} .perfil-identidade strong{font-size:20px;} .perfil-metricas{grid-template-columns:repeat(2,minmax(0,1fr));} }
   </style>
 </head>
 <body>
@@ -347,7 +67,7 @@
     <div id="perfil-alerta" class="perfil-alerta"></div>
 
     <section class="perfil-card">
-      <div class="perfil-capa"></div>
+      <div id="perfil-capa" class="perfil-capa"></div>
       <div class="perfil-topo">
         <div id="perfil-avatar" class="perfil-avatar">FS</div>
         <div class="perfil-identidade">
@@ -356,16 +76,24 @@
         </div>
         <div class="perfil-acoes">
           <button id="btn-seguir" type="button" class="perfil-btn seguir" onclick="perfilAlternarSeguir()">Seguir</button>
-          <button id="btn-editar-bio" type="button" class="perfil-btn" onclick="perfilAbrirEditorBio()" style="display:none;">Editar bio</button>
+          <button id="btn-editar-social" type="button" class="perfil-btn" onclick="perfilAbrirEditorSocial()" style="display:none;">Editar perfil social</button>
           <a href="/forum.html" class="perfil-btn">Voltar ao feed</a>
         </div>
       </div>
       <div class="perfil-corpo">
         <p id="perfil-bio" class="perfil-bio">Este usuário ainda não escreveu uma bio.</p>
-        <div id="perfil-bio-editor" class="perfil-bio-editor">
-          <textarea id="perfil-bio-texto" maxlength="280" placeholder="Escreva uma descrição curta sobre você, sua empresa ou área de atuação."></textarea>
-          <button type="button" class="perfil-btn primario" onclick="perfilSalvarBio()">Salvar bio</button>
-          <button type="button" class="perfil-btn" onclick="perfilFecharEditorBio()">Cancelar</button>
+        <div id="perfil-editor-social" class="perfil-editor">
+          <p class="perfil-nota-painel">Nome, empresa e foto do perfil vêm do Painel. Aqui você altera somente a bio social e a capa da comunidade.</p>
+          <label>Bio social
+            <textarea id="perfil-bio-texto" maxlength="280" placeholder="Escreva uma descrição curta sobre você, sua empresa ou área de atuação."></textarea>
+          </label>
+          <label>URL da imagem de capa
+            <input id="perfil-capa-url" type="url" placeholder="https://... imagem da capa">
+          </label>
+          <div class="perfil-editor-acoes">
+            <button type="button" class="perfil-btn primario" onclick="perfilSalvarSocial()">Salvar perfil social</button>
+            <button type="button" class="perfil-btn" onclick="perfilFecharEditorSocial()">Cancelar</button>
+          </div>
         </div>
         <div class="perfil-metricas">
           <div class="perfil-metrica"><strong id="perfil-total-posts">0</strong><span>Publicações</span></div>
@@ -377,27 +105,13 @@
     </section>
 
     <section class="perfil-section">
-      <div class="perfil-section-head">
-        <div>
-          <h2>Publicações</h2>
-          <p>O que este usuário já publicou na Comunidade FS.</p>
-        </div>
-      </div>
-      <div class="perfil-section-body">
-        <div id="perfil-lista-posts" class="perfil-posts"><div class="perfil-vazio">Carregando publicações...</div></div>
-      </div>
+      <div class="perfil-section-head"><div><h2>Publicações</h2><p>O que este usuário já publicou na Comunidade FS.</p></div></div>
+      <div class="perfil-section-body"><div id="perfil-lista-posts" class="perfil-posts"><div class="perfil-vazio">Carregando publicações...</div></div></div>
     </section>
 
     <section class="perfil-section">
-      <div class="perfil-section-head">
-        <div>
-          <h2>Respostas recentes</h2>
-          <p>Comentários e interações feitas por este perfil.</p>
-        </div>
-      </div>
-      <div class="perfil-section-body">
-        <div id="perfil-lista-respostas" class="perfil-posts"><div class="perfil-vazio">Carregando respostas...</div></div>
-      </div>
+      <div class="perfil-section-head"><div><h2>Respostas recentes</h2><p>Comentários e interações feitas por este perfil.</p></div></div>
+      <div class="perfil-section-body"><div id="perfil-lista-respostas" class="perfil-posts"><div class="perfil-vazio">Carregando respostas...</div></div></div>
     </section>
   </main>
 
@@ -415,218 +129,190 @@
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
   <script>
-    const FS_PERFIL = {
-      userId: null,
-      viewerId: null,
-      perfil: null,
-      posts: [],
-      respostas: []
-    };
+    const FS_PERFIL = { userId:null, viewerId:null, painel:{}, social:{}, posts:[], respostas:[], seguindo:false };
 
-    function perfilParamId() {
-      const params = new URLSearchParams(location.search);
-      return params.get('id') || params.get('user_id') || params.get('usuario_id') || '';
+    function perfilParamId(){ const p = new URLSearchParams(location.search); return p.get('id') || p.get('user_id') || p.get('usuario_id') || ''; }
+    function perfilEsc(v){ return String(v || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
+    function perfilTexto(v,f=''){ return String(v || f || '').trim(); }
+    function perfilSet(id,t){ const el=document.getElementById(id); if(el) el.textContent=t; }
+    function perfilData(v){ const d=new Date(v || ''); if(Number.isNaN(d.getTime())) return ''; return d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
+    function perfilMostrarAlerta(t){ const el=document.getElementById('perfil-alerta'); if(!el) return; el.style.display=t?'block':'none'; el.textContent=t || ''; }
+    function perfilIniciais(nome){ return String(nome || 'FS').trim().split(/\s+/).filter(Boolean).slice(0,2).map(p=>p[0]).join('').toUpperCase() || 'FS'; }
+    function perfilSouEu(){ return !!(FS_PERFIL.viewerId && FS_PERFIL.viewerId === FS_PERFIL.userId); }
+
+    async function perfilBuscarPainel(userId){
+      const { data, error } = await _supabase.from('perfis').select('id,nome,nome_empresa,foto_url,plano').eq('id', userId).maybeSingle();
+      if (error) return {};
+      return data || {};
     }
 
-    function perfilEsc(valor) {
-      return String(valor || '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
+    async function perfilBuscarSocial(userId){
+      const { data, error } = await _supabase.from('forum_perfis_publicos').select('*').eq('user_id', userId).maybeSingle();
+      if (error) return {};
+      return data || {};
     }
 
-    function perfilTexto(valor, fallback = '') {
-      return String(valor || fallback || '').trim();
+    async function perfilSincronizarMeuPerfilPublico(){
+      if (!perfilSouEu()) return;
+      const painel = FS_PERFIL.painel || {};
+      const payload = {
+        user_id: FS_PERFIL.userId,
+        nome_publico: painel.nome || '',
+        empresa_publica: painel.nome_empresa || '',
+        foto_url: painel.foto_url || '',
+        bio: FS_PERFIL.social?.bio || '',
+        capa_url: FS_PERFIL.social?.capa_url || '',
+        atualizado_em: new Date().toISOString()
+      };
+      try {
+        await _supabase.from('forum_perfis_publicos').upsert(payload, { onConflict: 'user_id' });
+      } catch (e) { console.warn('Não foi possível sincronizar perfil público:', e); }
     }
 
-    function perfilSet(id, texto) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = texto;
-    }
-
-    function perfilData(valor) {
-      const data = new Date(valor || '');
-      if (Number.isNaN(data.getTime())) return '';
-      return data.toLocaleDateString('pt-BR') + ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function perfilMostrarAlerta(texto) {
-      const el = document.getElementById('perfil-alerta');
-      if (!el) return;
-      el.style.display = texto ? 'block' : 'none';
-      el.textContent = texto || '';
-    }
-
-    function perfilIniciais(nome) {
-      const partes = String(nome || 'FS').trim().split(/\s+/).filter(Boolean);
-      return partes.slice(0, 2).map(p => p[0]).join('').toUpperCase() || 'FS';
-    }
-
-    function perfilAplicarDados(perfil) {
-      const nome = perfilTexto(perfil?.nome, perfil?.email || 'Usuário da comunidade');
-      const empresa = perfilTexto(perfil?.nome_empresa, 'Prestador de serviço');
-      const bio = perfilTexto(perfil?.bio || perfil?.descricao || perfil?.sobre, 'Este usuário ainda não escreveu uma bio.');
+    function perfilAplicarDados(){
+      const painel = FS_PERFIL.painel || {};
+      const social = FS_PERFIL.social || {};
+      const postBase = FS_PERFIL.posts[0] || FS_PERFIL.respostas[0] || {};
+      const nome = perfilTexto(painel.nome || social.nome_publico || postBase.autor_nome, 'Usuário da comunidade');
+      const empresa = perfilTexto(painel.nome_empresa || social.empresa_publica || postBase.autor_empresa, 'Prestador de serviço');
+      const bio = perfilTexto(social.bio, 'Este usuário ainda não escreveu uma bio.');
+      const foto = painel.foto_url || social.foto_url || postBase.autor_foto_url || '';
+      const capa = social.capa_url || '';
       const avatar = document.getElementById('perfil-avatar');
+      const capaEl = document.getElementById('perfil-capa');
 
       perfilSet('perfil-nome', nome);
-      perfilSet('perfil-subtitulo', empresa);
+      perfilSet('perfil-subtitulo', empresa + (painel.plano ? ` • Plano ${painel.plano}` : ''));
       perfilSet('perfil-bio', bio);
       document.title = `${nome} - Comunidade FS`;
+      if (avatar) avatar.innerHTML = foto ? `<img src="${perfilEsc(foto)}" alt="${perfilEsc(nome)}">` : perfilIniciais(nome);
+      if (capaEl) capaEl.style.backgroundImage = capa ? `linear-gradient(90deg,rgba(47,33,29,.42),rgba(47,33,29,.06)), url('${perfilEsc(capa)}')` : '';
 
-      if (avatar) {
-        const logo = perfil?.logo_url || perfil?.avatar_url || perfil?.foto_url || '';
-        avatar.innerHTML = logo ? `<img src="${perfilEsc(logo)}" alt="${perfilEsc(nome)}">` : perfilIniciais(nome);
-      }
-
-      const souEu = FS_PERFIL.viewerId && FS_PERFIL.viewerId === FS_PERFIL.userId;
       const btnSeguir = document.getElementById('btn-seguir');
-      const btnEditar = document.getElementById('btn-editar-bio');
-      if (btnSeguir) btnSeguir.style.display = souEu ? 'none' : 'inline-flex';
-      if (btnEditar) btnEditar.style.display = souEu ? 'inline-flex' : 'none';
+      const btnEditar = document.getElementById('btn-editar-social');
+      if (btnSeguir) btnSeguir.style.display = perfilSouEu() ? 'none' : 'inline-flex';
+      if (btnEditar) btnEditar.style.display = perfilSouEu() ? 'inline-flex' : 'none';
     }
 
-    function perfilStatusTopico(topico) {
-      return topico?.resolvido ? 'resolvido' : (topico?.status || 'aberto');
-    }
+    function perfilStatusTopico(t){ return t?.resolvido ? 'resolvido' : (t?.status || 'aberto'); }
 
-    function perfilRenderPosts() {
-      const box = document.getElementById('perfil-lista-posts');
-      if (!box) return;
-      if (!FS_PERFIL.posts.length) {
-        box.innerHTML = '<div class="perfil-vazio">Nenhuma publicação encontrada.</div>';
-        return;
-      }
-      box.innerHTML = FS_PERFIL.posts.map(post => `
+    function perfilRenderPosts(){
+      const box=document.getElementById('perfil-lista-posts'); if(!box) return;
+      if(!FS_PERFIL.posts.length){ box.innerHTML='<div class="perfil-vazio">Nenhuma publicação encontrada.</div>'; return; }
+      box.innerHTML=FS_PERFIL.posts.map(post=>`
         <article class="perfil-post" onclick="location.href='/forum.html#topico=${perfilEsc(post.id)}'">
           <strong>${perfilEsc(post.titulo || 'Publicação')}</strong>
-          <p>${perfilEsc(String(post.descricao || '').slice(0, 220))}</p>
+          <p>${perfilEsc(String(post.descricao || '').slice(0,220))}</p>
           <div class="perfil-post-meta">
             <span class="perfil-tag">${perfilEsc(post.categoria || 'Geral')}</span>
             <span class="perfil-tag">${perfilEsc(perfilStatusTopico(post))}</span>
-            <span class="perfil-tag">${Number(post.total_respostas || post.respostas || 0)} comentários</span>
-            <span class="perfil-tag">${Number(post.total_curtidas || post.curtidas || 0)} curtidas</span>
-            <span class="perfil-tag">${perfilEsc(perfilData(post.created_at || post.criado_em))}</span>
+            <span class="perfil-tag">${Number(post.total_respostas || 0)} comentários</span>
+            <span class="perfil-tag">${Number(post.total_curtidas || 0)} curtidas</span>
+            <span class="perfil-tag">${perfilEsc(perfilData(post.criado_em || post.created_at))}</span>
           </div>
-        </article>
-      `).join('');
+        </article>`).join('');
     }
 
-    function perfilRenderRespostas() {
-      const box = document.getElementById('perfil-lista-respostas');
-      if (!box) return;
-      if (!FS_PERFIL.respostas.length) {
-        box.innerHTML = '<div class="perfil-vazio">Nenhuma resposta encontrada.</div>';
-        return;
-      }
-      box.innerHTML = FS_PERFIL.respostas.map(resp => `
+    function perfilRenderRespostas(){
+      const box=document.getElementById('perfil-lista-respostas'); if(!box) return;
+      if(!FS_PERFIL.respostas.length){ box.innerHTML='<div class="perfil-vazio">Nenhuma resposta encontrada.</div>'; return; }
+      box.innerHTML=FS_PERFIL.respostas.map(resp=>`
         <article class="perfil-post" onclick="${resp.topico_id ? `location.href='/forum.html#topico=${perfilEsc(resp.topico_id)}'` : ''}">
           <strong>Comentário</strong>
-          <p>${perfilEsc(String(resp.texto || resp.conteudo || resp.resposta || '').slice(0, 220))}</p>
+          <p>${perfilEsc(String(resp.texto || resp.conteudo || resp.resposta || '').slice(0,220))}</p>
           <div class="perfil-post-meta">
-            <span class="perfil-tag">${Number(resp.total_curtidas || resp.curtidas || 0)} curtidas</span>
-            <span class="perfil-tag">${perfilEsc(perfilData(resp.created_at || resp.criado_em))}</span>
+            <span class="perfil-tag">${Number(resp.total_curtidas || 0)} curtidas</span>
+            <span class="perfil-tag">${perfilEsc(perfilData(resp.criado_em || resp.created_at))}</span>
           </div>
-        </article>
-      `).join('');
+        </article>`).join('');
     }
 
-    async function perfilBuscarDados() {
-      if (!window._supabase) throw new Error('Supabase não carregou.');
+    async function perfilCarregarSeguidores(){
+      try {
+        const [{ count: seguidores }, { data: seguindo }] = await Promise.all([
+          _supabase.from('forum_seguidores').select('*', { count:'exact', head:true }).eq('seguido_id', FS_PERFIL.userId),
+          FS_PERFIL.viewerId ? _supabase.from('forum_seguidores').select('id').eq('seguidor_id', FS_PERFIL.viewerId).eq('seguido_id', FS_PERFIL.userId).maybeSingle() : Promise.resolve({ data:null })
+        ]);
+        FS_PERFIL.seguindo = !!seguindo;
+        perfilSet('perfil-total-seguidores', Number(seguidores || 0));
+        const btn = document.getElementById('btn-seguir');
+        if (btn) btn.textContent = FS_PERFIL.seguindo ? 'Seguindo' : 'Seguir';
+      } catch (e) { console.warn('Não foi possível carregar seguidores:', e); }
+    }
 
-      const { data: sessaoData } = await _supabase.auth.getSession();
+    async function perfilBuscarDados(){
+      if(!window._supabase) throw new Error('Supabase não carregou.');
+      const { data:sessaoData } = await _supabase.auth.getSession();
       FS_PERFIL.viewerId = sessaoData?.session?.user?.id || null;
       FS_PERFIL.userId = perfilParamId() || FS_PERFIL.viewerId;
+      if(!FS_PERFIL.userId){ location.href='/index.html?login=1'; return; }
 
-      if (!FS_PERFIL.userId) {
-        location.href = '/index.html?login=1';
-        return;
-      }
-
-      const [{ data: perfil }, { data: posts }, { data: respostas }] = await Promise.all([
-        _supabase.from('perfis').select('*').eq('id', FS_PERFIL.userId).maybeSingle(),
-        _supabase.from('forum_topicos').select('*').eq('usuario_id', FS_PERFIL.userId).order('created_at', { ascending: false }).limit(30),
-        _supabase.from('forum_respostas').select('*').eq('usuario_id', FS_PERFIL.userId).order('created_at', { ascending: false }).limit(20)
+      const [painel, social, postsResp, respostasResp] = await Promise.all([
+        perfilBuscarPainel(FS_PERFIL.userId),
+        perfilBuscarSocial(FS_PERFIL.userId),
+        _supabase.from('forum_topicos').select('*').eq('usuario_id', FS_PERFIL.userId).order('criado_em', { ascending:false }).limit(30),
+        _supabase.from('forum_respostas').select('*').eq('usuario_id', FS_PERFIL.userId).order('criado_em', { ascending:false }).limit(20)
       ]);
-
-      FS_PERFIL.perfil = perfil || {};
-      FS_PERFIL.posts = Array.isArray(posts) ? posts : [];
-      FS_PERFIL.respostas = Array.isArray(respostas) ? respostas : [];
-
-      perfilAplicarDados(FS_PERFIL.perfil);
+      FS_PERFIL.painel = painel || {};
+      FS_PERFIL.social = social || {};
+      FS_PERFIL.posts = Array.isArray(postsResp?.data) ? postsResp.data : [];
+      FS_PERFIL.respostas = Array.isArray(respostasResp?.data) ? respostasResp.data : [];
+      await perfilSincronizarMeuPerfilPublico();
+      perfilAplicarDados();
       perfilSet('perfil-total-posts', FS_PERFIL.posts.length);
       perfilSet('perfil-total-respostas', FS_PERFIL.respostas.length);
-      perfilSet('perfil-total-curtidas', FS_PERFIL.posts.reduce((s, p) => s + Number(p.total_curtidas || p.curtidas || 0), 0));
-
-      const seguidoresFake = Number(localStorage.getItem(`fs_forum_seguidores_${FS_PERFIL.userId}`) || 0);
-      perfilSet('perfil-total-seguidores', seguidoresFake);
-      const seguindo = localStorage.getItem(`fs_forum_seguindo_${FS_PERFIL.userId}`) === '1';
-      const btn = document.getElementById('btn-seguir');
-      if (btn) btn.textContent = seguindo ? 'Seguindo' : 'Seguir';
-
+      perfilSet('perfil-total-curtidas', FS_PERFIL.posts.reduce((s,p)=>s+Number(p.total_curtidas || 0),0) + FS_PERFIL.respostas.reduce((s,r)=>s+Number(r.total_curtidas || 0),0));
+      await perfilCarregarSeguidores();
       perfilRenderPosts();
       perfilRenderRespostas();
     }
 
-    function perfilAlternarSeguir() {
-      if (!FS_PERFIL.userId) return;
-      const key = `fs_forum_seguindo_${FS_PERFIL.userId}`;
-      const countKey = `fs_forum_seguidores_${FS_PERFIL.userId}`;
-      const seguindo = localStorage.getItem(key) === '1';
-      let total = Number(localStorage.getItem(countKey) || 0);
-      if (seguindo) {
-        localStorage.removeItem(key);
-        total = Math.max(0, total - 1);
-      } else {
-        localStorage.setItem(key, '1');
-        total += 1;
-      }
-      localStorage.setItem(countKey, String(total));
-      perfilSet('perfil-total-seguidores', total);
-      const btn = document.getElementById('btn-seguir');
-      if (btn) btn.textContent = seguindo ? 'Seguir' : 'Seguindo';
-    }
-
-    function perfilAbrirEditorBio() {
-      const editor = document.getElementById('perfil-bio-editor');
-      const texto = document.getElementById('perfil-bio-texto');
-      if (texto) texto.value = document.getElementById('perfil-bio')?.textContent || '';
-      if (editor) editor.style.display = 'grid';
-    }
-
-    function perfilFecharEditorBio() {
-      const editor = document.getElementById('perfil-bio-editor');
-      if (editor) editor.style.display = 'none';
-    }
-
-    async function perfilSalvarBio() {
+    async function perfilAlternarSeguir(){
+      if(!FS_PERFIL.userId) return;
+      if(!FS_PERFIL.viewerId){ location.href='/index.html?login=1'; return; }
+      if(perfilSouEu()) return;
       try {
-        if (!FS_PERFIL.viewerId || FS_PERFIL.viewerId !== FS_PERFIL.userId) return;
+        if(FS_PERFIL.seguindo){
+          const { error } = await _supabase.from('forum_seguidores').delete().eq('seguidor_id', FS_PERFIL.viewerId).eq('seguido_id', FS_PERFIL.userId);
+          if(error) throw error;
+        } else {
+          const { error } = await _supabase.from('forum_seguidores').insert({ seguidor_id: FS_PERFIL.viewerId, seguido_id: FS_PERFIL.userId });
+          if(error) throw error;
+        }
+        await perfilCarregarSeguidores();
+      } catch(e){ console.warn('Erro ao seguir:', e); perfilMostrarAlerta('Não foi possível atualizar o vínculo de seguir.'); }
+    }
+
+    function perfilAbrirEditorSocial(){
+      document.getElementById('perfil-editor-social').style.display='grid';
+      document.getElementById('perfil-bio-texto').value = FS_PERFIL.social?.bio || '';
+      document.getElementById('perfil-capa-url').value = FS_PERFIL.social?.capa_url || '';
+    }
+    function perfilFecharEditorSocial(){ document.getElementById('perfil-editor-social').style.display='none'; }
+
+    async function perfilSalvarSocial(){
+      try{
+        if(!perfilSouEu()) return;
         const bio = document.getElementById('perfil-bio-texto')?.value?.trim() || '';
-        const { error } = await _supabase.from('perfis').update({ bio }).eq('id', FS_PERFIL.userId);
-        if (error) throw error;
-        perfilSet('perfil-bio', bio || 'Este usuário ainda não escreveu uma bio.');
-        perfilFecharEditorBio();
-        perfilMostrarAlerta('Bio atualizada com sucesso.');
-        setTimeout(() => perfilMostrarAlerta(''), 3500);
-      } catch (erro) {
-        console.warn('Erro ao salvar bio:', erro);
-        perfilMostrarAlerta('Não foi possível salvar a bio. Talvez a coluna bio ainda não exista na tabela perfis.');
-      }
+        const capa_url = document.getElementById('perfil-capa-url')?.value?.trim() || '';
+        const painel = FS_PERFIL.painel || {};
+        const payload = { user_id:FS_PERFIL.userId, nome_publico:painel.nome || '', empresa_publica:painel.nome_empresa || '', foto_url:painel.foto_url || '', bio, capa_url, atualizado_em:new Date().toISOString() };
+        const { error } = await _supabase.from('forum_perfis_publicos').upsert(payload, { onConflict:'user_id' });
+        if(error) throw error;
+        FS_PERFIL.social = { ...FS_PERFIL.social, ...payload };
+        perfilAplicarDados();
+        perfilFecharEditorSocial();
+        perfilMostrarAlerta('Perfil social atualizado com sucesso.');
+        setTimeout(()=>perfilMostrarAlerta(''),3500);
+      } catch(e){ console.warn('Erro ao salvar perfil social:', e); perfilMostrarAlerta('Não foi possível salvar o perfil social.'); }
     }
 
-    async function perfilIniciar() {
-      try {
-        await perfilBuscarDados();
-      } catch (erro) {
-        console.error('Erro ao carregar perfil:', erro);
-        perfilMostrarAlerta('Não foi possível carregar este perfil.');
-      }
-    }
-
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', perfilIniciar);
-    else perfilIniciar();
-
+    async function perfilIniciar(){ try{ await perfilBuscarDados(); } catch(e){ console.error('Erro ao carregar perfil:', e); perfilMostrarAlerta('Não foi possível carregar este perfil.'); } }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', perfilIniciar); else perfilIniciar();
     window.perfilAlternarSeguir = perfilAlternarSeguir;
-    window.perfilAbrirEditorBio = perfilAbrirEditorBio;
-    window.perfilFecharEditorBio = perfilFecharEditorBio;
-    window.perfilSalvarBio = perfilSalvarBio;
+    window.perfilAbrirEditorSocial = perfilAbrirEditorSocial;
+    window.perfilFecharEditorSocial = perfilFecharEditorSocial;
+    window.perfilSalvarSocial = perfilSalvarSocial;
   </script>
 </body>
 </html>
