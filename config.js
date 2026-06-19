@@ -94,10 +94,11 @@ const FS_CONFIG_CSS_POR_PAGINA = [
 const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js', 'fs-ver-cliente-fix-js']] },
   { paginas: ['/gerador', '/gerador.html'], scripts: [['gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js'], ['gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js']] },
-  { paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html'], scripts: [['fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js']] },
+  { paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html', '/recorrentes', '/recorrentes.html'], scripts: [['fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js']] },
   { paginas: ['/clientes', '/clientes.html'], scripts: [['clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js']] },
   { paginas: ['/veiculos', '/veiculos.html'], scripts: [['veiculos-ficha-link.js', 'fs-veiculos-ficha-link-js']] },
   { paginas: ['/estoque', '/estoque.html'], scripts: [['estoque-compra-caixa.js', 'fs-estoque-compra-caixa-js']] },
+  { paginas: ['/recorrentes', '/recorrentes.html'], scripts: [['recorrentes-pro.js', 'fs-recorrentes-pro-js']] },
   { paginas: ['/painel', '/painel.html'], scripts: [['painel-logo-fix.js', 'fs-painel-logo-fix-js'], ['painel-perfil-fix.js', 'fs-painel-perfil-fix-js']] },
   { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js', 'fs-orcamentos-pdf-js']] },
   { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js', 'fs-cliente-modal-js']] },
