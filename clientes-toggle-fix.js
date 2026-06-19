@@ -29,12 +29,7 @@
       botao.setAttribute('aria-expanded', 'true');
     }
 
-    setTimeout(() => {
-      const foco = modo === 'editar'
-        ? document.getElementById('cliente-nome')
-        : document.getElementById('cliente-nome');
-      foco?.focus();
-    }, 80);
+    setTimeout(() => document.getElementById('cliente-nome')?.focus(), 80);
   }
 
   function fecharModalCliente() {
@@ -59,6 +54,45 @@
     if (titulo) titulo.textContent = 'Novo cliente';
     if (btnSalvar) btnSalvar.textContent = 'Salvar cliente';
     abrirModalCliente('novo');
+  }
+
+  function formularioClienteTemErro() {
+    const mensagem = document.getElementById('mensagem-clientes-form');
+    return !!mensagem && mensagem.classList.contains('erro') && mensagem.textContent.trim().length > 0;
+  }
+
+  function formularioClienteProcessando() {
+    const btnSalvar = document.getElementById('btn-salvar-cliente');
+    const loading = String(btnSalvar?.textContent || '').toLowerCase().includes('salvando');
+    return !!btnSalvar?.disabled || loading;
+  }
+
+  function fecharAposSalvarComSucesso() {
+    const { card } = obterElementos();
+    if (!card?.classList.contains('fs-modal-form-aberto')) return;
+
+    let tentativas = 0;
+    const checar = () => {
+      tentativas += 1;
+      if (!card.classList.contains('fs-modal-form-aberto')) return;
+      if (formularioClienteTemErro()) return;
+
+      if (!formularioClienteProcessando()) {
+        const nome = document.getElementById('cliente-nome')?.value?.trim() || '';
+        const id = document.getElementById('cliente-id')?.value?.trim() || '';
+        const titulo = String(document.getElementById('titulo-form-cliente')?.textContent || '').toLowerCase();
+        const voltouParaNovo = titulo.includes('novo cliente') && !id;
+
+        if (voltouParaNovo && !nome) {
+          fecharModalCliente();
+          return;
+        }
+      }
+
+      if (tentativas < 12) setTimeout(checar, 250);
+    };
+
+    setTimeout(checar, 350);
   }
 
   function configurarModalCliente() {
@@ -122,11 +156,7 @@
       const form = document.getElementById('form-cliente');
       if (form) {
         form.addEventListener('submit', () => {
-          setTimeout(() => {
-            const id = document.getElementById('cliente-id')?.value || '';
-            const mensagem = document.getElementById('mensagem-clientes-form')?.textContent || '';
-            if (!id && mensagem.toLowerCase().includes('sucesso')) fecharModalCliente();
-          }, 700);
+          fecharAposSalvarComSucesso();
         });
       }
     }
@@ -138,13 +168,8 @@
     const style = document.createElement('style');
     style.id = 'fs-clientes-toggle-fix-style';
     style.textContent = `
-      body.fs-modal-form-lock {
-        overflow: hidden !important;
-      }
-
-      .clientes-grid {
-        grid-template-columns: 1fr !important;
-      }
+      body.fs-modal-form-lock { overflow: hidden !important; }
+      .clientes-grid { grid-template-columns: 1fr !important; }
 
       #card-form-cliente {
         background: transparent !important;
@@ -166,9 +191,7 @@
       }
 
       #card-form-cliente > .clientes-card-header .clientes-header-texto,
-      #card-form-cliente > .clientes-card-header .fs-modal-fechar {
-        display: none !important;
-      }
+      #card-form-cliente > .clientes-card-header .fs-modal-fechar { display: none !important; }
 
       #card-form-cliente #btn-toggle-form-cliente {
         display: inline-flex !important;
@@ -188,9 +211,7 @@
         cursor: pointer !important;
       }
 
-      #card-form-cliente:not(.fs-modal-form-aberto) .clientes-card-body {
-        display: none !important;
-      }
+      #card-form-cliente:not(.fs-modal-form-aberto) .clientes-card-body { display: none !important; }
 
       #card-form-cliente.fs-modal-form-aberto {
         position: fixed !important;
@@ -228,9 +249,7 @@
       }
 
       #card-form-cliente.fs-modal-form-aberto > .clientes-card-header .clientes-header-texto,
-      #card-form-cliente.fs-modal-form-aberto > .clientes-card-header .fs-modal-fechar {
-        display: block !important;
-      }
+      #card-form-cliente.fs-modal-form-aberto > .clientes-card-header .fs-modal-fechar { display: block !important; }
 
       #card-form-cliente.fs-modal-form-aberto > .clientes-card-header h2 {
         margin: 0 !important;
@@ -245,9 +264,7 @@
         line-height: 1.35 !important;
       }
 
-      #card-form-cliente.fs-modal-form-aberto #btn-toggle-form-cliente {
-        display: none !important;
-      }
+      #card-form-cliente.fs-modal-form-aberto #btn-toggle-form-cliente { display: none !important; }
 
       #card-form-cliente.fs-modal-form-aberto .fs-modal-fechar {
         width: 34px !important;
@@ -270,13 +287,8 @@
         box-shadow: 0 20px 44px rgba(0,0,0,.20) !important;
       }
 
-      #card-form-cliente.fs-modal-form-aberto .form-clientes {
-        gap: 10px !important;
-      }
-
-      #card-form-cliente.fs-modal-form-aberto .form-linha {
-        gap: 10px !important;
-      }
+      #card-form-cliente.fs-modal-form-aberto .form-clientes,
+      #card-form-cliente.fs-modal-form-aberto .form-linha { gap: 10px !important; }
 
       #card-form-cliente.fs-modal-form-aberto .campo input,
       #card-form-cliente.fs-modal-form-aberto .campo select,
@@ -286,28 +298,17 @@
         font-size: 13px !important;
       }
 
-      #card-form-cliente.fs-modal-form-aberto .campo textarea {
-        min-height: 76px !important;
-      }
+      #card-form-cliente.fs-modal-form-aberto .campo textarea { min-height: 76px !important; }
 
       @media (max-width: 680px) {
-        #card-form-cliente.fs-modal-form-aberto {
-          padding: 10px !important;
-        }
-
-        #card-form-cliente.fs-modal-form-aberto > .clientes-card-header {
-          margin-top: 10px !important;
-        }
-
-        #card-form-cliente.fs-modal-form-aberto .form-linha {
-          grid-template-columns: 1fr !important;
-        }
+        #card-form-cliente.fs-modal-form-aberto { padding: 10px !important; }
+        #card-form-cliente.fs-modal-form-aberto > .clientes-card-header { margin-top: 10px !important; }
+        #card-form-cliente.fs-modal-form-aberto .form-linha { grid-template-columns: 1fr !important; }
       }
     `;
     document.head.appendChild(style);
   }
 
-  const editarOriginal = window.editarCliente;
   function interceptarEdicao() {
     if (typeof window.editarCliente !== 'function' || window.editarCliente.__fsModalInterceptado) return;
     const original = window.editarCliente;
