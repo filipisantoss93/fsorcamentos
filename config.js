@@ -99,6 +99,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   { paginas: ['/veiculos', '/veiculos.html'], scripts: [['veiculos-ficha-link.js', 'fs-veiculos-ficha-link-js']] },
   { paginas: ['/estoque', '/estoque.html'], scripts: [['estoque-compra-caixa.js', 'fs-estoque-compra-caixa-js']] },
   { paginas: ['/recorrentes', '/recorrentes.html'], scripts: [['recorrentes-pro.js', 'fs-recorrentes-pro-js']] },
+  { paginas: ['/relatorios', '/relatorios.html'], scripts: [['relatorios-pro.js', 'fs-relatorios-pro-js']] },
   { paginas: ['/painel', '/painel.html'], scripts: [['painel-logo-fix.js', 'fs-painel-logo-fix-js'], ['painel-perfil-fix.js', 'fs-painel-perfil-fix-js']] },
   { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js', 'fs-orcamentos-pdf-js']] },
   { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js', 'fs-ordens-recorrente-prefill-js']] },
