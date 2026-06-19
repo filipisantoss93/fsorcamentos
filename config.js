@@ -145,9 +145,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
       ['index-ads-restore.js', 'fs-index-ads-restore-js'],
       ['index-cache-sync.js', 'fs-index-cache-sync-js'],
       ['index-empresa-card.js', 'fs-index-empresa-card-js'],
-      ['index-empresa-contrast-fix.js', 'fs-index-empresa-contrast-fix-js'],
-      ['dashboard-premium-index.js', 'fs-dashboard-premium-index-js'],
-      ['index-dashboard-tag-fix.js', 'fs-index-dashboard-tag-fix-js']
+      ['dashboard-premium-index.js', 'fs-dashboard-premium-index-js']
     ]
   },
   {
