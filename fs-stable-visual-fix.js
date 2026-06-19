@@ -1,4 +1,10 @@
-/* FS Orçamentos - comportamento final estável de sistema */
+/* =========================================================
+   FS ORÇAMENTOS - comportamento final de sistema
+   Responsabilidades:
+   - pré-carregar listas principais;
+   - abrir Nova OS/Novo agendamento em modal;
+   - transformar linhas de listas em detalhe clicável.
+   ========================================================= */
 (function () {
   'use strict';
 
@@ -6,19 +12,11 @@
 
   function injetarEstilo() {
     if (document.getElementById('fs-stable-visual-fix-style')) return;
+
     const style = document.createElement('style');
     style.id = 'fs-stable-visual-fix-style';
     style.textContent = `
-      body:not(.gerando-pdf) .fs-sem-borda-amarela,
-      body:not(.gerando-pdf) .card,
-      body:not(.gerando-pdf) .clientes-card,
-      body:not(.gerando-pdf) .veiculos-card,
-      body:not(.gerando-pdf) .ordens-card,
-      body:not(.gerando-pdf) .estoque-card,
-      body:not(.gerando-pdf) .agenda-card,
-      body:not(.gerando-pdf) .forum-card {
-        border-top-color: var(--fs-borda, #ded3c5) !important;
-      }
+      body.fs-modal-form-lock { overflow: hidden !important; }
 
       body:not(.gerando-pdf) #card-form-ordem,
       body:not(.gerando-pdf) #card-form-agendamento,
@@ -26,7 +24,7 @@
         background: transparent !important;
         border: 0 !important;
         box-shadow: none !important;
-        margin: 0 0 10px !important;
+        margin: 0 0 8px !important;
       }
 
       body:not(.gerando-pdf) #card-form-ordem:not(.fs-modal-form-aberto) .ordens-card-body,
@@ -41,9 +39,11 @@
         display: flex !important;
         justify-content: flex-end !important;
         align-items: center !important;
+        gap: 6px !important;
         background: transparent !important;
         border: 0 !important;
         padding: 0 !important;
+        box-shadow: none !important;
       }
 
       body:not(.gerando-pdf) #card-form-ordem:not(.fs-modal-form-aberto) > .ordens-card-header > div,
@@ -85,11 +85,12 @@
       body:not(.gerando-pdf) #card-form-ordem.fs-modal-form-aberto > .ordens-card-header,
       body:not(.gerando-pdf) #card-form-agendamento.fs-modal-form-aberto > .agenda-card-header,
       body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-header {
-        margin-top: 18px !important;
+        margin-top: 16px !important;
         display: flex !important;
         justify-content: space-between !important;
         align-items: flex-start !important;
-        padding: 12px 14px !important;
+        padding: 11px 13px !important;
+        background: #f8f4ee !important;
         border-top: 1px solid var(--fs-borda, #ded3c5) !important;
         border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
         border-radius: 7px 7px 0 0 !important;
@@ -100,7 +101,7 @@
       body:not(.gerando-pdf) #card-form-agendamento.fs-modal-form-aberto > .agenda-card-body,
       body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-body {
         display: block !important;
-        padding: 14px !important;
+        padding: 13px !important;
         border-bottom: 1px solid var(--fs-borda, #ded3c5) !important;
         border-radius: 0 0 7px 7px !important;
         box-shadow: 0 18px 38px rgba(0,0,0,.18) !important;
@@ -145,14 +146,14 @@
         display: flex !important;
         align-items: flex-start !important;
         justify-content: center !important;
-        padding: 18px !important;
+        padding: 16px !important;
         background: rgba(20, 13, 11, .62) !important;
         overflow-y: auto !important;
       }
 
       .fs-item-modal-card {
         width: min(820px, 100%) !important;
-        margin-top: 18px !important;
+        margin-top: 16px !important;
         background: #ffffff !important;
         color: var(--fs-texto, #2b211d) !important;
         border: 1px solid var(--fs-borda, #ded3c5) !important;
@@ -166,7 +167,7 @@
         justify-content: space-between !important;
         align-items: flex-start !important;
         gap: 10px !important;
-        padding: 12px 14px !important;
+        padding: 11px 13px !important;
         background: #f8f4ee !important;
         border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
       }
@@ -186,7 +187,7 @@
       }
 
       .fs-item-modal-corpo {
-        padding: 12px 14px !important;
+        padding: 12px 13px !important;
       }
 
       .fs-item-modal-corpo .cliente-acoes,
@@ -228,6 +229,7 @@
         }
       }
     `;
+
     document.head.appendChild(style);
   }
 
@@ -436,7 +438,7 @@
     instalarModalDeItensDaLista();
     setTimeout(() => { precargarListasRecentes(); instalarModaisRestantes(); instalarModalDeItensDaLista(); }, 600);
     setTimeout(() => { instalarModaisRestantes(); instalarModalDeItensDaLista(); }, 1600);
-    setInterval(instalarModalDeItensDaLista, 2200);
+    setInterval(instalarModalDeItensDaLista, 2500);
   }
 
   document.addEventListener('keydown', (event) => {
