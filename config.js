@@ -158,7 +158,6 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
     paginas: ['/gerador', '/gerador.html'],
     scripts: [
       ['gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js'],
-      ['gerador-acoes-fix.js', 'fs-gerador-acoes-fix-js'],
       ['gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js']
     ]
   },
