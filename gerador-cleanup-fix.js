@@ -3,7 +3,8 @@
    Correções finais da página gerador:
    - remove bloco redundante acima de "Dados da empresa";
    - remove opção amarela do seletor antigo;
-   - garante opção rosa;
+   - garante opção rosa circular;
+   - esconde campo visual de ID do cliente;
    - busca por Enter no modal de cliente;
    - inicializa blocos AdSense visíveis;
    - corrige layout quebrado no celular/tablet;
@@ -25,8 +26,56 @@
 
       .theme-dot.pink,
       .theme-dot.rosa {
+        display: inline-flex !important;
+        width: 24px !important;
+        min-width: 24px !important;
+        max-width: 24px !important;
+        height: 24px !important;
+        min-height: 24px !important;
+        max-height: 24px !important;
+        aspect-ratio: 1 / 1 !important;
+        padding: 0 !important;
         background: #db2777 !important;
         border-color: #ffffff !important;
+        border-radius: 999px !important;
+        overflow: hidden !important;
+        line-height: 0 !important;
+        font-size: 0 !important;
+      }
+
+      .cliente-id-acoes .campo-form:has(#orcamento-cliente-id),
+      label[for="orcamento-cliente-id"],
+      #orcamento-cliente-id {
+        display: none !important;
+      }
+
+      .cliente-id-acoes {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 7px !important;
+        align-items: stretch !important;
+      }
+
+      .cliente-id-acoes .btn-buscar-cliente-id,
+      .cliente-id-acoes .btn-limpar-cliente-id {
+        min-height: 34px !important;
+        border-radius: 4px !important;
+        padding: 7px 10px !important;
+        box-shadow: none !important;
+        font-size: 12px !important;
+        font-weight: 950 !important;
+      }
+
+      .cliente-id-acoes .btn-buscar-cliente-id {
+        background: #2f211d !important;
+        color: #ffc400 !important;
+        border: 1px solid #2f211d !important;
+      }
+
+      .cliente-id-acoes .btn-limpar-cliente-id {
+        background: #ffffff !important;
+        color: #2f211d !important;
+        border: 1px solid #d7ccc8 !important;
       }
 
       html,
@@ -339,13 +388,23 @@
 
       .theme-options {
         gap: 8px !important;
+        align-items: center !important;
       }
 
       .theme-dot {
+        display: inline-flex !important;
         width: 24px !important;
+        min-width: 24px !important;
+        max-width: 24px !important;
         height: 24px !important;
+        min-height: 24px !important;
+        max-height: 24px !important;
+        aspect-ratio: 1 / 1 !important;
+        padding: 0 !important;
+        border-radius: 999px !important;
         border-width: 2px !important;
         box-shadow: none !important;
+        overflow: hidden !important;
       }
 
       .acoes-gerador-principal {
@@ -540,6 +599,18 @@
     document.querySelectorAll('#formulario-orcamento > .intro-form-gerador').forEach(el => el.remove());
   }
 
+  function ocultarCampoIdClienteVisual() {
+    const input = document.getElementById('orcamento-cliente-id');
+    if (!input) return;
+    const campo = input.closest('.campo-form');
+    if (campo) campo.style.display = 'none';
+    input.setAttribute('tabindex', '-1');
+    input.setAttribute('aria-hidden', 'true');
+
+    const btnBuscar = document.querySelector('.btn-buscar-cliente-id');
+    if (btnBuscar) btnBuscar.textContent = 'Buscar cliente';
+  }
+
   function corrigirCoresPdf() {
     document.querySelectorAll('.theme-dot.yellow').forEach(el => el.remove());
 
@@ -559,6 +630,20 @@
       });
       container.appendChild(rosa);
     }
+
+    document.querySelectorAll('.theme-dot.pink, .theme-dot.rosa').forEach((el) => {
+      el.style.width = '24px';
+      el.style.height = '24px';
+      el.style.minWidth = '24px';
+      el.style.maxWidth = '24px';
+      el.style.minHeight = '24px';
+      el.style.maxHeight = '24px';
+      el.style.aspectRatio = '1 / 1';
+      el.style.padding = '0';
+      el.style.borderRadius = '999px';
+      el.style.overflow = 'hidden';
+      el.style.display = 'inline-flex';
+    });
 
     const hidden = document.getElementById('selected-theme');
     if (hidden && String(hidden.value || '').toLowerCase() === 'yellow') {
@@ -641,6 +726,7 @@
   function iniciar() {
     injetarEstilo();
     removerBlocoIntro();
+    ocultarCampoIdClienteVisual();
     corrigirCoresPdf();
     instalarEnterBuscaCliente();
     inicializarAdsense();
@@ -648,6 +734,7 @@
 
     setTimeout(() => {
       removerBlocoIntro();
+      ocultarCampoIdClienteVisual();
       corrigirCoresPdf();
       instalarEnterBuscaCliente();
       inicializarAdsense();
@@ -656,6 +743,7 @@
 
     setTimeout(() => {
       removerBlocoIntro();
+      ocultarCampoIdClienteVisual();
       corrigirCoresPdf();
       instalarEnterBuscaCliente();
       inicializarAdsense();
