@@ -8,11 +8,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comunidade - Fórum de Dúvidas Técnicas | FS Orçamentos</title>
-  <meta name="description" content="Comunidade do FS Orçamentos para dúvidas técnicas, gestão de orçamentos, ordens de serviço, clientes, cobrança, garantia e rotina profissional.">
+  <title>Comunidade FS - Rede social dos prestadores | FS Orçamentos</title>
+  <meta name="description" content="Comunidade FS Orçamentos: rede social para prestadores de serviço trocarem dúvidas, experiências, orçamentos, cobrança, garantia, oficina e rotina profissional.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="forum-actions-menu.css?v=20260617-1">
+  <link rel="stylesheet" href="forum-actions-menu.css?v=20260619-1">
   <link rel="stylesheet" href="forum-modal-fix.css?v=20260618-1">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
@@ -21,35 +21,44 @@
 <body>
   <div id="header-container"></div>
 
-  <main id="forum-conteudo" class="forum-page" style="display:none;">
-    <section class="forum-hero">
+  <main id="forum-conteudo" class="forum-page comunidade-page" style="display:none;">
+    <section class="forum-hero comunidade-hero">
       <div>
-        <span class="forum-tag">👥 Comunidade</span>
-        <h1>Fórum de Dúvidas Técnicas</h1>
-        <p>Espaço para trocar experiências sobre orçamentos, ordens de serviço, clientes, cobrança, garantia, oficina e rotina de prestação de serviços.</p>
+        <span class="forum-tag">👥 Comunidade FS</span>
+        <h1>A rede social dos prestadores de serviço</h1>
+        <p>Publique dúvidas, conte experiências, peça opinião sobre orçamento, cobrança, garantia, peças, clientes e rotina profissional. A ideia é juntar quem vive o serviço na prática.</p>
       </div>
       <div class="forum-hero-acoes">
-        <button type="button" class="forum-btn" onclick="forumMostrarFormularioNovoTopico()">+ Nova dúvida</button>
-        <button type="button" class="forum-btn-secundario" onclick="forumCarregarTopicos()">Atualizar</button>
+        <button type="button" class="forum-btn" onclick="forumMostrarFormularioNovoTopico()">+ Publicar</button>
+        <button type="button" class="forum-btn-secundario" onclick="forumCarregarTopicos()">Atualizar feed</button>
       </div>
     </section>
 
     <div id="forum-alerta" class="forum-alerta"></div>
 
-    <section class="forum-layout">
-      <div class="forum-coluna">
-        <article id="forum-form-card" class="forum-card" style="display:none;">
+    <section class="forum-layout comunidade-layout">
+      <div class="forum-coluna comunidade-feed-coluna">
+        <article class="forum-composer-card" onclick="forumMostrarFormularioNovoTopico()" role="button" tabindex="0">
+          <div class="forum-composer-avatar">FS</div>
+          <div class="forum-composer-input">
+            <strong>No que você está pensando?</strong>
+            <span>Publique uma dúvida, experiência, dica de cobrança ou situação de serviço.</span>
+          </div>
+          <button type="button" class="forum-btn">Publicar</button>
+        </article>
+
+        <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;">
           <div class="forum-card-topo">
             <div>
-              <h2>Publicar nova dúvida</h2>
-              <p>Descreva o problema com clareza. Evite expor dados pessoais de clientes.</p>
+              <h2>Criar publicação</h2>
+              <p>Compartilhe uma dúvida ou experiência profissional. Evite expor dados pessoais de clientes.</p>
             </div>
             <button type="button" class="forum-btn-secundario" onclick="forumOcultarFormularioNovoTopico()">Fechar</button>
           </div>
 
           <form id="forum-form-topico" class="forum-form" onsubmit="forumCriarTopico(event)">
             <label>
-              Título da dúvida
+              Título da publicação
               <input id="forum-topico-titulo" type="text" maxlength="120" placeholder="Ex: Como cobrar diagnóstico antes do orçamento?" required>
             </label>
             <label>
@@ -57,28 +66,28 @@
               <select id="forum-topico-categoria" required></select>
             </label>
             <label>
-              Descrição
-              <textarea id="forum-topico-descricao" maxlength="4000" placeholder="Explique o contexto, o que você já tentou e qual resultado espera." required></textarea>
+              Conteúdo
+              <textarea id="forum-topico-descricao" maxlength="4000" placeholder="Conte o contexto, o que aconteceu, o que você já tentou ou qual opinião precisa da comunidade." required></textarea>
             </label>
             <label>
-              Fotos do tópico
+              Fotos da publicação
               <input id="forum-topico-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="forumValidarFotosSelecionadas()">
-              <small>Opcional. Até 2 fotos por tópico, máximo 2 MB por foto. Formatos: JPG, PNG ou WEBP.</small>
+              <small>Opcional. Até 2 fotos, máximo 2 MB por foto. Formatos: JPG, PNG ou WEBP.</small>
             </label>
             <div id="forum-preview-fotos" class="forum-preview-fotos"></div>
-            <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar dúvida</button>
+            <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar na comunidade</button>
           </form>
         </article>
 
-        <article class="forum-card branco">
-          <div class="forum-card-topo">
+        <article class="forum-card branco comunidade-feed-card">
+          <div class="forum-card-topo comunidade-feed-topo">
             <div>
-              <h2>Dúvidas recentes</h2>
-              <p>Pesquise por assunto ou filtre por categoria/status.</p>
+              <h2>Feed da comunidade</h2>
+              <p>Veja dúvidas, relatos e discussões recentes dos prestadores.</p>
             </div>
           </div>
-          <div class="forum-filtros">
-            <input id="forum-busca" type="search" placeholder="Buscar no fórum..." oninput="forumFiltrarTopicosLocal()">
+          <div class="forum-filtros comunidade-filtros">
+            <input id="forum-busca" type="search" placeholder="Pesquisar publicações..." oninput="forumFiltrarTopicosLocal()">
             <select id="forum-filtro-categoria" onchange="forumFiltrarTopicosLocal()"></select>
             <select id="forum-filtro-status" onchange="forumFiltrarTopicosLocal()">
               <option value="todos">Todos</option>
@@ -88,19 +97,38 @@
               <option value="fechado">Fechado</option>
             </select>
           </div>
-          <div id="forum-lista-topicos" class="forum-lista">
-            <div class="forum-vazio">Carregando tópicos...</div>
+          <div id="forum-lista-topicos" class="forum-lista forum-feed-lista">
+            <div class="forum-vazio">Carregando feed...</div>
           </div>
         </article>
       </div>
 
-      <aside class="forum-coluna">
-        <article class="forum-card branco">
+      <aside class="forum-coluna comunidade-sidebar">
+        <article class="forum-card branco comunidade-sidebar-card">
+          <h3>Comunidade profissional</h3>
+          <div class="forum-mini-lista">
+            <div class="forum-mini-item"><strong>Publique</strong><span>Dúvidas de orçamento, OS, cobrança, garantia e atendimento.</span></div>
+            <div class="forum-mini-item"><strong>Interaja</strong><span>Curta, responda e acompanhe discussões de outros prestadores.</span></div>
+            <div class="forum-mini-item"><strong>Aprenda</strong><span>Transforme experiências reais em conhecimento para vender melhor.</span></div>
+          </div>
+        </article>
+
+        <article class="forum-card branco comunidade-sidebar-card">
+          <h3>Temas em alta</h3>
+          <div class="forum-mini-lista">
+            <button type="button" class="forum-mini-item" onclick="forumFiltrarCategoria('Orçamentos')">Orçamentos</button>
+            <button type="button" class="forum-mini-item" onclick="forumFiltrarCategoria('Cobrança e Pagamento')">Cobrança</button>
+            <button type="button" class="forum-mini-item" onclick="forumFiltrarCategoria('Oficina Mecânica')">Oficina mecânica</button>
+            <button type="button" class="forum-mini-item" onclick="forumFiltrarCategoria('Garantia')">Garantia</button>
+          </div>
+        </article>
+
+        <article class="forum-card branco comunidade-sidebar-card">
           <h3>Boas práticas</h3>
           <div class="forum-mini-lista">
             <div class="forum-mini-item">Não publique dados pessoais de clientes.</div>
-            <div class="forum-mini-item">Explique o contexto técnico com detalhes.</div>
-            <div class="forum-mini-item">Anexe fotos apenas quando elas ajudarem na dúvida.</div>
+            <div class="forum-mini-item">Explique o contexto com detalhes.</div>
+            <div class="forum-mini-item">Use fotos somente quando ajudarem na dúvida.</div>
             <div class="forum-mini-item">Denuncie spam, ofensas ou conteúdo inadequado.</div>
           </div>
         </article>
@@ -112,7 +140,7 @@
     <div class="forum-detalhe-card">
       <div class="forum-detalhe-topo">
         <div style="min-width:0;flex:1;">
-          <h2 id="forum-detalhe-titulo">Tópico</h2>
+          <h2 id="forum-detalhe-titulo">Publicação</h2>
           <div id="forum-detalhe-info" class="forum-detalhe-info"></div>
         </div>
         <button type="button" class="forum-fechar" onclick="forumFecharTopico()">×</button>
@@ -123,18 +151,18 @@
         <div id="forum-topico-acoes" class="forum-topico-acoes"></div>
 
         <article class="forum-card branco">
-          <h3>Respostas</h3>
+          <h3>Comentários</h3>
           <div id="forum-lista-respostas" class="forum-lista" style="margin-top:12px;"></div>
         </article>
 
         <article class="forum-card branco">
-          <h3>Responder</h3>
+          <h3>Comentar</h3>
           <form class="forum-form" onsubmit="forumCriarResposta(event)">
             <label>
               Sua resposta
               <textarea id="forum-resposta-texto" maxlength="4000" placeholder="Compartilhe sua orientação, experiência ou solução." required></textarea>
             </label>
-            <button id="forum-btn-responder" type="submit" class="forum-btn">Enviar resposta</button>
+            <button id="forum-btn-responder" type="submit" class="forum-btn">Enviar comentário</button>
           </form>
         </article>
       </div>
