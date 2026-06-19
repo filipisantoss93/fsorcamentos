@@ -425,3 +425,146 @@ body.login-modal-aberto { overflow-x: hidden; }
   color: var(--fs-marrom);
   transform: translateY(-1px);
 }
+
+/* =========================================================
+   Itens do orçamento: descrição na primeira linha;
+   quantidade, valor, subtotal e excluir na segunda.
+   Mantém alta especificidade para vencer correções carregadas depois.
+   ========================================================= */
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) {
+  display: grid !important;
+  grid-template-columns: minmax(58px, .65fr) minmax(92px, 1fr) minmax(92px, 1fr) 34px !important;
+  gap: 6px !important;
+  align-items: end !important;
+  width: 100% !important;
+  padding: 8px !important;
+  margin-bottom: 7px !important;
+  background: #fbf8f4 !important;
+  border: 1px solid #ebe2d7 !important;
+  border-radius: 6px !important;
+  box-sizing: border-box !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row.header-labels {
+  display: none !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels)::before {
+  content: "Descrição";
+  grid-column: 1 / -1 !important;
+  display: block !important;
+  margin: 0 0 -2px !important;
+  color: #62554d !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  text-transform: uppercase !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels)::after {
+  content: "Qntd        V. Unt        Subtotal";
+  grid-column: 1 / 4 !important;
+  grid-row: 3 !important;
+  display: grid !important;
+  grid-template-columns: minmax(58px, .65fr) minmax(92px, 1fr) minmax(92px, 1fr) !important;
+  color: #62554d !important;
+  font-size: 9px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+  text-transform: uppercase !important;
+  pointer-events: none !important;
+  opacity: .95 !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .desc-cell,
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .desc,
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:first-child {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  width: 100% !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .qtd,
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:nth-of-type(2) {
+  grid-column: 1 !important;
+  grid-row: 4 !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .valor,
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:nth-of-type(3) {
+  grid-column: 2 !important;
+  grid-row: 4 !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .subtotal,
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:nth-of-type(4) {
+  grid-column: 3 !important;
+  grid-row: 4 !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .btn-remove,
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) button {
+  grid-column: 4 !important;
+  grid-row: 4 !important;
+  width: 34px !important;
+  min-width: 34px !important;
+  max-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  max-height: 34px !important;
+  padding: 0 !important;
+  border-radius: 4px !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .btn-remove::before,
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) button::before {
+  content: "×" !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+  font-weight: 950 !important;
+}
+
+body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input {
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 6px 7px !important;
+  font-size: 12px !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 520px) {
+  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) {
+    grid-template-columns: minmax(46px, .62fr) minmax(76px, 1fr) minmax(76px, 1fr) 32px !important;
+    gap: 5px !important;
+    padding: 7px !important;
+  }
+
+  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels)::after {
+    grid-template-columns: minmax(46px, .62fr) minmax(76px, 1fr) minmax(76px, 1fr) !important;
+    font-size: 8px !important;
+  }
+
+  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .btn-remove,
+  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) button {
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+  }
+
+  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input {
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 5px 6px !important;
+    font-size: 11px !important;
+  }
+}
