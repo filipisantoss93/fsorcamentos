@@ -1,7 +1,23 @@
 /* =========================================================
-   FS ORÇAMENTOS — CONTRASTE GLOBAL DA MARCA E PADRÃO SISTEMA
-   Mantém a marca legível e compacta listas/telas internas.
+   FS ORÇAMENTOS — CONTRASTE, DENSIDADE E PADRÃO DE SISTEMA
+   Camada global enxuta: marca legível, listas compactas e visual neutro.
    ========================================================= */
+
+:root {
+  --fs-marrom: #2f211d;
+  --fs-marrom-2: #3e2723;
+  --fs-amarelo: #ffc400;
+  --fs-fundo-sistema: #f4efe8;
+  --fs-card: #ffffff;
+  --fs-card-soft: #fffaf0;
+  --fs-borda: #ded3c5;
+  --fs-borda-suave: #ebe2d7;
+  --fs-texto: #2b211d;
+  --fs-texto-suave: #62554d;
+  --fs-hover: #f8f4ee;
+  --fs-radius: 6px;
+  --fs-shadow: 0 3px 10px rgba(47, 33, 29, .07);
+}
 
 .logo-nav {
   display: inline-flex !important;
@@ -13,33 +29,40 @@
   white-space: nowrap !important;
 }
 
-.logo-nav .logo-fs {
+.logo-nav .logo-fs,
+.logo-nav > span:first-child,
+.auth-logo-box .auth-logo-text strong,
+.auth-logo-box .auth-logo-text .auth-logo-fs,
+.auth-logo-box .auth-logo-text .fs-box,
+.modal-login-box .auth-logo-text strong,
+#modal-login .auth-logo-text strong,
+.sobre-fs-box,
+.contato-fs-box {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  flex: 0 0 auto !important;
-  width: 40px !important;
-  height: 32px !important;
-  min-width: 40px !important;
-  min-height: 32px !important;
-  padding: 0 !important;
+  min-width: 36px !important;
+  height: 30px !important;
+  padding: 0 8px !important;
   border-radius: 5px !important;
-  background: #ffc400 !important;
+  background: var(--fs-amarelo) !important;
   color: #2c1b17 !important;
   font-weight: 950 !important;
   line-height: 1 !important;
   box-shadow: none !important;
 }
 
-.logo-nav .logo-orcamentos {
-  display: inline-block !important;
+.logo-nav .logo-orcamentos,
+.logo-nav > span:last-child,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box .auth-logo-text .logo-orcamentos,
+.auth-logo-box .auth-logo-text .auth-logo-orcamentos,
+.modal-login-box .auth-logo-text span,
+#modal-login .auth-logo-text span {
   color: #fffaf0 !important;
   opacity: 1 !important;
   font-weight: 950 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,.32) !important;
-  max-width: none !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,.28) !important;
 }
 
 .nav-menu .link-destaque-gestao::after {
@@ -49,10 +72,13 @@
 
 .auth-logo-box,
 .modal-login-box .auth-logo-box,
-#modal-login .auth-logo-box {
+#modal-login .auth-logo-box,
+.banner-topo,
+.login-banner,
+.auth-banner {
   background: #2c1b17 !important;
   color: #fffaf0 !important;
-  border-bottom: 2px solid #ffc400 !important;
+  border-bottom: 2px solid var(--fs-amarelo) !important;
   padding: 14px 16px !important;
 }
 
@@ -67,37 +93,6 @@
   font-weight: 950 !important;
 }
 
-.auth-logo-box .auth-logo-text strong,
-.auth-logo-box .auth-logo-text .auth-logo-fs,
-.auth-logo-box .auth-logo-text .fs-box,
-.modal-login-box .auth-logo-text strong,
-#modal-login .auth-logo-text strong {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 40px !important;
-  height: 32px !important;
-  min-width: 40px !important;
-  min-height: 32px !important;
-  padding: 0 !important;
-  border-radius: 5px !important;
-  background: #ffc400 !important;
-  color: #2c1b17 !important;
-  font-weight: 950 !important;
-  box-shadow: none !important;
-}
-
-.auth-logo-box .auth-logo-text span,
-.auth-logo-box .auth-logo-text .logo-orcamentos,
-.auth-logo-box .auth-logo-text .auth-logo-orcamentos,
-.modal-login-box .auth-logo-text span,
-#modal-login .auth-logo-text span {
-  color: #fffaf0 !important;
-  opacity: 1 !important;
-  font-weight: 950 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,.32) !important;
-}
-
 .auth-logo-box p,
 .modal-login-box .auth-logo-box p,
 #modal-login .auth-logo-box p {
@@ -107,67 +102,31 @@
 }
 
 .sobre-hero-logo,
-.contato-hero-logo {
-  color: #2c1b17 !important;
-}
-
-.sobre-hero-logo .sobre-fs-text,
+.contato-hero-logo,
 .sobre-fs-text,
-.contato-hero-logo .contato-fs-text,
-.contato-fs-text,
-.contato-hero-logo .sobre-fs-text {
+.contato-fs-text {
   color: #2c1b17 !important;
   opacity: 1 !important;
   font-weight: 950 !important;
   text-shadow: none !important;
 }
 
-.sobre-hero-logo .sobre-fs-box,
-.sobre-fs-box,
-.contato-hero-logo .contato-fs-box,
-.contato-fs-box,
-.contato-hero-logo .sobre-fs-box {
-  background: #ffc400 !important;
-  color: #2c1b17 !important;
-  opacity: 1 !important;
-  border-radius: 5px !important;
-}
-
-.banner-topo,
-.login-banner,
-.auth-banner {
-  background: #2c1b17 !important;
-  color: #fffaf0 !important;
-  border-bottom: 2px solid #ffc400 !important;
-}
-
-.banner-topo .logo-fs,
-.login-banner .logo-fs,
-.auth-banner .logo-fs {
-  background: #ffc400 !important;
-  color: #2c1b17 !important;
-  border-radius: 5px !important;
-}
-
-.banner-topo .logo-orcamentos,
-.login-banner .logo-orcamentos,
-.auth-banner .logo-orcamentos {
-  color: #fffaf0 !important;
-  opacity: 1 !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,.32) !important;
-}
-
 /* =========================================================
-   ACABAMENTO DE SISTEMA PROFISSIONAL
+   VISUAL GERAL: MENOS AMARELO, MAIS SISTEMA
    ========================================================= */
 
+body:not(.gerando-pdf) {
+  background: linear-gradient(180deg, #f8f5f0 0%, var(--fs-fundo-sistema) 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) main,
 body:not(.gerando-pdf) .pagina-clientes,
 body:not(.gerando-pdf) .pagina-veiculos,
 body:not(.gerando-pdf) .pagina-estoque,
 body:not(.gerando-pdf) .pagina-ordens,
-body:not(.gerando-pdf) .forum-page,
 body:not(.gerando-pdf) .pagina-painel,
-body:not(.gerando-pdf) main {
+body:not(.gerando-pdf) .forum-page {
   font-size: 13px !important;
 }
 
@@ -175,84 +134,158 @@ body:not(.gerando-pdf) .clientes-hero,
 body:not(.gerando-pdf) .veiculos-hero,
 body:not(.gerando-pdf) .estoque-hero,
 body:not(.gerando-pdf) .ordens-hero,
+body:not(.gerando-pdf) .ordem-hero,
+body:not(.gerando-pdf) .agenda-hero,
+body:not(.gerando-pdf) .forum-hero,
+body:not(.gerando-pdf) .painel-hero,
+body:not(.gerando-pdf) .container,
+body:not(.gerando-pdf) .card,
+body:not(.gerando-pdf) .clientes-card,
+body:not(.gerando-pdf) .veiculos-card,
+body:not(.gerando-pdf) .ordens-card,
+body:not(.gerando-pdf) .estoque-card,
+body:not(.gerando-pdf) .agenda-card,
+body:not(.gerando-pdf) .forum-card,
+body:not(.gerando-pdf) .painel-card {
+  background: var(--fs-card) !important;
+  color: var(--fs-texto) !important;
+  border: 1px solid var(--fs-borda-suave) !important;
+  border-top-color: var(--fs-borda) !important;
+  box-shadow: var(--fs-shadow) !important;
+  border-radius: 7px !important;
+}
+
+body:not(.gerando-pdf) .clientes-hero,
+body:not(.gerando-pdf) .veiculos-hero,
+body:not(.gerando-pdf) .estoque-hero,
+body:not(.gerando-pdf) .ordens-hero,
+body:not(.gerando-pdf) .ordem-hero,
+body:not(.gerando-pdf) .agenda-hero,
 body:not(.gerando-pdf) .forum-hero,
 body:not(.gerando-pdf) .painel-hero {
-  padding: 16px 18px !important;
-  border-radius: 8px !important;
-  margin-bottom: 12px !important;
-  box-shadow: 0 4px 14px rgba(62,39,35,.08) !important;
+  padding: 14px 16px !important;
+  margin-bottom: 10px !important;
 }
 
 body:not(.gerando-pdf) .clientes-hero h1,
 body:not(.gerando-pdf) .veiculos-hero h1,
 body:not(.gerando-pdf) .estoque-hero h1,
 body:not(.gerando-pdf) .ordens-hero h1,
+body:not(.gerando-pdf) .ordem-hero h1,
+body:not(.gerando-pdf) .agenda-hero h1,
 body:not(.gerando-pdf) .forum-hero h1,
 body:not(.gerando-pdf) .painel-hero h1 {
-  font-size: 22px !important;
-  margin-bottom: 4px !important;
+  color: var(--fs-marrom) !important;
+  font-size: 21px !important;
+  margin: 0 0 4px !important;
 }
 
 body:not(.gerando-pdf) .clientes-hero p,
 body:not(.gerando-pdf) .veiculos-hero p,
 body:not(.gerando-pdf) .estoque-hero p,
 body:not(.gerando-pdf) .ordens-hero p,
+body:not(.gerando-pdf) .ordem-hero p,
+body:not(.gerando-pdf) .agenda-hero p,
 body:not(.gerando-pdf) .forum-hero p,
 body:not(.gerando-pdf) .painel-hero p {
-  font-size: 13px !important;
+  color: var(--fs-texto-suave) !important;
+  font-size: 12px !important;
   line-height: 1.35 !important;
 }
 
-body:not(.gerando-pdf) .card-resumo,
-body:not(.gerando-pdf) .agenda-metrica,
-body:not(.gerando-pdf) .fs-ordens-dashboard-card,
-body:not(.gerando-pdf) .home-metrica-card {
-  min-height: 74px !important;
-  padding: 10px 12px !important;
-  border-radius: 7px !important;
+body:not(.gerando-pdf) .card-header,
+body:not(.gerando-pdf) .clientes-card-header,
+body:not(.gerando-pdf) .veiculos-card-header,
+body:not(.gerando-pdf) .ordens-card-header,
+body:not(.gerando-pdf) .estoque-card-header,
+body:not(.gerando-pdf) .agenda-card-header,
+body:not(.gerando-pdf) .forum-card-topo,
+body:not(.gerando-pdf) .modal-busca-cliente-header,
+body:not(.gerando-pdf) .modal-busca-produto-header {
+  background: #f8f4ee !important;
+  color: var(--fs-marrom) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--fs-borda-suave) !important;
+  border-radius: 7px 7px 0 0 !important;
+  box-shadow: none !important;
 }
 
-body:not(.gerando-pdf) .card-resumo span,
-body:not(.gerando-pdf) .agenda-metrica span,
-body:not(.gerando-pdf) .fs-ordens-dashboard-card span {
-  font-size: 10px !important;
-  margin-bottom: 4px !important;
-  line-height: 1.15 !important;
+body:not(.gerando-pdf) .card-header h1,
+body:not(.gerando-pdf) .card-header h2,
+body:not(.gerando-pdf) .card-header h3,
+body:not(.gerando-pdf) .clientes-card-header h1,
+body:not(.gerando-pdf) .clientes-card-header h2,
+body:not(.gerando-pdf) .clientes-card-header h3,
+body:not(.gerando-pdf) .veiculos-card-header h1,
+body:not(.gerando-pdf) .veiculos-card-header h2,
+body:not(.gerando-pdf) .veiculos-card-header h3,
+body:not(.gerando-pdf) .ordens-card-header h1,
+body:not(.gerando-pdf) .ordens-card-header h2,
+body:not(.gerando-pdf) .ordens-card-header h3,
+body:not(.gerando-pdf) .estoque-card-header h1,
+body:not(.gerando-pdf) .estoque-card-header h2,
+body:not(.gerando-pdf) .estoque-card-header h3,
+body:not(.gerando-pdf) .agenda-card-header h1,
+body:not(.gerando-pdf) .agenda-card-header h2,
+body:not(.gerando-pdf) .agenda-card-header h3,
+body:not(.gerando-pdf) .forum-card-topo h2,
+body:not(.gerando-pdf) .forum-card-topo h3 {
+  color: var(--fs-marrom) !important;
+  opacity: 1 !important;
 }
 
-body:not(.gerando-pdf) .card-resumo strong,
-body:not(.gerando-pdf) .agenda-metrica strong,
-body:not(.gerando-pdf) .fs-ordens-dashboard-card strong {
-  font-size: 20px !important;
-  line-height: 1.1 !important;
+body:not(.gerando-pdf) .card-header p,
+body:not(.gerando-pdf) .card-header span,
+body:not(.gerando-pdf) .clientes-card-header p,
+body:not(.gerando-pdf) .clientes-card-header span,
+body:not(.gerando-pdf) .veiculos-card-header p,
+body:not(.gerando-pdf) .veiculos-card-header span,
+body:not(.gerando-pdf) .ordens-card-header p,
+body:not(.gerando-pdf) .ordens-card-header span,
+body:not(.gerando-pdf) .estoque-card-header p,
+body:not(.gerando-pdf) .estoque-card-header span,
+body:not(.gerando-pdf) .agenda-card-header p,
+body:not(.gerando-pdf) .agenda-card-header span,
+body:not(.gerando-pdf) .forum-card-topo p,
+body:not(.gerando-pdf) .forum-card-topo span {
+  color: var(--fs-texto-suave) !important;
+  opacity: 1 !important;
 }
 
-body:not(.gerando-pdf) .clientes-card-body,
-body:not(.gerando-pdf) .veiculos-card-body,
-body:not(.gerando-pdf) .estoque-card-body,
-body:not(.gerando-pdf) .ordens-card-body,
-body:not(.gerando-pdf) .forum-card {
-  padding: 12px !important;
+/* O amarelo fica restrito a ações, preço, foco e pequenos acentos. */
+body:not(.gerando-pdf) .total-container,
+body:not(.gerando-pdf) .valor-total,
+body:not(.gerando-pdf) .os-total-box,
+body:not(.gerando-pdf) .card-total-os,
+body:not(.gerando-pdf) .home-preco-destaque,
+body:not(.gerando-pdf) .fs-visitante-preco,
+body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+  border: 1px solid var(--fs-marrom) !important;
 }
 
-body:not(.gerando-pdf) .clientes-filtros,
-body:not(.gerando-pdf) .veiculos-filtros,
-body:not(.gerando-pdf) .estoque-filtros,
-body:not(.gerando-pdf) .ordens-filtros,
-body:not(.gerando-pdf) .forum-filtros {
-  gap: 8px !important;
-  margin-bottom: 10px !important;
+body:not(.gerando-pdf) .total-container strong,
+body:not(.gerando-pdf) .valor-total strong,
+body:not(.gerando-pdf) .os-total-box strong,
+body:not(.gerando-pdf) .card-total-os strong,
+body:not(.gerando-pdf) .home-preco-destaque *,
+body:not(.gerando-pdf) .fs-visitante-preco *,
+body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque strong {
+  color: var(--fs-amarelo) !important;
 }
 
-body:not(.gerando-pdf) .campo {
-  gap: 4px !important;
-}
+/* =========================================================
+   FORMULÁRIOS E BOTÕES: COMPACTOS, SEM POLUIÇÃO
+   ========================================================= */
 
+body:not(.gerando-pdf) .campo { gap: 4px !important; }
 body:not(.gerando-pdf) .campo label,
 body:not(.gerando-pdf) label {
   font-size: 11px !important;
   line-height: 1.2 !important;
   font-weight: 800 !important;
+  color: var(--fs-marrom) !important;
 }
 
 body:not(.gerando-pdf) input,
@@ -260,12 +293,21 @@ body:not(.gerando-pdf) select,
 body:not(.gerando-pdf) textarea {
   min-height: 34px !important;
   padding: 7px 9px !important;
-  border-radius: 5px !important;
+  border-radius: 4px !important;
   font-size: 12px !important;
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border: 1px solid var(--fs-borda) !important;
+  box-shadow: none !important;
 }
 
-body:not(.gerando-pdf) textarea {
-  min-height: 66px !important;
+body:not(.gerando-pdf) textarea { min-height: 66px !important; }
+body:not(.gerando-pdf) input:focus,
+body:not(.gerando-pdf) select:focus,
+body:not(.gerando-pdf) textarea:focus {
+  border-color: #b9aa9b !important;
+  box-shadow: 0 0 0 2px rgba(47,33,29,.08) !important;
+  outline: none !important;
 }
 
 body:not(.gerando-pdf) .btn,
@@ -273,63 +315,147 @@ body:not(.gerando-pdf) button,
 body:not(.gerando-pdf) a[class*="btn"] {
   min-height: 32px !important;
   padding: 7px 10px !important;
-  border-radius: 5px !important;
+  border-radius: 4px !important;
   font-size: 12px !important;
   line-height: 1.1 !important;
   box-shadow: none !important;
+}
+
+body:not(.gerando-pdf) .btn-add,
+body:not(.gerando-pdf) .btn-extra,
+body:not(.gerando-pdf) .btn-primario,
+body:not(.gerando-pdf) .btn-primary,
+body:not(.gerando-pdf) .btn-salvar,
+body:not(.gerando-pdf) .btn-acao-pdf,
+body:not(.gerando-pdf) .link-destaque-gerador,
+body:not(.gerando-pdf) #btn-toggle-form-cliente,
+body:not(.gerando-pdf) #btn-toggle-form-veiculo,
+body:not(.gerando-pdf) #btn-toggle-form-produto,
+body:not(.gerando-pdf) #btn-toggle-form-ordem,
+body:not(.gerando-pdf) #btn-toggle-form-agendamento {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border: 1px solid var(--fs-marrom) !important;
+}
+
+body:not(.gerando-pdf) .btn-add:hover,
+body:not(.gerando-pdf) .btn-extra:hover,
+body:not(.gerando-pdf) .btn-primario:hover,
+body:not(.gerando-pdf) .btn-primary:hover,
+body:not(.gerando-pdf) .btn-salvar:hover,
+body:not(.gerando-pdf) .link-destaque-gerador:hover,
+body:not(.gerando-pdf) #btn-toggle-form-cliente:hover,
+body:not(.gerando-pdf) #btn-toggle-form-veiculo:hover,
+body:not(.gerando-pdf) #btn-toggle-form-produto:hover,
+body:not(.gerando-pdf) #btn-toggle-form-ordem:hover,
+body:not(.gerando-pdf) #btn-toggle-form-agendamento:hover {
+  background: #ffffff !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* =========================================================
+   LISTAS COMO TABELA: MAIS INFORMAÇÃO, MENOS BAGUNÇA
+   ========================================================= */
+
+body:not(.gerando-pdf) #lista-clientes,
+body:not(.gerando-pdf) #lista-veiculos,
+body:not(.gerando-pdf) #lista-ordens,
+body:not(.gerando-pdf) #lista-produtos,
+body:not(.gerando-pdf) #lista-estoque,
+body:not(.gerando-pdf) .lista-clientes,
+body:not(.gerando-pdf) .lista-veiculos,
+body:not(.gerando-pdf) .lista-ordens,
+body:not(.gerando-pdf) .lista-estoque {
+  display: grid !important;
+  gap: 0 !important;
+  border: 1px solid var(--fs-borda-suave) !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
 }
 
 body:not(.gerando-pdf) .cliente-item,
 body:not(.gerando-pdf) .veiculo-item,
 body:not(.gerando-pdf) .ordem-item,
 body:not(.gerando-pdf) .estoque-produto-bloco,
+body:not(.gerando-pdf) .estoque-item,
 body:not(.gerando-pdf) .forum-topico,
 body:not(.gerando-pdf) .forum-resposta {
-  padding: 9px 10px !important;
-  border-radius: 6px !important;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--fs-borda-suave) !important;
   box-shadow: none !important;
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) .cliente-item:nth-child(even),
+body:not(.gerando-pdf) .veiculo-item:nth-child(even),
+body:not(.gerando-pdf) .ordem-item:nth-child(even),
+body:not(.gerando-pdf) .estoque-produto-bloco:nth-child(even),
+body:not(.gerando-pdf) .estoque-item:nth-child(even),
+body:not(.gerando-pdf) .forum-topico:nth-child(even) {
+  background: #fbf8f4 !important;
+}
+
+body:not(.gerando-pdf) .cliente-item:hover,
+body:not(.gerando-pdf) .veiculo-item:hover,
+body:not(.gerando-pdf) .ordem-item:hover,
+body:not(.gerando-pdf) .estoque-produto-bloco:hover,
+body:not(.gerando-pdf) .estoque-item:hover,
+body:not(.gerando-pdf) .forum-topico:hover {
+  background: var(--fs-hover) !important;
 }
 
 body:not(.gerando-pdf) .cliente-linha-topo,
 body:not(.gerando-pdf) .veiculo-linha-topo,
 body:not(.gerando-pdf) .ordem-linha-topo,
 body:not(.gerando-pdf) .forum-topico-topo {
-  margin-bottom: 6px !important;
+  margin-bottom: 4px !important;
   gap: 8px !important;
+  align-items: center !important;
 }
 
 body:not(.gerando-pdf) .cliente-info h3,
 body:not(.gerando-pdf) .veiculo-info h3,
 body:not(.gerando-pdf) .ordem-info h3,
 body:not(.gerando-pdf) .forum-topico h3 {
-  font-size: 15px !important;
-  margin: 0 0 3px !important;
+  font-size: 14px !important;
+  margin: 0 0 2px !important;
   line-height: 1.2 !important;
+  color: var(--fs-marrom) !important;
 }
 
 body:not(.gerando-pdf) .cliente-info p,
 body:not(.gerando-pdf) .veiculo-info p,
 body:not(.gerando-pdf) .ordem-info p,
 body:not(.gerando-pdf) .forum-topico p {
-  font-size: 12px !important;
-  line-height: 1.3 !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  color: var(--fs-texto-suave) !important;
 }
 
 body:not(.gerando-pdf) .cliente-tags,
 body:not(.gerando-pdf) .veiculo-tags,
 body:not(.gerando-pdf) .ordem-tags,
 body:not(.gerando-pdf) .forum-badges {
-  gap: 5px !important;
-  margin: 6px 0 !important;
+  gap: 4px !important;
+  margin: 4px 0 !important;
 }
 
 body:not(.gerando-pdf) .tag,
 body:not(.gerando-pdf) .forum-badge,
 body:not(.gerando-pdf) .status-badge {
-  border-radius: 4px !important;
-  padding: 3px 6px !important;
+  border-radius: 3px !important;
+  padding: 2px 6px !important;
   font-size: 10px !important;
   line-height: 1.1 !important;
+  background: #f3eee7 !important;
+  color: var(--fs-marrom) !important;
+  border: 1px solid var(--fs-borda-suave) !important;
 }
 
 body:not(.gerando-pdf) .cliente-acoes,
@@ -339,19 +465,48 @@ body:not(.gerando-pdf) .estoque-produto-acoes,
 body:not(.gerando-pdf) .forum-topico-acoes,
 body:not(.gerando-pdf) .forum-resposta-acoes {
   gap: 5px !important;
-  margin-top: 7px !important;
+  margin-top: 6px !important;
 }
 
 body:not(.gerando-pdf) .estado-vazio {
-  padding: 18px 14px !important;
-  border-radius: 7px !important;
+  padding: 16px 14px !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #ffffff !important;
 }
 
+/* Listas nunca devem ficar ocultas por botão de ver/ocultar. */
+body:not(.gerando-pdf) #btn-toggle-lista-clientes,
+body:not(.gerando-pdf) #btn-toggle-lista-veiculos,
+body:not(.gerando-pdf) #btn-toggle-lista-ordens,
+body:not(.gerando-pdf) #btn-toggle-lista-produtos,
+body:not(.gerando-pdf) .clientes-lista-toggle-mobile,
+body:not(.gerando-pdf) .veiculos-lista-toggle-mobile,
+body:not(.gerando-pdf) .ordens-lista-toggle-mobile,
+body:not(.gerando-pdf) .estoque-lista-toggle-mobile {
+  display: none !important;
+}
+
+body:not(.gerando-pdf) #lista-clientes,
+body:not(.gerando-pdf) #lista-veiculos,
+body:not(.gerando-pdf) #lista-ordens,
+body:not(.gerando-pdf) #lista-produtos,
+body:not(.gerando-pdf) #lista-estoque,
+body:not(.gerando-pdf) .lista-clientes-mobile-fechada,
+body:not(.gerando-pdf) .lista-veiculos-mobile-fechada,
+body:not(.gerando-pdf) .lista-ordens-mobile-fechada,
+body:not(.gerando-pdf) .lista-estoque-mobile-fechada {
+  display: grid !important;
+}
+
+/* Estoque agrupado com menos linhas amarelas. */
 body:not(.gerando-pdf) .estoque-categoria-grupo,
 body:not(.gerando-pdf) .estoque-subcategoria-grupo,
 body:not(.gerando-pdf) .estoque-aplicacao-grupo {
   border-radius: 6px !important;
   margin-bottom: 8px !important;
+  border: 1px solid var(--fs-borda-suave) !important;
+  box-shadow: none !important;
 }
 
 body:not(.gerando-pdf) .estoque-categoria-titulo,
@@ -361,13 +516,14 @@ body:not(.gerando-pdf) .estoque-grade-cabecalho {
   min-height: 30px !important;
   padding: 7px 9px !important;
   font-size: 12px !important;
+  background: #f8f4ee !important;
+  color: var(--fs-marrom) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--fs-borda-suave) !important;
 }
 
 @media (max-width: 520px) {
-  .logo-nav {
-    gap: 6px !important;
-  }
-
+  .logo-nav { gap: 6px !important; }
   .logo-nav .logo-fs {
     width: 34px !important;
     height: 28px !important;
@@ -375,22 +531,10 @@ body:not(.gerando-pdf) .estoque-grade-cabecalho {
     min-height: 28px !important;
     font-size: 16px !important;
   }
-
   .logo-nav .logo-orcamentos {
     font-size: 17px !important;
     max-width: 132px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-  }
-
-  .auth-logo-box .auth-logo-text strong,
-  .auth-logo-box .auth-logo-text .auth-logo-fs,
-  .auth-logo-box .auth-logo-text .fs-box,
-  .modal-login-box .auth-logo-text strong,
-  #modal-login .auth-logo-text strong {
-    width: 36px !important;
-    height: 30px !important;
-    min-width: 36px !important;
-    min-height: 30px !important;
   }
 }
