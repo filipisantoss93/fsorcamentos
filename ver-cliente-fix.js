@@ -3,7 +3,8 @@
    Correções da página pública do cliente (ver.html):
    - não exibe botão/box "Gerar OS" para o cliente;
    - carrega dados da empresa com fallbacks do orçamento/perfil;
-   - aplica a cor/tema escolhido no orçamento, sobrescrevendo overrides globais.
+   - aplica a cor/tema escolhido no orçamento, sobrescrevendo overrides globais;
+   - limita forma_pagamento_cliente aos valores aceitos no banco.
    ========================================================= */
 (function () {
   'use strict';
@@ -23,6 +24,13 @@
     vermelho: { primaria: '#dc2626', destaque: '#fecaca', fundo: '#fff1f2', textoTopo: '#ffffff', fundoPagina: '#fff7f7', textoTabela: '#ffffff' },
     pink: { primaria: '#db2777', destaque: '#f9a8d4', fundo: '#fdf2f8', textoTopo: '#ffffff', fundoPagina: '#fff7fb', textoTabela: '#ffffff' },
     rosa: { primaria: '#db2777', destaque: '#f9a8d4', fundo: '#fdf2f8', textoTopo: '#ffffff', fundoPagina: '#fff7fb', textoTabela: '#ffffff' }
+  };
+
+  const FORMAS_VALIDAS = {
+    credito: 'Crédito',
+    debito: 'Débito',
+    pix: 'Pix',
+    dinheiro: 'Dinheiro'
   };
 
   function normalizar(valor) {
@@ -68,15 +76,7 @@
   }
 
   function temaDoOrcamento(orcamento) {
-    const tema = normalizar(
-      orcamento?.tema_pdf ||
-      orcamento?.tema ||
-      orcamento?.theme ||
-      orcamento?.cor_pdf ||
-      orcamento?.cor ||
-      orcamento?.pdf_theme ||
-      'original'
-    );
+    const tema = normalizar(orcamento?.tema_pdf || orcamento?.tema || orcamento?.theme || orcamento?.cor_pdf || orcamento?.cor || orcamento?.pdf_theme || 'original');
     return TEMAS_VER[tema] ? tema : 'original';
   }
 
@@ -91,8 +91,6 @@
     root.style.setProperty('--ver-cor-texto-topo', c.textoTopo);
     root.style.setProperty('--ver-cor-pagina', c.fundoPagina);
     root.style.setProperty('--ver-cor-texto-tabela', c.textoTabela);
-
-    /* Sobrescreve variáveis globais usadas pelos contrast-fixes antigos. */
     root.style.setProperty('--fs-marrom', c.primaria);
     root.style.setProperty('--fs-marrom-2', c.primaria);
     root.style.setProperty('--fs-amarelo', c.destaque);
@@ -116,170 +114,58 @@
         display: none !important;
       }
 
-      body:not(.gerando-pdf) {
-        background: var(--ver-cor-pagina) !important;
-      }
-
-      .pagina-ver {
-        background: #ffffff !important;
-      }
-
-      .ver-emissor-topo {
-        background: linear-gradient(135deg, var(--ver-cor-primaria), var(--ver-cor-primaria)) !important;
-        color: var(--ver-cor-texto-topo) !important;
-        border-bottom-color: var(--ver-cor-destaque) !important;
-      }
-
-      .ver-logo-box {
-        border-color: var(--ver-cor-destaque) !important;
-      }
-
-      #ver-logo-placeholder {
-        color: var(--ver-cor-primaria) !important;
-        background: var(--ver-cor-destaque) !important;
-      }
-
+      body:not(.gerando-pdf) { background: var(--ver-cor-pagina) !important; }
+      .pagina-ver { background: #ffffff !important; }
+      .ver-emissor-topo { background: linear-gradient(135deg, var(--ver-cor-primaria), var(--ver-cor-primaria)) !important; color: var(--ver-cor-texto-topo) !important; border-bottom-color: var(--ver-cor-destaque) !important; }
+      .ver-logo-box { border-color: var(--ver-cor-destaque) !important; }
+      #ver-logo-placeholder { color: var(--ver-cor-primaria) !important; background: var(--ver-cor-destaque) !important; }
       .ver-emissor-info .ver-label,
-      .ver-emissor-info h1 {
-        color: var(--ver-cor-destaque) !important;
-      }
-
+      .ver-emissor-info h1 { color: var(--ver-cor-destaque) !important; }
       .ver-emissor-info p,
-      .ver-emissor-dados span {
-        color: var(--ver-cor-texto-topo) !important;
-      }
-
-      .ver-emissor-dados span {
-        border-color: var(--ver-cor-destaque) !important;
-      }
-
+      .ver-emissor-dados span { color: var(--ver-cor-texto-topo) !important; }
+      .ver-emissor-dados span { border-color: var(--ver-cor-destaque) !important; }
       h1#titulo-orcamento,
       .box-info strong,
       .observacoes-box strong,
       .veiculo-orcamento-box strong,
       .rodape strong,
       .numero-orcamento,
-      .total-box {
-        color: var(--ver-cor-primaria) !important;
-      }
-
+      .total-box { color: var(--ver-cor-primaria) !important; }
       .linha-divisoria,
       .numero-orcamento,
       .box-info,
       .observacoes-box,
       .veiculo-orcamento-box,
       .total-box,
-      .msg-resposta {
-        border-left-color: var(--ver-cor-destaque) !important;
-        border-top-color: var(--ver-cor-destaque) !important;
-      }
-
+      .msg-resposta { border-left-color: var(--ver-cor-destaque) !important; border-top-color: var(--ver-cor-destaque) !important; }
       .box-info,
       .numero-orcamento,
       .total-box,
-      .veiculo-orcamento-box {
-        background: var(--ver-cor-fundo) !important;
-      }
-
+      .veiculo-orcamento-box,
       .observacoes-box,
-      .msg-resposta {
-        background: var(--ver-cor-fundo) !important;
-      }
-
+      .msg-resposta { background: var(--ver-cor-fundo) !important; }
       th,
       table th,
       .tabela-wrapper th,
-      #conteudo-orcamento th {
-        background: var(--ver-cor-primaria) !important;
-        color: var(--ver-cor-texto-tabela) !important;
-      }
-
-      .btn-whatsapp-empresa {
-        border-color: #1fb957 !important;
-      }
+      #conteudo-orcamento th { background: var(--ver-cor-primaria) !important; color: var(--ver-cor-texto-tabela) !important; }
+      .btn-whatsapp-empresa { border-color: #1fb957 !important; }
+      .formas-pagamento-grid button[data-forma-invalida="true"] { display: none !important; }
     `;
     document.head.appendChild(style);
   }
 
   function dadosEmpresaDoOrcamento(orcamento, perfil) {
-    const nomeEmpresa = valor(
-      perfil?.nome_empresa,
-      orcamento?.nome_empresa,
-      orcamento?.empresa_nome,
-      orcamento?.empresa,
-      orcamento?.emissor_nome_empresa,
-      orcamento?.emissor_empresa,
-      orcamento?.nome_empresa_emissor,
-      orcamento?.dados_empresa?.nome_empresa,
-      orcamento?.dados_empresa?.empresa,
-      'Empresa'
-    );
-
-    const consultor = valor(
-      orcamento?.consultor,
-      orcamento?.responsavel,
-      orcamento?.nome_responsavel,
-      orcamento?.responsavel_nome,
-      perfil?.nome,
-      orcamento?.dados_empresa?.nome,
-      'Consultor'
-    );
-
-    const telefone = valor(
-      perfil?.telefone_empresa,
-      orcamento?.telefone_empresa,
-      orcamento?.whatsapp_empresa,
-      orcamento?.empresa_telefone,
-      orcamento?.telefone_emissor,
-      orcamento?.emissor_telefone,
-      orcamento?.dados_empresa?.telefone_empresa,
-      orcamento?.dados_empresa?.whatsapp_empresa
-    );
-
-    const cnpj = valor(
-      perfil?.cnpj_empresa,
-      orcamento?.cnpj_empresa,
-      orcamento?.cpf_cnpj_empresa,
-      orcamento?.empresa_cnpj,
-      orcamento?.emissor_cnpj,
-      orcamento?.dados_empresa?.cnpj_empresa,
-      orcamento?.dados_empresa?.cpf_cnpj_empresa
-    );
-
-    const endereco = valor(
-      perfil?.endereco_empresa,
-      orcamento?.endereco_empresa,
-      orcamento?.empresa_endereco,
-      orcamento?.endereco_emissor,
-      orcamento?.dados_empresa?.endereco_empresa
-    );
-
-    const fotoUrl = valor(
-      perfil?.foto_url,
-      perfil?.logo_url,
-      orcamento?.foto_url,
-      orcamento?.logo_url,
-      orcamento?.empresa_logo,
-      orcamento?.logo_empresa,
-      orcamento?.emissor_logo,
-      orcamento?.dados_empresa?.foto_url,
-      orcamento?.dados_empresa?.logo_url
-    );
-
+    const nomeEmpresa = valor(perfil?.nome_empresa, orcamento?.nome_empresa, orcamento?.empresa_nome, orcamento?.empresa, orcamento?.emissor_nome_empresa, orcamento?.emissor_empresa, orcamento?.nome_empresa_emissor, orcamento?.dados_empresa?.nome_empresa, orcamento?.dados_empresa?.empresa, 'Empresa');
+    const consultor = valor(orcamento?.consultor, orcamento?.responsavel, orcamento?.nome_responsavel, orcamento?.responsavel_nome, perfil?.nome, orcamento?.dados_empresa?.nome, 'Consultor');
+    const telefone = valor(perfil?.telefone_empresa, orcamento?.telefone_empresa, orcamento?.whatsapp_empresa, orcamento?.empresa_telefone, orcamento?.telefone_emissor, orcamento?.emissor_telefone, orcamento?.dados_empresa?.telefone_empresa, orcamento?.dados_empresa?.whatsapp_empresa);
+    const cnpj = valor(perfil?.cnpj_empresa, orcamento?.cnpj_empresa, orcamento?.cpf_cnpj_empresa, orcamento?.empresa_cnpj, orcamento?.emissor_cnpj, orcamento?.dados_empresa?.cnpj_empresa, orcamento?.dados_empresa?.cpf_cnpj_empresa);
+    const endereco = valor(perfil?.endereco_empresa, orcamento?.endereco_empresa, orcamento?.empresa_endereco, orcamento?.endereco_emissor, orcamento?.dados_empresa?.endereco_empresa);
+    const fotoUrl = valor(perfil?.foto_url, perfil?.logo_url, orcamento?.foto_url, orcamento?.logo_url, orcamento?.empresa_logo, orcamento?.logo_empresa, orcamento?.emissor_logo, orcamento?.dados_empresa?.foto_url, orcamento?.dados_empresa?.logo_url);
     return { nomeEmpresa, consultor, telefone, cnpj, endereco, fotoUrl };
   }
 
   async function carregarPerfilEmissorCorrigido(usuarioId, orcamento) {
-    const possiveisIds = [
-      usuarioId,
-      orcamento?.usuario_id,
-      orcamento?.user_id,
-      orcamento?.id_usuario,
-      orcamento?.perfil_id,
-      orcamento?.emissor_id,
-      orcamento?.empresa_id
-    ].filter(Boolean);
-
+    const possiveisIds = [usuarioId, orcamento?.usuario_id, orcamento?.user_id, orcamento?.id_usuario, orcamento?.perfil_id, orcamento?.emissor_id, orcamento?.empresa_id].filter(Boolean);
     if (!possiveisIds.length || !window._supabase) return null;
 
     for (const id of possiveisIds) {
@@ -289,11 +175,9 @@
           .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, logo_url')
           .eq('id', id)
           .maybeSingle();
-
         if (!error && data) return data;
       } catch (_) {}
     }
-
     return null;
   }
 
@@ -339,7 +223,6 @@
 
     if (nomeEmpresaEl) nomeEmpresaEl.innerText = dados.nomeEmpresa;
     if (consultorEl) consultorEl.innerText = `Consultor: ${dados.consultor}`;
-
     preencherChip(whatsappEl, dados.telefone ? `WhatsApp: ${formatarTelefone(dados.telefone)}` : '');
     preencherChip(cnpjEl, dados.cnpj ? `CNPJ/CPF: ${formatarCpfCnpj(dados.cnpj)}` : '');
     preencherChip(enderecoEl, dados.endereco ? `Endereço: ${dados.endereco}` : '');
@@ -365,32 +248,70 @@
     document.querySelectorAll('.gerar-os-box, .btn-gerar-os, a[href*="ordens.html?orcamento_id"]').forEach(el => el.remove());
   }
 
+  function normalizarFormaPagamento(forma) {
+    const f = normalizar(forma);
+    if (f === 'cartao_credito' || f === 'cartao credito' || f === 'credito') return 'credito';
+    if (f === 'cartao_debito' || f === 'cartao debito' || f === 'debito') return 'debito';
+    if (f === 'pix') return 'pix';
+    if (f === 'dinheiro') return 'dinheiro';
+    return '';
+  }
+
+  function corrigirBotoesPagamento() {
+    document.querySelectorAll('.formas-pagamento-grid button').forEach((btn) => {
+      const onclick = btn.getAttribute('onclick') || '';
+      const match = onclick.match(/selecionarFormaPagamento\(['"]([^'"]+)['"]\)/);
+      const forma = normalizarFormaPagamento(match?.[1] || btn.dataset.forma || btn.textContent);
+
+      if (!forma || !FORMAS_VALIDAS[forma]) {
+        btn.dataset.formaInvalida = 'true';
+        return;
+      }
+
+      btn.dataset.formaInvalida = 'false';
+      btn.textContent = FORMAS_VALIDAS[forma];
+      btn.onclick = () => window.selecionarFormaPagamento(forma);
+    });
+  }
+
+  function instalarPagamentoSchemaReal() {
+    window.FORMAS_PAGAMENTO = { ...FORMAS_VALIDAS };
+    window.textoFormaPagamento = function (forma) {
+      return FORMAS_VALIDAS[normalizarFormaPagamento(forma)] || '-';
+    };
+
+    if (typeof window.selecionarFormaPagamento === 'function' && !window.selecionarFormaPagamento.__fsSchemaReal) {
+      const original = window.selecionarFormaPagamento;
+      window.selecionarFormaPagamento = function (forma) {
+        const formaNormalizada = normalizarFormaPagamento(forma);
+        if (!formaNormalizada) {
+          alert('Forma de pagamento inválida. Escolha crédito, débito, Pix ou dinheiro.');
+          return;
+        }
+        return original.call(this, formaNormalizada);
+      };
+      window.selecionarFormaPagamento.__fsSchemaReal = true;
+    }
+
+    corrigirBotoesPagamento();
+  }
+
   function instalarOverrides() {
     injetarEstiloTema();
     removerBotaoGerarOS();
+    instalarPagamentoSchemaReal();
 
     window.montarBotaoGerarOS = function () { return ''; };
-
-    window.coresDoTema = function (tema) {
-      return TEMAS_VER[normalizar(tema)] || TEMAS_VER.original;
-    };
-
-    window.aplicarTemaVerHtml = function (orcamento) {
-      return aplicarTemaCorrigido(orcamento);
-    };
-
-    window.carregarPerfilEmissor = async function (usuarioId) {
-      return carregarPerfilEmissorCorrigido(usuarioId, window.orcamentoAtual || {});
-    };
-
-    window.preencherTopoEmpresaVer = function (orcamento, perfil) {
-      preencherTopoEmpresaCorrigido(orcamento || window.orcamentoAtual || {}, perfil || window.perfilEmissorAtual || {});
-    };
+    window.coresDoTema = function (tema) { return TEMAS_VER[normalizar(tema)] || TEMAS_VER.original; };
+    window.aplicarTemaVerHtml = function (orcamento) { return aplicarTemaCorrigido(orcamento); };
+    window.carregarPerfilEmissor = async function (usuarioId) { return carregarPerfilEmissorCorrigido(usuarioId, window.orcamentoAtual || {}); };
+    window.preencherTopoEmpresaVer = function (orcamento, perfil) { preencherTopoEmpresaCorrigido(orcamento || window.orcamentoAtual || {}, perfil || window.perfilEmissorAtual || {}); };
 
     if (window.orcamentoAtual) {
       aplicarTemaCorrigido(window.orcamentoAtual);
       preencherTopoEmpresaCorrigido(window.orcamentoAtual, window.perfilEmissorAtual || {});
       removerBotaoGerarOS();
+      instalarPagamentoSchemaReal();
     }
   }
 
