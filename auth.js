@@ -39,9 +39,16 @@ function fsDestinoAtual() {
   return `${window.location.pathname || '/index.html'}${window.location.search || ''}`;
 }
 
+function fsDestinoSeguroAposLogin(destino) {
+  const valor = String(destino || '').trim();
+  if (!valor || valor.startsWith('http://') || valor.startsWith('https://') || valor.startsWith('//')) return '/index.html';
+  if (!valor.startsWith('/')) return `/${valor}`;
+  return valor;
+}
+
 function fsSalvarDestinoAposLogin(destino) {
   try {
-    localStorage.setItem('fs_destino_apos_login', destino || fsDestinoAtual() || '/gerador.html');
+    localStorage.setItem('fs_destino_apos_login', fsDestinoSeguroAposLogin(destino || fsDestinoAtual() || '/gerador.html'));
   } catch (error) {
     console.warn('Não foi possível salvar destino após login:', error);
   }
@@ -52,10 +59,18 @@ function fsLimparDestinoAposLogin() {
 }
 
 function fsRedirecionarAposLogin() {
+  let destino = '/index.html';
+  try { destino = fsDestinoSeguroAposLogin(localStorage.getItem('fs_destino_apos_login') || '/index.html'); } catch (_) {}
   fsLimparDestinoAposLogin();
-  const destino = '/index.html';
-  const atual = fsDestinoAtual();
-  if (!atual.endsWith('/index.html') && atual !== '/' && atual !== '/index') window.location.href = destino;
+
+  const atual = fsDestinoSeguroAposLogin(fsDestinoAtual());
+  if (atual !== destino) window.location.href = destino;
+}
+
+function fsIrParaLoginComDestino(destino) {
+  const destinoSeguro = fsDestinoSeguroAposLogin(destino || fsDestinoAtual());
+  fsSalvarDestinoAposLogin(destinoSeguro);
+  window.location.href = `/index.html?login=1&dest=${encodeURIComponent(destinoSeguro)}`;
 }
 
 function fsNormalizarTextoAuth(valor) {
@@ -169,7 +184,7 @@ async function reenviarEmailConfirmacao() {
   }
 }
 
-function atualizarTelaAutenticacao(session) {
+async function atualizarTelaAutenticacao(session) {
   const authArea = document.getElementById('auth-area');
   const authContainer = document.getElementById('auth-container');
   const conteudoProtegido = document.getElementById('conteudo-protegido') || document.getElementById('painel-conteudo') || document.getElementById('orcamentos-conteudo');
@@ -189,10 +204,16 @@ function atualizarTelaAutenticacao(session) {
     } else {
       if (conteudoGerador) conteudoGerador.style.display = 'none';
       if (conteudoProtegido) conteudoProtegido.style.display = 'none';
-      if (authArea && !modalLogin) authArea.style.display = 'block';
-      if (authContainer && !modalLogin) authContainer.style.display = 'block';
       fsSalvarDestinoAposLogin('/gerador.html');
-      setTimeout(abrirModalLogin, 250);
+      if (modalLogin) {
+        if (authArea) authArea.style.display = 'block';
+        if (authContainer) authContainer.style.display = 'block';
+        setTimeout(abrirModalLogin, 250);
+      } else {
+        if (authArea) authArea.style.display = 'none';
+        if (authContainer) authContainer.style.display = 'none';
+        setTimeout(() => fsIrParaLoginComDestino('/gerador.html'), 50);
+      }
     }
     return;
   }
@@ -204,11 +225,17 @@ function atualizarTelaAutenticacao(session) {
       if (conteudoProtegido) conteudoProtegido.style.display = 'block';
       fecharModalLogin();
     } else {
-      if (authArea) authArea.style.display = 'block';
-      if (authContainer) authContainer.style.display = 'block';
       if (conteudoProtegido) conteudoProtegido.style.display = 'none';
       fsSalvarDestinoAposLogin(fsDestinoAtual());
-      setTimeout(abrirModalLogin, 250);
+      if (modalLogin) {
+        if (authArea) authArea.style.display = 'block';
+        if (authContainer) authContainer.style.display = 'block';
+        setTimeout(abrirModalLogin, 250);
+      } else {
+        if (authArea) authArea.style.display = 'none';
+        if (authContainer) authContainer.style.display = 'none';
+        setTimeout(() => fsIrParaLoginComDestino(fsDestinoAtual()), 50);
+      }
     }
     return;
   }
@@ -546,3 +573,4 @@ window.usuarioPodeSalvarOrcamentoLocal = usuarioPodeSalvarOrcamentoLocal;
 window.usuarioPremium = usuarioPremium;
 window.reenviarEmailConfirmacao = reenviarEmailConfirmacao;
 window.fsAplicarModoAuth = fsAplicarModoAuth;
+window.fsSalvarDestinoAposLogin = fsSalvarDestinoAposLogin;
