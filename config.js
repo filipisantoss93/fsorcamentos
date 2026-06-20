@@ -22,7 +22,7 @@ const SUPABASE_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co';
   NÃO use chave com:
   "role": "service_role"
 */
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2anZob3ppcWNldmt6eXN6ZGtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODc4MTksImV4cCI6MjA5MDM2MzgxOX0.ptXSP5LeasQgLuIicmTrtw_on5MfijUk26hllMsegfI';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6Imt2anZob3ppcWNldmt6eXN6ZGtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODc4MTksImV4cCI6MjA5MDM2MzgxOX0.ptXSP5LeasQgLuIicmTrtw_on5MfijUk26hllMsegfI';
 
 window.SUPABASE_URL = SUPABASE_URL;
 window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
@@ -101,7 +101,7 @@ const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   { paginas: ['/recorrentes', '/recorrentes.html'], scripts: [['recorrentes-pro.js', 'fs-recorrentes-pro-js']] },
   { paginas: ['/relatorios', '/relatorios.html'], scripts: [['relatorios-pro.js', 'fs-relatorios-pro-js']] },
   { paginas: ['/painel', '/painel.html'], scripts: [['painel-logo-fix.js', 'fs-painel-logo-fix-js'], ['painel-perfil-fix.js', 'fs-painel-perfil-fix-js']] },
-  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js', 'fs-orcamentos-pdf-js']] },
+  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js', 'fs-orcamentos-pdf-js'], ['orcamentos-token-link-fix.js', 'fs-orcamentos-token-link-fix-js']] },
   { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js', 'fs-ordens-recorrente-prefill-js']] },
   { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js', 'fs-cliente-modal-js']] },
   { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js', 'fs-ordem-extras-js'], ['ordem-fotos-depois.js', 'fs-ordem-fotos-depois-js'], ['ordem-pdf-fotos-depois.js', 'fs-ordem-pdf-fotos-depois-js'], ['ordem-financeiro-nativo-fix.js', 'fs-ordem-financeiro-nativo-fix-js'], ['ordem-garantia.js', 'fs-ordem-garantia-js'], ['ordem-recibo.js', 'fs-ordem-recibo-js']] }
