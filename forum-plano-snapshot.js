@@ -1,55 +1,32 @@
 /* =========================================================
-   FS ORÇAMENTOS — snapshot do plano na Comunidade
-   Adiciona autor_plano automaticamente em inserts de tópicos/respostas.
+   FS ORÇAMENTOS — compatibilidade de publicação no Fórum
+   Mantém os inserts do fórum compatíveis com a tabela atual.
    ========================================================= */
 (function () {
   'use strict';
 
-  function normalizarPlano(valor) {
-    const plano = String(valor || 'gratis')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .trim();
+  function limparPayload(payload) {
+    if (!payload || typeof payload !== 'object') return payload;
+    const item = { ...payload };
 
-    if (plano === 'premium' || plano === 'gestao') return 'premium';
-    if (plano === 'basico') return 'basico';
-    return 'gratis';
+    /* autor_plano causava erro quando a coluna ainda não existia no Supabase. */
+    delete item.autor_plano;
+
+    /* Campos opcionais de foto só são enviados quando realmente existem. */
+    ['foto_1_url', 'foto_2_url'].forEach((campo) => {
+      if (item[campo] === null || item[campo] === undefined || item[campo] === '') delete item[campo];
+    });
+
+    return item;
   }
 
-  function planoAtualUsuario() {
-    try {
-      if (typeof forumPerfilAtual !== 'undefined' && forumPerfilAtual?.plano) {
-        return normalizarPlano(forumPerfilAtual.plano);
-      }
-    } catch (_) {}
-
-    return normalizarPlano(
-      localStorage.getItem('usuario_plano') ||
-      localStorage.getItem('plano') ||
-      'gratis'
-    );
-  }
-
-  function incluirPlano(payload) {
-    const plano = planoAtualUsuario();
-
-    if (Array.isArray(payload)) {
-      return payload.map(item => item && typeof item === 'object'
-        ? { autor_plano: item.autor_plano || plano, ...item, autor_plano: item.autor_plano || plano }
-        : item
-      );
-    }
-
-    if (payload && typeof payload === 'object') {
-      return { autor_plano: payload.autor_plano || plano, ...payload, autor_plano: payload.autor_plano || plano };
-    }
-
-    return payload;
+  function prepararPayload(payload) {
+    if (Array.isArray(payload)) return payload.map(limparPayload);
+    return limparPayload(payload);
   }
 
   function instalarPatch() {
-    if (!window._supabase || window._supabase.__fsForumPlanoSnapshotPatch) return;
+    if (!window._supabase || window._supabase.__fsForumPublicacaoPatch) return;
 
     const originalFrom = window._supabase.from.bind(window._supabase);
 
@@ -57,21 +34,19 @@
       const builder = originalFrom(tableName);
       const tabela = String(tableName || '');
 
-      if (!['forum_topicos', 'forum_respostas'].includes(tabela)) {
-        return builder;
-      }
+      if (!['forum_topicos', 'forum_respostas'].includes(tabela)) return builder;
 
       const originalInsert = builder.insert?.bind(builder);
       if (typeof originalInsert === 'function') {
         builder.insert = function fsForumInsertPatched(payload, options) {
-          return originalInsert(incluirPlano(payload), options);
+          return originalInsert(prepararPayload(payload), options);
         };
       }
 
       return builder;
     };
 
-    window._supabase.__fsForumPlanoSnapshotPatch = true;
+    window._supabase.__fsForumPublicacaoPatch = true;
   }
 
   if (document.readyState === 'loading') {
@@ -80,6 +55,7 @@
     instalarPatch();
   }
 
-  setTimeout(instalarPatch, 500);
-  setTimeout(instalarPatch, 1500);
+  setTimeout(instalarPatch, 300);
+  setTimeout(instalarPatch, 1000);
+  setTimeout(instalarPatch, 2000);
 })();
