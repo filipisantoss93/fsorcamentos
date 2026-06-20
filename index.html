@@ -2,539 +2,45 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#3e2723">
+  <meta name="theme-color" content="#111827">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>FS Orçamentos - Orçamentos profissionais e gestão para prestadores</title>
-
   <meta name="description" content="Gere orçamentos profissionais em PDF, acompanhe aprovações e organize clientes, ordens de serviço, estoque, agenda e rotina da empresa.">
   <meta name="keywords" content="sistema de orçamento, orçamento pdf, gestão de oficina, ordem de serviço, prestadores de serviço, micro saas orçamento">
   <meta name="author" content="Filipi Aparecido dos Santos">
-
-  <meta name="google-site-verification" content="AUNalSg35UWE0CFzVlqgXE57TMekeSRBmlmvdMhNT9M">
-  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://fsorcamentos.com.br/">
-  <meta property="og:title" content="FS Orçamentos - Plataforma profissional para prestadores de serviço">
-  <meta property="og:description" content="Orçamentos em PDF, aprovação por link, clientes, OS, estoque, agenda e dashboard em uma plataforma simples.">
-  <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
-
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://fsorcamentos.com.br/">
-  <meta property="twitter:title" content="FS Orçamentos - Sistema de orçamento e gestão">
-  <meta property="twitter:description" content="Profissionalize orçamentos e organize sua empresa sem depender só do WhatsApp.">
-  <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
-
   <link rel="stylesheet" href="style.css">
   <link id="fs-index-css" rel="stylesheet" href="index.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-  <style id="fs-home-vendas-limpa">
-    body:not(.gerando-pdf) {
-      background: linear-gradient(180deg, #f5efe7 0%, #ebe0d4 100%) !important;
-      color: #2b211d !important;
-    }
-
-    body:not(.gerando-pdf) #home-publica .bloco-anuncio,
-    body:not(.gerando-pdf) #home-publica .ad-area,
-    body:not(.gerando-pdf) #home-publica .adsbygoogle,
-    body:not(.gerando-pdf) #home-publica .adsense-label,
-    body:not(.gerando-pdf) #home-publica .fs-adsense-zone,
-    body:not(.gerando-pdf) #home-publica [aria-label="Publicidade"],
-    body:not(.gerando-pdf) #home-publica [id*="adsense"],
-    body:not(.gerando-pdf) #home-publica [class*="adsense"],
-    body:not(.gerando-pdf) #home-publica [id*="anuncio"],
-    body:not(.gerando-pdf) #home-publica [class*="anuncio"] {
-      display: none !important;
-      height: 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-      overflow: hidden !important;
-    }
-
-    .home-publica {
-      width: min(1120px, calc(100% - 18px)) !important;
-      margin: 12px auto 26px !important;
-      padding: 0 !important;
-      display: grid !important;
-      gap: 10px !important;
-    }
-
-    .home-visao-plano {
-      display: grid !important;
-      gap: 10px !important;
-    }
-
-    .home-hero-venda {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1.04fr) minmax(300px, .96fr) !important;
-      gap: 14px !important;
-      align-items: stretch !important;
-      background: #ffffff !important;
-      border: 1px solid #ded3c5 !important;
-      border-radius: 10px !important;
-      box-shadow: 0 8px 24px rgba(47, 33, 29, .10) !important;
-      padding: 16px !important;
-      overflow: hidden !important;
-    }
-
-    .home-hero-copy {
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: center !important;
-      min-width: 0 !important;
-    }
-
-    .home-kicker,
-    .home-mini-tag {
-      display: inline-flex !important;
-      width: fit-content !important;
-      align-items: center !important;
-      min-height: 22px !important;
-      padding: 4px 8px !important;
-      border-radius: 4px !important;
-      background: #f8f4ee !important;
-      border: 1px solid #e3d7ca !important;
-      color: #3e2723 !important;
-      font-size: 10px !important;
-      line-height: 1 !important;
-      font-weight: 950 !important;
-      text-transform: uppercase !important;
-      margin-bottom: 8px !important;
-    }
-
-    .home-hero-venda h1 {
-      margin: 0 !important;
-      color: #2f211d !important;
-      font-size: clamp(30px, 4.5vw, 50px) !important;
-      line-height: 1.02 !important;
-      letter-spacing: -.035em !important;
-      font-weight: 950 !important;
-      max-width: 760px !important;
-    }
-
-    .home-lead {
-      margin: 10px 0 0 !important;
-      color: #5f5149 !important;
-      font-size: 16px !important;
-      line-height: 1.45 !important;
-      font-weight: 730 !important;
-      max-width: 740px !important;
-    }
-
-    .home-cta-row {
-      display: flex !important;
-      flex-wrap: wrap !important;
-      gap: 8px !important;
-      margin-top: 14px !important;
-    }
-
-    .home-btn-primary,
-    .home-btn-secondary,
-    .btn-home-grande,
-    .btn-home-atalho {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      min-height: 38px !important;
-      border-radius: 5px !important;
-      padding: 9px 13px !important;
-      font-size: 12.5px !important;
-      font-weight: 950 !important;
-      text-decoration: none !important;
-      cursor: pointer !important;
-      box-shadow: none !important;
-    }
-
-    .home-btn-primary,
-    .btn-home-grande {
-      background: #2f211d !important;
-      color: #ffc400 !important;
-      border: 1px solid #2f211d !important;
-    }
-
-    .home-btn-secondary,
-    .btn-home-atalho {
-      background: #ffffff !important;
-      color: #2f211d !important;
-      border: 1px solid #d7ccc8 !important;
-    }
-
-    .home-hero-proof {
-      background: #2f211d !important;
-      color: #fffaf0 !important;
-      border-radius: 8px !important;
-      padding: 14px !important;
-      display: grid !important;
-      gap: 8px !important;
-      align-content: start !important;
-      border: 1px solid #2f211d !important;
-    }
-
-    .home-hero-proof h2 {
-      margin: 0 !important;
-      color: #ffc400 !important;
-      font-size: 18px !important;
-      line-height: 1.15 !important;
-      font-weight: 950 !important;
-    }
-
-    .home-hero-proof p {
-      margin: 0 !important;
-      color: #fffaf0 !important;
-      font-size: 12.5px !important;
-      line-height: 1.38 !important;
-      font-weight: 700 !important;
-    }
-
-    .home-proof-list {
-      display: grid !important;
-      gap: 6px !important;
-      margin: 4px 0 0 !important;
-      padding: 0 !important;
-      list-style: none !important;
-    }
-
-    .home-proof-list li {
-      display: grid !important;
-      grid-template-columns: 18px minmax(0, 1fr) !important;
-      gap: 6px !important;
-      align-items: start !important;
-      color: #fffaf0 !important;
-      font-size: 12px !important;
-      line-height: 1.3 !important;
-      font-weight: 750 !important;
-    }
-
-    .home-proof-list li::before {
-      content: "✓";
-      color: #ffc400;
-      font-weight: 950;
-    }
-
-    .home-section-clean {
-      background: #ffffff !important;
-      border: 1px solid #e4d8cc !important;
-      border-radius: 9px !important;
-      box-shadow: 0 4px 14px rgba(47,33,29,.065) !important;
-      padding: 14px !important;
-      color: #2b211d !important;
-      overflow: hidden !important;
-    }
-
-    .home-section-head {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1fr) auto !important;
-      gap: 10px !important;
-      align-items: end !important;
-      border-bottom: 1px solid #ebe2d7 !important;
-      padding-bottom: 9px !important;
-      margin-bottom: 10px !important;
-    }
-
-    .home-section-head h2 {
-      margin: 0 !important;
-      color: #2f211d !important;
-      font-size: clamp(20px, 2.6vw, 30px) !important;
-      line-height: 1.12 !important;
-      font-weight: 950 !important;
-      letter-spacing: -.02em !important;
-    }
-
-    .home-section-head p {
-      margin: 5px 0 0 !important;
-      color: #62554d !important;
-      font-size: 13px !important;
-      line-height: 1.4 !important;
-      font-weight: 700 !important;
-    }
-
-    .home-plans-line {
-      display: grid !important;
-      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-      gap: 8px !important;
-    }
-
-    .home-plan-mini {
-      background: #ffffff !important;
-      border: 1px solid #e4d8cc !important;
-      border-radius: 7px !important;
-      padding: 10px !important;
-      box-shadow: none !important;
-      min-width: 0 !important;
-    }
-
-    .home-plan-mini.destaque {
-      border-color: #2f211d !important;
-      box-shadow: inset 0 0 0 1px #2f211d !important;
-    }
-
-    .home-plan-mini strong {
-      display: block !important;
-      color: #2f211d !important;
-      font-size: 16px !important;
-      line-height: 1.15 !important;
-      font-weight: 950 !important;
-    }
-
-    .home-plan-mini b {
-      display: block !important;
-      color: #2f211d !important;
-      font-size: 21px !important;
-      line-height: 1.1 !important;
-      margin: 5px 0 !important;
-      font-weight: 950 !important;
-    }
-
-    .home-plan-mini span,
-    .home-plan-mini p {
-      display: block !important;
-      margin: 0 !important;
-      color: #62554d !important;
-      font-size: 12px !important;
-      line-height: 1.35 !important;
-      font-weight: 720 !important;
-    }
-
-    .home-flow-line {
-      display: grid !important;
-      grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-      gap: 6px !important;
-    }
-
-    .home-flow-step {
-      background: #fbf8f4 !important;
-      border: 1px solid #ebe2d7 !important;
-      border-radius: 6px !important;
-      padding: 8px !important;
-      min-width: 0 !important;
-    }
-
-    .home-flow-step strong {
-      display: block !important;
-      color: #2f211d !important;
-      font-size: 12.5px !important;
-      line-height: 1.15 !important;
-      font-weight: 950 !important;
-    }
-
-    .home-flow-step span {
-      display: block !important;
-      color: #62554d !important;
-      font-size: 11px !important;
-      line-height: 1.28 !important;
-      font-weight: 700 !important;
-      margin-top: 3px !important;
-    }
-
-    .home-split {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-      gap: 10px !important;
-    }
-
-    .home-text-list {
-      display: grid !important;
-      gap: 7px !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      list-style: none !important;
-    }
-
-    .home-text-list li {
-      background: #fbf8f4 !important;
-      border: 1px solid #ebe2d7 !important;
-      border-radius: 6px !important;
-      padding: 8px 9px !important;
-      color: #2b211d !important;
-      font-size: 12.3px !important;
-      line-height: 1.35 !important;
-      font-weight: 730 !important;
-    }
-
-    .home-final-cta {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1fr) auto !important;
-      gap: 12px !important;
-      align-items: center !important;
-      background: #2f211d !important;
-      color: #fffaf0 !important;
-      border: 1px solid #2f211d !important;
-      border-radius: 9px !important;
-      padding: 14px !important;
-      box-shadow: 0 6px 18px rgba(47,33,29,.12) !important;
-    }
-
-    .home-final-cta h2 {
-      margin: 0 !important;
-      color: #ffc400 !important;
-      font-size: 22px !important;
-      line-height: 1.12 !important;
-      font-weight: 950 !important;
-    }
-
-    .home-final-cta p {
-      margin: 5px 0 0 !important;
-      color: #fffaf0 !important;
-      font-size: 13px !important;
-      line-height: 1.38 !important;
-      font-weight: 720 !important;
-    }
-
-    .index-aviso-login {
-      display: none;
-      margin-top: 8px !important;
-      padding: 8px 10px !important;
-      border-radius: 5px !important;
-      background: #fff7ed !important;
-      border: 1px solid #fed7aa !important;
-      color: #9a3412 !important;
-      font-size: 12px !important;
-      font-weight: 850 !important;
-    }
-
-    .fs-footer-index {
-      width: min(1120px, calc(100% - 18px)) !important;
-      margin: 0 auto 18px !important;
-      padding: 10px 0 !important;
-      border-top: 1px solid #d8ccc0 !important;
-      color: #62554d !important;
-      font-size: 12px !important;
-    }
-
-    .fs-footer-index a {
-      color: #2f211d !important;
-      font-weight: 850 !important;
-    }
-
-    @media (max-width: 900px) {
-      .home-hero-venda,
-      .home-split,
-      .home-final-cta {
-        grid-template-columns: 1fr !important;
-      }
-
-      .home-plans-line {
-        grid-template-columns: 1fr !important;
-      }
-
-      .home-flow-line {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-      }
-    }
-
-    @media (max-width: 620px) {
-      .home-publica {
-        width: min(100% - 10px, 1120px) !important;
-        margin-top: 8px !important;
-      }
-
-      .home-hero-venda,
-      .home-section-clean,
-      .home-final-cta {
-        padding: 10px !important;
-        border-radius: 8px !important;
-      }
-
-      .home-hero-venda h1 {
-        font-size: 31px !important;
-      }
-
-      .home-flow-line {
-        grid-template-columns: 1fr !important;
-      }
-
-      .home-cta-row,
-      .home-final-cta .home-cta-row {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-      }
-    }
-  </style>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "FS Orçamentos",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "url": "https://fsorcamentos.com.br/",
-    "description": "Plataforma para criar orçamentos profissionais em PDF, acompanhar aprovações e organizar a rotina de prestadores de serviço."
-  }
-  </script>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077" crossorigin="anonymous"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17435932696');
-  </script>
 </head>
-
 <body>
   <div id="header-container"></div>
 
   <div id="modal-login" class="modal-login-overlay">
     <div class="modal-login-box">
       <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button>
-
       <div class="auth-logo-box">
         <div class="auth-logo-text"><strong>FS</strong><span>Orçamentos</span></div>
         <p>Acesse sua conta para gerar orçamentos profissionais</p>
       </div>
-
       <div id="auth-area" class="auth-area-index">
         <div id="auth-container" class="auth-container-index">
           <form id="form-autenticacao" onsubmit="return false;">
             <h3 id="auth-titulo" class="auth-titulo-index">Acesse sua Conta</h3>
-
-            <div id="grupo-nome" class="auth-campo-index oculto">
-              <label for="auth-nome">Nome</label>
-              <input type="text" id="auth-nome" placeholder="Seu nome">
-            </div>
-
-            <div class="auth-campo-index">
-              <label for="auth-email">E-mail</label>
-              <input type="email" id="auth-email" placeholder="seu@email.com">
-            </div>
-
-            <div id="grupo-nome-empresa" class="auth-campo-index oculto">
-              <label for="reg-nome-empresa">Nome da Empresa</label>
-              <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa">
-            </div>
-
-            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto">
-              <label for="reg-telefone-empresa">WhatsApp da Empresa</label>
-              <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa">
-            </div>
-
-            <div class="auth-campo-index">
-              <label for="auth-senha">Senha</label>
-              <input type="password" id="auth-senha" placeholder="******">
-            </div>
-
-            <div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto">
-              <label for="auth-confirmar-senha">Confirmar Senha</label>
-              <input type="password" id="auth-confirmar-senha" placeholder="******">
-            </div>
-
+            <div id="grupo-nome" class="auth-campo-index oculto"><label for="auth-nome">Nome</label><input type="text" id="auth-nome" placeholder="Seu nome"></div>
+            <div class="auth-campo-index"><label for="auth-email">E-mail</label><input type="email" id="auth-email" placeholder="seu@email.com"></div>
+            <div id="grupo-nome-empresa" class="auth-campo-index oculto"><label for="reg-nome-empresa">Nome da Empresa</label><input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa"></div>
+            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto"><label for="reg-telefone-empresa">WhatsApp da Empresa</label><input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa"></div>
+            <div class="auth-campo-index"><label for="auth-senha">Senha</label><input type="password" id="auth-senha" placeholder="******"></div>
+            <div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto"><label for="auth-confirmar-senha">Confirmar Senha</label><input type="password" id="auth-confirmar-senha" placeholder="******"></div>
             <button type="button" id="btn-principal" class="btn-principal-index" onclick="enviarFormulario()">Entrar</button>
           </form>
-
-          <div class="auth-alternar-index">
-            <a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a>
-          </div>
+          <div class="auth-alternar-index"><a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a></div>
         </div>
       </div>
     </div>
@@ -562,16 +68,13 @@
           <span class="home-kicker">Sistema para prestadores de serviço</span>
           <h1>Pare de vender serviço com orçamento improvisado.</h1>
           <p class="home-lead">Crie propostas profissionais em PDF, envie para o cliente aprovar por link e acompanhe tudo que está pendente, aprovado ou em serviço. O FS Orçamentos ajuda seu negócio a parecer mais organizado e mais confiável.</p>
-
           <div class="home-cta-row">
             <button type="button" class="home-btn-primary" onclick="abrirGeradorHomeProtegido()">Começar grátis</button>
             <a href="/planos.html" class="home-btn-secondary">Ver planos pagos</a>
             <a href="/forum.html" class="home-btn-secondary">Comunidade FS</a>
           </div>
-
           <div id="index-aviso-login" class="index-aviso-login">Faça login ou crie sua conta para acessar o gerador de orçamento.</div>
         </div>
-
         <aside class="home-hero-proof">
           <span class="home-mini-tag">O que muda na prática</span>
           <h2>Mais controle antes, durante e depois da venda.</h2>
@@ -594,35 +97,15 @@
           </div>
           <a href="/planos.html" class="home-btn-secondary">Comparar planos</a>
         </div>
-
         <div class="home-plans-line">
-          <article class="home-plan-mini">
-            <strong>Grátis</strong>
-            <b>R$ 0</b>
-            <p>Para testar o gerador e criar os primeiros PDFs profissionais.</p>
-          </article>
-          <article class="home-plan-mini destaque">
-            <strong>Básico</strong>
-            <b>R$ 19,90/mês</b>
-            <p>Histórico, status, aprovação por link e mais controle comercial.</p>
-          </article>
-          <article class="home-plan-mini">
-            <strong>Gestão</strong>
-            <b>Premium</b>
-            <p>Clientes, veículos, OS, estoque, agenda e saúde da empresa no dashboard.</p>
-          </article>
+          <article class="home-plan-mini"><strong>Grátis</strong><b>R$ 0</b><p>Para testar o gerador e criar os primeiros PDFs profissionais.</p></article>
+          <article class="home-plan-mini destaque"><strong>Básico</strong><b>R$ 19,90/mês</b><p>Histórico, status, aprovação por link e mais controle comercial.</p></article>
+          <article class="home-plan-mini"><strong>Gestão</strong><b>Premium</b><p>Clientes, veículos, OS, estoque, agenda e saúde da empresa no dashboard.</p></article>
         </div>
       </section>
 
       <section class="home-section-clean">
-        <div class="home-section-head">
-          <div>
-            <span class="home-mini-tag">Fluxo do produto</span>
-            <h2>Da proposta ao serviço concluído.</h2>
-            <p>O objetivo é reduzir informação perdida e deixar o prestador com visão clara do que está em aberto.</p>
-          </div>
-        </div>
-
+        <div class="home-section-head"><div><span class="home-mini-tag">Fluxo do produto</span><h2>Da proposta ao serviço concluído.</h2><p>O objetivo é reduzir informação perdida e deixar o prestador com visão clara do que está em aberto.</p></div></div>
         <div class="home-flow-line">
           <div class="home-flow-step"><strong>Cliente</strong><span>Dados centralizados.</span></div>
           <div class="home-flow-step"><strong>Orçamento</strong><span>PDF e itens organizados.</span></div>
@@ -634,60 +117,33 @@
 
       <section class="home-split">
         <article class="home-section-clean">
-          <div class="home-section-head">
-            <div>
-              <span class="home-mini-tag">Desejo</span>
-              <h2>O cliente sente mais confiança quando recebe uma proposta organizada.</h2>
-            </div>
-          </div>
+          <div class="home-section-head"><div><span class="home-mini-tag">Desejo</span><h2>O cliente sente mais confiança quando recebe uma proposta organizada.</h2></div></div>
           <ul class="home-text-list">
             <li>Você mostra escopo, peças, mão de obra, prazo e total com clareza.</li>
             <li>O cliente entende melhor o valor do serviço e tem menos dúvida para aprovar.</li>
             <li>Seu negócio deixa de depender de prints, mensagens soltas e anotações perdidas.</li>
           </ul>
         </article>
-
         <article class="home-section-clean">
-          <div class="home-section-head">
-            <div>
-              <span class="home-mini-tag">Comunidade FS</span>
-              <h2>Uma rede de prestadores para trocar experiência.</h2>
-            </div>
-          </div>
+          <div class="home-section-head"><div><span class="home-mini-tag">Comunidade FS</span><h2>Uma rede de prestadores para trocar experiência.</h2></div></div>
           <ul class="home-text-list">
             <li>Publique dúvidas sobre orçamento, cobrança, garantia, peças e atendimento.</li>
             <li>Veja respostas de outros profissionais que vivem problemas parecidos.</li>
             <li>A comunidade aumenta o motivo para voltar à plataforma, mesmo fora do orçamento.</li>
           </ul>
-          <div class="home-cta-row">
-            <a href="/forum.html" class="home-btn-secondary">Acessar comunidade</a>
-          </div>
+          <div class="home-cta-row"><a href="/forum.html" class="home-btn-secondary">Acessar comunidade</a></div>
         </article>
       </section>
 
       <section class="home-final-cta">
-        <div>
-          <h2>Comece simples. Venda com mais aparência profissional.</h2>
-          <p>Teste o gerador grátis. Quando precisar de histórico, status, aprovação e gestão, evolua para um plano pago.</p>
-        </div>
-        <div class="home-cta-row">
-          <button type="button" class="home-btn-primary" onclick="abrirGeradorHomeProtegido()">Gerar orçamento grátis</button>
-          <a href="/planos.html" class="home-btn-secondary">Ver planos</a>
-        </div>
+        <div><h2>Comece simples. Venda com mais aparência profissional.</h2><p>Teste o gerador grátis. Quando precisar de histórico, status, aprovação e gestão, evolua para um plano pago.</p></div>
+        <div class="home-cta-row"><button type="button" class="home-btn-primary" onclick="abrirGeradorHomeProtegido()">Gerar orçamento grátis</button><a href="/planos.html" class="home-btn-secondary">Ver planos</a></div>
       </section>
     </section>
   </main>
 
   <footer class="fs-footer-index">
-    <span>© 2026 FS Orçamentos</span>
-    <span class="footer-separador">|</span>
-    <a href="/privacidade.html">Privacidade</a>
-    <span class="footer-separador">|</span>
-    <a href="/termos.html">Termos</a>
-    <span class="footer-separador">|</span>
-    <a href="/contato.html">Contato</a>
-    <span class="footer-separador">|</span>
-    <a href="/forum.html">Comunidade</a>
+    <span>© 2026 FS Orçamentos</span><span class="footer-separador">|</span><a href="/privacidade.html">Privacidade</a><span class="footer-separador">|</span><a href="/termos.html">Termos</a><span class="footer-separador">|</span><a href="/contato.html">Contato</a><span class="footer-separador">|</span><a href="/forum.html">Comunidade</a>
   </footer>
 
   <script src="index.js"></script>
