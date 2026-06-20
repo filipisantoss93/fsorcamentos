@@ -167,6 +167,60 @@ function homeIndexPreencherMetricasBasico(orcamentos) {
   homeIndexSetTexto('home-basico-valor', homeIndexFormatarMoeda(valorAprovado));
 }
 
+function fsHomeGratisAplicarEscopoPDF() {
+  const homeGratis = document.getElementById('home-plano-gratis');
+  if (!homeGratis) return;
+
+  const lead = homeGratis.querySelector('.home-lead');
+  if (lead) {
+    lead.textContent = 'No plano grátis, você usa o gerador para criar orçamento profissional em PDF. Histórico, aprovação por link, dashboard e gestão ficam para os planos pagos.';
+  }
+
+  const proofTitulo = homeGratis.querySelector('.home-hero-proof h2');
+  if (proofTitulo) proofTitulo.textContent = 'Plano grátis focado no essencial: gerar PDF.';
+
+  const proofTexto = homeGratis.querySelector('.home-hero-proof p');
+  if (proofTexto) proofTexto.textContent = 'A versão grátis serve para criar e baixar orçamentos profissionais com limitações e anúncios.';
+
+  const proofList = homeGratis.querySelector('.home-proof-list');
+  if (proofList) {
+    proofList.innerHTML = `
+      <li>Gerador de orçamento profissional.</li>
+      <li>PDF com aparência organizada.</li>
+      <li>Uso com limitações e anúncios.</li>
+      <li>Dashboard, OS, estoque e gestão ficam no plano Premium.</li>
+    `;
+  }
+
+  const evolucaoTexto = homeGratis.querySelector('.home-section-head p');
+  if (evolucaoTexto) {
+    evolucaoTexto.textContent = 'O plano grátis é somente para gerar PDF. O Básico libera histórico/status/aprovação, e o Premium libera gestão completa com dashboard.';
+  }
+
+  const fluxoTitulo = [...homeGratis.querySelectorAll('.home-section-head h2')].find(el => el.textContent.includes('Da proposta'));
+  if (fluxoTitulo) fluxoTitulo.textContent = 'O plano grátis começa e termina no PDF.';
+
+  const fluxoTexto = [...homeGratis.querySelectorAll('.home-section-head p')].find(el => el.textContent.includes('reduzir informação'));
+  if (fluxoTexto) fluxoTexto.textContent = 'Para o grátis, o foco é gerar uma proposta apresentável. O acompanhamento do processo é liberado nos planos pagos.';
+
+  const steps = homeGratis.querySelectorAll('.home-flow-step');
+  const novosSteps = [
+    ['Dados', 'Cliente e serviço.'],
+    ['Itens', 'Produtos e mão de obra.'],
+    ['PDF', 'Orçamento profissional.'],
+    ['Anúncios', 'Modelo grátis.'],
+    ['Upgrade', 'Gestão nos planos pagos.']
+  ];
+  steps.forEach((step, idx) => {
+    const novo = novosSteps[idx];
+    if (!novo) return;
+    const strong = step.querySelector('strong');
+    const span = step.querySelector('span');
+    if (strong) strong.textContent = novo[0];
+    if (span) span.textContent = novo[1];
+  });
+}
+
 function fsHomeVendedoraAplicar() {
   if (!indexEstaNaHome()) return;
 
@@ -176,6 +230,8 @@ function fsHomeVendedoraAplicar() {
   linksForum.forEach(link => {
     link.href = '/forum.html';
   });
+
+  fsHomeGratisAplicarEscopoPDF();
 }
 
 async function homeIndexAplicarPlano() {
