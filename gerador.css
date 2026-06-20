@@ -1,570 +1,305 @@
 /* =========================================================
    FS ORÇAMENTOS - gerador.css
-   Estilos específicos da página de geração de orçamento
+   Override final da página gerador.html para cinza profissional.
+   Mantém a estrutura do HTML e substitui marrom/amarelo por cinza.
    ========================================================= */
 
 :root {
-  --fs-marrom: #3e2723;
-  --fs-marrom-2: #2c1b17;
-  --fs-creme: #f4ece1;
-  --fs-creme-2: #fffaf0;
-  --fs-amarelo: #ffc400;
-  --fs-verde: #25d366;
+  --fs-marrom: #475569;
+  --fs-marrom-2: #334155;
+  --fs-creme: #f8fafc;
+  --fs-creme-2: #ffffff;
+  --fs-amarelo: #94a3b8;
+  --fs-verde: #16a34a;
   --fs-azul: #2563eb;
   --fs-vermelho: #dc2626;
-  --fs-borda: #e0d6c8;
-  --fs-texto: #3e2723;
+  --fs-borda: #dbe3ee;
+  --fs-texto: #1f2937;
+  --fs-texto-suave: #64748b;
 }
 
-html { scroll-behavior: smooth; }
-
-body {
-  background:
-    radial-gradient(circle at top left, rgba(255,196,0,0.16), transparent 30%),
-    linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
-  min-height: 100vh;
-  overflow-x: hidden;
+html,
+body:not(.gerando-pdf) {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #eef2f7 100%) !important;
+  color: #1f2937 !important;
 }
 
-#btn-flutuante-gerador-global { display: none !important; }
-
-body.gerando-pdf { background: #ffffff !important; }
-
-body.gerando-pdf #header-container,
-body.gerando-pdf .gerador-hero,
-body.gerando-pdf .gerador-sidebar,
-body.gerando-pdf .floating-actions,
-body.gerando-pdf footer,
-body.gerando-pdf .fs-adsense-zone,
-body.gerando-pdf .btn-help-link,
-body.gerando-pdf .acoes-profissionais-orcamento,
-body.gerando-pdf .previa-label,
-body.gerando-pdf #modal-login {
-  display: none !important;
-}
-
-body.gerando-pdf .pagina-gerador,
-body.gerando-pdf .gerador-layout,
-body.gerando-pdf .gerador-card-principal,
-body.gerando-pdf #formulario-orcamento,
-body.gerando-pdf #area-previa {
-  display: block !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  background: #ffffff !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  max-width: none !important;
-  width: auto !important;
-}
-
-body.gerando-pdf #conteudo-pdf,
-body.gerando-pdf #conteudo-pdf > div {
-  display: block !important;
-  width: 794px !important;
-  max-width: none !important;
-  min-height: 1123px !important;
-  overflow: visible !important;
-  box-shadow: none !important;
-  margin: 0 !important;
-  transform: none !important;
-  background: #ffffff !important;
-}
-
-.modal-login-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.78);
-  display: none;
-  align-items: flex-start;
-  justify-content: center;
-  z-index: 20000;
-  padding: 18px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-}
-
-.modal-login-box {
-  width: min(100%, 430px);
-  max-height: none;
-  min-height: auto;
-  margin: 24px auto;
-  overflow: visible;
-  background: #f4ece1;
-  color: var(--fs-marrom);
-  border-radius: 18px;
-  border-top: 6px solid var(--fs-amarelo);
-  padding: 22px;
-  padding-bottom: 28px;
-  box-shadow: 0 22px 60px rgba(0,0,0,0.55);
-  position: relative;
-  box-sizing: border-box;
-}
-
-body.login-modal-aberto { overflow-x: hidden; }
-
-.btn-fechar-login {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 34px;
-  height: 34px;
-  border: none;
-  border-radius: 9px;
-  background: var(--fs-vermelho);
-  color: #fff;
-  font-size: 22px;
-  font-weight: 900;
-  cursor: pointer;
-  z-index: 2;
-}
-
-#modal-login #auth-area,
-#modal-login #auth-container,
-#modal-login #form-autenticacao {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-#modal-login #auth-container { background: #ffffff !important; }
-
-#modal-login input,
-#modal-login #btn-principal {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+body:not(.gerando-pdf)::before,
+body:not(.gerando-pdf)::after {
+  background: transparent !important;
 }
 
 .pagina-gerador {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 26px 14px 45px;
-  color: var(--fs-texto);
+  color: #1f2937 !important;
+}
+
+.gerador-hero,
+.gerador-card-principal,
+.sidebar-card,
+.emissor-readonly-card,
+.intro-form-gerador,
+#itens-lista,
+.calc-expansivel,
+.color-selector,
+.modal-login-box,
+.modal-content,
+.modal-busca-cliente-box,
+.teste-premium-inline-card,
+.cliente-vinculado-card,
+.veiculo-orcamento-card,
+.veiculo-vinculado-card,
+.status-sessao-card,
+.aviso-perfil-incompleto,
+.fs-adsense-zone {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #dbe3ee !important;
+  border-top-color: #cbd5e1 !important;
+  border-left-color: #94a3b8 !important;
+  box-shadow: 0 6px 18px rgba(51, 65, 85, .08) !important;
 }
 
 .gerador-hero {
-  background: linear-gradient(135deg, #fff7df, var(--fs-creme));
-  border-radius: 26px;
-  padding: 28px;
-  border-top: 6px solid var(--fs-amarelo);
-  box-shadow: 0 18px 46px rgba(0,0,0,0.24);
-  margin-bottom: 22px;
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 58%, #e5e7eb 100%) !important;
+  border-top: 6px solid #94a3b8 !important;
 }
 
 .gerador-hero::before {
-  content: "";
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: rgba(255,196,0,0.18);
-  top: -90px;
-  right: -80px;
+  background: rgba(148, 163, 184, .16) !important;
 }
 
-.gerador-hero-conteudo {
-  position: relative;
-  display: block;
-  max-width: 880px;
+.gerador-tag,
+.tag-planos,
+.tag-plano-pix,
+.tag,
+.status-badge,
+.plano-badge {
+  background: #e2e8f0 !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
 }
 
-.gerador-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--fs-marrom);
-  color: var(--fs-amarelo);
-  border: 1px solid var(--fs-amarelo);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 12px;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin-bottom: 12px;
+.gerador-hero h1,
+.gerador-hero h2,
+.gerador-hero h3,
+.sidebar-card h3,
+.auth-aviso-gerador h2,
+.emissor-info-principal strong,
+.emissor-readonly-grid strong,
+.dadositens,
+.campo-form label,
+.color-selector label,
+.calc-header,
+.calc-secao-titulo,
+.modal-header h3,
+.modal-busca-cliente-header h3,
+.cliente-vinculado-card strong,
+.veiculo-vinculado-card strong,
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+label {
+  color: #1f2937 !important;
 }
 
-.gerador-hero h1 {
-  margin: 0 0 10px;
-  color: var(--fs-marrom);
-  font-size: 34px;
-  line-height: 1.15;
-}
-
-.gerador-hero p {
-  margin: 0;
-  color: #5d4037;
-  font-size: 16px;
-  line-height: 1.55;
-  max-width: 760px;
-}
-
-.gerador-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 330px;
-  gap: 22px;
-  align-items: start;
-}
-
-.gerador-card-principal {
-  background: var(--fs-creme);
-  border-radius: 24px;
-  padding: 22px;
-  border-top: 6px solid var(--fs-amarelo);
-  box-shadow: 0 18px 50px rgba(0,0,0,0.28);
-  min-width: 0;
-}
-
-.gerador-sidebar {
-  position: sticky;
-  top: 92px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
-}
-
-.sidebar-card {
-  background: var(--fs-creme-2);
-  border-radius: 18px;
-  padding: 17px;
-  border: 1px solid var(--fs-borda);
-  border-left: 6px solid var(--fs-amarelo);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.18);
-  color: var(--fs-marrom);
-}
-
-.sidebar-card h3 {
-  margin: 0 0 9px;
-  color: var(--fs-marrom);
-  font-size: 18px;
-}
-
-.sidebar-card p {
-  margin: 0;
-  color: #6d4c41;
-  font-size: 13px;
-  line-height: 1.45;
-}
-
-.sidebar-lista {
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 8px;
-}
-
-.sidebar-lista li {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 9px;
-  color: #5d4037;
-  font-size: 13px;
-  font-weight: 700;
-  border-left: 4px solid var(--fs-amarelo);
-}
-
-.auth-aviso-gerador {
-  text-align: center;
-  margin-bottom: 16px;
-  color: var(--fs-marrom);
-  padding-top: 18px;
-}
-
-.auth-aviso-gerador h2 {
-  margin: 0 0 8px;
-  font-size: 24px;
-}
-
-.auth-aviso-gerador p {
-  margin: 0;
-  color: #6d4c41;
-  line-height: 1.45;
-  font-size: 14px;
-}
-
-.status-sessao-card,
-.aviso-perfil-incompleto {
-  display: none;
-  background: #fff8e1;
-  border-left: 6px solid var(--fs-amarelo);
-  color: #5d4037;
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 16px;
-  font-weight: 800;
-  line-height: 1.4;
-}
-
-.aviso-perfil-incompleto a {
-  color: var(--fs-marrom);
-  font-weight: 900;
-}
-
-.emissor-readonly-card {
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid var(--fs-borda);
-  border-left: 7px solid var(--fs-amarelo);
-  padding: 16px;
-  margin: 0 0 14px 0;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  color: var(--fs-marrom);
-}
-
-.emissor-readonly-topo {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.emissor-logo-mini {
-  width: 110px;
-  height: 88px;
-  border: 1px dashed #d7ccc8;
-  border-radius: 14px;
-  background: #fafafa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  color: #8d6e63;
-  font-size: 12px;
-  text-align: center;
-}
-
-.emissor-logo-mini img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  display: none;
-}
-
+.gerador-hero p,
+.sidebar-card p,
+.sidebar-lista li,
+.auth-aviso-gerador p,
+.emissor-info-principal small,
 .emissor-info-principal span,
-.emissor-readonly-grid span {
-  display: block;
-  font-size: 11px;
-  font-weight: 900;
-  color: #6d4c41;
-  text-transform: uppercase;
-  letter-spacing: .4px;
-  margin-bottom: 4px;
+.emissor-readonly-grid span,
+.intro-form-gerador p,
+.header-labels,
+.cliente-vinculado-card span,
+.veiculo-orcamento-card small,
+.veiculo-vinculado-card span,
+.busca-cliente-ajuda,
+.cliente-busca-item span,
+.estado-busca-cliente,
+.teste-premium-inline-card p,
+.teste-premium-inline-card small,
+small,
+p {
+  color: #64748b !important;
 }
 
-.emissor-info-principal strong {
-  display: block;
-  font-size: 22px;
-  color: var(--fs-marrom);
-  word-break: break-word;
-  line-height: 1.15;
+.dadositens,
+.calc-header,
+.emissor-readonly-grid div,
+.sidebar-lista li,
+.item-row,
+.help-item,
+.estado-busca-cliente {
+  background: #f8fafc !important;
+  border-color: #dbe3ee !important;
+  border-left-color: #94a3b8 !important;
 }
 
-.emissor-info-principal small {
-  display: block;
-  margin-top: 6px;
-  color: #8d6e63;
-  font-weight: 700;
-  font-size: 12px;
+.campo-form input,
+.campo-form textarea,
+.campo-form select,
+.item-row input,
+.extra-field input,
+.busca-cliente-linha input,
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #cbd5e1 !important;
 }
 
-.emissor-readonly-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.campo-form input:focus,
+.campo-form textarea:focus,
+.campo-form select:focus,
+.item-row input:focus,
+.extra-field input:focus,
+.busca-cliente-linha input:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #94a3b8 !important;
+  box-shadow: 0 0 0 4px rgba(100, 116, 139, .16) !important;
+  outline: none !important;
 }
 
-.emissor-readonly-grid div {
-  background: #f7f2ea;
-  border-radius: 12px;
-  padding: 11px;
-  border-left: 4px solid var(--fs-amarelo);
-  min-width: 0;
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
 }
 
-.emissor-readonly-grid strong {
-  display: block;
-  font-size: 14px;
-  color: var(--fs-marrom);
-  word-break: break-word;
+.btn-add,
+.btn-extra,
+.btn-editar-dados-empresa,
+.btn-previa-profissional,
+.btn-acao-pdf,
+.btn-entendi,
+.btn-executar-busca-cliente,
+.btn-buscar-cliente-id,
+.teste-premium-inline-card .btn-teste-premium,
+.btn-float-download,
+.btn-help-trigger,
+#modal-login #btn-principal,
+.btn-principal-index {
+  background: #64748b !important;
+  color: #ffffff !important;
+  border-color: #64748b !important;
+  box-shadow: 0 6px 16px rgba(51, 65, 85, .14) !important;
 }
 
-.emissor-readonly-acoes {
-  margin-top: 14px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  flex-wrap: wrap;
+.btn-add:hover,
+.btn-extra:hover,
+.btn-editar-dados-empresa:hover,
+.btn-previa-profissional:hover,
+.btn-acao-pdf:hover,
+.btn-entendi:hover,
+.btn-executar-busca-cliente:hover,
+.btn-buscar-cliente-id:hover,
+.teste-premium-inline-card .btn-teste-premium:hover:not(:disabled),
+.btn-float-download:hover,
+.btn-help-trigger:hover,
+#modal-login #btn-principal:hover,
+.btn-principal-index:hover {
+  background: #475569 !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
 }
 
-.btn-editar-dados-empresa {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  background: var(--fs-marrom);
-  color: var(--fs-amarelo);
-  border: 2px solid var(--fs-amarelo);
-  border-radius: 999px;
-  padding: 10px 15px;
-  font-size: 13px;
-  font-weight: 900;
-  text-decoration: none;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.14);
-  transition: .2s ease;
+.btn-novo-profissional,
+.btn-limpar-cliente-id,
+.btn-float-novo,
+.btn-fechar-login,
+.close-modal {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #cbd5e1 !important;
 }
 
-.btn-editar-dados-empresa:hover {
-  background: var(--fs-amarelo);
-  color: var(--fs-marrom);
-  transform: translateY(-1px);
+.btn-novo-profissional:hover,
+.btn-limpar-cliente-id:hover,
+.btn-float-novo:hover,
+.btn-fechar-login:hover,
+.close-modal:hover {
+  background: #eef2f7 !important;
+  color: #111827 !important;
+  border-color: #94a3b8 !important;
 }
 
-/* =========================================================
-   Itens do orçamento: descrição na primeira linha;
-   quantidade, valor, subtotal e excluir na segunda.
-   Mantém alta especificidade para vencer correções carregadas depois.
-   ========================================================= */
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) {
-  display: grid !important;
-  grid-template-columns: minmax(58px, .65fr) minmax(92px, 1fr) minmax(92px, 1fr) 34px !important;
-  gap: 6px !important;
-  align-items: end !important;
-  width: 100% !important;
-  padding: 8px !important;
-  margin-bottom: 7px !important;
-  background: #fbf8f4 !important;
-  border: 1px solid #ebe2d7 !important;
-  border-radius: 6px !important;
-  box-sizing: border-box !important;
+.total-container,
+.acoes-profissionais-orcamento,
+.modal-busca-cliente-header,
+.modal-header,
+.card-header,
+.auth-logo-box {
+  background: #f8fafc !important;
+  color: #1f2937 !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 6px 18px rgba(51, 65, 85, .08) !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row.header-labels {
-  display: none !important;
+.total-container,
+.total-container strong,
+.acoes-profissionais-orcamento-topo strong,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header p,
+.card-header span,
+.card-header small,
+.auth-logo-box p,
+.auth-logo-box span,
+.auth-logo-box strong {
+  color: #1f2937 !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels)::before {
-  content: "Descrição";
-  grid-column: 1 / -1 !important;
-  display: block !important;
-  margin: 0 0 -2px !important;
-  color: #62554d !important;
-  font-size: 10px !important;
-  line-height: 1 !important;
-  font-weight: 950 !important;
-  text-transform: uppercase !important;
+.acoes-profissionais-orcamento-topo span {
+  color: #64748b !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels)::after {
-  content: "Qntd        V. Unt        Subtotal";
-  grid-column: 1 / 4 !important;
-  grid-row: 3 !important;
-  display: grid !important;
-  grid-template-columns: minmax(58px, .65fr) minmax(92px, 1fr) minmax(92px, 1fr) !important;
-  color: #62554d !important;
-  font-size: 9px !important;
-  line-height: 1 !important;
-  font-weight: 950 !important;
-  text-transform: uppercase !important;
-  pointer-events: none !important;
-  opacity: .95 !important;
+#area-previa {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .desc-cell,
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .desc,
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:first-child {
-  grid-column: 1 / -1 !important;
-  grid-row: 2 !important;
-  width: 100% !important;
+#conteudo-pdf,
+body.gerando-pdf #conteudo-pdf,
+body.gerando-pdf #conteudo-pdf * {
+  color: #000000 !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .qtd,
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:nth-of-type(2) {
-  grid-column: 1 !important;
-  grid-row: 4 !important;
+.cliente-busca-item {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #dbe3ee !important;
+  border-left-color: #94a3b8 !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .valor,
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:nth-of-type(3) {
-  grid-column: 2 !important;
-  grid-row: 4 !important;
+.cliente-busca-item:hover {
+  box-shadow: 0 8px 18px rgba(51, 65, 85, .14) !important;
+  border-color: #94a3b8 !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .subtotal,
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input:nth-of-type(4) {
-  grid-column: 3 !important;
-  grid-row: 4 !important;
+.cliente-busca-item strong {
+  color: #1f2937 !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .btn-remove,
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) button {
-  grid-column: 4 !important;
-  grid-row: 4 !important;
-  width: 34px !important;
-  min-width: 34px !important;
-  max-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  max-height: 34px !important;
-  padding: 0 !important;
-  border-radius: 4px !important;
-  font-size: 0 !important;
-  line-height: 1 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+.fs-adsense-zone .adsense-label,
+footer,
+footer a {
+  color: #64748b !important;
 }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .btn-remove::before,
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) button::before {
-  content: "×" !important;
-  font-size: 20px !important;
-  line-height: 1 !important;
-  font-weight: 950 !important;
-}
+.original { background: #64748b !important; }
 
-body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input {
-  min-width: 0 !important;
-  width: 100% !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  padding: 6px 7px !important;
-  font-size: 12px !important;
-  box-sizing: border-box !important;
-}
-
-@media (max-width: 520px) {
-  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) {
-    grid-template-columns: minmax(46px, .62fr) minmax(76px, 1fr) minmax(76px, 1fr) 32px !important;
-    gap: 5px !important;
-    padding: 7px !important;
-  }
-
-  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels)::after {
-    grid-template-columns: minmax(46px, .62fr) minmax(76px, 1fr) minmax(76px, 1fr) !important;
-    font-size: 8px !important;
-  }
-
-  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) .btn-remove,
-  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) button {
-    width: 32px !important;
-    min-width: 32px !important;
-    max-width: 32px !important;
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-  }
-
-  body:not(.gerando-pdf) #itens-lista .item-row:not(.header-labels) input {
-    height: 32px !important;
-    min-height: 32px !important;
-    padding: 5px 6px !important;
-    font-size: 11px !important;
+@media (max-width: 760px) {
+  .item-row {
+    background: #f8fafc !important;
+    border-color: #dbe3ee !important;
   }
 }
