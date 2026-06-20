@@ -1,6 +1,23 @@
 let headerJaCarregado = false;
 let fsMenuInicializado = false;
 
+const FS_ROTAS_PROTEGIDAS_MENU = [
+  '/gerador.html', '/gerador',
+  '/painel.html', '/painel',
+  '/orcamentos.html', '/orcamentos',
+  '/dashboard.html', '/dashboard',
+  '/gestao.html', '/gestao',
+  '/clientes.html', '/clientes',
+  '/veiculos.html', '/veiculos',
+  '/ordens.html', '/ordens',
+  '/ordem.html', '/ordem',
+  '/estoque.html', '/estoque',
+  '/agenda.html', '/agenda',
+  '/relatorios.html', '/relatorios',
+  '/recorrentes.html', '/recorrentes',
+  '/fluxo-caixa.html', '/fluxo-caixa'
+];
+
 function fsModoEmbedGestao() {
   try {
     const params = new URLSearchParams(window.location.search);
@@ -59,6 +76,44 @@ function fsEstaNaHome() {
   return path === '/index.html' || path.endsWith('/index.html') || path.endsWith('index.html');
 }
 
+function fsDestinoProtegidoMenu(href) {
+  try {
+    if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) return '';
+    const url = new URL(href, window.location.origin);
+    if (url.origin !== window.location.origin) return '';
+    return `${url.pathname || '/index.html'}${url.search || ''}${url.hash || ''}`;
+  } catch (_) {
+    return '';
+  }
+}
+
+function fsEhRotaProtegidaMenu(destino) {
+  const path = String(destino || '').split('?')[0].split('#')[0].replace(/\/$/, '').toLowerCase();
+  return FS_ROTAS_PROTEGIDAS_MENU.some(rota => path === rota || path.endsWith(rota));
+}
+
+function fsSalvarDestinoProtegidoMenu(destino) {
+  try {
+    const destinoSeguro = fsDestinoProtegidoMenu(destino) || '/painel.html';
+    localStorage.setItem('fs_destino_apos_login', destinoSeguro);
+    return destinoSeguro;
+  } catch (_) {
+    return '/painel.html';
+  }
+}
+
+function fsAbrirLoginParaDestinoProtegido(destino) {
+  const destinoSeguro = fsSalvarDestinoProtegidoMenu(destino);
+  fecharMenuMobileSeAberto();
+
+  if (fsEstaNaHome() && typeof abrirModalLogin === 'function') {
+    abrirModalLogin();
+    return;
+  }
+
+  window.location.href = `/index.html?login=1&dest=${encodeURIComponent(destinoSeguro)}`;
+}
+
 async function obterSessaoAtualMenu() {
   try {
     if (!window._supabase) return null;
@@ -100,7 +155,29 @@ function toggleMenuMobile() {
 }
 
 function configurarLinksDoHeader() {
-  document.querySelectorAll('.header-menu-linha a').forEach(link => link.addEventListener('click', fecharMenuMobileSeAberto));
+  document.querySelectorAll('.header-menu-linha a').forEach(link => {
+    if (link.dataset.fsHeaderLinkConfigurado === 'sim') return;
+    link.dataset.fsHeaderLinkConfigurado = 'sim';
+
+    link.addEventListener('click', async event => {
+      const destino = fsDestinoProtegidoMenu(link.getAttribute('href') || '');
+
+      if (!fsEhRotaProtegidaMenu(destino)) {
+        fecharMenuMobileSeAberto();
+        return;
+      }
+
+      const session = await obterSessaoAtualMenu();
+      if (session?.user?.id) {
+        fecharMenuMobileSeAberto();
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      fsAbrirLoginParaDestinoProtegido(destino);
+    });
+  });
 }
 
 function configurarDropdownsHeader() {
@@ -260,7 +337,7 @@ async function abrirGeradorGlobal() {
   if (!session?.user?.id) {
     removerBotaoFlutuanteGeradorGlobal();
     if (fsEstaNaHome() && typeof abrirModalLogin === 'function') return abrirModalLogin();
-    window.location.href = '/index.html?login=1';
+    window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/gerador.html');
     return;
   }
   window.location.href = '/gerador.html';
@@ -273,6 +350,8 @@ function removerParametrosUrlMenu() {
 
 function abrirLoginAutomaticamenteSeSolicitado() {
   const params = new URLSearchParams(window.location.search);
+  const destino = params.get('dest') || '';
+  if (destino && fsEhRotaProtegidaMenu(destino)) fsSalvarDestinoProtegidoMenu(destino);
   if (params.get('login') !== '1') return;
   setTimeout(() => {
     if (typeof abrirModalLogin === 'function') abrirModalLogin();
@@ -286,8 +365,9 @@ async function abrirGeradorAutomaticamenteSeSolicitado() {
   const session = await obterSessaoAtualMenu();
   removerParametrosUrlMenu();
   if (!session?.user?.id) {
+    fsSalvarDestinoProtegidoMenu('/gerador.html');
     if (typeof abrirModalLogin === 'function') abrirModalLogin();
-    else window.location.href = '/index.html?login=1';
+    else window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/gerador.html');
     return;
   }
   window.location.href = '/gerador.html';
@@ -366,3 +446,5 @@ window.configurarHeaderInteligente = configurarHeaderInteligente;
 window.controlarHeaderInteligente = controlarHeaderInteligente;
 window.aplicarVisibilidadeMenuPorPlano = aplicarVisibilidadeMenuPorPlano;
 window.inicializarMenuFS = inicializarMenuFS;
+window.fsAbrirLoginParaDestinoProtegido = fsAbrirLoginParaDestinoProtegido;
+window.fsSalvarDestinoProtegidoMenu = fsSalvarDestinoProtegidoMenu;
