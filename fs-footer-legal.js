@@ -1,13 +1,9 @@
 /* =========================================================
    FS ORÇAMENTOS - fs-footer-legal.js
-   Footer limpo + espaçamento automático abaixo do header fixo.
+   Footer único + espaçamento automático abaixo do header fixo.
    ========================================================= */
 (function () {
   'use strict';
-
-  function paginaAtual() {
-    return String(location.pathname || '/').toLowerCase().replace(/\/$/, '') || '/';
-  }
 
   function headerVisivel() {
     return document.querySelector('#header-container header, .main-header, header.site-header, header');
@@ -44,81 +40,48 @@
     });
   }
 
+  function removerFootersDuplicados() {
+    const todos = Array.from(document.querySelectorAll('footer, .sobre-footer'));
+    if (todos.length <= 1) return todos[0] || null;
+
+    let principal = todos.find(f => f.classList.contains('fs-footer-legal')) || todos[0];
+    todos.forEach((f) => {
+      if (f !== principal) f.remove();
+    });
+    return principal;
+  }
+
   function obterFooterPrincipal() {
-    let footer = document.querySelector('footer.fs-footer-legal');
-    if (!footer) footer = document.querySelector('footer, .sobre-footer');
+    let footer = removerFootersDuplicados();
     if (!footer) {
       footer = document.createElement('footer');
       document.body.appendChild(footer);
     }
-    footer.classList.add('fs-footer-legal');
+    footer.className = 'fs-footer-legal';
     return footer;
   }
 
-  function footerQuebrado(footer) {
-    if (!footer) return true;
-    const texto = String(footer.textContent || '').replace(/\s+/g, ' ').trim();
-    const qtdLinks = footer.querySelectorAll('a[href]').length;
-    const temSeparadorSolto = /(^|\s)[|•](\s*[|•])+|[|•]\s*[|•]/.test(texto) || /^©?\s*202\d\s*FS Orçamentos\s*[|•\s]*$/i.test(texto);
-    return qtdLinks === 0 || temSeparadorSolto;
-  }
-
-  function limparFooter(footer) {
+  function renderFooterOficial(footer) {
     footer.innerHTML = `
       <div class="fs-footer-inner">
         <div class="fs-footer-copy">© 2026 FS Orçamentos</div>
         <nav class="fs-footer-legal-links" aria-label="Links legais">
           <a href="/privacidade.html">Privacidade</a>
-          <span aria-hidden="true">•</span>
           <a href="/termos.html">Termos</a>
-          <span aria-hidden="true">•</span>
           <a href="/contato.html">Contato</a>
         </nav>
       </div>
     `;
   }
 
-  function removerSeparadoresSoltos(footer) {
-    if (!footer) return;
-    Array.from(footer.childNodes).forEach((node) => {
-      if (node.nodeType === Node.TEXT_NODE && /^[\s|•]+$/.test(node.textContent || '')) node.remove();
-    });
-    footer.querySelectorAll('span').forEach((span) => {
-      const txt = String(span.textContent || '').trim();
-      if ((txt === '|' || txt === '•') && !span.previousElementSibling && !span.nextElementSibling) span.remove();
-    });
-  }
-
   function garantirFooter() {
     const footer = obterFooterPrincipal();
-    if (footerQuebrado(footer)) limparFooter(footer);
-    else {
-      if (!footer.querySelector('.fs-footer-copy')) {
-        const copy = document.createElement('div');
-        copy.className = 'fs-footer-copy';
-        copy.textContent = '© 2026 FS Orçamentos';
-        footer.prepend(copy);
-      }
-      let legal = footer.querySelector('.fs-footer-legal-links');
-      if (!legal) {
-        legal = document.createElement('nav');
-        legal.className = 'fs-footer-legal-links';
-        legal.setAttribute('aria-label', 'Links legais');
-        footer.appendChild(legal);
-      }
-      legal.innerHTML = `
-        <a href="/privacidade.html">Privacidade</a>
-        <span aria-hidden="true">•</span>
-        <a href="/termos.html">Termos</a>
-        <span aria-hidden="true">•</span>
-        <a href="/contato.html">Contato</a>
-      `;
-    }
-    removerSeparadoresSoltos(footer);
+    renderFooterOficial(footer);
   }
 
   function injetarEstilo() {
-    if (document.getElementById('fs-footer-legal-style')) return;
+    const antigo = document.getElementById('fs-footer-legal-style');
+    if (antigo) antigo.remove();
 
     const style = document.createElement('style');
     style.id = 'fs-footer-legal-style';
@@ -153,17 +116,21 @@
         overflow: hidden !important;
       }
 
+      .fs-footer-legal * {
+        box-sizing: border-box !important;
+      }
+
       .fs-footer-inner {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         flex-wrap: wrap !important;
-        gap: 10px 16px !important;
+        gap: 10px 18px !important;
       }
 
       .fs-footer-copy {
         color: #fffaf0 !important;
-        opacity: .94 !important;
+        opacity: .96 !important;
         font-size: 13px !important;
         font-weight: 900 !important;
         line-height: 1.3 !important;
@@ -174,30 +141,28 @@
         align-items: center !important;
         justify-content: center !important;
         flex-wrap: wrap !important;
-        gap: 8px !important;
+        gap: 12px !important;
         font-size: 12px !important;
         font-weight: 900 !important;
         line-height: 1.3 !important;
       }
 
-      .fs-footer-legal-links a,
-      .fs-footer-legal a[href*="privacidade.html"],
-      .fs-footer-legal a[href*="termos.html"],
-      .fs-footer-legal a[href*="contato.html"] {
+      .fs-footer-legal-links a {
+        display: inline-flex !important;
         color: #ffc400 !important;
         text-decoration: none !important;
         font-weight: 950 !important;
+        opacity: 1 !important;
       }
 
-      .fs-footer-legal-links span {
+      .fs-footer-legal-links a + a::before {
+        content: '•' !important;
         color: rgba(255,250,240,.55) !important;
+        margin-right: 12px !important;
         font-weight: 900 !important;
       }
 
-      .fs-footer-legal-links a:hover,
-      .fs-footer-legal a[href*="privacidade.html"]:hover,
-      .fs-footer-legal a[href*="termos.html"]:hover,
-      .fs-footer-legal a[href*="contato.html"]:hover {
+      .fs-footer-legal-links a:hover {
         color: #fff2a8 !important;
         text-decoration: underline !important;
       }
@@ -213,8 +178,9 @@
           flex-direction: column !important;
           gap: 6px !important;
         }
-        .fs-footer-legal-links span {
-          display: none !important;
+        .fs-footer-legal-links a + a::before {
+          content: '' !important;
+          margin-right: 0 !important;
         }
       }
     `;
