@@ -28,16 +28,19 @@
   --accent-yellow: var(--fs-amarelo);
 }
 
-html, body {
+html,
+body {
   background: linear-gradient(180deg, #f4f4f2 0%, #ececea 100%) !important;
   color: #262626 !important;
 }
 
+/* Estrutura principal */
 .main-header,
 #header-container .main-header,
 .header-menu-linha,
 .modal-notificacoes-topo,
 #modal-login.modal-login-overlay .auth-logo-box,
+#splash-screen,
 footer,
 .footer,
 .site-footer,
@@ -50,21 +53,63 @@ footer,
 
 .main-header,
 #header-container .main-header,
-#modal-login.modal-login-overlay .auth-logo-box {
+#modal-login.modal-login-overlay .auth-logo-box,
+#splash-screen .splash-logo,
+.splash-logo {
   border-bottom-color: #ffc400 !important;
 }
 
 .logo-nav .logo-fs,
-.logo-nav > span:first-child { color: #ffffff !important; }
+.logo-nav > span:first-child,
+#modal-login.modal-login-overlay .auth-logo-text strong,
+#splash-screen .fs-box,
+.splash-logo .fs-box {
+  color: #ffffff !important;
+}
+
 .logo-nav .logo-orcamentos,
 .logo-nav > span:last-child,
+#modal-login.modal-login-overlay .auth-logo-text span,
+#splash-screen .fs-text,
+.splash-logo .fs-text,
 footer a,
 .site-footer a,
 .footer a,
 .forum-footer a,
 .fs-footer-legal a,
-.fs-footer-legal-links a { color: #ffc400 !important; }
+.fs-footer-legal-links a {
+  color: #ffc400 !important;
+}
 
+/* Splash screen */
+#splash-screen {
+  background: radial-gradient(circle at top, #3a3a3a 0%, #242424 45%, #1f1f1f 100%) !important;
+}
+
+#splash-screen .splash-content,
+.splash-content {
+  background: #242424 !important;
+  color: #f8f8f6 !important;
+  border: 1px solid rgba(255, 196, 0, .35) !important;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .34) !important;
+}
+
+#splash-screen .splash-logo,
+.splash-logo {
+  color: #f8f8f6 !important;
+}
+
+#splash-screen .loader-bar,
+.loader-bar {
+  background: linear-gradient(90deg, #ffc400, #f97316, #16a34a) !important;
+}
+
+#splash-screen p,
+.splash-content p {
+  color: #e5e5e2 !important;
+}
+
+/* Cards e blocos */
 section,
 .card,
 .card-padrao,
@@ -100,13 +145,15 @@ section,
 .lista-box,
 .home-card,
 .home-hero-card,
-.home-hero-proof,
 .home-flow,
 .home-flow-step,
 .home-kpi,
 .home-premium-card,
 .home-premium-metrica,
 .home-premium-alerta,
+.home-section-clean,
+.home-plan-mini,
+.home-text-list li,
 .modal-notificacoes-card,
 .notificacoes-tabela,
 .notificacao-linha,
@@ -120,6 +167,7 @@ section,
   box-shadow: 0 8px 22px rgba(32, 32, 32, .08) !important;
 }
 
+.home-hero-venda,
 .home-hero,
 .home-dashboard,
 .home-resumo,
@@ -149,7 +197,24 @@ thead,
   border-color: #dededb !important;
 }
 
-h1, h2, h3, h4,
+.home-hero-proof,
+.home-final-cta {
+  background: #242424 !important;
+  color: #f8f8f6 !important;
+  border-color: #242424 !important;
+  box-shadow: 0 8px 22px rgba(32, 32, 32, .16) !important;
+}
+
+.home-plan-mini.destaque {
+  border-color: #242424 !important;
+  box-shadow: inset 0 0 0 1px #242424 !important;
+}
+
+/* Textos */
+h1,
+h2,
+h3,
+h4,
 .titulo,
 .subtitulo,
 .card-title,
@@ -159,6 +224,11 @@ h1, h2, h3, h4,
 .forum-hero h1,
 .painel-header h1,
 .gerador-hero h1,
+.home-hero-venda h1,
+.home-section-head h2,
+.home-plan-mini strong,
+.home-plan-mini b,
+.home-flow-step strong,
 .forum-autor-texto strong,
 label,
 th,
@@ -177,6 +247,11 @@ th,
   color: #262626 !important;
 }
 
+.home-hero-proof h2,
+.home-final-cta h2 {
+  color: #ffc400 !important;
+}
+
 p,
 small,
 .muted,
@@ -185,6 +260,9 @@ small,
 .card-desc,
 .home-lead,
 .home-section-head p,
+.home-plan-mini span,
+.home-plan-mini p,
+.home-flow-step span,
 .forum-card p,
 .forum-mini-item,
 .forum-mini-item span,
@@ -194,6 +272,20 @@ small,
   color: #5f5f5f !important;
 }
 
+.home-hero-proof p,
+.home-proof-list li,
+.home-final-cta p {
+  color: #f8f8f6 !important;
+}
+
+.home-kicker,
+.home-mini-tag {
+  background: #eeeeeb !important;
+  border-color: #dededb !important;
+  color: #262626 !important;
+}
+
+/* Formulários */
 input,
 select,
 textarea,
@@ -216,10 +308,11 @@ input:focus,
 select:focus,
 textarea:focus {
   border-color: #9ca3af !important;
-  box-shadow: 0 0 0 2px rgba(36,36,36,.10) !important;
+  box-shadow: 0 0 0 2px rgba(36, 36, 36, .10) !important;
   outline: none !important;
 }
 
+/* Botões */
 .fs-btn-primary,
 .btn-primary,
 .dashboard-btn,
@@ -236,7 +329,9 @@ textarea:focus {
 #auth-container #btn-principal,
 .auth-container-index #btn-principal,
 .btn-principal-index,
-.modal-login-box #btn-principal {
+.modal-login-box #btn-principal,
+.home-btn-primary,
+.btn-home-grande {
   background: #262626 !important;
   color: #ffc400 !important;
   border-color: #262626 !important;
@@ -249,12 +344,55 @@ textarea:focus {
 .btn-limpar,
 .btn-senha,
 .btn-outline,
-.btn-light {
-  background: #f8f8f6 !important;
+.btn-light,
+.home-btn-secondary,
+.btn-home-atalho {
+  background: #ffffff !important;
   color: #262626 !important;
   border-color: #d1d1cd !important;
 }
 
+#modal-login .btn-fechar-login,
+.btn-fechar-login,
+.notificacoes-fechar,
+.forum-fechar {
+  background: #f8f8f6 !important;
+  color: #262626 !important;
+  border: 1px solid #d1d1cd !important;
+  box-shadow: 0 2px 8px rgba(32, 32, 32, .12) !important;
+}
+
+#modal-login .btn-fechar-login:hover,
+.btn-fechar-login:hover,
+.notificacoes-fechar:hover,
+.forum-fechar:hover {
+  background: #242424 !important;
+  color: #ffc400 !important;
+  border-color: #ffc400 !important;
+}
+
+.nav-menu .link-destaque-gerador,
+.nav-menu .link-destaque-gestao:hover,
+.nav-menu .link-destaque-gestao.ativo,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-generate {
+  color: #242424 !important;
+}
+
+.contador-notificacoes,
+.btn-notificacoes-header,
+.btn-header-entrar,
+.btn-header-sair,
+.menu-mobile-btn,
+.btn-menu-mobile-entrar,
+.btn-menu-mobile-sair {
+  border-color: rgba(255, 196, 0, .65) !important;
+}
+
+.contador-notificacoes { border-color: #242424 !important; }
+
+/* Login */
 #modal-login.modal-login-overlay {
   background: rgba(24, 24, 24, .72) !important;
 }
@@ -273,6 +411,7 @@ footer span,
   background: #e5e5e2 !important;
 }
 
+/* Tabelas */
 table,
 .tabela,
 .fs-table {
@@ -280,7 +419,8 @@ table,
   color: #262626 !important;
 }
 
-td, th,
+td,
+th,
 .tabela td,
 .tabela th,
 .fs-table td,
@@ -294,6 +434,7 @@ tr:hover,
   background: #f8f8f6 !important;
 }
 
+/* Estados */
 .status.verde,
 .status.aprovado,
 .badge.aprovado,
@@ -314,7 +455,8 @@ tr:hover,
 .aguardando,
 .notificacao-agenda,
 .notificacao-estoque,
-.notificacao-os {
+.notificacao-os,
+.index-aviso-login {
   color: #9a3412 !important;
   background: #ffedd5 !important;
   border-color: #f97316 !important;
@@ -330,23 +472,15 @@ tr:hover,
   border-color: #dc2626 !important;
 }
 
-.nav-menu .link-destaque-gerador,
-.nav-menu .link-destaque-gestao:hover,
-.nav-menu .link-destaque-gestao.ativo,
-.btn-header-entrar,
-.btn-menu-mobile-entrar,
-.btn-generate {
-  color: #242424 !important;
+/* Rodapé */
+.fs-footer-index {
+  background: #242424 !important;
+  color: #f8f8f6 !important;
+  border-color: #1f1f1f !important;
+  padding: 12px !important;
+  border-radius: 8px !important;
 }
 
-.contador-notificacoes,
-.btn-notificacoes-header,
-.btn-header-entrar,
-.btn-header-sair,
-.menu-mobile-btn,
-.btn-menu-mobile-entrar,
-.btn-menu-mobile-sair {
-  border-color: rgba(255,196,0,.65) !important;
+.fs-footer-index a {
+  color: #ffc400 !important;
 }
-
-.contador-notificacoes { border-color: #242424 !important; }
