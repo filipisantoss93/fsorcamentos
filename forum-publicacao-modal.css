@@ -1,0 +1,163 @@
+#forum-form-card.forum-publicacao-modal {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483000 !important;
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(47, 33, 29, .68) !important;
+  padding: 14px !important;
+  overflow: auto !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+#forum-form-card.forum-publicacao-modal.ativo {
+  display: flex !important;
+}
+
+#forum-form-card .forum-publicacao-modal-painel {
+  width: min(760px, 100%) !important;
+  max-height: min(90vh, 820px) !important;
+  overflow: auto !important;
+  background: #fffaf0 !important;
+  border: 1px solid #e4d8cc !important;
+  border-radius: 14px !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .32) !important;
+  padding: 14px !important;
+  color: #2f211d !important;
+}
+
+#forum-form-card.forum-publicacao-modal .forum-card-topo {
+  display: flex !important;
+  position: sticky !important;
+  top: -14px !important;
+  z-index: 2 !important;
+  background: #fffaf0 !important;
+  padding: 4px 0 12px !important;
+  border-bottom: 1px solid #eadfd4 !important;
+  margin-bottom: 12px !important;
+}
+
+#forum-form-card.forum-publicacao-modal .forum-form {
+  display: grid !important;
+  gap: 12px !important;
+  width: 100% !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+#forum-form-card.forum-publicacao-modal .forum-form label {
+  display: grid !important;
+  gap: 6px !important;
+  color: #2f211d !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+#forum-form-card.forum-publicacao-modal input,
+#forum-form-card.forum-publicacao-modal select,
+#forum-form-card.forum-publicacao-modal textarea {
+  display: block !important;
+  width: 100% !important;
+  min-height: 42px !important;
+  border: 1px solid #d7ccc8 !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #2f211d !important;
+  padding: 10px !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+}
+
+#forum-form-card.forum-publicacao-modal textarea {
+  min-height: 170px !important;
+  resize: vertical !important;
+}
+
+#forum-form-card.forum-publicacao-modal input[type="file"] {
+  padding: 9px !important;
+  background: #fffaf0 !important;
+}
+
+#forum-form-card.forum-publicacao-modal small {
+  display: block !important;
+  color: #6b5b53 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+#forum-form-card.forum-publicacao-modal #forum-preview-fotos {
+  display: flex !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+#forum-form-card.forum-publicacao-modal #forum-btn-criar {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  margin-top: 4px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.forum-meu-perfil-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 40px !important;
+  padding: 9px 12px !important;
+  border-radius: 8px !important;
+  background: #fffaf0 !important;
+  color: #3e2723 !important;
+  border: 1px solid #d7ccc8 !important;
+  text-decoration: none !important;
+  font-weight: 950 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.forum-meu-perfil-btn:hover {
+  background: #ffc400 !important;
+  color: #2f211d !important;
+  border-color: #2f211d !important;
+}
+
+@media (max-width: 640px) {
+  #forum-form-card.forum-publicacao-modal {
+    align-items: flex-start !important;
+    padding: 10px !important;
+  }
+
+  .forum-publicacao-modal-painel {
+    max-height: calc(100vh - 20px) !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+  }
+
+  .forum-hero-acoes {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .forum-hero-acoes button,
+  .forum-hero-acoes a {
+    width: 100% !important;
+  }
+}
