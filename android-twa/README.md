@@ -19,7 +19,7 @@ Nome do app: FS Orçamentos
 Package name: br.com.fsorcamentos.app
 URL inicial: https://fsorcamentos.com.br/index.html
 Host: fsorcamentos.com.br
-Tema: #3e2723
+Tema: #e5e7eb
 ```
 
 ## Etapa 1 — Instalar ferramentas no computador
@@ -56,8 +56,8 @@ Name: FS Orçamentos
 Launcher name: FS Orçamentos
 Host: fsorcamentos.com.br
 Start URL: /index.html
-Theme color: #3e2723
-Navigation color: #3e2723
+Theme color: #e5e7eb
+Navigation color: #e5e7eb
 ```
 
 ## Etapa 3 — Chave de assinatura
