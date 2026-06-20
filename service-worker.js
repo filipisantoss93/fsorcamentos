@@ -1,5 +1,5 @@
 /* FS Orçamentos - Service Worker PWA */
-const FS_SW_VERSION = 'fsorcamentos-pwa-v20260620-1';
+const FS_SW_VERSION = 'fsorcamentos-pwa-v20260620-2';
 const FS_STATIC_CACHE = `${FS_SW_VERSION}-static`;
 const FS_RUNTIME_CACHE = `${FS_SW_VERSION}-runtime`;
 
@@ -10,8 +10,7 @@ const FS_CORE_ASSETS = [
   '/manifest.json',
   '/pwa-icon.svg',
   '/favicon.png',
-  '/apple-touch-icon.png',
-  '/config.js'
+  '/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -41,6 +40,24 @@ function isMutableRequest(request) {
 
 function isNavigationRequest(request) {
   return request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
+}
+
+function isFreshAsset(url) {
+  return /\.(js|css|json)$/i.test(url.pathname) || url.pathname.endsWith('/config.js') || url.pathname.endsWith('/service-worker.js');
+}
+
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request, { cache: 'no-store' });
+    if (response && response.status === 200 && response.type !== 'opaque') {
+      const cache = await caches.open(FS_RUNTIME_CACHE);
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch (error) {
+    const cached = await caches.match(request);
+    return cached || caches.match('/offline.html');
+  }
 }
 
 async function networkFirstNavigation(request) {
@@ -80,6 +97,11 @@ self.addEventListener('fetch', (event) => {
 
   if (isNavigationRequest(request)) {
     event.respondWith(networkFirstNavigation(request));
+    return;
+  }
+
+  if (isFreshAsset(url)) {
+    event.respondWith(networkFirst(request));
     return;
   }
 
