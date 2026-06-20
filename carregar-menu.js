@@ -418,6 +418,14 @@ async function inicializarMenuFS() {
   if (aplicarModoEmbedGestao()) return;
   garantirCssHeaderFS();
   await carregarMenu();
+
+  const sessionInicial = await obterSessaoAtualMenu();
+  const destinoAtual = fsPaginaAtual();
+  if (!sessionInicial?.user?.id && fsEhRotaProtegidaMenu(destinoAtual) && !fsEstaNaHome()) {
+    fsAbrirLoginParaDestinoProtegido(destinoAtual);
+    return;
+  }
+
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
 
