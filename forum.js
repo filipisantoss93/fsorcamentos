@@ -31,6 +31,7 @@ let forumRespostasCache = [];
 let forumCurtidasTopicos = new Set();
 let forumCurtidasRespostas = new Set();
 let forumPublicacaoModalPreparado = false;
+let forumPreviewObjectUrls = [];
 
 function forumNormalizarTexto(valor) {
   return String(valor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -177,6 +178,15 @@ function forumFotosHtml(topico) {
   `).join('')}</div>`;
 }
 
+function forumLimparPreviewFotos() {
+  forumPreviewObjectUrls.forEach(url => {
+    try { URL.revokeObjectURL(url); } catch (_) {}
+  });
+  forumPreviewObjectUrls = [];
+  const preview = document.getElementById('forum-preview-fotos');
+  if (preview) preview.innerHTML = '';
+}
+
 function forumValidarArquivoFotoUnica(arquivo) {
   if (!arquivo) throw new Error('Nenhuma imagem selecionada.');
   if (!FORUM_MIMES_FOTO.includes(arquivo.type)) throw new Error('Use apenas imagens JPG, PNG ou WEBP.');
@@ -194,11 +204,18 @@ function forumValidarFotosSelecionadas() {
   const input = document.getElementById('forum-topico-fotos');
   const preview = document.getElementById('forum-preview-fotos');
   try {
+    forumLimparPreviewFotos();
     const arquivos = forumValidarArquivosFotos(input?.files || []);
-    if (preview) preview.innerHTML = arquivos.map(arquivo => `<img src="${URL.createObjectURL(arquivo)}" alt="Prévia da foto">`).join('');
+    if (preview) {
+      preview.innerHTML = arquivos.map(arquivo => {
+        const url = URL.createObjectURL(arquivo);
+        forumPreviewObjectUrls.push(url);
+        return `<img src="${url}" alt="Prévia da foto">`;
+      }).join('');
+    }
   } catch (error) {
+    forumLimparPreviewFotos();
     if (input) input.value = '';
-    if (preview) preview.innerHTML = '';
     alert(error.message || 'Fotos inválidas.');
   }
 }
@@ -223,8 +240,13 @@ async function forumUploadFotosTopico() {
   const input = document.getElementById('forum-topico-fotos');
   const arquivos = forumValidarArquivosFotos(input?.files || []);
   const urls = [];
-  for (const arquivo of arquivos) urls.push(await forumUploadArquivoFotoTopico(arquivo));
-  return urls;
+  try {
+    for (const arquivo of arquivos) urls.push(await forumUploadArquivoFotoTopico(arquivo));
+    return urls;
+  } catch (error) {
+    await Promise.allSettled(urls.map(url => forumRemoverArquivoStorageSeForDoUsuario(url)));
+    throw error;
+  }
 }
 
 function forumSelecionarUmaFoto() {
@@ -311,34 +333,62 @@ async function forumBuscarPerfil(userId) {
 }
 
 function forumInjetarCssPublicacaoModal() {
-  if (document.getElementById('forum-publicacao-modal-css')) return;
-  const style = document.createElement('style');
-  style.id = 'forum-publicacao-modal-css';
-  style.textContent = `
-    #forum-form-card.forum-publicacao-modal{position:fixed!important;inset:0!important;z-index:2147483000!important;display:none;align-items:center!important;justify-content:center!important;background:rgba(47,33,29,.68)!important;padding:14px!important;overflow:auto!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;}
-    #forum-form-card.forum-publicacao-modal.ativo{display:flex!important;}
-    #forum-form-card .forum-publicacao-modal-painel{width:min(760px,100%)!important;max-height:min(90vh,820px)!important;overflow:auto!important;background:#fffaf0!important;border:1px solid #e4d8cc!important;border-radius:14px!important;box-shadow:0 24px 70px rgba(0,0,0,.32)!important;padding:14px!important;color:#2f211d!important;}
-    #forum-form-card.forum-publicacao-modal .forum-card-topo{display:flex!important;position:sticky!important;top:-14px!important;z-index:2!important;background:#fffaf0!important;padding:4px 0 12px!important;border-bottom:1px solid #eadfd4!important;margin-bottom:12px!important;}
-    #forum-form-card.forum-publicacao-modal .forum-form{display:grid!important;gap:12px!important;width:100%!important;visibility:visible!important;opacity:1!important;height:auto!important;max-height:none!important;overflow:visible!important;}
-    #forum-form-card.forum-publicacao-modal .forum-form label{display:grid!important;gap:6px!important;color:#2f211d!important;font-size:13px!important;font-weight:900!important;visibility:visible!important;opacity:1!important;}
-    #forum-form-card.forum-publicacao-modal input,#forum-form-card.forum-publicacao-modal select,#forum-form-card.forum-publicacao-modal textarea{display:block!important;width:100%!important;min-height:42px!important;border:1px solid #d7ccc8!important;border-radius:8px!important;background:#fff!important;color:#2f211d!important;padding:10px!important;font-size:15px!important;font-weight:700!important;visibility:visible!important;opacity:1!important;position:relative!important;}
-    #forum-form-card.forum-publicacao-modal textarea{min-height:170px!important;resize:vertical!important;}
-    #forum-form-card.forum-publicacao-modal input[type="file"]{padding:9px!important;background:#fffaf0!important;}
-    #forum-form-card.forum-publicacao-modal small{display:block!important;color:#6b5b53!important;font-size:11px!important;font-weight:700!important;}
-    #forum-form-card.forum-publicacao-modal #forum-preview-fotos{display:flex!important;gap:8px!important;flex-wrap:wrap!important;visibility:visible!important;opacity:1!important;}
-    #forum-form-card.forum-publicacao-modal #forum-btn-criar{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:46px!important;margin-top:4px!important;visibility:visible!important;opacity:1!important;}
-    .forum-meu-perfil-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:40px!important;padding:9px 12px!important;border-radius:8px!important;background:#fffaf0!important;color:#3e2723!important;border:1px solid #d7ccc8!important;text-decoration:none!important;font-weight:950!important;font-size:13px!important;cursor:pointer!important;white-space:nowrap!important;}
-    .forum-meu-perfil-btn:hover{background:#ffc400!important;color:#2f211d!important;border-color:#2f211d!important;}
-    @media(max-width:640px){#forum-form-card.forum-publicacao-modal{align-items:flex-start!important;padding:10px!important}.forum-publicacao-modal-painel{max-height:calc(100vh - 20px)!important;border-radius:12px!important;padding:12px!important}.forum-hero-acoes{display:grid!important;grid-template-columns:1fr!important}.forum-hero-acoes button,.forum-hero-acoes a{width:100%!important}}
+  if (document.getElementById('forum-publicacao-modal-css-link')) return;
+  const link = document.createElement('link');
+  link.id = 'forum-publicacao-modal-css-link';
+  link.rel = 'stylesheet';
+  link.href = '/forum-publicacao-modal.css?v=20260620-1';
+  link.onerror = () => console.warn('Não foi possível carregar forum-publicacao-modal.css.');
+  document.head.appendChild(link);
+}
+
+function forumFormularioTopicoHtml() {
+  return `
+    <form id="forum-form-topico" class="forum-form" onsubmit="forumCriarTopico(event)">
+      <label>
+        Título da publicação
+        <input id="forum-topico-titulo" type="text" maxlength="120" placeholder="Ex: Como cobrar diagnóstico antes do orçamento?" required>
+      </label>
+      <label>
+        Categoria
+        <select id="forum-topico-categoria" required></select>
+      </label>
+      <label>
+        Conteúdo
+        <textarea id="forum-topico-descricao" maxlength="4000" placeholder="Conte o contexto, o que aconteceu, o que você já tentou ou qual opinião precisa da comunidade." required></textarea>
+      </label>
+      <label>
+        Fotos da publicação
+        <input id="forum-topico-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="forumValidarFotosSelecionadas()">
+        <small>Opcional. Até 2 fotos, máximo 2 MB por foto. Formatos: JPG, PNG ou WEBP.</small>
+      </label>
+      <div id="forum-preview-fotos" class="forum-preview-fotos"></div>
+      <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar na comunidade</button>
+    </form>
   `;
-  document.head.appendChild(style);
+}
+
+function forumGarantirFormularioTopico(card) {
+  if (!card) return;
+  const painel = card.querySelector('.forum-publicacao-modal-painel') || card;
+  let form = document.getElementById('forum-form-topico');
+  if (form && !painel.contains(form)) painel.appendChild(form);
+  if (!form) {
+    painel.insertAdjacentHTML('beforeend', forumFormularioTopicoHtml());
+    form = document.getElementById('forum-form-topico');
+  }
+  forumPreencherCategorias();
+  return form;
 }
 
 function forumPrepararModalPublicacao() {
   forumInjetarCssPublicacaoModal();
   const card = document.getElementById('forum-form-card');
   if (!card) return null;
-  if (forumPublicacaoModalPreparado) return card;
+  if (forumPublicacaoModalPreparado) {
+    forumGarantirFormularioTopico(card);
+    return card;
+  }
   const painel = document.createElement('div');
   painel.className = 'forum-publicacao-modal-painel';
   while (card.firstChild) painel.appendChild(card.firstChild);
@@ -351,6 +401,7 @@ function forumPrepararModalPublicacao() {
     if (event.key === 'Escape' && card.classList.contains('ativo')) forumOcultarFormularioNovoTopico();
   });
   forumPublicacaoModalPreparado = true;
+  forumGarantirFormularioTopico(card);
   return card;
 }
 
@@ -361,6 +412,7 @@ function forumMostrarFormularioNovoTopico() {
     forumMostrarAlerta('Faça login para publicar na Comunidade.', 'erro');
     return;
   }
+  forumGarantirFormularioTopico(card);
   card.classList.add('ativo');
   card.style.setProperty('display', 'flex', 'important');
   card.setAttribute('aria-hidden', 'false');
@@ -434,8 +486,8 @@ function forumFiltrarTopicosLocal() {
   const status = document.getElementById('forum-filtro-status')?.value || 'todos';
   let topicos = [...forumTopicosCache];
   if (categoria !== 'todos') topicos = topicos.filter(t => t.categoria === categoria);
-  if (status !== 'todos') topicos = topicos.filter(t => forumNormalizarTexto(t.status) === status);
-  if (busca) topicos = topicos.filter(t => forumNormalizarTexto(`${t.titulo} ${t.descricao} ${t.categoria} ${t.status} ${t.autor_nome} ${t.autor_empresa}`).includes(busca));
+  if (status !== 'todos') topicos = topicos.filter(t => forumNormalizarTexto(forumStatusTopico(t)) === status);
+  if (busca) topicos = topicos.filter(t => forumNormalizarTexto(`${t.titulo} ${t.descricao} ${t.categoria} ${forumStatusTopico(t)} ${t.autor_nome} ${t.autor_empresa}`).includes(busca));
   forumRenderizarTopicos(topicos);
 }
 
@@ -488,8 +540,9 @@ async function forumCriarTopico(event) {
   if (!titulo || titulo.length < 8) return forumMostrarAlerta('Informe um título mais claro para sua dúvida.', 'erro');
   if (!descricao || descricao.length < 20) return forumMostrarAlerta('Descreva melhor sua dúvida antes de publicar.', 'erro');
   forumSetBotao('forum-btn-criar', 'Publicando...', true);
+  let fotos = [];
   try {
-    const fotos = await forumUploadFotosTopico();
+    fotos = await forumUploadFotosTopico();
     const autor = forumAutorAtualPayload();
     const { data, error } = await _supabase.from('forum_topicos').insert({
       usuario_id: forumSessaoAtual.user.id,
@@ -507,12 +560,12 @@ async function forumCriarTopico(event) {
     if (error) throw error;
     await forumExecutarRPCNotificacao('fs_forum_notificar_topico', { p_topico_id: data?.id });
     document.getElementById('forum-form-topico')?.reset();
-    const preview = document.getElementById('forum-preview-fotos');
-    if (preview) preview.innerHTML = '';
+    forumLimparPreviewFotos();
     forumOcultarFormularioNovoTopico();
     forumMostrarAlerta('Publicação criada com sucesso.', 'ok');
     await forumCarregarTopicos();
   } catch (error) {
+    await Promise.allSettled(fotos.map(url => forumRemoverArquivoStorageSeForDoUsuario(url)));
     console.error('Erro ao criar tópico:', error);
     forumMostrarAlerta(error.message || 'Não foi possível publicar sua dúvida.', 'erro');
   } finally {
@@ -739,10 +792,14 @@ async function forumMarcarTopicoResolvido() {
 
 async function forumMarcarRespostaSolucao(respostaId) {
   if (!forumTopicoAtual?.id || !respostaId) return;
+  if (!forumEhDonoTopico()) {
+    alert('Apenas o autor do tópico pode marcar uma solução.');
+    return;
+  }
   if (!confirm('Marcar esta resposta como solução?')) return;
   try {
     await _supabase.from('forum_respostas').update({ marcada_como_solucao: false }).eq('topico_id', forumTopicoAtual.id);
-    const { error } = await _supabase.from('forum_respostas').update({ marcada_como_solucao: true }).eq('id', respostaId);
+    const { error } = await _supabase.from('forum_respostas').update({ marcada_como_solucao: true }).eq('id', respostaId).eq('topico_id', forumTopicoAtual.id);
     if (error) throw error;
     await _supabase.from('forum_topicos').update({ resolvido: true, status: 'resolvido' }).eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
     forumAtualizarTopicoLocal({ resolvido: true, status: 'resolvido' });
@@ -760,7 +817,8 @@ async function forumCurtirTopico(topicoId, event) {
   if (forumCurtidasTopicos.has(topicoId)) return;
   try {
     const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: forumSessaoAtual.user.id, topico_id: topicoId });
-    if (error && !String(error.message || '').toLowerCase().includes('duplicate')) throw error;
+    if (error && error.code !== '23505') throw error;
+    if (error?.code === '23505') return;
     await forumExecutarRPCNotificacao('fs_forum_notificar_curtida_topico', { p_topico_id: topicoId });
     forumCurtidasTopicos.add(topicoId);
     const topico = forumTopicosCache.find(t => t.id === topicoId);
@@ -778,7 +836,8 @@ async function forumCurtirResposta(respostaId) {
   if (forumCurtidasRespostas.has(respostaId)) return;
   try {
     const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: forumSessaoAtual.user.id, resposta_id: respostaId });
-    if (error && !String(error.message || '').toLowerCase().includes('duplicate')) throw error;
+    if (error && error.code !== '23505') throw error;
+    if (error?.code === '23505') return;
     await forumExecutarRPCNotificacao('fs_forum_notificar_curtida_resposta', { p_resposta_id: respostaId });
     forumCurtidasRespostas.add(respostaId);
     const resposta = forumRespostasCache.find(r => r.id === respostaId);
@@ -819,9 +878,11 @@ async function forumDenunciarResposta(respostaId) {
 async function forumExcluirTopico() {
   if (!forumTopicoAtual?.id) return;
   if (!confirm('Excluir este tópico e todas as respostas?')) return;
+  const fotos = forumFotosTopico(forumTopicoAtual);
   try {
     const { error } = await _supabase.from('forum_topicos').delete().eq('id', forumTopicoAtual.id).eq('usuario_id', forumSessaoAtual.user.id);
     if (error) throw error;
+    await Promise.allSettled(fotos.map(url => forumRemoverArquivoStorageSeForDoUsuario(url)));
     forumFecharTopico();
     await forumCarregarTopicos();
   } catch (error) {
@@ -864,6 +925,7 @@ async function inicializarForumFS() {
     if (forumPerfilAtual?.nome) localStorage.setItem('usuario_nome', forumPerfilAtual.nome);
     if (forumPerfilAtual?.nome_empresa) localStorage.setItem('nome_empresa', forumPerfilAtual.nome_empresa);
     if (forumPerfilAtual?.foto_url) localStorage.setItem('usuario_foto_url', forumPerfilAtual.foto_url);
+    forumPreencherCategorias();
     await forumCarregarTopicos();
   } catch (error) {
     console.error('Erro ao inicializar fórum:', error);
