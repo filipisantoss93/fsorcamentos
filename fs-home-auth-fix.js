@@ -30,6 +30,8 @@
 
   function instalarSairSeguro(){
     window.deslogar = sairSeguro;
+    if (window.__fsHomeAuthFixSairInstalado) return;
+    window.__fsHomeAuthFixSairInstalado = true;
     document.addEventListener('click', function(ev){
       const alvo = ev.target?.closest?.('#btn-header-sair,#btn-menu-mobile-sair,.btn-header-sair,.btn-menu-mobile-sair,[data-acao="sair"]');
       if (!alvo) return;
@@ -51,9 +53,38 @@
       body.login-modal-aberto #modal-login.modal-login-overlay { display: flex; }
       body:not(.login-modal-aberto) #modal-login:not(.ativo):not(.active) { display: none !important; }
       #home-publica { visibility: visible !important; opacity: 1 !important; }
+      #home-publica .home-visao-plano.ativo { display: grid !important; visibility: visible !important; opacity: 1 !important; }
       #splash-screen.hide-splash { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
     `;
     document.head.appendChild(s);
+  }
+
+  function elementoVisivel(el){
+    if (!el) return false;
+    const cs = getComputedStyle(el);
+    return cs.display !== 'none' && cs.visibility !== 'hidden' && Number(cs.opacity || 1) !== 0;
+  }
+
+  function garantirSecaoHomeAtiva(){
+    if (!ehHome()) return;
+    const secoes = Array.from(document.querySelectorAll('#home-publica .home-visao-plano'));
+    if (!secoes.length) return;
+
+    const existeVisivel = secoes.some(elementoVisivel);
+    if (existeVisivel) return;
+
+    const gratis = document.getElementById('home-plano-gratis') || secoes[0];
+    if (!gratis) return;
+
+    secoes.forEach(secao => {
+      secao.classList.remove('ativo');
+      secao.style.setProperty('display', 'none', 'important');
+    });
+
+    gratis.classList.add('ativo');
+    gratis.style.setProperty('display', 'grid', 'important');
+    gratis.style.setProperty('visibility', 'visible', 'important');
+    gratis.style.setProperty('opacity', '1', 'important');
   }
 
   function garantirHomeVisivel(){
@@ -65,17 +96,19 @@
     const home = document.getElementById('home-publica');
 
     if (home) {
-      home.style.visibility = 'visible';
-      home.style.opacity = '1';
-      if (home.style.display === 'none') home.style.display = 'grid';
+      home.style.setProperty('visibility', 'visible', 'important');
+      home.style.setProperty('opacity', '1', 'important');
+      if (getComputedStyle(home).display === 'none') home.style.setProperty('display', 'grid', 'important');
     }
 
+    garantirSecaoHomeAtiva();
+
     if (splash) {
-      setTimeout(() => splash.classList.add('hide-splash'), 1200);
+      setTimeout(() => splash.classList.add('hide-splash'), 900);
       setTimeout(() => {
         splash.style.display = 'none';
         splash.style.pointerEvents = 'none';
-      }, 2600);
+      }, 2200);
     }
 
     if (modal && params.get('login') !== '1' && !document.body.classList.contains('login-modal-aberto')) {
@@ -105,6 +138,6 @@
     instalarSairSeguro();
     bloquearRedirectAutomaticoHome();
     garantirHomeVisivel();
-    if (++tentativas > 50) clearInterval(timer);
-  }, 400);
+    if (++tentativas > 60) clearInterval(timer);
+  }, 350);
 })();
