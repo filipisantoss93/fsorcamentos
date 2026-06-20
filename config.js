@@ -56,15 +56,15 @@ window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
 const FS_CONFIG_CSS_GLOBAIS = [
-  ['fs-theme-cinza.css?v=20260620-4', 'fs-theme-cinza-css'],
-  ['fs-theme-cinza-hotfix.css?v=20260620-1', 'fs-theme-cinza-hotfix-css']
+  ['fs-theme-cinza.css?v=20260620-5', 'fs-theme-cinza-css'],
+  ['fs-theme-cinza-hotfix.css?v=20260620-2', 'fs-theme-cinza-hotfix-css']
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
   ['fs-auth-redirect-guard.js?v=20260620-1', 'fs-auth-redirect-guard-js'],
   ['fs-pwa-register.js?v=20260620-2', 'fs-pwa-register-js'],
   ['fs-home-auth-fix.js?v=20260620-2', 'fs-home-auth-fix-js'],
-  ['fs-home-premium-dashboard.js?v=20260620-1', 'fs-home-premium-dashboard-js'],
+  ['fs-home-premium-dashboard.js?v=20260620-2', 'fs-home-premium-dashboard-js'],
   ['fs-no-zoom.js', 'fs-no-zoom-js'],
   ['fs-session-cache.js', 'fs-session-cache-js'],
   ['fs-menu-close-outside.js', 'fs-menu-close-outside-js'],
