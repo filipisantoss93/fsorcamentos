@@ -56,7 +56,7 @@ window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
 const FS_CONFIG_CSS_GLOBAIS = [
-  ['fs-theme-cinza.css?v=20260620-3', 'fs-theme-cinza-css']
+  ['fs-theme-cinza.css?v=20260620-4', 'fs-theme-cinza-css']
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
@@ -105,6 +105,9 @@ function fsConfigPathCorresponde(pathAtual, pagina) {
   if (pagina === '/') return pathAtual === '/';
   return pathAtual === pagina || pathAtual.endsWith(pagina);
 }
+function fsConfigEhPaginaForum(pathAtual) {
+  return ['/forum', '/forum.html', '/social', '/social.html'].some(pagina => fsConfigPathCorresponde(pathAtual, pagina));
+}
 function fsConfigCarregarScriptUnico(src, id) {
   if (document.getElementById(id)) return;
   const script = document.createElement('script');
@@ -127,6 +130,13 @@ function fsConfigCarregarListaScripts(scripts) { scripts.forEach(([arquivo, id])
 function fsConfigCarregarListaCss(estilos) { estilos.forEach(([arquivo, id]) => fsConfigCarregarCssUnico(arquivo, id)); }
 function fsConfigCarregarCssDaPagina(pathAtual) { FS_CONFIG_CSS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaCss(grupo.estilos); }); }
 function fsConfigCarregarScriptsDaPagina(pathAtual) { FS_CONFIG_SCRIPTS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaScripts(grupo.scripts); }); }
-function fsConfigCarregarAjustesPagina() { const pathAtual = fsConfigNormalizarPathAtual(); fsConfigCarregarListaCss(FS_CONFIG_CSS_GLOBAIS); fsConfigCarregarCssDaPagina(pathAtual); fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS); fsConfigCarregarScriptsDaPagina(pathAtual); fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS); }
+function fsConfigCarregarAjustesPagina() {
+  const pathAtual = fsConfigNormalizarPathAtual();
+  fsConfigCarregarListaCss(FS_CONFIG_CSS_GLOBAIS);
+  fsConfigCarregarCssDaPagina(pathAtual);
+  fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS);
+  fsConfigCarregarScriptsDaPagina(pathAtual);
+  if (!fsConfigEhPaginaForum(pathAtual)) fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS);
+}
 
 fsConfigCarregarAjustesPagina();
