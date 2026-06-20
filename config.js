@@ -78,7 +78,7 @@ const FS_CONFIG_SCRIPTS_FINAIS = [
 ];
 
 const FS_CONFIG_CSS_POR_PAGINA = [
-  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css', 'fs-gerador-css']] },
+  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css?v=20260620-2', 'fs-gerador-css']] },
   { paginas: ['/orcamentos', '/orcamentos.html'], estilos: [['orcamentos.css', 'fs-orcamentos-css']] }
 ];
 
