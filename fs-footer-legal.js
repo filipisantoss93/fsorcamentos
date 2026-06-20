@@ -6,13 +6,7 @@
   'use strict';
 
   function paginaAtual() {
-    const path = String(location.pathname || '/').toLowerCase().replace(/\/$/, '') || '/';
-    return path;
-  }
-
-  function ehHome() {
-    const p = paginaAtual();
-    return p === '/' || p === '/index' || p === '/index.html';
+    return String(location.pathname || '/').toLowerCase().replace(/\/$/, '') || '/';
   }
 
   function headerVisivel() {
@@ -28,11 +22,12 @@
     if (!altura) return;
 
     const cs = getComputedStyle(header);
-    const fixo = ['fixed', 'sticky'].includes(cs.position) || Math.abs(rect.top) < 2;
-    if (!fixo) return;
+    const fixo = cs.position === 'fixed';
+    const sticky = cs.position === 'sticky';
 
     document.documentElement.style.setProperty('--fs-header-altura-real', `${altura}px`);
-    document.body.classList.add('fs-header-space-fix');
+    document.body.classList.toggle('fs-header-fixed-space', fixo);
+    document.body.classList.toggle('fs-header-sticky-space', sticky);
 
     const primeiroConteudo = document.querySelector('main, .container, .cx, #home-publica, .pagina-ver, .page, .conteudo, .dashboard-wrap');
     if (primeiroConteudo) primeiroConteudo.classList.add('fs-conteudo-apos-header');
@@ -130,16 +125,18 @@
     style.textContent = `
       html { scroll-padding-top: calc(var(--fs-header-altura-real, 96px) + 12px) !important; }
 
-      body.fs-header-space-fix > main:first-of-type,
-      body.fs-header-space-fix .fs-conteudo-apos-header {
-        margin-top: max(10px, env(safe-area-inset-top, 0px)) !important;
+      body.fs-header-fixed-space .fs-conteudo-apos-header,
+      body.fs-header-fixed-space > main:first-of-type,
+      body.fs-header-fixed-space #header-container + main,
+      body.fs-header-fixed-space #header-container + .cx,
+      body.fs-header-fixed-space #header-container + .container,
+      body.fs-header-fixed-space #header-container + #home-publica {
+        margin-top: calc(var(--fs-header-altura-real, 96px) + 10px) !important;
       }
 
-      body.fs-header-space-fix #header-container + main,
-      body.fs-header-space-fix #header-container + .cx,
-      body.fs-header-space-fix #header-container + .container,
-      body.fs-header-space-fix #header-container + #home-publica {
-        margin-top: 10px !important;
+      body.fs-header-sticky-space .fs-conteudo-apos-header,
+      body:not(.fs-header-fixed-space) .fs-conteudo-apos-header {
+        margin-top: max(10px, env(safe-area-inset-top, 0px)) !important;
       }
 
       .fs-footer-legal {
