@@ -1,0 +1,42 @@
+{
+  "packageId": "br.com.fsorcamentos.app",
+  "host": "fsorcamentos.com.br",
+  "name": "FS Orçamentos",
+  "launcherName": "FS Orçamentos",
+  "display": "standalone",
+  "themeColor": "#3e2723",
+  "themeColorDark": "#2f211d",
+  "navigationColor": "#3e2723",
+  "navigationColorDark": "#2f211d",
+  "navigationDividerColor": "#ffc400",
+  "navigationDividerColorDark": "#ffc400",
+  "backgroundColor": "#f4ece1",
+  "enableNotifications": true,
+  "startUrl": "/index.html",
+  "iconUrl": "https://fsorcamentos.com.br/pwa-icon.svg",
+  "maskableIconUrl": "https://fsorcamentos.com.br/pwa-icon.svg",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "../fsorcamentos-release.keystore",
+    "alias": "fsorcamentos"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Novo orçamento",
+      "short_name": "Orçamento",
+      "url": "/gerador.html?source=android-shortcut"
+    },
+    {
+      "name": "Ordens de serviço",
+      "short_name": "OS",
+      "url": "/ordens.html?source=android-shortcut"
+    },
+    {
+      "name": "Fluxo de caixa",
+      "short_name": "Caixa",
+      "url": "/fluxo-caixa.html?source=android-shortcut"
+    }
+  ]
+}
