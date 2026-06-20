@@ -89,7 +89,7 @@ function fsDestinoProtegidoMenu(href) {
 
 function fsEhRotaProtegidaMenu(destino) {
   const path = String(destino || '').split('?')[0].split('#')[0].replace(/\/$/, '').toLowerCase();
-  return FS_ROTAS_PROTEGIDAS_MENU.some(rota => path === rota || path.endsWith(rota));
+  return FS_ROTAS_PROTEGIDAS_MENU.some(rota => path === rota || path === rota.replace(/\.html$/, ''));
 }
 
 function fsSalvarDestinoProtegidoMenu(destino) {
