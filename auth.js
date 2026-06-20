@@ -433,7 +433,9 @@ async function loginComProvider(provider) {
     if (!window._supabase) return alert('Supabase não carregou. Atualize a página e tente novamente.');
     const providerNormalizado = fsNormalizarTextoAuth(provider);
     if (!['google', 'facebook'].includes(providerNormalizado)) return alert('Provedor de login inválido.');
-    const { error } = await _supabase.auth.signInWithOAuth({ provider: providerNormalizado, options: { redirectTo: `${window.location.origin}/index.html?login=1`, queryParams: { access_type: 'offline', prompt: 'select_account' } } });
+    const destinoSalvo = localStorage.getItem('fs_destino_apos_login') || '';
+    const destinoQuery = destinoSalvo ? `&dest=${encodeURIComponent(fsDestinoSeguroAposLogin(destinoSalvo))}` : '';
+    const { error } = await _supabase.auth.signInWithOAuth({ provider: providerNormalizado, options: { redirectTo: `${window.location.origin}/index.html?login=1${destinoQuery}`, queryParams: { access_type: 'offline', prompt: 'select_account' } } });
     if (error) { console.error(`Erro ao entrar com ${providerNormalizado}:`, error); alert('Não foi possível iniciar o login. Tente novamente.'); }
   } catch (error) { console.error('Erro inesperado no login social:', error); alert('Erro inesperado ao iniciar login social.'); }
 }
