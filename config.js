@@ -74,6 +74,7 @@ window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 ========================= */
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
+  ['fs-home-auth-fix.js?v=20260620-1', 'fs-home-auth-fix-js'],
   ['fs-no-zoom.js', 'fs-no-zoom-js'],
   ['fs-session-cache.js', 'fs-session-cache-js'],
   ['fs-menu-close-outside.js', 'fs-menu-close-outside-js'],
@@ -119,7 +120,7 @@ function fsConfigCarregarScriptUnico(src, id) {
   if (document.getElementById(id)) return;
   const script = document.createElement('script');
   script.id = id;
-  script.src = src;
+  script.src = src.startsWith('/') ? src : `/${src}`;
   script.async = false;
   script.onerror = () => console.warn(`Não foi possível carregar ${src}.`);
   document.head.appendChild(script);
@@ -133,7 +134,7 @@ function fsConfigCarregarCssUnico(href, id) {
   link.onerror = () => console.warn(`Não foi possível carregar ${href}.`);
   document.head.appendChild(link);
 }
-function fsConfigCarregarListaScripts(scripts) { scripts.forEach(([arquivo, id]) => fsConfigCarregarScriptUnico(`/${arquivo}`, id)); }
+function fsConfigCarregarListaScripts(scripts) { scripts.forEach(([arquivo, id]) => fsConfigCarregarScriptUnico(arquivo, id)); }
 function fsConfigCarregarListaCss(estilos) { estilos.forEach(([arquivo, id]) => fsConfigCarregarCssUnico(`/${arquivo}`, id)); }
 function fsConfigCarregarCssDaPagina(pathAtual) { FS_CONFIG_CSS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaCss(grupo.estilos); }); }
 function fsConfigCarregarScriptsDaPagina(pathAtual) { FS_CONFIG_SCRIPTS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaScripts(grupo.scripts); }); }
