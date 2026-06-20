@@ -8,15 +8,20 @@ function esconderSplashIndex() {
     const splash = document.getElementById('splash-screen');
     if (splash) {
       splash.classList.add('hide-splash');
+      splash.setAttribute('aria-hidden', 'true');
       setTimeout(() => {
         splash.style.display = 'none';
         splash.style.pointerEvents = 'none';
+        splash.style.visibility = 'hidden';
       }, 450);
     }
   };
 
+  esconder();
+  setTimeout(esconder, 250);
   setTimeout(esconder, 700);
   setTimeout(esconder, 1800);
+  window.addEventListener('load', esconder, { once: true });
 }
 
 function fsNormalizarPlano(valor) {
@@ -41,6 +46,129 @@ async function usuarioTemSessaoAtivaFS() {
 function indexEstaNaHome() {
   const path = String(window.location.pathname || '').toLowerCase().replace(/\/$/, '');
   return path === '' || path === '/' || path.endsWith('/index') || path.endsWith('/index.html');
+}
+
+function fsIndexRemoverCssDuplicado() {
+  document.getElementById('fs-home-vendas-limpa')?.remove();
+
+  if (document.getElementById('fs-index-cinza-runtime')) return;
+
+  const style = document.createElement('style');
+  style.id = 'fs-index-cinza-runtime';
+  style.textContent = `
+    body:not(.gerando-pdf) {
+      background: linear-gradient(180deg, var(--fs-cinza-100, #f3f4f6) 0%, var(--fs-cinza-200, #e5e7eb) 100%) !important;
+      color: var(--fs-cinza-900, #111827) !important;
+    }
+
+    #splash-screen {
+      background: var(--fs-cinza-950, #0f172a) !important;
+      color: #ffffff !important;
+    }
+
+    #splash-screen.hide-splash {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .fs-box,
+    .splash-logo .fs-box {
+      background: var(--fs-amarelo, #ffc400) !important;
+      color: var(--fs-cinza-950, #0f172a) !important;
+    }
+
+    .fs-text,
+    .splash-content p {
+      color: #ffffff !important;
+    }
+
+    .home-publica {
+      width: min(1120px, calc(100% - 18px)) !important;
+      margin: 12px auto 26px !important;
+      padding: 0 !important;
+      display: grid !important;
+      gap: 10px !important;
+    }
+
+    .home-visao-plano {
+      display: grid !important;
+      gap: 10px !important;
+    }
+
+    .home-visao-plano:not(.ativo) {
+      display: none !important;
+    }
+
+    .home-hero-venda,
+    .home-section-clean,
+    .home-plan-mini,
+    .home-flow-step,
+    .home-final-cta {
+      background: #ffffff !important;
+      color: var(--fs-cinza-900, #111827) !important;
+      border-color: var(--fs-cinza-200, #e5e7eb) !important;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .08) !important;
+    }
+
+    .home-hero-proof {
+      background: var(--fs-cinza-900, #111827) !important;
+      color: #ffffff !important;
+      border-color: var(--fs-amarelo, #ffc400) !important;
+    }
+
+    .home-kicker,
+    .home-mini-tag,
+    .home-plan-mini.destaque {
+      background: var(--fs-cinza-100, #f3f4f6) !important;
+      color: var(--fs-cinza-900, #111827) !important;
+      border-color: var(--fs-cinza-300, #d1d5db) !important;
+      box-shadow: none !important;
+    }
+
+    .home-hero-venda h1,
+    .home-section-head h2,
+    .home-plan-mini strong,
+    .home-plan-mini b,
+    .home-flow-step strong,
+    .home-final-cta h2 {
+      color: var(--fs-cinza-950, #0f172a) !important;
+    }
+
+    .home-lead,
+    .home-section-head p,
+    .home-plan-mini span,
+    .home-plan-mini p,
+    .home-flow-step span,
+    .home-final-cta p,
+    .home-text-list li {
+      color: var(--fs-cinza-600, #4b5563) !important;
+    }
+
+    .home-hero-proof h2 {
+      color: var(--fs-amarelo, #ffc400) !important;
+    }
+
+    .home-hero-proof p,
+    .home-proof-list li {
+      color: #f9fafb !important;
+    }
+
+    .home-btn-primary,
+    .btn-home-grande {
+      background: var(--fs-cinza-900, #111827) !important;
+      color: var(--fs-amarelo, #ffc400) !important;
+      border-color: var(--fs-amarelo, #ffc400) !important;
+    }
+
+    .home-btn-secondary,
+    .btn-home-atalho {
+      background: #ffffff !important;
+      color: var(--fs-cinza-900, #111827) !important;
+      border-color: var(--fs-cinza-300, #d1d5db) !important;
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 async function redirecionarUsuarioLogadoParaDashboardIndex() {
@@ -224,6 +352,8 @@ function fsHomeGratisAplicarEscopoPDF() {
 function fsHomeVendedoraAplicar() {
   if (!indexEstaNaHome()) return;
 
+  fsIndexRemoverCssDuplicado();
+
   document.querySelectorAll('#fs-home-planos-pagos-venda, #fs-home-desejo-produto, #fs-home-forum-social').forEach(el => el.remove());
 
   const linksForum = document.querySelectorAll('a[href="/social.html"]');
@@ -236,6 +366,8 @@ function fsHomeVendedoraAplicar() {
 
 async function homeIndexAplicarPlano() {
   try {
+    fsIndexRemoverCssDuplicado();
+
     if (!window._supabase) {
       homeIndexMostrarVisao('gratis');
       fsHomeVendedoraAplicar();
@@ -280,6 +412,7 @@ async function homeIndexAplicarPlano() {
 }
 
 async function inicializarIndexFS() {
+  fsIndexRemoverCssDuplicado();
   esconderSplashIndex();
   configurarRedirecionamentoAposLoginIndex();
   fsHomeVendedoraAplicar();
@@ -316,3 +449,4 @@ window.abrirGeradorHomeProtegido = abrirGeradorHomeProtegido;
 window.homeIndexAplicarPlano = homeIndexAplicarPlano;
 window.redirecionarUsuarioLogadoParaDashboardIndex = redirecionarUsuarioLogadoParaDashboardIndex;
 window.configurarRedirecionamentoAposLoginIndex = configurarRedirecionamentoAposLoginIndex;
+window.fsIndexRemoverCssDuplicado = fsIndexRemoverCssDuplicado;
