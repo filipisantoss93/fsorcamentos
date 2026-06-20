@@ -80,7 +80,7 @@ const FS_CONFIG_SCRIPTS_GLOBAIS = [
   ['fs-session-cache.js', 'fs-session-cache-js'],
   ['fs-menu-close-outside.js', 'fs-menu-close-outside-js'],
   ['fs-format-br.js', 'fs-format-br-js'],
-  ['fs-footer-legal.js', 'fs-footer-legal-js'],
+  ['fs-footer-legal.js?v=20260620-1', 'fs-footer-legal-js'],
   ['layout-grid-global-fix.js', 'fs-layout-grid-global-fix-js']
 ];
 
