@@ -56,7 +56,8 @@ window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
 const FS_CONFIG_CSS_GLOBAIS = [
-  ['fs-theme-cinza.css?v=20260620-4', 'fs-theme-cinza-css']
+  ['fs-theme-cinza.css?v=20260620-4', 'fs-theme-cinza-css'],
+  ['fs-theme-cinza-hotfix.css?v=20260620-1', 'fs-theme-cinza-hotfix-css']
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
