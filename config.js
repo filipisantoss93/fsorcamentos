@@ -55,9 +55,9 @@ else inicializarSupabaseFS();
 window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
-/* =========================
-   CARREGAMENTO DE AJUSTES POR PÁGINA
-========================= */
+const FS_CONFIG_CSS_GLOBAIS = [
+  ['fs-theme-cinza.css?v=20260620-2', 'fs-theme-cinza-css']
+];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
   ['fs-auth-redirect-guard.js?v=20260620-1', 'fs-auth-redirect-guard-js'],
@@ -119,14 +119,14 @@ function fsConfigCarregarCssUnico(href, id) {
   const link = document.createElement('link');
   link.id = id;
   link.rel = 'stylesheet';
-  link.href = href;
+  link.href = href.startsWith('/') ? href : `/${href}`;
   link.onerror = () => console.warn(`Não foi possível carregar ${href}.`);
   document.head.appendChild(link);
 }
 function fsConfigCarregarListaScripts(scripts) { scripts.forEach(([arquivo, id]) => fsConfigCarregarScriptUnico(arquivo, id)); }
-function fsConfigCarregarListaCss(estilos) { estilos.forEach(([arquivo, id]) => fsConfigCarregarCssUnico(`/${arquivo}`, id)); }
+function fsConfigCarregarListaCss(estilos) { estilos.forEach(([arquivo, id]) => fsConfigCarregarCssUnico(arquivo, id)); }
 function fsConfigCarregarCssDaPagina(pathAtual) { FS_CONFIG_CSS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaCss(grupo.estilos); }); }
 function fsConfigCarregarScriptsDaPagina(pathAtual) { FS_CONFIG_SCRIPTS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaScripts(grupo.scripts); }); }
-function fsConfigCarregarAjustesPagina() { const pathAtual = fsConfigNormalizarPathAtual(); fsConfigCarregarCssDaPagina(pathAtual); fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS); fsConfigCarregarScriptsDaPagina(pathAtual); fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS); }
+function fsConfigCarregarAjustesPagina() { const pathAtual = fsConfigNormalizarPathAtual(); fsConfigCarregarListaCss(FS_CONFIG_CSS_GLOBAIS); fsConfigCarregarCssDaPagina(pathAtual); fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS); fsConfigCarregarScriptsDaPagina(pathAtual); fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS); }
 
 fsConfigCarregarAjustesPagina();
