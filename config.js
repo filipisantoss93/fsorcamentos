@@ -93,7 +93,7 @@ const FS_CONFIG_CSS_POR_PAGINA = [
 
 const FS_CONFIG_SCRIPTS_POR_PAGINA = [
   { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js', 'fs-ver-cliente-fix-js']] },
-  { paginas: ['/gerador', '/gerador.html'], scripts: [['gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js'], ['gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js']] },
+  { paginas: ['/gerador', '/gerador.html'], scripts: [['gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js'], ['gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js'], ['gerador-token-link-fix.js', 'fs-gerador-token-link-fix-js']] },
   { paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html', '/recorrentes', '/recorrentes.html'], scripts: [['fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js']] },
   { paginas: ['/clientes', '/clientes.html'], scripts: [['clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js']] },
   { paginas: ['/veiculos', '/veiculos.html'], scripts: [['veiculos-ficha-link.js', 'fs-veiculos-ficha-link-js']] },
