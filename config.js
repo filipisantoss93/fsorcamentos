@@ -5,23 +5,9 @@
    IMPORTANTE:
    - Aqui deve ficar SOMENTE a anon public key do Supabase.
    - Nunca coloque service_role key no frontend.
-   - Service role deve ficar apenas em Supabase Secrets / Edge Functions.
    ========================================================= */
 
 const SUPABASE_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co';
-
-/*
-  Cole abaixo a sua chave ANON PUBLIC do Supabase.
-
-  Onde pegar:
-  Supabase Dashboard > Project Settings > API > Project API keys > anon public
-
-  A chave correta normalmente contém no payload JWT:
-  "role": "anon"
-
-  NÃO use chave com:
-  "role": "service_role"
-*/
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2anZob3ppcWNldmt6eXN6ZGtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODc4MTksImV4cCI6MjA5MDM2MzgxOX0.ptXSP5LeasQgLuIicmTrtw_on5MfijUk26hllMsegfI';
 
 window.SUPABASE_URL = SUPABASE_URL;
@@ -80,7 +66,7 @@ const FS_CONFIG_SCRIPTS_GLOBAIS = [
   ['fs-session-cache.js', 'fs-session-cache-js'],
   ['fs-menu-close-outside.js', 'fs-menu-close-outside-js'],
   ['fs-format-br.js', 'fs-format-br-js'],
-  ['fs-footer-legal.js?v=20260620-2', 'fs-footer-legal-js'],
+  ['fs-footer-legal.js?v=20260620-3', 'fs-footer-legal-js'],
   ['layout-grid-global-fix.js', 'fs-layout-grid-global-fix-js']
 ];
 
