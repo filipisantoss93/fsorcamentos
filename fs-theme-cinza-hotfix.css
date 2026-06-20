@@ -1,76 +1,83 @@
 /* FS Orçamentos — hotfix do tema cinza */
 #splash-screen,
 body #splash-screen {
-  background: radial-gradient(circle at top, #3a3a3a 0%, #242424 48%, #1f1f1f 100%) !important;
-  color: #f8f8f6 !important;
+  background: radial-gradient(circle at top, #ffffff 0%, #f8fafc 48%, #e5e7eb 100%) !important;
+  color: #1f2937 !important;
 }
 
 #splash-screen .splash-content,
 body #splash-screen .splash-content {
-  background: transparent !important;
-  color: #f8f8f6 !important;
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #dbe3ee !important;
+  box-shadow: 0 18px 44px rgba(51, 65, 85, .14) !important;
 }
 
 #splash-screen .splash-logo,
 #splash-screen .fs-text {
-  color: #ffc400 !important;
+  color: #1f2937 !important;
 }
 
 #splash-screen .fs-box,
 #splash-screen .logo-fs {
-  background: #ffc400 !important;
-  color: #242424 !important;
-  border-color: #ffc400 !important;
+  background: #e5e7eb !important;
+  color: #111827 !important;
+  border-color: #cbd5e1 !important;
 }
 
 #splash-screen .loader-bar,
 #splash-screen .loader {
-  background: linear-gradient(90deg, #ffc400, #f97316, #16a34a) !important;
+  background: #e2e8f0 !important;
+}
+
+#splash-screen .loader-bar::after,
+#splash-screen .loader::after {
+  background: #94a3b8 !important;
 }
 
 #splash-screen p,
 body #splash-screen p {
-  color: #e5e5e2 !important;
+  color: #64748b !important;
 }
 
 #modal-login .btn-fechar-login,
 .modal-login-overlay .btn-fechar-login,
 button.btn-fechar-login {
-  background: #f8f8f6 !important;
-  color: #262626 !important;
-  border: 1px solid #d1d1cd !important;
-  box-shadow: 0 3px 10px rgba(32, 32, 32, .12) !important;
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 3px 10px rgba(51, 65, 85, .12) !important;
 }
 
 #modal-login .btn-fechar-login:hover,
 .modal-login-overlay .btn-fechar-login:hover,
 button.btn-fechar-login:hover {
-  background: #242424 !important;
-  color: #ffc400 !important;
-  border-color: #242424 !important;
+  background: #eef2f7 !important;
+  color: #111827 !important;
+  border-color: #94a3b8 !important;
 }
 
 #forum-detalhe.forum-detalhe,
 .fs-item-modal-overlay {
-  background: rgba(24, 24, 24, .68) !important;
+  background: rgba(15, 23, 42, .48) !important;
 }
 
 #forum-detalhe .forum-detalhe-card,
 .fs-item-modal-card {
   background: #ffffff !important;
-  color: #262626 !important;
-  border-color: #dededb !important;
+  color: #1f2937 !important;
+  border-color: #dbe3ee !important;
 }
 
 #forum-detalhe .forum-detalhe-topo,
 .fs-item-modal-topo {
-  background: #f8f8f6 !important;
-  color: #262626 !important;
-  border-color: #dededb !important;
+  background: #f8fafc !important;
+  color: #1f2937 !important;
+  border-color: #dbe3ee !important;
 }
 
 #forum-detalhe #forum-detalhe-titulo,
 #forum-detalhe .forum-detalhe-topo h2,
 .fs-item-modal-topo strong {
-  color: #262626 !important;
+  color: #1f2937 !important;
 }
