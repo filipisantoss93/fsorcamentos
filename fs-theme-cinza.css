@@ -1,75 +1,136 @@
 /* =========================================================
-   FS ORÇAMENTOS — TEMA CINZA ESCURO
-   Substitui o marrom principal por cinza profissional.
-   Base visual inspirada no cabeçalho da página Privacidade.
+   FS ORÇAMENTOS — TEMA CINZA GLOBAL
+   Cinza como base principal, amarelo como identidade,
+   verde para sucesso e laranja para atenção.
    ========================================================= */
 
 :root {
   --fs-marrom: #262626;
   --fs-marrom-2: #202020;
   --fs-marrom-3: #3a3a3a;
+  --fs-amarelo: #ffc400;
+  --fs-amarelo-2: #f1b600;
+  --fs-creme: #f4f4f2;
+  --fs-creme-2: #ececea;
+  --fs-card: #ffffff;
+  --fs-card-soft: #f8f8f6;
+  --fs-borda: #dededb;
+  --fs-borda-2: #d1d1cd;
   --fs-texto: #262626;
   --fs-muted: #5f5f5f;
-  --fs-shadow: 0 10px 28px rgba(32, 32, 32, 0.12);
-  --fs-shadow-soft: 0 6px 18px rgba(32, 32, 32, 0.08);
+  --fs-sucesso: #16a34a;
+  --fs-alerta: #f97316;
+  --fs-erro: #dc2626;
+  --primary: var(--fs-amarelo);
+  --bg-dark: var(--fs-creme);
+  --body-brown: var(--fs-card);
+  --text-dark: var(--fs-texto);
+  --accent-yellow: var(--fs-amarelo);
+}
+
+html, body {
+  background: linear-gradient(180deg, #f4f4f2 0%, #ececea 100%) !important;
+  color: #262626 !important;
 }
 
 .main-header,
-#header-container .main-header {
+#header-container .main-header,
+.header-menu-linha,
+.modal-notificacoes-topo,
+#modal-login.modal-login-overlay .auth-logo-box,
+footer,
+.footer,
+.site-footer,
+.forum-footer,
+.fs-footer-legal {
   background: #242424 !important;
-  color: #fff !important;
-  border-bottom-color: var(--fs-amarelo) !important;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, .18) !important;
+  color: #f8f8f6 !important;
+  border-color: #1f1f1f !important;
 }
 
-.logo-nav,
+.main-header,
+#header-container .main-header,
+#modal-login.modal-login-overlay .auth-logo-box {
+  border-bottom-color: #ffc400 !important;
+}
+
 .logo-nav .logo-fs,
-.logo-nav > span:first-child {
-  color: #fff !important;
-}
-
+.logo-nav > span:first-child { color: #ffffff !important; }
 .logo-nav .logo-orcamentos,
-.logo-nav > span:last-child {
-  color: var(--fs-amarelo) !important;
+.logo-nav > span:last-child,
+footer a,
+.site-footer a,
+.footer a,
+.forum-footer a,
+.fs-footer-legal a,
+.fs-footer-legal-links a { color: #ffc400 !important; }
+
+section,
+.card,
+.card-padrao,
+.card-form,
+.card-lista,
+.card-dashboard,
+.card-metrica,
+.card-alerta,
+.card-resumo,
+.dashboard-card,
+.kpi-card,
+.metric-card,
+.forum-card,
+.forum-composer-card,
+.forum-topico,
+.forum-resposta,
+.forum-detalhe-card,
+.painel-card,
+.cliente-card,
+.veiculo-card,
+.ordem-card,
+.estoque-card,
+.agenda-card,
+.relatorio-card,
+.recorrente-card,
+.modal-card,
+.modal-content,
+.modal-box,
+.form-card,
+.box,
+.caixa,
+.tabela-box,
+.lista-box,
+.home-card,
+.home-hero-card,
+.home-hero-proof,
+.home-flow,
+.home-flow-step,
+.home-kpi,
+.home-premium-card,
+.home-premium-metrica,
+.home-premium-alerta,
+.modal-notificacoes-card,
+.notificacoes-tabela,
+.notificacao-linha,
+.notificacao-vazia,
+#modal-login.modal-login-overlay .modal-login-box,
+#auth-container,
+.auth-container-index {
+  background: #ffffff !important;
+  color: #262626 !important;
+  border-color: #dededb !important;
+  box-shadow: 0 8px 22px rgba(32, 32, 32, .08) !important;
 }
 
-.nav-menu .link-destaque-gerador,
-.nav-menu .link-destaque-gestao:hover,
-.nav-menu .link-destaque-gestao.ativo,
-.btn-header-entrar,
-.btn-menu-mobile-entrar,
-.btn-generate {
-  color: #242424 !important;
-}
-
-.nav-menu .link-destaque-gestao::after,
-.contador-notificacoes,
-.btn-notificacoes-header,
-.btn-header-entrar,
-.btn-header-sair,
-.menu-mobile-btn,
-.btn-menu-mobile-entrar,
-.btn-menu-mobile-sair {
-  border-color: rgba(255, 196, 0, .65) !important;
-}
-
-.contador-notificacoes {
-  border-color: #242424 !important;
-}
-
-@media (max-width: 900px) {
-  .header-menu-linha {
-    background: #242424 !important;
-    border-color: rgba(255, 196, 0, .45) !important;
-    border-top-color: var(--fs-amarelo) !important;
-  }
-}
-
-.fs-page-header,
-.page-header,
+.home-hero,
+.home-dashboard,
+.home-resumo,
+.home-alertas,
+.home-atalhos,
 .dashboard-hero,
 .forum-hero,
 .painel-header,
+.fs-page-header,
+.page-header,
+.gerador-hero,
 .clientes-header,
 .veiculos-header,
 .ordens-header,
@@ -77,11 +138,21 @@
 .agenda-header,
 .relatorios-header,
 .recorrentes-header,
-.gerador-hero,
-.painel-os-topo {
+.painel-os-topo,
+.notificacoes-acoes,
+thead,
+.tabela thead,
+.fs-table thead,
+.notificacoes-tabela th {
+  background: #f8f8f6 !important;
   color: #262626 !important;
+  border-color: #dededb !important;
 }
 
+h1, h2, h3, h4,
+.titulo,
+.subtitulo,
+.card-title,
 .fs-page-header h1,
 .page-header h1,
 .dashboard-hero h1,
@@ -89,18 +160,64 @@
 .painel-header h1,
 .gerador-hero h1,
 .forum-autor-texto strong,
+label,
 th,
 .fs-table th,
+.tabela th,
 .fs-badge,
 .badge,
 .status-badge,
 .forum-badge,
 .plano-badge,
-footer a,
-.site-footer a,
-.footer a,
-.forum-footer a {
+#auth-container .auth-titulo-index,
+.auth-container-index .auth-titulo-index,
+#auth-titulo,
+#auth-container label,
+.auth-container-index label {
   color: #262626 !important;
+}
+
+p,
+small,
+.muted,
+.text-muted,
+.descricao,
+.card-desc,
+.home-lead,
+.home-section-head p,
+.forum-card p,
+.forum-mini-item,
+.forum-mini-item span,
+.notificacao-texto small,
+#auth-container .separador-login,
+.auth-container-index .separador-login {
+  color: #5f5f5f !important;
+}
+
+input,
+select,
+textarea,
+.campo,
+.form-control,
+#auth-container input,
+.auth-container-index input,
+#auth-container .btn-social-login,
+#auth-container .btn-google,
+.auth-container-index .btn-social-login,
+.auth-container-index .btn-google,
+button.btn-social-login,
+button.btn-google {
+  background: #ffffff !important;
+  color: #262626 !important;
+  border-color: #d1d1cd !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #9ca3af !important;
+  box-shadow: 0 0 0 2px rgba(36,36,36,.10) !important;
+  outline: none !important;
 }
 
 .fs-btn-primary,
@@ -115,10 +232,14 @@ footer a,
 .btn-ver-ordens-painel,
 .forum-fechar,
 #btn-flutuante-gerador-global,
-.total-container {
+.total-container,
+#auth-container #btn-principal,
+.auth-container-index #btn-principal,
+.btn-principal-index,
+.modal-login-box #btn-principal {
   background: #262626 !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
+  color: #ffc400 !important;
+  border-color: #262626 !important;
 }
 
 .fs-btn-secondary,
@@ -127,23 +248,105 @@ footer a,
 .forum-btn-secundario,
 .btn-limpar,
 .btn-senha,
-label,
-.dadositens {
-  color: #3a3a3a !important;
+.btn-outline,
+.btn-light {
+  background: #f8f8f6 !important;
+  color: #262626 !important;
+  border-color: #d1d1cd !important;
 }
 
-.nav-dropdown-menu a,
-.nav-dropdown-menu a:hover,
-.modal-notificacoes-topo,
-.toast-notificacao-orcamento strong {
-  color: #262626;
+#modal-login.modal-login-overlay {
+  background: rgba(24, 24, 24, .72) !important;
 }
 
-.modal-notificacoes-topo {
-  background: #242424 !important;
+#modal-login.modal-login-overlay .auth-logo-text span,
+.fs-footer-copy,
+footer span,
+.forum-footer span {
+  color: #f8f8f6 !important;
 }
 
-.fs-footer-legal {
-  background: #242424 !important;
-  border-color: #1f1f1f !important;
+#auth-container .separador-login::before,
+#auth-container .separador-login::after,
+.auth-container-index .separador-login::before,
+.auth-container-index .separador-login::after {
+  background: #e5e5e2 !important;
 }
+
+table,
+.tabela,
+.fs-table {
+  background: #ffffff !important;
+  color: #262626 !important;
+}
+
+td, th,
+.tabela td,
+.tabela th,
+.fs-table td,
+.fs-table th {
+  border-color: #dededb !important;
+}
+
+tr:hover,
+.tabela tr:hover,
+.fs-table tr:hover {
+  background: #f8f8f6 !important;
+}
+
+.status.verde,
+.status.aprovado,
+.badge.aprovado,
+.badge-verde,
+.sucesso,
+.aprovado,
+.pago,
+.recebido,
+.notificacao-aprovado {
+  color: #166534 !important;
+  background: #dcfce7 !important;
+  border-color: #16a34a !important;
+}
+
+.status.alerta,
+.badge-alerta,
+.pendente,
+.aguardando,
+.notificacao-agenda,
+.notificacao-estoque,
+.notificacao-os {
+  color: #9a3412 !important;
+  background: #ffedd5 !important;
+  border-color: #f97316 !important;
+}
+
+.status.erro,
+.status.vermelho,
+.recusado,
+.cancelado,
+.notificacao-recusado {
+  color: #991b1b !important;
+  background: #fee2e2 !important;
+  border-color: #dc2626 !important;
+}
+
+.nav-menu .link-destaque-gerador,
+.nav-menu .link-destaque-gestao:hover,
+.nav-menu .link-destaque-gestao.ativo,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-generate {
+  color: #242424 !important;
+}
+
+.contador-notificacoes,
+.btn-notificacoes-header,
+.btn-header-entrar,
+.btn-header-sair,
+.menu-mobile-btn,
+.btn-menu-mobile-entrar,
+.btn-menu-mobile-sair {
+  border-color: rgba(255,196,0,.65) !important;
+}
+
+.contador-notificacoes { border-color: #242424 !important; }
