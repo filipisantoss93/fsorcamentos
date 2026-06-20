@@ -7,6 +7,7 @@ const FS_ROTAS_PROTEGIDAS_MENU = [
   '/orcamentos.html', '/orcamentos',
   '/dashboard.html', '/dashboard',
   '/gestao.html', '/gestao',
+  '/forum.html', '/forum',
   '/clientes.html', '/clientes',
   '/veiculos.html', '/veiculos',
   '/ordens.html', '/ordens',
