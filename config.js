@@ -61,9 +61,6 @@ window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
   ['fs-pwa-register.js?v=20260620-2', 'fs-pwa-register-js'],
-  ['forum-comunidade-hard-modal.js?v=20260620-1', 'forum-comunidade-hard-modal-js'],
-  ['forum-comunidade-modal-fix.js?v=20260620-1', 'forum-comunidade-modal-fix-js'],
-  ['forum-comunidade-campos-fix.js?v=20260620-1', 'forum-comunidade-campos-fix-js'],
   ['fs-home-auth-fix.js?v=20260620-2', 'fs-home-auth-fix-js'],
   ['fs-home-premium-dashboard.js?v=20260620-1', 'fs-home-premium-dashboard-js'],
   ['fs-no-zoom.js', 'fs-no-zoom-js'],
