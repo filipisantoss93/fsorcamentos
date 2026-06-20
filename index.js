@@ -4,10 +4,19 @@
    ========================================================= */
 
 function esconderSplashIndex() {
-  setTimeout(() => {
+  const esconder = () => {
     const splash = document.getElementById('splash-screen');
-    if (splash) splash.classList.add('hide-splash');
-  }, 900);
+    if (splash) {
+      splash.classList.add('hide-splash');
+      setTimeout(() => {
+        splash.style.display = 'none';
+        splash.style.pointerEvents = 'none';
+      }, 450);
+    }
+  };
+
+  setTimeout(esconder, 700);
+  setTimeout(esconder, 1800);
 }
 
 function fsNormalizarPlano(valor) {
@@ -35,21 +44,7 @@ function indexEstaNaHome() {
 }
 
 async function redirecionarUsuarioLogadoParaDashboardIndex() {
-  try {
-    if (!window._supabase || !indexEstaNaHome()) return false;
-
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('abrirGerador') === '1') return false;
-
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (!session?.user?.id) return false;
-
-    window.location.href = '/dashboard.html';
-    return true;
-  } catch (error) {
-    console.warn('Não foi possível redirecionar para o Dashboard:', error);
-    return false;
-  }
+  return false;
 }
 
 function configurarRedirecionamentoAposLoginIndex() {
@@ -59,7 +54,8 @@ function configurarRedirecionamentoAposLoginIndex() {
   _supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session?.user?.id && indexEstaNaHome()) {
       setTimeout(() => {
-        window.location.href = '/dashboard.html';
+        const destino = localStorage.getItem('fs_destino_apos_login');
+        if (destino && destino !== '/index.html') window.location.href = destino;
       }, 650);
     }
   });
@@ -185,6 +181,7 @@ function fsHomeVendedoraAplicar() {
 async function homeIndexAplicarPlano() {
   try {
     if (!window._supabase) {
+      homeIndexMostrarVisao('gratis');
       fsHomeVendedoraAplicar();
       return;
     }
@@ -221,6 +218,7 @@ async function homeIndexAplicarPlano() {
     }
   } catch (error) {
     console.warn('Erro ao aplicar home por plano:', error);
+    homeIndexMostrarVisao('gratis');
     fsHomeVendedoraAplicar();
   }
 }
@@ -229,12 +227,9 @@ async function inicializarIndexFS() {
   esconderSplashIndex();
   configurarRedirecionamentoAposLoginIndex();
   fsHomeVendedoraAplicar();
+  homeIndexMostrarVisao('gratis');
 
   const params = new URLSearchParams(window.location.search);
-
-  if (await redirecionarUsuarioLogadoParaDashboardIndex()) {
-    return;
-  }
 
   if (params.get('login') === '1') {
     setTimeout(() => {
