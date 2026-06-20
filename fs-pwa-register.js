@@ -12,12 +12,14 @@
       const reg = await navigator.serviceWorker.register('/service-worker.js', { scope: '/' });
       window.fsServiceWorkerRegistration = reg;
 
+      try { await reg.update(); } catch(_) {}
+
       reg.addEventListener('updatefound', () => {
         const novo = reg.installing;
         if(!novo) return;
         novo.addEventListener('statechange', () => {
           if(novo.state === 'installed' && navigator.serviceWorker.controller){
-            console.info('Nova versão do FS Orçamentos disponível. Ela será aplicada ao recarregar.');
+            console.info('Nova versão do FS Orçamentos disponível. Feche e abra o app para aplicar.');
           }
         });
       });
