@@ -19,38 +19,45 @@
     html,
     body {
       width: 100%;
-      min-height: 100%;
+      height: 100%;
       margin: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
       background: #f8fafc;
-      color: #111827;
-      scroll-padding-top: calc(var(--fs-header-real-mobile, 112px) + 54px);
     }
 
-    body { display: block; }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
 
     #header-container {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: #ffffff;
+      flex: 0 0 auto;
+      position: relative;
+      z-index: 100;
     }
 
     .gestao-page {
+      flex: 1 1 auto;
+      min-height: 0;
       width: 100%;
       margin: 0;
-      padding: 0;
+      padding: 6px 0 0;
+      display: flex;
+      flex-direction: column;
       background: #f8fafc;
+      overflow: hidden;
       box-sizing: border-box;
     }
 
-    .gestao-topo { display: none !important; }
+    .gestao-topo {
+      display: none !important;
+    }
 
     .gestao-tabs-wrap {
+      flex: 0 0 auto;
       position: sticky;
-      top: var(--fs-header-real-desktop, 74px);
-      z-index: 900;
+      top: 0;
+      z-index: 80;
       width: 100%;
       background: #ffffff;
       border: 0;
@@ -63,7 +70,6 @@
       overflow-x: auto;
       overflow-y: hidden;
       box-sizing: border-box;
-      -webkit-overflow-scrolling: touch;
     }
 
     .gestao-tabs {
@@ -73,57 +79,67 @@
       table-layout: fixed;
     }
 
-    .gestao-tabs td { padding: 0; border: 0; background: transparent; }
+    .gestao-tabs td {
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
 
     .gestao-tab {
       width: 100%;
-      min-height: 36px;
+      min-height: 32px;
       border: 1px solid #d1d5db;
       background: #f9fafb;
       color: #374151;
-      border-radius: 6px;
+      border-radius: 4px;
       font-weight: 900;
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
-      padding: 7px 8px;
+      padding: 6px 7px;
       line-height: 1.05;
       text-align: center;
       white-space: nowrap;
       box-shadow: none;
     }
 
-    .gestao-tab.ativo { background: #64748b; color: #ffffff; border-color: #64748b; }
+    .gestao-tab.ativo {
+      background: #64748b;
+      color: #ffffff;
+      border-color: #64748b;
+    }
 
     .gestao-frame-box {
+      flex: 1 1 auto;
+      min-height: 0;
       width: 100%;
       background: #ffffff;
       border: 0;
       border-radius: 0;
       box-shadow: none;
-      overflow: visible;
+      overflow: hidden;
       margin: 0;
       position: relative;
     }
 
     #gestao-frame {
       width: 100%;
-      min-height: 900px;
+      height: 100%;
+      min-height: 0;
       border: 0;
       display: block;
       background: #f8fafc;
-      overflow: hidden;
     }
 
     .gestao-loading {
-      position: sticky;
-      top: calc(var(--fs-header-real-desktop, 74px) + 48px);
+      position: absolute;
+      top: 0;
       left: 0;
       right: 0;
-      z-index: 920;
+      z-index: 20;
       padding: 7px 10px;
       color: #374151;
       font-size: 12px;
@@ -133,28 +149,33 @@
       display: none;
     }
 
-    .gestao-loading.ativo { display: block; }
-    body > footer { display: none !important; }
+    .gestao-loading.ativo {
+      display: block;
+    }
+
+    body > footer {
+      display: none !important;
+    }
 
     @media (max-width: 760px) {
-      html,
-      body { scroll-padding-top: calc(var(--fs-header-real-mobile, 104px) + 56px); }
+      .gestao-page {
+        padding-top: 5px;
+      }
 
       .gestao-tabs-wrap {
-        top: var(--fs-header-real-mobile, 104px);
         padding: 4px;
       }
 
-      .gestao-tabs { min-width: 620px; border-spacing: 4px; }
-
-      .gestao-tab {
-        min-height: 34px;
-        font-size: 12px;
-        padding: 6px 7px;
+      .gestao-tabs {
+        min-width: 620px;
+        border-spacing: 4px;
       }
 
-      .gestao-loading { top: calc(var(--fs-header-real-mobile, 104px) + 44px); }
-      #gestao-frame { min-height: 980px; }
+      .gestao-tab {
+        min-height: 30px;
+        font-size: 11px;
+        padding: 5px 6px;
+      }
     }
   </style>
 </head>
@@ -178,7 +199,7 @@
 
     <section class="gestao-frame-box">
       <div id="gestao-loading" class="gestao-loading">Carregando módulo...</div>
-      <iframe id="gestao-frame" title="Módulo de gestão" src="clientes.html?embed=1" scrolling="no"></iframe>
+      <iframe id="gestao-frame" title="Módulo de gestão" src="clientes.html?embed=1"></iframe>
     </section>
   </main>
 
@@ -193,54 +214,21 @@
     const loading = document.getElementById('gestao-loading');
     const tabs = Array.from(document.querySelectorAll('.gestao-tab'));
 
-    function normalizarModuloGestao(src) {
-      return String(src || '').split('.html')[0].replace('/', '');
-    }
-
-    function ajustarAlturaFrame() {
-      try {
-        if (!frame?.contentWindow?.document) return;
-        const doc = frame.contentWindow.document;
-        const altura = Math.max(
-          900,
-          doc.documentElement?.scrollHeight || 0,
-          doc.body?.scrollHeight || 0,
-          doc.documentElement?.offsetHeight || 0,
-          doc.body?.offsetHeight || 0
-        );
-        frame.style.height = `${altura + 24}px`;
-      } catch (erro) {
-        frame.style.height = '1200px';
-      }
-    }
-
     function abrirModuloGestao(src, push = true) {
       tabs.forEach(btn => btn.classList.toggle('ativo', btn.dataset.src === src));
       loading.classList.add('ativo');
-      frame.style.height = '980px';
       frame.src = src;
-      if (push) history.replaceState(null, '', `#${normalizarModuloGestao(src)}`);
-      document.querySelector('.gestao-tabs-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (push) {
+        const nome = src.split('.html')[0].replace('/', '');
+        history.replaceState(null, '', `#${nome}`);
+      }
     }
 
     tabs.forEach(btn => {
       btn.addEventListener('click', () => abrirModuloGestao(btn.dataset.src));
     });
 
-    frame.addEventListener('load', () => {
-      loading.classList.remove('ativo');
-      ajustarAlturaFrame();
-      setTimeout(ajustarAlturaFrame, 250);
-      setTimeout(ajustarAlturaFrame, 900);
-      setTimeout(ajustarAlturaFrame, 1800);
-    });
-
-    window.addEventListener('message', event => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data?.tipo === 'fs-ajustar-iframe') setTimeout(ajustarAlturaFrame, 60);
-    });
-
-    window.addEventListener('resize', () => setTimeout(ajustarAlturaFrame, 120));
+    frame.addEventListener('load', () => loading.classList.remove('ativo'));
 
     const hashInicial = String(location.hash || '').replace('#', '');
     const tabInicial = tabs.find(btn => btn.dataset.src.startsWith(hashInicial + '.html'));
