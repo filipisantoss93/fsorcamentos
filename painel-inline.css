@@ -1,6 +1,6 @@
 /* =========================================================
    FS ORÇAMENTOS — PAINEL
-   Estilos específicos do painel com paleta cinza profissional.
+   Estilos específicos do painel com tema cinza consolidado.
    ========================================================= */
 
 body:has(#conteudo-protegido) {
@@ -29,7 +29,7 @@ body:has(#conteudo-protegido) {
   background: #ffffff !important;
   color: var(--fs-cinza-900, #111827) !important;
   border: 1px solid var(--fs-cinza-200, #e5e7eb) !important;
-  border-top: 4px solid var(--fs-amarelo) !important;
+  border-top: 4px solid var(--fs-cinza-700, #374151) !important;
   border-radius: 8px !important;
   box-shadow: 0 6px 18px rgba(15, 23, 42, .07) !important;
 }
@@ -81,14 +81,35 @@ body:has(#conteudo-protegido) {
 }
 
 .painel-aviso,
-.dica-seguranca {
-  background: #fff7cc !important;
-  color: #713f12 !important;
-  border: 1px solid var(--fs-amarelo) !important;
-  border-left: 4px solid var(--fs-amarelo) !important;
+.dica-seguranca,
+.painel-plano-aviso {
+  background: var(--fs-cinza-50, #f9fafb) !important;
+  color: var(--fs-cinza-700, #374151) !important;
+  border: 1px solid var(--fs-cinza-200, #e5e7eb) !important;
+  border-left: 4px solid var(--fs-cinza-600, #4b5563) !important;
   border-radius: 6px !important;
   padding: 9px 11px !important;
   margin-bottom: 10px !important;
+}
+
+.painel-aviso-compacto { margin-bottom: 10px !important; }
+.dica-perigo,
+.plano-erro {
+  background: #fef2f2 !important;
+  color: #991b1b !important;
+  border-color: #fecaca !important;
+  border-left-color: #dc2626 !important;
+}
+.plano-alerta {
+  background: var(--fs-cinza-100, #f3f4f6) !important;
+  color: var(--fs-cinza-800, #1f2937) !important;
+  border-left-color: var(--fs-cinza-700, #374151) !important;
+}
+.plano-ok {
+  background: #f0fdf4 !important;
+  color: #166534 !important;
+  border-color: #bbf7d0 !important;
+  border-left-color: #16a34a !important;
 }
 
 .painel-os-topo,
@@ -159,7 +180,7 @@ body:has(#conteudo-protegido) {
   padding: 9px !important;
   background: #ffffff !important;
   border: 1px solid var(--fs-cinza-200, #e5e7eb) !important;
-  border-left: 4px solid var(--fs-amarelo) !important;
+  border-left: 4px solid var(--fs-cinza-500, #6b7280) !important;
   border-radius: 6px !important;
   box-shadow: none !important;
   overflow: hidden !important;
@@ -175,7 +196,8 @@ body:has(#conteudo-protegido) {
 
 .info-card.full,
 .painel-os-card-full,
-.info-card-assinatura.full { grid-column: 1 / -1 !important; }
+.info-card-assinatura.full,
+.campo-painel-full { grid-column: 1 / -1 !important; }
 
 .info-card strong,
 .painel-os-card strong,
@@ -222,6 +244,9 @@ body:has(#conteudo-protegido) {
   font-weight: 950 !important;
   padding: 4px 7px !important;
 }
+
+.plano-basico,
+.plano-premium { background: var(--fs-cinza-800, #1f2937) !important; color: #ffffff !important; }
 
 .acoes-painel,
 .botoes-modal-painel,
@@ -273,12 +298,13 @@ body:has(#conteudo-protegido) {
 .btn-confirmar,
 .btn-upload-logo {
   background: var(--fs-cinza-900, #111827) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
+  color: #ffffff !important;
+  border-color: var(--fs-cinza-900, #111827) !important;
 }
 
 .btn-excluir-conta,
 .btn-remover-logo,
+.btn-perigo,
 #modal-excluir-conta .btn-confirmar {
   background: #fff5f5 !important;
   color: #b91c1c !important;
@@ -299,6 +325,7 @@ body:has(#conteudo-protegido) {
   overflow-y: auto !important;
   box-sizing: border-box !important;
 }
+
 .modal-responsavel-interno { z-index: 53000 !important; align-items: center !important; }
 .modal-overlay-painel[style*="display: flex"],
 .modal-overlay-painel.ativo,
@@ -348,12 +375,85 @@ body:has(#conteudo-protegido) {
 .campo-painel input:focus,
 .campo-painel select:focus,
 .campo-painel textarea:focus {
-  border-color: var(--fs-amarelo) !important;
-  box-shadow: 0 0 0 3px rgba(255,196,0,.18) !important;
+  border-color: var(--fs-cinza-700, #374151) !important;
+  box-shadow: 0 0 0 3px rgba(55, 65, 81, .14) !important;
   outline: none !important;
 }
 
+.input-logo-escondido { display: none !important; }
 .status-msg { margin-top: 8px; font-weight: 850; }
+.status-msg.sucesso { color: #166534; }
+.status-msg.erro { color: #b91c1c; }
+
+.responsavel-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  padding: 8px !important;
+  border: 1px solid var(--fs-cinza-200, #e5e7eb) !important;
+  border-radius: 6px !important;
+  background: #ffffff !important;
+  margin-bottom: 6px !important;
+}
+.responsavel-item.selecionado { background: var(--fs-cinza-100, #f3f4f6) !important; border-color: var(--fs-cinza-500, #6b7280) !important; }
+.responsavel-item span { color: var(--fs-cinza-950, #0f172a) !important; font-weight: 900 !important; }
+.responsavel-item small { color: var(--fs-cinza-600, #4b5563) !important; font-weight: 700 !important; }
+.responsavel-item button { white-space: nowrap !important; }
+
+.painel-tabela-wrapper {
+  width: 100% !important;
+  overflow-x: auto !important;
+}
+.painel-tabela {
+  width: 100% !important;
+  min-width: 720px !important;
+  border-collapse: collapse !important;
+  background: #ffffff !important;
+  border: 1px solid var(--fs-cinza-200, #e5e7eb) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+.painel-tabela th {
+  padding: 10px !important;
+  text-align: left !important;
+  background: var(--fs-cinza-800, #1f2937) !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+}
+.painel-tabela td {
+  padding: 10px !important;
+  border-bottom: 1px solid var(--fs-cinza-200, #e5e7eb) !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  font-size: 13px !important;
+  vertical-align: middle !important;
+}
+.painel-tabela tbody tr { cursor: pointer !important; }
+.painel-tabela tbody tr:hover { background: var(--fs-cinza-50, #f9fafb) !important; }
+.painel-tabela .texto-direita { text-align: right !important; }
+.painel-tabela .texto-forte { font-weight: 900 !important; }
+
+#btn-flutuante-gerador-global {
+  position: fixed !important;
+  right: 14px !important;
+  bottom: 14px !important;
+  z-index: 20000 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-height: 42px !important;
+  padding: 10px 12px !important;
+  border: 1px solid var(--fs-cinza-900, #111827) !important;
+  border-radius: 999px !important;
+  background: var(--fs-cinza-900, #111827) !important;
+  color: #ffffff !important;
+  font-weight: 950 !important;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, .22) !important;
+  cursor: pointer !important;
+}
 
 @media (max-width: 820px) {
   .painel-header,
@@ -380,4 +480,5 @@ body:has(#conteudo-protegido) {
   .painel-premium-resumo-grid,
   .grid-painel,
   .painel-premium-atalhos-grid { grid-template-columns: 1fr !important; }
+  #btn-flutuante-gerador-global span { display: none !important; }
 }
