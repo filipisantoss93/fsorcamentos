@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=/social.html">
   <title>Redirecionando para Social FS</title>
+  <link rel="canonical" href="/social.html">
   <script>
-    const hash = window.location.hash || '';
-    const query = window.location.search || '';
-    window.location.replace('/social.html' + query + hash);
+    (function () {
+      const query = window.location.search || '';
+      const hash = window.location.hash || '';
+      window.location.replace('/social.html' + query + hash);
+    })();
   </script>
 </head>
 <body>
