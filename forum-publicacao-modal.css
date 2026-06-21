@@ -5,7 +5,7 @@
   display: none;
   align-items: center !important;
   justify-content: center !important;
-  background: rgba(47, 33, 29, .68) !important;
+  background: rgba(15, 23, 42, .68) !important;
   padding: 14px !important;
   overflow: auto !important;
   margin: 0 !important;
@@ -22,12 +22,12 @@
   width: min(760px, 100%) !important;
   max-height: min(90vh, 820px) !important;
   overflow: auto !important;
-  background: #fffaf0 !important;
-  border: 1px solid #e4d8cc !important;
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
   border-radius: 14px !important;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, .32) !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .32) !important;
   padding: 14px !important;
-  color: #2f211d !important;
+  color: #111827 !important;
 }
 
 #forum-form-card.forum-publicacao-modal .forum-card-topo {
@@ -35,9 +35,9 @@
   position: sticky !important;
   top: -14px !important;
   z-index: 2 !important;
-  background: #fffaf0 !important;
+  background: #ffffff !important;
   padding: 4px 0 12px !important;
-  border-bottom: 1px solid #eadfd4 !important;
+  border-bottom: 1px solid #e5e7eb !important;
   margin-bottom: 12px !important;
 }
 
@@ -55,7 +55,7 @@
 #forum-form-card.forum-publicacao-modal .forum-form label {
   display: grid !important;
   gap: 6px !important;
-  color: #2f211d !important;
+  color: #111827 !important;
   font-size: 13px !important;
   font-weight: 900 !important;
   visibility: visible !important;
@@ -68,10 +68,10 @@
   display: block !important;
   width: 100% !important;
   min-height: 42px !important;
-  border: 1px solid #d7ccc8 !important;
+  border: 1px solid #d1d5db !important;
   border-radius: 8px !important;
   background: #fff !important;
-  color: #2f211d !important;
+  color: #111827 !important;
   padding: 10px !important;
   font-size: 15px !important;
   font-weight: 700 !important;
@@ -87,12 +87,12 @@
 
 #forum-form-card.forum-publicacao-modal input[type="file"] {
   padding: 9px !important;
-  background: #fffaf0 !important;
+  background: #f9fafb !important;
 }
 
 #forum-form-card.forum-publicacao-modal small {
   display: block !important;
-  color: #6b5b53 !important;
+  color: #4b5563 !important;
   font-size: 11px !important;
   font-weight: 700 !important;
 }
@@ -123,9 +123,9 @@
   min-height: 40px !important;
   padding: 9px 12px !important;
   border-radius: 8px !important;
-  background: #fffaf0 !important;
-  color: #3e2723 !important;
-  border: 1px solid #d7ccc8 !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #d1d5db !important;
   text-decoration: none !important;
   font-weight: 950 !important;
   font-size: 13px !important;
@@ -134,9 +134,9 @@
 }
 
 .forum-meu-perfil-btn:hover {
-  background: #ffc400 !important;
-  color: #2f211d !important;
-  border-color: #2f211d !important;
+  background: #f3f4f6 !important;
+  color: #111827 !important;
+  border-color: #9ca3af !important;
 }
 
 @media (max-width: 640px) {
