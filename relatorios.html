@@ -19,6 +19,7 @@
   <meta name="robots" content="noindex, nofollow">
 
   <link rel="stylesheet" href="style.css?v=20260620-3">
+  <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260621-gestao-cinza-1">
   <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
@@ -27,14 +28,13 @@
       --fs-cinza-900: #111827;
       --fs-cinza-800: #1f2937;
       --fs-cinza-700: #374151;
-      --fs-cinza-600: #4b5563;
-      --fs-cinza-500: #6b7280;
-      --fs-cinza-300: #d1d5db;
+      --fs-cinza-600: #475569;
+      --fs-cinza-500: #64748b;
+      --fs-cinza-300: #cbd5e1;
       --fs-cinza-200: #e5e7eb;
-      --fs-cinza-100: #f3f4f6;
+      --fs-cinza-100: #f1f5f9;
       --fs-cinza-50: #f8fafc;
       --fs-card: #ffffff;
-      --fs-amarelo: #ffc400;
       --fs-borda: #dbe3ee;
       --fs-texto: #111827;
       --fs-texto-suave: #64748b;
@@ -47,38 +47,32 @@
     body {
       min-height: 100%;
       margin: 0;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 48%, #eef2f7 100%) !important;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #eef2f7 100%) !important;
       color: var(--fs-texto) !important;
       font-family: Arial, Helvetica, sans-serif;
       overflow-x: hidden;
     }
 
-    body {
-      padding-top: 118px;
-    }
+    body { padding-top: 94px; }
 
     html.fs-embed body {
       padding-top: 0 !important;
       background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
     }
 
-    html.fs-embed #header-container {
-      display: none !important;
-    }
-
-    body > footer {
-      display: none !important;
-    }
+    html.fs-embed #header-container { display: none !important; }
+    body > footer { display: none !important; }
 
     .pagina-relatorios {
-      max-width: 1180px;
+      width: min(1180px, calc(100% - 24px));
       margin: 0 auto;
-      padding: 24px 14px 80px;
+      padding: 22px 0 86px;
       color: var(--fs-texto) !important;
     }
 
     html.fs-embed .pagina-relatorios {
-      padding-top: 22px;
+      width: min(1180px, calc(100% - 16px));
+      padding-top: 14px;
       padding-bottom: 96px;
     }
 
@@ -94,20 +88,20 @@
 
     .relatorios-hero {
       border-radius: 18px;
-      border-top: 5px solid var(--fs-cinza-700) !important;
-      padding: 28px;
-      margin-bottom: 20px;
+      border-top: 5px solid var(--fs-cinza-500) !important;
+      padding: 24px;
+      margin-bottom: 18px;
     }
 
     .tag-premium {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: var(--fs-cinza-700) !important;
-      color: var(--fs-amarelo) !important;
-      border: 1px solid var(--fs-amarelo) !important;
-      border-radius: 8px;
-      padding: 7px 13px;
+      background: var(--fs-cinza-100) !important;
+      color: var(--fs-cinza-800) !important;
+      border: 1px solid var(--fs-cinza-300) !important;
+      border-radius: 999px;
+      padding: 7px 12px;
       font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
@@ -118,7 +112,7 @@
     .relatorios-hero h1 {
       margin: 0 0 10px;
       color: var(--fs-cinza-900) !important;
-      font-size: clamp(30px, 5vw, 46px);
+      font-size: clamp(28px, 5vw, 42px);
       line-height: 1.12;
       letter-spacing: -.03em;
     }
@@ -127,9 +121,9 @@
       margin: 0;
       color: var(--fs-texto-suave) !important;
       line-height: 1.55;
-      max-width: 860px;
-      font-size: clamp(16px, 3vw, 22px);
-      font-weight: 800;
+      max-width: 880px;
+      font-size: clamp(15px, 3vw, 20px);
+      font-weight: 750;
     }
 
     .filtros-relatorios {
@@ -138,7 +132,7 @@
       gap: 12px;
       align-items: end;
       border-radius: 16px;
-      padding: 18px;
+      padding: 16px;
       margin-bottom: 18px;
     }
 
@@ -146,7 +140,7 @@
       display: block;
       color: var(--fs-cinza-600) !important;
       font-weight: 900;
-      font-size: 13px;
+      font-size: 12px;
       margin-bottom: 6px;
       text-transform: uppercase;
     }
@@ -156,25 +150,25 @@
       width: 100%;
       border: 1px solid var(--fs-cinza-300) !important;
       border-radius: 10px;
-      padding: 12px;
+      padding: 11px 12px;
       color: var(--fs-cinza-900) !important;
       background: #ffffff !important;
-      font-size: 16px;
-      min-height: 46px;
+      font-size: 15px;
+      min-height: 44px;
       outline: none;
     }
 
     .campo input:focus,
     .campo select:focus {
-      border-color: var(--fs-cinza-700) !important;
-      box-shadow: 0 0 0 3px rgba(55, 65, 81, .14) !important;
+      border-color: var(--fs-cinza-500) !important;
+      box-shadow: 0 0 0 3px rgba(100, 116, 139, .16) !important;
     }
 
     .btn {
       border: 1px solid var(--fs-cinza-300) !important;
       border-radius: 10px;
-      min-height: 46px;
-      padding: 11px 16px;
+      min-height: 44px;
+      padding: 10px 15px;
       font-weight: 900;
       cursor: pointer;
       text-decoration: none;
@@ -188,14 +182,14 @@
     }
 
     .btn-primario {
-      background: #64748b !important;
-      color: var(--fs-amarelo) !important;
-      border-color: var(--fs-amarelo) !important;
+      background: var(--fs-cinza-500) !important;
+      color: #ffffff !important;
+      border-color: var(--fs-cinza-500) !important;
     }
 
     .btn-primario:hover {
-      background: #475569 !important;
-      color: #ffe58a !important;
+      background: var(--fs-cinza-600) !important;
+      color: #ffffff !important;
     }
 
     .metricas-grid {
@@ -208,7 +202,7 @@
     .metrica-card {
       border-left: 5px solid var(--fs-cinza-500) !important;
       border-radius: 16px;
-      padding: 17px;
+      padding: 16px;
     }
 
     .metrica-card span {
@@ -223,7 +217,7 @@
     .metrica-card strong {
       display: block;
       color: var(--fs-cinza-900) !important;
-      font-size: 28px;
+      font-size: 27px;
       line-height: 1;
     }
 
@@ -243,14 +237,14 @@
 
     .card-relatorio {
       border-radius: 16px;
-      padding: 18px;
+      padding: 17px;
       margin-bottom: 0;
     }
 
     .card-relatorio h2 {
       margin: 0 0 8px;
       color: var(--fs-cinza-900) !important;
-      font-size: 21px;
+      font-size: 20px;
     }
 
     .card-relatorio p {
@@ -261,10 +255,7 @@
       font-weight: 700;
     }
 
-    .lista-ranking {
-      display: grid;
-      gap: 10px;
-    }
+    .lista-ranking { display: grid; gap: 10px; }
 
     .ranking-item {
       display: grid;
@@ -280,36 +271,16 @@
     }
 
     .ranking-item strong,
-    .ranking-item span {
-      display: block;
-    }
-
-    .ranking-item strong {
-      color: var(--fs-cinza-900) !important;
-      font-size: 14px;
-      line-height: 1.25;
-      word-break: break-word;
-    }
-
-    .ranking-item span {
-      color: var(--fs-texto-suave) !important;
-      font-size: 12px;
-      margin-top: 4px;
-      font-weight: 800;
-    }
-
-    .ranking-valor {
-      color: var(--fs-cinza-900) !important;
-      font-weight: 900;
-      white-space: nowrap;
-      text-align: right;
-    }
+    .ranking-item span { display: block; }
+    .ranking-item strong { color: var(--fs-cinza-900) !important; font-size: 14px; line-height: 1.25; word-break: break-word; }
+    .ranking-item span { color: var(--fs-texto-suave) !important; font-size: 12px; margin-top: 4px; font-weight: 800; }
+    .ranking-valor { color: var(--fs-cinza-900) !important; font-weight: 900; white-space: nowrap; text-align: right; }
 
     .estado-vazio {
       background: var(--fs-cinza-50) !important;
       border: 1px dashed var(--fs-cinza-300) !important;
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px;
       text-align: center;
       color: var(--fs-cinza-700) !important;
       font-weight: 800;
@@ -321,62 +292,33 @@
       padding: 13px 15px;
       border-radius: 12px;
       font-weight: 800;
+      line-height: 1.4;
     }
 
     .mensagem.erro,
-    .mensagem.info {
-      display: block;
-    }
-
-    .mensagem.erro {
-      background: #fee2e2 !important;
-      color: #991b1b !important;
-      border: 1px solid #fecaca !important;
-    }
-
-    .mensagem.info {
-      background: var(--fs-cinza-100) !important;
-      color: var(--fs-cinza-800) !important;
-      border: 1px solid var(--fs-cinza-300) !important;
-    }
-
-    body.gerando-pdf,
-    body.gerando-pdf * {
-      color: inherit;
-    }
+    .mensagem.info { display: block; }
+    .mensagem.erro { background: #fee2e2 !important; color: #991b1b !important; border: 1px solid #fecaca !important; }
+    .mensagem.info { background: var(--fs-cinza-100) !important; color: var(--fs-cinza-800) !important; border: 1px solid var(--fs-cinza-300) !important; }
 
     @media (max-width: 900px) {
-      body { padding-top: 96px; }
+      body { padding-top: 84px; }
       .metricas-grid,
       .relatorio-grid,
-      .filtros-relatorios {
-        grid-template-columns: 1fr;
-      }
+      .filtros-relatorios { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 680px) {
       .pagina-relatorios {
-        padding: 18px 10px 96px;
+        width: min(100% - 12px, 1180px);
+        padding: 14px 0 96px;
       }
 
-      .relatorios-hero {
-        padding: 22px;
-        border-radius: 14px;
-      }
-
+      .relatorios-hero { padding: 18px; border-radius: 14px; }
       .filtros-relatorios,
       .card-relatorio,
-      .metrica-card {
-        border-radius: 12px;
-      }
-
-      .ranking-item {
-        grid-template-columns: 1fr;
-      }
-
-      .ranking-valor {
-        text-align: left;
-      }
+      .metrica-card { border-radius: 12px; }
+      .ranking-item { grid-template-columns: 1fr; }
+      .ranking-valor { text-align: left; }
     }
   </style>
 </head>
@@ -470,6 +412,6 @@
   <script src="planos.js?v=20260620-3"></script>
   <script src="carregar-menu.js?v=20260620-3"></script>
   <script src="notificacoes.js?v=20260620-3"></script>
-  <script src="relatorios.js?v=20260620-cinza-1"></script>
+  <script src="relatorios.js?v=20260621-leve-1"></script>
 </body>
 </html>
