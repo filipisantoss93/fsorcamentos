@@ -11,7 +11,7 @@
   align-items: flex-start !important;
   justify-content: center !important;
   padding: calc(var(--fs-header-real-desktop, 74px) + 14px) 14px 20px !important;
-  background: rgba(20, 13, 11, .72) !important;
+  background: rgba(15, 23, 42, .72) !important;
   backdrop-filter: blur(5px) !important;
   overflow-y: auto !important;
   box-sizing: border-box !important;
@@ -29,12 +29,12 @@
   width: min(900px, 100%) !important;
   max-height: calc(100vh - var(--fs-header-real-desktop, 74px) - 34px) !important;
   margin: 0 auto !important;
-  background: #fffaf0 !important;
-  color: #2f241f !important;
-  border: 1px solid #e0d6c8 !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid #e5e7eb !important;
   border-top: 5px solid #ffc400 !important;
   border-radius: 14px !important;
-  box-shadow: 0 24px 70px rgba(0,0,0,.35) !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .35) !important;
   overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
@@ -44,8 +44,8 @@
   position: sticky !important;
   top: 0 !important;
   z-index: 2 !important;
-  background: #fff8e1 !important;
-  border-bottom: 1px solid #e0d6c8 !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e5e7eb !important;
   padding: 14px !important;
   display: flex !important;
   align-items: flex-start !important;
@@ -54,7 +54,7 @@
 
 #forum-detalhe .forum-detalhe-topo h2,
 #forum-detalhe #forum-detalhe-titulo {
-  color: #3e2723 !important;
+  color: #111827 !important;
   font-size: clamp(24px, 6vw, 38px) !important;
   line-height: 1.12 !important;
   margin: 0 !important;
@@ -76,7 +76,7 @@
   min-height: 42px !important;
   border-radius: 10px !important;
   border: 1px solid #ffc400 !important;
-  background: #3e2723 !important;
+  background: #111827 !important;
   color: #ffc400 !important;
   font-size: 28px !important;
   line-height: 1 !important;
