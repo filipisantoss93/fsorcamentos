@@ -6,15 +6,6 @@
 (function () {
   'use strict';
 
-  function escapar(valor) {
-    return String(valor || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
   function normalizar(valor) {
     return String(valor || '')
       .toLowerCase()
@@ -49,8 +40,8 @@
         transition: background .15s ease, box-shadow .15s ease !important;
       }
       .forum-autor-linha:hover {
-        background: rgba(255,196,0,.12) !important;
-        box-shadow: inset 0 0 0 1px rgba(47,33,29,.10) !important;
+        background: rgba(15, 23, 42, .06) !important;
+        box-shadow: inset 0 0 0 1px rgba(15, 23, 42, .10) !important;
       }
       .forum-autor-texto strong {
         display: inline-flex !important;
@@ -66,9 +57,9 @@
         min-height: 18px !important;
         padding: 3px 6px !important;
         border-radius: 4px !important;
-        border: 1px solid #e4d8cc !important;
-        background: #f8f4ee !important;
-        color: #3e2723 !important;
+        border: 1px solid #d1d5db !important;
+        background: #f3f4f6 !important;
+        color: #1f2937 !important;
         font-size: 9.5px !important;
         line-height: 1 !important;
         font-weight: 950 !important;
@@ -83,13 +74,13 @@
       }
       .forum-plano-selo.premium {
         background: #ffc400 !important;
-        color: #2f211d !important;
-        border-color: #2f211d !important;
-        box-shadow: 0 0 0 1px rgba(47,33,29,.08) !important;
+        color: #111827 !important;
+        border-color: #111827 !important;
+        box-shadow: 0 0 0 1px rgba(15, 23, 42, .08) !important;
       }
       .forum-topico:has(.forum-plano-selo.premium) {
         border-color: #d6a900 !important;
-        box-shadow: 0 5px 16px rgba(47,33,29,.09) !important;
+        box-shadow: 0 5px 16px rgba(15, 23, 42, .09) !important;
       }
       .forum-social-perfil-link {
         text-decoration: none !important;
@@ -268,6 +259,4 @@
     tentarAbrirTopicoDoHash.aberto = '';
     aplicarComAtraso();
   });
-
-  setInterval(aplicar, 2500);
 })();
