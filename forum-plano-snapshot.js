@@ -47,32 +47,6 @@
     window._supabase.__fsForumPublicacaoPatch = true;
   }
 
-  function formularioHtml() {
-    return `
-      <form id="forum-form-topico" class="forum-form" onsubmit="forumCriarTopico(event)">
-        <label>
-          Título da publicação
-          <input id="forum-topico-titulo" type="text" maxlength="120" placeholder="Ex: Como cobrar diagnóstico antes do orçamento?" required>
-        </label>
-        <label>
-          Categoria
-          <select id="forum-topico-categoria" required></select>
-        </label>
-        <label>
-          Conteúdo
-          <textarea id="forum-topico-descricao" maxlength="4000" placeholder="Conte o contexto, o que aconteceu, o que você já tentou ou qual opinião precisa da comunidade." required></textarea>
-        </label>
-        <label>
-          Fotos da publicação
-          <input id="forum-topico-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="forumValidarFotosSelecionadas()">
-          <small>Opcional. Até 2 fotos, máximo 2 MB por foto. Formatos: JPG, PNG ou WEBP.</small>
-        </label>
-        <div id="forum-preview-fotos" class="forum-preview-fotos"></div>
-        <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar na comunidade</button>
-      </form>
-    `;
-  }
-
   function mostrarElemento(el, display) {
     if (!el) return;
     el.hidden = false;
@@ -89,25 +63,23 @@
 
   function corrigirModalPublicacao() {
     const card = document.getElementById('forum-form-card');
-    if (!card) return;
+    const form = document.getElementById('forum-form-topico');
+    if (!card || !form) return;
 
-    let painel = card.querySelector('.forum-publicacao-modal-painel');
-    if (!painel) painel = card;
-
-    let form = document.getElementById('forum-form-topico');
-    if (!form) {
-      painel.insertAdjacentHTML('beforeend', formularioHtml());
-      form = document.getElementById('forum-form-topico');
-    }
-
-    if (form && !painel.contains(form)) painel.appendChild(form);
+    const painel = card.querySelector('.forum-publicacao-modal-painel') || card;
+    if (!painel.contains(form)) painel.appendChild(form);
 
     const topo = painel.querySelector('.forum-card-topo');
-    if (topo && form && topo.nextElementSibling !== form) topo.insertAdjacentElement('afterend', form);
+    if (topo && topo.nextElementSibling !== form) topo.insertAdjacentElement('afterend', form);
 
     mostrarElemento(form, 'grid');
-    form?.querySelectorAll('label,input,select,textarea,small,button,#forum-preview-fotos').forEach((el) => {
-      mostrarElemento(el, el.tagName === 'LABEL' || el.id === 'forum-preview-fotos' ? 'grid' : el.tagName === 'BUTTON' ? 'inline-flex' : 'block');
+    form.querySelectorAll('label,input,select,textarea,small,button,#forum-preview-fotos').forEach((el) => {
+      const display = el.tagName === 'LABEL' || el.id === 'forum-preview-fotos'
+        ? 'grid'
+        : el.tagName === 'BUTTON'
+          ? 'inline-flex'
+          : 'block';
+      mostrarElemento(el, display);
     });
 
     try {
@@ -127,7 +99,12 @@
     }, true);
 
     const observer = new MutationObserver(() => corrigirModalPublicacao());
-    observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style', 'hidden']
+    });
   }
 
   function iniciar() {
@@ -142,5 +119,5 @@
     iniciar();
   }
 
-  [300, 700, 1200, 2000, 3500].forEach((tempo) => setTimeout(iniciar, tempo));
+  [300, 700, 1200].forEach((tempo) => setTimeout(iniciar, tempo));
 })();
