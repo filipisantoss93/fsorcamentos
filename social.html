@@ -18,20 +18,147 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    .comunidade-hero {
+      position: relative !important;
+      padding-right: 76px !important;
+    }
+
+    .forum-perfil-icone-btn {
+      position: absolute !important;
+      top: 16px !important;
+      right: 16px !important;
+      width: 46px !important;
+      height: 46px !important;
+      min-width: 46px !important;
+      min-height: 46px !important;
+      border-radius: 10px !important;
+      border: 1px solid #d1d5db !important;
+      background: #ffffff !important;
+      color: #111827 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 22px !important;
+      line-height: 1 !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, .08) !important;
+      z-index: 2 !important;
+    }
+
+    .forum-perfil-icone-btn:hover {
+      background: #f3f4f6 !important;
+      border-color: #9ca3af !important;
+    }
+
+    .forum-top-search {
+      margin: 18px 0 14px !important;
+      width: 100% !important;
+    }
+
+    .forum-top-search input {
+      width: 100% !important;
+      min-height: 48px !important;
+      border-radius: 10px !important;
+      border: 1px solid #d1d5db !important;
+      background: #ffffff !important;
+      color: #111827 !important;
+      padding: 12px 14px !important;
+      font-size: 15px !important;
+      font-weight: 750 !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .forum-top-search input:focus {
+      border-color: #64748b !important;
+      box-shadow: 0 0 0 3px rgba(100, 116, 139, .16) !important;
+    }
+
+    .forum-feed-direto {
+      margin-top: 16px !important;
+      display: grid !important;
+      gap: 12px !important;
+    }
+
+    .forum-pull-refresh-indicator {
+      position: fixed;
+      top: 82px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120%);
+      z-index: 65000;
+      min-width: 190px;
+      max-width: calc(100vw - 32px);
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, .28);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+
+    .forum-pull-refresh-indicator.ativo {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .forum-pull-refresh-indicator.pronto {
+      background: #64748b;
+      color: #ffc400;
+    }
+
+    @media (max-width: 680px) {
+      .comunidade-hero {
+        padding: 22px 66px 22px 22px !important;
+      }
+
+      .forum-perfil-icone-btn {
+        top: 14px !important;
+        right: 14px !important;
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        min-height: 42px !important;
+        font-size: 20px !important;
+      }
+
+      .forum-top-search {
+        margin-top: 16px !important;
+      }
+
+      .forum-hero-acoes {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="header-container"></div>
+  <div id="forum-pull-refresh-indicator" class="forum-pull-refresh-indicator">Puxe para atualizar</div>
 
   <main id="forum-conteudo" class="forum-page comunidade-page" style="display:none;">
     <section class="forum-hero comunidade-hero">
+      <button type="button" id="forum-meu-perfil-btn" class="forum-perfil-icone-btn" aria-label="Meu perfil" title="Meu perfil" onclick="forumAbrirMeuPerfil()">👤</button>
+
       <div>
         <span class="forum-tag">👥 Social FS</span>
         <h1>A rede social dos prestadores de serviço</h1>
         <p>Publique dúvidas, conte experiências, peça opinião sobre orçamento, cobrança, garantia, peças, clientes e rotina profissional. A ideia é juntar quem vive o serviço na prática.</p>
+
+        <div class="forum-top-search" role="search">
+          <input id="forum-busca" type="search" placeholder="Pesquisar publicações..." oninput="forumFiltrarTopicosLocal()" autocomplete="off">
+        </div>
       </div>
+
       <div class="forum-hero-acoes">
         <button type="button" class="forum-btn" onclick="forumMostrarFormularioNovoTopico()">+ Publicar</button>
-        <button type="button" class="forum-btn-secundario" onclick="forumCarregarTopicos()">Atualizar feed</button>
       </div>
     </section>
 
@@ -40,7 +167,6 @@
     <section class="forum-layout comunidade-layout">
       <div class="forum-coluna comunidade-feed-coluna">
         <article class="forum-composer-card" onclick="forumMostrarFormularioNovoTopico()" role="button" tabindex="0">
-          <div class="forum-composer-avatar">FS</div>
           <div class="forum-composer-input">
             <strong>No que você está pensando?</strong>
             <span>Publique uma dúvida, experiência, dica de cobrança ou situação de serviço.</span>
@@ -58,28 +184,9 @@
           </div>
         </article>
 
-        <article class="forum-card branco comunidade-feed-card">
-          <div class="forum-card-topo comunidade-feed-topo">
-            <div>
-              <h2>Feed social</h2>
-              <p>Veja dúvidas, relatos e discussões recentes dos prestadores.</p>
-            </div>
-          </div>
-          <div class="forum-filtros comunidade-filtros">
-            <input id="forum-busca" type="search" placeholder="Pesquisar publicações..." oninput="forumFiltrarTopicosLocal()">
-            <select id="forum-filtro-categoria" onchange="forumFiltrarTopicosLocal()"></select>
-            <select id="forum-filtro-status" onchange="forumFiltrarTopicosLocal()">
-              <option value="todos">Todos</option>
-              <option value="aberto">Aberto</option>
-              <option value="respondido">Respondido</option>
-              <option value="resolvido">Resolvido</option>
-              <option value="fechado">Fechado</option>
-            </select>
-          </div>
-          <div id="forum-lista-topicos" class="forum-lista forum-feed-lista">
-            <div class="forum-vazio">Carregando feed...</div>
-          </div>
-        </article>
+        <section id="forum-lista-topicos" class="forum-lista forum-feed-lista forum-feed-direto" aria-label="Publicações da comunidade">
+          <div class="forum-vazio">Carregando feed...</div>
+        </section>
       </div>
 
       <aside class="forum-coluna comunidade-sidebar">
@@ -152,8 +259,87 @@
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
   <script src="forum-plano-snapshot.js?v=20260621-1"></script>
-  <script src="forum.js?v=20260621-1"></script>
+  <script src="forum.js?v=20260621-2"></script>
   <script src="forum-actions-menu.js?v=20260620-2"></script>
   <script src="forum-perfil-social.js?v=20260620-2"></script>
+  <script>
+    async function forumAbrirMeuPerfil() {
+      try {
+        let userId = localStorage.getItem('id') || '';
+        if (!userId && window._supabase) {
+          const { data } = await _supabase.auth.getSession();
+          userId = data?.session?.user?.id || '';
+        }
+
+        if (userId) {
+          window.location.href = `/perfil.html?id=${encodeURIComponent(userId)}`;
+          return;
+        }
+      } catch (_) {}
+
+      try { localStorage.setItem('fs_destino_apos_login', '/social.html'); } catch (_) {}
+      window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/social.html');
+    }
+
+    (function instalarPullRefreshForum() {
+      let inicioY = 0;
+      let puxando = false;
+      let pronto = false;
+      let bloqueado = false;
+      const indicador = document.getElementById('forum-pull-refresh-indicator');
+
+      function topoDaPagina() {
+        return (window.scrollY || document.documentElement.scrollTop || 0) <= 4;
+      }
+
+      function mostrar(texto, classePronto) {
+        if (!indicador) return;
+        indicador.textContent = texto;
+        indicador.classList.add('ativo');
+        indicador.classList.toggle('pronto', !!classePronto);
+      }
+
+      function ocultar() {
+        if (!indicador) return;
+        indicador.classList.remove('ativo', 'pronto');
+      }
+
+      window.addEventListener('touchstart', event => {
+        if (bloqueado || !topoDaPagina() || event.touches.length !== 1) return;
+        inicioY = event.touches[0].clientY;
+        puxando = true;
+        pronto = false;
+      }, { passive: true });
+
+      window.addEventListener('touchmove', event => {
+        if (!puxando || bloqueado || event.touches.length !== 1) return;
+        const delta = event.touches[0].clientY - inicioY;
+        if (delta < 28) return;
+        pronto = delta > 92;
+        mostrar(pronto ? 'Solte para atualizar' : 'Puxe para atualizar', pronto);
+      }, { passive: true });
+
+      window.addEventListener('touchend', async () => {
+        if (!puxando) return;
+        puxando = false;
+
+        if (!pronto || typeof window.forumCarregarTopicos !== 'function') {
+          ocultar();
+          return;
+        }
+
+        bloqueado = true;
+        mostrar('Atualizando feed...', true);
+        try {
+          await window.forumCarregarTopicos();
+        } finally {
+          setTimeout(() => {
+            ocultar();
+            bloqueado = false;
+          }, 700);
+        }
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>
