@@ -12,9 +12,8 @@
   <meta name="description" content="Social FS Orçamentos: rede social para prestadores de serviço trocarem dúvidas, experiências, orçamentos, cobrança, garantia, oficina e rotina profissional.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="forum-actions-menu.css?v=20260619-1">
-  <link rel="stylesheet" href="forum-modal-fix.css?v=20260618-1">
-  <link rel="stylesheet" href="forum-publicacao-modal.css?v=20260620-1">
+  <link rel="stylesheet" href="forum-actions-menu.css?v=20260620-2">
+  <link rel="stylesheet" href="forum-modal-fix.css?v=20260620-2">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -48,7 +47,7 @@
           <button type="button" class="forum-btn">Publicar</button>
         </article>
 
-        <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;">
+        <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;" aria-hidden="true">
           <div class="forum-card-topo">
             <div>
               <h2>Criar publicação</h2>
@@ -56,28 +55,6 @@
             </div>
             <button type="button" class="forum-btn-secundario" onclick="forumOcultarFormularioNovoTopico()">Fechar</button>
           </div>
-
-          <form id="forum-form-topico" class="forum-form" onsubmit="forumCriarTopico(event)">
-            <label>
-              Título da publicação
-              <input id="forum-topico-titulo" type="text" maxlength="120" placeholder="Ex: Como cobrar diagnóstico antes do orçamento?" required>
-            </label>
-            <label>
-              Categoria
-              <select id="forum-topico-categoria" required></select>
-            </label>
-            <label>
-              Conteúdo
-              <textarea id="forum-topico-descricao" maxlength="4000" placeholder="Conte o contexto, o que aconteceu, o que você já tentou ou qual opinião precisa da comunidade." required></textarea>
-            </label>
-            <label>
-              Fotos da publicação
-              <input id="forum-topico-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="forumValidarFotosSelecionadas()">
-              <small>Opcional. Até 2 fotos, máximo 2 MB por foto. Formatos: JPG, PNG ou WEBP.</small>
-            </label>
-            <div id="forum-preview-fotos" class="forum-preview-fotos"></div>
-            <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar na comunidade</button>
-          </form>
         </article>
 
         <article class="forum-card branco comunidade-feed-card">
@@ -173,9 +150,9 @@
   <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
-  <script src="forum-plano-snapshot.js?v=20260620-3"></script>
-  <script src="forum.js?v=20260620-2"></script>
-  <script src="forum-actions-menu.js?v=20260617-1"></script>
-  <script src="forum-perfil-social.js?v=20260619-1"></script>
+  <script src="forum-plano-snapshot.js?v=20260620-4"></script>
+  <script src="forum.js?v=20260620-3"></script>
+  <script src="forum-actions-menu.js?v=20260620-2"></script>
+  <script src="forum-perfil-social.js?v=20260620-2"></script>
 </body>
 </html>
