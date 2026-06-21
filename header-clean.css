@@ -6,6 +6,8 @@
 :root {
   --fs-header-altura-mobile: 64px;
   --fs-header-altura-desktop: 68px;
+  --fs-header-respiro: 16px;
+  --fs-header-offset: calc(var(--fs-header-altura-desktop) + var(--fs-header-respiro));
 }
 
 html,
@@ -15,8 +17,12 @@ body {
   overflow-x: hidden !important;
 }
 
+html {
+  scroll-padding-top: var(--fs-header-offset) !important;
+}
+
 body:not(.gerando-pdf):not(.modo-embed-gestao) {
-  padding-top: var(--fs-header-altura-desktop) !important;
+  padding-top: var(--fs-header-offset) !important;
 }
 
 #header-container {
@@ -254,8 +260,8 @@ body.modo-embed-gestao #header-container { display: none !important; }
 }
 
 @media (max-width: 900px) {
-  body:not(.gerando-pdf):not(.modo-embed-gestao) {
-    padding-top: var(--fs-header-altura-mobile) !important;
+  :root {
+    --fs-header-offset: calc(var(--fs-header-altura-mobile) + var(--fs-header-respiro));
   }
 
   .header-shell {
