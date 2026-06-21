@@ -1,6 +1,6 @@
 /* =========================================================
    FS ORÇAMENTOS — compatibilidade de publicação no Fórum
-   Mantém os inserts e o modal de publicação compatíveis.
+   Mantém os inserts compatíveis sem observar mutations infinitas.
    ========================================================= */
 (function () {
   'use strict';
@@ -51,14 +51,20 @@
     if (!el) return;
     el.hidden = false;
     el.removeAttribute('hidden');
-    el.style.setProperty('display', display, 'important');
-    el.style.setProperty('visibility', 'visible', 'important');
-    el.style.setProperty('opacity', '1', 'important');
-    el.style.setProperty('height', 'auto', 'important');
-    el.style.setProperty('max-height', 'none', 'important');
-    el.style.setProperty('overflow', 'visible', 'important');
-    el.style.setProperty('position', 'static', 'important');
-    el.style.setProperty('transform', 'none', 'important');
+
+    const estilos = {
+      display,
+      visibility: 'visible',
+      opacity: '1',
+      height: 'auto',
+      maxHeight: 'none',
+      overflow: 'visible',
+      transform: 'none'
+    };
+
+    Object.entries(estilos).forEach(([prop, valor]) => {
+      if (el.style[prop] !== valor) el.style.setProperty(prop.replace(/[A-Z]/g, m => '-' + m.toLowerCase()), valor, 'important');
+    });
   }
 
   function corrigirModalPublicacao() {
@@ -87,30 +93,31 @@
     } catch (_) {}
   }
 
-  function instalarObservadorModal() {
-    if (window.__fsForumModalPublicacaoObserver) return;
-    window.__fsForumModalPublicacaoObserver = true;
+  function agendarCorrecaoModal() {
+    if (window.__fsForumModalCorrecaoAgendada) return;
+    window.__fsForumModalCorrecaoAgendada = true;
+    requestAnimationFrame(() => {
+      window.__fsForumModalCorrecaoAgendada = false;
+      corrigirModalPublicacao();
+    });
+  }
+
+  function instalarEventosModal() {
+    if (window.__fsForumModalPublicacaoEventos) return;
+    window.__fsForumModalPublicacaoEventos = true;
 
     document.addEventListener('click', (event) => {
       if (event.target?.closest?.('.forum-btn, .forum-composer-card, #forum-form-card')) {
-        setTimeout(corrigirModalPublicacao, 40);
-        setTimeout(corrigirModalPublicacao, 180);
+        setTimeout(agendarCorrecaoModal, 40);
+        setTimeout(agendarCorrecaoModal, 180);
       }
     }, true);
-
-    const observer = new MutationObserver(() => corrigirModalPublicacao());
-    observer.observe(document.documentElement, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class', 'style', 'hidden']
-    });
   }
 
   function iniciar() {
     instalarPatchInsert();
     corrigirModalPublicacao();
-    instalarObservadorModal();
+    instalarEventosModal();
   }
 
   if (document.readyState === 'loading') {
