@@ -215,7 +215,7 @@
 
     <section class="gestao-frame-box">
       <div id="gestao-loading" class="gestao-loading">Carregando módulo...</div>
-      <iframe id="gestao-frame" title="Módulo de gestão" src="clientes.html?embed=1"></iframe>
+      <iframe id="gestao-frame" title="Módulo de gestão" src="about:blank"></iframe>
     </section>
   </main>
 
@@ -231,6 +231,7 @@
     const tabs = Array.from(document.querySelectorAll('.gestao-tab'));
     const headerContainer = document.getElementById('header-container');
     const FS_GESTAO_TEMA_CINZA_URL = '/fs-theme-cinza.css?v=20260621-gestao-cinza-1';
+    let fsGestaoSrcAtual = '';
 
     function medirHeaderGestao() {
       const candidatos = [
@@ -260,7 +261,7 @@
     function aplicarTemaCinzaNoFrame() {
       try {
         const doc = frame.contentDocument || frame.contentWindow?.document;
-        if (!doc?.head) return;
+        if (!doc?.head || doc.location?.href === 'about:blank') return;
 
         doc.documentElement.classList.add('fs-embed', 'fs-gestao-tema-cinza');
         doc.body?.classList.add('fs-gestao-tema-cinza');
@@ -272,13 +273,17 @@
           link.rel = 'stylesheet';
           doc.head.appendChild(link);
         }
-        link.href = FS_GESTAO_TEMA_CINZA_URL;
+        if (link.href !== new URL(FS_GESTAO_TEMA_CINZA_URL, location.origin).href) {
+          link.href = FS_GESTAO_TEMA_CINZA_URL;
+        }
       } catch (error) {
         console.warn('Não foi possível aplicar o tema cinza no módulo da gestão.', error);
       }
     }
 
     function abrirModuloGestao(src, push = true) {
+      if (!src || fsGestaoSrcAtual === src) return;
+      fsGestaoSrcAtual = src;
       tabs.forEach(btn => btn.classList.toggle('ativo', btn.dataset.src === src));
       loading.classList.add('ativo');
       frame.src = src;
@@ -309,8 +314,8 @@
     setTimeout(medirHeaderGestao, 1200);
 
     const hashInicial = String(location.hash || '').replace('#', '');
-    const tabInicial = tabs.find(btn => btn.dataset.src.startsWith(hashInicial + '.html'));
-    if (tabInicial) abrirModuloGestao(tabInicial.dataset.src, false);
+    const tabInicial = tabs.find(btn => btn.dataset.src.startsWith(hashInicial + '.html')) || tabs[0];
+    abrirModuloGestao(tabInicial.dataset.src, false);
   </script>
 </body>
 </html>
