@@ -29,6 +29,8 @@
   display: none !important;
 }
 
+#forum-detalhe .forum-topico-acoes,
+#forum-detalhe .forum-acoes-compactas,
 .fs-item-modal-corpo .forum-topico-acoes,
 .fs-item-modal-corpo .forum-acoes-compactas {
   display: flex !important;
@@ -41,6 +43,8 @@
   flex-wrap: wrap !important;
 }
 
+#forum-detalhe .forum-curtir-slot,
+#forum-detalhe .forum-acoes-menu-wrap,
 .fs-item-modal-corpo .forum-curtir-slot,
 .fs-item-modal-corpo .forum-acoes-menu-wrap {
   display: inline-flex !important;
@@ -48,6 +52,8 @@
   position: relative !important;
 }
 
+#forum-detalhe .forum-curtir-slot .forum-like-btn,
+#forum-detalhe .forum-topico-acoes .forum-like-btn,
 .fs-item-modal-corpo .forum-curtir-slot .forum-like-btn,
 .fs-item-modal-corpo .forum-topico-acoes .forum-like-btn {
   min-width: 52px !important;
@@ -66,6 +72,9 @@
   box-shadow: none !important;
 }
 
+#forum-detalhe .forum-curtir-slot .forum-like-btn.curtido,
+#forum-detalhe .forum-curtir-slot .forum-like-btn.ativo,
+#forum-detalhe .forum-curtir-slot .forum-like-btn[aria-pressed="true"],
 .fs-item-modal-corpo .forum-curtir-slot .forum-like-btn.curtido,
 .fs-item-modal-corpo .forum-curtir-slot .forum-like-btn.ativo,
 .fs-item-modal-corpo .forum-curtir-slot .forum-like-btn[aria-pressed="true"] {
@@ -74,6 +83,7 @@
   border-color: var(--fs-borda, #d1d5db) !important;
 }
 
+#forum-detalhe .forum-menu-trigger,
 .fs-item-modal-corpo .forum-menu-trigger {
   width: 32px !important;
   height: 31px !important;
@@ -93,12 +103,14 @@
   padding: 0 !important;
 }
 
+#forum-detalhe .forum-acoes-menu-wrap.aberto .forum-menu-trigger,
 .fs-item-modal-corpo .forum-acoes-menu-wrap.aberto .forum-menu-trigger {
   background: var(--fs-cinza-900, #111827) !important;
   color: var(--fs-amarelo, #ffc400) !important;
   border-color: var(--fs-cinza-900, #111827) !important;
 }
 
+#forum-detalhe .forum-acoes-menu,
 .fs-item-modal-corpo .forum-acoes-menu {
   display: none !important;
   position: absolute !important;
@@ -113,11 +125,13 @@
   z-index: 9999 !important;
 }
 
+#forum-detalhe .forum-acoes-menu-wrap.aberto .forum-acoes-menu,
 .fs-item-modal-corpo .forum-acoes-menu-wrap.aberto .forum-acoes-menu {
   display: grid !important;
   gap: 4px !important;
 }
 
+#forum-detalhe .forum-menu-item,
 .fs-item-modal-corpo .forum-menu-item {
   width: 100% !important;
   min-height: 32px !important;
@@ -136,10 +150,12 @@
   font-family: inherit !important;
 }
 
+#forum-detalhe .forum-menu-item:hover,
 .fs-item-modal-corpo .forum-menu-item:hover {
   background: #f3f4f6 !important;
 }
 
+#forum-detalhe .forum-menu-item.destaque,
 .fs-item-modal-corpo .forum-menu-item.destaque {
   background: #f3f4f6 !important;
   color: var(--fs-cinza-900, #111827) !important;
@@ -147,6 +163,7 @@
   font-weight: 900 !important;
 }
 
+#forum-detalhe .forum-menu-item.perigo,
 .fs-item-modal-corpo .forum-menu-item.perigo {
   background: #fff5f5 !important;
   color: #b91c1c !important;
@@ -154,6 +171,8 @@
 }
 
 @media (max-width: 520px) {
+  #forum-detalhe .forum-topico-acoes,
+  #forum-detalhe .forum-acoes-compactas,
   .fs-item-modal-corpo .forum-topico-acoes,
   .fs-item-modal-corpo .forum-acoes-compactas {
     display: grid !important;
@@ -161,16 +180,21 @@
     gap: 6px !important;
   }
 
+  #forum-detalhe .forum-acoes-menu-wrap,
+  #forum-detalhe .forum-curtir-slot,
+  #forum-detalhe .forum-like-btn,
   .fs-item-modal-corpo .forum-acoes-menu-wrap,
   .fs-item-modal-corpo .forum-curtir-slot,
   .fs-item-modal-corpo .forum-like-btn {
     width: 100% !important;
   }
 
+  #forum-detalhe .forum-menu-trigger,
   .fs-item-modal-corpo .forum-menu-trigger {
     width: 100% !important;
   }
 
+  #forum-detalhe .forum-acoes-menu,
   .fs-item-modal-corpo .forum-acoes-menu {
     width: min(235px, calc(100vw - 32px)) !important;
   }
