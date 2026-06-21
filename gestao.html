@@ -8,6 +8,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    if (String(location.hash || '').replace('#', '') === 'relatorios') {
+      location.replace('/relatorios.html?origem=gestao');
+    }
+  </script>
   <title>Gestão - FS Orçamentos</title>
   <meta name="description" content="Central de gestão do FS Orçamentos com clientes, veículos, ordens de serviço, estoque, agenda, relatórios e recorrentes.">
   <meta name="robots" content="noindex, nofollow">
@@ -17,9 +22,7 @@
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
-    :root {
-      --gestao-header-h: 118px;
-    }
+    :root { --gestao-header-h: 118px; }
 
     html,
     body {
@@ -64,9 +67,7 @@
       z-index: 10;
     }
 
-    .gestao-topo {
-      display: none !important;
-    }
+    .gestao-topo { display: none !important; }
 
     .gestao-tabs-wrap {
       flex: 0 0 auto;
@@ -75,7 +76,6 @@
       width: 100%;
       background: #ffffff;
       border: 0;
-      border-top: 0;
       border-bottom: 1px solid #d1d5db;
       border-radius: 0;
       padding: 4px 6px;
@@ -165,33 +165,14 @@
       display: none;
     }
 
-    .gestao-loading.ativo {
-      display: block;
-    }
-
-    body > footer {
-      display: none !important;
-    }
+    .gestao-loading.ativo { display: block; }
+    body > footer { display: none !important; }
 
     @media (max-width: 760px) {
-      :root {
-        --gestao-header-h: 128px;
-      }
-
-      .gestao-tabs-wrap {
-        padding: 3px 4px;
-      }
-
-      .gestao-tabs {
-        min-width: 620px;
-        border-spacing: 4px;
-      }
-
-      .gestao-tab {
-        min-height: 30px;
-        font-size: 11px;
-        padding: 5px 6px;
-      }
+      :root { --gestao-header-h: 128px; }
+      .gestao-tabs-wrap { padding: 3px 4px; }
+      .gestao-tabs { min-width: 620px; border-spacing: 4px; }
+      .gestao-tab { min-height: 30px; font-size: 11px; padding: 5px 6px; }
     }
   </style>
 </head>
@@ -207,7 +188,7 @@
           <td><button class="gestao-tab" type="button" data-src="ordens.html?embed=1">OS</button></td>
           <td><button class="gestao-tab" type="button" data-src="estoque.html?embed=1">Estoque</button></td>
           <td><button class="gestao-tab" type="button" data-src="agenda.html?embed=1">Agenda</button></td>
-          <td><button class="gestao-tab" type="button" data-src="relatorios.html?embed=1">Relatórios</button></td>
+          <td><button class="gestao-tab" type="button" data-direct="/relatorios.html?origem=gestao">Relatórios</button></td>
           <td><button class="gestao-tab" type="button" data-src="recorrentes.html?embed=1">Recorrentes</button></td>
         </tr>
       </table>
@@ -251,10 +232,7 @@
         if (h > altura) altura = h;
       });
 
-      if (!altura || altura < 64) {
-        altura = window.innerWidth <= 760 ? 128 : 118;
-      }
-
+      if (!altura || altura < 64) altura = window.innerWidth <= 760 ? 128 : 118;
       document.documentElement.style.setProperty('--gestao-header-h', `${altura}px`);
     }
 
@@ -273,9 +251,9 @@
           link.rel = 'stylesheet';
           doc.head.appendChild(link);
         }
-        if (link.href !== new URL(FS_GESTAO_TEMA_CINZA_URL, location.origin).href) {
-          link.href = FS_GESTAO_TEMA_CINZA_URL;
-        }
+
+        const hrefFinal = new URL(FS_GESTAO_TEMA_CINZA_URL, location.origin).href;
+        if (link.href !== hrefFinal) link.href = FS_GESTAO_TEMA_CINZA_URL;
       } catch (error) {
         console.warn('Não foi possível aplicar o tema cinza no módulo da gestão.', error);
       }
@@ -294,13 +272,20 @@
     }
 
     tabs.forEach(btn => {
-      btn.addEventListener('click', () => abrirModuloGestao(btn.dataset.src));
+      btn.addEventListener('click', () => {
+        if (btn.dataset.direct) {
+          window.location.href = btn.dataset.direct;
+          return;
+        }
+        abrirModuloGestao(btn.dataset.src);
+      });
     });
 
     frame.addEventListener('load', () => {
       aplicarTemaCinzaNoFrame();
       loading.classList.remove('ativo');
     });
+
     window.addEventListener('resize', () => setTimeout(medirHeaderGestao, 80));
     window.addEventListener('orientationchange', () => setTimeout(medirHeaderGestao, 250));
 
@@ -314,7 +299,7 @@
     setTimeout(medirHeaderGestao, 1200);
 
     const hashInicial = String(location.hash || '').replace('#', '');
-    const tabInicial = tabs.find(btn => btn.dataset.src.startsWith(hashInicial + '.html')) || tabs[0];
+    const tabInicial = tabs.find(btn => btn.dataset.src && btn.dataset.src.startsWith(hashInicial + '.html')) || tabs[0];
     abrirModuloGestao(tabInicial.dataset.src, false);
   </script>
 </body>
