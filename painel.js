@@ -1,12 +1,27 @@
-// ==================== VARIÁVEIS GLOBAIS ====================
+// ==================== ESTADO DO PAINEL ====================
 
 let perfilAtual = null;
-let painelJaCarregado = false;
 let responsaveisCache = [];
+let painelCarregando = false;
+let painelUsuarioInicializado = null;
 
 // ==================== INICIALIZAÇÃO ====================
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', iniciarPainel);
+
+if (window._supabase?.auth) {
+  _supabase.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user?.id) {
+      await inicializarPainel(session);
+      return;
+    }
+
+    resetarEstadoPainel();
+    mostrarAreaLoginPainel();
+  });
+}
+
+async function iniciarPainel() {
   const session = await obterSessaoPainel();
 
   if (!session) {
@@ -15,46 +30,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   await inicializarPainel(session);
-});
-
-if (window._supabase) {
-  _supabase.auth.onAuthStateChange(async (event, session) => {
-    if (session) {
-      await inicializarPainel(session);
-      return;
-    }
-
-    painelJaCarregado = false;
-    perfilAtual = null;
-    window.perfilAtual = null;
-    responsaveisCache = [];
-
-    mostrarAreaLoginPainel();
-  });
 }
 
-async function inicializarPainel(session) {
-  mostrarConteudoProtegidoPainel();
+async function inicializarPainel(session, opcoes = {}) {
+  if (!session?.user?.id) return;
 
-  limparCardsPlanoDuplicados();
+  const forcar = opcoes.forcar === true;
 
-  await carregarPerfil();
-  await carregarResponsaveis();
+  if (!forcar && painelCarregando) return;
+  if (!forcar && painelUsuarioInicializado === session.user.id) return;
 
-  configurarUploadLogo();
+  painelCarregando = true;
 
-  atualizarCardPlano(perfilAtual);
+  try {
+    mostrarConteudoProtegidoPainel();
 
-  await carregarResumoOrdensServicoPainel();
-  await carregarIndicadoresPremiumPainel();
-  await carregarResumoRelatoriosRecorrentesPainel();
-  await carregarDashboardPainel();
-  await carregarUltimosOrcamentosPainel();
+    await carregarPerfil();
+    await carregarResponsaveis();
+    configurarUploadLogo();
+    atualizarCardPlano(perfilAtual);
 
-  painelJaCarregado = true;
+    await Promise.all([
+      carregarResumoOrdensServicoPainel(),
+      carregarIndicadoresPremiumPainel(),
+      carregarResumoRelatoriosRecorrentesPainel(),
+      carregarDashboardPainel(),
+      carregarUltimosOrcamentosPainel()
+    ]);
+
+    painelUsuarioInicializado = session.user.id;
+  } catch (error) {
+    console.error('Erro ao inicializar painel:', error);
+  } finally {
+    painelCarregando = false;
+  }
 }
 
-// ==================== HELPERS BÁSICOS ====================
+function resetarEstadoPainel() {
+  perfilAtual = null;
+  responsaveisCache = [];
+  painelCarregando = false;
+  painelUsuarioInicializado = null;
+  window.perfilAtual = null;
+}
+
+// ==================== HELPERS ====================
 
 function pegarElemento(id) {
   return document.getElementById(id);
@@ -67,7 +87,7 @@ function setValor(id, valor) {
 
 function getValor(id) {
   const el = pegarElemento(id);
-  return el ? el.value.trim() : '';
+  return el ? String(el.value || '').trim() : '';
 }
 
 function valorOuTraco(valor) {
@@ -83,16 +103,43 @@ function escaparHtmlPainel(valor) {
     .replace(/'/g, '&#039;');
 }
 
-function normalizarPlanoPainel(valor) {
-  return String(valor || 'gratis')
+function normalizarTextoPainel(valor, padrao = '') {
+  const texto = valor === null || valor === undefined || valor === '' ? padrao : valor;
+
+  return String(texto)
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .trim();
 }
 
+function normalizarStatusPainel(valor) {
+  return normalizarTextoPainel(valor)
+    .replace(/\s+/g, '_')
+    .replace(/-/g, '_');
+}
+
+function normalizarPlanoPainel(valor) {
+  return normalizarTextoPainel(valor, 'gratis');
+}
+
+function converterNumeroPainel(valor) {
+  if (valor === null || valor === undefined || valor === '') return 0;
+  if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
+
+  let texto = String(valor).trim().replace(/[^\d.,-]/g, '');
+  if (!texto) return 0;
+
+  if (texto.includes(',')) {
+    texto = texto.replace(/\./g, '').replace(',', '.');
+  }
+
+  const numero = Number(texto);
+  return Number.isFinite(numero) ? numero : 0;
+}
+
 function formatarMoedaPainel(valor) {
-  return Number(valor || 0).toLocaleString('pt-BR', {
+  return converterNumeroPainel(valor).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   });
@@ -102,8 +149,7 @@ function formatarDataPainel(dataValor) {
   if (!dataValor) return '-';
 
   const data = new Date(dataValor);
-
-  if (isNaN(data.getTime())) return '-';
+  if (Number.isNaN(data.getTime())) return '-';
 
   return data.toLocaleDateString('pt-BR');
 }
@@ -112,8 +158,7 @@ function formatarDataHoraPainel(dataValor) {
   if (!dataValor) return '-';
 
   const data = new Date(dataValor);
-
-  if (isNaN(data.getTime())) return '-';
+  if (Number.isNaN(data.getTime())) return '-';
 
   return data.toLocaleString('pt-BR', {
     dateStyle: 'short',
@@ -121,120 +166,22 @@ function formatarDataHoraPainel(dataValor) {
   });
 }
 
-function diasAteExpirar(dataValor) {
+function diasAteDataPainel(dataValor) {
   if (!dataValor) return null;
 
   const hoje = new Date();
-  const expira = new Date(dataValor);
+  const data = new Date(String(dataValor).substring(0, 10) + 'T00:00:00');
 
-  if (isNaN(expira.getTime())) return null;
+  if (Number.isNaN(data.getTime())) return null;
 
   hoje.setHours(0, 0, 0, 0);
-  expira.setHours(0, 0, 0, 0);
+  data.setHours(0, 0, 0, 0);
 
-  const diff = expira.getTime() - hoje.getTime();
-
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+  return Math.ceil((data.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
 }
 
-function planoLabel(plano) {
-  const p = normalizarPlanoPainel(plano);
-
-  if (p === 'premium') return 'Plano Premium';
-  if (p === 'basico') return 'Plano Básico';
-
-  return 'Plano Grátis';
-}
-
-function statusPlanoLabel(status) {
-  const s = normalizarPlanoPainel(status || 'ativo');
-
-  if (s === 'ativo') return 'Ativo';
-  if (s === 'teste_gratis') return 'Teste grátis';
-  if (s === 'pago') return 'Ativo';
-  if (s === 'cancelado') return 'Cancelado';
-  if (s === 'expirado') return 'Expirado';
-  if (s === 'pendente') return 'Pendente';
-
-  return status || 'Ativo';
-}
-
-function statusOrcamentoLabel(status) {
-  const mapa = {
-    pendente: 'Pendente',
-    aprovado: 'Aprovado',
-    recusado: 'Recusado',
-    em_servico: 'Em serviço',
-    finalizado: 'Finalizado'
-  };
-
-  return mapa[status] || status || 'Pendente';
-}
-
-function formaPagamentoPainelLabel(valor) {
-  const forma = normalizarPlanoPainel(valor);
-
-  const mapa = {
-    pix: 'Pix',
-    dinheiro: 'Dinheiro',
-    credito: 'Crédito',
-    debito: 'Débito',
-    cartao_credito: 'Cartão de crédito',
-    cartao_debito: 'Cartão de débito'
-  };
-
-  return mapa[forma] || (valor ? String(valor) : '-');
-}
-
-function mostrarStatus(id, mensagem, tipo = 'sucesso') {
-  const el = document.getElementById(id);
-  if (!el) return;
-
-  el.className = `status-msg ${tipo}`;
-  el.innerText = mensagem;
-
-  if (mensagem) {
-    setTimeout(() => {
-      el.className = 'status-msg';
-      el.innerText = '';
-    }, 4500);
-  }
-}
-
-function atualizarTexto(id, valor) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = valor;
-}
-
-function converterNumeroPainel(valor) {
-  if (valor === null || valor === undefined || valor === '') return 0;
-
-  if (typeof valor === 'number') {
-    return Number.isFinite(valor) ? valor : 0;
-  }
-
-  let texto = String(valor).trim();
-
-  if (!texto) return 0;
-
-  texto = texto.replace(/[^\d.,-]/g, '');
-
-  const temVirgula = texto.includes(',');
-  const temPonto = texto.includes('.');
-
-  if (temVirgula) {
-    texto = texto.replace(/\./g, '').replace(',', '.');
-    const numeroBR = Number(texto);
-    return Number.isFinite(numeroBR) ? numeroBR : 0;
-  }
-
-  if (temPonto) {
-    const numeroUS = Number(texto);
-    return Number.isFinite(numeroUS) ? numeroUS : 0;
-  }
-
-  const numero = Number(texto);
-  return Number.isFinite(numero) ? numero : 0;
+function diasAteExpirar(dataValor) {
+  return diasAteDataPainel(dataValor);
 }
 
 function estaNoMesAtualPainel(dataValor) {
@@ -248,20 +195,98 @@ function estaNoMesAtualPainel(dataValor) {
   return data.getMonth() === agora.getMonth() && data.getFullYear() === agora.getFullYear();
 }
 
-function statusPagamentoEhPagoPainel(status) {
-  const s = normalizarStatusOrdemServicoPainel(status);
-  return ['pago', 'quitado', 'recebido', 'concluido'].includes(s);
+function atualizarTexto(id, valor) {
+  const el = pegarElemento(id);
+  if (el) el.innerText = String(valor ?? '');
 }
 
-function obterDataConclusaoOSPainel(os) {
-  return os?.data_conclusao || os?.concluido_em || os?.finalizado_em || os?.updated_at || os?.created_at || os?.criado_em || null;
+function mostrarStatus(id, mensagem, tipo = 'sucesso') {
+  const el = pegarElemento(id);
+  if (!el) return;
+
+  el.className = `status-msg ${tipo}`;
+  el.innerText = mensagem || '';
+
+  if (mensagem) {
+    setTimeout(() => {
+      el.className = 'status-msg';
+      el.innerText = '';
+    }, 4500);
+  }
+}
+
+function planoLabel(plano) {
+  const p = normalizarPlanoPainel(plano);
+  if (p === 'premium') return 'Plano Premium';
+  if (p === 'basico') return 'Plano Básico';
+  return 'Plano Grátis';
+}
+
+function statusPlanoLabel(status) {
+  const s = normalizarStatusPainel(status || 'ativo');
+
+  const mapa = {
+    ativo: 'Ativo',
+    pago: 'Ativo',
+    teste_gratis: 'Teste grátis',
+    cancelado: 'Cancelado',
+    expirado: 'Expirado',
+    pendente: 'Pendente'
+  };
+
+  return mapa[s] || status || 'Ativo';
+}
+
+function statusOrcamentoLabel(status) {
+  const s = normalizarStatusPainel(status || 'pendente');
+
+  const mapa = {
+    pendente: 'Pendente',
+    aprovado: 'Aprovado',
+    recusado: 'Recusado',
+    em_servico: 'Em serviço',
+    finalizado: 'Finalizado'
+  };
+
+  return mapa[s] || status || 'Pendente';
+}
+
+function formaPagamentoPainelLabel(valor) {
+  const forma = normalizarStatusPainel(valor);
+
+  const mapa = {
+    pix: 'Pix',
+    dinheiro: 'Dinheiro',
+    credito: 'Crédito',
+    debito: 'Débito',
+    cartao_credito: 'Cartão de crédito',
+    cartao_debito: 'Cartão de débito',
+    boleto: 'Boleto',
+    transferencia: 'Transferência',
+    outro: 'Outro'
+  };
+
+  return mapa[forma] || (valor ? String(valor) : '-');
+}
+
+async function obterSessaoPainel() {
+  try {
+    if (!window._supabase?.auth) return null;
+
+    const { data: { session }, error } = await _supabase.auth.getSession();
+    if (error || !session) return null;
+
+    return session;
+  } catch (error) {
+    console.error('Erro ao obter sessão:', error);
+    return null;
+  }
 }
 
 async function buscarTabelaDoUsuarioPainel(tabela, colunas = '*', opcoes = {}) {
   const session = await obterSessaoPainel();
   if (!session) return [];
 
-  const usuarioId = session.user.id;
   const camposUsuario = opcoes.camposUsuario || ['user_id', 'usuario_id', 'id_usuario'];
   const orderBy = opcoes.orderBy || null;
   const ascending = opcoes.ascending ?? false;
@@ -271,21 +296,14 @@ async function buscarTabelaDoUsuarioPainel(tabela, colunas = '*', opcoes = {}) {
     let query = _supabase
       .from(tabela)
       .select(colunas)
-      .eq(campo, usuarioId);
+      .eq(campo, session.user.id);
 
-    if (orderBy) {
-      query = query.order(orderBy, { ascending });
-    }
-
-    if (limit) {
-      query = query.limit(limit);
-    }
+    if (orderBy) query = query.order(orderBy, { ascending });
+    if (limit) query = query.limit(limit);
 
     const { data, error } = await query;
 
-    if (!error) {
-      return Array.isArray(data) ? data : [];
-    }
+    if (!error) return Array.isArray(data) ? data : [];
 
     const textoErro = String(error.message || error.details || error.hint || '').toLowerCase();
     const erroDeColuna = textoErro.includes('column') || textoErro.includes('schema cache') || textoErro.includes('could not find');
@@ -302,86 +320,32 @@ async function buscarTabelaDoUsuarioPainel(tabela, colunas = '*', opcoes = {}) {
 // ==================== CONTROLE DE TELA ====================
 
 function mostrarAreaLoginPainel() {
-  const authArea = document.getElementById('auth-area');
-  const conteudo = document.getElementById('conteudo-protegido');
+  const authArea = pegarElemento('auth-area');
+  const conteudo = pegarElemento('conteudo-protegido');
 
   if (authArea) authArea.style.display = 'block';
   if (conteudo) conteudo.style.display = 'none';
 }
 
 function mostrarConteudoProtegidoPainel() {
-  const authArea = document.getElementById('auth-area');
-  const conteudo = document.getElementById('conteudo-protegido');
+  const authArea = pegarElemento('auth-area');
+  const conteudo = pegarElemento('conteudo-protegido');
 
   if (authArea) authArea.style.display = 'none';
   if (conteudo) conteudo.style.display = 'block';
 }
 
-async function obterSessaoPainel() {
-  try {
-    if (!window._supabase) return null;
-
-    const { data: { session }, error } = await _supabase.auth.getSession();
-
-    if (error || !session) return null;
-
-    return session;
-  } catch (error) {
-    console.error('Erro ao obter sessão:', error);
-    return null;
-  }
-}
-
-// ==================== LIMPEZA DE DUPLICAÇÕES ====================
-
-function limparCardsPlanoDuplicados() {
-  const cardsPorId = document.querySelectorAll('#card-plano-painel');
-
-  cardsPorId.forEach(card => {
-    card.remove();
-  });
-
-  const cardsPainel = document.querySelectorAll('.painel-card');
-
-  cardsPainel.forEach(card => {
-    const titulo = card.querySelector('h2');
-
-    if (
-      titulo &&
-      titulo.innerText &&
-      titulo.innerText.trim().toLowerCase() === 'dados do plano'
-    ) {
-      card.remove();
-    }
-  });
-}
-
 // ==================== PLANO / ASSINATURA ====================
 
 function usuarioJaTemPlanoPago(perfil) {
-  const plano = normalizarPlanoPainel(
-    perfil?.plano ||
-    localStorage.getItem('usuario_plano') ||
-    'gratis'
-  );
-
-  const status = normalizarPlanoPainel(
-    perfil?.plano_status ||
-    localStorage.getItem('usuario_plano_status') ||
-    'ativo'
-  );
+  const plano = normalizarPlanoPainel(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis');
+  const status = normalizarStatusPainel(perfil?.plano_status || localStorage.getItem('usuario_plano_status') || 'ativo');
 
   if (plano === 'premium') return true;
 
-  if (plano === 'basico' && status !== 'cancelado' && status !== 'expirado') {
-    const dias = diasAteExpirar(
-      perfil?.plano_expira_em ||
-      localStorage.getItem('usuario_plano_expira_em')
-    );
-
-    if (dias === null) return true;
-
-    return dias >= 0;
+  if (plano === 'basico' && !['cancelado', 'expirado'].includes(status)) {
+    const dias = diasAteExpirar(perfil?.plano_expira_em || localStorage.getItem('usuario_plano_expira_em'));
+    return dias === null || dias >= 0;
   }
 
   return false;
@@ -393,7 +357,7 @@ function montarTextoExpiracaoPlano(perfil) {
 
   if (plano === 'gratis') return 'Sem expiração';
 
-  if (normalizarPlanoPainel(perfil?.plano_status) === 'teste_gratis' && perfil?.teste_premium_fim) {
+  if (normalizarStatusPainel(perfil?.plano_status) === 'teste_gratis' && perfil?.teste_premium_fim) {
     const diasTeste = diasAteExpirar(perfil.teste_premium_fim);
     const dataTeste = formatarDataPainel(perfil.teste_premium_fim);
 
@@ -409,7 +373,6 @@ function montarTextoExpiracaoPlano(perfil) {
   const dataFormatada = formatarDataPainel(expiraEm);
 
   if (dias === null) return dataFormatada;
-
   if (dias < 0) return `${dataFormatada} · expirado`;
   if (dias === 0) return `${dataFormatada} · vence hoje`;
   if (dias === 1) return `${dataFormatada} · vence amanhã`;
@@ -419,7 +382,7 @@ function montarTextoExpiracaoPlano(perfil) {
 
 function montarAvisoPlano(perfil) {
   const plano = normalizarPlanoPainel(perfil?.plano);
-  const status = normalizarPlanoPainel(perfil?.plano_status || 'ativo');
+  const status = normalizarStatusPainel(perfil?.plano_status || 'ativo');
   const dias = diasAteExpirar(perfil?.plano_expira_em);
 
   if (plano === 'gratis') {
@@ -441,87 +404,41 @@ function montarAvisoPlano(perfil) {
   }
 
   if (status === 'cancelado') {
-    return {
-      tipo: 'erro',
-      texto: 'Seu plano está cancelado. Renove para continuar usando os recursos pagos.'
-    };
+    return { tipo: 'erro', texto: 'Seu plano está cancelado. Renove para continuar usando os recursos pagos.' };
   }
 
   if (status === 'expirado' || (dias !== null && dias < 0)) {
-    return {
-      tipo: 'erro',
-      texto: 'Seu plano expirou. Renove o Plano Básico para continuar usando os recursos pagos.'
-    };
+    return { tipo: 'erro', texto: 'Seu plano expirou. Renove o Plano Básico para continuar usando os recursos pagos.' };
   }
 
   if (dias !== null && dias <= 7) {
-    return {
-      tipo: 'alerta',
-      texto: `Seu plano vence ${dias === 0 ? 'hoje' : `em ${dias} dia(s)`}. Renove para evitar bloqueio dos recursos pagos.`
-    };
+    return { tipo: 'alerta', texto: `Seu plano vence ${dias === 0 ? 'hoje' : `em ${dias} dia(s)`}. Renove para evitar bloqueio dos recursos pagos.` };
   }
 
-  return {
-    tipo: 'ok',
-    texto: 'Seu plano está ativo.'
-  };
+  return { tipo: 'ok', texto: 'Seu plano está ativo.' };
 }
 
 function atualizarCardPlano(perfil) {
   const planoAtual = perfil?.plano || 'gratis';
   const planoNormalizado = normalizarPlanoPainel(planoAtual);
-
-    const badge = document.getElementById('perfil-plano');
-  const planoTexto = document.getElementById('perfil-plano-texto');
-  const statusEl = document.getElementById('perfil-plano-status');
-  const expiraEl = document.getElementById('perfil-plano-expira');
-  const avisoEl = document.getElementById('perfil-plano-aviso');
-  const limiteEl = document.getElementById('perfil-limite-responsaveis');
+  const badge = pegarElemento('perfil-plano');
+  const statusEl = pegarElemento('perfil-plano-status');
+  const expiraEl = pegarElemento('perfil-plano-expira');
+  const avisoEl = pegarElemento('perfil-plano-aviso');
+  const limiteEl = pegarElemento('perfil-limite-responsaveis');
 
   if (badge) {
     badge.innerText = planoLabel(planoAtual);
-
     badge.classList.remove('plano-gratis', 'plano-basico', 'plano-premium');
-
-    if (planoNormalizado === 'basico') {
-      badge.classList.add('plano-basico');
-    } else if (planoNormalizado === 'premium') {
-      badge.classList.add('plano-premium');
-    } else {
-      badge.classList.add('plano-gratis');
-    }
+    badge.classList.add(`plano-${planoNormalizado === 'premium' || planoNormalizado === 'basico' ? planoNormalizado : 'gratis'}`);
   }
 
-  if (planoTexto) {
-    planoTexto.innerText = planoLabel(planoAtual);
-
-    planoTexto.removeAttribute('class');
-    planoTexto.style.background = 'transparent';
-    planoTexto.style.color = '#3e2723';
-    planoTexto.style.border = 'none';
-    planoTexto.style.boxShadow = 'none';
-    planoTexto.style.padding = '0';
-    planoTexto.style.borderRadius = '0';
-    planoTexto.style.fontSize = '24px';
-    planoTexto.style.fontWeight = '900';
-    planoTexto.style.lineHeight = '1.25';
-  }
-
-  if (statusEl) {
-    statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
-  }
-
-  if (expiraEl) {
-    expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
-  }
-
-  if (limiteEl) {
-    limiteEl.innerText = String(limiteResponsaveisPorPlano());
-  }
+  if (statusEl) statusEl.innerText = statusPlanoLabel(perfil?.plano_status || 'ativo');
+  if (expiraEl) expiraEl.innerText = montarTextoExpiracaoPlano(perfil);
+  if (limiteEl) limiteEl.innerText = String(limiteResponsaveisPorPlano());
 
   if (avisoEl) {
     const aviso = montarAvisoPlano(perfil);
-
     avisoEl.innerText = aviso.texto;
     avisoEl.className = `painel-plano-aviso plano-${aviso.tipo}`;
     avisoEl.style.display = 'block';
@@ -542,7 +459,7 @@ async function carregarPerfil() {
     await window.verificarExpiracaoTestePremium(true);
   }
 
-const { data, error } = await _supabase
+  const { data, error } = await _supabase
     .from('perfis')
     .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano, plano_status, plano_expira_em, teste_premium_usado, teste_premium_inicio, teste_premium_fim')
     .eq('id', session.user.id)
@@ -574,26 +491,15 @@ const { data, error } = await _supabase
 }
 
 function preencherCamposEstaticos(data, session) {
-  const responsavelEl = document.getElementById('perfil-responsavel-selecionado');
-  const empresaEl = document.getElementById('perfil-empresa');
-  const telefoneEl = document.getElementById('perfil-telefone');
-  const cnpjEl = document.getElementById('perfil-cnpj');
-  const enderecoEl = document.getElementById('perfil-endereco');
-
-  if (responsavelEl) responsavelEl.innerText = valorOuTraco(data?.nome);
-  if (empresaEl) empresaEl.innerText = valorOuTraco(data?.nome_empresa);
-  if (telefoneEl) telefoneEl.innerText = valorOuTraco(data?.telefone_empresa);
-  if (cnpjEl) cnpjEl.innerText = valorOuTraco(data?.cnpj_empresa);
-  if (enderecoEl) enderecoEl.innerText = valorOuTraco(data?.endereco_empresa);
+  atualizarTexto('perfil-responsavel-selecionado', valorOuTraco(data?.nome));
+  atualizarTexto('perfil-empresa', valorOuTraco(data?.nome_empresa));
+  atualizarTexto('perfil-telefone', valorOuTraco(data?.telefone_empresa));
+  atualizarTexto('perfil-cnpj', valorOuTraco(data?.cnpj_empresa));
+  atualizarTexto('perfil-endereco', valorOuTraco(data?.endereco_empresa));
 
   atualizarLogoEstatica(data?.foto_url || '');
 
-  const nomeLocal =
-    data?.nome ||
-    data?.nome_empresa ||
-    session?.user?.email?.split('@')[0] ||
-    '';
-
+  const nomeLocal = data?.nome || data?.nome_empresa || session?.user?.email?.split('@')[0] || '';
   localStorage.setItem('usuario_nome', nomeLocal);
   localStorage.setItem('usuario_plano', data?.plano || 'gratis');
   localStorage.setItem('nome_empresa', data?.nome_empresa || '');
@@ -601,23 +507,14 @@ function preencherCamposEstaticos(data, session) {
   localStorage.setItem('endereco_empresa', data?.endereco_empresa || '');
   localStorage.setItem('cnpj_empresa', data?.cnpj_empresa || '');
 
-  if (data?.foto_url) {
-    localStorage.setItem('foto_url', data.foto_url);
-  } else {
-    localStorage.removeItem('foto_url');
-  }
+  if (data?.foto_url) localStorage.setItem('foto_url', data.foto_url);
+  else localStorage.removeItem('foto_url');
 
-  if (data?.plano_status) {
-    localStorage.setItem('usuario_plano_status', data.plano_status);
-  } else {
-    localStorage.removeItem('usuario_plano_status');
-  }
+  if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
+  else localStorage.removeItem('usuario_plano_status');
 
-  if (data?.plano_expira_em) {
-    localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
-  } else {
-    localStorage.removeItem('usuario_plano_expira_em');
-  }
+  if (data?.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
+  else localStorage.removeItem('usuario_plano_expira_em');
 }
 
 function preencherFormularioEdicao(data) {
@@ -665,11 +562,7 @@ async function salvarPerfil(event) {
     return;
   }
 
-  perfilAtual = {
-    ...perfilAtual,
-    ...payload
-  };
-
+  perfilAtual = { ...perfilAtual, ...payload };
   window.perfilAtual = perfilAtual;
 
   preencherCamposEstaticos(perfilAtual, session);
@@ -682,62 +575,51 @@ async function salvarPerfil(event) {
   }
 
   mostrarStatus('status-perfil', 'Perfil atualizado com sucesso.', 'sucesso');
-
-  setTimeout(() => {
-    fecharModalEditarPerfil();
-  }, 700);
+  setTimeout(fecharModalEditarPerfil, 700);
 }
 
 // ==================== LOGO ====================
 
-function atualizarPreviewLogo(url) {
-  const img = document.getElementById('preview-logo');
-  const placeholder = document.getElementById('logo-placeholder');
+function montarUrlLogoPainel(url) {
+  if (!url) return '';
+  return url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+}
 
+function atualizarImagemComPlaceholder(imgId, placeholderId, url) {
+  const img = pegarElemento(imgId);
+  const placeholder = pegarElemento(placeholderId);
   if (!img || !placeholder) return;
 
   if (url) {
-    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+    img.src = montarUrlLogoPainel(url);
     img.style.display = 'block';
     placeholder.style.display = 'none';
-  } else {
-    img.src = '';
-    img.style.display = 'none';
-    placeholder.style.display = 'block';
+    return;
   }
+
+  img.src = '';
+  img.style.display = 'none';
+  placeholder.style.display = 'block';
+}
+
+function atualizarPreviewLogo(url) {
+  atualizarImagemComPlaceholder('preview-logo', 'logo-placeholder', url);
 }
 
 function atualizarLogoEstatica(url) {
-  const img = document.getElementById('perfil-logo-img');
-  const placeholder = document.getElementById('perfil-logo-placeholder');
-
-  if (!img || !placeholder) return;
-
-  if (url) {
-    img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-    img.style.display = 'block';
-    placeholder.style.display = 'none';
-  } else {
-    img.src = '';
-    img.style.display = 'none';
-    placeholder.style.display = 'block';
-  }
+  atualizarImagemComPlaceholder('perfil-logo-img', 'perfil-logo-placeholder', url);
 }
 
 function configurarUploadLogo() {
-  const input = document.getElementById('logo_file');
-
+  const input = pegarElemento('logo_file');
   if (!input || input.dataset.configurado === 'sim') return;
 
   input.dataset.configurado = 'sim';
-
   input.addEventListener('change', async event => {
     const file = event.target.files[0];
-
     if (!file) return;
 
     await enviarLogoPerfil(file);
-
     event.target.value = '';
   });
 }
@@ -787,10 +669,7 @@ async function enviarLogoPerfil(file) {
 
   const { error: perfilError } = await _supabase
     .from('perfis')
-    .update({
-      foto_url: logoUrl,
-      atualizado_em: new Date().toISOString()
-    })
+    .update({ foto_url: logoUrl, atualizado_em: new Date().toISOString() })
     .eq('id', session.user.id);
 
   if (perfilError) {
@@ -799,22 +678,15 @@ async function enviarLogoPerfil(file) {
     return;
   }
 
-  perfilAtual = {
-    ...perfilAtual,
-    foto_url: logoUrl
-  };
-
+  perfilAtual = { ...perfilAtual, foto_url: logoUrl };
   window.perfilAtual = perfilAtual;
-
   localStorage.setItem('foto_url', logoUrl);
 
   mostrarStatus('status-logo', 'Logo salva com sucesso.', 'sucesso');
 }
 
 async function removerLogoPerfil() {
-  const confirmar = confirm('Deseja remover a logo da empresa?');
-
-  if (!confirmar) return;
+  if (!confirm('Deseja remover a logo da empresa?')) return;
 
   const session = await obterSessaoPainel();
   if (!session) return;
@@ -830,10 +702,7 @@ async function removerLogoPerfil() {
 
   const { error } = await _supabase
     .from('perfis')
-    .update({
-      foto_url: '',
-      atualizado_em: new Date().toISOString()
-    })
+    .update({ foto_url: '', atualizado_em: new Date().toISOString() })
     .eq('id', session.user.id);
 
   if (error) {
@@ -846,13 +715,8 @@ async function removerLogoPerfil() {
   atualizarPreviewLogo('');
   atualizarLogoEstatica('');
 
-  perfilAtual = {
-    ...perfilAtual,
-    foto_url: ''
-  };
-
+  perfilAtual = { ...perfilAtual, foto_url: '' };
   window.perfilAtual = perfilAtual;
-
   localStorage.removeItem('foto_url');
 
   mostrarStatus('status-logo', 'Logo removida com sucesso.', 'sucesso');
@@ -865,11 +729,7 @@ function obterResponsavelSelecionadoNome() {
 }
 
 function limiteResponsaveisPorPlano() {
-  const plano = normalizarPlanoPainel(
-    perfilAtual?.plano ||
-    localStorage.getItem('usuario_plano') ||
-    'gratis'
-  );
+  const plano = normalizarPlanoPainel(perfilAtual?.plano || localStorage.getItem('usuario_plano') || 'gratis');
 
   if (plano === 'basico') return 5;
   if (plano === 'premium') return 999;
@@ -881,7 +741,7 @@ async function carregarResponsaveis() {
   const session = await obterSessaoPainel();
   if (!session) return;
 
-  const container = document.getElementById('lista-responsaveis');
+  const container = pegarElemento('lista-responsaveis');
 
   const { data, error } = await _supabase
     .from('responsaveis_orcamento')
@@ -897,7 +757,6 @@ async function carregarResponsaveis() {
   }
 
   responsaveisCache = data || [];
-
   await garantirResponsavelSelecionadoNaLista(session);
 
   preencherSelectResponsaveis();
@@ -907,10 +766,8 @@ async function carregarResponsaveis() {
 
 async function garantirResponsavelSelecionadoNaLista(session) {
   const nomeSelecionado = String(perfilAtual?.nome || '').trim();
-  const nomeNormalizado = normalizarPlanoPainel(nomeSelecionado);
+  const nomeNormalizado = normalizarTextoPainel(nomeSelecionado);
 
-  // Não cria automaticamente responsável chamado "Usuário" nem responsável em branco.
-  // Se não houver nome, o usuário cadastra manualmente.
   if (!nomeSelecionado || nomeNormalizado === 'usuario') return;
 
   const jaExiste = responsaveisCache.some(resp =>
@@ -923,40 +780,24 @@ async function garantirResponsavelSelecionadoNaLista(session) {
 
   const { data, error } = await _supabase
     .from('responsaveis_orcamento')
-    .insert({
-      usuario_id: session.user.id,
-      nome: nomeSelecionado,
-      ativo: true
-    })
+    .insert({ usuario_id: session.user.id, nome: nomeSelecionado, ativo: true })
     .select()
     .single();
 
-  if (!error && data) {
-    responsaveisCache.push(data);
-  }
+  if (!error && data) responsaveisCache.push(data);
 }
 
 function preencherSelectResponsaveis() {
-  const select = document.getElementById('responsavel_selecionado');
-
+  const select = pegarElemento('responsavel_selecionado');
   if (!select) return;
 
   const selecionado = obterResponsavelSelecionadoNome();
-
   select.innerHTML = '';
-
-  if (!responsaveisCache.length && selecionado) {
-    const option = document.createElement('option');
-    option.value = selecionado;
-    option.textContent = selecionado;
-    select.appendChild(option);
-    return;
-  }
 
   if (!responsaveisCache.length) {
     const option = document.createElement('option');
-    option.value = '';
-    option.textContent = 'Cadastre um responsável';
+    option.value = selecionado || '';
+    option.textContent = selecionado || 'Cadastre um responsável';
     select.appendChild(option);
     return;
   }
@@ -968,18 +809,12 @@ function preencherSelectResponsaveis() {
     select.appendChild(option);
   });
 
-  if (selecionado) {
-    select.value = selecionado;
-  }
-
-  if (!select.value && responsaveisCache[0]) {
-    select.value = responsaveisCache[0].nome;
-  }
+  if (selecionado) select.value = selecionado;
+  if (!select.value && responsaveisCache[0]) select.value = responsaveisCache[0].nome;
 }
 
 function renderizarListaResponsaveis() {
-  const container = document.getElementById('lista-responsaveis');
-
+  const container = pegarElemento('lista-responsaveis');
   if (!container) return;
 
   const selecionado = obterResponsavelSelecionadoNome();
@@ -998,7 +833,7 @@ function renderizarListaResponsaveis() {
   }
 
   container.innerHTML = `
-    <div class="painel-aviso" style="margin-bottom:10px;">
+    <div class="painel-aviso painel-aviso-compacto">
       Você cadastrou ${responsaveisCache.length} de ${limite} responsável(is)/consultor(es) disponíveis no seu plano.
     </div>
 
@@ -1012,9 +847,7 @@ function renderizarListaResponsaveis() {
             <small>${ativo ? 'Responsável selecionado' : 'Responsável cadastrado'}</small>
           </div>
 
-          <button type="button" onclick="excluirResponsavel('${resp.id}')">
-            Excluir
-          </button>
+          <button type="button" onclick="excluirResponsavel('${escaparHtmlPainel(resp.id)}')">Excluir</button>
         </div>
       `;
     }).join('')}
@@ -1029,27 +862,18 @@ function abrirModalResponsavelInterno() {
     return;
   }
 
-  const input = document.getElementById('novo-responsavel-nome');
-  if (input) input.value = '';
+  setValor('novo-responsavel-nome', '');
+  mostrarStatus('status-responsavel', '');
 
-  const status = document.getElementById('status-responsavel');
-
-  if (status) {
-    status.className = 'status-msg';
-    status.innerText = '';
-  }
-
-  const modal = document.getElementById('modal-responsavel-interno');
+  const modal = pegarElemento('modal-responsavel-interno');
+  const input = pegarElemento('novo-responsavel-nome');
 
   if (modal) modal.style.display = 'flex';
-
-  setTimeout(() => {
-    if (input) input.focus();
-  }, 100);
+  setTimeout(() => input?.focus(), 100);
 }
 
 function fecharModalResponsavelInterno() {
-  const modal = document.getElementById('modal-responsavel-interno');
+  const modal = pegarElemento('modal-responsavel-interno');
   if (modal) modal.style.display = 'none';
 }
 
@@ -1057,8 +881,7 @@ async function salvarResponsavel() {
   const session = await obterSessaoPainel();
   if (!session) return;
 
-  const input = document.getElementById('novo-responsavel-nome');
-  const nome = input?.value?.trim() || '';
+  const nome = getValor('novo-responsavel-nome');
 
   if (!nome) {
     mostrarStatus('status-responsavel', 'Informe o nome do responsável/consultor.', 'erro');
@@ -1083,11 +906,7 @@ async function salvarResponsavel() {
 
   const { data, error } = await _supabase
     .from('responsaveis_orcamento')
-    .insert({
-      usuario_id: session.user.id,
-      nome,
-      ativo: true
-    })
+    .insert({ usuario_id: session.user.id, nome, ativo: true })
     .select()
     .single();
 
@@ -1097,15 +916,12 @@ async function salvarResponsavel() {
     return;
   }
 
-  if (data) {
-    responsaveisCache.push(data);
-  }
+  if (data) responsaveisCache.push(data);
 
   fecharModalResponsavelInterno();
-
   preencherSelectResponsaveis();
 
-  const select = document.getElementById('responsavel_selecionado');
+  const select = pegarElemento('responsavel_selecionado');
   if (select) select.value = nome;
 
   renderizarListaResponsaveis();
@@ -1113,16 +929,14 @@ async function salvarResponsavel() {
 }
 
 async function excluirResponsavel(id) {
-  const responsavel = responsaveisCache.find(resp => resp.id === id);
+  const responsavel = responsaveisCache.find(resp => String(resp.id) === String(id));
 
   if (responsavel && responsavel.nome === perfilAtual?.nome) {
     alert('Este responsável está selecionado. Selecione outro responsável antes de excluir.');
     return;
   }
 
-  const confirmar = confirm('Deseja excluir este responsável/consultor?');
-
-  if (!confirmar) return;
+  if (!confirm('Deseja excluir este responsável/consultor?')) return;
 
   const session = await obterSessaoPainel();
   if (!session) return;
@@ -1139,25 +953,25 @@ async function excluirResponsavel(id) {
     return;
   }
 
-  responsaveisCache = responsaveisCache.filter(resp => resp.id !== id);
+  responsaveisCache = responsaveisCache.filter(resp => String(resp.id) !== String(id));
   preencherSelectResponsaveis();
   renderizarListaResponsaveis();
   atualizarCardPlano(perfilAtual);
 }
 
-// ==================== MODAIS PERFIL / SENHA ====================
+// ==================== MODAIS PERFIL / SENHA / CONTA ====================
 
 function abrirModalEditarPerfil() {
   preencherFormularioEdicao(perfilAtual || {});
   preencherSelectResponsaveis();
   renderizarListaResponsaveis();
 
-  const modal = document.getElementById('modal-editar-perfil');
+  const modal = pegarElemento('modal-editar-perfil');
   if (modal) modal.style.display = 'flex';
 }
 
 function fecharModalEditarPerfil() {
-  const modal = document.getElementById('modal-editar-perfil');
+  const modal = pegarElemento('modal-editar-perfil');
   if (modal) modal.style.display = 'none';
 }
 
@@ -1166,12 +980,12 @@ function abrirModalSenha() {
   setValor('nova_senha', '');
   setValor('confirmar_senha', '');
 
-  const modal = document.getElementById('modal-senha');
+  const modal = pegarElemento('modal-senha');
   if (modal) modal.style.display = 'flex';
 }
 
 function fecharModalSenha() {
-  const modal = document.getElementById('modal-senha');
+  const modal = pegarElemento('modal-senha');
   if (modal) modal.style.display = 'none';
 }
 
@@ -1209,9 +1023,7 @@ async function alterarSenhaSegura() {
     return;
   }
 
-  const { error: updateError } = await _supabase.auth.updateUser({
-    password: novaSenha
-  });
+  const { error: updateError } = await _supabase.auth.updateUser({ password: novaSenha });
 
   if (updateError) {
     console.error('Erro ao alterar senha:', updateError);
@@ -1223,47 +1035,29 @@ async function alterarSenhaSegura() {
   alert('Senha alterada com sucesso.');
 }
 
-// ==================== EXCLUSÃO DE CONTA ====================
-
 function abrirModalExcluirConta() {
-  const input = document.getElementById('confirmar_excluir_conta');
-  const status = document.getElementById('status-excluir-conta');
-  const modal = document.getElementById('modal-excluir-conta');
+  setValor('confirmar_excluir_conta', '');
+  mostrarStatus('status-excluir-conta', '');
 
-  if (input) input.value = '';
-
-  if (status) {
-    status.className = 'status-msg';
-    status.innerText = '';
-  }
-
-  if (modal) {
-    modal.style.display = 'flex';
-  }
+  const modal = pegarElemento('modal-excluir-conta');
+  if (modal) modal.style.display = 'flex';
 }
 
 function fecharModalExcluirConta() {
-  const modal = document.getElementById('modal-excluir-conta');
-
-  if (modal) {
-    modal.style.display = 'none';
-  }
+  const modal = pegarElemento('modal-excluir-conta');
+  if (modal) modal.style.display = 'none';
 }
 
 async function excluirMinhaConta() {
   try {
-    const confirmacao = document.getElementById('confirmar_excluir_conta')?.value?.trim();
+    const confirmacao = getValor('confirmar_excluir_conta');
 
     if (confirmacao !== 'EXCLUIR') {
       mostrarStatus('status-excluir-conta', 'Digite EXCLUIR para confirmar.', 'erro');
       return;
     }
 
-    const confirmar = confirm(
-      'Tem certeza que deseja excluir sua conta definitivamente? Esta ação não poderá ser desfeita.'
-    );
-
-    if (!confirmar) return;
+    if (!confirm('Tem certeza que deseja excluir sua conta definitivamente? Esta ação não poderá ser desfeita.')) return;
 
     const session = await obterSessaoPainel();
 
@@ -1275,9 +1069,7 @@ async function excluirMinhaConta() {
     mostrarStatus('status-excluir-conta', 'Excluindo conta, aguarde...', 'sucesso');
 
     const { data, error } = await _supabase.functions.invoke('excluir-conta', {
-      body: {
-        confirmar: 'EXCLUIR'
-      }
+      body: { confirmar: 'EXCLUIR' }
     });
 
     if (error) {
@@ -1300,29 +1092,26 @@ async function excluirMinhaConta() {
     }
 
     alert('Conta excluída com sucesso.');
-
     window.location.href = '/index.html';
-
   } catch (error) {
     console.error('Erro inesperado ao excluir conta:', error);
     mostrarStatus('status-excluir-conta', 'Erro inesperado ao excluir conta.', 'erro');
   }
 }
 
-window.abrirModalExcluirConta = abrirModalExcluirConta;
-window.fecharModalExcluirConta = fecharModalExcluirConta;
-window.excluirMinhaConta = excluirMinhaConta;
-
-// ==================== RESUMO DE ORDENS DE SERVIÇO ====================
+// ==================== ORDENS DE SERVIÇO / INDICADORES ====================
 
 function normalizarStatusOrdemServicoPainel(status) {
-  return String(status || '')
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, '_')
-    .replace(/-/g, '_');
+  return normalizarStatusPainel(status);
+}
+
+function statusPagamentoEhPagoPainel(status) {
+  const s = normalizarStatusOrdemServicoPainel(status);
+  return ['pago', 'quitado', 'recebido', 'concluido'].includes(s);
+}
+
+function obterDataConclusaoOSPainel(os) {
+  return os?.data_conclusao || os?.concluido_em || os?.finalizado_em || os?.updated_at || os?.created_at || os?.criado_em || null;
 }
 
 function obterValorTotalOrdemServicoPainel(os) {
@@ -1337,56 +1126,32 @@ function obterValorTotalOrdemServicoPainel(os) {
   ];
 
   for (const campo of camposPossiveis) {
-    const numero = Number(campo);
-    if (!Number.isNaN(numero) && numero > 0) {
-      return numero;
-    }
+    const numero = converterNumeroPainel(campo);
+    if (numero > 0) return numero;
   }
 
   return 0;
 }
 
 function statusOrdemEhAberta(statusNormalizado) {
-  return [
-    'aberta',
-    'aberto',
-    'em_aberto',
-    'nova',
-    'novo',
-    'pendente'
-  ].includes(statusNormalizado);
+  return ['aberta', 'aberto', 'em_aberto', 'nova', 'novo', 'pendente'].includes(statusNormalizado);
 }
 
 function statusOrdemEhEmExecucao(statusNormalizado) {
-  return [
-    'em_execucao',
-    'execucao',
-    'em_andamento',
-    'andamento',
-    'executando',
-    'em_servico',
-    'servico'
-  ].includes(statusNormalizado);
+  return ['em_execucao', 'execucao', 'em_andamento', 'andamento', 'executando', 'em_servico', 'servico'].includes(statusNormalizado);
 }
 
 function statusOrdemEhConcluida(statusNormalizado) {
-  return [
-    'concluida',
-    'concluido',
-    'finalizada',
-    'finalizado',
-    'fechada',
-    'fechado'
-  ].includes(statusNormalizado);
+  return ['concluida', 'concluido', 'finalizada', 'finalizado', 'fechada', 'fechado'].includes(statusNormalizado);
 }
 
 async function carregarResumoOrdensServicoPainel() {
   const possuiCardsOS =
-    document.getElementById('painel-total-os') ||
-    document.getElementById('painel-os-abertas') ||
-    document.getElementById('painel-os-execucao') ||
-    document.getElementById('painel-os-concluidas') ||
-    document.getElementById('painel-total-valor-os');
+    pegarElemento('painel-total-os') ||
+    pegarElemento('painel-os-abertas') ||
+    pegarElemento('painel-os-execucao') ||
+    pegarElemento('painel-os-concluidas') ||
+    pegarElemento('painel-total-valor-os');
 
   if (!possuiCardsOS) return;
 
@@ -1397,33 +1162,18 @@ async function carregarResumoOrdensServicoPainel() {
       ascending: false
     });
 
-    const totalOS = ordens.length;
+    const abertas = ordens.filter(os => statusOrdemEhAberta(normalizarStatusOrdemServicoPainel(os.status))).length;
+    const emExecucao = ordens.filter(os => statusOrdemEhEmExecucao(normalizarStatusOrdemServicoPainel(os.status))).length;
+    const concluidas = ordens.filter(os => statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status))).length;
+    const totalValorOS = ordens.reduce((soma, os) => soma + obterValorTotalOrdemServicoPainel(os), 0);
 
-    const abertas = ordens.filter(os =>
-      statusOrdemEhAberta(normalizarStatusOrdemServicoPainel(os.status))
-    ).length;
-
-    const emExecucao = ordens.filter(os =>
-      statusOrdemEhEmExecucao(normalizarStatusOrdemServicoPainel(os.status))
-    ).length;
-
-    const concluidas = ordens.filter(os =>
-      statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status))
-    ).length;
-
-    const totalValorOS = ordens.reduce((soma, os) => {
-      return soma + obterValorTotalOrdemServicoPainel(os);
-    }, 0);
-
-    atualizarTexto('painel-total-os', totalOS);
+    atualizarTexto('painel-total-os', ordens.length);
     atualizarTexto('painel-os-abertas', abertas);
     atualizarTexto('painel-os-execucao', emExecucao);
     atualizarTexto('painel-os-concluidas', concluidas);
     atualizarTexto('painel-total-valor-os', formatarMoedaPainel(totalValorOS));
-
   } catch (error) {
     console.warn('Erro inesperado ao carregar resumo de ordens de serviço:', error);
-
     atualizarTexto('painel-total-os', '0');
     atualizarTexto('painel-os-abertas', '0');
     atualizarTexto('painel-os-execucao', '0');
@@ -1432,19 +1182,17 @@ async function carregarResumoOrdensServicoPainel() {
   }
 }
 
-// ==================== INDICADORES PREMIUM / OS / ESTOQUE ====================
-
 async function carregarIndicadoresPremiumPainel() {
   const precisaCarregar =
-    document.getElementById('painel-faturamento-os-total') ||
-    document.getElementById('painel-recebido-mes-os') ||
-    document.getElementById('painel-os-pagas-mes') ||
-    document.getElementById('painel-ticket-medio-os') ||
-    document.getElementById('painel-orcamentos-aprovados') ||
-    document.getElementById('painel-orcamentos-convertidos-os') ||
-    document.getElementById('painel-os-pendentes-pagamento') ||
-    document.getElementById('painel-produtos-estoque-baixo') ||
-    document.getElementById('lista-ultimas-os-finalizadas-painel');
+    pegarElemento('painel-faturamento-os-total') ||
+    pegarElemento('painel-recebido-mes-os') ||
+    pegarElemento('painel-os-pagas-mes') ||
+    pegarElemento('painel-ticket-medio-os') ||
+    pegarElemento('painel-orcamentos-aprovados') ||
+    pegarElemento('painel-orcamentos-convertidos-os') ||
+    pegarElemento('painel-os-pendentes-pagamento') ||
+    pegarElemento('painel-produtos-estoque-baixo') ||
+    pegarElemento('lista-ultimas-os-finalizadas-painel');
 
   if (!precisaCarregar) return;
 
@@ -1466,40 +1214,23 @@ async function carregarIndicadoresPremiumPainel() {
     })
   ]);
 
-  const osConcluidasPagas = ordens.filter(os => {
-    return statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status)) &&
-      statusPagamentoEhPagoPainel(os.status_pagamento);
-  });
+  const osConcluidasPagas = ordens.filter(os =>
+    statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status)) &&
+    statusPagamentoEhPagoPainel(os.status_pagamento)
+  );
 
-  const faturamentoTotalOS = osConcluidasPagas.reduce((soma, os) => {
-    return soma + obterValorTotalOrdemServicoPainel(os);
-  }, 0);
-
+  const faturamentoTotalOS = osConcluidasPagas.reduce((soma, os) => soma + obterValorTotalOrdemServicoPainel(os), 0);
   const osPagasMes = osConcluidasPagas.filter(os => estaNoMesAtualPainel(obterDataConclusaoOSPainel(os)));
+  const recebidoMesOS = osPagasMes.reduce((soma, os) => soma + obterValorTotalOrdemServicoPainel(os), 0);
+  const ticketMedioOS = osConcluidasPagas.length ? faturamentoTotalOS / osConcluidasPagas.length : 0;
 
-  const recebidoMesOS = osPagasMes.reduce((soma, os) => {
-    return soma + obterValorTotalOrdemServicoPainel(os);
-  }, 0);
-
-  const ticketMedioOS = osConcluidasPagas.length > 0
-    ? faturamentoTotalOS / osConcluidasPagas.length
-    : 0;
-
-  const orcamentosAprovados = orcamentos.filter(o => {
-    const status = normalizarStatusOrdemServicoPainel(o.status);
-    return ['aprovado', 'em_servico', 'finalizado'].includes(status);
-  });
-
-  const orcamentosConvertidosOS = orcamentos.filter(o => {
-    const status = normalizarStatusOrdemServicoPainel(o.status);
-    return !!o.ordem_servico_id || ['em_servico', 'finalizado'].includes(status);
-  });
+  const orcamentosAprovados = orcamentos.filter(o => ['aprovado', 'em_servico', 'finalizado'].includes(normalizarStatusOrdemServicoPainel(o.status)));
+  const orcamentosConvertidosOS = orcamentos.filter(o => !!o.ordem_servico_id || ['em_servico', 'finalizado'].includes(normalizarStatusOrdemServicoPainel(o.status)));
 
   const osPendentesPagamento = ordens.filter(os => {
     const status = normalizarStatusOrdemServicoPainel(os.status);
     const pagamento = normalizarStatusOrdemServicoPainel(os.status_pagamento);
-
-    return status !== 'cancelada' && status !== 'cancelado' && pagamento !== 'pago';
+    return !['cancelada', 'cancelado'].includes(status) && pagamento !== 'pago';
   });
 
   const produtosEstoqueBaixo = produtos.filter(produto => {
@@ -1516,7 +1247,6 @@ async function carregarIndicadoresPremiumPainel() {
   atualizarTexto('painel-recebido-mes-os', formatarMoedaPainel(recebidoMesOS));
   atualizarTexto('painel-os-pagas-mes', osPagasMes.length);
   atualizarTexto('painel-ticket-medio-os', formatarMoedaPainel(ticketMedioOS));
-
   atualizarTexto('painel-orcamentos-aprovados', orcamentosAprovados.length);
   atualizarTexto('painel-orcamentos-convertidos-os', orcamentosConvertidosOS.length);
   atualizarTexto('painel-os-pendentes-pagamento', osPendentesPagamento.length);
@@ -1525,77 +1255,136 @@ async function carregarIndicadoresPremiumPainel() {
   renderizarUltimasOSFinalizadasPainel(osConcluidasPagas);
 }
 
-function renderizarUltimasOSFinalizadasPainel(ordens) {
-  const container = document.getElementById('lista-ultimas-os-finalizadas-painel');
-  if (!container) return;
+function montarTabelaPainel({ colunas, linhas, vazio, minWidth = 720 }) {
+  if (!linhas.length) return `<div class="painel-aviso">${escaparHtmlPainel(vazio)}</div>`;
 
-  const ultimas = [...ordens]
-    .sort((a, b) => {
-      const dataA = new Date(obterDataConclusaoOSPainel(a) || 0).getTime();
-      const dataB = new Date(obterDataConclusaoOSPainel(b) || 0).getTime();
-      return dataB - dataA;
-    })
-    .slice(0, 5);
-
-  if (!ultimas.length) {
-    container.innerHTML = `
-      <div class="painel-aviso">
-        Nenhuma OS concluída e paga ainda.
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = `
-    <div style="width:100%; overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; min-width:720px; background:#fff; border-radius:12px; overflow:hidden;">
+  return `
+    <div class="painel-tabela-wrapper">
+      <table class="painel-tabela" style="min-width:${minWidth}px;">
         <thead>
-          <tr style="background:#3e2723; color:#ffc400;">
-            <th style="padding:10px; text-align:left;">OS</th>
-            <th style="padding:10px; text-align:left;">Título</th>
-            <th style="padding:10px; text-align:left;">Pagamento</th>
-            <th style="padding:10px; text-align:left;">Conclusão</th>
-            <th style="padding:10px; text-align:right;">Total</th>
+          <tr>
+            ${colunas.map(coluna => `<th class="${coluna.classe || ''}">${escaparHtmlPainel(coluna.titulo)}</th>`).join('')}
           </tr>
         </thead>
-
         <tbody>
-          ${ultimas.map(os => {
-            const numero = os.numero_os ? String(os.numero_os).padStart(6, '0') : '-';
-            const id = encodeURIComponent(os.id || '');
-
-            return `
-              <tr onclick="window.location.href='/ordem.html?id=${id}'" style="cursor:pointer;">
-                <td style="padding:10px; border-bottom:1px solid #eee; font-weight:800;">${numero}</td>
-                <td style="padding:10px; border-bottom:1px solid #eee;">${escaparHtmlPainel(os.titulo || '-')}</td>
-                <td style="padding:10px; border-bottom:1px solid #eee;">${escaparHtmlPainel(formatarFormaPagamentoOrdemServicoPainel(os.forma_pagamento))}</td>
-                <td style="padding:10px; border-bottom:1px solid #eee;">${formatarDataPainel(obterDataConclusaoOSPainel(os))}</td>
-                <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">${formatarMoedaPainel(obterValorTotalOrdemServicoPainel(os))}</td>
-              </tr>
-            `;
-          }).join('')}
+          ${linhas.join('')}
         </tbody>
       </table>
     </div>
   `;
 }
 
-function formatarFormaPagamentoOrdemServicoPainel(forma) {
-  const mapa = {
-    pix: 'Pix',
-    dinheiro: 'Dinheiro',
-    cartao_credito: 'Cartão de crédito',
-    cartao_debito: 'Cartão de débito',
-    boleto: 'Boleto',
-    transferencia: 'Transferência',
-    outro: 'Outro'
-  };
-
-  const chave = normalizarStatusOrdemServicoPainel(forma);
-  return mapa[chave] || forma || '-';
+function montarLinhaTabelaPainel(celulas, href = '') {
+  return `
+    <tr ${href ? `data-href="${escaparHtmlPainel(href)}"` : ''}>
+      ${celulas.map(celula => `
+        <td class="${celula.classe || ''}">
+          ${celula.html === true ? celula.valor : escaparHtmlPainel(celula.valor)}
+        </td>
+      `).join('')}
+    </tr>
+  `;
 }
 
-// ==================== DASHBOARD ====================
+function renderizarUltimasOSFinalizadasPainel(ordens) {
+  const container = pegarElemento('lista-ultimas-os-finalizadas-painel');
+  if (!container) return;
+
+  const ultimas = [...ordens]
+    .sort((a, b) => new Date(obterDataConclusaoOSPainel(b) || 0) - new Date(obterDataConclusaoOSPainel(a) || 0))
+    .slice(0, 5);
+
+  const linhas = ultimas.map(os => {
+    const numero = os.numero_os ? String(os.numero_os).padStart(6, '0') : '-';
+    const href = `/ordem.html?id=${encodeURIComponent(os.id || '')}`;
+
+    return montarLinhaTabelaPainel([
+      { valor: numero, classe: 'texto-forte' },
+      { valor: os.titulo || '-' },
+      { valor: formaPagamentoPainelLabel(os.forma_pagamento) },
+      { valor: formatarDataPainel(obterDataConclusaoOSPainel(os)) },
+      { valor: formatarMoedaPainel(obterValorTotalOrdemServicoPainel(os)), classe: 'texto-direita texto-forte' }
+    ], href);
+  });
+
+  container.innerHTML = montarTabelaPainel({
+    colunas: [
+      { titulo: 'OS' },
+      { titulo: 'Título' },
+      { titulo: 'Pagamento' },
+      { titulo: 'Conclusão' },
+      { titulo: 'Total', classe: 'texto-direita' }
+    ],
+    linhas,
+    vazio: 'Nenhuma OS concluída e paga ainda.',
+    minWidth: 720
+  });
+}
+
+async function carregarResumoRelatoriosRecorrentesPainel() {
+  const precisaCarregar =
+    pegarElemento('painel-recorrentes-vencidas') ||
+    pegarElemento('painel-recorrentes-7') ||
+    pegarElemento('painel-relatorio-faturado-mes') ||
+    pegarElemento('painel-relatorio-os-mes');
+
+  if (!precisaCarregar) return;
+
+  try {
+    const plano = normalizarPlanoPainel(localStorage.getItem('usuario_plano') || perfilAtual?.plano || 'gratis');
+    const bloco = pegarElemento('painel-premium-gestao-avancada');
+
+    if (plano !== 'premium') {
+      if (bloco) bloco.style.display = 'none';
+      return;
+    }
+
+    if (bloco) bloco.style.display = 'block';
+
+    const [ordens, recorrentes] = await Promise.all([
+      buscarTabelaDoUsuarioPainel('ordens_servico', '*', {
+        camposUsuario: ['user_id', 'usuario_id'],
+        orderBy: 'created_at',
+        ascending: false
+      }),
+      buscarTabelaDoUsuarioPainel('servicos_recorrentes', '*', {
+        camposUsuario: ['user_id', 'usuario_id'],
+        orderBy: 'proxima_data',
+        ascending: true
+      })
+    ]);
+
+    const osMes = ordens.filter(os =>
+      statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status)) &&
+      estaNoMesAtualPainel(obterDataConclusaoOSPainel(os) || os.updated_at || os.created_at)
+    );
+
+    const faturadoMes = osMes.reduce((soma, os) => soma + obterValorTotalOrdemServicoPainel(os), 0);
+
+    const vencidas = recorrentes.filter(item => {
+      const dias = diasAteDataPainel(item.proxima_data);
+      return normalizarStatusOrdemServicoPainel(item.status || 'ativo') === 'ativo' && dias !== null && dias < 0;
+    }).length;
+
+    const proximos7 = recorrentes.filter(item => {
+      const dias = diasAteDataPainel(item.proxima_data);
+      return normalizarStatusOrdemServicoPainel(item.status || 'ativo') === 'ativo' && dias !== null && dias >= 0 && dias <= 7;
+    }).length;
+
+    atualizarTexto('painel-recorrentes-vencidas', vencidas);
+    atualizarTexto('painel-recorrentes-7', proximos7);
+    atualizarTexto('painel-relatorio-faturado-mes', formatarMoedaPainel(faturadoMes));
+    atualizarTexto('painel-relatorio-os-mes', osMes.length);
+  } catch (erro) {
+    console.warn('Não foi possível carregar resumo Premium avançado:', erro);
+    atualizarTexto('painel-recorrentes-vencidas', '-');
+    atualizarTexto('painel-recorrentes-7', '-');
+    atualizarTexto('painel-relatorio-faturado-mes', '-');
+    atualizarTexto('painel-relatorio-os-mes', '-');
+  }
+}
+
+// ==================== DASHBOARD DE ORÇAMENTOS ====================
 
 async function carregarDashboardPainel() {
   atualizarCardPlano(perfilAtual);
@@ -1614,21 +1403,11 @@ async function carregarDashboardPainel() {
   }
 
   const orcamentos = data || [];
-
-  const agora = new Date();
-  const mesAtual = agora.getMonth();
-  const anoAtual = agora.getFullYear();
-
   const total = orcamentos.length;
-  const pendentes = orcamentos.filter(o => (o.status || 'pendente') === 'pendente').length;
-  const aprovados = orcamentos.filter(o => (o.status || '') === 'aprovado');
-
-  const aprovadosMes = aprovados.filter(o => {
-    const d = new Date(o.criado_em);
-    return !isNaN(d.getTime()) && d.getMonth() === mesAtual && d.getFullYear() === anoAtual;
-  });
-
-  const valorAprovadoMes = aprovadosMes.reduce((soma, o) => soma + Number(o.total || 0), 0);
+  const pendentes = orcamentos.filter(o => normalizarStatusPainel(o.status || 'pendente') === 'pendente').length;
+  const aprovados = orcamentos.filter(o => normalizarStatusPainel(o.status) === 'aprovado');
+  const aprovadosMes = aprovados.filter(o => estaNoMesAtualPainel(o.criado_em));
+  const valorAprovadoMes = aprovadosMes.reduce((soma, o) => soma + converterNumeroPainel(o.total), 0);
   const taxaAprovacao = total > 0 ? Math.round((aprovados.length / total) * 100) : 0;
 
   atualizarTexto('dash-total-orcamentos', total);
@@ -1640,17 +1419,13 @@ async function carregarDashboardPainel() {
 }
 
 async function carregarUltimosOrcamentosPainel() {
-  const container = document.getElementById('lista-ultimos-orcamentos-painel');
+  const container = pegarElemento('lista-ultimos-orcamentos-painel');
   if (!container) return;
 
   const session = await obterSessaoPainel();
   if (!session) return;
 
-  container.innerHTML = `
-    <div class="painel-aviso">
-      Carregando últimos orçamentos...
-    </div>
-  `;
+  container.innerHTML = '<div class="painel-aviso">Carregando últimos orçamentos...</div>';
 
   const { data, error } = await _supabase
     .from('orcamentos')
@@ -1661,7 +1436,6 @@ async function carregarUltimosOrcamentosPainel() {
 
   if (error) {
     console.warn('Erro ao buscar últimos orçamentos:', error);
-
     container.innerHTML = `
       <div class="painel-aviso">
         Não foi possível carregar os últimos orçamentos.
@@ -1674,76 +1448,52 @@ async function carregarUltimosOrcamentosPainel() {
 
   const orcamentos = data || [];
 
-  if (!orcamentos.length) {
-    container.innerHTML = `
-      <div class="painel-aviso">
-        Nenhum orçamento criado ainda.
-      </div>
-    `;
-    return;
-  }
+  const linhas = orcamentos.map(o => {
+    const numero = o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-';
+    const href = `/orcamentos.html?orcamento=${encodeURIComponent(o.id || '')}`;
 
-  container.innerHTML = `
-    <div style="width:100%; overflow-x:auto;">
-      <table style="width:100%; border-collapse:collapse; min-width:760px; background:#fff; border-radius:12px; overflow:hidden;">
-        <thead>
-          <tr style="background:#3e2723; color:#ffc400;">
-            <th style="padding:10px; text-align:left;">Nº</th>
-            <th style="padding:10px; text-align:left;">Cliente</th>
-            <th style="padding:10px; text-align:left;">Assunto</th>
-            <th style="padding:10px; text-align:left;">Status</th>
-            <th style="padding:10px; text-align:left;">Pagamento</th>
-            <th style="padding:10px; text-align:right;">Total</th>
-          </tr>
-        </thead>
+    return montarLinhaTabelaPainel([
+      { valor: numero, classe: 'texto-forte' },
+      { valor: o.cliente_nome || '-' },
+      { valor: o.assunto || '-' },
+      { valor: statusOrcamentoLabel(o.status) },
+      { valor: formaPagamentoPainelLabel(o.forma_pagamento_cliente) },
+      { valor: formatarMoedaPainel(o.total), classe: 'texto-direita texto-forte' }
+    ], href);
+  });
 
-        <tbody>
-          ${orcamentos.map(o => `
-            <tr onclick="window.location.href='/orcamentos.html?orcamento=${encodeURIComponent(o.id)}'" style="cursor:pointer;">
-              <td style="padding:10px; border-bottom:1px solid #eee; font-weight:800;">
-                ${o.numero_orcamento ? String(o.numero_orcamento).padStart(6, '0') : '-'}
-              </td>
-
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(o.cliente_nome || '-')}
-              </td>
-
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(o.assunto || '-')}
-              </td>
-
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(statusOrcamentoLabel(o.status))}
-              </td>
-
-              <td style="padding:10px; border-bottom:1px solid #eee;">
-                ${escaparHtmlPainel(formaPagamentoPainelLabel(o.forma_pagamento_cliente))}
-              </td>
-
-              <td style="padding:10px; border-bottom:1px solid #eee; text-align:right; font-weight:800;">
-                ${formatarMoedaPainel(o.total)}
-              </td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </div>
-  `;
+  container.innerHTML = montarTabelaPainel({
+    colunas: [
+      { titulo: 'Nº' },
+      { titulo: 'Cliente' },
+      { titulo: 'Assunto' },
+      { titulo: 'Status' },
+      { titulo: 'Pagamento' },
+      { titulo: 'Total', classe: 'texto-direita' }
+    ],
+    linhas,
+    vazio: 'Nenhum orçamento criado ainda.',
+    minWidth: 760
+  });
 }
 
-// ==================== GERADOR GLOBAL ====================
+// ==================== GERADOR GLOBAL E EVENTOS ====================
 
 function abrirGeradorGlobal() {
   window.location.href = '/gerador.html';
 }
 
-// ==================== EVENTOS GLOBAIS ====================
-
 document.addEventListener('click', event => {
-  const modalPerfil = document.getElementById('modal-editar-perfil');
-  const modalSenha = document.getElementById('modal-senha');
-  const modalResponsavel = document.getElementById('modal-responsavel-interno');
-  const modalExcluirConta = document.getElementById('modal-excluir-conta');
+  const linhaTabela = event.target.closest?.('tr[data-href]');
+  if (linhaTabela?.dataset?.href) {
+    window.location.href = linhaTabela.dataset.href;
+    return;
+  }
+
+  const modalPerfil = pegarElemento('modal-editar-perfil');
+  const modalSenha = pegarElemento('modal-senha');
+  const modalResponsavel = pegarElemento('modal-responsavel-interno');
+  const modalExcluirConta = pegarElemento('modal-excluir-conta');
 
   if (event.target === modalPerfil) fecharModalEditarPerfil();
   if (event.target === modalSenha) fecharModalSenha();
@@ -1752,129 +1502,39 @@ document.addEventListener('click', event => {
 });
 
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape') {
-    fecharModalResponsavelInterno();
-    fecharModalEditarPerfil();
-    fecharModalSenha();
-    fecharModalExcluirConta();
-  }
+  if (event.key !== 'Escape') return;
+
+  fecharModalResponsavelInterno();
+  fecharModalEditarPerfil();
+  fecharModalSenha();
+  fecharModalExcluirConta();
 });
 
 // ==================== EXPORTAÇÕES GLOBAIS ====================
 
-window.carregarPerfil = carregarPerfil;
-window.salvarPerfil = salvarPerfil;
-window.configurarUploadLogo = configurarUploadLogo;
-window.enviarLogoPerfil = enviarLogoPerfil;
-window.removerLogoPerfil = removerLogoPerfil;
-
-window.abrirModalEditarPerfil = abrirModalEditarPerfil;
-window.fecharModalEditarPerfil = fecharModalEditarPerfil;
-
-window.abrirModalSenha = abrirModalSenha;
-window.fecharModalSenha = fecharModalSenha;
-window.alterarSenhaSegura = alterarSenhaSegura;
-
-window.abrirModalExcluirConta = abrirModalExcluirConta;
-window.fecharModalExcluirConta = fecharModalExcluirConta;
-window.excluirMinhaConta = excluirMinhaConta;
-
-window.abrirModalResponsavelInterno = abrirModalResponsavelInterno;
-window.fecharModalResponsavelInterno = fecharModalResponsavelInterno;
-window.salvarResponsavel = salvarResponsavel;
-window.excluirResponsavel = excluirResponsavel;
-
-window.carregarResumoOrdensServicoPainel = carregarResumoOrdensServicoPainel;
-window.carregarIndicadoresPremiumPainel = carregarIndicadoresPremiumPainel;
-window.carregarDashboardPainel = carregarDashboardPainel;
-window.carregarUltimosOrcamentosPainel = carregarUltimosOrcamentosPainel;
-
-window.abrirGeradorGlobal = abrirGeradorGlobal;
-
-/* =========================================================
-   PAINEL - RESUMO PREMIUM: RELATÓRIOS E RECORRÊNCIAS
-   ========================================================= */
-
-async function carregarResumoRelatoriosRecorrentesPainel() {
-  const precisaCarregar =
-    document.getElementById('painel-recorrentes-vencidas') ||
-    document.getElementById('painel-recorrentes-7') ||
-    document.getElementById('painel-relatorio-faturado-mes') ||
-    document.getElementById('painel-relatorio-os-mes');
-
-  if (!precisaCarregar) return;
-
-  try {
-    const plano = normalizarPlanoPainel(localStorage.getItem('usuario_plano') || perfilAtual?.plano || 'gratis');
-
-    if (plano !== 'premium') {
-      const bloco = document.getElementById('painel-premium-gestao-avancada');
-      if (bloco) bloco.style.display = 'none';
-      return;
-    }
-
-    const bloco = document.getElementById('painel-premium-gestao-avancada');
-    if (bloco) bloco.style.display = 'block';
-
-    const [ordens, recorrentes] = await Promise.all([
-      buscarTabelaDoUsuarioPainel('ordens_servico', '*', {
-        camposUsuario: ['user_id', 'usuario_id'],
-        orderBy: 'created_at',
-        ascending: false
-      }),
-      buscarTabelaDoUsuarioPainel('servicos_recorrentes', '*', {
-        camposUsuario: ['user_id', 'usuario_id'],
-        orderBy: 'proxima_data',
-        ascending: true
-      })
-    ]);
-
-    const osMes = ordens.filter(os => {
-      return statusOrdemEhConcluida(normalizarStatusOrdemServicoPainel(os.status)) &&
-        estaNoMesAtualPainel(obterDataConclusaoOSPainel(os) || os.updated_at || os.created_at);
-    });
-
-    const faturadoMes = osMes.reduce((soma, os) => {
-      return soma + obterValorTotalOrdemServicoPainel(os);
-    }, 0);
-
-    const vencidas = recorrentes.filter(item => {
-      return normalizarStatusOrdemServicoPainel(item.status || 'ativo') === 'ativo' &&
-        diasAteDataPainelPremium(item.proxima_data) !== null &&
-        diasAteDataPainelPremium(item.proxima_data) < 0;
-    }).length;
-
-    const proximos7 = recorrentes.filter(item => {
-      const dias = diasAteDataPainelPremium(item.proxima_data);
-      return normalizarStatusOrdemServicoPainel(item.status || 'ativo') === 'ativo' &&
-        dias !== null &&
-        dias >= 0 &&
-        dias <= 7;
-    }).length;
-
-    atualizarTexto('painel-recorrentes-vencidas', vencidas);
-    atualizarTexto('painel-recorrentes-7', proximos7);
-    atualizarTexto('painel-relatorio-faturado-mes', formatarMoedaPainel(faturadoMes));
-    atualizarTexto('painel-relatorio-os-mes', osMes.length);
-  } catch (erro) {
-    console.warn('Não foi possível carregar resumo Premium avançado:', erro);
-    atualizarTexto('painel-recorrentes-vencidas', '-');
-    atualizarTexto('painel-recorrentes-7', '-');
-    atualizarTexto('painel-relatorio-faturado-mes', '-');
-    atualizarTexto('painel-relatorio-os-mes', '-');
-  }
-}
-
-function diasAteDataPainelPremium(valor) {
-  if (!valor) return null;
-
-  const hoje = new Date();
-  const data = new Date(String(valor).substring(0, 10) + 'T00:00:00');
-
-  if (isNaN(data.getTime())) return null;
-
-  hoje.setHours(0, 0, 0, 0);
-  data.setHours(0, 0, 0, 0);
-
-  return Math.ceil((data.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
-}
+Object.assign(window, {
+  carregarPerfil,
+  salvarPerfil,
+  configurarUploadLogo,
+  enviarLogoPerfil,
+  removerLogoPerfil,
+  abrirModalEditarPerfil,
+  fecharModalEditarPerfil,
+  abrirModalSenha,
+  fecharModalSenha,
+  alterarSenhaSegura,
+  abrirModalExcluirConta,
+  fecharModalExcluirConta,
+  excluirMinhaConta,
+  abrirModalResponsavelInterno,
+  fecharModalResponsavelInterno,
+  salvarResponsavel,
+  excluirResponsavel,
+  carregarResumoOrdensServicoPainel,
+  carregarIndicadoresPremiumPainel,
+  carregarResumoRelatoriosRecorrentesPainel,
+  carregarDashboardPainel,
+  carregarUltimosOrcamentosPainel,
+  abrirGeradorGlobal,
+  usuarioJaTemPlanoPago
+});
