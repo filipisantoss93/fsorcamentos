@@ -11,12 +11,10 @@
   <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
 
   <link rel="stylesheet" href="style.css?v=20260620-3" />
-  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260620-clientes-cinza-5" />
+  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260620-clientes-cinza-6" />
 
   <style>
-    html {
-      scroll-padding-top: calc(var(--fs-header-real-mobile, 112px) + 18px);
-    }
+    html { scroll-padding-top: calc(var(--fs-header-real-mobile, 112px) + 18px); }
 
     body.fs-em-iframe #header-container,
     body.fs-em-webview #header-container {
@@ -26,19 +24,12 @@
       background: #ffffff !important;
     }
 
-    body.fs-em-iframe .pagina-clientes,
-    body.fs-em-webview .pagina-clientes {
-      scroll-margin-top: calc(var(--fs-header-real-mobile, 112px) + 18px);
-    }
-
     .clientes-card,
     .clientes-grid,
     .clientes-filtros,
     .clientes-topo-botoes,
     #card-form-cliente,
-    #lista-clientes {
-      scroll-margin-top: calc(var(--fs-header-real-mobile, 112px) + 18px);
-    }
+    #lista-clientes { scroll-margin-top: calc(var(--fs-header-real-mobile, 112px) + 18px); }
 
     .clientes-card-header .clientes-topo-acoes h2,
     .clientes-card-header .clientes-topo-acoes p {
@@ -101,9 +92,7 @@
     .modal-cliente,
     .fs-modal-cliente,
     [id*="modal"][id*="cliente"],
-    [class*="modal"][class*="cliente"] {
-      color: #111827 !important;
-    }
+    [class*="modal"][class*="cliente"] { color: #111827 !important; }
 
     #modal-buscar-cliente .modal-header,
     #modal-busca-cliente .modal-header,
@@ -158,26 +147,22 @@
       border: 1px solid #d1d5db !important;
     }
 
-    #modal-buscar-cliente button,
-    #modal-busca-cliente button,
-    #modal-selecionar-cliente button,
-    .modal-buscar-cliente button,
-    .modal-busca-cliente button,
-    .modal-selecionar-cliente button,
-    .modal-cliente button,
-    .fs-modal-cliente button,
-    [id*="modal"][id*="cliente"] button,
-    [class*="modal"][class*="cliente"] button {
-      text-shadow: none !important;
-    }
-
     @media (max-width: 680px) {
-      .card-form-mobile.form-fechado:not(.clientes-form-modal-aberto) {
-        display: none !important;
-      }
+      .card-form-mobile.form-fechado:not(.clientes-form-modal-aberto) { display: none !important; }
 
       body.clientes-modal-aberto {
         overflow: hidden !important;
+        overscroll-behavior: none !important;
+      }
+
+      body.clientes-modal-aberto #btn-flutuante-gerador-global,
+      body.clientes-modal-aberto .floating-actions,
+      body.clientes-modal-aberto .btn-flutuante-gerador,
+      body.clientes-modal-aberto .botao-flutuante-gerador,
+      body.clientes-modal-aberto [class*="flutuante"][class*="gerador"] {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
       }
 
       body.clientes-modal-aberto::before {
@@ -190,57 +175,97 @@
       }
 
       .card-form-mobile.clientes-form-modal-aberto {
-        display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
         position: fixed !important;
         z-index: 41001 !important;
-        top: max(12px, env(safe-area-inset-top)) !important;
+        top: max(10px, env(safe-area-inset-top)) !important;
         left: 10px !important;
         right: 10px !important;
-        bottom: max(12px, env(safe-area-inset-bottom)) !important;
+        bottom: max(10px, env(safe-area-inset-bottom)) !important;
         width: auto !important;
         max-width: none !important;
+        max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+        height: auto !important;
         margin: 0 !important;
-        overflow-y: auto !important;
+        overflow: hidden !important;
         border-radius: 16px !important;
         box-shadow: 0 24px 70px rgba(15, 23, 42, .35) !important;
         border-top: 4px solid #ffc400 !important;
+        background: #ffffff !important;
+      }
+
+      @supports not (height: 100dvh) {
+        .card-form-mobile.clientes-form-modal-aberto {
+          max-height: calc(100vh - 20px) !important;
+        }
       }
 
       .card-form-mobile.clientes-form-modal-aberto .clientes-card-header {
+        flex: 0 0 auto !important;
         display: flex !important;
         align-items: flex-start !important;
         justify-content: space-between !important;
         gap: 10px !important;
-        position: sticky;
-        top: 0;
-        z-index: 2;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 2 !important;
         background: #1f2937 !important;
         color: #ffffff !important;
         border-bottom: 1px solid #374151 !important;
+        padding: 12px 12px !important;
       }
 
       .card-form-mobile.clientes-form-modal-aberto .clientes-card-header h2 {
         display: block !important;
         color: #ffffff !important;
+        font-size: 18px !important;
+        line-height: 1.1 !important;
       }
 
       .card-form-mobile.clientes-form-modal-aberto .header-form-mobile p {
         display: block !important;
         color: #f8fafc !important;
-        font-size: 12px !important;
-        line-height: 1.35 !important;
+        font-size: 11px !important;
+        line-height: 1.25 !important;
+        margin-top: 4px !important;
       }
 
       .card-form-mobile.clientes-form-modal-aberto .corpo-form-mobile {
         display: block !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain !important;
         background: #ffffff !important;
+        padding: 16px 16px max(96px, calc(24px + env(safe-area-inset-bottom))) !important;
+      }
+
+      .card-form-mobile.clientes-form-modal-aberto .form-clientes {
+        padding-bottom: 42px !important;
       }
 
       .card-form-mobile.clientes-form-modal-aberto .btn-toggle-form-mobile {
         display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 0 0 38px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        padding: 0 !important;
+        border-radius: 999px !important;
         background: #ffffff !important;
         color: #111827 !important;
-        border-color: #d1d5db !important;
+        border: 1px solid #d1d5db !important;
+        font-size: 27px !important;
+        font-weight: 950 !important;
+        line-height: 1 !important;
       }
 
       .clientes-topo-acoes {
@@ -314,8 +339,8 @@
             </p>
           </div>
 
-          <button type="button" id="btn-toggle-form-cliente" class="btn-toggle-form-mobile">
-            Fechar
+          <button type="button" id="btn-toggle-form-cliente" class="btn-toggle-form-mobile" aria-label="Fechar cadastro de cliente">
+            ×
           </button>
         </div>
 
@@ -503,7 +528,7 @@
   <script src="ui.js?v=20260620-3"></script>
   <script src="planos.js?v=20260620-3"></script>
   <script src="carregar-menu.js?v=20260620-3"></script>
-  <script src="clientes.js?v=20260620-clientes-cinza-5"></script>
+  <script src="clientes.js?v=20260620-clientes-cinza-6"></script>
   <script>
     (function () {
       function estaEmIframeOuWebview() {
@@ -529,7 +554,7 @@
         if (card) {
           card.classList.remove('form-fechado');
           card.classList.add('clientes-form-modal-aberto');
-          card.style.setProperty('display', 'block', 'important');
+          card.style.setProperty('display', 'flex', 'important');
           card.style.setProperty('visibility', 'visible', 'important');
           card.style.setProperty('opacity', '1', 'important');
         }
@@ -537,14 +562,19 @@
         if (corpo) {
           corpo.hidden = false;
           corpo.removeAttribute('hidden');
+          corpo.scrollTop = 0;
           corpo.style.setProperty('display', 'block', 'important');
           corpo.style.setProperty('visibility', 'visible', 'important');
           corpo.style.setProperty('opacity', '1', 'important');
-          corpo.style.setProperty('height', 'auto', 'important');
-          corpo.style.setProperty('max-height', 'none', 'important');
+          corpo.style.setProperty('overflow-y', 'auto', 'important');
+          corpo.style.setProperty('-webkit-overflow-scrolling', 'touch');
         }
 
-        if (botaoToggle) botaoToggle.textContent = 'Fechar';
+        if (botaoToggle) {
+          botaoToggle.textContent = '×';
+          botaoToggle.setAttribute('aria-label', 'Fechar cadastro de cliente');
+          botaoToggle.setAttribute('title', 'Fechar');
+        }
       }
 
       function abrirFormularioNovoCliente(event) {
@@ -599,20 +629,22 @@
           corpo.style.removeProperty('display');
           corpo.style.removeProperty('visibility');
           corpo.style.removeProperty('opacity');
-          corpo.style.removeProperty('height');
-          corpo.style.removeProperty('max-height');
+          corpo.style.removeProperty('overflow-y');
+          corpo.style.removeProperty('-webkit-overflow-scrolling');
         }
-        if (botaoToggle) botaoToggle.textContent = 'Fechar';
+        if (botaoToggle) {
+          botaoToggle.textContent = '×';
+          botaoToggle.setAttribute('aria-label', 'Fechar cadastro de cliente');
+        }
         document.body.classList.remove('clientes-modal-aberto');
       }
 
-      function substituirBotaoPorClone(id, texto, classeExtra, handler) {
+      function substituirBotaoPorClone(id, texto, handler) {
         const antigo = document.getElementById(id);
         if (!antigo) return null;
 
         const novo = antigo.cloneNode(true);
         novo.textContent = texto;
-        if (classeExtra) novo.classList.add(classeExtra);
         novo.dataset.fsControleProprio = 'sim';
         antigo.replaceWith(novo);
         novo.addEventListener('click', handler, true);
@@ -636,7 +668,11 @@
 
         const btnToggle = document.getElementById('btn-toggle-form-cliente');
         if (btnToggle && btnToggle.dataset.fsControleProprio !== 'sim') {
-          substituirBotaoPorClone('btn-toggle-form-cliente', 'Fechar', '', fecharFormularioNovoCliente);
+          const novoToggle = substituirBotaoPorClone('btn-toggle-form-cliente', '×', fecharFormularioNovoCliente);
+          if (novoToggle) {
+            novoToggle.setAttribute('aria-label', 'Fechar cadastro de cliente');
+            novoToggle.setAttribute('title', 'Fechar');
+          }
         }
       }
 
