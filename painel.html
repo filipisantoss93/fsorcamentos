@@ -2,10 +2,10 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#f8fafc">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#f8fafc">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,574 +14,504 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'AW-17435932696');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17435932696');
+  </script>
+
   <link id="fs-painel-inline-css" rel="stylesheet" href="painel-inline.css">
-  <link id="fs-painel-overrides-css" rel="stylesheet" href="painel-overrides.css">
 </head>
 
 <body>
+  <div id="header-container"></div>
 
-<div id="header-container"></div>
+  <div id="conteudo-protegido" style="display:none;">
+    <div class="container painel-container">
+      <div class="painel-header">
+        <div>
+          <h1>Painel de Controle</h1>
+          <p class="painel-subtitulo">
+            Gerencie os dados da empresa, plano, orçamentos, ordens de serviço, estoque e faturamento.
+          </p>
+        </div>
 
-<!-- Login inline antigo removido: usuários deslogados voltam para a home com modal de login. -->
+        <div class="painel-topo-acoes">
+          <a href="gerador.html" class="btn-gerar-orcamento-painel">🧾 Gerar Orçamento</a>
+        </div>
+      </div>
 
-<div id="conteudo-protegido" style="display:none;">
+      <div class="painel-aviso">
+        Mantenha seus dados atualizados. Essas informações aparecem no gerador, no PDF e no link enviado ao cliente.
+      </div>
 
-  <div class="container painel-container">
-    <div class="painel-header">
-      <div>
-        <h1>Painel de Controle</h1>
+      <section id="painel-premium-gestao-avancada" class="painel-card painel-premium-gestao-avancada" data-plano-min="premium">
+        <h2>Gestão Premium avançada</h2>
         <p class="painel-subtitulo">
-          Gerencie os dados da empresa, plano, orçamentos, ordens de serviço, estoque e faturamento.
+          Acesse relatórios mensais e controle manutenções recorrentes para transformar o FS Orçamentos em uma central de gestão.
         </p>
-      </div>
 
-      <div class="painel-topo-acoes">
-        <a href="gerador.html" class="btn-gerar-orcamento-painel">🧾 Gerar Orçamento</a>
-      </div>
-    </div>
+        <div class="painel-premium-atalhos-grid">
+          <a href="relatorios.html" class="painel-premium-atalho">
+            <strong>📊 Relatórios por serviço</strong>
+            <span>Faturamento, OS concluídas, serviços mais realizados, produtos usados, clientes e veículos.</span>
+          </a>
 
-    <div class="painel-aviso">
-      Mantenha seus dados atualizados. Essas informações aparecem no gerador, no PDF e no link enviado ao cliente.
-    </div>
+          <a href="recorrentes.html" class="painel-premium-atalho">
+            <strong>🔁 Manutenção preventiva</strong>
+            <span>Serviços recorrentes, vencidos, próximos 7 dias e próximos 30 dias.</span>
+          </a>
 
+          <a href="agenda.html" class="painel-premium-atalho">
+            <strong>📅 Agenda de serviços</strong>
+            <span>Organize atendimentos por data, status, cliente, veículo e OS vinculada.</span>
+          </a>
 
-    <section id="painel-premium-gestao-avancada" class="painel-card painel-premium-gestao-avancada" data-plano-min="premium">
-      <h2>Gestão Premium avançada</h2>
-      <p class="painel-subtitulo">
-        Acesse relatórios mensais e controle manutenções recorrentes para transformar o FS Orçamentos em uma central de gestão.
-      </p>
-
-      <div class="painel-premium-atalhos-grid">
-        <a href="relatorios.html" class="painel-premium-atalho">
-          <strong>📊 Relatórios por serviço</strong>
-          <span>Faturamento, OS concluídas, serviços mais realizados, produtos usados, clientes e veículos.</span>
-        </a>
-
-        <a href="recorrentes.html" class="painel-premium-atalho">
-          <strong>🔁 Manutenção preventiva</strong>
-          <span>Serviços recorrentes, vencidos, próximos 7 dias e próximos 30 dias.</span>
-        </a>
-
-        <a href="agenda.html" class="painel-premium-atalho">
-          <strong>📅 Agenda de serviços</strong>
-          <span>Organize atendimentos por data, status, cliente, veículo e OS vinculada.</span>
-        </a>
-
-        <a href="ordens.html" class="painel-premium-atalho">
-          <strong>🛠️ Ordens de serviço</strong>
-          <span>Acompanhe execução, estoque, pagamento, recibo, garantia e assinatura.</span>
-        </a>
-      </div>
-
-      <div class="painel-premium-resumo-grid">
-        <div class="info-card">
-          <strong>Recorrências vencidas</strong>
-          <span id="painel-recorrentes-vencidas">-</span>
+          <a href="ordens.html" class="painel-premium-atalho">
+            <strong>🛠️ Ordens de serviço</strong>
+            <span>Acompanhe execução, estoque, pagamento, recibo, garantia e assinatura.</span>
+          </a>
         </div>
 
-        <div class="info-card">
-          <strong>Próximos 7 dias</strong>
-          <span id="painel-recorrentes-7">-</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Faturado no mês em OS</strong>
-          <span id="painel-relatorio-faturado-mes">-</span>
-        </div>
-
-        <div class="info-card">
-          <strong>OS concluídas no mês</strong>
-          <span id="painel-relatorio-os-mes">-</span>
-        </div>
-      </div>
-    </section>
-
-
-    <section class="painel-card">
-      <h2>Dados da Empresa</h2>
-
-      <div class="perfil-layout">
-        <div class="perfil-logo-card">
-          <div class="perfil-logo-box">
-            <span id="perfil-logo-placeholder">Nenhuma logo cadastrada</span>
-            <img id="perfil-logo-img" src="" alt="Logo da empresa">
+        <div class="painel-premium-resumo-grid">
+          <div class="info-card">
+            <strong>Recorrências vencidas</strong>
+            <span id="painel-recorrentes-vencidas">-</span>
           </div>
 
-          <span class="perfil-logo-label">Identidade visual</span>
-        </div>
-
-        <div>
-          <div class="perfil-dados-grid">
-            <div class="info-card">
-              <strong>Consultor selecionado</strong>
-              <span id="perfil-responsavel-selecionado">-</span>
-            </div>
-
-            <div class="info-card">
-              <strong>Empresa</strong>
-              <span id="perfil-empresa">-</span>
-            </div>
-
-            <div class="info-card">
-              <strong>WhatsApp / Telefone</strong>
-              <span id="perfil-telefone">-</span>
-            </div>
-
-            <div class="info-card">
-              <strong>CNPJ / CPF</strong>
-              <span id="perfil-cnpj">-</span>
-            </div>
-
-            <div class="info-card full">
-              <strong>Endereço</strong>
-              <span id="perfil-endereco">-</span>
-            </div>
+          <div class="info-card">
+            <strong>Próximos 7 dias</strong>
+            <span id="painel-recorrentes-7">-</span>
           </div>
 
-          <div class="acoes-painel">
-            <button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">
-              ✏️ Editar dados
-            </button>
-
-            <button type="button" class="btn-senha" onclick="abrirModalSenha()">
-              🔐 Alterar senha
-            </button>
-
-            <button type="button" class="btn-excluir-conta" onclick="abrirModalExcluirConta()">
-              🗑️ Excluir conta
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="plano-painel" class="painel-card">
-      <h2>Plano Atual</h2>
-
-      <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
-
-      <div class="perfil-dados-grid plano-atual-grid">
-        <div class="info-card">
-          <strong>Plano</strong>
-          <span id="perfil-plano" class="plano-badge">Plano Grátis</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Status do plano</strong>
-          <span id="perfil-plano-status">-</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Expira em</strong>
-          <span id="perfil-plano-expira">-</span>
-        </div>
-
-        <div class="info-card info-card-assinatura full">
-          <strong>Assinatura</strong>
-          <span>
-            <a href="/planos.html" class="btn-plano-painel">
-              ⭐ Gerenciar plano
-            </a>
-          </span>
-        </div>
-      </div>
-    </section>
-
-
-    <section id="resumo-ordens-servico-painel" class="painel-card">
-      <div class="painel-os-topo">
-        <div>
-          <h2>Ordens de Serviço</h2>
-          <p>
-            Resumo rápido das OS cadastradas, abertas, em execução, concluídas e valores vinculados às ordens de serviço.
-          </p>
-        </div>
-
-        <a href="/ordens.html" class="btn-ver-ordens-painel">
-          🧰 Ver ordens
-        </a>
-      </div>
-
-      <div class="painel-os-grid painel-os-resumo-grid">
-        <div class="painel-os-card">
-          <strong>Total de OS</strong>
-          <span id="painel-total-os">0</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>Abertas</strong>
-          <span id="painel-os-abertas">0</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>Em execução</strong>
-          <span id="painel-os-execucao">0</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>Concluídas</strong>
-          <span id="painel-os-concluidas">0</span>
-        </div>
-
-        <div class="painel-os-card painel-os-card-full">
-          <strong>Total em OS</strong>
-          <span id="painel-total-valor-os">R$ 0,00</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="faturamento-os-painel" class="painel-card">
-      <div class="painel-os-topo">
-        <div>
-          <h2>Faturamento por OS</h2>
-          <p>
-            Estes valores devem considerar somente ordens de serviço concluídas e pagas,
-            evitando misturar orçamento aprovado com dinheiro realmente recebido.
-          </p>
-        </div>
-      </div>
-
-      <div class="painel-grid-4 painel-grid-2">
-        <div class="painel-os-card">
-          <strong>Total faturado em OS</strong>
-          <span id="painel-faturamento-os-total">R$ 0,00</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>Recebido no mês</strong>
-          <span id="painel-recebido-mes-os">R$ 0,00</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>OS pagas no mês</strong>
-          <span id="painel-os-pagas-mes">0</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>Ticket médio por OS</strong>
-          <span id="painel-ticket-medio-os">R$ 0,00</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="operacional-premium-painel" class="painel-card">
-      <div class="painel-os-topo">
-        <div>
-          <h2>Indicadores Operacionais</h2>
-          <p>
-            Acompanhe conversão de orçamentos em OS, pendências de pagamento e produtos com estoque baixo.
-          </p>
-        </div>
-      </div>
-
-      <div class="painel-grid-4 painel-grid-2">
-        <div class="painel-os-card">
-          <strong>Orçamentos aprovados</strong>
-          <span id="painel-orcamentos-aprovados">0</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>Convertidos em OS</strong>
-          <span id="painel-orcamentos-convertidos-os">0</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>OS pendentes pagamento</strong>
-          <span id="painel-os-pendentes-pagamento">0</span>
-        </div>
-
-        <div class="painel-os-card">
-          <strong>Produtos estoque baixo</strong>
-          <span id="painel-produtos-estoque-baixo">0</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="ultimas-os-finalizadas-painel" class="painel-card">
-      <div class="painel-os-topo">
-        <div>
-          <h2>Últimas OS Finalizadas</h2>
-          <p>
-            Lista rápida das últimas ordens concluídas e pagas que entram no faturamento.
-          </p>
-        </div>
-
-        <a href="/ordens.html" class="btn-ver-ordens-painel">
-          🧰 Ver todas
-        </a>
-      </div>
-
-      <div id="lista-ultimas-os-finalizadas-painel" class="painel-lista-operacional">
-        <div class="painel-aviso">Carregando últimas OS finalizadas...</div>
-      </div>
-    </section>
-
-    <section id="dashboard-painel" class="painel-card">
-      <h2>Resumo dos Orçamentos</h2>
-
-      <div class="perfil-dados-grid resumo-orcamentos-grid">
-        <div class="info-card">
-          <strong>Total de orçamentos</strong>
-          <span id="dash-total-orcamentos">0</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Pendentes</strong>
-          <span id="dash-pendentes">0</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Aprovados no mês</strong>
-          <span id="dash-aprovados-mes">0</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Valor aprovado no mês</strong>
-          <span id="dash-valor-aprovado-mes">R$ 0,00</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Taxa de aprovação</strong>
-          <span id="dash-taxa-aprovacao">0%</span>
-        </div>
-
-        <div class="info-card">
-          <strong>Última atualização</strong>
-          <span id="dash-atualizado-em">-</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="ultimos-orcamentos-painel" class="painel-card">
-      <h2>Últimos Orçamentos</h2>
-
-      <div id="lista-ultimos-orcamentos-painel">
-        <div class="painel-aviso">Carregando últimos orçamentos...</div>
-      </div>
-    </section>
-  </div>
-
-  <div id="modal-editar-perfil" class="modal-overlay-painel">
-    <div class="modal-painel">
-      <h2>Editar Dados da Empresa</h2>
-
-      <form id="form-cadastro-perfil" onsubmit="salvarPerfil(event)">
-        <div class="logo-area-modal">
-          <div class="logo-preview-box">
-            <span id="logo-placeholder">Nenhuma logo cadastrada</span>
-            <img id="preview-logo" src="" alt="Pré-visualização da logo da empresa">
+          <div class="info-card">
+            <strong>Faturado no mês em OS</strong>
+            <span id="painel-relatorio-faturado-mes">-</span>
           </div>
 
-          <div class="logo-info">
-            <h3>Logo da empresa</h3>
+          <div class="info-card">
+            <strong>OS concluídas no mês</strong>
+            <span id="painel-relatorio-os-mes">-</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="painel-card">
+        <h2>Dados da Empresa</h2>
+
+        <div class="perfil-layout">
+          <div class="perfil-logo-card">
+            <div class="perfil-logo-box">
+              <span id="perfil-logo-placeholder">Nenhuma logo cadastrada</span>
+              <img id="perfil-logo-img" src="" alt="Logo da empresa">
+            </div>
+
+            <span class="perfil-logo-label">Identidade visual</span>
+          </div>
+
+          <div>
+            <div class="perfil-dados-grid">
+              <div class="info-card">
+                <strong>Consultor selecionado</strong>
+                <span id="perfil-responsavel-selecionado">-</span>
+              </div>
+
+              <div class="info-card">
+                <strong>Empresa</strong>
+                <span id="perfil-empresa">-</span>
+              </div>
+
+              <div class="info-card">
+                <strong>WhatsApp / Telefone</strong>
+                <span id="perfil-telefone">-</span>
+              </div>
+
+              <div class="info-card">
+                <strong>CNPJ / CPF</strong>
+                <span id="perfil-cnpj">-</span>
+              </div>
+
+              <div class="info-card full">
+                <strong>Endereço</strong>
+                <span id="perfil-endereco">-</span>
+              </div>
+            </div>
+
+            <div class="acoes-painel">
+              <button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">✏️ Editar dados</button>
+              <button type="button" class="btn-senha" onclick="abrirModalSenha()">🔐 Alterar senha</button>
+              <button type="button" class="btn-excluir-conta" onclick="abrirModalExcluirConta()">🗑️ Excluir conta</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="plano-painel" class="painel-card">
+        <h2>Plano Atual</h2>
+
+        <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
+
+        <div class="perfil-dados-grid plano-atual-grid">
+          <div class="info-card">
+            <strong>Plano</strong>
+            <span id="perfil-plano" class="plano-badge">Plano Grátis</span>
+          </div>
+
+          <div class="info-card">
+            <strong>Status do plano</strong>
+            <span id="perfil-plano-status">-</span>
+          </div>
+
+          <div class="info-card">
+            <strong>Expira em</strong>
+            <span id="perfil-plano-expira">-</span>
+          </div>
+
+          <div class="info-card info-card-assinatura full">
+            <strong>Assinatura</strong>
+            <span>
+              <a href="/planos.html" class="btn-plano-painel">⭐ Gerenciar plano</a>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section id="resumo-ordens-servico-painel" class="painel-card">
+        <div class="painel-os-topo">
+          <div>
+            <h2>Ordens de Serviço</h2>
+            <p>Resumo rápido das OS cadastradas, abertas, em execução, concluídas e valores vinculados às ordens de serviço.</p>
+          </div>
+
+          <a href="/ordens.html" class="btn-ver-ordens-painel">🧰 Ver ordens</a>
+        </div>
+
+        <div class="painel-os-grid painel-os-resumo-grid">
+          <div class="painel-os-card">
+            <strong>Total de OS</strong>
+            <span id="painel-total-os">0</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>Abertas</strong>
+            <span id="painel-os-abertas">0</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>Em execução</strong>
+            <span id="painel-os-execucao">0</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>Concluídas</strong>
+            <span id="painel-os-concluidas">0</span>
+          </div>
+
+          <div class="painel-os-card painel-os-card-full">
+            <strong>Total em OS</strong>
+            <span id="painel-total-valor-os">R$ 0,00</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="faturamento-os-painel" class="painel-card">
+        <div class="painel-os-topo">
+          <div>
+            <h2>Faturamento por OS</h2>
             <p>
-              Envie uma imagem PNG, JPG, JPEG ou WEBP. A logo salva aqui aparecerá automaticamente no cabeçalho dos seus orçamentos.
+              Estes valores devem considerar somente ordens de serviço concluídas e pagas,
+              evitando misturar orçamento aprovado com dinheiro realmente recebido.
             </p>
+          </div>
+        </div>
 
-            <div class="upload-row">
-              <label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label>
-              <button type="button" class="btn-remover-logo" onclick="removerLogoPerfil()">Remover logo</button>
-              <input type="file" id="logo_file" class="input-logo-escondido" accept="image/png, image/jpeg, image/webp">
-              <input type="hidden" id="foto_url">
+        <div class="painel-grid-4 painel-grid-2">
+          <div class="painel-os-card">
+            <strong>Total faturado em OS</strong>
+            <span id="painel-faturamento-os-total">R$ 0,00</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>Recebido no mês</strong>
+            <span id="painel-recebido-mes-os">R$ 0,00</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>OS pagas no mês</strong>
+            <span id="painel-os-pagas-mes">0</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>Ticket médio por OS</strong>
+            <span id="painel-ticket-medio-os">R$ 0,00</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="operacional-premium-painel" class="painel-card">
+        <div class="painel-os-topo">
+          <div>
+            <h2>Indicadores Operacionais</h2>
+            <p>Acompanhe conversão de orçamentos em OS, pendências de pagamento e produtos com estoque baixo.</p>
+          </div>
+        </div>
+
+        <div class="painel-grid-4 painel-grid-2">
+          <div class="painel-os-card">
+            <strong>Orçamentos aprovados</strong>
+            <span id="painel-orcamentos-aprovados">0</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>Convertidos em OS</strong>
+            <span id="painel-orcamentos-convertidos-os">0</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>OS pendentes pagamento</strong>
+            <span id="painel-os-pendentes-pagamento">0</span>
+          </div>
+
+          <div class="painel-os-card">
+            <strong>Produtos estoque baixo</strong>
+            <span id="painel-produtos-estoque-baixo">0</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="ultimas-os-finalizadas-painel" class="painel-card">
+        <div class="painel-os-topo">
+          <div>
+            <h2>Últimas OS Finalizadas</h2>
+            <p>Lista rápida das últimas ordens concluídas e pagas que entram no faturamento.</p>
+          </div>
+
+          <a href="/ordens.html" class="btn-ver-ordens-painel">🧰 Ver todas</a>
+        </div>
+
+        <div id="lista-ultimas-os-finalizadas-painel" class="painel-lista-operacional">
+          <div class="painel-aviso">Carregando últimas OS finalizadas...</div>
+        </div>
+      </section>
+
+      <section id="dashboard-painel" class="painel-card">
+        <h2>Resumo dos Orçamentos</h2>
+
+        <div class="perfil-dados-grid resumo-orcamentos-grid">
+          <div class="info-card">
+            <strong>Total de orçamentos</strong>
+            <span id="dash-total-orcamentos">0</span>
+          </div>
+
+          <div class="info-card">
+            <strong>Pendentes</strong>
+            <span id="dash-pendentes">0</span>
+          </div>
+
+          <div class="info-card">
+            <strong>Aprovados no mês</strong>
+            <span id="dash-aprovados-mes">0</span>
+          </div>
+
+          <div class="info-card">
+            <strong>Valor aprovado no mês</strong>
+            <span id="dash-valor-aprovado-mes">R$ 0,00</span>
+          </div>
+
+          <div class="info-card">
+            <strong>Taxa de aprovação</strong>
+            <span id="dash-taxa-aprovacao">0%</span>
+          </div>
+
+          <div class="info-card">
+            <strong>Última atualização</strong>
+            <span id="dash-atualizado-em">-</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="ultimos-orcamentos-painel" class="painel-card">
+        <h2>Últimos Orçamentos</h2>
+
+        <div id="lista-ultimos-orcamentos-painel">
+          <div class="painel-aviso">Carregando últimos orçamentos...</div>
+        </div>
+      </section>
+    </div>
+
+    <div id="modal-editar-perfil" class="modal-overlay-painel">
+      <div class="modal-painel">
+        <h2>Editar Dados da Empresa</h2>
+
+        <form id="form-cadastro-perfil" onsubmit="salvarPerfil(event)">
+          <div class="logo-area-modal">
+            <div class="logo-preview-box">
+              <span id="logo-placeholder">Nenhuma logo cadastrada</span>
+              <img id="preview-logo" src="" alt="Pré-visualização da logo da empresa">
             </div>
 
-            <div id="status-logo" class="status-msg"></div>
-          </div>
-        </div>
+            <div class="logo-info">
+              <h3>Logo da empresa</h3>
+              <p>
+                Envie uma imagem PNG, JPG, JPEG ou WEBP. A logo salva aqui aparecerá automaticamente no cabeçalho dos seus orçamentos.
+              </p>
 
-        <div class="grid-painel">
-          <div class="campo-painel">
-            <label>Responsável selecionado <span>*</span></label>
-            <select id="responsavel_selecionado" required></select>
-          </div>
+              <div class="upload-row">
+                <label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label>
+                <button type="button" class="btn-remover-logo" onclick="removerLogoPerfil()">Remover logo</button>
+                <input type="file" id="logo_file" class="input-logo-escondido" accept="image/png, image/jpeg, image/webp">
+                <input type="hidden" id="foto_url">
+              </div>
 
-          <div class="campo-painel">
-            <label>Nome da empresa <span>*</span></label>
-            <input type="text" id="nome_empresa" required placeholder="Nome da sua empresa ou negócio">
-          </div>
-
-          <div class="campo-painel">
-            <label>WhatsApp / Telefone <span>*</span></label>
-            <input type="tel" id="telefone_empresa" required placeholder="Ex: (18) 99999-9999">
+              <div id="status-logo" class="status-msg"></div>
+            </div>
           </div>
 
-          <div class="campo-painel">
-            <label>CNPJ / CPF</label>
-            <input type="text" id="cnpj_empresa" placeholder="00.000.000/0000-00">
-          </div>
-
-          <div class="campo-painel" style="grid-column: 1 / -1;">
-            <label>Endereço</label>
-            <input type="text" id="endereco_empresa" placeholder="Rua, número, bairro, cidade/UF">
-          </div>
-        </div>
-
-        <div class="responsaveis-box">
-          <div class="responsaveis-topo">
-            <div>
-              <h3>Responsáveis pelo orçamento</h3>
-              <p>Cadastre e selecione quem aparecerá como responsável nos orçamentos gerados.</p>
+          <div class="grid-painel">
+            <div class="campo-painel">
+              <label>Responsável selecionado <span>*</span></label>
+              <select id="responsavel_selecionado" required></select>
             </div>
 
-            <button type="button" class="btn-editar-perfil" onclick="abrirModalResponsavelInterno()">
-              + Adicionar
-            </button>
+            <div class="campo-painel">
+              <label>Nome da empresa <span>*</span></label>
+              <input type="text" id="nome_empresa" required placeholder="Nome da sua empresa ou negócio">
+            </div>
+
+            <div class="campo-painel">
+              <label>WhatsApp / Telefone <span>*</span></label>
+              <input type="tel" id="telefone_empresa" required placeholder="Ex: (18) 99999-9999">
+            </div>
+
+            <div class="campo-painel">
+              <label>CNPJ / CPF</label>
+              <input type="text" id="cnpj_empresa" placeholder="00.000.000/0000-00">
+            </div>
+
+            <div class="campo-painel campo-painel-full">
+              <label>Endereço</label>
+              <input type="text" id="endereco_empresa" placeholder="Rua, número, bairro, cidade/UF">
+            </div>
           </div>
 
-          <div id="lista-responsaveis" class="lista-responsaveis">
-            Carregando responsáveis...
-          </div>
-        </div>
+          <div class="responsaveis-box">
+            <div class="responsaveis-topo">
+              <div>
+                <h3>Responsáveis pelo orçamento</h3>
+                <p>Cadastre e selecione quem aparecerá como responsável nos orçamentos gerados.</p>
+              </div>
 
-        <div id="status-perfil" class="status-msg"></div>
+              <button type="button" class="btn-editar-perfil" onclick="abrirModalResponsavelInterno()">+ Adicionar</button>
+            </div>
 
-        <div class="botoes-modal-painel">
-          <button type="button" class="btn-cancelar" onclick="fecharModalEditarPerfil()">
-            Cancelar
-          </button>
-
-          <button type="submit" class="btn-salvar">
-            Salvar alterações
-          </button>
-        </div>
-      </form>
-
-      <div id="modal-responsavel-interno" class="modal-responsavel-interno">
-        <div class="modal-responsavel-card">
-          <h3>Novo responsável</h3>
-
-          <div class="campo-painel">
-            <label>Nome do responsável</label>
-            <input type="text" id="novo-responsavel-nome" placeholder="Ex: João Silva">
+            <div id="lista-responsaveis" class="lista-responsaveis">Carregando responsáveis...</div>
           </div>
 
-          <div id="status-responsavel" class="status-msg"></div>
+          <div id="status-perfil" class="status-msg"></div>
 
           <div class="botoes-modal-painel">
-            <button type="button" class="btn-cancelar" onclick="fecharModalResponsavelInterno()">
-              Cancelar
-            </button>
-
-            <button type="button" class="btn-confirmar" onclick="salvarResponsavel()">
-              Salvar responsável
-            </button>
+            <button type="button" class="btn-cancelar" onclick="fecharModalEditarPerfil()">Cancelar</button>
+            <button type="submit" class="btn-salvar">Salvar alterações</button>
           </div>
+        </form>
+
+        <div id="modal-responsavel-interno" class="modal-responsavel-interno">
+          <div class="modal-responsavel-card">
+            <h3>Novo responsável</h3>
+
+            <div class="campo-painel">
+              <label>Nome do responsável</label>
+              <input type="text" id="novo-responsavel-nome" placeholder="Ex: João Silva">
+            </div>
+
+            <div id="status-responsavel" class="status-msg"></div>
+
+            <div class="botoes-modal-painel">
+              <button type="button" class="btn-cancelar" onclick="fecharModalResponsavelInterno()">Cancelar</button>
+              <button type="button" class="btn-confirmar" onclick="salvarResponsavel()">Salvar responsável</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-senha" class="modal-overlay-painel">
+      <div class="modal-painel pequeno">
+        <h2>Alterar senha</h2>
+
+        <div class="dica-seguranca">
+          Para sua segurança, informe sua senha atual antes de cadastrar uma nova senha.
+        </div>
+
+        <div class="campo-painel">
+          <label>Senha atual</label>
+          <input type="password" id="senha_atual" autocomplete="current-password" placeholder="Digite sua senha atual">
+        </div>
+
+        <div class="campo-painel">
+          <label>Nova senha</label>
+          <input type="password" id="nova_senha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres">
+        </div>
+
+        <div class="campo-painel">
+          <label>Confirmar nova senha</label>
+          <input type="password" id="confirmar_senha" autocomplete="new-password" placeholder="Digite a nova senha novamente">
+        </div>
+
+        <div id="status-senha" class="status-msg"></div>
+
+        <div class="botoes-modal-painel">
+          <button type="button" class="btn-cancelar" onclick="fecharModalSenha()">Cancelar</button>
+          <button type="button" class="btn-confirmar" onclick="alterarSenhaSegura()">Confirmar alteração</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-excluir-conta" class="modal-overlay-painel">
+      <div class="modal-painel pequeno">
+        <h2>Excluir conta</h2>
+
+        <div class="dica-seguranca dica-perigo">
+          Esta ação é permanente. Sua conta, perfil, orçamentos, notificações, responsáveis e logo serão removidos.
+        </div>
+
+        <div class="campo-painel">
+          <label>Digite EXCLUIR para confirmar</label>
+          <input type="text" id="confirmar_excluir_conta" placeholder="EXCLUIR">
+        </div>
+
+        <div id="status-excluir-conta" class="status-msg"></div>
+
+        <div class="botoes-modal-painel">
+          <button type="button" class="btn-cancelar" onclick="fecharModalExcluirConta()">Cancelar</button>
+          <button type="button" class="btn-confirmar btn-perigo" onclick="excluirMinhaConta()">Excluir definitivamente</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div id="modal-senha" class="modal-overlay-painel">
-    <div class="modal-painel pequeno">
-      <h2>Alterar senha</h2>
+  <footer>
+    &copy; 2026 FS Orçamentos |
+    <a href="/privacidade.html">Privacidade</a> |
+    <a href="/termos.html">Termos</a>
+  </footer>
 
-      <div class="dica-seguranca">
-        Para sua segurança, informe sua senha atual antes de cadastrar uma nova senha.
-      </div>
+  <button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">
+    🧾
+    <span>Gerar orçamento</span>
+  </button>
 
-      <div class="campo-painel">
-        <label>Senha atual</label>
-        <input type="password" id="senha_atual" autocomplete="current-password" placeholder="Digite sua senha atual">
-      </div>
-
-      <div class="campo-painel">
-        <label>Nova senha</label>
-        <input type="password" id="nova_senha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres">
-      </div>
-
-      <div class="campo-painel">
-        <label>Confirmar nova senha</label>
-        <input type="password" id="confirmar_senha" autocomplete="new-password" placeholder="Digite a nova senha novamente">
-      </div>
-
-      <div id="status-senha" class="status-msg"></div>
-
-      <div class="botoes-modal-painel">
-        <button type="button" class="btn-cancelar" onclick="fecharModalSenha()">
-          Cancelar
-        </button>
-
-        <button type="button" class="btn-confirmar" onclick="alterarSenhaSegura()">
-          Confirmar alteração
-        </button>
-      </div>
-    </div>
-
-  </div>
-<div id="modal-excluir-conta" class="modal-overlay-painel">
-  <div class="modal-painel pequeno">
-    <h2>Excluir conta</h2>
-
-    <div class="dica-seguranca" style="background:#f8d7da;color:#721c24;">
-      Esta ação é permanente. Sua conta, perfil, orçamentos, notificações, responsáveis e logo serão removidos.
-    </div>
-
-    <div class="campo-painel">
-      <label>Digite EXCLUIR para confirmar</label>
-      <input type="text" id="confirmar_excluir_conta" placeholder="EXCLUIR">
-    </div>
-
-    <div id="status-excluir-conta" class="status-msg"></div>
-
-    <div class="botoes-modal-painel">
-      <button type="button" class="btn-cancelar" onclick="fecharModalExcluirConta()">
-        Cancelar
-      </button>
-
-      <button type="button" class="btn-confirmar" style="background:#dc2626;" onclick="excluirMinhaConta()">
-        Excluir definitivamente
-      </button>
-    </div>
-  </div>
-</div>
-</div>
-
-
-
-<footer>
-  &copy; 2026 FS Orçamentos |
-  <a href="/privacidade.html">Privacidade</a> |
-  <a href="/termos.html">Termos</a>
-</footer>
-
-<button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">
-  🧾
-  <span>Gerar orçamento</span>
-</button>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script src="auth.js"></script>
-<script src="ui.js"></script>
-<script src="planos.js"></script>
-<script src="carregar-menu.js"></script>
-<script src="notificacoes.js"></script>
-<script src="painel.js"></script>
-
-<script>
-  /*
-    Correção importante:
-    O painel.html já possui os blocos:
-    - Plano Atual
-    - Resumo dos Orçamentos
-    - Últimos Orçamentos
-
-    Então esta função impede que o painel.js crie outro dashboard duplicado.
-  */
-  window.garantirDashboardNoHtml = function() {
-    return;
-  };
-</script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
+  <script src="painel.js"></script>
 </body>
 </html>
