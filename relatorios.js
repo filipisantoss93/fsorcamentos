@@ -1,7 +1,7 @@
 /* =========================================================
    FS ORÇAMENTOS - relatorios.js
-   Relatórios Premium por período, com carregamento manual
-   para evitar travamento ao abrir a página no celular.
+   Relatórios Premium com abertura leve.
+   A página não consulta dados nem bloqueia o corpo ao iniciar.
    ========================================================= */
 
 let usuarioLogadoRelatorios = null;
@@ -10,119 +10,77 @@ let itensRelatorioCache = [];
 let fsRelatoriosInicializado = false;
 let fsRelatoriosCarregando = false;
 
-const FS_RELATORIOS_TIMEOUT_MS = 12000;
-const FS_RELATORIOS_LIMITE_ORDENS = 250;
-const FS_RELATORIOS_LIMITE_ITENS = 700;
+const FS_RELATORIOS_TIMEOUT_MS = 8000;
+const FS_RELATORIOS_TIMEOUT_SESSAO_MS = 3500;
+const FS_RELATORIOS_LIMITE_ORDENS = 120;
+const FS_RELATORIOS_LIMITE_ITENS = 350;
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", iniciarRelatoriosPremium);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', iniciarRelatoriosPremium);
 } else {
   iniciarRelatoriosPremium();
 }
 
-async function iniciarRelatoriosPremium() {
+function iniciarRelatoriosPremium() {
   if (fsRelatoriosInicializado) return;
   fsRelatoriosInicializado = true;
-  await inicializarRelatoriosPremium();
+  inicializarRelatoriosPremiumLeve();
 }
 
-async function inicializarRelatoriosPremium() {
+function inicializarRelatoriosPremiumLeve() {
   try {
     garantirSupabaseRelatorios();
-
-    if (typeof bloquearPaginaSeNaoPremiumAsync === "function") {
-      const bloqueado = await executarComTimeoutRelatorios(
-        bloquearPaginaSeNaoPremiumAsync("Relatórios mensais por serviço, faturamento, clientes e veículos fazem parte do Plano Premium."),
-        8000,
-        false
-      );
-      if (bloqueado) return;
-    }
-
-    const session = await obterSessaoAtualRelatorios();
-
-    if (!session) {
-      redirecionarParaLoginRelatorios();
-      return;
-    }
-
-    usuarioLogadoRelatorios = session.user;
     configurarEventosRelatorios();
     aplicarPeriodoMesAtualRelatorios();
+    limparCachesRelatorios();
     renderizarResumoRelatorios();
     renderizarRankingsRelatorios();
-    mostrarMensagemRelatorios("Relatório pronto para consulta. Toque em Atualizar relatório para carregar os dados do período.", "info");
+    mostrarMensagemRelatorios('Relatório pronto. Clique em Atualizar relatório para carregar os dados do período.', 'info');
     notificarAlturaRelatorios();
+
+    setTimeout(verificarSessaoInicialRelatorios, 80);
   } catch (erro) {
-    console.error("Erro ao iniciar relatórios:", erro);
-    mostrarMensagemRelatorios("Erro ao iniciar os relatórios Premium.", "erro");
+    console.error('Erro ao iniciar relatórios:', erro);
+    mostrarMensagemRelatorios('Erro ao iniciar os relatórios. Atualize a página e tente novamente.', 'erro');
     notificarAlturaRelatorios();
   }
 }
 
 function garantirSupabaseRelatorios() {
-  if (window._supabase) return;
+  if (window._supabase) return true;
 
   if (window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
-    window._supabase = window.supabase.createClient(
-      window.SUPABASE_URL,
-      window.SUPABASE_ANON_KEY
-    );
+    window._supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
+    return true;
+  }
+
+  throw new Error('Supabase não inicializado. Verifique config.js.');
+}
+
+async function verificarSessaoInicialRelatorios() {
+  const session = await obterSessaoAtualRelatorios(false);
+  if (!session?.user?.id) {
+    usuarioLogadoRelatorios = null;
+    mostrarMensagemRelatorios('Faça login para carregar seus relatórios. Se você já está logado, toque em Atualizar relatório.', 'info');
     return;
   }
 
-  throw new Error("Supabase não inicializado. Verifique config.js.");
-}
-
-async function executarComTimeoutRelatorios(promessa, tempoMs = FS_RELATORIOS_TIMEOUT_MS, retornoTimeout = null) {
-  let timer;
-  try {
-    return await Promise.race([
-      promessa,
-      new Promise((resolve) => {
-        timer = setTimeout(() => resolve(retornoTimeout), tempoMs);
-      })
-    ]);
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function obterSessaoAtualRelatorios() {
-  const resposta = await executarComTimeoutRelatorios(
-    window._supabase.auth.getSession(),
-    8000,
-    { data: { session: null }, error: new Error("Tempo excedido ao obter sessão") }
-  );
-
-  const { data, error } = resposta || {};
-
-  if (error) {
-    console.error("Erro ao obter sessão:", error);
-    return null;
-  }
-
-  return data?.session || null;
-}
-
-function redirecionarParaLoginRelatorios() {
-  const embed = new URLSearchParams(location.search).get("embed") === "1";
-  const destino = encodeURIComponent(embed ? "gestao.html#relatorios" : "relatorios.html");
-  window.top.location.href = "index.html?redirect=" + destino;
+  usuarioLogadoRelatorios = session.user;
+  mostrarMensagemRelatorios('Relatório pronto para consulta. Toque em Atualizar relatório para buscar os dados.', 'info');
 }
 
 function configurarEventosRelatorios() {
-  const btnAtualizar = document.getElementById("btn-atualizar-relatorios");
+  const btnAtualizar = document.getElementById('btn-atualizar-relatorios');
 
-  if (btnAtualizar && btnAtualizar.dataset.configurado !== "sim") {
-    btnAtualizar.dataset.configurado = "sim";
-    btnAtualizar.addEventListener("click", carregarRelatoriosPremium);
+  if (btnAtualizar && btnAtualizar.dataset.configurado !== 'sim') {
+    btnAtualizar.dataset.configurado = 'sim';
+    btnAtualizar.addEventListener('click', carregarRelatoriosPremium);
   }
 }
 
 function aplicarPeriodoMesAtualRelatorios() {
-  const inicio = document.getElementById("relatorio-data-inicio");
-  const fim = document.getElementById("relatorio-data-fim");
+  const inicio = document.getElementById('relatorio-data-inicio');
+  const fim = document.getElementById('relatorio-data-fim');
 
   const hoje = new Date();
   const primeiro = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
@@ -139,22 +97,26 @@ async function carregarRelatoriosPremium() {
 
   try {
     limparMensagemRelatorios();
+    garantirSupabaseRelatorios();
 
-    if (!usuarioLogadoRelatorios?.id) {
-      const session = await obterSessaoAtualRelatorios();
-      if (!session) {
-        redirecionarParaLoginRelatorios();
-        return;
-      }
-      usuarioLogadoRelatorios = session.user;
-    }
+    const session = usuarioLogadoRelatorios?.id
+      ? { user: usuarioLogadoRelatorios }
+      : await obterSessaoAtualRelatorios(true);
 
-    const periodo = obterPeriodoRelatorios();
-
-    if (periodo.inicio && periodo.fim && periodo.inicio > periodo.fim) {
-      mostrarMensagemRelatorios("A data inicial não pode ser maior que a data final.", "erro");
+    if (!session?.user?.id) {
+      mostrarMensagemRelatorios('Você precisa estar logado para carregar os relatórios.', 'erro');
       return;
     }
+
+    usuarioLogadoRelatorios = session.user;
+
+    const periodo = obterPeriodoRelatorios();
+    if (periodo.inicio && periodo.fim && periodo.inicio > periodo.fim) {
+      mostrarMensagemRelatorios('A data inicial não pode ser maior que a data final.', 'erro');
+      return;
+    }
+
+    mostrarMensagemRelatorios('Carregando dados do período...', 'info');
 
     await carregarOrdensRelatorio(periodo);
     await carregarItensRelatorio();
@@ -163,13 +125,14 @@ async function carregarRelatoriosPremium() {
     renderizarRankingsRelatorios();
 
     if (!ordensRelatorioCache.length) {
-      mostrarMensagemRelatorios("Nenhuma ordem de serviço encontrada no período selecionado.", "info");
+      mostrarMensagemRelatorios('Nenhuma ordem de serviço encontrada no período selecionado.', 'info');
+    } else {
+      limparMensagemRelatorios();
     }
   } catch (erro) {
-    console.error("Erro ao carregar relatórios:", erro);
-    mostrarMensagemRelatorios("Erro ao carregar relatórios Premium. Tente reduzir o período consultado.", "erro");
-    ordensRelatorioCache = [];
-    itensRelatorioCache = [];
+    console.error('Erro ao carregar relatórios:', erro);
+    mostrarMensagemRelatorios('Erro ao carregar relatórios. Tente reduzir o período consultado.', 'erro');
+    limparCachesRelatorios();
     renderizarResumoRelatorios();
     renderizarRankingsRelatorios();
   } finally {
@@ -179,145 +142,120 @@ async function carregarRelatoriosPremium() {
   }
 }
 
+async function obterSessaoAtualRelatorios(mostrarErro = false) {
+  if (!window._supabase?.auth?.getSession) return null;
+
+  const resposta = await executarComTimeoutRelatorios(
+    window._supabase.auth.getSession(),
+    FS_RELATORIOS_TIMEOUT_SESSAO_MS,
+    { data: { session: null }, error: new Error('Tempo excedido ao obter sessão') }
+  );
+
+  const { data, error } = resposta || {};
+
+  if (error && mostrarErro) {
+    console.warn('Erro ao obter sessão:', error);
+  }
+
+  return data?.session || null;
+}
+
+function executarComTimeoutRelatorios(promessa, tempoMs = FS_RELATORIOS_TIMEOUT_MS, retornoTimeout = null) {
+  let timer;
+  return Promise.race([
+    Promise.resolve(promessa),
+    new Promise((resolve) => {
+      timer = setTimeout(() => resolve(retornoTimeout), tempoMs);
+    })
+  ]).finally(() => clearTimeout(timer));
+}
+
 function obterPeriodoRelatorios() {
-  const inicio = valorInputRelatorios("relatorio-data-inicio");
-  const fim = valorInputRelatorios("relatorio-data-fim");
+  const inicio = valorInputRelatorios('relatorio-data-inicio');
+  const fim = valorInputRelatorios('relatorio-data-fim');
 
   return {
     inicio,
     fim,
-    inicioISO: inicio ? `${inicio}T00:00:00` : "",
-    fimISO: fim ? `${fim}T23:59:59` : ""
+    inicioISO: inicio ? `${inicio}T00:00:00` : '',
+    fimISO: fim ? `${fim}T23:59:59` : ''
   };
 }
 
 async function carregarOrdensRelatorio(periodo) {
   ordensRelatorioCache = [];
 
-  let query = criarQueryOrdensRelatorios(true)
-    .eq("user_id", usuarioLogadoRelatorios.id)
-    .order("created_at", { ascending: false })
+  let query = window._supabase
+    .from('ordens_servico')
+    .select('*')
+    .eq('user_id', usuarioLogadoRelatorios.id)
+    .order('created_at', { ascending: false })
     .limit(FS_RELATORIOS_LIMITE_ORDENS);
 
-  if (periodo.inicioISO) query = query.gte("data_conclusao", periodo.inicioISO);
-  if (periodo.fimISO) query = query.lte("data_conclusao", periodo.fimISO);
+  if (periodo.inicioISO) query = query.gte('created_at', periodo.inicioISO);
+  if (periodo.fimISO) query = query.lte('created_at', periodo.fimISO);
 
-  let resposta = await executarComTimeoutRelatorios(query, FS_RELATORIOS_TIMEOUT_MS, {
-    data: null,
-    error: new Error("Tempo excedido na consulta de OS com relações")
+  const resposta = await executarComTimeoutRelatorios(query, FS_RELATORIOS_TIMEOUT_MS, {
+    data: [],
+    error: new Error('Tempo excedido na consulta de OS')
   });
 
-  let data = resposta?.data;
-  let error = resposta?.error;
-
-  if (error) {
-    console.warn("Consulta com relações/data_conclusao falhou. Tentando fallback simples:", error);
-    let fallback = criarQueryOrdensRelatorios(false)
-      .eq("user_id", usuarioLogadoRelatorios.id)
-      .order("created_at", { ascending: false })
-      .limit(FS_RELATORIOS_LIMITE_ORDENS);
-
-    if (periodo.inicioISO) fallback = fallback.gte("created_at", periodo.inicioISO);
-    if (periodo.fimISO) fallback = fallback.lte("created_at", periodo.fimISO);
-
-    const fb = await executarComTimeoutRelatorios(fallback, FS_RELATORIOS_TIMEOUT_MS, {
-      data: [],
-      error: new Error("Tempo excedido na consulta simples de OS")
-    });
-    data = fb?.data;
-    error = fb?.error;
-  }
-
-  if (error) {
-    console.error("Erro ao carregar OS para relatório:", error);
-    mostrarMensagemRelatorios("Não foi possível carregar as ordens de serviço para o relatório.", "erro");
+  if (resposta?.error) {
+    console.warn('Erro ao carregar OS para relatório:', resposta.error);
+    mostrarMensagemRelatorios('Não foi possível carregar as ordens de serviço para o relatório.', 'erro');
     ordensRelatorioCache = [];
     return;
   }
 
-  ordensRelatorioCache = Array.isArray(data) ? data : [];
+  ordensRelatorioCache = Array.isArray(resposta?.data) ? resposta.data : [];
   await enriquecerOrdensRelatorioComClientesEVeiculos();
-}
-
-function criarQueryOrdensRelatorios(comRelacoes) {
-  if (!comRelacoes) return window._supabase.from("ordens_servico").select("*");
-
-  return window._supabase
-    .from("ordens_servico")
-    .select(`
-      *,
-      clientes (
-        id,
-        nome,
-        numero_cliente,
-        whatsapp,
-        email
-      ),
-      veiculos (
-        id,
-        placa,
-        marca,
-        modelo,
-        cor,
-        prisma,
-        ano
-      )
-    `);
 }
 
 async function enriquecerOrdensRelatorioComClientesEVeiculos() {
   if (!ordensRelatorioCache.length) return;
 
-  const idsClientes = [...new Set(ordensRelatorioCache.map(ordem => ordem.cliente_id).filter(Boolean))];
-  const idsVeiculos = [...new Set(ordensRelatorioCache.map(ordem => ordem.veiculo_id).filter(Boolean))];
+  const idsClientes = [...new Set(ordensRelatorioCache.map(ordem => ordem.cliente_id).filter(Boolean))].slice(0, FS_RELATORIOS_LIMITE_ORDENS);
+  const idsVeiculos = [...new Set(ordensRelatorioCache.map(ordem => ordem.veiculo_id).filter(Boolean))].slice(0, FS_RELATORIOS_LIMITE_ORDENS);
 
   const mapaClientes = new Map();
   const mapaVeiculos = new Map();
 
   if (idsClientes.length) {
-    try {
-      const resposta = await executarComTimeoutRelatorios(
-        window._supabase
-          .from("clientes")
-          .select("id, nome, numero_cliente, whatsapp, email")
-          .eq("user_id", usuarioLogadoRelatorios.id)
-          .in("id", idsClientes),
-        FS_RELATORIOS_TIMEOUT_MS,
-        { data: [], error: null }
-      );
+    const respostaClientes = await executarComTimeoutRelatorios(
+      window._supabase
+        .from('clientes')
+        .select('id, nome, numero_cliente, whatsapp, email')
+        .eq('user_id', usuarioLogadoRelatorios.id)
+        .in('id', idsClientes),
+      FS_RELATORIOS_TIMEOUT_MS,
+      { data: [], error: null }
+    );
 
-      if (!resposta?.error && Array.isArray(resposta?.data)) {
-        resposta.data.forEach(cliente => mapaClientes.set(cliente.id, cliente));
-      }
-    } catch (erro) {
-      console.warn("Não foi possível enriquecer clientes do relatório:", erro);
+    if (!respostaClientes?.error && Array.isArray(respostaClientes?.data)) {
+      respostaClientes.data.forEach(cliente => mapaClientes.set(cliente.id, cliente));
     }
   }
 
   if (idsVeiculos.length) {
-    try {
-      const resposta = await executarComTimeoutRelatorios(
-        window._supabase
-          .from("veiculos")
-          .select("id, placa, marca, modelo, cor, prisma, ano")
-          .eq("user_id", usuarioLogadoRelatorios.id)
-          .in("id", idsVeiculos),
-        FS_RELATORIOS_TIMEOUT_MS,
-        { data: [], error: null }
-      );
+    const respostaVeiculos = await executarComTimeoutRelatorios(
+      window._supabase
+        .from('veiculos')
+        .select('id, placa, marca, modelo, cor, prisma, ano')
+        .eq('user_id', usuarioLogadoRelatorios.id)
+        .in('id', idsVeiculos),
+      FS_RELATORIOS_TIMEOUT_MS,
+      { data: [], error: null }
+    );
 
-      if (!resposta?.error && Array.isArray(resposta?.data)) {
-        resposta.data.forEach(veiculo => mapaVeiculos.set(veiculo.id, veiculo));
-      }
-    } catch (erro) {
-      console.warn("Não foi possível enriquecer veículos do relatório:", erro);
+    if (!respostaVeiculos?.error && Array.isArray(respostaVeiculos?.data)) {
+      respostaVeiculos.data.forEach(veiculo => mapaVeiculos.set(veiculo.id, veiculo));
     }
   }
 
   ordensRelatorioCache = ordensRelatorioCache.map(ordem => ({
     ...ordem,
-    clientes: ordem.clientes || mapaClientes.get(ordem.cliente_id) || null,
-    veiculos: ordem.veiculos || mapaVeiculos.get(ordem.veiculo_id) || null
+    clientes: mapaClientes.get(ordem.cliente_id) || null,
+    veiculos: mapaVeiculos.get(ordem.veiculo_id) || null
   }));
 }
 
@@ -327,114 +265,88 @@ async function carregarItensRelatorio() {
   const ids = ordensRelatorioCache.map((ordem) => ordem.id).filter(Boolean);
   if (!ids.length) return;
 
-  let resposta = await executarComTimeoutRelatorios(
+  const resposta = await executarComTimeoutRelatorios(
     window._supabase
-      .from("ordem_servico_itens")
-      .select(`
-        *,
-        produtos_estoque (
-          id,
-          nome,
-          codigo,
-          categoria,
-          unidade
-        )
-      `)
-      .eq("user_id", usuarioLogadoRelatorios.id)
-      .in("ordem_servico_id", ids)
+      .from('ordem_servico_itens')
+      .select('*')
+      .eq('user_id', usuarioLogadoRelatorios.id)
+      .in('ordem_servico_id', ids)
       .limit(FS_RELATORIOS_LIMITE_ITENS),
     FS_RELATORIOS_TIMEOUT_MS,
-    { data: null, error: new Error("Tempo excedido na consulta de itens") }
+    { data: [], error: null }
   );
 
-  let data = resposta?.data;
-  let error = resposta?.error;
-
-  if (error) {
-    console.warn("Consulta de itens com produto relacionado falhou. Tentando fallback simples:", error);
-    const fb = await executarComTimeoutRelatorios(
-      window._supabase
-        .from("ordem_servico_itens")
-        .select("*")
-        .eq("user_id", usuarioLogadoRelatorios.id)
-        .in("ordem_servico_id", ids)
-        .limit(FS_RELATORIOS_LIMITE_ITENS),
-      FS_RELATORIOS_TIMEOUT_MS,
-      { data: [], error: null }
-    );
-    data = fb?.data;
-    error = fb?.error;
-  }
-
-  if (error) {
-    console.warn("Não foi possível carregar itens para relatório:", error);
+  if (resposta?.error) {
+    console.warn('Não foi possível carregar itens para relatório:', resposta.error);
     itensRelatorioCache = [];
     return;
   }
 
-  itensRelatorioCache = Array.isArray(data) ? data : [];
+  itensRelatorioCache = Array.isArray(resposta?.data) ? resposta.data : [];
   await enriquecerItensRelatorioComProdutos();
 }
 
 async function enriquecerItensRelatorioComProdutos() {
-  const idsProdutos = [...new Set(itensRelatorioCache.map(item => item.produto_estoque_id).filter(Boolean))];
+  const idsProdutos = [...new Set(itensRelatorioCache.map(item => item.produto_estoque_id).filter(Boolean))].slice(0, FS_RELATORIOS_LIMITE_ITENS);
   if (!idsProdutos.length) return;
 
-  const jaTemProduto = itensRelatorioCache.some(item => item.produtos_estoque);
-  if (jaTemProduto) return;
+  const resposta = await executarComTimeoutRelatorios(
+    window._supabase
+      .from('produtos_estoque')
+      .select('id, nome, codigo, categoria, unidade')
+      .eq('user_id', usuarioLogadoRelatorios.id)
+      .in('id', idsProdutos),
+    FS_RELATORIOS_TIMEOUT_MS,
+    { data: [], error: null }
+  );
 
-  try {
-    const resposta = await executarComTimeoutRelatorios(
-      window._supabase
-        .from("produtos_estoque")
-        .select("id, nome, codigo, categoria, unidade")
-        .eq("user_id", usuarioLogadoRelatorios.id)
-        .in("id", idsProdutos),
-      FS_RELATORIOS_TIMEOUT_MS,
-      { data: [], error: null }
-    );
+  if (resposta?.error || !Array.isArray(resposta?.data)) return;
 
-    if (resposta?.error || !Array.isArray(resposta?.data)) return;
-    const mapa = new Map(resposta.data.map(produto => [produto.id, produto]));
-    itensRelatorioCache = itensRelatorioCache.map(item => ({
-      ...item,
-      produtos_estoque: mapa.get(item.produto_estoque_id) || null
-    }));
-  } catch (erro) {
-    console.warn("Não foi possível enriquecer produtos do relatório:", erro);
-  }
+  const mapa = new Map(resposta.data.map(produto => [produto.id, produto]));
+  itensRelatorioCache = itensRelatorioCache.map(item => ({
+    ...item,
+    produtos_estoque: mapa.get(item.produto_estoque_id) || null
+  }));
+}
+
+function limparCachesRelatorios() {
+  ordensRelatorioCache = [];
+  itensRelatorioCache = [];
 }
 
 function renderizarResumoRelatorios() {
-  const concluidas = ordensRelatorioCache.filter((ordem) => normalizarTextoRelatorios(ordem.status) === "concluida");
+  const concluidas = ordensRelatorioCache.filter((ordem) => {
+    const status = normalizarTextoRelatorios(ordem.status);
+    return status === 'concluida' || status === 'concluido' || status === 'finalizada' || status === 'finalizado';
+  });
   const base = concluidas.length ? concluidas : ordensRelatorioCache;
 
   const faturamento = base.reduce((soma, ordem) => soma + converterNumeroRelatorios(ordem.valor_total), 0);
   const saldoPendente = base.reduce((soma, ordem) => soma + converterNumeroRelatorios(ordem.saldo_restante), 0);
   const ticketMedio = base.length ? faturamento / base.length : 0;
 
-  setTextoRelatorios("relatorio-faturamento", formatarMoedaRelatorios(faturamento));
-  setTextoRelatorios("relatorio-os-concluidas", concluidas.length);
-  setTextoRelatorios("relatorio-ticket-medio", formatarMoedaRelatorios(ticketMedio));
-  setTextoRelatorios("relatorio-pendente", formatarMoedaRelatorios(saldoPendente));
+  setTextoRelatorios('relatorio-faturamento', formatarMoedaRelatorios(faturamento));
+  setTextoRelatorios('relatorio-os-concluidas', concluidas.length);
+  setTextoRelatorios('relatorio-ticket-medio', formatarMoedaRelatorios(ticketMedio));
+  setTextoRelatorios('relatorio-pendente', formatarMoedaRelatorios(saldoPendente));
 }
 
 function renderizarRankingsRelatorios() {
-  renderizarRankingGenerico("ranking-servicos", agruparItensPorServicoRelatorios(), "Nenhum serviço encontrado no período.");
-  renderizarRankingGenerico("ranking-produtos", agruparProdutosUsadosRelatorios(), "Nenhum produto de estoque encontrado no período.");
-  renderizarRankingGenerico("ranking-clientes", agruparOrdensPorClienteRelatorios(), "Nenhum cliente encontrado no período.");
-  renderizarRankingGenerico("ranking-veiculos", agruparOrdensPorVeiculoRelatorios(), "Nenhum veículo encontrado no período.");
+  renderizarRankingGenerico('ranking-servicos', agruparItensPorServicoRelatorios(), 'Nenhum serviço encontrado no período.');
+  renderizarRankingGenerico('ranking-produtos', agruparProdutosUsadosRelatorios(), 'Nenhum produto de estoque encontrado no período.');
+  renderizarRankingGenerico('ranking-clientes', agruparOrdensPorClienteRelatorios(), 'Nenhum cliente encontrado no período.');
+  renderizarRankingGenerico('ranking-veiculos', agruparOrdensPorVeiculoRelatorios(), 'Nenhum veículo encontrado no período.');
 }
 
 function agruparItensPorServicoRelatorios() {
   const mapa = new Map();
 
   itensRelatorioCache.forEach((item) => {
-    const tipo = normalizarTextoRelatorios(item.tipo || "");
-    const ehProduto = item.produto_estoque_id || tipo === "produto";
+    const tipo = normalizarTextoRelatorios(item.tipo || '');
+    const ehProduto = item.produto_estoque_id || tipo === 'produto';
     if (ehProduto) return;
 
-    const nome = item.descricao || "Serviço sem descrição";
+    const nome = item.descricao || item.nome || 'Serviço sem descrição';
     const chave = normalizarTextoRelatorios(nome);
 
     if (!mapa.has(chave)) mapa.set(chave, { titulo: nome, quantidade: 0, valor: 0 });
@@ -452,10 +364,10 @@ function agruparProdutosUsadosRelatorios() {
 
   itensRelatorioCache.forEach((item) => {
     const produto = item.produtos_estoque;
-    const ehProduto = item.produto_estoque_id || normalizarTextoRelatorios(item.tipo) === "produto";
+    const ehProduto = item.produto_estoque_id || normalizarTextoRelatorios(item.tipo) === 'produto';
     if (!ehProduto) return;
 
-    const nome = produto?.nome || item.descricao || "Produto sem nome";
+    const nome = produto?.nome || item.descricao || item.nome || 'Produto sem nome';
     const chave = item.produto_estoque_id || normalizarTextoRelatorios(nome);
 
     if (!mapa.has(chave)) {
@@ -463,7 +375,7 @@ function agruparProdutosUsadosRelatorios() {
         titulo: nome,
         quantidade: 0,
         valor: 0,
-        detalhe: produto?.codigo ? `Código: ${produto.codigo}` : ""
+        detalhe: produto?.codigo ? `Código: ${produto.codigo}` : ''
       });
     }
 
@@ -480,7 +392,7 @@ function agruparOrdensPorClienteRelatorios() {
 
   ordensRelatorioCache.forEach((ordem) => {
     const cliente = ordem.clientes;
-    const nome = cliente?.nome || ordem.cliente_nome || "Cliente sem cadastro";
+    const nome = cliente?.nome || ordem.cliente_nome || 'Cliente sem cadastro';
     const numero = formatarNumeroClienteRelatorios(cliente?.numero_cliente);
     const chave = ordem.cliente_id || normalizarTextoRelatorios(nome);
 
@@ -489,7 +401,7 @@ function agruparOrdensPorClienteRelatorios() {
         titulo: nome,
         quantidade: 0,
         valor: 0,
-        detalhe: numero ? `ID: ${numero}` : ""
+        detalhe: numero ? `ID: ${numero}` : ''
       });
     }
 
@@ -508,7 +420,7 @@ function agruparOrdensPorVeiculoRelatorios() {
     const veiculo = ordem.veiculos;
     if (!veiculo && !ordem.veiculo_id) return;
 
-    const titulo = veiculo ? formatarVeiculoRelatorios(veiculo) : "Veículo sem dados carregados";
+    const titulo = veiculo ? formatarVeiculoRelatorios(veiculo) : 'Veículo sem dados carregados';
     const chave = ordem.veiculo_id || normalizarTextoRelatorios(titulo);
 
     if (!mapa.has(chave)) {
@@ -516,7 +428,7 @@ function agruparOrdensPorVeiculoRelatorios() {
         titulo,
         quantidade: 0,
         valor: 0,
-        detalhe: veiculo?.placa ? `Placa: ${String(veiculo.placa).toUpperCase()}` : ""
+        detalhe: veiculo?.placa ? `Placa: ${String(veiculo.placa).toUpperCase()}` : ''
       });
     }
 
@@ -545,9 +457,9 @@ function renderizarRankingGenerico(id, lista, vazio) {
   }
 
   container.innerHTML = lista.map((item, index) => {
-    const detalhe = [item.detalhe || "", `Qtd: ${formatarQuantidadeRelatorios(item.quantidade)}`]
+    const detalhe = [item.detalhe || '', `Qtd: ${formatarQuantidadeRelatorios(item.quantidade)}`]
       .filter(Boolean)
-      .join(" • ");
+      .join(' • ');
 
     return `
       <div class="ranking-item">
@@ -558,28 +470,28 @@ function renderizarRankingGenerico(id, lista, vazio) {
         <div class="ranking-valor">${formatarMoedaRelatorios(item.valor)}</div>
       </div>
     `;
-  }).join("");
+  }).join('');
 }
 
 function formatarVeiculoRelatorios(veiculo) {
-  if (!veiculo) return "";
-  const placa = veiculo.placa ? String(veiculo.placa).toUpperCase() : "Sem placa";
-  const modelo = [veiculo.marca, veiculo.modelo].filter(Boolean).join(" ");
-  const cor = veiculo.cor ? ` - ${veiculo.cor}` : "";
-  const ano = veiculo.ano ? ` - ${veiculo.ano}` : "";
-  return `${placa}${modelo ? ` - ${modelo}` : ""}${cor}${ano}`;
+  if (!veiculo) return '';
+  const placa = veiculo.placa ? String(veiculo.placa).toUpperCase() : 'Sem placa';
+  const modelo = [veiculo.marca, veiculo.modelo].filter(Boolean).join(' ');
+  const cor = veiculo.cor ? ` - ${veiculo.cor}` : '';
+  const ano = veiculo.ano ? ` - ${veiculo.ano}` : '';
+  return `${placa}${modelo ? ` - ${modelo}` : ''}${cor}${ano}`;
 }
 
 function formatarNumeroClienteRelatorios(numero) {
-  if (!numero && numero !== 0) return "";
+  if (!numero && numero !== 0) return '';
   const valor = Number(numero);
-  if (Number.isFinite(valor)) return `CLI-${String(valor).padStart(6, "0")}`;
+  if (Number.isFinite(valor)) return `CLI-${String(valor).padStart(6, '0')}`;
   return String(numero);
 }
 
 function valorInputRelatorios(id) {
   const el = document.getElementById(id);
-  return el && typeof el.value === "string" ? el.value.trim() : "";
+  return el && typeof el.value === 'string' ? el.value.trim() : '';
 }
 
 function setTextoRelatorios(id, valor) {
@@ -587,82 +499,82 @@ function setTextoRelatorios(id, valor) {
   if (el) el.textContent = valor;
 }
 
-function mostrarMensagemRelatorios(texto, tipo = "info") {
-  const el = document.getElementById("mensagem-relatorios");
+function mostrarMensagemRelatorios(texto, tipo = 'info') {
+  const el = document.getElementById('mensagem-relatorios');
   if (!el) return;
   el.className = `mensagem ${tipo}`;
   el.textContent = texto;
 }
 
 function limparMensagemRelatorios() {
-  const el = document.getElementById("mensagem-relatorios");
+  const el = document.getElementById('mensagem-relatorios');
   if (!el) return;
-  el.className = "mensagem";
-  el.textContent = "";
+  el.className = 'mensagem';
+  el.textContent = '';
 }
 
 function dataParaInputRelatorios(data) {
   const ano = data.getFullYear();
-  const mes = String(data.getMonth() + 1).padStart(2, "0");
-  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const dia = String(data.getDate()).padStart(2, '0');
   return `${ano}-${mes}-${dia}`;
 }
 
 function converterNumeroRelatorios(valor) {
-  if (valor === null || valor === undefined || valor === "") return 0;
-  if (typeof valor === "number") return Number.isFinite(valor) ? valor : 0;
+  if (valor === null || valor === undefined || valor === '') return 0;
+  if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
 
-  let texto = String(valor).trim().replace(/[^\d.,-]/g, "");
+  let texto = String(valor).trim().replace(/[^\d.,-]/g, '');
   if (!texto) return 0;
-  if (texto.includes(",")) texto = texto.replace(/\./g, "").replace(",", ".");
+  if (texto.includes(',')) texto = texto.replace(/\./g, '').replace(',', '.');
 
   const numero = Number(texto);
   return Number.isFinite(numero) ? numero : 0;
 }
 
 function formatarMoedaRelatorios(valor) {
-  return converterNumeroRelatorios(valor).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
+  return converterNumeroRelatorios(valor).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
   });
 }
 
 function formatarQuantidadeRelatorios(valor) {
   const numero = converterNumeroRelatorios(valor);
-  return numero.toLocaleString("pt-BR", {
+  return numero.toLocaleString('pt-BR', {
     minimumFractionDigits: Number.isInteger(numero) ? 0 : 2,
     maximumFractionDigits: 2
   });
 }
 
 function normalizarTextoRelatorios(valor) {
-  return String(valor || "")
+  return String(valor || '')
     .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .trim();
 }
 
 function escaparHtmlRelatorios(valor) {
-  return String(valor || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(valor || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }
 
 function alterarEstadoBotaoRelatorios(carregando) {
-  const btn = document.getElementById("btn-atualizar-relatorios");
+  const btn = document.getElementById('btn-atualizar-relatorios');
   if (!btn) return;
   btn.disabled = !!carregando;
-  btn.textContent = carregando ? "Carregando..." : "Atualizar relatório";
+  btn.textContent = carregando ? 'Carregando...' : 'Atualizar relatório';
 }
 
 function notificarAlturaRelatorios() {
   try {
     if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ tipo: "fs-ajustar-iframe", origem: "relatorios" }, window.location.origin);
+      window.parent.postMessage({ tipo: 'fs-ajustar-iframe', origem: 'relatorios' }, window.location.origin);
     }
   } catch (_) {}
 }
