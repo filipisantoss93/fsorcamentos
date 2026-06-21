@@ -12,6 +12,7 @@
   <meta name="description" content="Central de gestão do FS Orçamentos com clientes, veículos, ordens de serviço, estoque, agenda, relatórios e recorrentes.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260621-gestao-cinza-1">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -229,6 +230,7 @@
     const loading = document.getElementById('gestao-loading');
     const tabs = Array.from(document.querySelectorAll('.gestao-tab'));
     const headerContainer = document.getElementById('header-container');
+    const FS_GESTAO_TEMA_CINZA_URL = '/fs-theme-cinza.css?v=20260621-gestao-cinza-1';
 
     function medirHeaderGestao() {
       const candidatos = [
@@ -255,6 +257,27 @@
       document.documentElement.style.setProperty('--gestao-header-h', `${altura}px`);
     }
 
+    function aplicarTemaCinzaNoFrame() {
+      try {
+        const doc = frame.contentDocument || frame.contentWindow?.document;
+        if (!doc?.head) return;
+
+        doc.documentElement.classList.add('fs-embed', 'fs-gestao-tema-cinza');
+        doc.body?.classList.add('fs-gestao-tema-cinza');
+
+        let link = doc.getElementById('fs-gestao-tema-cinza-css');
+        if (!link) {
+          link = doc.createElement('link');
+          link.id = 'fs-gestao-tema-cinza-css';
+          link.rel = 'stylesheet';
+          doc.head.appendChild(link);
+        }
+        link.href = FS_GESTAO_TEMA_CINZA_URL;
+      } catch (error) {
+        console.warn('Não foi possível aplicar o tema cinza no módulo da gestão.', error);
+      }
+    }
+
     function abrirModuloGestao(src, push = true) {
       tabs.forEach(btn => btn.classList.toggle('ativo', btn.dataset.src === src));
       loading.classList.add('ativo');
@@ -269,7 +292,10 @@
       btn.addEventListener('click', () => abrirModuloGestao(btn.dataset.src));
     });
 
-    frame.addEventListener('load', () => loading.classList.remove('ativo'));
+    frame.addEventListener('load', () => {
+      aplicarTemaCinzaNoFrame();
+      loading.classList.remove('ativo');
+    });
     window.addEventListener('resize', () => setTimeout(medirHeaderGestao, 80));
     window.addEventListener('orientationchange', () => setTimeout(medirHeaderGestao, 250));
 
