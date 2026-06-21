@@ -11,9 +11,35 @@
   <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
 
   <link rel="stylesheet" href="style.css?v=20260620-3" />
-  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260620-clientes-cinza-4" />
+  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260620-clientes-cinza-5" />
 
   <style>
+    html {
+      scroll-padding-top: calc(var(--fs-header-real-mobile, 112px) + 18px);
+    }
+
+    body.fs-em-iframe #header-container,
+    body.fs-em-webview #header-container {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 60000 !important;
+      background: #ffffff !important;
+    }
+
+    body.fs-em-iframe .pagina-clientes,
+    body.fs-em-webview .pagina-clientes {
+      scroll-margin-top: calc(var(--fs-header-real-mobile, 112px) + 18px);
+    }
+
+    .clientes-card,
+    .clientes-grid,
+    .clientes-filtros,
+    .clientes-topo-botoes,
+    #card-form-cliente,
+    #lista-clientes {
+      scroll-margin-top: calc(var(--fs-header-real-mobile, 112px) + 18px);
+    }
+
     .clientes-card-header .clientes-topo-acoes h2,
     .clientes-card-header .clientes-topo-acoes p {
       color: #ffffff !important;
@@ -132,8 +158,21 @@
       border: 1px solid #d1d5db !important;
     }
 
+    #modal-buscar-cliente button,
+    #modal-busca-cliente button,
+    #modal-selecionar-cliente button,
+    .modal-buscar-cliente button,
+    .modal-busca-cliente button,
+    .modal-selecionar-cliente button,
+    .modal-cliente button,
+    .fs-modal-cliente button,
+    [id*="modal"][id*="cliente"] button,
+    [class*="modal"][class*="cliente"] button {
+      text-shadow: none !important;
+    }
+
     @media (max-width: 680px) {
-      .card-form-mobile.form-fechado {
+      .card-form-mobile.form-fechado:not(.clientes-form-modal-aberto) {
         display: none !important;
       }
 
@@ -154,10 +193,10 @@
         display: block !important;
         position: fixed !important;
         z-index: 41001 !important;
-        top: calc(var(--fs-header-real-mobile, 88px) + 8px) !important;
+        top: max(12px, env(safe-area-inset-top)) !important;
         left: 10px !important;
         right: 10px !important;
-        bottom: 12px !important;
+        bottom: max(12px, env(safe-area-inset-bottom)) !important;
         width: auto !important;
         max-width: none !important;
         margin: 0 !important;
@@ -276,7 +315,7 @@
           </div>
 
           <button type="button" id="btn-toggle-form-cliente" class="btn-toggle-form-mobile">
-            Abrir
+            Fechar
           </button>
         </div>
 
@@ -464,14 +503,56 @@
   <script src="ui.js?v=20260620-3"></script>
   <script src="planos.js?v=20260620-3"></script>
   <script src="carregar-menu.js?v=20260620-3"></script>
-  <script src="clientes.js?v=20260620-clientes-cinza-4"></script>
+  <script src="clientes.js?v=20260620-clientes-cinza-5"></script>
   <script>
     (function () {
-      function abrirFormularioNovoCliente(event) {
-        if (event) event.preventDefault();
+      function estaEmIframeOuWebview() {
+        try {
+          if (window.self !== window.top) return true;
+        } catch (_) {
+          return true;
+        }
+        return /wv|WebView|; wv\)/i.test(navigator.userAgent || '');
+      }
+
+      function marcarAmbiente() {
+        if (estaEmIframeOuWebview()) {
+          document.body.classList.add('fs-em-iframe', 'fs-em-webview');
+        }
+      }
+
+      function forcarFormularioVisivel() {
         const card = document.getElementById('card-form-cliente');
         const corpo = document.getElementById('corpo-form-cliente');
         const botaoToggle = document.getElementById('btn-toggle-form-cliente');
+
+        if (card) {
+          card.classList.remove('form-fechado');
+          card.classList.add('clientes-form-modal-aberto');
+          card.style.setProperty('display', 'block', 'important');
+          card.style.setProperty('visibility', 'visible', 'important');
+          card.style.setProperty('opacity', '1', 'important');
+        }
+
+        if (corpo) {
+          corpo.hidden = false;
+          corpo.removeAttribute('hidden');
+          corpo.style.setProperty('display', 'block', 'important');
+          corpo.style.setProperty('visibility', 'visible', 'important');
+          corpo.style.setProperty('opacity', '1', 'important');
+          corpo.style.setProperty('height', 'auto', 'important');
+          corpo.style.setProperty('max-height', 'none', 'important');
+        }
+
+        if (botaoToggle) botaoToggle.textContent = 'Fechar';
+      }
+
+      function abrirFormularioNovoCliente(event) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+
         const nome = document.getElementById('cliente-nome');
         const titulo = document.getElementById('titulo-form-cliente');
         const btnSalvar = document.getElementById('btn-salvar-cliente');
@@ -487,15 +568,12 @@
 
         if (titulo) titulo.textContent = 'Novo cliente';
         if (btnSalvar) btnSalvar.textContent = 'Salvar cliente';
-        if (card) {
-          card.classList.remove('form-fechado');
-          card.classList.add('clientes-form-modal-aberto');
-          card.style.setProperty('display', 'block', 'important');
-          if (!mobile) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        if (corpo) corpo.style.setProperty('display', 'block', 'important');
-        if (botaoToggle) botaoToggle.textContent = 'Fechar';
+        forcarFormularioVisivel();
         if (mobile) document.body.classList.add('clientes-modal-aberto');
+        else document.getElementById('card-form-cliente')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        requestAnimationFrame(forcarFormularioVisivel);
+        setTimeout(forcarFormularioVisivel, 80);
         setTimeout(() => nome?.focus(), 250);
       }
 
@@ -514,29 +592,51 @@
           card.classList.remove('clientes-form-modal-aberto');
           card.classList.add('form-fechado');
           card.style.removeProperty('display');
+          card.style.removeProperty('visibility');
+          card.style.removeProperty('opacity');
         }
-        if (corpo) corpo.style.removeProperty('display');
-        if (botaoToggle) botaoToggle.textContent = 'Abrir';
+        if (corpo) {
+          corpo.style.removeProperty('display');
+          corpo.style.removeProperty('visibility');
+          corpo.style.removeProperty('opacity');
+          corpo.style.removeProperty('height');
+          corpo.style.removeProperty('max-height');
+        }
+        if (botaoToggle) botaoToggle.textContent = 'Fechar';
         document.body.classList.remove('clientes-modal-aberto');
       }
 
-      function aplicarAjustesClientes() {
-        const btnBuscar = document.getElementById('btn-atualizar-clientes');
-        const btnNovo = document.getElementById('btn-novo-cliente-atalho');
-        const btnToggle = document.getElementById('btn-toggle-form-cliente');
+      function substituirBotaoPorClone(id, texto, classeExtra, handler) {
+        const antigo = document.getElementById(id);
+        if (!antigo) return null;
 
+        const novo = antigo.cloneNode(true);
+        novo.textContent = texto;
+        if (classeExtra) novo.classList.add(classeExtra);
+        novo.dataset.fsControleProprio = 'sim';
+        antigo.replaceWith(novo);
+        novo.addEventListener('click', handler, true);
+        return novo;
+      }
+
+      function aplicarAjustesClientes() {
+        marcarAmbiente();
+
+        const btnBuscar = document.getElementById('btn-atualizar-clientes');
         if (btnBuscar) btnBuscar.textContent = 'Buscar cliente';
-        if (btnNovo && btnNovo.dataset.configurado !== 'sim') {
-          btnNovo.dataset.configurado = 'sim';
-          btnNovo.addEventListener('click', abrirFormularioNovoCliente);
+
+        const btnNovo = document.getElementById('btn-novo-cliente-atalho');
+        if (btnNovo && btnNovo.dataset.fsControleProprio !== 'sim') {
+          const novo = btnNovo.cloneNode(true);
+          novo.textContent = '+ Novo cliente';
+          novo.dataset.fsControleProprio = 'sim';
+          btnNovo.replaceWith(novo);
+          novo.addEventListener('click', abrirFormularioNovoCliente, true);
         }
 
-        if (btnToggle && btnToggle.dataset.modalConfigurado !== 'sim') {
-          btnToggle.dataset.modalConfigurado = 'sim';
-          btnToggle.addEventListener('click', function (event) {
-            const card = document.getElementById('card-form-cliente');
-            if (card?.classList.contains('clientes-form-modal-aberto')) fecharFormularioNovoCliente(event);
-          }, true);
+        const btnToggle = document.getElementById('btn-toggle-form-cliente');
+        if (btnToggle && btnToggle.dataset.fsControleProprio !== 'sim') {
+          substituirBotaoPorClone('btn-toggle-form-cliente', 'Fechar', '', fecharFormularioNovoCliente);
         }
       }
 
@@ -544,6 +644,11 @@
         if (event.key !== 'Escape') return;
         const card = document.getElementById('card-form-cliente');
         if (card?.classList.contains('clientes-form-modal-aberto')) fecharFormularioNovoCliente(event);
+      });
+
+      window.addEventListener('resize', function () {
+        const card = document.getElementById('card-form-cliente');
+        if (card?.classList.contains('clientes-form-modal-aberto')) requestAnimationFrame(forcarFormularioVisivel);
       });
 
       if (document.readyState === 'loading') {
@@ -554,6 +659,7 @@
 
       setTimeout(aplicarAjustesClientes, 300);
       setTimeout(aplicarAjustesClientes, 1000);
+      setTimeout(aplicarAjustesClientes, 2000);
     })();
   </script>
 </body>
