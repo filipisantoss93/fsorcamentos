@@ -1,5 +1,5 @@
 /* FS Orçamentos - Service Worker PWA */
-const FS_SW_VERSION = 'fsorcamentos-pwa-v20260620-2';
+const FS_SW_VERSION = 'fsorcamentos-pwa-v20260620-3';
 const FS_STATIC_CACHE = `${FS_SW_VERSION}-static`;
 const FS_RUNTIME_CACHE = `${FS_SW_VERSION}-runtime`;
 
@@ -62,7 +62,7 @@ async function networkFirst(request) {
 
 async function networkFirstNavigation(request) {
   try {
-    const response = await fetch(request);
+    const response = await fetch(request, { cache: 'no-store' });
     const cache = await caches.open(FS_RUNTIME_CACHE);
     cache.put(request, response.clone());
     return response;
