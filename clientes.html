@@ -11,7 +11,86 @@
   <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
 
   <link rel="stylesheet" href="style.css?v=20260620-3" />
-  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260620-clientes-cinza-2" />
+  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260620-clientes-cinza-3" />
+
+  <style>
+    .clientes-card-header .clientes-topo-acoes h2,
+    .clientes-card-header .clientes-topo-acoes p {
+      color: #ffffff !important;
+      opacity: 1 !important;
+      text-shadow: none !important;
+    }
+
+    .clientes-card-header .clientes-topo-acoes p {
+      color: #f8fafc !important;
+      font-weight: 750 !important;
+      line-height: 1.48 !important;
+    }
+
+    .clientes-topo-acoes > div:first-child {
+      flex: 1 1 280px;
+      min-width: 0;
+    }
+
+    .clientes-topo-botoes {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .clientes-topo-botoes .btn {
+      min-height: 44px;
+      white-space: nowrap;
+      box-shadow: none !important;
+    }
+
+    #btn-atualizar-clientes {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      border-color: #334155 !important;
+    }
+
+    #btn-novo-cliente-atalho {
+      background: #64748b !important;
+      color: #ffc400 !important;
+      border-color: #ffc400 !important;
+      font-weight: 950 !important;
+      text-transform: uppercase;
+      letter-spacing: .2px;
+    }
+
+    #btn-novo-cliente-atalho:hover {
+      background: #475569 !important;
+      color: #ffe58a !important;
+    }
+
+    @media (max-width: 680px) {
+      .card-form-mobile.form-fechado {
+        display: none !important;
+      }
+
+      .clientes-topo-acoes {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 14px !important;
+      }
+
+      .clientes-topo-botoes {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .clientes-topo-botoes .btn {
+        width: 100%;
+        min-height: 46px;
+        padding-inline: 8px;
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -176,9 +255,15 @@
               <p>Consulte, filtre, copie o ID e acesse rapidamente orçamentos ou ordens de serviço.</p>
             </div>
 
-            <button type="button" id="btn-atualizar-clientes" class="btn btn-secundario">
-              Buscar
-            </button>
+            <div class="clientes-topo-botoes">
+              <button type="button" id="btn-atualizar-clientes" class="btn btn-secundario">
+                Buscar cliente
+              </button>
+
+              <button type="button" id="btn-novo-cliente-atalho" class="btn btn-primario" aria-controls="card-form-cliente">
+                + Novo cliente
+              </button>
+            </div>
           </div>
         </div>
 
@@ -246,6 +331,54 @@
   <script src="ui.js?v=20260620-3"></script>
   <script src="planos.js?v=20260620-3"></script>
   <script src="carregar-menu.js?v=20260620-3"></script>
-  <script src="clientes.js?v=20260620-clientes-cinza-2"></script>
+  <script src="clientes.js?v=20260620-clientes-cinza-3"></script>
+  <script>
+    (function () {
+      function abrirFormularioNovoCliente() {
+        const card = document.getElementById('card-form-cliente');
+        const botaoToggle = document.getElementById('btn-toggle-form-cliente');
+        const nome = document.getElementById('cliente-nome');
+        const titulo = document.getElementById('titulo-form-cliente');
+        const btnSalvar = document.getElementById('btn-salvar-cliente');
+
+        if (typeof window.limparFormularioCliente === 'function') {
+          window.limparFormularioCliente();
+        } else {
+          document.getElementById('form-cliente')?.reset();
+          const id = document.getElementById('cliente-id');
+          if (id) id.value = '';
+        }
+
+        if (titulo) titulo.textContent = 'Novo cliente';
+        if (btnSalvar) btnSalvar.textContent = 'Salvar cliente';
+        if (card) {
+          card.classList.remove('form-fechado');
+          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        if (botaoToggle) botaoToggle.textContent = 'Fechar';
+        setTimeout(() => nome?.focus(), 250);
+      }
+
+      function aplicarAjustesClientes() {
+        const btnBuscar = document.getElementById('btn-atualizar-clientes');
+        const btnNovo = document.getElementById('btn-novo-cliente-atalho');
+
+        if (btnBuscar) btnBuscar.textContent = 'Buscar cliente';
+        if (btnNovo && btnNovo.dataset.configurado !== 'sim') {
+          btnNovo.dataset.configurado = 'sim';
+          btnNovo.addEventListener('click', abrirFormularioNovoCliente);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', aplicarAjustesClientes);
+      } else {
+        aplicarAjustesClientes();
+      }
+
+      setTimeout(aplicarAjustesClientes, 300);
+      setTimeout(aplicarAjustesClientes, 1000);
+    })();
+  </script>
 </body>
 </html>
