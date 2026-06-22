@@ -161,6 +161,51 @@
   opacity: 1 !important;
 }
 
+/* Editor dinâmico de orçamento: neutraliza CSS bege/marrom criado via JS em orcamentos.html. */
+.fs-editor-orcamento-box {
+  color: var(--fs-cinza-900, #111827) !important;
+}
+
+.fs-editor-campo,
+.fs-editor-itens,
+.fs-editor-total {
+  background: #ffffff !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--fs-borda, #e5e7eb) !important;
+}
+
+.fs-editor-campo strong {
+  color: var(--fs-muted, #4b5563) !important;
+}
+
+.fs-editor-campo span,
+.fs-editor-total,
+.fs-edit-subtotal {
+  color: var(--fs-cinza-950, #0f172a) !important;
+}
+
+.fs-editor-itens th,
+.fs-editor-itens td {
+  border-color: var(--fs-borda, #e5e7eb) !important;
+  color: var(--fs-cinza-900, #111827) !important;
+}
+
+.fs-editor-itens th {
+  background: var(--fs-cinza-100, #f3f4f6) !important;
+  color: var(--fs-cinza-950, #0f172a) !important;
+}
+
+.fs-editor-itens input {
+  border-color: var(--fs-cinza-300, #d1d5db) !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  background: #ffffff !important;
+}
+
+.fs-editor-itens input:focus {
+  border-color: var(--fs-cinza-700, #374151) !important;
+  box-shadow: 0 0 0 3px rgba(55, 65, 81, .14) !important;
+}
+
 @media (max-width: 760px) {
   .upgrade-orcamentos-box {
     width: min(100% - 12px, 1180px) !important;
