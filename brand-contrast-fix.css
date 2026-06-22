@@ -1,12 +1,13 @@
 /* =========================================================
-   FS ORÇAMENTOS — CONTRASTE, DENSIDADE E PADRÃO DE SISTEMA
-   Camada global enxuta: marca legível, listas compactas e visual neutro.
-   Tema: cinza profissional + amarelo de destaque.
+   FS ORÇAMENTOS — CONTRASTE GLOBAL E LIMPEZA DE TEMA ANTIGO
+   Camada final carregada pelo menu para neutralizar CSS marrom
+   escondido em HTMLs antigos e manter o sistema em cinza.
    ========================================================= */
 
 :root {
   --fs-marrom: var(--fs-cinza-800, #1f2937);
   --fs-marrom-2: var(--fs-cinza-950, #0f172a);
+  --fs-marrom-claro: var(--fs-cinza-700, #374151);
   --fs-amarelo: #ffc400;
   --fs-fundo-sistema: var(--fs-cinza-100, #f3f4f6);
   --fs-card: #ffffff;
@@ -16,25 +17,21 @@
   --fs-texto: var(--fs-cinza-900, #111827);
   --fs-texto-suave: var(--fs-muted, #4b5563);
   --fs-hover: var(--fs-cinza-50, #f9fafb);
-  --fs-radius: 6px;
-  --fs-shadow: 0 3px 10px rgba(15, 23, 42, .07);
+  --fs-radius: 7px;
+  --fs-shadow: 0 4px 14px rgba(15, 23, 42, .08);
 }
 
-.logo-nav {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 7px !important;
-  max-width: none !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  white-space: nowrap !important;
+html,
+body:not(.gerando-pdf) {
+  background: linear-gradient(180deg, #ffffff 0%, var(--fs-cinza-50, #f8fafc) 45%, var(--fs-cinza-100, #f3f4f6) 100%) !important;
+  color: var(--fs-texto, #111827) !important;
 }
 
+/* Marca e header */
+.logo-nav { display: inline-flex !important; align-items: center !important; gap: 7px !important; }
 .logo-nav .logo-fs,
 .logo-nav > span:first-child,
 .auth-logo-box .auth-logo-text strong,
-.auth-logo-box .auth-logo-text .auth-logo-fs,
-.auth-logo-box .auth-logo-text .fs-box,
 .modal-login-box .auth-logo-text strong,
 #modal-login .auth-logo-text strong,
 .sobre-fs-box,
@@ -46,7 +43,7 @@
   height: 30px !important;
   padding: 0 8px !important;
   border-radius: 5px !important;
-  background: var(--fs-amarelo) !important;
+  background: var(--fs-amarelo, #ffc400) !important;
   color: var(--fs-cinza-950, #0f172a) !important;
   font-weight: 950 !important;
   line-height: 1 !important;
@@ -56,19 +53,11 @@
 .logo-nav .logo-orcamentos,
 .logo-nav > span:last-child,
 .auth-logo-box .auth-logo-text span,
-.auth-logo-box .auth-logo-text .logo-orcamentos,
-.auth-logo-box .auth-logo-text .auth-logo-orcamentos,
 .modal-login-box .auth-logo-text span,
 #modal-login .auth-logo-text span {
   color: #ffffff !important;
   opacity: 1 !important;
   font-weight: 950 !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .24) !important;
-}
-
-.nav-menu .link-destaque-gestao::after {
-  content: 'Gestão' !important;
-  border-radius: 4px !important;
 }
 
 .auth-logo-box,
@@ -79,64 +68,34 @@
 .auth-banner {
   background: var(--fs-cinza-900, #111827) !important;
   color: #ffffff !important;
-  border-bottom: 2px solid var(--fs-amarelo) !important;
-  padding: 14px 16px !important;
+  border-bottom: 2px solid var(--fs-amarelo, #ffc400) !important;
 }
 
-.auth-logo-box .auth-logo-text,
-.modal-login-box .auth-logo-text,
-#modal-login .auth-logo-text {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 7px !important;
-  color: #ffffff !important;
-  line-height: 1 !important;
-  font-weight: 950 !important;
-}
-
-.auth-logo-box p,
-.modal-login-box .auth-logo-box p,
-#modal-login .auth-logo-box p {
-  color: #ffffff !important;
-  opacity: 1 !important;
-  font-weight: 700 !important;
-}
-
-.sobre-hero-logo,
-.contato-hero-logo,
-.sobre-fs-text,
-.contato-fs-text {
-  color: var(--fs-cinza-950, #0f172a) !important;
-  opacity: 1 !important;
-  font-weight: 950 !important;
-  text-shadow: none !important;
-}
-
-/* =========================================================
-   VISUAL GERAL: MENOS AMARELO, MAIS SISTEMA
-   ========================================================= */
-
-body:not(.gerando-pdf) {
-  background: linear-gradient(180deg, #f8fafc 0%, var(--fs-fundo-sistema) 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
+/* Base visual de páginas do sistema */
 body:not(.gerando-pdf) main,
 body:not(.gerando-pdf) .pagina-clientes,
 body:not(.gerando-pdf) .pagina-veiculos,
 body:not(.gerando-pdf) .pagina-estoque,
 body:not(.gerando-pdf) .pagina-ordens,
+body:not(.gerando-pdf) .pagina-ordem,
+body:not(.gerando-pdf) .pagina-agenda,
+body:not(.gerando-pdf) .pagina-recorrentes,
+body:not(.gerando-pdf) .pagina-relatorios,
 body:not(.gerando-pdf) .pagina-painel,
 body:not(.gerando-pdf) .forum-page {
+  color: var(--fs-texto, #111827) !important;
   font-size: 13px !important;
 }
 
+/* Heróis, cards e containers claros */
 body:not(.gerando-pdf) .clientes-hero,
 body:not(.gerando-pdf) .veiculos-hero,
 body:not(.gerando-pdf) .estoque-hero,
 body:not(.gerando-pdf) .ordens-hero,
 body:not(.gerando-pdf) .ordem-hero,
 body:not(.gerando-pdf) .agenda-hero,
+body:not(.gerando-pdf) .recorrentes-hero,
+body:not(.gerando-pdf) .relatorios-hero,
 body:not(.gerando-pdf) .forum-hero,
 body:not(.gerando-pdf) .painel-hero,
 body:not(.gerando-pdf) .container,
@@ -146,14 +105,29 @@ body:not(.gerando-pdf) .veiculos-card,
 body:not(.gerando-pdf) .ordens-card,
 body:not(.gerando-pdf) .estoque-card,
 body:not(.gerando-pdf) .agenda-card,
+body:not(.gerando-pdf) .card-recorrente,
+body:not(.gerando-pdf) .card-relatorio,
+body:not(.gerando-pdf) .filtros-relatorios,
 body:not(.gerando-pdf) .forum-card,
-body:not(.gerando-pdf) .painel-card {
-  background: var(--fs-card) !important;
-  color: var(--fs-texto) !important;
-  border: 1px solid var(--fs-borda-suave) !important;
-  border-top-color: var(--fs-borda) !important;
+body:not(.gerando-pdf) .painel-card,
+body:not(.gerando-pdf) .upgrade-beneficio,
+body:not(.gerando-pdf) .plano-pix-card,
+body:not(.gerando-pdf) .faq-card,
+body:not(.gerando-pdf) .manual-card,
+body:not(.gerando-pdf) .agenda-metrica,
+body:not(.gerando-pdf) .agenda-modal-card,
+body:not(.gerando-pdf) .agenda-detalhe,
+body:not(.gerando-pdf) .cliente-selecionado-agenda,
+body:not(.gerando-pdf) .cliente-modal-item,
+body:not(.gerando-pdf) .resumo-card,
+body:not(.gerando-pdf) .recorrente-item,
+body:not(.gerando-pdf) .recorrente-detalhes div,
+body:not(.gerando-pdf) .metrica-card,
+body:not(.gerando-pdf) .estado-vazio {
+  background: #ffffff !important;
+  color: var(--fs-texto, #111827) !important;
+  border-color: var(--fs-borda, #e5e7eb) !important;
   box-shadow: var(--fs-shadow) !important;
-  border-radius: 7px !important;
 }
 
 body:not(.gerando-pdf) .clientes-hero,
@@ -162,58 +136,35 @@ body:not(.gerando-pdf) .estoque-hero,
 body:not(.gerando-pdf) .ordens-hero,
 body:not(.gerando-pdf) .ordem-hero,
 body:not(.gerando-pdf) .agenda-hero,
-body:not(.gerando-pdf) .forum-hero,
+body:not(.gerando-pdf) .recorrentes-hero,
+body:not(.gerando-pdf) .relatorios-hero,
 body:not(.gerando-pdf) .painel-hero {
-  padding: 14px 16px !important;
-  margin-bottom: 10px !important;
+  border-top-color: var(--fs-cinza-500, #64748b) !important;
+  background: linear-gradient(135deg, #ffffff, var(--fs-cinza-50, #f8fafc)) !important;
 }
 
-body:not(.gerando-pdf) .clientes-hero h1,
-body:not(.gerando-pdf) .veiculos-hero h1,
-body:not(.gerando-pdf) .estoque-hero h1,
-body:not(.gerando-pdf) .ordens-hero h1,
-body:not(.gerando-pdf) .ordem-hero h1,
-body:not(.gerando-pdf) .agenda-hero h1,
-body:not(.gerando-pdf) .forum-hero h1,
-body:not(.gerando-pdf) .painel-hero h1 {
-  color: var(--fs-cinza-950, #0f172a) !important;
-  font-size: 21px !important;
-  margin: 0 0 4px !important;
-}
-
-body:not(.gerando-pdf) .clientes-hero p,
-body:not(.gerando-pdf) .veiculos-hero p,
-body:not(.gerando-pdf) .estoque-hero p,
-body:not(.gerando-pdf) .ordens-hero p,
-body:not(.gerando-pdf) .ordem-hero p,
-body:not(.gerando-pdf) .agenda-hero p,
-body:not(.gerando-pdf) .forum-hero p,
-body:not(.gerando-pdf) .painel-hero p {
-  color: var(--fs-texto-suave) !important;
-  font-size: 12px !important;
-  line-height: 1.35 !important;
-}
-
+/* Cabeçalhos de cards e modais */
 body:not(.gerando-pdf) .card-header,
 body:not(.gerando-pdf) .clientes-card-header,
 body:not(.gerando-pdf) .veiculos-card-header,
 body:not(.gerando-pdf) .ordens-card-header,
 body:not(.gerando-pdf) .estoque-card-header,
 body:not(.gerando-pdf) .agenda-card-header,
-body:not(.gerando-pdf) .forum-card-topo,
 body:not(.gerando-pdf) .modal-busca-cliente-header,
-body:not(.gerando-pdf) .modal-busca-produto-header {
-  background: var(--fs-cinza-50, #f9fafb) !important;
-  color: var(--fs-cinza-950, #0f172a) !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--fs-borda-suave) !important;
-  border-radius: 7px 7px 0 0 !important;
+body:not(.gerando-pdf) .modal-busca-produto-header,
+body:not(.gerando-pdf) .modal-resumo-ordem-header,
+body:not(.gerando-pdf) .agenda-modal-topo,
+body:not(.gerando-pdf) .modal-pix-topo {
+  background: var(--fs-cinza-800, #1f2937) !important;
+  color: #ffffff !important;
+  border-color: var(--fs-cinza-700, #374151) !important;
   box-shadow: none !important;
 }
 
 body:not(.gerando-pdf) .card-header h1,
 body:not(.gerando-pdf) .card-header h2,
 body:not(.gerando-pdf) .card-header h3,
+body:not(.gerando-pdf) .card-header strong,
 body:not(.gerando-pdf) .clientes-card-header h1,
 body:not(.gerando-pdf) .clientes-card-header h2,
 body:not(.gerando-pdf) .clientes-card-header h3,
@@ -229,31 +180,196 @@ body:not(.gerando-pdf) .estoque-card-header h3,
 body:not(.gerando-pdf) .agenda-card-header h1,
 body:not(.gerando-pdf) .agenda-card-header h2,
 body:not(.gerando-pdf) .agenda-card-header h3,
-body:not(.gerando-pdf) .forum-card-topo h2,
-body:not(.gerando-pdf) .forum-card-topo h3 {
-  color: var(--fs-cinza-950, #0f172a) !important;
+body:not(.gerando-pdf) .agenda-modal-topo strong,
+body:not(.gerando-pdf) .modal-busca-cliente-header h3,
+body:not(.gerando-pdf) .modal-resumo-ordem-header h3 {
+  color: #ffffff !important;
   opacity: 1 !important;
 }
 
 body:not(.gerando-pdf) .card-header p,
 body:not(.gerando-pdf) .card-header span,
-body:not(.gerando-pdf) .clientes-card-header p,
-body:not(.gerando-pdf) .clientes-card-header span,
-body:not(.gerando-pdf) .veiculos-card-header p,
-body:not(.gerando-pdf) .veiculos-card-header span,
-body:not(.gerando-pdf) .ordens-card-header p,
-body:not(.gerando-pdf) .ordens-card-header span,
-body:not(.gerando-pdf) .estoque-card-header p,
-body:not(.gerando-pdf) .estoque-card-header span,
 body:not(.gerando-pdf) .agenda-card-header p,
 body:not(.gerando-pdf) .agenda-card-header span,
-body:not(.gerando-pdf) .forum-card-topo p,
-body:not(.gerando-pdf) .forum-card-topo span {
-  color: var(--fs-texto-suave) !important;
+body:not(.gerando-pdf) .agenda-modal-topo span,
+body:not(.gerando-pdf) .modal-busca-cliente-header p,
+body:not(.gerando-pdf) .modal-resumo-ordem-header p {
+  color: var(--fs-cinza-200, #e5e7eb) !important;
   opacity: 1 !important;
 }
 
-/* O amarelo fica restrito a ações, preço, foco e pequenos acentos. */
+/* Textos principais */
+body:not(.gerando-pdf) h1,
+body:not(.gerando-pdf) h2,
+body:not(.gerando-pdf) h3,
+body:not(.gerando-pdf) strong,
+body:not(.gerando-pdf) .agenda-hero h1,
+body:not(.gerando-pdf) .recorrentes-hero h1,
+body:not(.gerando-pdf) .relatorios-hero h1,
+body:not(.gerando-pdf) .agenda-metrica strong,
+body:not(.gerando-pdf) .resumo-card strong,
+body:not(.gerando-pdf) .recorrente-topo h3,
+body:not(.gerando-pdf) .recorrente-detalhes strong,
+body:not(.gerando-pdf) .metrica-card strong {
+  color: var(--fs-cinza-950, #0f172a) !important;
+}
+
+body:not(.gerando-pdf) p,
+body:not(.gerando-pdf) small,
+body:not(.gerando-pdf) .agenda-hero p,
+body:not(.gerando-pdf) .recorrentes-hero p,
+body:not(.gerando-pdf) .relatorios-hero p,
+body:not(.gerando-pdf) .agenda-metrica span,
+body:not(.gerando-pdf) .resumo-card span,
+body:not(.gerando-pdf) .recorrente-topo p,
+body:not(.gerando-pdf) .recorrente-detalhes small,
+body:not(.gerando-pdf) .metrica-card span,
+body:not(.gerando-pdf) .campo small {
+  color: var(--fs-texto-suave, #4b5563) !important;
+}
+
+/* Formulários */
+body:not(.gerando-pdf) .campo label,
+body:not(.gerando-pdf) label {
+  color: var(--fs-cinza-700, #374151) !important;
+  font-weight: 900 !important;
+}
+
+body:not(.gerando-pdf) input,
+body:not(.gerando-pdf) select,
+body:not(.gerando-pdf) textarea {
+  background: #ffffff !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--fs-cinza-300, #d1d5db) !important;
+  box-shadow: none !important;
+}
+
+body:not(.gerando-pdf) input::placeholder,
+body:not(.gerando-pdf) textarea::placeholder { color: var(--fs-cinza-400, #9ca3af) !important; opacity: 1 !important; }
+body:not(.gerando-pdf) input:focus,
+body:not(.gerando-pdf) select:focus,
+body:not(.gerando-pdf) textarea:focus {
+  border-color: var(--fs-cinza-700, #374151) !important;
+  box-shadow: 0 0 0 3px rgba(55, 65, 81, .14) !important;
+  outline: none !important;
+}
+
+/* Botões */
+body:not(.gerando-pdf) .btn,
+body:not(.gerando-pdf) button,
+body:not(.gerando-pdf) a[class*="btn"] {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+body:not(.gerando-pdf) .btn-primario,
+body:not(.gerando-pdf) .btn-primary,
+body:not(.gerando-pdf) .btn-salvar,
+body:not(.gerando-pdf) .btn-add,
+body:not(.gerando-pdf) .btn-extra,
+body:not(.gerando-pdf) .btn-download,
+body:not(.gerando-pdf) .btn-acao-pdf,
+body:not(.gerando-pdf) .btn-novo-orcamento-topo,
+body:not(.gerando-pdf) .link-destaque-gerador,
+body:not(.gerando-pdf) #btn-toggle-form-cliente,
+body:not(.gerando-pdf) #btn-toggle-form-veiculo,
+body:not(.gerando-pdf) #btn-toggle-form-produto,
+body:not(.gerando-pdf) #btn-toggle-form-ordem,
+body:not(.gerando-pdf) #btn-toggle-form-agendamento,
+body:not(.gerando-pdf) .plano-pix-card button {
+  background: var(--fs-cinza-700, #374151) !important;
+  color: #ffffff !important;
+  border-color: var(--fs-cinza-700, #374151) !important;
+}
+
+body:not(.gerando-pdf) .btn-primario:hover,
+body:not(.gerando-pdf) .btn-primary:hover,
+body:not(.gerando-pdf) .btn-salvar:hover,
+body:not(.gerando-pdf) .btn-add:hover,
+body:not(.gerando-pdf) .btn-extra:hover,
+body:not(.gerando-pdf) .btn-download:hover,
+body:not(.gerando-pdf) .btn-acao-pdf:hover,
+body:not(.gerando-pdf) .btn-novo-orcamento-topo:hover,
+body:not(.gerando-pdf) .link-destaque-gerador:hover,
+body:not(.gerando-pdf) .plano-pix-card button:hover {
+  background: var(--fs-cinza-900, #111827) !important;
+  color: #ffffff !important;
+  border-color: var(--fs-cinza-900, #111827) !important;
+}
+
+body:not(.gerando-pdf) .btn-secundario,
+body:not(.gerando-pdf) .btn-toggle-form-mobile,
+body:not(.gerando-pdf) .btn-toggle-lista-mobile {
+  background: #ffffff !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--fs-cinza-300, #d1d5db) !important;
+}
+
+/* Tags, chips, avisos e estados vazios */
+body:not(.gerando-pdf) .tag,
+body:not(.gerando-pdf) .tag-premium,
+body:not(.gerando-pdf) .agenda-tag,
+body:not(.gerando-pdf) .agenda-chip,
+body:not(.gerando-pdf) .status-pill,
+body:not(.gerando-pdf) .tag-plano-pix,
+body:not(.gerando-pdf) .home-section-tag,
+body:not(.gerando-pdf) .plano-badge {
+  background: var(--fs-cinza-100, #f3f4f6) !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--fs-cinza-300, #d1d5db) !important;
+}
+
+body:not(.gerando-pdf) .estado-vazio,
+body:not(.gerando-pdf) .mensagem.info,
+body:not(.gerando-pdf) .mensagem-agenda.info,
+body:not(.gerando-pdf) .cliente-selecionado-agenda {
+  background: var(--fs-cinza-50, #f9fafb) !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--fs-cinza-300, #d1d5db) !important;
+}
+
+/* Tabelas */
+body:not(.gerando-pdf) table,
+body:not(.gerando-pdf) .agenda-tabela,
+body:not(.gerando-pdf) .tabela-comparativo,
+body:not(.gerando-pdf) .manual-table,
+body:not(.gerando-pdf) .comparativo {
+  background: #ffffff !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--fs-borda, #e5e7eb) !important;
+}
+
+body:not(.gerando-pdf) th,
+body:not(.gerando-pdf) .agenda-tabela th,
+body:not(.gerando-pdf) .tabela-comparativo th,
+body:not(.gerando-pdf) .manual-table th,
+body:not(.gerando-pdf) .comparativo th {
+  background: var(--fs-cinza-100, #f3f4f6) !important;
+  color: var(--fs-cinza-950, #0f172a) !important;
+  border-color: var(--fs-borda, #e5e7eb) !important;
+}
+
+body:not(.gerando-pdf) td,
+body:not(.gerando-pdf) .agenda-tabela td,
+body:not(.gerando-pdf) .tabela-comparativo td,
+body:not(.gerando-pdf) .manual-table td,
+body:not(.gerando-pdf) .comparativo td {
+  color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--fs-borda, #e5e7eb) !important;
+}
+
+body:not(.gerando-pdf) tr:nth-child(even),
+body:not(.gerando-pdf) tbody tr:nth-child(even),
+body:not(.gerando-pdf) .agenda-tabela tbody tr:nth-child(even) {
+  background: var(--fs-cinza-50, #f9fafb) !important;
+}
+
+body:not(.gerando-pdf) tr:hover,
+body:not(.gerando-pdf) .agenda-tabela tbody tr:hover {
+  background: var(--fs-cinza-100, #f3f4f6) !important;
+}
+
+/* Blocos de total permanecem destacados em cinza, não marrom. */
 body:not(.gerando-pdf) .total-container,
 body:not(.gerando-pdf) .valor-total,
 body:not(.gerando-pdf) .os-total-box,
@@ -263,130 +379,8 @@ body:not(.gerando-pdf) .fs-visitante-preco,
 body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque {
   background: var(--fs-cinza-900, #111827) !important;
   color: #ffffff !important;
-  border: 1px solid var(--fs-cinza-900, #111827) !important;
-}
-
-body:not(.gerando-pdf) .total-container strong,
-body:not(.gerando-pdf) .valor-total strong,
-body:not(.gerando-pdf) .os-total-box strong,
-body:not(.gerando-pdf) .card-total-os strong,
-body:not(.gerando-pdf) .home-preco-destaque *,
-body:not(.gerando-pdf) .fs-visitante-preco *,
-body:not(.gerando-pdf) .fs-ordens-dashboard-card.destaque strong {
-  color: var(--fs-amarelo) !important;
-}
-
-/* =========================================================
-   FORMULÁRIOS E BOTÕES: COMPACTOS, SEM POLUIÇÃO
-   ========================================================= */
-
-body:not(.gerando-pdf) .campo { gap: 4px !important; }
-body:not(.gerando-pdf) .campo label,
-body:not(.gerando-pdf) label {
-  font-size: 11px !important;
-  line-height: 1.2 !important;
-  font-weight: 800 !important;
-  color: var(--fs-cinza-700, #374151) !important;
-}
-
-body:not(.gerando-pdf) input,
-body:not(.gerando-pdf) select,
-body:not(.gerando-pdf) textarea {
-  min-height: 34px !important;
-  padding: 7px 9px !important;
-  border-radius: 4px !important;
-  font-size: 12px !important;
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border: 1px solid var(--fs-borda) !important;
-  box-shadow: none !important;
-}
-
-body:not(.gerando-pdf) textarea { min-height: 66px !important; }
-body:not(.gerando-pdf) input:focus,
-body:not(.gerando-pdf) select:focus,
-body:not(.gerando-pdf) textarea:focus {
-  border-color: var(--fs-cinza-700, #374151) !important;
-  box-shadow: 0 0 0 2px rgba(55, 65, 81, .12) !important;
-  outline: none !important;
-}
-
-body:not(.gerando-pdf) .btn,
-body:not(.gerando-pdf) button,
-body:not(.gerando-pdf) a[class*="btn"] {
-  min-height: 32px !important;
-  padding: 7px 10px !important;
-  border-radius: 4px !important;
-  font-size: 12px !important;
-  line-height: 1.1 !important;
-  box-shadow: none !important;
-}
-
-body:not(.gerando-pdf) .btn-add,
-body:not(.gerando-pdf) .btn-extra,
-body:not(.gerando-pdf) .btn-primario,
-body:not(.gerando-pdf) .btn-primary,
-body:not(.gerando-pdf) .btn-salvar,
-body:not(.gerando-pdf) .btn-acao-pdf,
-body:not(.gerando-pdf) .link-destaque-gerador,
-body:not(.gerando-pdf) #btn-toggle-form-cliente,
-body:not(.gerando-pdf) #btn-toggle-form-veiculo,
-body:not(.gerando-pdf) #btn-toggle-form-produto,
-body:not(.gerando-pdf) #btn-toggle-form-ordem,
-body:not(.gerando-pdf) #btn-toggle-form-agendamento {
-  background: var(--fs-cinza-900, #111827) !important;
-  color: #ffffff !important;
-  border: 1px solid var(--fs-cinza-900, #111827) !important;
-}
-
-body:not(.gerando-pdf) .btn-add:hover,
-body:not(.gerando-pdf) .btn-extra:hover,
-body:not(.gerando-pdf) .btn-primario:hover,
-body:not(.gerando-pdf) .btn-primary:hover,
-body:not(.gerando-pdf) .btn-salvar:hover,
-body:not(.gerando-pdf) .link-destaque-gerador:hover,
-body:not(.gerando-pdf) #btn-toggle-form-cliente:hover,
-body:not(.gerando-pdf) #btn-toggle-form-veiculo:hover,
-body:not(.gerando-pdf) #btn-toggle-form-produto:hover,
-body:not(.gerando-pdf) #btn-toggle-form-ordem:hover,
-body:not(.gerando-pdf) #btn-toggle-form-agendamento:hover {
-  background: #ffffff !important;
-  color: var(--fs-cinza-900, #111827) !important;
   border-color: var(--fs-cinza-900, #111827) !important;
 }
 
-/* =========================================================
-   LISTAS COMO TABELA: MAIS INFORMAÇÃO, MENOS BAGUNÇA
-   ========================================================= */
-
-body:not(.gerando-pdf) #lista-clientes,
-body:not(.gerando-pdf) #lista-veiculos,
-body:not(.gerando-pdf) #lista-ordens,
-body:not(.gerando-pdf) #lista-produtos,
-body:not(.gerando-pdf) #lista-estoque,
-body:not(.gerando-pdf) .lista-clientes,
-body:not(.gerando-pdf) .lista-veiculos,
-body:not(.gerando-pdf) .lista-ordens,
-body:not(.gerando-pdf) .lista-estoque {
-  display: grid !important;
-  gap: 0 !important;
-  border: 1px solid var(--fs-borda-suave) !important;
-  border-radius: 6px !important;
-  overflow: hidden !important;
-  background: #ffffff !important;
-}
-
-body:not(.gerando-pdf) .cliente-item,
-body:not(.gerando-pdf) .veiculo-item,
-body:not(.gerando-pdf) .ordem-item,
-body:not(.gerando-pdf) .produto-item {
-  border-radius: 0 !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--fs-borda-suave) !important;
-  box-shadow: none !important;
-}
-
-body:not(.gerando-pdf) .cliente-item:last-child,
-body:not(.gerando-pdf) .veiculo-item:last-child,
-body:not(.gerando-pdf) .ordem-item:last-child,
-body:not(.gerando-pdf) .produto-item:last-child { border-bottom: 0 !important; }
+body.gerando-pdf,
+body.gerando-pdf * { color: inherit; }
