@@ -1,26 +1,26 @@
 /* =========================================================
-   FS ORÇAMENTOS — CONTRASTE DA PÁGINA ORÇAMENTOS
-   Corrige textos apagados no bloco de upgrade e melhora legibilidade mobile.
+   FS ORÇAMENTOS — ORÇAMENTOS
+   Ajustes específicos da página usando o tema cinza oficial.
    ========================================================= */
 
 .conteudo-protegido-orcamentos,
 #conteudo-protegido {
-  color: #2f241f !important;
+  color: var(--fs-cinza-900, #111827) !important;
 }
 
 .upgrade-orcamentos-box {
   width: min(1180px, calc(100% - 18px)) !important;
   margin: 18px auto 32px !important;
-  color: #2f241f !important;
+  color: var(--fs-cinza-900, #111827) !important;
 }
 
 .upgrade-hero {
-  background:
-    linear-gradient(135deg, rgba(62, 39, 35, .96), rgba(44, 27, 23, .98)) !important;
-  color: #fffaf0 !important;
-  border: 2px solid #ffc400 !important;
-  border-radius: 18px !important;
-  box-shadow: 0 18px 44px rgba(62, 39, 35, .28) !important;
+  background: linear-gradient(135deg, var(--fs-cinza-950, #0f172a), var(--fs-cinza-800, #1f2937)) !important;
+  color: #ffffff !important;
+  border: 2px solid var(--fs-cinza-700, #374151) !important;
+  border-top: 5px solid var(--fs-amarelo, #ffc400) !important;
+  border-radius: var(--fs-radius-lg, 14px) !important;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, .22) !important;
   padding: clamp(22px, 5vw, 44px) !important;
   text-align: center !important;
   overflow: hidden !important;
@@ -31,9 +31,9 @@
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: #ffc400 !important;
-  color: #3e2723 !important;
-  border: 1px solid #ffc400 !important;
+  background: var(--fs-amarelo, #ffc400) !important;
+  color: var(--fs-cinza-950, #0f172a) !important;
+  border: 1px solid var(--fs-amarelo, #ffc400) !important;
   border-radius: 999px !important;
   padding: 8px 14px !important;
   font-size: 12px !important;
@@ -41,13 +41,13 @@
   text-transform: uppercase !important;
   letter-spacing: .02em !important;
   margin-bottom: 18px !important;
-  box-shadow: 0 8px 18px rgba(0,0,0,.18) !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .18) !important;
 }
 
 .upgrade-hero h1 {
   color: #ffffff !important;
   opacity: 1 !important;
-  text-shadow: 0 2px 8px rgba(0,0,0,.35) !important;
+  text-shadow: none !important;
   font-size: clamp(25px, 6vw, 42px) !important;
   line-height: 1.13 !important;
   font-weight: 950 !important;
@@ -56,9 +56,9 @@
 }
 
 .upgrade-hero p {
-  color: #fff2c2 !important;
+  color: var(--fs-cinza-200, #e5e7eb) !important;
   opacity: 1 !important;
-  text-shadow: 0 1px 6px rgba(0,0,0,.25) !important;
+  text-shadow: none !important;
   font-size: clamp(15px, 3.5vw, 20px) !important;
   line-height: 1.55 !important;
   font-weight: 750 !important;
@@ -74,11 +74,11 @@
 
 .upgrade-acoes-orcamentos .btn-novo-orcamento-topo,
 .upgrade-hero .btn-novo-orcamento-topo {
-  background: #ffc400 !important;
-  color: #3e2723 !important;
-  border: 2px solid #fff2c2 !important;
-  border-radius: 10px !important;
-  box-shadow: 0 10px 24px rgba(0,0,0,.26) !important;
+  background: var(--fs-amarelo, #ffc400) !important;
+  color: var(--fs-cinza-950, #0f172a) !important;
+  border: 2px solid var(--fs-amarelo, #ffc400) !important;
+  border-radius: var(--fs-radius, 10px) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .18) !important;
   text-shadow: none !important;
   font-weight: 950 !important;
   min-height: 46px !important;
@@ -94,17 +94,17 @@
 
 .upgrade-beneficio {
   background: #ffffff !important;
-  color: #2f241f !important;
-  border: 1px solid #e0d6c8 !important;
-  border-left: 6px solid #ffc400 !important;
-  border-radius: 14px !important;
-  box-shadow: 0 10px 26px rgba(62, 39, 35, .10) !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border: 1px solid var(--fs-borda, #e5e7eb) !important;
+  border-left: 5px solid var(--fs-cinza-600, #4b5563) !important;
+  border-radius: var(--fs-radius, 10px) !important;
+  box-shadow: var(--fs-shadow-soft, 0 6px 18px rgba(15, 23, 42, .08)) !important;
   padding: 18px !important;
 }
 
 .upgrade-beneficio strong {
   display: block !important;
-  color: #3e2723 !important;
+  color: var(--fs-cinza-950, #0f172a) !important;
   font-size: 18px !important;
   font-weight: 950 !important;
   line-height: 1.2 !important;
@@ -114,7 +114,7 @@
 .upgrade-beneficio span,
 .upgrade-beneficio p {
   display: block !important;
-  color: #5d4037 !important;
+  color: var(--fs-muted, #4b5563) !important;
   font-size: 15px !important;
   line-height: 1.42 !important;
   font-weight: 650 !important;
@@ -122,46 +122,42 @@
 
 .planos-pix-section {
   background: #ffffff !important;
-  color: #2f241f !important;
-  border-top: 5px solid #ffc400 !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border-top: 5px solid var(--fs-cinza-700, #374151) !important;
 }
 
 .planos-pix-section h2,
-.planos-pix-topo h2 {
-  color: #3e2723 !important;
+.planos-pix-topo h2,
+.plano-pix-periodo,
+.plano-pix-preco {
+  color: var(--fs-cinza-950, #0f172a) !important;
   opacity: 1 !important;
 }
 
 .planos-pix-section p,
 .planos-pix-topo p,
 .plano-pix-card p {
-  color: #5d4037 !important;
+  color: var(--fs-muted, #4b5563) !important;
   opacity: 1 !important;
 }
 
 .plano-pix-card,
 .plano-pix-card.destaque {
-  background: #fffaf0 !important;
-  color: #2f241f !important;
-  border: 1px solid #e0d6c8 !important;
-  box-shadow: 0 8px 20px rgba(62, 39, 35, .10) !important;
-}
-
-.plano-pix-periodo,
-.plano-pix-preco {
-  color: #3e2723 !important;
-  opacity: 1 !important;
+  background: var(--fs-cinza-50, #f9fafb) !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border: 1px solid var(--fs-borda, #e5e7eb) !important;
+  box-shadow: var(--fs-shadow-soft, 0 6px 18px rgba(15, 23, 42, .08)) !important;
 }
 
 .plano-pix-beneficios {
-  background: #fff8e1 !important;
-  color: #3e2723 !important;
-  border: 1px solid #ffc400 !important;
+  background: #ffffff !important;
+  color: var(--fs-cinza-900, #111827) !important;
+  border: 1px solid var(--fs-borda, #e5e7eb) !important;
 }
 
 .plano-pix-beneficios strong,
 .plano-pix-beneficios span {
-  color: #3e2723 !important;
+  color: var(--fs-cinza-900, #111827) !important;
   opacity: 1 !important;
 }
 
@@ -173,7 +169,7 @@
 
   .upgrade-hero {
     padding: 22px 14px !important;
-    border-radius: 16px !important;
+    border-radius: var(--fs-radius-lg, 14px) !important;
   }
 
   .upgrade-hero h1 {
@@ -193,17 +189,12 @@
 
   .upgrade-beneficio {
     padding: 13px !important;
-    border-radius: 12px !important;
+    border-radius: var(--fs-radius, 10px) !important;
   }
 
-  .upgrade-beneficio strong {
-    font-size: 16px !important;
-  }
-
+  .upgrade-beneficio strong { font-size: 16px !important; }
   .upgrade-beneficio span,
-  .upgrade-beneficio p {
-    font-size: 14px !important;
-  }
+  .upgrade-beneficio p { font-size: 14px !important; }
 
   #area-orcamentos-funcoes .orcamentos-lista-card,
   #area-orcamentos-funcoes .lista-orcamentos,
@@ -230,26 +221,13 @@
   }
 
   #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(1),
-  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(1) {
-    width: 21% !important;
-  }
-
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(1) { width: 21% !important; }
   #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(2),
-  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(2) {
-    width: 35% !important;
-  }
-
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(2) { width: 35% !important; }
   #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(3),
-  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(3) {
-    width: 22% !important;
-    text-align: right !important;
-  }
-
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(3) { width: 22% !important; text-align: right !important; }
   #area-orcamentos-funcoes .tabela-orcamentos th:nth-child(4),
-  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(4) {
-    width: 22% !important;
-    text-align: center !important;
-  }
+  #area-orcamentos-funcoes .tabela-orcamentos td:nth-child(4) { width: 22% !important; text-align: center !important; }
 
   #area-orcamentos-funcoes .tabela-orcamentos td small {
     display: block !important;
@@ -258,13 +236,5 @@
     line-height: 1.1 !important;
     max-height: 22px !important;
     overflow: hidden !important;
-  }
-
-  #area-orcamentos-funcoes .tabela-orcamentos .status {
-    min-height: 18px !important;
-    padding: 2px 3px !important;
-    font-size: 8.8px !important;
-    line-height: 1 !important;
-    max-width: 100% !important;
   }
 }
