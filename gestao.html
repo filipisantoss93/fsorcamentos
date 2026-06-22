@@ -8,11 +8,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>
-    if (String(location.hash || '').replace('#', '') === 'relatorios') {
-      location.replace('/relatorios.html?origem=gestao');
-    }
-  </script>
   <title>Gestão - FS Orçamentos</title>
   <meta name="description" content="Central de gestão do FS Orçamentos com clientes, veículos, ordens de serviço, estoque, agenda, relatórios e recorrentes.">
   <meta name="robots" content="noindex, nofollow">
@@ -188,7 +183,7 @@
           <td><button class="gestao-tab" type="button" data-src="ordens.html?embed=1">OS</button></td>
           <td><button class="gestao-tab" type="button" data-src="estoque.html?embed=1">Estoque</button></td>
           <td><button class="gestao-tab" type="button" data-src="agenda.html?embed=1">Agenda</button></td>
-          <td><button class="gestao-tab" type="button" data-direct="/relatorios.html?origem=gestao">Relatórios</button></td>
+          <td><button class="gestao-tab" type="button" data-src="relatorios.html?embed=1">Relatórios</button></td>
           <td><button class="gestao-tab" type="button" data-src="recorrentes.html?embed=1">Recorrentes</button></td>
         </tr>
       </table>
@@ -225,7 +220,6 @@
       ].filter(Boolean);
 
       let altura = 0;
-
       candidatos.forEach(el => {
         const rect = el.getBoundingClientRect?.();
         const h = Math.ceil(Math.max(rect?.height || 0, el.scrollHeight || 0, el.offsetHeight || 0));
@@ -240,7 +234,6 @@
       try {
         const doc = frame.contentDocument || frame.contentWindow?.document;
         if (!doc?.head || doc.location?.href === 'about:blank') return;
-
         doc.documentElement.classList.add('fs-embed', 'fs-gestao-tema-cinza');
         doc.body?.classList.add('fs-gestao-tema-cinza');
 
@@ -272,13 +265,7 @@
     }
 
     tabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (btn.dataset.direct) {
-          window.location.href = btn.dataset.direct;
-          return;
-        }
-        abrirModuloGestao(btn.dataset.src);
-      });
+      btn.addEventListener('click', () => abrirModuloGestao(btn.dataset.src));
     });
 
     frame.addEventListener('load', () => {
