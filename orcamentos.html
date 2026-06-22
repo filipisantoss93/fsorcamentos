@@ -2,10 +2,10 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#3e2723">
+  <meta name="theme-color" content="#f8fafc">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="style.css">
   <link id="fs-orcamentos-overrides-css" rel="stylesheet" href="orcamentos-overrides.css">
   <link id="fs-orcamentos-auth-css" rel="stylesheet" href="orcamentos-auth.css">
-  <link id="fs-orcamentos-contrast-css" rel="stylesheet" href="orcamentos-contrast.css?v=20260617-1">
+  <link id="fs-orcamentos-contrast-css" rel="stylesheet" href="orcamentos-contrast.css?v=20260622-2">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
 </head>
@@ -173,7 +173,7 @@
         <div class="resumo-header" onclick="toggleResumoFinanceiro()">
           <div>
             <h2>Resumo financeiro</h2>
-            <small id="resumo-periodo-label" style="display:block; color:#6d5b52; margin-top:4px;">Período: Total</small>
+            <small id="resumo-periodo-label" style="display:block; color:#4b5563; margin-top:4px;">Período: Total</small>
           </div>
           <button type="button" id="btn-toggle-resumo" class="btn-toggle-resumo">Minimizar ▲</button>
         </div>
@@ -235,19 +235,19 @@
     style.textContent = `
       .fs-editor-orcamento-box { display:grid; gap:10px; }
       .fs-editor-orcamento-topo { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
-      .fs-editor-campo { border:1px solid #ebe2d7; background:#fff; border-radius:6px; padding:8px 9px; }
-      .fs-editor-campo strong { display:block; color:#62554d; font-size:10px; text-transform:uppercase; margin-bottom:4px; }
-      .fs-editor-campo span { color:#2f211d; font-size:13px; font-weight:850; overflow-wrap:anywhere; }
-      .fs-editor-itens { width:100%; border-collapse:collapse; table-layout:fixed; border:1px solid #ebe2d7; background:#fff; }
-      .fs-editor-itens th, .fs-editor-itens td { border-bottom:1px solid #ebe2d7; padding:6px; vertical-align:middle; }
-      .fs-editor-itens th { background:#f8f4ee; color:#2f211d; font-size:10px; text-transform:uppercase; text-align:left; }
-      .fs-editor-itens input { width:100%; min-height:30px; box-sizing:border-box; border:1px solid #d7ccc8; border-radius:4px; padding:6px 7px; font-size:12px; color:#2b211d; background:#fff; }
+      .fs-editor-campo { border:1px solid #e5e7eb; background:#fff; border-radius:6px; padding:8px 9px; }
+      .fs-editor-campo strong { display:block; color:#4b5563; font-size:10px; text-transform:uppercase; margin-bottom:4px; }
+      .fs-editor-campo span { color:#111827; font-size:13px; font-weight:850; overflow-wrap:anywhere; }
+      .fs-editor-itens { width:100%; border-collapse:collapse; table-layout:fixed; border:1px solid #e5e7eb; background:#fff; }
+      .fs-editor-itens th, .fs-editor-itens td { border-bottom:1px solid #e5e7eb; padding:6px; vertical-align:middle; }
+      .fs-editor-itens th { background:#f3f4f6; color:#0f172a; font-size:10px; text-transform:uppercase; text-align:left; }
+      .fs-editor-itens input { width:100%; min-height:30px; box-sizing:border-box; border:1px solid #d1d5db; border-radius:4px; padding:6px 7px; font-size:12px; color:#111827; background:#fff; }
       .fs-editor-itens th:nth-child(1), .fs-editor-itens td:nth-child(1) { width:42%; }
       .fs-editor-itens th:nth-child(2), .fs-editor-itens td:nth-child(2) { width:14%; }
       .fs-editor-itens th:nth-child(3), .fs-editor-itens td:nth-child(3) { width:18%; }
       .fs-editor-itens th:nth-child(4), .fs-editor-itens td:nth-child(4) { width:18%; text-align:right; }
       .fs-editor-itens th:nth-child(5), .fs-editor-itens td:nth-child(5) { width:8%; text-align:center; }
-      .fs-editor-total { display:flex; justify-content:flex-end; align-items:center; gap:10px; padding:10px; border:1px solid #ebe2d7; border-radius:6px; background:#fbf8f4; font-size:14px; font-weight:950; color:#2f211d; }
+      .fs-editor-total { display:flex; justify-content:flex-end; align-items:center; gap:10px; padding:10px; border:1px solid #e5e7eb; border-radius:6px; background:#f9fafb; font-size:14px; font-weight:950; color:#111827; }
       .fs-editor-btn-remover { min-width:30px !important; min-height:30px !important; padding:0 !important; background:#fff5f5 !important; color:#b91c1c !important; border-color:#fecaca !important; }
       @media (max-width:760px) {
         .fs-editor-orcamento-topo { grid-template-columns:1fr; }
