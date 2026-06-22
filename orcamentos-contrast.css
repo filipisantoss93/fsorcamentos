@@ -8,6 +8,26 @@
   color: var(--fs-cinza-900, #111827) !important;
 }
 
+#area-orcamentos-funcoes .btn-novo-orcamento-topo,
+.orcamentos-header .btn-novo-orcamento-topo,
+a.btn-novo-orcamento-topo,
+button.btn-novo-orcamento-topo {
+  background: var(--fs-cinza-700, #374151) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--fs-cinza-700, #374151) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+#area-orcamentos-funcoes .btn-novo-orcamento-topo:hover,
+.orcamentos-header .btn-novo-orcamento-topo:hover,
+a.btn-novo-orcamento-topo:hover,
+button.btn-novo-orcamento-topo:hover {
+  background: var(--fs-cinza-900, #111827) !important;
+  color: #ffffff !important;
+  border-color: var(--fs-cinza-900, #111827) !important;
+}
+
 .upgrade-orcamentos-box {
   width: min(1180px, calc(100% - 18px)) !important;
   margin: 18px auto 32px !important;
