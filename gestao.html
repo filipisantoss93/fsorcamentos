@@ -12,298 +12,48 @@
   <meta name="description" content="Central de gestão do FS Orçamentos com clientes, veículos, ordens de serviço, estoque, agenda, relatórios e recorrentes.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260622-iframe-2">
+  <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260623-sem-marrom-1">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
-    :root {
-      --fs-header-offset: 104px;
-      --gestao-tabs-h: 58px;
-    }
-
-    html,
-    body {
-      min-height: 100%;
-      margin: 0;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #eef2f7 100%) !important;
-      color: #111827 !important;
-      overflow-x: hidden !important;
-    }
-
-    body {
-      padding-top: 0 !important;
-    }
-
-    body > footer { display: none !important; }
-
-    .gestao-page {
-      width: min(1180px, calc(100% - 16px));
-      margin: 0 auto;
-      padding: calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 8px) 0 56px;
-    }
-
-    .gestao-tabs-wrap {
-      position: fixed;
-      top: var(--fs-header-offset);
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 990;
-      width: min(1180px, calc(100% - 16px));
-      background: rgba(255, 255, 255, .98);
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 6px;
-      box-shadow: 0 6px 16px rgba(15, 23, 42, .10);
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      margin: 0;
-    }
-
-    .gestao-tabs {
-      min-width: 720px;
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 6px;
-      table-layout: fixed;
-      margin: 0;
-    }
-
-    .gestao-tabs td {
-      padding: 0;
-      border: 0;
-      background: transparent;
-    }
-
-    .gestao-tab {
-      width: 100%;
-      min-height: 40px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: #1f2937;
-      border-radius: 7px;
-      font-weight: 950;
-      font-size: 14px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 10px;
-      line-height: 1.05;
-      text-align: center;
-      white-space: nowrap;
-      box-shadow: none;
-    }
-
-    .gestao-tab.ativo {
-      background: #64748b;
-      color: #ffffff;
-      border-color: #64748b;
-    }
-
-    .gestao-frame-box {
-      position: relative;
-      width: 100%;
-      background: #ffffff;
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, .08);
-      overflow: hidden;
-      min-height: 640px;
-    }
-
-    #gestao-frame {
-      width: 100%;
-      height: 1500px;
-      min-height: 640px;
-      border: 0;
-      display: block;
-      background: #f8fafc;
-    }
-
-    .gestao-loading {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 2;
-      padding: 8px 12px;
-      color: #374151;
-      font-size: 13px;
-      font-weight: 900;
-      background: #f3f4f6;
-      border-bottom: 1px solid #d1d5db;
-      display: none;
-      pointer-events: none;
-    }
-
-    .gestao-loading.ativo { display: block; }
-
-    @media (max-width: 760px) {
-      :root { --fs-header-offset: 112px; --gestao-tabs-h: 48px; }
-      .gestao-page { width: min(100% - 8px, 1180px); padding-top: calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 6px); }
-      .gestao-tabs-wrap { width: min(100% - 8px, 1180px); border-radius: 8px; padding: 4px; }
-      .gestao-tabs { min-width: 690px; border-spacing: 4px; }
-      .gestao-tab { min-height: 34px; font-size: 12px; padding: 7px 8px; }
-      .gestao-frame-box { border-radius: 10px; min-height: 700px; }
-      #gestao-frame { min-height: 700px; }
-    }
+    :root{--fs-header-offset:104px;--gestao-tabs-h:58px}html,body{min-height:100%;margin:0;background:linear-gradient(180deg,#fff 0%,#f8fafc 55%,#eef2f7 100%)!important;color:#111827!important;overflow-x:hidden!important}body{padding-top:0!important}body>footer{display:none!important}.gestao-page{width:min(1180px,calc(100% - 16px));margin:0 auto;padding:calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 8px) 0 56px}.gestao-tabs-wrap{position:fixed;top:var(--fs-header-offset);left:50%;transform:translateX(-50%);z-index:990;width:min(1180px,calc(100% - 16px));background:rgba(255,255,255,.98);border:1px solid #d1d5db;border-radius:12px;padding:6px;box-shadow:0 6px 16px rgba(15,23,42,.10);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin:0}.gestao-tabs{min-width:720px;width:100%;border-collapse:separate;border-spacing:6px;table-layout:fixed;margin:0}.gestao-tabs td{padding:0;border:0;background:transparent}.gestao-tab{width:100%;min-height:40px;border:1px solid #d1d5db;background:#fff;color:#1f2937;border-radius:7px;font-weight:950;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:8px 10px;line-height:1.05;text-align:center;white-space:nowrap;box-shadow:none}.gestao-tab.ativo{background:#64748b;color:#fff;border-color:#64748b}.gestao-frame-box{position:relative;width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 8px 22px rgba(15,23,42,.08);overflow:hidden;min-height:640px}#gestao-frame{width:100%;height:1500px;min-height:640px;border:0;display:block;background:#f8fafc}.gestao-loading{position:absolute;top:0;left:0;right:0;z-index:2;padding:8px 12px;color:#374151;font-size:13px;font-weight:900;background:#f3f4f6;border-bottom:1px solid #d1d5db;display:none;pointer-events:none}.gestao-loading.ativo{display:block}@media(max-width:760px){:root{--fs-header-offset:112px;--gestao-tabs-h:48px}.gestao-page{width:min(100% - 8px,1180px);padding-top:calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 6px)}.gestao-tabs-wrap{width:min(100% - 8px,1180px);border-radius:8px;padding:4px}.gestao-tabs{min-width:690px;border-spacing:4px}.gestao-tab{min-height:34px;font-size:12px;padding:7px 8px}.gestao-frame-box{border-radius:10px;min-height:700px}#gestao-frame{min-height:700px}}
   </style>
 </head>
 <body>
   <div id="header-container"></div>
-
   <main class="gestao-page">
     <section class="gestao-tabs-wrap" aria-label="Menu da gestão">
-      <table class="gestao-tabs">
-        <tr>
-          <td><button class="gestao-tab ativo" type="button" data-src="clientes.html?embed=1">Clientes</button></td>
-          <td><button class="gestao-tab" type="button" data-src="veiculos.html?embed=1">Veículos</button></td>
-          <td><button class="gestao-tab" type="button" data-src="ordens.html?embed=1">OS</button></td>
-          <td><button class="gestao-tab" type="button" data-src="estoque.html?embed=1">Estoque</button></td>
-          <td><button class="gestao-tab" type="button" data-src="agenda.html?embed=1">Agenda</button></td>
-          <td><button class="gestao-tab" type="button" data-src="relatorios.html?embed=1">Relatórios</button></td>
-          <td><button class="gestao-tab" type="button" data-src="recorrentes.html?embed=1">Recorrentes</button></td>
-        </tr>
-      </table>
+      <table class="gestao-tabs"><tr>
+        <td><button class="gestao-tab ativo" type="button" data-src="clientes.html?embed=1">Clientes</button></td>
+        <td><button class="gestao-tab" type="button" data-src="veiculos.html?embed=1">Veículos</button></td>
+        <td><button class="gestao-tab" type="button" data-src="ordens.html?embed=1">OS</button></td>
+        <td><button class="gestao-tab" type="button" data-src="estoque.html?embed=1">Estoque</button></td>
+        <td><button class="gestao-tab" type="button" data-src="agenda.html?embed=1">Agenda</button></td>
+        <td><button class="gestao-tab" type="button" data-src="relatorios.html?embed=1">Relatórios</button></td>
+        <td><button class="gestao-tab" type="button" data-src="recorrentes.html?embed=1">Recorrentes</button></td>
+      </tr></table>
     </section>
-
-    <section class="gestao-frame-box">
-      <div id="gestao-loading" class="gestao-loading">Carregando módulo...</div>
-      <iframe id="gestao-frame" title="Módulo de gestão" src="about:blank"></iframe>
-    </section>
+    <section class="gestao-frame-box"><div id="gestao-loading" class="gestao-loading">Carregando módulo...</div><iframe id="gestao-frame" title="Módulo de gestão" src="about:blank"></iframe></section>
   </main>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="auth.js"></script>
   <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
+  <script src="/fs-pr8-gestao-estoque.js?v=20260623-pr8-1"></script>
   <script>
-    const frame = document.getElementById('gestao-frame');
-    const loading = document.getElementById('gestao-loading');
-    const tabs = Array.from(document.querySelectorAll('.gestao-tab'));
-    const tabsWrap = document.querySelector('.gestao-tabs-wrap');
-    const headerContainer = document.getElementById('header-container');
-    const FS_GESTAO_TEMA_CINZA_URL = '/fs-theme-cinza.css?v=20260622-iframe-2';
-    let fsGestaoSrcAtual = '';
-    let fsGestaoLoadingTimer = null;
-
-    function medirHeaderGestao() {
-      const candidatos = [
-        headerContainer,
-        headerContainer?.firstElementChild,
-        document.querySelector('#header-container header'),
-        document.querySelector('#header-container .main-header'),
-        document.querySelector('#header-container .header'),
-        document.querySelector('#header-container .topbar')
-      ].filter(Boolean);
-
-      let alturaHeader = 0;
-      candidatos.forEach(el => {
-        const rect = el.getBoundingClientRect?.();
-        const altura = Math.ceil(Math.max(rect?.height || 0, el.offsetHeight || 0, el.scrollHeight || 0));
-        if (altura > alturaHeader) alturaHeader = altura;
-      });
-
-      if (!alturaHeader || alturaHeader < 64) alturaHeader = window.innerWidth <= 760 ? 112 : 104;
-      const alturaTabs = Math.ceil(tabsWrap?.getBoundingClientRect?.().height || tabsWrap?.offsetHeight || (window.innerWidth <= 760 ? 48 : 58));
-
-      document.documentElement.style.setProperty('--fs-header-offset', `${alturaHeader}px`);
-      document.documentElement.style.setProperty('--gestao-tabs-h', `${alturaTabs}px`);
-    }
-
-    function ocultarLoadingGestao() {
-      loading.classList.remove('ativo');
-      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
-      fsGestaoLoadingTimer = null;
-    }
-
-    function aplicarTemaCinzaNoFrame() {
-      try {
-        const doc = frame.contentDocument || frame.contentWindow?.document;
-        if (!doc?.head || doc.location?.href === 'about:blank') return;
-        doc.documentElement.classList.add('fs-embed', 'fs-gestao-tema-cinza');
-        doc.body?.classList.add('fs-gestao-tema-cinza');
-
-        let link = doc.getElementById('fs-gestao-tema-cinza-css');
-        if (!link) {
-          link = doc.createElement('link');
-          link.id = 'fs-gestao-tema-cinza-css';
-          link.rel = 'stylesheet';
-          doc.head.appendChild(link);
-        }
-        link.href = FS_GESTAO_TEMA_CINZA_URL;
-      } catch (_) {}
-    }
-
-    function ajustarAlturaFrame(alturaRecebida) {
-      const altura = Number(alturaRecebida) || 0;
-      const final = Math.max(700, Math.min(altura + 24, 4200));
-      frame.style.height = `${final}px`;
-    }
-
-    function abrirModuloGestao(src, push = true) {
-      if (!src) return;
-      tabs.forEach(btn => btn.classList.toggle('ativo', btn.dataset.src === src));
-
-      if (fsGestaoSrcAtual === src) {
-        ocultarLoadingGestao();
-        return;
-      }
-
-      fsGestaoSrcAtual = src;
-      loading.classList.add('ativo');
-      frame.style.height = '1500px';
-      frame.src = src;
-
-      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
-      fsGestaoLoadingTimer = setTimeout(ocultarLoadingGestao, 3500);
-
-      if (push) {
-        const nome = src.split('.html')[0].replace('/', '');
-        history.replaceState(null, '', `#${nome}`);
-      }
-    }
-
-    tabs.forEach(btn => btn.addEventListener('click', () => abrirModuloGestao(btn.dataset.src)));
-
-    frame.addEventListener('load', () => {
-      aplicarTemaCinzaNoFrame();
-      ocultarLoadingGestao();
-      setTimeout(() => {
-        try {
-          const doc = frame.contentDocument || frame.contentWindow?.document;
-          const altura = Math.max(doc.body?.scrollHeight || 0, doc.documentElement?.scrollHeight || 0);
-          ajustarAlturaFrame(altura);
-        } catch (_) {}
-      }, 150);
-    });
-
-    window.addEventListener('message', (event) => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data?.tipo === 'fs-ajustar-iframe' || event.data?.tipo === 'fs-modulo-pronto') {
-        aplicarTemaCinzaNoFrame();
-        ajustarAlturaFrame(event.data.altura);
-        ocultarLoadingGestao();
-      }
-    });
-
-    window.addEventListener('resize', () => setTimeout(medirHeaderGestao, 80));
-    window.addEventListener('orientationchange', () => setTimeout(medirHeaderGestao, 250));
-    if (window.ResizeObserver && headerContainer) new ResizeObserver(medirHeaderGestao).observe(headerContainer);
-    if (window.ResizeObserver && tabsWrap) new ResizeObserver(medirHeaderGestao).observe(tabsWrap);
-
-    medirHeaderGestao();
-    setTimeout(medirHeaderGestao, 120);
-    setTimeout(medirHeaderGestao, 500);
-    setTimeout(medirHeaderGestao, 1200);
-
-    const hashInicial = String(location.hash || '').replace('#', '');
-    const tabInicial = tabs.find(btn => btn.dataset.src && btn.dataset.src.startsWith(hashInicial + '.html')) || tabs[0];
-    abrirModuloGestao(tabInicial.dataset.src, false);
+    const frame=document.getElementById('gestao-frame'),loading=document.getElementById('gestao-loading'),tabs=Array.from(document.querySelectorAll('.gestao-tab')),tabsWrap=document.querySelector('.gestao-tabs-wrap'),headerContainer=document.getElementById('header-container'),FS_GESTAO_TEMA_CINZA_URL='/fs-theme-cinza.css?v=20260623-sem-marrom-1';let fsGestaoSrcAtual='',fsGestaoLoadingTimer=null;
+    function medirHeaderGestao(){const c=[headerContainer,headerContainer?.firstElementChild,document.querySelector('#header-container header'),document.querySelector('#header-container .main-header'),document.querySelector('#header-container .header'),document.querySelector('#header-container .topbar')].filter(Boolean);let h=0;c.forEach(el=>{const r=el.getBoundingClientRect?.(),a=Math.ceil(Math.max(r?.height||0,el.offsetHeight||0,el.scrollHeight||0));if(a>h)h=a});if(!h||h<64)h=window.innerWidth<=760?112:104;const t=Math.ceil(tabsWrap?.getBoundingClientRect?.().height||tabsWrap?.offsetHeight||(window.innerWidth<=760?48:58));document.documentElement.style.setProperty('--fs-header-offset',h+'px');document.documentElement.style.setProperty('--gestao-tabs-h',t+'px')}
+    function ocultarLoadingGestao(){loading.classList.remove('ativo');if(fsGestaoLoadingTimer)clearTimeout(fsGestaoLoadingTimer);fsGestaoLoadingTimer=null}
+    function aplicarTemaCinzaNoFrame(){try{const doc=frame.contentDocument||frame.contentWindow?.document;if(!doc?.head||doc.location?.href==='about:blank')return;doc.documentElement.classList.add('fs-embed','fs-gestao-tema-cinza');doc.body?.classList.add('fs-gestao-tema-cinza');let link=doc.getElementById('fs-gestao-tema-cinza-css');if(!link){link=doc.createElement('link');link.id='fs-gestao-tema-cinza-css';link.rel='stylesheet';doc.head.appendChild(link)}link.href=FS_GESTAO_TEMA_CINZA_URL}catch(_){}}
+    function ajustarAlturaFrame(a){const n=Number(a)||0;frame.style.height=Math.max(700,Math.min(n+24,4200))+'px'}
+    function abrirModuloGestao(src,push=true){if(!src)return;tabs.forEach(b=>b.classList.toggle('ativo',b.dataset.src===src));if(fsGestaoSrcAtual===src){ocultarLoadingGestao();return}fsGestaoSrcAtual=src;loading.classList.add('ativo');frame.style.height='1500px';frame.src=src;if(fsGestaoLoadingTimer)clearTimeout(fsGestaoLoadingTimer);fsGestaoLoadingTimer=setTimeout(ocultarLoadingGestao,3500);if(push){const nome=src.split('.html')[0].replace('/','');history.replaceState(null,'','#'+nome)}}
+    tabs.forEach(b=>b.addEventListener('click',()=>abrirModuloGestao(b.dataset.src)));
+    frame.addEventListener('load',()=>{aplicarTemaCinzaNoFrame();ocultarLoadingGestao();[150,600,1400,2600].forEach(t=>setTimeout(()=>{aplicarTemaCinzaNoFrame();try{const doc=frame.contentDocument||frame.contentWindow?.document;ajustarAlturaFrame(Math.max(doc.body?.scrollHeight||0,doc.documentElement?.scrollHeight||0))}catch(_){}},t))});
+    window.addEventListener('message',e=>{if(e.origin!==window.location.origin)return;if(e.data?.tipo==='fs-ajustar-iframe'||e.data?.tipo==='fs-modulo-pronto'){aplicarTemaCinzaNoFrame();ajustarAlturaFrame(e.data.altura);ocultarLoadingGestao()}});
+    window.addEventListener('resize',()=>setTimeout(medirHeaderGestao,80));window.addEventListener('orientationchange',()=>setTimeout(medirHeaderGestao,250));if(window.ResizeObserver&&headerContainer)new ResizeObserver(medirHeaderGestao).observe(headerContainer);if(window.ResizeObserver&&tabsWrap)new ResizeObserver(medirHeaderGestao).observe(tabsWrap);medirHeaderGestao();setTimeout(medirHeaderGestao,120);setTimeout(medirHeaderGestao,500);setTimeout(medirHeaderGestao,1200);const hashInicial=String(location.hash||'').replace('#',''),tabInicial=tabs.find(b=>b.dataset.src&&b.dataset.src.startsWith(hashInicial+'.html'))||tabs[0];abrirModuloGestao(tabInicial.dataset.src,false);
   </script>
 </body>
 </html>
