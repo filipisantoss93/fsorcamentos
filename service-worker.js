@@ -1,5 +1,5 @@
 /* FS Orçamentos - Service Worker PWA */
-const FS_SW_VERSION = 'fsorcamentos-pwa-v20260622-1';
+const FS_SW_VERSION = 'fsorcamentos-pwa-v20260622-2';
 const FS_STATIC_CACHE = `${FS_SW_VERSION}-static`;
 const FS_RUNTIME_CACHE = `${FS_SW_VERSION}-runtime`;
 
@@ -37,7 +37,6 @@ function isSupabaseRequest(url) {
 function isMutableRequest(request) {
   return request.method !== 'GET';
 }
-
 function isNavigationRequest(request) {
   return request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
 }
