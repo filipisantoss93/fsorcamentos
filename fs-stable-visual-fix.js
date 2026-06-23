@@ -12,6 +12,66 @@
   const path = (window.location.pathname || '').toLowerCase();
   window.fsListasCompactasCache = window.fsListasCompactasCache || {};
 
+  const CAMPOS_ESTOQUE_SUPABASE = [
+    'id',
+    'user_id',
+    'nome',
+    'descricao',
+    'categoria',
+    'subcategoria',
+    'codigo',
+    'unidade',
+    'quantidade_atual',
+    'estoque_minimo',
+    'valor_custo',
+    'valor_venda',
+    'controlar_estoque',
+    'ativo',
+    'observacoes',
+    'created_at',
+    'updated_at',
+    'marca_veiculo',
+    'modelo_veiculo',
+    'ano_inicial',
+    'ano_final',
+    'versao_veiculo',
+    'motor_veiculo',
+    'codigo_original',
+    'codigo_fabricante',
+    'aplicacao',
+    'produto_universal'
+  ];
+
+  const ROTULOS_ESTOQUE = {
+    id: 'ID',
+    user_id: 'Usuário',
+    nome: 'Nome',
+    descricao: 'Descrição',
+    categoria: 'Categoria',
+    subcategoria: 'Subcategoria',
+    codigo: 'Código',
+    unidade: 'Unidade',
+    quantidade_atual: 'Qtd disponível',
+    estoque_minimo: 'Estoque mínimo',
+    valor_custo: 'Valor de custo',
+    valor_venda: 'Valor de venda',
+    controlar_estoque: 'Controlar estoque',
+    ativo: 'Ativo',
+    observacoes: 'Observações',
+    created_at: 'Criado em',
+    updated_at: 'Atualizado em',
+    marca_veiculo: 'Marca',
+    modelo_veiculo: 'Modelo',
+    ano_inicial: 'Ano inicial',
+    ano_final: 'Ano final',
+    versao_veiculo: 'Versão',
+    motor_veiculo: 'Motor',
+    codigo_original: 'Código original',
+    codigo_fabricante: 'Código fabricante',
+    aplicacao: 'Aplicação',
+    produto_universal: 'Produto universal'
+  };
+
   function esc(valor) {
     return String(valor ?? '')
       .replace(/&/g, '&amp;')
@@ -25,8 +85,39 @@
     return String(texto || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   }
 
+  function numero(valor) {
+    if (valor === null || valor === undefined || valor === '') return 0;
+    if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
+
+    let texto = String(valor).trim().replace(/[^\d.,-]/g, '');
+    if (!texto) return 0;
+
+    if (texto.includes(',')) texto = texto.replace(/\./g, '').replace(',', '.');
+    const convertido = Number(texto);
+    return Number.isFinite(convertido) ? convertido : 0;
+  }
+
   function moeda(valor) {
-    return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return numero(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function quantidade(valor) {
+    const convertido = numero(valor);
+    return convertido.toLocaleString('pt-BR', {
+      minimumFractionDigits: convertido % 1 === 0 ? 0 : 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function valorVazio(valor) {
+    return valor === null || valor === undefined || valor === '';
+  }
+
+  function valorModalEstoque(campo, valor) {
+    if (campo === 'valor_custo' || campo === 'valor_venda') return moeda(valor);
+    if (campo === 'quantidade_atual' || campo === 'estoque_minimo') return quantidade(valor);
+    if (typeof valor === 'boolean') return valor ? 'Sim' : 'Não';
+    return valorVazio(valor) ? '-' : String(valor);
   }
 
   function injetarEstilo() {
@@ -85,7 +176,7 @@
         align-items: center !important;
         justify-content: flex-start !important;
         padding: 14px !important;
-        background: rgba(20, 13, 11, .62) !important;
+        background: rgba(17, 24, 39, .62) !important;
         overflow-y: auto !important;
       }
 
@@ -97,8 +188,8 @@
       body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-body {
         width: min(820px, 100%) !important;
         background: #ffffff !important;
-        border-left: 1px solid var(--fs-borda, #ded3c5) !important;
-        border-right: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-left: 1px solid var(--fs-borda, #d1d5db) !important;
+        border-right: 1px solid var(--fs-borda, #d1d5db) !important;
       }
 
       body:not(.gerando-pdf) #card-form-ordem.fs-modal-form-aberto > .ordens-card-header,
@@ -109,9 +200,9 @@
         justify-content: space-between !important;
         align-items: flex-start !important;
         padding: 11px 13px !important;
-        background: #f8f4ee !important;
-        border-top: 1px solid var(--fs-borda, #ded3c5) !important;
-        border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        background: #f3f4f6 !important;
+        border-top: 1px solid var(--fs-borda, #d1d5db) !important;
+        border-bottom: 1px solid var(--fs-borda-suave, #e5e7eb) !important;
         border-radius: 7px 7px 0 0 !important;
         box-shadow: 0 12px 28px rgba(0,0,0,.16) !important;
       }
@@ -121,7 +212,7 @@
       body:not(.gerando-pdf) .card-form-agendamento.fs-modal-form-aberto > .agenda-card-body {
         display: block !important;
         padding: 13px !important;
-        border-bottom: 1px solid var(--fs-borda, #ded3c5) !important;
+        border-bottom: 1px solid var(--fs-borda, #d1d5db) !important;
         border-radius: 0 0 7px 7px !important;
         box-shadow: 0 18px 38px rgba(0,0,0,.18) !important;
       }
@@ -130,9 +221,9 @@
         width: 32px !important;
         height: 32px !important;
         border-radius: 4px !important;
-        border: 1px solid #d6c8ba !important;
+        border: 1px solid #d1d5db !important;
         background: #ffffff !important;
-        color: #7f1d1d !important;
+        color: #991b1b !important;
         font-size: 20px !important;
         font-weight: 900 !important;
         cursor: pointer !important;
@@ -142,9 +233,9 @@
         width: 100% !important;
         overflow-x: auto !important;
         background: #ffffff !important;
-        border: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border: 1px solid var(--fs-borda-suave, #e5e7eb) !important;
         border-radius: 7px !important;
-        box-shadow: 0 3px 10px rgba(47,33,29,.07) !important;
+        box-shadow: 0 3px 10px rgba(17,24,39,.07) !important;
       }
 
       .fs-tabela-lista {
@@ -157,18 +248,18 @@
       .fs-tabela-lista th,
       .fs-tabela-lista td {
         padding: 8px 9px !important;
-        border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border-bottom: 1px solid var(--fs-borda-suave, #e5e7eb) !important;
         text-align: left !important;
         vertical-align: middle !important;
-        color: var(--fs-texto, #2b211d) !important;
+        color: var(--fs-texto, #111827) !important;
         font-size: 12px !important;
         line-height: 1.25 !important;
         overflow-wrap: anywhere !important;
       }
 
       .fs-tabela-lista th {
-        background: #f8f4ee !important;
-        color: var(--fs-marrom, #2f211d) !important;
+        background: #f3f4f6 !important;
+        color: var(--fs-cinza-900, #111827) !important;
         font-size: 11px !important;
         text-transform: uppercase !important;
         font-weight: 950 !important;
@@ -179,12 +270,12 @@
         background: #ffffff !important;
       }
 
-      .fs-tabela-lista tbody tr:nth-child(even) { background: #fbf8f4 !important; }
-      .fs-tabela-lista tbody tr:hover { background: #f8f4ee !important; }
+      .fs-tabela-lista tbody tr:nth-child(even) { background: #f9fafb !important; }
+      .fs-tabela-lista tbody tr:hover { background: #f3f4f6 !important; }
 
       .fs-tabela-lista small {
         display: block !important;
-        color: var(--fs-texto-suave, #62554d) !important;
+        color: var(--fs-texto-suave, #6b7280) !important;
         font-size: 10.5px !important;
         font-weight: 700 !important;
         line-height: 1.15 !important;
@@ -195,11 +286,11 @@
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        border: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border: 1px solid var(--fs-borda-suave, #e5e7eb) !important;
         border-radius: 3px !important;
         padding: 3px 6px !important;
-        background: #f3eee7 !important;
-        color: var(--fs-marrom, #2f211d) !important;
+        background: #f3f4f6 !important;
+        color: var(--fs-cinza-900, #111827) !important;
         font-size: 10px !important;
         font-weight: 900 !important;
       }
@@ -255,7 +346,7 @@
         align-items: flex-start !important;
         justify-content: center !important;
         padding: 16px !important;
-        background: rgba(20, 13, 11, .62) !important;
+        background: rgba(17, 24, 39, .62) !important;
         overflow-y: auto !important;
       }
 
@@ -263,8 +354,8 @@
         width: min(820px, 100%) !important;
         margin-top: 16px !important;
         background: #ffffff !important;
-        color: var(--fs-texto, #2b211d) !important;
-        border: 1px solid var(--fs-borda, #ded3c5) !important;
+        color: var(--fs-texto, #111827) !important;
+        border: 1px solid var(--fs-borda, #d1d5db) !important;
         border-radius: 7px !important;
         box-shadow: 0 18px 42px rgba(0,0,0,.22) !important;
         overflow: hidden !important;
@@ -276,12 +367,12 @@
         align-items: flex-start !important;
         gap: 10px !important;
         padding: 11px 13px !important;
-        background: #f8f4ee !important;
-        border-bottom: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        background: #f3f4f6 !important;
+        border-bottom: 1px solid var(--fs-borda-suave, #e5e7eb) !important;
       }
 
-      .fs-item-modal-topo strong { display: block !important; color: var(--fs-marrom, #2f211d) !important; font-size: 16px !important; line-height: 1.2 !important; }
-      .fs-item-modal-topo span { display: block !important; color: var(--fs-texto-suave, #62554d) !important; font-size: 12px !important; margin-top: 3px !important; }
+      .fs-item-modal-topo strong { display: block !important; color: var(--fs-cinza-900, #111827) !important; font-size: 16px !important; line-height: 1.2 !important; }
+      .fs-item-modal-topo span { display: block !important; color: var(--fs-texto-suave, #6b7280) !important; font-size: 12px !important; margin-top: 3px !important; }
       .fs-item-modal-corpo { padding: 12px 13px !important; }
 
       .fs-item-modal-corpo .cliente-acoes,
@@ -297,7 +388,7 @@
         gap: 6px !important;
         margin-top: 12px !important;
         padding-top: 10px !important;
-        border-top: 1px solid var(--fs-borda-suave, #ebe2d7) !important;
+        border-top: 1px solid var(--fs-borda-suave, #e5e7eb) !important;
       }
 
       .fs-item-modal-corpo .btn,
@@ -313,8 +404,8 @@
       }
 
       @media (max-width: 760px) {
-        .fs-tabela-lista-wrapper { overflow-x: hidden !important; }
-        .fs-tabela-lista { min-width: 0 !important; }
+        .fs-tabela-lista-wrapper { overflow-x: auto !important; }
+        .fs-tabela-lista { min-width: 880px !important; }
         .fs-tabela-lista th,
         .fs-tabela-lista td { padding: 6px 4px !important; font-size: 10.5px !important; line-height: 1.15 !important; }
         .fs-tabela-lista small { font-size: 9px !important; max-height: 20px !important; overflow: hidden !important; }
@@ -427,23 +518,34 @@
   function td(conteudo) { return `<td>${conteudo}</td>`; }
   function tag(texto, classe) { return `<span class="fs-tag-lista ${esc(classe || normalizar(texto).replace(/\s+/g, '_'))}">${esc(texto || '-')}</span>`; }
 
+  function detalhesModalPadrao(item) {
+    return Object.entries(item)
+      .filter(([, valor]) => valor !== null && valor !== undefined && typeof valor !== 'object')
+      .map(([chave, valor]) => `<div class="fs-modal-dado"><strong>${esc(chave.replace(/_/g, ' '))}</strong><span>${esc(valor)}</span></div>`)
+      .join('');
+  }
+
+  function detalhesModalEstoque(item) {
+    return CAMPOS_ESTOQUE_SUPABASE
+      .map((campo) => `<div class="fs-modal-dado"><strong>${esc(ROTULOS_ESTOQUE[campo] || campo.replace(/_/g, ' '))}</strong><span>${esc(valorModalEstoque(campo, item[campo]))}</span></div>`)
+      .join('');
+  }
+
   function abrirModalRegistro(tipo, id) {
     const lista = window.fsListasCompactasCache[tipo] || [];
     const item = lista.find(reg => String(reg.id) === String(id));
     if (!item) return;
 
     const titulo = item.nome || item.titulo || item.placa || item.numero_os || item.nome_cliente || item.cliente_nome || item.nome_produto || 'Detalhes';
-    const subtitulo = [item.whatsapp, item.email, item.status, item.categoria, item.data_servico, item.hora_inicio].filter(Boolean).slice(0, 3).join(' • ') || 'Ações disponíveis abaixo.';
+    const subtitulo = tipo === 'estoque'
+      ? [item.categoria, item.subcategoria, item.codigo].filter(Boolean).join(' • ') || 'Produto do estoque.'
+      : [item.whatsapp, item.email, item.status, item.categoria, item.data_servico, item.hora_inicio].filter(Boolean).slice(0, 3).join(' • ') || 'Ações disponíveis abaixo.';
 
     const overlay = document.createElement('div');
     overlay.id = 'fs-item-modal-overlay';
     overlay.className = 'fs-item-modal-overlay';
 
-    const detalhes = Object.entries(item)
-      .filter(([chave, valor]) => valor !== null && valor !== undefined && typeof valor !== 'object')
-      .slice(0, 18)
-      .map(([chave, valor]) => `<div class="fs-modal-dado"><strong>${esc(chave.replace(/_/g, ' '))}</strong><span>${esc(valor)}</span></div>`)
-      .join('');
+    const detalhes = tipo === 'estoque' ? detalhesModalEstoque(item) : detalhesModalPadrao(item);
 
     overlay.innerHTML = `
       <section class="fs-item-modal-card" role="dialog" aria-modal="true">
@@ -487,6 +589,7 @@
         <button type="button" onclick="editarProdutoEstoque('${idEsc}')">Editar</button>
         <button type="button" onclick="abrirModalMovimentacaoEstoque('${idEsc}', 'entrada')">Entrada</button>
         <button type="button" onclick="abrirModalMovimentacaoEstoque('${idEsc}', 'saida')">Saída</button>
+        <button type="button" onclick="abrirModalMovimentacaoEstoque('${idEsc}', 'ajuste')">Ajuste</button>
         <button type="button" onclick="excluirProdutoEstoque('${idEsc}')">Excluir</button>`;
     }
     if (tipo === 'agenda') {
@@ -548,13 +651,16 @@
     if (typeof window.renderizarProdutosEstoque === 'function' && !window.renderizarProdutosEstoque.__fsCompacta) {
       window.renderizarProdutosEstoque = function (lista) {
         window.fsListasCompactasCache.estoque = Array.isArray(lista) ? lista : [];
-        tabela('lista-produtos-estoque', 'estoque', ['Produto', 'Categoria', 'Aplicação', 'Qtd', 'Venda'], window.fsListasCompactasCache.estoque.map(p => `
+        tabela('lista-produtos-estoque', 'estoque', ['Categoria', 'Subcategoria', 'Código', 'Descrição', 'Qtd disponível', 'Valor', 'Marca', 'Modelo'], window.fsListasCompactasCache.estoque.map(p => `
           <tr onclick="fsAbrirModalRegistro('estoque','${esc(p.id)}')">
-            ${td(`<strong>${esc(p.nome || 'Produto')}</strong><small>${esc(p.codigo || p.codigo_original || p.codigo_fabricante || '')}</small>`)}
-            ${td(`${esc(p.categoria || '-')}<small>${esc(p.subcategoria || '')}</small>`)}
-            ${td(`${esc([p.marca_veiculo, p.modelo_veiculo].filter(Boolean).join(' ') || (p.produto_universal ? 'Universal' : '-'))}<small>${esc(p.aplicacao || '')}</small>`)}
-            ${td(`<strong>${esc(p.quantidade_atual ?? 0)}</strong><small>mín. ${esc(p.estoque_minimo ?? 0)}</small>`)}
+            ${td(esc(p.categoria || '-'))}
+            ${td(esc(p.subcategoria || '-'))}
+            ${td(esc(p.codigo || p.codigo_original || p.codigo_fabricante || '-'))}
+            ${td(`<strong>${esc(p.nome || 'Produto')}</strong><small>${esc(p.descricao || '')}</small>`)}
+            ${td(`<strong>${esc(quantidade(p.quantidade_atual))} ${esc(p.unidade || 'un')}</strong><small>mín. ${esc(quantidade(p.estoque_minimo))} ${esc(p.unidade || 'un')}</small>`)}
             ${td(`<strong>${moeda(p.valor_venda || 0)}</strong>`)}
+            ${td(esc(p.marca_veiculo || '-'))}
+            ${td(esc(p.modelo_veiculo || '-'))}
           </tr>`));
       };
       window.renderizarProdutosEstoque.__fsCompacta = true;
