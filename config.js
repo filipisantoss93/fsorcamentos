@@ -56,31 +56,31 @@ window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
 const FS_CONFIG_CSS_GLOBAIS = [
-  ['fs-theme-cinza.css?v=20260622-limpeza-gerador-1', 'fs-theme-cinza-css']
+  ['fs-theme-cinza.css?v=20260623-sem-marrom-1', 'fs-theme-cinza-css']
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
-  ['fs-auth-redirect-guard.js?v=20260622-limpeza-gerador-1', 'fs-auth-redirect-guard-js'],
-  ['fs-pwa-register.js?v=20260622-limpeza-gerador-1', 'fs-pwa-register-js'],
-  ['fs-session-cache.js?v=20260622-limpeza-gerador-1', 'fs-session-cache-js'],
-  ['fs-menu-close-outside.js?v=20260622-limpeza-gerador-1', 'fs-menu-close-outside-js'],
-  ['fs-footer-legal.js?v=20260622-limpeza-gerador-1', 'fs-footer-legal-js']
+  ['fs-auth-redirect-guard.js?v=20260623-sem-marrom-1', 'fs-auth-redirect-guard-js'],
+  ['fs-pwa-register.js?v=20260623-sem-marrom-1', 'fs-pwa-register-js'],
+  ['fs-session-cache.js?v=20260623-sem-marrom-1', 'fs-session-cache-js'],
+  ['fs-menu-close-outside.js?v=20260623-sem-marrom-1', 'fs-menu-close-outside-js'],
+  ['fs-footer-legal.js?v=20260623-sem-marrom-1', 'fs-footer-legal-js']
 ];
 
 const FS_CONFIG_CSS_POR_PAGINA = [
-  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css?v=20260622-limpeza-gerador-1', 'fs-gerador-css']] },
-  { paginas: ['/orcamentos', '/orcamentos.html'], estilos: [['orcamentos.css?v=20260622-limpeza-gerador-1', 'fs-orcamentos-css']] }
+  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css?v=20260623-sem-marrom-1', 'fs-gerador-css']] },
+  { paginas: ['/orcamentos', '/orcamentos.html'], estilos: [['orcamentos.css?v=20260623-sem-marrom-1', 'fs-orcamentos-css']] }
 ];
 
 const FS_CONFIG_SCRIPTS_POR_PAGINA = [
-  { paginas: ['/', '/index', '/index.html'], scripts: [['fs-format-br.js?v=20260622-limpeza-gerador-1', 'fs-format-br-js'], ['fs-home-auth-fix.js?v=20260622-limpeza-gerador-1', 'fs-home-auth-fix-js'], ['fs-home-premium-dashboard.js?v=20260622-limpeza-gerador-1', 'fs-home-premium-dashboard-js']] },
-  { paginas: ['/painel', '/painel.html'], scripts: [['fs-format-br.js?v=20260622-limpeza-gerador-1', 'fs-format-br-js']] },
-  { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js?v=20260622-limpeza-gerador-1', 'fs-ver-cliente-fix-js']] },
-  { paginas: ['/gerador', '/gerador.html'], scripts: [['fs-format-br.js?v=20260622-limpeza-gerador-1', 'fs-format-br-js'], ['gerador-pdf-fix.js?v=20260622-limpeza-gerador-1', 'fs-gerador-pdf-fix-js']] },
-  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js?v=20260622-limpeza-gerador-1', 'fs-orcamentos-pdf-js']] },
-  { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js?v=20260622-limpeza-gerador-1', 'fs-ordens-recorrente-prefill-js']] },
-  { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js?v=20260622-limpeza-gerador-1', 'fs-cliente-modal-js']] },
-  { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js?v=20260622-limpeza-gerador-1', 'fs-ordem-extras-js'], ['ordem-fotos-depois.js?v=20260622-limpeza-gerador-1', 'fs-ordem-fotos-depois-js'], ['ordem-pdf-fotos-depois.js?v=20260622-limpeza-gerador-1', 'fs-ordem-pdf-fotos-depois-js'], ['ordem-financeiro-nativo-fix.js?v=20260622-limpeza-gerador-1', 'fs-ordem-financeiro-nativo-fix-js'], ['ordem-garantia.js?v=20260622-limpeza-gerador-1', 'fs-ordem-garantia-js'], ['ordem-recibo.js?v=20260622-limpeza-gerador-1', 'fs-ordem-recibo-js']] }
+  { paginas: ['/', '/index', '/index.html'], scripts: [['fs-format-br.js?v=20260623-sem-marrom-1', 'fs-format-br-js'], ['fs-home-auth-fix.js?v=20260623-sem-marrom-1', 'fs-home-auth-fix-js'], ['fs-home-premium-dashboard.js?v=20260623-sem-marrom-1', 'fs-home-premium-dashboard-js']] },
+  { paginas: ['/painel', '/painel.html'], scripts: [['fs-format-br.js?v=20260623-sem-marrom-1', 'fs-format-br-js']] },
+  { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js?v=20260623-sem-marrom-1', 'fs-ver-cliente-fix-js']] },
+  { paginas: ['/gerador', '/gerador.html'], scripts: [['fs-format-br.js?v=20260623-sem-marrom-1', 'fs-format-br-js'], ['gerador-pdf-fix.js?v=20260623-sem-marrom-1', 'fs-gerador-pdf-fix-js']] },
+  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js?v=20260623-sem-marrom-1', 'fs-orcamentos-pdf-js']] },
+  { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js?v=20260623-sem-marrom-1', 'fs-ordens-recorrente-prefill-js']] },
+  { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js?v=20260623-sem-marrom-1', 'fs-cliente-modal-js']] },
+  { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js?v=20260623-sem-marrom-1', 'fs-ordem-extras-js'], ['ordem-fotos-depois.js?v=20260623-sem-marrom-1', 'fs-ordem-fotos-depois-js'], ['ordem-pdf-fotos-depois.js?v=20260623-sem-marrom-1', 'fs-ordem-pdf-fotos-depois-js'], ['ordem-financeiro-nativo-fix.js?v=20260623-sem-marrom-1', 'fs-ordem-financeiro-nativo-fix-js'], ['ordem-garantia.js?v=20260623-sem-marrom-1', 'fs-ordem-garantia-js'], ['ordem-recibo.js?v=20260623-sem-marrom-1', 'fs-ordem-recibo-js']] }
 ];
 
 function fsConfigNormalizarPathAtual() {
