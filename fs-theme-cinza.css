@@ -1,6 +1,6 @@
 /* =========================================================
    FS ORÇAMENTOS — TEMA CINZA GLOBAL
-   Remove heranças antigas em marrom e padroniza a plataforma.
+   Remove heranças antigas em marrom, bege, dourado e amarelo.
    ========================================================= */
 
 :root {
@@ -19,20 +19,18 @@
   --fs-grafite: var(--fs-cinza-500);
   --fs-grafite-2: var(--fs-cinza-400);
   --fs-grafite-3: var(--fs-cinza-600);
-  --fs-destaque: var(--fs-cinza-200);
-  --fs-destaque-2: var(--fs-cinza-300);
+  --fs-destaque: var(--fs-cinza-300);
+  --fs-destaque-2: var(--fs-cinza-400);
 
-  /* Compatibilidade com nomes antigos: tudo que era marrom vira cinza. */
-  --fs-marrom: var(--fs-cinza-600);
-  --fs-marrom-2: var(--fs-cinza-800);
-  --fs-marrom-3: var(--fs-cinza-700);
+  --fs-marrom: var(--fs-cinza-700);
+  --fs-marrom-2: var(--fs-cinza-900);
+  --fs-marrom-3: var(--fs-cinza-600);
   --fs-marrom-claro: var(--fs-cinza-500);
 
-  /* Compatibilidade com destaques antigos: amarelo deixa de dominar os módulos. */
-  --fs-amarelo: var(--fs-cinza-500);
-  --fs-amarelo-2: var(--fs-cinza-600);
-  --accent-yellow: var(--fs-cinza-500);
-  --accent-gray: var(--fs-cinza-200);
+  --fs-amarelo: var(--fs-cinza-400);
+  --fs-amarelo-2: var(--fs-cinza-500);
+  --accent-yellow: var(--fs-cinza-400);
+  --primary: var(--fs-cinza-500);
 
   --fs-creme: var(--fs-cinza-50);
   --fs-creme-2: var(--fs-cinza-100);
@@ -61,7 +59,7 @@
   --text-dark: var(--fs-cinza-900);
 
   --fs-sucesso: #16a34a;
-  --fs-alerta: #f97316;
+  --fs-alerta: var(--fs-cinza-500);
   --fs-erro: #dc2626;
   --fs-perigo: #dc2626;
   --fs-verde: #16a34a;
@@ -129,7 +127,6 @@ body:not(.gerando-pdf) .card-relatorio {
   box-shadow: var(--fs-shadow-cinza) !important;
 }
 
-/* Header claro e compatível com header-clean.css */
 body:not(.gerando-pdf) .main-header,
 body:not(.gerando-pdf) #header-container .main-header,
 body:not(.gerando-pdf) header.main-header,
@@ -141,7 +138,29 @@ body:not(.gerando-pdf) .header-dropdown-menu {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 58%, #e5e7eb 100%) !important;
   color: var(--fs-texto) !important;
   border-color: var(--fs-borda-2) !important;
+  border-bottom-color: var(--fs-borda-2) !important;
   box-shadow: 0 4px 16px rgba(51, 65, 85, .10) !important;
+}
+
+body:not(.gerando-pdf) .main-header,
+body:not(.gerando-pdf) .container,
+body:not(.gerando-pdf) .painel-container,
+body:not(.gerando-pdf) .fs-page-header,
+body:not(.gerando-pdf) .page-header,
+body:not(.gerando-pdf) .dashboard-hero,
+body:not(.gerando-pdf) .forum-hero,
+body:not(.gerando-pdf) .painel-header,
+body:not(.gerando-pdf) .clientes-header,
+body:not(.gerando-pdf) .veiculos-header,
+body:not(.gerando-pdf) .ordens-header,
+body:not(.gerando-pdf) .estoque-header,
+body:not(.gerando-pdf) .agenda-header,
+body:not(.gerando-pdf) .relatorios-header,
+body:not(.gerando-pdf) .recorrentes-header,
+body:not(.gerando-pdf) .gerador-hero,
+body:not(.gerando-pdf) .nav-dropdown-menu {
+  border-top-color: var(--fs-cinza-400) !important;
+  border-bottom-color: var(--fs-borda-2) !important;
 }
 
 body:not(.gerando-pdf) .logo-nav,
@@ -174,6 +193,7 @@ body:not(.gerando-pdf) .nav-menu a:hover,
 body:not(.gerando-pdf) .nav-menu summary:hover,
 body:not(.gerando-pdf) .nav-menu a.ativo,
 body:not(.gerando-pdf) .nav-menu .ativo,
+body:not(.gerando-pdf) .nav-menu .link-destaque-gerador,
 body:not(.gerando-pdf) .header-menu-linha a:hover,
 body:not(.gerando-pdf) .header-menu-linha a.ativo {
   background: var(--fs-cinza-200) !important;
@@ -181,7 +201,6 @@ body:not(.gerando-pdf) .header-menu-linha a.ativo {
   border-color: var(--fs-cinza-300) !important;
 }
 
-/* Heróis e seções principais dos módulos de gestão */
 body:not(.gerando-pdf) .home-hero-venda,
 body:not(.gerando-pdf) .home-hero,
 body:not(.gerando-pdf) .home-dashboard,
@@ -214,7 +233,7 @@ body:not(.gerando-pdf) .home-premium-showcase {
   background: linear-gradient(135deg, #ffffff 0%, var(--fs-cinza-50) 100%) !important;
   color: var(--fs-texto) !important;
   border-color: var(--fs-borda) !important;
-  border-top-color: var(--fs-cinza-500) !important;
+  border-top-color: var(--fs-cinza-400) !important;
   box-shadow: var(--fs-shadow-cinza) !important;
 }
 
@@ -225,21 +244,6 @@ body:not(.gerando-pdf) h4,
 body:not(.gerando-pdf) .titulo,
 body:not(.gerando-pdf) .subtitulo,
 body:not(.gerando-pdf) .card-title,
-body:not(.gerando-pdf) .fs-page-header h1,
-body:not(.gerando-pdf) .page-header h1,
-body:not(.gerando-pdf) .dashboard-hero h1,
-body:not(.gerando-pdf) .forum-hero h1,
-body:not(.gerando-pdf) .painel-header h1,
-body:not(.gerando-pdf) .gerador-hero h1,
-body:not(.gerando-pdf) .clientes-hero h1,
-body:not(.gerando-pdf) .veiculos-hero h1,
-body:not(.gerando-pdf) .ordens-hero h1,
-body:not(.gerando-pdf) .ordem-hero h1,
-body:not(.gerando-pdf) .estoque-hero h1,
-body:not(.gerando-pdf) .agenda-hero h1,
-body:not(.gerando-pdf) .relatorios-hero h1,
-body:not(.gerando-pdf) .recorrentes-hero h1,
-body:not(.gerando-pdf) .section-topo h2,
 body:not(.gerando-pdf) label,
 body:not(.gerando-pdf) .campo label,
 body:not(.gerando-pdf) .card strong,
@@ -258,376 +262,99 @@ body:not(.gerando-pdf) small,
 body:not(.gerando-pdf) .muted,
 body:not(.gerando-pdf) .text-muted,
 body:not(.gerando-pdf) .descricao,
-body:not(.gerando-pdf) .card-desc,
-body:not(.gerando-pdf) .home-lead,
-body:not(.gerando-pdf) .clientes-hero p,
-body:not(.gerando-pdf) .veiculos-hero p,
-body:not(.gerando-pdf) .ordens-hero p,
-body:not(.gerando-pdf) .ordem-hero p,
-body:not(.gerando-pdf) .estoque-hero p,
-body:not(.gerando-pdf) .agenda-hero p,
-body:not(.gerando-pdf) .relatorios-hero p,
-body:not(.gerando-pdf) .recorrentes-hero p,
-body:not(.gerando-pdf) .campo small,
-body:not(.gerando-pdf) .info-item span,
-body:not(.gerando-pdf) .texto-bloco,
-body:not(.gerando-pdf) .valor-linha span,
-body:not(.gerando-pdf) .veiculo-info p,
-body:not(.gerando-pdf) .cliente-modal-item span {
+body:not(.gerando-pdf) .hint,
+body:not(.gerando-pdf) .helper,
+body:not(.gerando-pdf) .subtexto {
   color: var(--fs-cinza-500) !important;
 }
 
-/* Cabeçalhos internos que eram marrom */
-body:not(.gerando-pdf) .card-header,
-body:not(.gerando-pdf) .clientes-card-header,
-body:not(.gerando-pdf) .veiculos-card-header,
-body:not(.gerando-pdf) .ordens-card-header,
-body:not(.gerando-pdf) .estoque-card-header,
-body:not(.gerando-pdf) .agenda-card-header,
-body:not(.gerando-pdf) .modal-busca-cliente-header,
-body:not(.gerando-pdf) .modal-busca-produto-header,
-body:not(.gerando-pdf) .modal-pix-topo,
-body:not(.gerando-pdf) .agenda-modal-topo,
-body:not(.gerando-pdf) .home-cliente-topo,
-body:not(.gerando-pdf) .mock-card-head,
-body:not(.gerando-pdf) .orcamento-whatsapp-header,
-body:not(.gerando-pdf) .home-orcamento-whatsapp-header,
-body:not(.gerando-pdf) .total-container,
-body:not(.gerando-pdf) .valor-total,
-body:not(.gerando-pdf) .cliente-total-demo,
-body:not(.gerando-pdf) .home-cliente-total,
-body:not(.gerando-pdf) .manual-flow div,
-body:not(.gerando-pdf) .mini-dashboard,
-body:not(.gerando-pdf) .auth-logo-box,
-body:not(.gerando-pdf) .banner-topo {
-  background: var(--fs-cinza-700) !important;
-  color: #ffffff !important;
-  border-color: var(--fs-cinza-500) !important;
-  box-shadow: none !important;
-}
-
-body:not(.gerando-pdf) .card-header *,
-body:not(.gerando-pdf) .clientes-card-header *,
-body:not(.gerando-pdf) .veiculos-card-header *,
-body:not(.gerando-pdf) .ordens-card-header *,
-body:not(.gerando-pdf) .estoque-card-header *,
-body:not(.gerando-pdf) .agenda-card-header *,
-body:not(.gerando-pdf) .modal-busca-cliente-header *,
-body:not(.gerando-pdf) .modal-busca-produto-header *,
-body:not(.gerando-pdf) .modal-pix-topo *,
-body:not(.gerando-pdf) .agenda-modal-topo *,
-body:not(.gerando-pdf) .total-container *,
-body:not(.gerando-pdf) .valor-total *,
-body:not(.gerando-pdf) .auth-logo-box *,
-body:not(.gerando-pdf) .banner-topo * {
-  color: #ffffff !important;
-  opacity: 1 !important;
-  text-shadow: none !important;
-}
-
-/* Botões — padrão cinza */
 body:not(.gerando-pdf) button,
 body:not(.gerando-pdf) .btn,
-body:not(.gerando-pdf) .fs-btn,
 body:not(.gerando-pdf) .btn-primary,
-body:not(.gerando-pdf) .fs-btn-primary,
-body:not(.gerando-pdf) .dashboard-btn,
-body:not(.gerando-pdf) .forum-btn,
-body:not(.gerando-pdf) .btn-add,
-body:not(.gerando-pdf) .btn-extra,
 body:not(.gerando-pdf) .btn-primario,
 body:not(.gerando-pdf) .btn-salvar,
-body:not(.gerando-pdf) .btn-download,
-body:not(.gerando-pdf) .btn-acao-pdf,
-body:not(.gerando-pdf) .btn-previa-profissional,
-body:not(.gerando-pdf) .btn-hero-principal,
-body:not(.gerando-pdf) .btn-ir-planos-home,
-body:not(.gerando-pdf) .btn-home-planos-forte,
-body:not(.gerando-pdf) .btn-home-grande,
-body:not(.gerando-pdf) .btn-home-medio,
-body:not(.gerando-pdf) .btn-gerar-orcamento-home,
-body:not(.gerando-pdf) .btn-editar-dados-empresa,
-body:not(.gerando-pdf) .btn-toggle-form-mobile,
-body:not(.gerando-pdf) .btn-toggle-lista-mobile,
-body:not(.gerando-pdf) .btn-notificacoes-header,
+body:not(.gerando-pdf) .btn-novo,
+body:not(.gerando-pdf) .btn-destaque,
+body:not(.gerando-pdf) .btn-login,
 body:not(.gerando-pdf) .btn-header-entrar,
 body:not(.gerando-pdf) .btn-header-sair,
-body:not(.gerando-pdf) .menu-mobile-btn,
 body:not(.gerando-pdf) .btn-menu-mobile-entrar,
 body:not(.gerando-pdf) .btn-menu-mobile-sair,
-body:not(.gerando-pdf) .plano-pix-card button,
-body:not(.gerando-pdf) .gestao-tab.ativo {
+body:not(.gerando-pdf) .menu-mobile-btn,
+body:not(.gerando-pdf) .btn-notificacoes-header,
+body:not(.gerando-pdf) input[type="submit"] {
+  border-color: var(--fs-cinza-400) !important;
   background: var(--fs-cinza-500) !important;
   color: #ffffff !important;
-  border-color: var(--fs-cinza-500) !important;
-  box-shadow: 0 4px 12px rgba(51, 65, 85, .12) !important;
-  text-shadow: none !important;
+  box-shadow: none !important;
 }
 
 body:not(.gerando-pdf) button:hover,
 body:not(.gerando-pdf) .btn:hover,
-body:not(.gerando-pdf) .fs-btn:hover,
 body:not(.gerando-pdf) .btn-primary:hover,
-body:not(.gerando-pdf) .fs-btn-primary:hover,
-body:not(.gerando-pdf) .dashboard-btn:hover,
-body:not(.gerando-pdf) .forum-btn:hover,
-body:not(.gerando-pdf) .btn-add:hover,
-body:not(.gerando-pdf) .btn-extra:hover,
 body:not(.gerando-pdf) .btn-primario:hover,
 body:not(.gerando-pdf) .btn-salvar:hover,
-body:not(.gerando-pdf) .btn-download:hover,
-body:not(.gerando-pdf) .btn-acao-pdf:hover,
-body:not(.gerando-pdf) .btn-toggle-form-mobile:hover,
-body:not(.gerando-pdf) .btn-toggle-lista-mobile:hover,
-body:not(.gerando-pdf) .gestao-tab.ativo:hover {
+body:not(.gerando-pdf) .btn-novo:hover,
+body:not(.gerando-pdf) .btn-destaque:hover,
+body:not(.gerando-pdf) .btn-login:hover {
   background: var(--fs-cinza-600) !important;
   color: #ffffff !important;
   border-color: var(--fs-cinza-600) !important;
 }
 
 body:not(.gerando-pdf) .btn-secondary,
-body:not(.gerando-pdf) .fs-btn-secondary,
 body:not(.gerando-pdf) .btn-secundario,
-body:not(.gerando-pdf) .dashboard-btn-secundario,
-body:not(.gerando-pdf) .forum-btn-secundario,
-body:not(.gerando-pdf) .btn-limpar,
-body:not(.gerando-pdf) .btn-senha,
-body:not(.gerando-pdf) .btn-outline,
-body:not(.gerando-pdf) .btn-light,
-body:not(.gerando-pdf) .home-btn-secondary,
-body:not(.gerando-pdf) .btn-home-atalho,
-body:not(.gerando-pdf) .gestao-tab {
+body:not(.gerando-pdf) .btn-cancelar,
+body:not(.gerando-pdf) .btn-fechar,
+body:not(.gerando-pdf) button.secondary,
+body:not(.gerando-pdf) button.secundario {
   background: #ffffff !important;
-  color: var(--fs-cinza-800) !important;
+  color: var(--fs-cinza-700) !important;
   border-color: var(--fs-cinza-300) !important;
-  box-shadow: none !important;
 }
 
-body:not(.gerando-pdf) .btn-secondary:hover,
-body:not(.gerando-pdf) .fs-btn-secondary:hover,
-body:not(.gerando-pdf) .btn-secundario:hover,
-body:not(.gerando-pdf) .dashboard-btn-secundario:hover,
-body:not(.gerando-pdf) .forum-btn-secundario:hover,
-body:not(.gerando-pdf) .btn-limpar:hover,
-body:not(.gerando-pdf) .btn-senha:hover,
-body:not(.gerando-pdf) .btn-outline:hover,
-body:not(.gerando-pdf) .btn-light:hover,
-body:not(.gerando-pdf) .home-btn-secondary:hover,
-body:not(.gerando-pdf) .btn-home-atalho:hover,
-body:not(.gerando-pdf) .gestao-tab:hover {
-  background: var(--fs-cinza-100) !important;
-  color: var(--fs-cinza-950) !important;
-  border-color: var(--fs-cinza-400) !important;
-}
-
-body:not(.gerando-pdf) .btn-danger,
-body:not(.gerando-pdf) .fs-btn-danger,
-body:not(.gerando-pdf) .btn-perigo,
-body:not(.gerando-pdf) .btn-remove,
-body:not(.gerando-pdf) .btn-excluir-conta {
-  background: #fff5f5 !important;
-  color: #b91c1c !important;
-  border-color: #fecaca !important;
-}
-
-body:not(.gerando-pdf) .btn-whatsapp,
-body:not(.gerando-pdf) .btn-verde {
-  background: #16a34a !important;
-  color: #ffffff !important;
-  border-color: #15803d !important;
-}
-
-/* Formulários */
 body:not(.gerando-pdf) input,
 body:not(.gerando-pdf) select,
-body:not(.gerando-pdf) textarea,
-body:not(.gerando-pdf) .campo,
-body:not(.gerando-pdf) .form-control,
-body:not(.gerando-pdf) #auth-container input,
-body:not(.gerando-pdf) .auth-container-index input,
-body:not(.gerando-pdf) #auth-container .btn-social-login,
-body:not(.gerando-pdf) #auth-container .btn-google,
-body:not(.gerando-pdf) .auth-container-index .btn-social-login,
-body:not(.gerando-pdf) .auth-container-index .btn-google {
+body:not(.gerando-pdf) textarea {
   background: #ffffff !important;
-  color: var(--fs-texto) !important;
+  color: var(--fs-cinza-900) !important;
   border-color: var(--fs-cinza-300) !important;
-}
-
-body:not(.gerando-pdf) input::placeholder,
-body:not(.gerando-pdf) textarea::placeholder {
-  color: var(--fs-cinza-400) !important;
-  opacity: 1 !important;
+  box-shadow: none !important;
 }
 
 body:not(.gerando-pdf) input:focus,
 body:not(.gerando-pdf) select:focus,
 body:not(.gerando-pdf) textarea:focus {
   border-color: var(--fs-cinza-500) !important;
-  box-shadow: 0 0 0 3px rgba(100, 116, 139, .16) !important;
+  box-shadow: 0 0 0 3px rgba(100, 116, 139, .18) !important;
   outline: none !important;
 }
 
-/* Tabelas e listas */
-body:not(.gerando-pdf) table,
-body:not(.gerando-pdf) .tabela,
-body:not(.gerando-pdf) .fs-table,
-body:not(.gerando-pdf) .agenda-tabela,
-body:not(.gerando-pdf) .comparativo,
-body:not(.gerando-pdf) .manual-table,
-body:not(.gerando-pdf) .tabela-comparativo,
-body:not(.gerando-pdf) .home-tabela-comparativo {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) th,
-body:not(.gerando-pdf) thead,
+body:not(.gerando-pdf) table th,
 body:not(.gerando-pdf) .tabela th,
-body:not(.gerando-pdf) .fs-table th,
-body:not(.gerando-pdf) .agenda-tabela th,
-body:not(.gerando-pdf) .comparativo th,
-body:not(.gerando-pdf) .manual-table th,
-body:not(.gerando-pdf) .tabela-comparativo th,
-body:not(.gerando-pdf) .home-tabela-comparativo th {
+body:not(.gerando-pdf) .tabela-orcamentos th {
   background: var(--fs-cinza-100) !important;
-  color: var(--fs-cinza-950) !important;
-  border-color: var(--fs-borda) !important;
-}
-
-body:not(.gerando-pdf) td,
-body:not(.gerando-pdf) .tabela td,
-body:not(.gerando-pdf) .fs-table td,
-body:not(.gerando-pdf) .agenda-tabela td,
-body:not(.gerando-pdf) .comparativo td,
-body:not(.gerando-pdf) .manual-table td {
-  color: var(--fs-texto) !important;
-  border-color: var(--fs-borda) !important;
-}
-
-body:not(.gerando-pdf) tr:hover,
-body:not(.gerando-pdf) .tabela tr:hover,
-body:not(.gerando-pdf) .fs-table tr:hover,
-body:not(.gerando-pdf) .agenda-tabela tbody tr:hover,
-body:not(.gerando-pdf) tbody tr:nth-child(even),
-body:not(.gerando-pdf) tr:nth-child(even) {
-  background: var(--fs-cinza-50) !important;
-}
-
-/* Badges, tags e indicadores */
-body:not(.gerando-pdf) .fs-badge,
-body:not(.gerando-pdf) .badge,
-body:not(.gerando-pdf) .status-badge,
-body:not(.gerando-pdf) .forum-badge,
-body:not(.gerando-pdf) .plano-badge,
-body:not(.gerando-pdf) .tag,
-body:not(.gerando-pdf) .agenda-tag,
-body:not(.gerando-pdf) .agenda-chip,
-body:not(.gerando-pdf) .tag-premium,
-body:not(.gerando-pdf) .placa-badge,
-body:not(.gerando-pdf) .status-pill {
-  background: var(--fs-cinza-100) !important;
-  color: var(--fs-cinza-800) !important;
+  color: var(--fs-cinza-900) !important;
   border-color: var(--fs-cinza-300) !important;
 }
 
-body:not(.gerando-pdf) .tag.ativo,
-body:not(.gerando-pdf) .status.verde,
-body:not(.gerando-pdf) .status.aprovado,
-body:not(.gerando-pdf) .badge.aprovado,
-body:not(.gerando-pdf) .badge-verde,
-body:not(.gerando-pdf) .sucesso,
-body:not(.gerando-pdf) .aprovado,
-body:not(.gerando-pdf) .pago,
-body:not(.gerando-pdf) .recebido,
-body:not(.gerando-pdf) .notificacao-aprovado,
-body:not(.gerando-pdf) .status-pill.em_execucao {
-  color: #166534 !important;
-  background: #dcfce7 !important;
-  border-color: #bbf7d0 !important;
-}
-
-body:not(.gerando-pdf) .status.alerta,
-body:not(.gerando-pdf) .badge-alerta,
-body:not(.gerando-pdf) .pendente,
-body:not(.gerando-pdf) .aguardando,
-body:not(.gerando-pdf) .notificacao-agenda,
-body:not(.gerando-pdf) .notificacao-estoque,
-body:not(.gerando-pdf) .notificacao-os,
-body:not(.gerando-pdf) .index-aviso-login {
-  color: #9a3412 !important;
-  background: #ffedd5 !important;
-  border-color: #fed7aa !important;
-}
-
-body:not(.gerando-pdf) .status.erro,
-body:not(.gerando-pdf) .status.vermelho,
-body:not(.gerando-pdf) .recusado,
-body:not(.gerando-pdf) .cancelado,
-body:not(.gerando-pdf) .tag.inativo,
-body:not(.gerando-pdf) .status-pill.cancelado,
-body:not(.gerando-pdf) .status-pill.atrasado,
-body:not(.gerando-pdf) .notificacao-recusado {
-  color: #991b1b !important;
-  background: #fee2e2 !important;
-  border-color: #fecaca !important;
-}
-
-/* Gestão dentro de iframe */
-html.fs-embed body,
-body.modo-embed-gestao,
-body.fs-gestao-tema-cinza {
-  padding-top: 0 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) .gestao-tabs-wrap {
-  background: #ffffff !important;
-  border-bottom-color: var(--fs-borda) !important;
-  box-shadow: 0 2px 8px rgba(51, 65, 85, .08) !important;
-}
-
-/* Rodapé */
-body:not(.gerando-pdf) footer,
-body:not(.gerando-pdf) .footer,
-body:not(.gerando-pdf) .site-footer,
-body:not(.gerando-pdf) .forum-footer,
-body:not(.gerando-pdf) .fs-footer-legal,
-body:not(.gerando-pdf) .fs-footer-index {
-  background: var(--fs-cinza-50) !important;
-  color: var(--fs-cinza-600) !important;
-  border-color: var(--fs-borda) !important;
-}
-
-body:not(.gerando-pdf) footer a,
-body:not(.gerando-pdf) .site-footer a,
-body:not(.gerando-pdf) .footer a,
-body:not(.gerando-pdf) .forum-footer a,
-body:not(.gerando-pdf) .fs-footer-legal a,
-body:not(.gerando-pdf) .fs-footer-legal-links a,
-body:not(.gerando-pdf) .fs-footer-index a {
+body:not(.gerando-pdf) .status,
+body:not(.gerando-pdf) .tag,
+body:not(.gerando-pdf) .badge,
+body:not(.gerando-pdf) .chip,
+body:not(.gerando-pdf) .pill {
+  background: var(--fs-cinza-100) !important;
   color: var(--fs-cinza-700) !important;
+  border-color: var(--fs-cinza-300) !important;
 }
 
-body.gerando-pdf,
-body.gerando-pdf * {
-  color: inherit;
-}
-
-@media (max-width: 860px) {
-  body:not(.gerando-pdf) .nav-menu,
-  body:not(.gerando-pdf) .nav-menu-compacto,
-  body:not(.gerando-pdf) .header-menu-linha {
-    background: #ffffff !important;
-    border-color: var(--fs-borda) !important;
-    box-shadow: 0 16px 40px rgba(51, 65, 85, .16) !important;
-  }
-
-  body:not(.gerando-pdf) .nav-menu a,
-  body:not(.gerando-pdf) .nav-menu summary,
-  body:not(.gerando-pdf) .nav-menu-compacto a,
-  body:not(.gerando-pdf) .nav-menu-compacto summary {
-    color: var(--fs-cinza-800) !important;
-  }
+body:not(.gerando-pdf) [style*="#ffc400"],
+body:not(.gerando-pdf) [style*="#f1b600"],
+body:not(.gerando-pdf) [style*="#3e2723"],
+body:not(.gerando-pdf) [style*="#efebe9"],
+body:not(.gerando-pdf) [style*="#fffaf0"],
+body:not(.gerando-pdf) [style*="255,196,0"] {
+  border-color: var(--fs-cinza-400) !important;
+  background-color: var(--fs-cinza-100) !important;
+  color: var(--fs-cinza-900) !important;
 }
