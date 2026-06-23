@@ -1,83 +1,83 @@
 /* =========================================================
-   FS ORÇAMENTOS - orcamentos-auth.css
-   Login/cadastro protegido da página de orçamentos
+   FS ORÇAMENTOS — LOGIN DA PÁGINA ORÇAMENTOS
+   Estilo enxuto usando a paleta cinza oficial.
    ========================================================= */
 
 .auth-area-orcamentos {
   display: none;
-  max-width: 380px;
+  width: min(380px, calc(100% - 24px));
   margin: 45px auto;
-  font-family: sans-serif;
+  font-family: inherit;
 }
 
 .auth-container-orcamentos {
   padding: 22px;
-  border: 1px solid #e0d6c8;
-  border-radius: 14px;
+  border: 1px solid var(--fs-borda, #e5e7eb);
+  border-top: 4px solid var(--fs-cinza-700, #374151);
+  border-radius: var(--fs-radius-lg, 14px);
   background: #ffffff;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+  box-shadow: var(--fs-shadow-soft, 0 6px 18px rgba(15, 23, 42, .08));
 }
 
 .auth-titulo-orcamentos {
-  margin-top: 0;
+  margin: 0 0 16px;
   text-align: center;
-  color: #ffc400;
+  color: var(--fs-cinza-950, #0f172a);
+  font-weight: 950;
 }
 
-.auth-campo-orcamentos {
-  margin-bottom: 15px;
-}
-
-.auth-campo-orcamentos.oculto {
-  display: none;
-}
-
-.auth-campo-confirmar-orcamentos {
-  margin-bottom: 20px;
-}
+.auth-campo-orcamentos { margin-bottom: 14px; }
+.auth-campo-orcamentos.oculto { display: none; }
+.auth-campo-confirmar-orcamentos { margin-bottom: 18px; }
 
 .auth-campo-orcamentos label {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 5px;
-  color: #666666;
+  color: var(--fs-cinza-700, #374151);
+  font-weight: 900;
 }
 
 .auth-campo-orcamentos input {
   width: 100%;
-  padding: 8px;
+  padding: 10px 11px;
   box-sizing: border-box;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
+  border: 1px solid var(--fs-cinza-300, #d1d5db);
+  border-radius: var(--fs-radius-sm, 6px);
+  background: #ffffff;
+  color: var(--fs-cinza-900, #111827);
+}
+
+.auth-campo-orcamentos input:focus {
+  border-color: var(--fs-cinza-700, #374151);
+  box-shadow: 0 0 0 3px rgba(55, 65, 81, .14);
+  outline: none;
 }
 
 .btn-principal-orcamentos {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
+  min-height: 42px;
+  padding: 10px 12px;
+  background: var(--fs-cinza-900, #111827);
   color: #ffffff;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid var(--fs-cinza-900, #111827);
+  border-radius: var(--fs-radius-sm, 6px);
   cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 950;
+  font-size: 15px;
 }
 
 .auth-alternar-orcamentos {
   text-align: center;
-  margin-top: 15px;
+  margin-top: 14px;
 }
 
 .auth-alternar-orcamentos a {
   font-size: 13px;
-  color: #007bff;
+  color: var(--fs-info, #2563eb);
   text-decoration: none;
+  font-weight: 800;
 }
 
-.conteudo-protegido-orcamentos {
-  display: none;
-}
-
-.upgrade-acoes-orcamentos {
-  margin-top: 22px;
-}
+.conteudo-protegido-orcamentos { display: none; }
+.upgrade-acoes-orcamentos { margin-top: 22px; }

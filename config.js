@@ -56,46 +56,31 @@ window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
 const FS_CONFIG_CSS_GLOBAIS = [
-  ['fs-theme-cinza.css?v=20260620-5', 'fs-theme-cinza-css'],
-  ['fs-theme-cinza-hotfix.css?v=20260620-2', 'fs-theme-cinza-hotfix-css']
+  ['fs-theme-cinza.css?v=20260622-limpeza-gerador-1', 'fs-theme-cinza-css']
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
-  ['fs-auth-redirect-guard.js?v=20260620-1', 'fs-auth-redirect-guard-js'],
-  ['fs-pwa-register.js?v=20260620-2', 'fs-pwa-register-js'],
-  ['fs-home-auth-fix.js?v=20260620-2', 'fs-home-auth-fix-js'],
-  ['fs-home-premium-dashboard.js?v=20260620-2', 'fs-home-premium-dashboard-js'],
-  ['fs-no-zoom.js', 'fs-no-zoom-js'],
-  ['fs-session-cache.js', 'fs-session-cache-js'],
-  ['fs-menu-close-outside.js', 'fs-menu-close-outside-js'],
-  ['fs-format-br.js', 'fs-format-br-js'],
-  ['fs-footer-legal.js?v=20260620-3', 'fs-footer-legal-js'],
-  ['layout-grid-global-fix.js', 'fs-layout-grid-global-fix-js']
-];
-
-const FS_CONFIG_SCRIPTS_FINAIS = [
-  ['fs-stable-visual-fix.js', 'fs-stable-visual-fix-js']
+  ['fs-auth-redirect-guard.js?v=20260622-limpeza-gerador-1', 'fs-auth-redirect-guard-js'],
+  ['fs-pwa-register.js?v=20260622-limpeza-gerador-1', 'fs-pwa-register-js'],
+  ['fs-session-cache.js?v=20260622-limpeza-gerador-1', 'fs-session-cache-js'],
+  ['fs-menu-close-outside.js?v=20260622-limpeza-gerador-1', 'fs-menu-close-outside-js'],
+  ['fs-footer-legal.js?v=20260622-limpeza-gerador-1', 'fs-footer-legal-js']
 ];
 
 const FS_CONFIG_CSS_POR_PAGINA = [
-  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css?v=20260620-2', 'fs-gerador-css']] },
-  { paginas: ['/orcamentos', '/orcamentos.html'], estilos: [['orcamentos.css', 'fs-orcamentos-css']] }
+  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css?v=20260622-limpeza-gerador-1', 'fs-gerador-css']] },
+  { paginas: ['/orcamentos', '/orcamentos.html'], estilos: [['orcamentos.css?v=20260622-limpeza-gerador-1', 'fs-orcamentos-css']] }
 ];
 
 const FS_CONFIG_SCRIPTS_POR_PAGINA = [
-  { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js', 'fs-ver-cliente-fix-js']] },
-  { paginas: ['/gerador', '/gerador.html'], scripts: [['gerador-pdf-fix.js', 'fs-gerador-pdf-fix-js'], ['gerador-cleanup-fix.js', 'fs-gerador-cleanup-fix-js'], ['gerador-token-link-fix.js', 'fs-gerador-token-link-fix-js']] },
-  { paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html', '/recorrentes', '/recorrentes.html'], scripts: [['fs-premium-mobile-layout-fix.js', 'fs-premium-mobile-layout-fix-js']] },
-  { paginas: ['/clientes', '/clientes.html'], scripts: [['clientes-toggle-fix.js', 'fs-clientes-toggle-fix-js']] },
-  { paginas: ['/veiculos', '/veiculos.html'], scripts: [['veiculos-ficha-link.js', 'fs-veiculos-ficha-link-js']] },
-  { paginas: ['/estoque', '/estoque.html'], scripts: [['estoque-compra-caixa.js', 'fs-estoque-compra-caixa-js']] },
-  { paginas: ['/recorrentes', '/recorrentes.html'], scripts: [['recorrentes-pro.js', 'fs-recorrentes-pro-js']] },
-  { paginas: ['/relatorios', '/relatorios.html'], scripts: [['relatorios-pro.js', 'fs-relatorios-pro-js']] },
-  { paginas: ['/painel', '/painel.html'], scripts: [['painel-logo-fix.js', 'fs-painel-logo-fix-js'], ['painel-perfil-fix.js', 'fs-painel-perfil-fix-js']] },
-  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js', 'fs-orcamentos-pdf-js'], ['orcamentos-token-link-fix.js', 'fs-orcamentos-token-link-fix-js']] },
-  { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js', 'fs-ordens-recorrente-prefill-js']] },
-  { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js', 'fs-cliente-modal-js']] },
-  { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js', 'fs-ordem-extras-js'], ['ordem-fotos-depois.js', 'fs-ordem-fotos-depois-js'], ['ordem-pdf-fotos-depois.js', 'fs-ordem-pdf-fotos-depois-js'], ['ordem-financeiro-nativo-fix.js', 'fs-ordem-financeiro-nativo-fix-js'], ['ordem-garantia.js', 'fs-ordem-garantia-js'], ['ordem-recibo.js', 'fs-ordem-recibo-js']] }
+  { paginas: ['/', '/index', '/index.html'], scripts: [['fs-format-br.js?v=20260622-limpeza-gerador-1', 'fs-format-br-js'], ['fs-home-auth-fix.js?v=20260622-limpeza-gerador-1', 'fs-home-auth-fix-js'], ['fs-home-premium-dashboard.js?v=20260622-limpeza-gerador-1', 'fs-home-premium-dashboard-js']] },
+  { paginas: ['/painel', '/painel.html'], scripts: [['fs-format-br.js?v=20260622-limpeza-gerador-1', 'fs-format-br-js']] },
+  { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js?v=20260622-limpeza-gerador-1', 'fs-ver-cliente-fix-js']] },
+  { paginas: ['/gerador', '/gerador.html'], scripts: [['fs-format-br.js?v=20260622-limpeza-gerador-1', 'fs-format-br-js'], ['gerador-pdf-fix.js?v=20260622-limpeza-gerador-1', 'fs-gerador-pdf-fix-js']] },
+  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js?v=20260622-limpeza-gerador-1', 'fs-orcamentos-pdf-js']] },
+  { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js?v=20260622-limpeza-gerador-1', 'fs-ordens-recorrente-prefill-js']] },
+  { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js?v=20260622-limpeza-gerador-1', 'fs-cliente-modal-js']] },
+  { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js?v=20260622-limpeza-gerador-1', 'fs-ordem-extras-js'], ['ordem-fotos-depois.js?v=20260622-limpeza-gerador-1', 'fs-ordem-fotos-depois-js'], ['ordem-pdf-fotos-depois.js?v=20260622-limpeza-gerador-1', 'fs-ordem-pdf-fotos-depois-js'], ['ordem-financeiro-nativo-fix.js?v=20260622-limpeza-gerador-1', 'fs-ordem-financeiro-nativo-fix-js'], ['ordem-garantia.js?v=20260622-limpeza-gerador-1', 'fs-ordem-garantia-js'], ['ordem-recibo.js?v=20260622-limpeza-gerador-1', 'fs-ordem-recibo-js']] }
 ];
 
 function fsConfigNormalizarPathAtual() {
@@ -105,9 +90,6 @@ function fsConfigNormalizarPathAtual() {
 function fsConfigPathCorresponde(pathAtual, pagina) {
   if (pagina === '/') return pathAtual === '/';
   return pathAtual === pagina || pathAtual.endsWith(pagina);
-}
-function fsConfigEhPaginaForum(pathAtual) {
-  return ['/forum', '/forum.html', '/social', '/social.html'].some(pagina => fsConfigPathCorresponde(pathAtual, pagina));
 }
 function fsConfigCarregarScriptUnico(src, id) {
   if (document.getElementById(id)) return;
@@ -131,13 +113,20 @@ function fsConfigCarregarListaScripts(scripts) { scripts.forEach(([arquivo, id])
 function fsConfigCarregarListaCss(estilos) { estilos.forEach(([arquivo, id]) => fsConfigCarregarCssUnico(arquivo, id)); }
 function fsConfigCarregarCssDaPagina(pathAtual) { FS_CONFIG_CSS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaCss(grupo.estilos); }); }
 function fsConfigCarregarScriptsDaPagina(pathAtual) { FS_CONFIG_SCRIPTS_POR_PAGINA.forEach((grupo) => { if (grupo.paginas.some((pagina) => fsConfigPathCorresponde(pathAtual, pagina))) fsConfigCarregarListaScripts(grupo.scripts); }); }
+function fsConfigModoEmbed() {
+  try {
+    const params = new URLSearchParams(window.location.search || '');
+    return params.get('embed') === '1' || params.get('iframe') === '1' || document.documentElement.classList.contains('fs-embed');
+  } catch (_) { return false; }
+}
 function fsConfigCarregarAjustesPagina() {
   const pathAtual = fsConfigNormalizarPathAtual();
+  const modoEmbed = fsConfigModoEmbed();
   fsConfigCarregarListaCss(FS_CONFIG_CSS_GLOBAIS);
   fsConfigCarregarCssDaPagina(pathAtual);
+  if (modoEmbed) return;
   fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_GLOBAIS);
   fsConfigCarregarScriptsDaPagina(pathAtual);
-  if (!fsConfigEhPaginaForum(pathAtual)) fsConfigCarregarListaScripts(FS_CONFIG_SCRIPTS_FINAIS);
 }
 
 fsConfigCarregarAjustesPagina();

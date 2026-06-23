@@ -1,5 +1,5 @@
 /* FS Orçamentos - Service Worker PWA */
-const FS_SW_VERSION = 'fsorcamentos-pwa-v20260622-1';
+const FS_SW_VERSION = 'fsorcamentos-pwa-v20260622-gestao-sem-iframe-1';
 const FS_STATIC_CACHE = `${FS_SW_VERSION}-static`;
 const FS_RUNTIME_CACHE = `${FS_SW_VERSION}-runtime`;
 
@@ -11,6 +11,17 @@ const FS_CORE_ASSETS = [
   '/pwa-icon.svg',
   '/favicon.png',
   '/apple-touch-icon.png'
+];
+
+const FS_NO_CACHE_PATHS = [
+  '/gestao.html',
+  '/relatorios.html',
+  '/clientes.html',
+  '/veiculos.html',
+  '/ordens.html',
+  '/estoque.html',
+  '/agenda.html',
+  '/recorrentes.html'
 ];
 
 self.addEventListener('install', (event) => {
@@ -44,6 +55,14 @@ function isNavigationRequest(request) {
 
 function isFreshAsset(url) {
   return /\.(js|css|json)$/i.test(url.pathname) || url.pathname.endsWith('/config.js') || url.pathname.endsWith('/service-worker.js');
+}
+
+function isNoCachePath(url) {
+  return FS_NO_CACHE_PATHS.includes(url.pathname);
+}
+
+async function networkOnly(request) {
+  return fetch(request, { cache: 'no-store' });
 }
 
 async function networkFirst(request) {
@@ -94,6 +113,11 @@ self.addEventListener('fetch', (event) => {
   if (isMutableRequest(request)) return;
   if (url.origin !== self.location.origin) return;
   if (isSupabaseRequest(url)) return;
+
+  if (isNoCachePath(url)) {
+    event.respondWith(networkOnly(request));
+    return;
+  }
 
   if (isNavigationRequest(request)) {
     event.respondWith(networkFirstNavigation(request));

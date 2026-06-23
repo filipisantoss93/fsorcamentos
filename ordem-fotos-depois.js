@@ -38,7 +38,7 @@
     const s=document.createElement('style');
     s.id='fs-fotos-depois-css';
     s.textContent=`
-      .fs-fotos-depois-card{margin-top:12px;border:1px solid #e4d8cc;border-radius:8px;background:#fff;overflow:hidden}.fs-fotos-depois-head{background:#2f211d;color:#ffc400;padding:10px 12px;border-bottom:1px solid #ffc400}.fs-fotos-depois-head h3{margin:0;font-size:16px;color:#ffc400}.fs-fotos-depois-head p{margin:3px 0 0;color:#fffaf0;font-size:12px;font-weight:700}.fs-fotos-depois-body{padding:10px;display:grid;gap:9px}.fs-fotos-depois-upload{border:1px dashed #d7ccc8;border-radius:7px;background:#fbf8f4;padding:10px;display:grid;gap:7px}.fs-fotos-depois-upload input{border:1px solid #d7ccc8;border-radius:5px;padding:8px;background:#fff}.fs-fotos-depois-acoes{display:flex;gap:7px;flex-wrap:wrap}.fs-fotos-depois-acoes button{min-height:32px;border-radius:6px;border:1px solid #ffc400;background:#3e2723;color:#ffc400;font-weight:900;padding:7px 10px;cursor:pointer}.fs-fotos-depois-acoes .sec{background:#fff;color:#3e2723;border-color:#d7ccc8}.fs-fotos-depois-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.fs-fotos-depois-item{border:1px solid #e4d8cc;border-radius:7px;overflow:hidden;background:#fff}.fs-fotos-depois-item img{width:100%;height:120px;object-fit:cover;display:block;background:#f8f4ee}.fs-fotos-depois-item button{width:100%;border:0;border-top:1px solid #e4d8cc;background:#fff1f1;color:#991b1b;font-size:10.5px;font-weight:900;padding:6px;cursor:pointer}.fs-fotos-depois-vazio{padding:12px;text-align:center;border:1px dashed #e4d8cc;border-radius:7px;color:#62554d;font-size:12px}@media(max-width:540px){.fs-fotos-depois-acoes button{width:100%}}
+      .fs-fotos-depois-card{margin-top:12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;overflow:hidden}.fs-fotos-depois-head{background:#1f2937;color:#fff;padding:10px 12px;border-bottom:1px solid #374151}.fs-fotos-depois-head h3{margin:0;font-size:16px;color:#fff}.fs-fotos-depois-head p{margin:3px 0 0;color:#e5e7eb;font-size:12px;font-weight:700}.fs-fotos-depois-body{padding:10px;display:grid;gap:9px}.fs-fotos-depois-upload{border:1px dashed #cbd5e1;border-radius:8px;background:#f8fafc;padding:10px;display:grid;gap:7px}.fs-fotos-depois-upload input{border:1px solid #cbd5e1;border-radius:7px;padding:8px;background:#fff;color:#111827}.fs-fotos-depois-acoes{display:flex;gap:7px;flex-wrap:wrap}.fs-fotos-depois-acoes button{min-height:32px;border-radius:8px;border:1px solid #64748b;background:#64748b;color:#fff;font-weight:900;padding:7px 10px;cursor:pointer}.fs-fotos-depois-acoes .sec{background:#fff;color:#111827;border-color:#cbd5e1}.fs-fotos-depois-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.fs-fotos-depois-item{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;background:#fff}.fs-fotos-depois-item img{width:100%;height:120px;object-fit:cover;display:block;background:#f1f5f9}.fs-fotos-depois-item button{width:100%;border:0;border-top:1px solid #e5e7eb;background:#fef2f2;color:#991b1b;font-size:10.5px;font-weight:900;padding:6px;cursor:pointer}.fs-fotos-depois-vazio{padding:12px;text-align:center;border:1px dashed #cbd5e1;border-radius:8px;color:#64748b;font-size:12px}@media(max-width:540px){.fs-fotos-depois-acoes button{width:100%}}
     `;
     document.head.appendChild(s);
   }
@@ -67,9 +67,7 @@
     $('btn-remover-foto-depois')?.addEventListener('click',removerTodasFotosDepois);
   }
 
-  function lerLocal(){
-    try{return JSON.parse(localStorage.getItem(chaveLocal())||'[]')||[]}catch(_){return[]}
-  }
+  function lerLocal(){try{return JSON.parse(localStorage.getItem(chaveLocal())||'[]')||[]}catch(_){return[]}}
   function salvarLocal(){localStorage.setItem(chaveLocal(),JSON.stringify(fotosDepois||[]))}
 
   async function reduzir(file){
@@ -124,11 +122,7 @@
     msg('Fotos depois removidas.','sucesso');
   }
 
-  function removerFoto(i){
-    fotosDepois.splice(i,1);
-    salvarLocal();
-    renderizar();
-  }
+  function removerFoto(i){fotosDepois.splice(i,1);salvarLocal();renderizar();}
 
   function renderizar(){
     const box=$('preview-fotos-depois-os');if(!box)return;

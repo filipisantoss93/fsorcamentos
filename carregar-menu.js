@@ -58,6 +58,26 @@ function garantirCssHeaderFS() {
   fsGarantirCss('fs-brand-contrast-css', '/brand-contrast-fix.css?v=20260618-1');
 }
 
+function removerCssObsoletoTemaMarrom() {
+  const idsObsoletos = ['fs-formal-theme-overrides', 'fs-contrast-fix-final'];
+  idsObsoletos.forEach(id => {
+    document.querySelectorAll(`style#${id}`).forEach(style => style.remove());
+  });
+
+  document.querySelectorAll('style').forEach(style => {
+    const texto = style.textContent || '';
+    const pareceOverrideAntigo =
+      texto.includes('FS FORMAL THEME OVERRIDES') ||
+      texto.includes('FS CONTRAST FIX') ||
+      texto.includes('Mantém marrom no header') ||
+      texto.includes('Cores oficiais: marrom escuro + amarelo + bege');
+
+    if (pareceOverrideAntigo) style.remove();
+  });
+}
+
+removerCssObsoletoTemaMarrom();
+
 function fsNormalizarTextoMenu(valor) {
   return String(valor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 }
@@ -386,6 +406,7 @@ function controlarHeaderInteligente() {
 }
 
 async function carregarMenu(sessionRecebida = undefined) {
+  removerCssObsoletoTemaMarrom();
   if (aplicarModoEmbedGestao()) return;
   garantirCssHeaderFS();
   const headerContainer = document.getElementById('header-container');
@@ -413,6 +434,7 @@ async function carregarMenu(sessionRecebida = undefined) {
 }
 
 async function inicializarMenuFS() {
+  removerCssObsoletoTemaMarrom();
   if (fsMenuInicializado) return;
   fsMenuInicializado = true;
   if (aplicarModoEmbedGestao()) return;
@@ -431,6 +453,7 @@ async function inicializarMenuFS() {
 
   if (window._supabase) {
     _supabase.auth.onAuthStateChange(async (event, session) => {
+      removerCssObsoletoTemaMarrom();
       await atualizarHeaderUsuario(session || null);
       aplicarVisibilidadeMenuPorPlano();
       await controlarBotaoFlutuanteGeradorGlobal(session || null);
@@ -457,3 +480,4 @@ window.aplicarVisibilidadeMenuPorPlano = aplicarVisibilidadeMenuPorPlano;
 window.inicializarMenuFS = inicializarMenuFS;
 window.fsAbrirLoginParaDestinoProtegido = fsAbrirLoginParaDestinoProtegido;
 window.fsSalvarDestinoProtegidoMenu = fsSalvarDestinoProtegidoMenu;
+window.removerCssObsoletoTemaMarrom = removerCssObsoletoTemaMarrom;
