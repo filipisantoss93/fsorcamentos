@@ -59,7 +59,7 @@
     if(document.getElementById('fs-ordem-recibo-css'))return;
     const s=document.createElement('style');
     s.id='fs-ordem-recibo-css';
-    s.textContent='.fs-recibo-card{margin-top:12px;padding:10px;border:1px solid #e4d8cc;border-radius:8px;background:#fbf8f4;display:grid;gap:8px}.fs-recibo-card strong{color:#2f211d;font-size:13px}.fs-recibo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.fs-recibo-box{background:#fff;border:1px solid #e4d8cc;border-radius:6px;padding:8px}.fs-recibo-box span{display:block;color:#62554d;font-size:10px;font-weight:950;text-transform:uppercase;margin-bottom:4px}.fs-recibo-box b{display:block;color:#2f211d;font-size:14px;font-weight:950}.fs-recibo-preview{white-space:pre-wrap;background:#fff;border:1px solid #e4d8cc;border-left:4px solid #ffc400;border-radius:7px;padding:9px;color:#2b211d;font-size:12px;line-height:1.45;max-height:210px;overflow:auto}.fs-recibo-acoes{display:flex;gap:7px;flex-wrap:wrap}.fs-recibo-acoes button{min-height:34px;border-radius:7px;border:1px solid #ffc400;background:#3e2723;color:#ffc400;font-weight:950;padding:8px 11px;cursor:pointer}@media(max-width:640px){.fs-recibo-grid{grid-template-columns:1fr}.fs-recibo-acoes button{width:100%}}';
+    s.textContent='.fs-recibo-card{margin-top:12px;padding:10px;border:1px solid #e5e7eb;border-radius:10px;background:#f8fafc;display:grid;gap:8px}.fs-recibo-card strong{color:#111827;font-size:13px}.fs-recibo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.fs-recibo-box{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:8px}.fs-recibo-box span{display:block;color:#64748b;font-size:10px;font-weight:950;text-transform:uppercase;margin-bottom:4px}.fs-recibo-box b{display:block;color:#111827;font-size:14px;font-weight:950}.fs-recibo-preview{white-space:pre-wrap;background:#fff;border:1px solid #cbd5e1;border-left:5px solid #64748b;border-radius:8px;padding:9px;color:#111827;font-size:12px;line-height:1.45;max-height:210px;overflow:auto}.fs-recibo-acoes{display:flex;gap:7px;flex-wrap:wrap}.fs-recibo-acoes button{min-height:34px;border-radius:8px;border:1px solid #64748b;background:#64748b;color:#fff;font-weight:950;padding:8px 11px;cursor:pointer}@media(max-width:640px){.fs-recibo-grid{grid-template-columns:1fr}.fs-recibo-acoes button{width:100%}}';
     document.head.appendChild(s);
   }
 
@@ -102,7 +102,7 @@
     const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
     const W=doc.internal.pageSize.getWidth(),H=doc.internal.pageSize.getHeight(),m=14;
     let y=16;
-    doc.setTextColor(0);doc.setDrawColor(0);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('RECIBO DE PAGAMENTO',W/2,y,{align:'center'});y+=8;doc.line(m,y,W-m,y);y+=10;doc.setFont('helvetica','normal');doc.setFontSize(10);
+    doc.setTextColor(17,24,39);doc.setDrawColor(51,65,85);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('RECIBO DE PAGAMENTO',W/2,y,{align:'center'});y+=8;doc.line(m,y,W-m,y);y+=10;doc.setFont('helvetica','normal');doc.setFontSize(10);
     doc.splitTextToSize(conteudo,W-(m*2)).forEach(l=>{if(y>H-32){doc.addPage();y=16;}doc.text(l,m,y);y+=5;});
     y=Math.max(y+22,H-34);doc.line(55,y,155,y);doc.text('Assinatura / Carimbo',W/2,y+5,{align:'center'});
     const numero=ordemRecibo?.numero_os?String(ordemRecibo.numero_os).padStart(6,'0'):'os';
@@ -114,10 +114,7 @@
   window.fsGerarReciboOSPDF=gerarPDF;
   window.fsImprimirReciboOS=imprimir;
 
-  window.addEventListener('fs:pagamento-os-atualizado',(ev)=>{
-    ordemRecibo={...(ordemRecibo||{}),...(ev.detail||{})};
-    atualizarCard();
-  });
+  window.addEventListener('fs:pagamento-os-atualizado',(ev)=>{ordemRecibo={...(ordemRecibo||{}),...(ev.detail||{})};atualizarCard();});
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(iniciar,1200));
   else setTimeout(iniciar,1200);
