@@ -18,97 +18,40 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
     :root { --fs-header-offset: 104px; --gestao-tabs-h: 58px; }
-    html, body {
-      min-height: 100%;
-      margin: 0;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #eef2f7 100%) !important;
-      color: #111827 !important;
-      overflow-x: hidden !important;
-    }
+    html, body { min-height: 100%; margin: 0; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #eef2f7 100%) !important; color: #111827 !important; overflow-x: hidden !important; }
     body { padding-top: 0 !important; }
     body > footer { display: none !important; }
-    .gestao-page {
-      width: min(1180px, calc(100% - 16px));
-      margin: 0 auto;
-      padding: calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 8px) 0 56px;
-    }
-    .gestao-tabs-wrap {
-      position: fixed;
-      top: var(--fs-header-offset);
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 990;
-      width: min(1180px, calc(100% - 16px));
-      background: rgba(255, 255, 255, .98);
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 6px;
-      box-shadow: 0 6px 16px rgba(15, 23, 42, .10);
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      margin: 0;
-    }
+    .gestao-page { width: min(1180px, calc(100% - 16px)); margin: 0 auto; padding: calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 8px) 0 56px; }
+    .gestao-tabs-wrap { position: fixed; top: var(--fs-header-offset); left: 50%; transform: translateX(-50%); z-index: 990; width: min(1180px, calc(100% - 16px)); background: rgba(255, 255, 255, .98); border: 1px solid #d1d5db; border-radius: 12px; padding: 6px; box-shadow: 0 6px 16px rgba(15, 23, 42, .10); overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; margin: 0; }
     .gestao-tabs { min-width: 720px; width: 100%; border-collapse: separate; border-spacing: 6px; table-layout: fixed; margin: 0; }
     .gestao-tabs td { padding: 0; border: 0; background: transparent; }
-    .gestao-tab {
-      width: 100%; min-height: 40px; border: 1px solid #d1d5db; background: #ffffff; color: #1f2937;
-      border-radius: 7px; font-weight: 950; font-size: 14px; cursor: pointer; display: inline-flex;
-      align-items: center; justify-content: center; padding: 8px 10px; line-height: 1.05; text-align: center;
-      white-space: nowrap; box-shadow: none;
-    }
+    .gestao-tab { width: 100%; min-height: 40px; border: 1px solid #d1d5db; background: #ffffff; color: #1f2937; border-radius: 7px; font-weight: 950; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; padding: 8px 10px; line-height: 1.05; text-align: center; white-space: nowrap; box-shadow: none; }
     .gestao-tab.ativo { background: #64748b; color: #ffffff; border-color: #64748b; }
-    .gestao-frame-box {
-      position: relative; width: 100%; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, .08); overflow: hidden; min-height: 640px;
-    }
+    .gestao-frame-box { position: relative; width: 100%; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 8px 22px rgba(15, 23, 42, .08); overflow: hidden; min-height: 640px; }
     #gestao-frame { width: 100%; height: 1500px; min-height: 640px; border: 0; display: block; background: #f8fafc; }
-    .gestao-loading {
-      position: absolute; top: 0; left: 0; right: 0; z-index: 2; padding: 8px 12px; color: #374151;
-      font-size: 13px; font-weight: 900; background: #f3f4f6; border-bottom: 1px solid #d1d5db; display: none; pointer-events: none;
-    }
+    .gestao-loading { position: absolute; top: 0; left: 0; right: 0; z-index: 2; padding: 8px 12px; color: #374151; font-size: 13px; font-weight: 900; background: #f3f4f6; border-bottom: 1px solid #d1d5db; display: none; pointer-events: none; }
     .gestao-loading.ativo { display: block; }
-    @media (max-width: 760px) {
-      :root { --fs-header-offset: 112px; --gestao-tabs-h: 48px; }
-      .gestao-page { width: min(100% - 8px, 1180px); padding-top: calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 6px); }
-      .gestao-tabs-wrap { width: min(100% - 8px, 1180px); border-radius: 8px; padding: 4px; }
-      .gestao-tabs { min-width: 690px; border-spacing: 4px; }
-      .gestao-tab { min-height: 34px; font-size: 12px; padding: 7px 8px; }
-      .gestao-frame-box { border-radius: 10px; min-height: 700px; }
-      #gestao-frame { min-height: 700px; }
-    }
+    @media (max-width: 760px) { :root { --fs-header-offset: 112px; --gestao-tabs-h: 48px; } .gestao-page { width: min(100% - 8px, 1180px); padding-top: calc(var(--fs-header-offset) + var(--gestao-tabs-h) + 6px); } .gestao-tabs-wrap { width: min(100% - 8px, 1180px); border-radius: 8px; padding: 4px; } .gestao-tabs { min-width: 690px; border-spacing: 4px; } .gestao-tab { min-height: 34px; font-size: 12px; padding: 7px 8px; } .gestao-frame-box { border-radius: 10px; min-height: 700px; } #gestao-frame { min-height: 700px; } }
   </style>
 </head>
 <body>
   <div id="header-container"></div>
-
   <main class="gestao-page">
     <section class="gestao-tabs-wrap" aria-label="Menu da gestão">
-      <table class="gestao-tabs">
-        <tr>
-          <td><button class="gestao-tab ativo" type="button" data-src="clientes.html?embed=1">Clientes</button></td>
-          <td><button class="gestao-tab" type="button" data-src="veiculos.html?embed=1">Veículos</button></td>
-          <td><button class="gestao-tab" type="button" data-src="ordens.html?embed=1">OS</button></td>
-          <td><button class="gestao-tab" type="button" data-src="estoque.html?embed=1">Estoque</button></td>
-          <td><button class="gestao-tab" type="button" data-src="agenda.html?embed=1">Agenda</button></td>
-          <td><button class="gestao-tab" type="button" data-src="relatorios.html?embed=1">Relatórios</button></td>
-          <td><button class="gestao-tab" type="button" data-src="recorrentes.html?embed=1">Recorrentes</button></td>
-        </tr>
-      </table>
+      <table class="gestao-tabs"><tr>
+        <td><button class="gestao-tab ativo" type="button" data-src="clientes.html?embed=1">Clientes</button></td>
+        <td><button class="gestao-tab" type="button" data-src="veiculos.html?embed=1">Veículos</button></td>
+        <td><button class="gestao-tab" type="button" data-src="ordens.html?embed=1">OS</button></td>
+        <td><button class="gestao-tab" type="button" data-src="estoque.html?embed=1">Estoque</button></td>
+        <td><button class="gestao-tab" type="button" data-src="agenda.html?embed=1">Agenda</button></td>
+        <td><button class="gestao-tab" type="button" data-src="relatorios.html?embed=1">Relatórios</button></td>
+        <td><button class="gestao-tab" type="button" data-src="recorrentes.html?embed=1">Recorrentes</button></td>
+      </tr></table>
     </section>
-
-    <section class="gestao-frame-box">
-      <div id="gestao-loading" class="gestao-loading">Carregando módulo...</div>
-      <iframe id="gestao-frame" title="Módulo de gestão" src="about:blank"></iframe>
-    </section>
+    <section class="gestao-frame-box"><div id="gestao-loading" class="gestao-loading">Carregando módulo...</div><iframe id="gestao-frame" title="Módulo de gestão" src="about:blank"></iframe></section>
   </main>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="auth.js"></script>
-  <script src="planos.js"></script>
-  <script src="carregar-menu.js"></script>
-  <script src="notificacoes.js"></script>
+  <script src="config.js"></script><script src="auth.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script src="notificacoes.js"></script>
   <script>
     const frame = document.getElementById('gestao-frame');
     const loading = document.getElementById('gestao-loading');
@@ -116,481 +59,31 @@
     const tabsWrap = document.querySelector('.gestao-tabs-wrap');
     const headerContainer = document.getElementById('header-container');
     const FS_GESTAO_TEMA_CINZA_URL = '/fs-theme-cinza.css?v=20260622-iframe-2';
-    let fsGestaoSrcAtual = '';
-    let fsGestaoLoadingTimer = null;
-
+    let fsGestaoSrcAtual = ''; let fsGestaoLoadingTimer = null;
     const FS_DASHBOARDS_GESTAO = {
       clientes: { seletor: '.clientes-resumo', antes: '.clientes-grid', titulo: 'Dashboard de clientes', texto: 'Resumo rápido da carteira de clientes para acompanhar relacionamento, status e recorrência.' },
       veiculos: { seletor: '.veiculos-resumo', antes: '.veiculos-grid', titulo: 'Dashboard de veículos', texto: 'Resumo rápido da frota cadastrada para acompanhar veículos ativos, vínculos e histórico.' },
-      ordens: { seletor: '.ordens-resumo', antes: '.ordens-grid', titulo: 'Dashboard de ordens', texto: 'Resumo rápido das OSs para acompanhar execução, conclusão e pagamentos.', html: `
-        <div class="card-resumo"><span>Total de OS</span><strong id="resumo-total-ordens">0</strong><small>Ordens cadastradas</small></div>
-        <div class="card-resumo"><span>Abertas</span><strong id="resumo-ordens-abertas">0</strong><small>Aguardando início</small></div>
-        <div class="card-resumo"><span>Em execução</span><strong id="resumo-ordens-execucao">0</strong><small>Serviços ativos</small></div>
-        <div class="card-resumo"><span>Concluídas</span><strong id="resumo-ordens-concluidas">0</strong><small>Serviços finalizados</small></div>
-        <div class="card-resumo destaque"><span>Faturamento</span><strong id="resumo-valor-total-ordens">R$ 0,00</strong><small>OS pagas/concluídas</small></div>
-        <div class="card-resumo"><span>A receber</span><strong id="resumo-valor-pendente-ordens">R$ 0,00</strong><small>Pagamentos pendentes</small></div>
-        <div class="card-resumo"><span>Ticket médio</span><strong id="resumo-ticket-medio-ordens">R$ 0,00</strong><small>Média por OS</small></div>
-        <div class="card-resumo"><span>Pend. pagamento</span><strong id="resumo-ordens-pendentes-pagamento">0</strong><small>OS sem baixa</small></div>` },
+      ordens: { seletor: '.ordens-resumo', antes: '.ordens-grid', titulo: 'Dashboard de ordens', texto: 'Resumo rápido das OSs para acompanhar execução, conclusão e pagamentos.', html: '<div class="card-resumo"><span>Total de OS</span><strong id="resumo-total-ordens">0</strong><small>Ordens cadastradas</small></div><div class="card-resumo"><span>Abertas</span><strong id="resumo-ordens-abertas">0</strong><small>Aguardando início</small></div><div class="card-resumo"><span>Em execução</span><strong id="resumo-ordens-execucao">0</strong><small>Serviços ativos</small></div><div class="card-resumo"><span>Concluídas</span><strong id="resumo-ordens-concluidas">0</strong><small>Serviços finalizados</small></div><div class="card-resumo destaque"><span>Faturamento</span><strong id="resumo-valor-total-ordens">R$ 0,00</strong><small>OS pagas/concluídas</small></div><div class="card-resumo"><span>A receber</span><strong id="resumo-valor-pendente-ordens">R$ 0,00</strong><small>Pagamentos pendentes</small></div><div class="card-resumo"><span>Ticket médio</span><strong id="resumo-ticket-medio-ordens">R$ 0,00</strong><small>Média por OS</small></div><div class="card-resumo"><span>Pend. pagamento</span><strong id="resumo-ordens-pendentes-pagamento">0</strong><small>OS sem baixa</small></div>' },
       estoque: { seletor: '.estoque-resumo', antes: '.estoque-grid', titulo: 'Dashboard de estoque', texto: 'Resumo rápido dos produtos para acompanhar disponibilidade, estoque mínimo e valor em venda.' },
       agenda: { seletor: '.agenda-resumo', antes: '.agenda-grid', titulo: 'Dashboard de agenda', texto: 'Resumo rápido dos agendamentos para acompanhar serviços do dia, atrasos e próximos atendimentos.' },
       relatorios: { seletor: '.relatorios-resumo, .relatorios-dashboard, .dashboard-relatorios', antes: '.relatorios-grid, .relatorios-card', titulo: 'Dashboard de relatórios', texto: 'Resumo rápido dos indicadores para acompanhar desempenho, faturamento e produtividade.' },
       recorrentes: { seletor: '.recorrentes-resumo, .recorrentes-dashboard', antes: '.recorrentes-grid, .recorrentes-card', titulo: 'Dashboard de recorrentes', texto: 'Resumo rápido dos serviços recorrentes para acompanhar contratos, próximas cobranças e clientes ativos.' }
     };
-
-    function medirHeaderGestao() {
-      const candidatos = [
-        headerContainer,
-        headerContainer?.firstElementChild,
-        document.querySelector('#header-container header'),
-        document.querySelector('#header-container .main-header'),
-        document.querySelector('#header-container .header'),
-        document.querySelector('#header-container .topbar')
-      ].filter(Boolean);
-      let alturaHeader = 0;
-      candidatos.forEach(el => {
-        const rect = el.getBoundingClientRect?.();
-        const altura = Math.ceil(Math.max(rect?.height || 0, el.offsetHeight || 0, el.scrollHeight || 0));
-        if (altura > alturaHeader) alturaHeader = altura;
-      });
-      if (!alturaHeader || alturaHeader < 64) alturaHeader = window.innerWidth <= 760 ? 112 : 104;
-      const alturaTabs = Math.ceil(tabsWrap?.getBoundingClientRect?.().height || tabsWrap?.offsetHeight || (window.innerWidth <= 760 ? 48 : 58));
-      document.documentElement.style.setProperty('--fs-header-offset', `${alturaHeader}px`);
-      document.documentElement.style.setProperty('--gestao-tabs-h', `${alturaTabs}px`);
-    }
-
-    function ocultarLoadingGestao() {
-      loading.classList.remove('ativo');
-      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
-      fsGestaoLoadingTimer = null;
-    }
-
-    function docFrame() {
-      try { return frame.contentDocument || frame.contentWindow?.document || null; } catch (_) { return null; }
-    }
-
-    function moduloAtualDoFrame(doc) {
-      const path = String(doc?.location?.pathname || '').toLowerCase();
-      const nome = path.split('/').pop().replace('.html', '') || '';
-      return nome || String(fsGestaoSrcAtual || '').split('.html')[0].replace('/', '').replace('?embed=1', '');
-    }
-
-    function cssDashboardGestao() {
-      return `
-        body.fs-gestao-tema-cinza .clientes-hero,
-        body.fs-gestao-tema-cinza .veiculos-hero,
-        body.fs-gestao-tema-cinza .ordens-hero,
-        body.fs-gestao-tema-cinza .estoque-hero,
-        body.fs-gestao-tema-cinza .agenda-hero,
-        body.fs-gestao-tema-cinza .relatorios-hero,
-        body.fs-gestao-tema-cinza .recorrentes-hero { display:none !important; }
-        .fs-dashboard-gestao-bloco,
-        .clientes-resumo,
-        .veiculos-resumo,
-        .ordens-resumo,
-        .estoque-resumo,
-        .agenda-resumo,
-        .relatorios-resumo,
-        .relatorios-dashboard,
-        .dashboard-relatorios,
-        .recorrentes-resumo,
-        .recorrentes-dashboard {
-          display:grid !important;
-          grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-          gap:12px !important;
-          width:100% !important;
-          margin:0 0 18px !important;
-          padding:16px !important;
-          background:#ffffff !important;
-          border:1px solid #d1d5db !important;
-          border-radius:14px !important;
-          box-shadow:0 8px 22px rgba(15,23,42,.08) !important;
-        }
-        .fs-dashboard-gestao-cabecalho { grid-column:1/-1 !important; margin:0 0 4px !important; }
-        .fs-dashboard-gestao-cabecalho h2 { margin:0 !important; color:#111827 !important; font-size:22px !important; line-height:1.15 !important; font-weight:950 !important; }
-        .fs-dashboard-gestao-cabecalho p { margin:6px 0 0 !important; color:#64748b !important; font-size:14px !important; line-height:1.35 !important; font-weight:800 !important; }
-        .fs-dashboard-gestao-bloco .card-resumo,
-        .clientes-resumo .card-resumo,
-        .veiculos-resumo .card-resumo,
-        .ordens-resumo .card-resumo,
-        .estoque-resumo .card-resumo,
-        .agenda-resumo .card-resumo,
-        .relatorios-resumo .card-resumo,
-        .relatorios-dashboard .card-resumo,
-        .dashboard-relatorios .card-resumo,
-        .recorrentes-resumo .card-resumo,
-        .recorrentes-dashboard .card-resumo {
-          min-height:84px !important;
-          padding:13px !important;
-          background:#ffffff !important;
-          color:#111827 !important;
-          border:1px solid #d1d5db !important;
-          border-radius:10px !important;
-          box-shadow:0 3px 10px rgba(15,23,42,.05) !important;
-          display:flex !important;
-          flex-direction:column !important;
-          justify-content:center !important;
-          gap:4px !important;
-        }
-        .fs-dashboard-gestao-bloco .card-resumo.destaque,
-        .ordens-resumo .card-resumo.destaque { background:#475569 !important; border-color:#475569 !important; color:#ffffff !important; }
-        .fs-dashboard-gestao-bloco .card-resumo span,
-        .clientes-resumo .card-resumo span,
-        .veiculos-resumo .card-resumo span,
-        .ordens-resumo .card-resumo span,
-        .estoque-resumo .card-resumo span,
-        .agenda-resumo .card-resumo span,
-        .relatorios-resumo .card-resumo span,
-        .recorrentes-resumo .card-resumo span { color:#64748b !important; font-size:11px !important; font-weight:950 !important; text-transform:uppercase !important; letter-spacing:.25px !important; }
-        .fs-dashboard-gestao-bloco .card-resumo strong,
-        .clientes-resumo .card-resumo strong,
-        .veiculos-resumo .card-resumo strong,
-        .ordens-resumo .card-resumo strong,
-        .estoque-resumo .card-resumo strong,
-        .agenda-resumo .card-resumo strong,
-        .relatorios-resumo .card-resumo strong,
-        .recorrentes-resumo .card-resumo strong { color:#1f2937 !important; font-size:22px !important; line-height:1.1 !important; font-weight:950 !important; }
-        .fs-dashboard-gestao-bloco .card-resumo small,
-        .clientes-resumo .card-resumo small,
-        .veiculos-resumo .card-resumo small,
-        .ordens-resumo .card-resumo small,
-        .estoque-resumo .card-resumo small,
-        .agenda-resumo .card-resumo small,
-        .relatorios-resumo .card-resumo small,
-        .recorrentes-resumo .card-resumo small { color:#64748b !important; font-size:11px !important; font-weight:800 !important; line-height:1.2 !important; }
-        .fs-dashboard-gestao-bloco .card-resumo.destaque span,
-        .fs-dashboard-gestao-bloco .card-resumo.destaque strong,
-        .fs-dashboard-gestao-bloco .card-resumo.destaque small,
-        .ordens-resumo .card-resumo.destaque span,
-        .ordens-resumo .card-resumo.destaque strong,
-        .ordens-resumo .card-resumo.destaque small { color:#ffffff !important; }
-        @media (max-width: 760px) {
-          .fs-dashboard-gestao-bloco,
-          .clientes-resumo,
-          .veiculos-resumo,
-          .ordens-resumo,
-          .estoque-resumo,
-          .agenda-resumo,
-          .relatorios-resumo,
-          .relatorios-dashboard,
-          .dashboard-relatorios,
-          .recorrentes-resumo,
-          .recorrentes-dashboard { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px !important; padding:14px !important; margin-bottom:16px !important; border-radius:12px !important; }
-          .fs-dashboard-gestao-cabecalho h2 { font-size:21px !important; }
-          .fs-dashboard-gestao-cabecalho p { font-size:13px !important; }
-          .fs-dashboard-gestao-bloco .card-resumo,
-          .clientes-resumo .card-resumo,
-          .veiculos-resumo .card-resumo,
-          .ordens-resumo .card-resumo,
-          .estoque-resumo .card-resumo,
-          .agenda-resumo .card-resumo,
-          .relatorios-resumo .card-resumo,
-          .recorrentes-resumo .card-resumo { min-height:82px !important; padding:12px !important; }
-        }
-      `;
-    }
-
-    function aplicarDashboardGestaoNoFrame(doc) {
-      const modulo = moduloAtualDoFrame(doc);
-      const config = FS_DASHBOARDS_GESTAO[modulo];
-      if (!config || !doc?.body) return;
-
-      let style = doc.getElementById('fs-gestao-dashboard-blocos-css');
-      if (!style) {
-        style = doc.createElement('style');
-        style.id = 'fs-gestao-dashboard-blocos-css';
-        doc.head.appendChild(style);
-      }
-      style.textContent = cssDashboardGestao();
-
-      let secao = doc.querySelector(config.seletor);
-      if (!secao && config.html) {
-        secao = doc.createElement('section');
-        secao.className = `${modulo}-resumo fs-dashboard-gestao-bloco`;
-        secao.innerHTML = config.html;
-        const ref = doc.querySelector(config.antes) || doc.querySelector('main')?.firstElementChild;
-        if (ref?.parentNode) ref.parentNode.insertBefore(secao, ref);
-        else doc.querySelector('main')?.prepend(secao);
-      }
-      if (!secao) return;
-      secao.classList.add('fs-dashboard-gestao-bloco');
-      if (!secao.querySelector('.fs-dashboard-gestao-cabecalho')) {
-        const header = doc.createElement('div');
-        header.className = 'fs-dashboard-gestao-cabecalho';
-        header.innerHTML = `<h2>${config.titulo}</h2><p>${config.texto}</p>`;
-        secao.prepend(header);
-      }
-    }
-
-    function escaparHTML(valor) {
-      return String(valor ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-    }
-
-    function aplicarAjustesEstoqueNoFrame(doc) {
-      const modulo = moduloAtualDoFrame(doc);
-      if (modulo !== 'estoque' || !doc?.body) return;
-      const win = frame.contentWindow;
-      if (!win || !win._supabase) return;
-
-      const campoNome = doc.getElementById('produto-nome');
-      const labelNome = doc.querySelector('label[for="produto-nome"]');
-      if (labelNome) labelNome.textContent = 'Descrição do produto *';
-      if (campoNome) campoNome.placeholder = 'Ex: Correia dentada, Palheta, Disco de freio';
-      const descricaoAntiga = doc.getElementById('produto-descricao')?.closest('.campo');
-      if (descricaoAntiga) descricaoAntiga.style.display = 'none';
-      const labelMarcaVeiculo = doc.querySelector('label[for="produto-marca-veiculo"]');
-      if (labelMarcaVeiculo) labelMarcaVeiculo.textContent = 'Marca do veículo compatível';
-      const busca = doc.getElementById('busca-produtos');
-      if (busca) busca.placeholder = 'Descrição, fabricante, código, marca, modelo, categoria ou subcategoria';
-
-      if (!doc.getElementById('produto-fabricante') && campoNome?.closest('.campo')) {
-        const campo = doc.createElement('div');
-        campo.className = 'campo';
-        campo.innerHTML = `<label for="produto-fabricante">Fabricante / marca da peça</label><input type="text" id="produto-fabricante" placeholder="Ex: Bosch, Cofap, Nakata, Gates" autocomplete="off"><small>Marca/fabricante da peça. Não é a marca do veículo.</small>`;
-        campoNome.closest('.campo').insertAdjacentElement('afterend', campo);
-      }
-
-      if (win.__fsEstoqueFabricanteAplicado) return;
-      win.__fsEstoqueFabricanteAplicado = true;
-
-      const campos = ['id','user_id','descricao','fabricante','categoria','subcategoria','codigo','unidade','quantidade_atual','estoque_minimo','valor_custo','valor_venda','controlar_estoque','ativo','observacoes','created_at','updated_at','marca_veiculo','modelo_veiculo','ano_inicial','ano_final','versao_veiculo','motor_veiculo','codigo_original','codigo_fabricante','aplicacao','produto_universal'];
-      const rotulos = { id:'ID', user_id:'Usuário', descricao:'Descrição', fabricante:'Fabricante', categoria:'Categoria', subcategoria:'Subcategoria', codigo:'Código', unidade:'Unidade', quantidade_atual:'Qtd disponível', estoque_minimo:'Estoque mínimo', valor_custo:'Valor de custo', valor_venda:'Valor de venda', controlar_estoque:'Controlar estoque', ativo:'Ativo', observacoes:'Observações', created_at:'Criado em', updated_at:'Atualizado em', marca_veiculo:'Marca do veículo', modelo_veiculo:'Modelo do veículo', ano_inicial:'Ano inicial', ano_final:'Ano final', versao_veiculo:'Versão', motor_veiculo:'Motor', codigo_original:'Código original', codigo_fabricante:'Código fabricante', aplicacao:'Aplicação', produto_universal:'Produto universal' };
-      const numero = (valor) => {
-        if (valor === null || valor === undefined || valor === '') return 0;
-        if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
-        let texto = String(valor).trim().replace(/[^\d.,-]/g, '');
-        if (!texto) return 0;
-        if (texto.includes(',')) texto = texto.replace(/\./g, '').replace(',', '.');
-        const n = Number(texto);
-        return Number.isFinite(n) ? n : 0;
-      };
-      const moeda = (valor) => numero(valor).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-      const qtd = (valor) => numero(valor).toLocaleString('pt-BR', { minimumFractionDigits: numero(valor) % 1 === 0 ? 0 : 2, maximumFractionDigits: 2 });
-      const val = (id) => doc.getElementById(id)?.value?.trim?.() || '';
-      const set = (id, valor) => { const el = doc.getElementById(id); if (el) el.value = valor ?? ''; };
-      const checked = (id) => !!doc.getElementById(id)?.checked;
-      const setChecked = (id, valor) => { const el = doc.getElementById(id); if (el) el.checked = !!valor; };
-      const nomeProduto = (p) => String(p?.descricao || p?.nome || '').trim() || 'Produto sem descrição';
-
-      async function sessao() {
-        const { data, error } = await win._supabase.auth.getSession();
-        if (error) return null;
-        return data?.session || null;
-      }
-
-      function renderizar(lista) {
-        const produtos = Array.isArray(lista) ? lista : [];
-        win.produtosEstoqueCache = produtos;
-        const container = doc.getElementById('lista-produtos-estoque');
-        if (!container) return;
-        if (!produtos.length) {
-          container.innerHTML = '<div class="estado-vazio"><strong>Nenhum produto encontrado</strong><p>Cadastre produtos ou ajuste os filtros para consultar o estoque.</p></div>';
-          return;
-        }
-        container.innerHTML = `<div class="fs-tabela-lista-wrapper"><table class="fs-tabela-lista"><thead><tr>${['Código','Descrição','Fabricante','Qtd disponível','Valor','Marca veículo','Modelo','Categoria','Subcategoria'].map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${produtos.map(p => `
-          <tr onclick="abrirModalDetalhesProdutoEstoque('${escaparHTML(p.id)}')">
-            <td>${escaparHTML(p.codigo || p.codigo_original || p.codigo_fabricante || '-')}</td>
-            <td><strong>${escaparHTML(nomeProduto(p))}</strong><small>${escaparHTML(p.aplicacao || '')}</small></td>
-            <td>${escaparHTML(p.fabricante || '-')}</td>
-            <td><strong>${escaparHTML(qtd(p.quantidade_atual))} ${escaparHTML(p.unidade || 'un')}</strong><small>mín. ${escaparHTML(qtd(p.estoque_minimo))} ${escaparHTML(p.unidade || 'un')}</small></td>
-            <td><strong>${moeda(p.valor_venda || 0)}</strong></td>
-            <td>${escaparHTML(p.marca_veiculo || '-')}</td>
-            <td>${escaparHTML(p.modelo_veiculo || '-')}</td>
-            <td>${escaparHTML(p.categoria || '-')}</td>
-            <td>${escaparHTML(p.subcategoria || '-')}</td>
-          </tr>`).join('')}</tbody></table></div>`;
-      }
-
-      win.renderizarProdutosEstoque = renderizar;
-
-      win.carregarProdutosEstoque = async function () {
-        const session = await sessao();
-        if (!session) return;
-        const termo = val('busca-produtos');
-        const status = val('filtro-status-produtos');
-        const estoque = val('filtro-estoque-produtos');
-        const categoria = val('filtro-categoria-produtos');
-        const subcategoria = val('filtro-subcategoria-produtos');
-        let query = win._supabase.from('produtos_estoque').select('*').eq('user_id', session.user.id).order('categoria', { ascending:true }).order('descricao', { ascending:true }).limit(20);
-        if (termo) {
-          const t = `%${termo}%`;
-          query = query.or(`descricao.ilike.${t},fabricante.ilike.${t},codigo.ilike.${t},categoria.ilike.${t},subcategoria.ilike.${t},marca_veiculo.ilike.${t},modelo_veiculo.ilike.${t},codigo_original.ilike.${t},codigo_fabricante.ilike.${t},aplicacao.ilike.${t},observacoes.ilike.${t}`);
-        }
-        if (status === 'ativo') query = query.eq('ativo', true);
-        if (status === 'inativo') query = query.eq('ativo', false);
-        if (categoria && categoria !== 'Sem categoria') query = query.eq('categoria', categoria);
-        if (subcategoria && subcategoria !== 'Sem subcategoria') query = query.eq('subcategoria', subcategoria);
-        if (estoque === 'sem_controle') query = query.eq('controlar_estoque', false);
-        const { data, error } = await query;
-        if (error) { console.error('Erro ao carregar estoque:', error); return; }
-        let lista = Array.isArray(data) ? data : [];
-        if (estoque === 'baixo') lista = lista.filter(p => p.ativo !== false && p.controlar_estoque !== false && numero(p.quantidade_atual) <= numero(p.estoque_minimo));
-        if (estoque === 'normal') lista = lista.filter(p => p.controlar_estoque !== false && numero(p.quantidade_atual) > numero(p.estoque_minimo));
-        renderizar(lista);
-        if (typeof win.atualizarResumoEstoque === 'function') { try { win.atualizarResumoEstoque(lista); } catch (_) {} }
-      };
-
-      win.abrirModalDetalhesProdutoEstoque = function (id) {
-        const produto = (win.produtosEstoqueCache || []).find(p => String(p.id) === String(id));
-        if (!produto) return;
-        const existente = doc.getElementById('modal-detalhes-produto-estoque');
-        if (existente) existente.remove();
-        const modal = doc.createElement('div');
-        modal.id = 'modal-detalhes-produto-estoque';
-        modal.className = 'modal-estoque ativo';
-        modal.innerHTML = `<div class="modal-conteudo" role="dialog" aria-modal="true"><div class="modal-header"><div><h2>${escaparHTML(nomeProduto(produto))}</h2><p>${escaparHTML([produto.codigo, produto.fabricante, produto.marca_veiculo, produto.modelo_veiculo].filter(Boolean).join(' • '))}</p></div><button type="button" class="btn btn-secundario btn-pequeno" onclick="document.getElementById('modal-detalhes-produto-estoque')?.remove()">Fechar</button></div><div class="modal-body"><div class="modal-resumo-grid">${campos.map(c => `<div><strong>${escaparHTML(rotulos[c] || c)}</strong><span>${escaparHTML(c === 'valor_custo' || c === 'valor_venda' ? moeda(produto[c]) : c === 'quantidade_atual' || c === 'estoque_minimo' ? qtd(produto[c]) : typeof produto[c] === 'boolean' ? (produto[c] ? 'Sim' : 'Não') : (produto[c] ?? '-'))}</span></div>`).join('')}</div><div class="estoque-acoes" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px"><button type="button" class="btn btn-secundario" onclick="editarProdutoEstoque('${escaparHTML(produto.id)}')">Editar</button><button type="button" class="btn btn-secundario" onclick="abrirModalMovimentacaoEstoque('${escaparHTML(produto.id)}','entrada')">Entrada</button><button type="button" class="btn btn-secundario" onclick="abrirModalMovimentacaoEstoque('${escaparHTML(produto.id)}','saida')">Saída</button><button type="button" class="btn btn-secundario" onclick="abrirModalMovimentacaoEstoque('${escaparHTML(produto.id)}','ajuste')">Ajuste</button><button type="button" class="btn btn-perigo" onclick="excluirProdutoEstoque('${escaparHTML(produto.id)}')">Excluir</button></div></div></div>`;
-        doc.body.appendChild(modal);
-      };
-
-      win.editarProdutoEstoque = function (id) {
-        const p = (win.produtosEstoqueCache || []).find(item => String(item.id) === String(id));
-        if (!p) return;
-        doc.getElementById('modal-detalhes-produto-estoque')?.remove();
-        set('produto-id', p.id);
-        set('produto-nome', nomeProduto(p));
-        set('produto-descricao', '');
-        set('produto-fabricante', p.fabricante || '');
-        set('produto-categoria', p.categoria || '');
-        set('produto-subcategoria', p.subcategoria || '');
-        set('produto-marca-veiculo', p.marca_veiculo || '');
-        set('produto-modelo-veiculo', p.modelo_veiculo || '');
-        set('produto-ano-inicial', p.ano_inicial || '');
-        set('produto-ano-final', p.ano_final || '');
-        set('produto-versao-veiculo', p.versao_veiculo || '');
-        set('produto-motor-veiculo', p.motor_veiculo || '');
-        set('produto-codigo-original', p.codigo_original || '');
-        set('produto-codigo-fabricante', p.codigo_fabricante || '');
-        set('produto-aplicacao', p.aplicacao || '');
-        setChecked('produto-universal', p.produto_universal === true);
-        set('produto-codigo', p.codigo || '');
-        set('produto-unidade', p.unidade || 'un');
-        set('produto-ativo', p.ativo === false ? 'false' : 'true');
-        setChecked('produto-controlar-estoque', p.controlar_estoque !== false);
-        set('produto-quantidade-atual', numero(p.quantidade_atual).toFixed(2));
-        set('produto-estoque-minimo', numero(p.estoque_minimo).toFixed(2));
-        set('produto-valor-custo', numero(p.valor_custo).toFixed(2));
-        set('produto-valor-venda', numero(p.valor_venda).toFixed(2));
-        set('produto-observacoes', p.observacoes || '');
-        const titulo = doc.getElementById('titulo-form-produto');
-        if (titulo) titulo.textContent = 'Editar produto';
-        const btn = doc.getElementById('btn-salvar-produto');
-        if (btn) btn.textContent = 'Atualizar produto';
-        doc.getElementById('card-form-produto')?.classList.remove('form-fechado');
-        doc.defaultView?.scrollTo({ top: 0, behavior: 'smooth' });
-      };
-
-      const form = doc.getElementById('form-produto-estoque');
-      if (form && form.dataset.fsFabricanteSubmit !== '1') {
-        form.dataset.fsFabricanteSubmit = '1';
-        form.addEventListener('submit', async (event) => {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          const session = await sessao();
-          if (!session) return;
-          const payload = {
-            descricao: val('produto-nome') || val('produto-descricao'),
-            fabricante: val('produto-fabricante'),
-            categoria: (val('produto-categoria') === '__outra__' ? val('produto-categoria-outra') : val('produto-categoria')) || '',
-            subcategoria: val('produto-subcategoria'), marca_veiculo: val('produto-marca-veiculo'), modelo_veiculo: val('produto-modelo-veiculo'),
-            ano_inicial: val('produto-ano-inicial') ? parseInt(val('produto-ano-inicial'), 10) : null,
-            ano_final: val('produto-ano-final') ? parseInt(val('produto-ano-final'), 10) : null,
-            versao_veiculo: val('produto-versao-veiculo'), motor_veiculo: val('produto-motor-veiculo'), codigo_original: val('produto-codigo-original'), codigo_fabricante: val('produto-codigo-fabricante'), aplicacao: val('produto-aplicacao'), produto_universal: checked('produto-universal'), codigo: val('produto-codigo'), unidade: val('produto-unidade') || 'un', quantidade_atual: numero(val('produto-quantidade-atual')), estoque_minimo: numero(val('produto-estoque-minimo')), valor_custo: numero(val('produto-valor-custo')), valor_venda: numero(val('produto-valor-venda')), controlar_estoque: checked('produto-controlar-estoque'), ativo: val('produto-ativo') !== 'false', observacoes: val('produto-observacoes')
-          };
-          if (!payload.descricao) { alert('Informe a descrição do produto.'); return; }
-          const id = val('produto-id');
-          const req = id ? win._supabase.from('produtos_estoque').update(payload).eq('id', id).eq('user_id', session.user.id) : win._supabase.from('produtos_estoque').insert({ ...payload, user_id: session.user.id });
-          const { error } = await req;
-          if (error) { console.error('Erro ao salvar produto:', error); alert('Erro ao salvar produto.'); return; }
-          form.reset(); set('produto-id',''); set('produto-unidade','un'); set('produto-ativo','true'); setChecked('produto-controlar-estoque', true);
-          await win.carregarProdutosEstoque(true);
-        }, true);
-      }
-
-      ['btn-atualizar-estoque','busca-produtos','filtro-status-produtos','filtro-estoque-produtos','filtro-categoria-produtos','filtro-subcategoria-produtos'].forEach((id) => {
-        const el = doc.getElementById(id);
-        if (!el || el.dataset.fsFabricanteEvento === '1') return;
-        el.dataset.fsFabricanteEvento = '1';
-        const evento = id === 'busca-produtos' ? 'input' : (id === 'btn-atualizar-estoque' ? 'click' : 'change');
-        el.addEventListener(evento, (event) => { event.stopImmediatePropagation(); win.carregarProdutosEstoque(true); }, true);
-      });
-
-      setTimeout(() => win.carregarProdutosEstoque(true), 150);
-    }
-
-    function aplicarTemaCinzaNoFrame() {
-      try {
-        const doc = docFrame();
-        if (!doc?.head || doc.location?.href === 'about:blank') return;
-        doc.documentElement.classList.add('fs-embed', 'fs-gestao-tema-cinza');
-        doc.body?.classList.add('fs-gestao-tema-cinza');
-        let link = doc.getElementById('fs-gestao-tema-cinza-css');
-        if (!link) {
-          link = doc.createElement('link');
-          link.id = 'fs-gestao-tema-cinza-css';
-          link.rel = 'stylesheet';
-          doc.head.appendChild(link);
-        }
-        link.href = FS_GESTAO_TEMA_CINZA_URL;
-        aplicarDashboardGestaoNoFrame(doc);
-        aplicarAjustesEstoqueNoFrame(doc);
-      } catch (_) {}
-    }
-
-    function ajustarAlturaFrame(alturaRecebida) {
-      const altura = Number(alturaRecebida) || 0;
-      const final = Math.max(700, Math.min(altura + 24, 4200));
-      frame.style.height = `${final}px`;
-    }
-
-    function abrirModuloGestao(src, push = true) {
-      if (!src) return;
-      tabs.forEach(btn => btn.classList.toggle('ativo', btn.dataset.src === src));
-      if (fsGestaoSrcAtual === src) { ocultarLoadingGestao(); return; }
-      fsGestaoSrcAtual = src;
-      loading.classList.add('ativo');
-      frame.style.height = '1500px';
-      frame.src = src;
-      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
-      fsGestaoLoadingTimer = setTimeout(ocultarLoadingGestao, 3500);
-      if (push) {
-        const nome = src.split('.html')[0].replace('/', '');
-        history.replaceState(null, '', `#${nome}`);
-      }
-    }
-
-    tabs.forEach(btn => btn.addEventListener('click', () => abrirModuloGestao(btn.dataset.src)));
-    frame.addEventListener('load', () => {
-      aplicarTemaCinzaNoFrame();
-      ocultarLoadingGestao();
-      [150, 500, 1200, 2200].forEach((tempo) => setTimeout(() => {
-        aplicarTemaCinzaNoFrame();
-        try {
-          const doc = docFrame();
-          const altura = Math.max(doc.body?.scrollHeight || 0, doc.documentElement?.scrollHeight || 0);
-          ajustarAlturaFrame(altura);
-        } catch (_) {}
-      }, tempo));
-    });
-
-    window.addEventListener('message', (event) => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data?.tipo === 'fs-ajustar-iframe' || event.data?.tipo === 'fs-modulo-pronto') {
-        aplicarTemaCinzaNoFrame();
-        ajustarAlturaFrame(event.data.altura);
-        ocultarLoadingGestao();
-      }
-    });
-
-    window.addEventListener('resize', () => setTimeout(medirHeaderGestao, 80));
-    window.addEventListener('orientationchange', () => setTimeout(medirHeaderGestao, 250));
-    if (window.ResizeObserver && headerContainer) new ResizeObserver(medirHeaderGestao).observe(headerContainer);
-    if (window.ResizeObserver && tabsWrap) new ResizeObserver(medirHeaderGestao).observe(tabsWrap);
-    medirHeaderGestao();
-    setTimeout(medirHeaderGestao, 120);
-    setTimeout(medirHeaderGestao, 500);
-    setTimeout(medirHeaderGestao, 1200);
-    const hashInicial = String(location.hash || '').replace('#', '');
-    const tabInicial = tabs.find(btn => btn.dataset.src && btn.dataset.src.startsWith(hashInicial + '.html')) || tabs[0];
-    abrirModuloGestao(tabInicial.dataset.src, false);
+    function medirHeaderGestao(){const candidatos=[headerContainer,headerContainer?.firstElementChild,document.querySelector('#header-container header'),document.querySelector('#header-container .main-header'),document.querySelector('#header-container .header'),document.querySelector('#header-container .topbar')].filter(Boolean);let alturaHeader=0;candidatos.forEach(el=>{const rect=el.getBoundingClientRect?.();const altura=Math.ceil(Math.max(rect?.height||0,el.offsetHeight||0,el.scrollHeight||0));if(altura>alturaHeader)alturaHeader=altura;});if(!alturaHeader||alturaHeader<64)alturaHeader=window.innerWidth<=760?112:104;const alturaTabs=Math.ceil(tabsWrap?.getBoundingClientRect?.().height||tabsWrap?.offsetHeight||(window.innerWidth<=760?48:58));document.documentElement.style.setProperty('--fs-header-offset',`${alturaHeader}px`);document.documentElement.style.setProperty('--gestao-tabs-h',`${alturaTabs}px`);}
+    function ocultarLoadingGestao(){loading.classList.remove('ativo');if(fsGestaoLoadingTimer)clearTimeout(fsGestaoLoadingTimer);fsGestaoLoadingTimer=null;}
+    function docFrame(){try{return frame.contentDocument||frame.contentWindow?.document||null;}catch(_){return null;}}
+    function moduloAtualDoFrame(doc){const path=String(doc?.location?.pathname||'').toLowerCase();return path.split('/').pop().replace('.html','')||String(fsGestaoSrcAtual||'').split('.html')[0].replace('/','').replace('?embed=1','');}
+    function cssDashboardGestao(){return 'body.fs-gestao-tema-cinza .clientes-hero,body.fs-gestao-tema-cinza .veiculos-hero,body.fs-gestao-tema-cinza .ordens-hero,body.fs-gestao-tema-cinza .estoque-hero,body.fs-gestao-tema-cinza .agenda-hero,body.fs-gestao-tema-cinza .relatorios-hero,body.fs-gestao-tema-cinza .recorrentes-hero{display:none!important}.fs-dashboard-gestao-bloco,.clientes-resumo,.veiculos-resumo,.ordens-resumo,.estoque-resumo,.agenda-resumo,.relatorios-resumo,.relatorios-dashboard,.dashboard-relatorios,.recorrentes-resumo,.recorrentes-dashboard{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;width:100%!important;margin:0 0 18px!important;padding:16px!important;background:#fff!important;border:1px solid #d1d5db!important;border-radius:14px!important;box-shadow:0 8px 22px rgba(15,23,42,.08)!important}.fs-dashboard-gestao-cabecalho{grid-column:1/-1!important;margin:0 0 4px!important}.fs-dashboard-gestao-cabecalho h2{margin:0!important;color:#111827!important;font-size:22px!important;line-height:1.15!important;font-weight:950!important}.fs-dashboard-gestao-cabecalho p{margin:6px 0 0!important;color:#64748b!important;font-size:14px!important;line-height:1.35!important;font-weight:800!important}.fs-dashboard-gestao-bloco .card-resumo,.clientes-resumo .card-resumo,.veiculos-resumo .card-resumo,.ordens-resumo .card-resumo,.estoque-resumo .card-resumo,.agenda-resumo .card-resumo,.relatorios-resumo .card-resumo,.recorrentes-resumo .card-resumo{min-height:84px!important;padding:13px!important;background:#fff!important;color:#111827!important;border:1px solid #d1d5db!important;border-radius:10px!important;box-shadow:0 3px 10px rgba(15,23,42,.05)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:4px!important}.fs-dashboard-gestao-bloco .card-resumo.destaque,.ordens-resumo .card-resumo.destaque{background:#475569!important;border-color:#475569!important;color:#fff!important}.fs-dashboard-gestao-bloco .card-resumo span,.clientes-resumo .card-resumo span,.veiculos-resumo .card-resumo span,.ordens-resumo .card-resumo span,.estoque-resumo .card-resumo span,.agenda-resumo .card-resumo span,.relatorios-resumo .card-resumo span,.recorrentes-resumo .card-resumo span{color:#64748b!important;font-size:11px!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.25px!important}.fs-dashboard-gestao-bloco .card-resumo strong,.clientes-resumo .card-resumo strong,.veiculos-resumo .card-resumo strong,.ordens-resumo .card-resumo strong,.estoque-resumo .card-resumo strong,.agenda-resumo .card-resumo strong,.relatorios-resumo .card-resumo strong,.recorrentes-resumo .card-resumo strong{color:#1f2937!important;font-size:22px!important;line-height:1.1!important;font-weight:950!important}.fs-dashboard-gestao-bloco .card-resumo small,.clientes-resumo .card-resumo small,.veiculos-resumo .card-resumo small,.ordens-resumo .card-resumo small,.estoque-resumo .card-resumo small,.agenda-resumo .card-resumo small,.relatorios-resumo .card-resumo small,.recorrentes-resumo .card-resumo small{color:#64748b!important;font-size:11px!important;font-weight:800!important;line-height:1.2!important}.card-resumo.destaque span,.card-resumo.destaque strong,.card-resumo.destaque small{color:#fff!important}@media(max-width:760px){.fs-dashboard-gestao-bloco,.clientes-resumo,.veiculos-resumo,.ordens-resumo,.estoque-resumo,.agenda-resumo,.relatorios-resumo,.relatorios-dashboard,.dashboard-relatorios,.recorrentes-resumo,.recorrentes-dashboard{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;padding:14px!important;margin-bottom:16px!important;border-radius:12px!important}.fs-dashboard-gestao-cabecalho h2{font-size:21px!important}.fs-dashboard-gestao-cabecalho p{font-size:13px!important}.card-resumo{min-height:82px!important;padding:12px!important}}';}
+    function aplicarDashboardGestaoNoFrame(doc){const modulo=moduloAtualDoFrame(doc);const config=FS_DASHBOARDS_GESTAO[modulo];if(!config||!doc?.body)return;let style=doc.getElementById('fs-gestao-dashboard-blocos-css');if(!style){style=doc.createElement('style');style.id='fs-gestao-dashboard-blocos-css';doc.head.appendChild(style);}style.textContent=cssDashboardGestao();let secao=doc.querySelector(config.seletor);if(!secao&&config.html){secao=doc.createElement('section');secao.className=`${modulo}-resumo fs-dashboard-gestao-bloco`;secao.innerHTML=config.html;const ref=doc.querySelector(config.antes)||doc.querySelector('main')?.firstElementChild;if(ref?.parentNode)ref.parentNode.insertBefore(secao,ref);else doc.querySelector('main')?.prepend(secao);}if(!secao)return;secao.classList.add('fs-dashboard-gestao-bloco');if(!secao.querySelector('.fs-dashboard-gestao-cabecalho')){const header=doc.createElement('div');header.className='fs-dashboard-gestao-cabecalho';header.innerHTML=`<h2>${config.titulo}</h2><p>${config.texto}</p>`;secao.prepend(header);}}
+    function escaparHTML(valor){return String(valor??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+    function aplicarAjustesEstoqueNoFrame(doc){const modulo=moduloAtualDoFrame(doc);if(modulo!=='estoque'||!doc?.body)return;const win=frame.contentWindow;if(!win||!win._supabase)return;const campoNome=doc.getElementById('produto-nome');const labelNome=doc.querySelector('label[for="produto-nome"]');if(labelNome)labelNome.textContent='Descrição do produto *';if(campoNome)campoNome.placeholder='Ex: Correia dentada, Palheta, Disco de freio';const descricaoAntiga=doc.getElementById('produto-descricao')?.closest('.campo');if(descricaoAntiga)descricaoAntiga.style.display='none';const labelMarcaVeiculo=doc.querySelector('label[for="produto-marca-veiculo"]');if(labelMarcaVeiculo)labelMarcaVeiculo.textContent='Marca do veículo compatível';const busca=doc.getElementById('busca-produtos');if(busca)busca.placeholder='Descrição, fabricante, código, marca, modelo, categoria ou subcategoria';if(!doc.getElementById('produto-fabricante')&&campoNome?.closest('.campo')){const campo=doc.createElement('div');campo.className='campo';campo.innerHTML='<label for="produto-fabricante">Fabricante / marca da peça</label><input type="text" id="produto-fabricante" placeholder="Ex: Bosch, Cofap, Nakata, Gates" autocomplete="off"><small>Marca/fabricante da peça. Não é a marca do veículo.</small>';campoNome.closest('.campo').insertAdjacentElement('afterend',campo);} }
+    function aplicarTemaCinzaNoFrame(){try{const doc=docFrame();if(!doc?.head||doc.location?.href==='about:blank')return;doc.documentElement.classList.add('fs-embed','fs-gestao-tema-cinza');doc.body?.classList.add('fs-gestao-tema-cinza');let link=doc.getElementById('fs-gestao-tema-cinza-css');if(!link){link=doc.createElement('link');link.id='fs-gestao-tema-cinza-css';link.rel='stylesheet';doc.head.appendChild(link);}link.href=FS_GESTAO_TEMA_CINZA_URL;aplicarDashboardGestaoNoFrame(doc);aplicarAjustesEstoqueNoFrame(doc);}catch(_){} }
+    function ajustarAlturaFrame(alturaRecebida){const altura=Number(alturaRecebida)||0;const final=Math.max(700,Math.min(altura+24,4200));frame.style.height=`${final}px`;}
+    function abrirModuloGestao(src,push=true){if(!src)return;tabs.forEach(btn=>btn.classList.toggle('ativo',btn.dataset.src===src));if(fsGestaoSrcAtual===src){ocultarLoadingGestao();return;}fsGestaoSrcAtual=src;loading.classList.add('ativo');frame.style.height='1500px';frame.src=src;if(fsGestaoLoadingTimer)clearTimeout(fsGestaoLoadingTimer);fsGestaoLoadingTimer=setTimeout(ocultarLoadingGestao,3500);if(push){const nome=src.split('.html')[0].replace('/','');history.replaceState(null,'',`#${nome}`);}}
+    tabs.forEach(btn=>btn.addEventListener('click',()=>abrirModuloGestao(btn.dataset.src)));
+    frame.addEventListener('load',()=>{aplicarTemaCinzaNoFrame();ocultarLoadingGestao();[150,500,1200,2200].forEach(tempo=>setTimeout(()=>{aplicarTemaCinzaNoFrame();try{const doc=docFrame();const altura=Math.max(doc.body?.scrollHeight||0,doc.documentElement?.scrollHeight||0);ajustarAlturaFrame(altura);}catch(_){}},tempo));});
+    window.addEventListener('message',(event)=>{if(event.origin!==window.location.origin)return;if(event.data?.tipo==='fs-ajustar-iframe'||event.data?.tipo==='fs-modulo-pronto'){aplicarTemaCinzaNoFrame();ajustarAlturaFrame(event.data.altura);ocultarLoadingGestao();}});
+    window.addEventListener('resize',()=>setTimeout(medirHeaderGestao,80));window.addEventListener('orientationchange',()=>setTimeout(medirHeaderGestao,250));if(window.ResizeObserver&&headerContainer)new ResizeObserver(medirHeaderGestao).observe(headerContainer);if(window.ResizeObserver&&tabsWrap)new ResizeObserver(medirHeaderGestao).observe(tabsWrap);medirHeaderGestao();setTimeout(medirHeaderGestao,120);setTimeout(medirHeaderGestao,500);setTimeout(medirHeaderGestao,1200);const hashInicial=String(location.hash||'').replace('#','');const tabInicial=tabs.find(btn=>btn.dataset.src&&btn.dataset.src.startsWith(hashInicial+'.html'))||tabs[0];abrirModuloGestao(tabInicial.dataset.src,false);
   </script>
 </body>
 </html>
