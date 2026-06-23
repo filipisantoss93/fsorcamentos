@@ -12,163 +12,142 @@
   <meta name="description" content="Central de gestão do FS Orçamentos com clientes, veículos, ordens de serviço, estoque, agenda, relatórios e recorrentes.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260621-gestao-cinza-1">
+  <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260621-gestao-cinza-2">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
-    :root { --gestao-header-h: 118px; }
-
-    html,
     body {
-      width: 100%;
-      height: 100%;
       margin: 0;
-      overflow: hidden !important;
-      background: #f8fafc;
-    }
-
-    body {
-      position: fixed;
-      inset: 0;
-      display: block;
-    }
-
-    #header-container {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      z-index: 1000 !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      background: #ffffff !important;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #eef2f7 100%) !important;
+      color: #111827 !important;
+      overflow-x: hidden;
     }
 
     .gestao-page {
-      position: fixed;
-      top: var(--gestao-header-h);
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      background: #f8fafc;
-      overflow: hidden;
-      box-sizing: border-box;
-      z-index: 10;
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 18px 0 56px;
     }
 
-    .gestao-topo { display: none !important; }
-
-    .gestao-tabs-wrap {
-      flex: 0 0 auto;
-      position: relative;
-      z-index: 20;
-      width: 100%;
-      background: #ffffff;
-      border: 0;
-      border-bottom: 1px solid #d1d5db;
-      border-radius: 0;
-      padding: 4px 6px;
-      box-shadow: 0 2px 8px rgba(51, 65, 85, .08);
-      margin: 0;
-      overflow-x: auto;
-      overflow-y: hidden;
-      box-sizing: border-box;
-      -webkit-overflow-scrolling: touch;
+    .gestao-hero,
+    .gestao-card {
+      background: #ffffff !important;
+      color: #111827 !important;
+      border: 1px solid #e5e7eb !important;
+      border-radius: 16px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .08) !important;
     }
 
-    .gestao-tabs {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 4px;
-      table-layout: fixed;
-      margin: 0;
+    .gestao-hero {
+      padding: 24px;
+      margin-bottom: 18px;
+      border-top: 5px solid #64748b !important;
     }
 
-    .gestao-tabs td {
-      padding: 0;
-      border: 0;
-      background: transparent;
-    }
-
-    .gestao-tab {
-      width: 100%;
-      min-height: 32px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
-      color: #374151;
-      border-radius: 4px;
-      font-weight: 900;
-      font-size: 12px;
-      cursor: pointer;
+    .gestao-tag {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      padding: 6px 7px;
-      line-height: 1.05;
-      text-align: center;
-      white-space: nowrap;
-      box-shadow: none;
+      background: #f3f4f6 !important;
+      color: #1f2937 !important;
+      border: 1px solid #d1d5db !important;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
 
-    .gestao-tab.ativo {
-      background: #64748b;
-      color: #ffffff;
-      border-color: #64748b;
+    .gestao-hero h1 {
+      margin: 0 0 8px;
+      color: #0f172a !important;
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.12;
+      font-weight: 950;
     }
 
-    .gestao-frame-box {
-      flex: 1 1 auto;
-      min-height: 0;
-      width: 100%;
-      background: #ffffff;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
-      overflow: hidden;
+    .gestao-hero p {
       margin: 0;
-      position: relative;
+      color: #4b5563 !important;
+      font-size: 15px;
+      line-height: 1.55;
+      font-weight: 700;
+      max-width: 900px;
     }
 
-    #gestao-frame {
-      width: 100%;
-      height: 100%;
-      min-height: 0;
-      border: 0;
-      display: block;
-      background: #f8fafc;
+    .gestao-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
     }
 
-    .gestao-loading {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 20;
-      padding: 7px 10px;
-      color: #374151;
+    .gestao-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 170px;
+      padding: 18px;
+      text-decoration: none;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    }
+
+    .gestao-card:hover {
+      transform: translateY(-2px);
+      border-color: #94a3b8 !important;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .12) !important;
+    }
+
+    .gestao-card strong {
+      color: #0f172a !important;
+      font-size: 20px;
+      font-weight: 950;
+      line-height: 1.2;
+    }
+
+    .gestao-card span {
+      color: #4b5563 !important;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 650;
+      flex: 1;
+    }
+
+    .gestao-card small {
+      color: #374151 !important;
+      background: #f3f4f6 !important;
+      border: 1px solid #d1d5db !important;
+      border-radius: 999px;
+      padding: 6px 10px;
+      width: fit-content;
       font-size: 12px;
       font-weight: 900;
-      background: #f3f4f6;
-      border-bottom: 1px solid #d1d5db;
-      display: none;
-      pointer-events: none;
     }
 
-    .gestao-loading.ativo { display: block; }
-    body > footer { display: none !important; }
+    .gestao-alerta {
+      margin: 18px 0;
+      background: #f9fafb !important;
+      border: 1px solid #e5e7eb !important;
+      border-left: 5px solid #64748b !important;
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: #374151 !important;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
 
-    @media (max-width: 760px) {
-      :root { --gestao-header-h: 128px; }
-      .gestao-tabs-wrap { padding: 3px 4px; }
-      .gestao-tabs { min-width: 620px; border-spacing: 4px; }
-      .gestao-tab { min-height: 30px; font-size: 11px; padding: 5px 6px; }
+    @media (max-width: 860px) {
+      .gestao-page { width: min(100% - 16px, 1180px); padding-top: 14px; }
+      .gestao-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .gestao-card { min-height: 150px; padding: 15px; }
+    }
+
+    @media (max-width: 560px) {
+      .gestao-grid { grid-template-columns: 1fr; }
+      .gestao-hero { padding: 20px; }
+      .gestao-card { min-height: auto; }
     }
   </style>
 </head>
@@ -176,23 +155,24 @@
   <div id="header-container"></div>
 
   <main class="gestao-page">
-    <section class="gestao-tabs-wrap" aria-label="Menu da gestão">
-      <table class="gestao-tabs">
-        <tr>
-          <td><button class="gestao-tab ativo" type="button" data-src="clientes.html?embed=1">Clientes</button></td>
-          <td><button class="gestao-tab" type="button" data-src="veiculos.html?embed=1">Veículos</button></td>
-          <td><button class="gestao-tab" type="button" data-src="ordens.html?embed=1">OS</button></td>
-          <td><button class="gestao-tab" type="button" data-src="estoque.html?embed=1">Estoque</button></td>
-          <td><button class="gestao-tab" type="button" data-src="agenda.html?embed=1">Agenda</button></td>
-          <td><button class="gestao-tab" type="button" data-src="relatorios.html?embed=1">Relatórios</button></td>
-          <td><button class="gestao-tab" type="button" data-src="recorrentes.html?embed=1">Recorrentes</button></td>
-        </tr>
-      </table>
+    <section class="gestao-hero">
+      <span class="gestao-tag">Plano Premium</span>
+      <h1>Central de Gestão</h1>
+      <p>Abra cada módulo como página normal. Esta versão removeu o iframe da gestão para evitar travamento de tela, header, botões flutuantes e navegação no celular ou computador.</p>
     </section>
 
-    <section class="gestao-frame-box">
-      <div id="gestao-loading" class="gestao-loading">Carregando módulo...</div>
-      <iframe id="gestao-frame" title="Módulo de gestão" src="about:blank"></iframe>
+    <div class="gestao-alerta">
+      Os módulos abaixo abrem diretamente na página correspondente. Isso elimina o problema de tela presa em “Carregando módulo...” e evita que o iframe capture cliques ou scroll.
+    </div>
+
+    <section class="gestao-grid" aria-label="Módulos da gestão">
+      <a class="gestao-card" href="clientes.html"><strong>Clientes</strong><span>Cadastre clientes, contatos e dados para orçamentos, veículos e ordens.</span><small>Abrir clientes</small></a>
+      <a class="gestao-card" href="veiculos.html"><strong>Veículos</strong><span>Controle veículos vinculados aos clientes, placas, modelos e histórico.</span><small>Abrir veículos</small></a>
+      <a class="gestao-card" href="ordens.html"><strong>Ordens de Serviço</strong><span>Crie e acompanhe serviços, status, execução e histórico técnico.</span><small>Abrir OS</small></a>
+      <a class="gestao-card" href="estoque.html"><strong>Estoque</strong><span>Gerencie produtos, peças, quantidades, alertas e movimentações.</span><small>Abrir estoque</small></a>
+      <a class="gestao-card" href="agenda.html"><strong>Agenda</strong><span>Organize serviços agendados, retornos, atrasos e compromissos.</span><small>Abrir agenda</small></a>
+      <a class="gestao-card" href="relatorios.html"><strong>Relatórios</strong><span>Acompanhe faturamento, serviços, produtos, clientes e veículos.</span><small>Abrir relatórios</small></a>
+      <a class="gestao-card" href="recorrentes.html"><strong>Recorrentes</strong><span>Controle revisões, retornos e manutenções preventivas por data ou km.</span><small>Abrir recorrentes</small></a>
     </section>
   </main>
 
@@ -202,138 +182,5 @@
   <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
-  <script>
-    const frame = document.getElementById('gestao-frame');
-    const loading = document.getElementById('gestao-loading');
-    const tabs = Array.from(document.querySelectorAll('.gestao-tab'));
-    const headerContainer = document.getElementById('header-container');
-    const FS_GESTAO_TEMA_CINZA_URL = '/fs-theme-cinza.css?v=20260621-gestao-cinza-1';
-    let fsGestaoSrcAtual = '';
-    let fsGestaoLoadingTimer = null;
-    let fsGestaoCheckTimer = null;
-
-    function medirHeaderGestao() {
-      const candidatos = [
-        headerContainer,
-        headerContainer?.firstElementChild,
-        document.querySelector('#header-container header'),
-        document.querySelector('#header-container .main-header'),
-        document.querySelector('#header-container .header'),
-        document.querySelector('#header-container .topbar')
-      ].filter(Boolean);
-
-      let altura = 0;
-      candidatos.forEach(el => {
-        const rect = el.getBoundingClientRect?.();
-        const h = Math.ceil(Math.max(rect?.height || 0, el.scrollHeight || 0, el.offsetHeight || 0));
-        if (h > altura) altura = h;
-      });
-
-      if (!altura || altura < 64) altura = window.innerWidth <= 760 ? 128 : 118;
-      document.documentElement.style.setProperty('--gestao-header-h', `${altura}px`);
-    }
-
-    function ocultarLoadingGestao() {
-      loading.classList.remove('ativo');
-      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
-      if (fsGestaoCheckTimer) clearInterval(fsGestaoCheckTimer);
-      fsGestaoLoadingTimer = null;
-      fsGestaoCheckTimer = null;
-    }
-
-    function iniciarFailsafeLoadingGestao() {
-      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
-      if (fsGestaoCheckTimer) clearInterval(fsGestaoCheckTimer);
-
-      fsGestaoLoadingTimer = setTimeout(ocultarLoadingGestao, 4500);
-      fsGestaoCheckTimer = setInterval(() => {
-        try {
-          const doc = frame.contentDocument || frame.contentWindow?.document;
-          if (doc && doc.location?.href !== 'about:blank' && doc.readyState === 'complete') {
-            aplicarTemaCinzaNoFrame();
-            ocultarLoadingGestao();
-          }
-        } catch (_) {}
-      }, 500);
-    }
-
-    function aplicarTemaCinzaNoFrame() {
-      try {
-        const doc = frame.contentDocument || frame.contentWindow?.document;
-        if (!doc?.head || doc.location?.href === 'about:blank') return;
-        doc.documentElement.classList.add('fs-embed', 'fs-gestao-tema-cinza');
-        doc.body?.classList.add('fs-gestao-tema-cinza');
-
-        let link = doc.getElementById('fs-gestao-tema-cinza-css');
-        if (!link) {
-          link = doc.createElement('link');
-          link.id = 'fs-gestao-tema-cinza-css';
-          link.rel = 'stylesheet';
-          doc.head.appendChild(link);
-        }
-
-        const hrefFinal = new URL(FS_GESTAO_TEMA_CINZA_URL, location.origin).href;
-        if (link.href !== hrefFinal) link.href = FS_GESTAO_TEMA_CINZA_URL;
-      } catch (error) {
-        console.warn('Não foi possível aplicar o tema cinza no módulo da gestão.', error);
-      }
-    }
-
-    function abrirModuloGestao(src, push = true) {
-      if (!src) return;
-
-      tabs.forEach(btn => btn.classList.toggle('ativo', btn.dataset.src === src));
-
-      if (fsGestaoSrcAtual === src) {
-        ocultarLoadingGestao();
-        return;
-      }
-
-      fsGestaoSrcAtual = src;
-      loading.classList.add('ativo');
-      iniciarFailsafeLoadingGestao();
-      frame.src = src;
-
-      if (push) {
-        const nome = src.split('.html')[0].replace('/', '');
-        history.replaceState(null, '', `#${nome}`);
-      }
-    }
-
-    tabs.forEach(btn => {
-      btn.addEventListener('click', () => abrirModuloGestao(btn.dataset.src));
-    });
-
-    frame.addEventListener('load', () => {
-      aplicarTemaCinzaNoFrame();
-      ocultarLoadingGestao();
-    });
-
-    frame.addEventListener('error', ocultarLoadingGestao);
-
-    window.addEventListener('message', (event) => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data?.tipo === 'fs-ajustar-iframe' || event.data?.tipo === 'fs-modulo-pronto') {
-        aplicarTemaCinzaNoFrame();
-        ocultarLoadingGestao();
-      }
-    });
-
-    window.addEventListener('resize', () => setTimeout(medirHeaderGestao, 80));
-    window.addEventListener('orientationchange', () => setTimeout(medirHeaderGestao, 250));
-
-    if (window.ResizeObserver && headerContainer) {
-      new ResizeObserver(medirHeaderGestao).observe(headerContainer);
-    }
-
-    medirHeaderGestao();
-    setTimeout(medirHeaderGestao, 120);
-    setTimeout(medirHeaderGestao, 500);
-    setTimeout(medirHeaderGestao, 1200);
-
-    const hashInicial = String(location.hash || '').replace('#', '');
-    const tabInicial = tabs.find(btn => btn.dataset.src && btn.dataset.src.startsWith(hashInicial + '.html')) || tabs[0];
-    abrirModuloGestao(tabInicial.dataset.src, false);
-  </script>
 </body>
 </html>
