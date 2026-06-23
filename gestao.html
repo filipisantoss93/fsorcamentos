@@ -158,6 +158,7 @@
       background: #f3f4f6;
       border-bottom: 1px solid #d1d5db;
       display: none;
+      pointer-events: none;
     }
 
     .gestao-loading.ativo { display: block; }
@@ -208,6 +209,8 @@
     const headerContainer = document.getElementById('header-container');
     const FS_GESTAO_TEMA_CINZA_URL = '/fs-theme-cinza.css?v=20260621-gestao-cinza-1';
     let fsGestaoSrcAtual = '';
+    let fsGestaoLoadingTimer = null;
+    let fsGestaoCheckTimer = null;
 
     function medirHeaderGestao() {
       const candidatos = [
@@ -228,6 +231,30 @@
 
       if (!altura || altura < 64) altura = window.innerWidth <= 760 ? 128 : 118;
       document.documentElement.style.setProperty('--gestao-header-h', `${altura}px`);
+    }
+
+    function ocultarLoadingGestao() {
+      loading.classList.remove('ativo');
+      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
+      if (fsGestaoCheckTimer) clearInterval(fsGestaoCheckTimer);
+      fsGestaoLoadingTimer = null;
+      fsGestaoCheckTimer = null;
+    }
+
+    function iniciarFailsafeLoadingGestao() {
+      if (fsGestaoLoadingTimer) clearTimeout(fsGestaoLoadingTimer);
+      if (fsGestaoCheckTimer) clearInterval(fsGestaoCheckTimer);
+
+      fsGestaoLoadingTimer = setTimeout(ocultarLoadingGestao, 4500);
+      fsGestaoCheckTimer = setInterval(() => {
+        try {
+          const doc = frame.contentDocument || frame.contentWindow?.document;
+          if (doc && doc.location?.href !== 'about:blank' && doc.readyState === 'complete') {
+            aplicarTemaCinzaNoFrame();
+            ocultarLoadingGestao();
+          }
+        } catch (_) {}
+      }, 500);
     }
 
     function aplicarTemaCinzaNoFrame() {
@@ -253,11 +280,20 @@
     }
 
     function abrirModuloGestao(src, push = true) {
-      if (!src || fsGestaoSrcAtual === src) return;
-      fsGestaoSrcAtual = src;
+      if (!src) return;
+
       tabs.forEach(btn => btn.classList.toggle('ativo', btn.dataset.src === src));
+
+      if (fsGestaoSrcAtual === src) {
+        ocultarLoadingGestao();
+        return;
+      }
+
+      fsGestaoSrcAtual = src;
       loading.classList.add('ativo');
+      iniciarFailsafeLoadingGestao();
       frame.src = src;
+
       if (push) {
         const nome = src.split('.html')[0].replace('/', '');
         history.replaceState(null, '', `#${nome}`);
@@ -270,7 +306,17 @@
 
     frame.addEventListener('load', () => {
       aplicarTemaCinzaNoFrame();
-      loading.classList.remove('ativo');
+      ocultarLoadingGestao();
+    });
+
+    frame.addEventListener('error', ocultarLoadingGestao);
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.tipo === 'fs-ajustar-iframe' || event.data?.tipo === 'fs-modulo-pronto') {
+        aplicarTemaCinzaNoFrame();
+        ocultarLoadingGestao();
+      }
     });
 
     window.addEventListener('resize', () => setTimeout(medirHeaderGestao, 80));
