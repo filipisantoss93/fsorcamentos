@@ -68,7 +68,7 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     const s=document.createElement('style');
     s.id='fs-ordem-garantia-css';
     s.textContent=`
-      .fs-garantia-form{margin-top:14px;display:grid;gap:10px;border-top:1px solid #e4d8cc;padding-top:12px}.fs-garantia-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fs-garantia-campo{display:grid;gap:5px}.fs-garantia-campo label{font-size:11px;font-weight:950;text-transform:uppercase;color:#3e2723}.fs-garantia-campo input,.fs-garantia-campo textarea{width:100%;box-sizing:border-box;border:1px solid #d7ccc8;border-radius:7px;padding:9px;color:#2f241f;background:#fff;font-size:13px}.fs-garantia-campo textarea{min-height:88px;resize:vertical}.fs-garantia-termo-preview{white-space:pre-wrap;background:#fffaf0;border:1px solid #ffc400;border-radius:8px;padding:10px;color:#3e2723;font-size:12.5px;line-height:1.45;max-height:220px;overflow:auto}.fs-garantia-acoes{display:flex;gap:8px;flex-wrap:wrap}.fs-garantia-acoes button{min-height:34px;border-radius:7px;border:1px solid #ffc400;background:#3e2723;color:#ffc400;font-weight:950;padding:8px 11px;cursor:pointer}.fs-garantia-acoes button.sec{background:#fff;color:#3e2723;border-color:#d7ccc8}@media(max-width:620px){.fs-garantia-grid{grid-template-columns:1fr}.fs-garantia-acoes button{width:100%}}
+      .fs-garantia-form{margin-top:14px;display:grid;gap:10px;border-top:1px solid #e5e7eb;padding-top:12px}.fs-garantia-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fs-garantia-campo{display:grid;gap:5px}.fs-garantia-campo label{font-size:11px;font-weight:950;text-transform:uppercase;color:#374151}.fs-garantia-campo input,.fs-garantia-campo textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;padding:9px;color:#111827;background:#fff;font-size:13px}.fs-garantia-campo textarea{min-height:88px;resize:vertical}.fs-garantia-termo-preview{white-space:pre-wrap;background:#f8fafc;border:1px solid #cbd5e1;border-left:5px solid #64748b;border-radius:8px;padding:10px;color:#111827;font-size:12.5px;line-height:1.45;max-height:220px;overflow:auto}.fs-garantia-acoes{display:flex;gap:8px;flex-wrap:wrap}.fs-garantia-acoes button{min-height:34px;border-radius:8px;border:1px solid #64748b;background:#64748b;color:#fff;font-weight:950;padding:8px 11px;cursor:pointer}.fs-garantia-acoes button.sec{background:#fff;color:#111827;border-color:#cbd5e1}@media(max-width:620px){.fs-garantia-grid{grid-template-columns:1fr}.fs-garantia-acoes button{width:100%}}
     `;
     document.head.appendChild(s);
   }
@@ -112,10 +112,7 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     const el=document.getElementById('detalhe-garantia-validade');if(el)el.textContent=validade;
   }
 
-  function atualizarPreview(){
-    const p=document.getElementById('garantia-termo-preview-os');
-    if(p)p.textContent=val('garantia-termo-os')||'Termo ainda não gerado.';
-  }
+  function atualizarPreview(){const p=document.getElementById('garantia-termo-preview-os');if(p)p.textContent=val('garantia-termo-os')||'Termo ainda não gerado.';}
 
   function atualizarResumo(ordem){
     const dias=Number(ordem?.garantia_dias||0);
@@ -141,10 +138,7 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     finally{const btn=document.getElementById('btn-salvar-garantia-os');if(btn){btn.disabled=false;btn.textContent='Salvar garantia'}}
   }
 
-  function nomeArquivoGarantia(){
-    const numero=ordemGarantiaAtual?.numero_os?String(ordemGarantiaAtual.numero_os).padStart(6,'0'):'os';
-    return `termo-garantia-os-${numero}.pdf`;
-  }
+  function nomeArquivoGarantia(){const numero=ordemGarantiaAtual?.numero_os?String(ordemGarantiaAtual.numero_os).padStart(6,'0'):'os';return `termo-garantia-os-${numero}.pdf`;}
 
   function imprimirFallback(texto){
     const w=window.open('','_blank');
@@ -164,8 +158,8 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     let y=16;
     function page(need=16){if(y+need<=H-16)return;rodape();doc.addPage();y=16;}
     function rodape(){doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(90);doc.text('Gerado pelo FS Orçamentos',m,H-8);doc.text(String(doc.internal.getNumberOfPages()),W-m,H-8,{align:'right'});}
-    doc.setFillColor(0,0,0);doc.rect(0,0,W,12,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('FS Orçamentos • Termo de Garantia',m,8);
-    doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('TERMO DE GARANTIA',m,y);y+=10;
+    doc.setFillColor(51,65,85);doc.rect(0,0,W,12,'F');doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('FS Orçamentos • Termo de Garantia',m,8);
+    doc.setTextColor(17,24,39);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('TERMO DE GARANTIA',m,y);y+=10;
     doc.setFont('helvetica','normal');doc.setFontSize(9);
     doc.splitTextToSize(texto,W-m*2).forEach(l=>{page(5);doc.text(l,m,y);y+=4.8;});
     y+=18;page(28);doc.line(m,y,W-m,y);y+=5;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Assinatura do cliente/responsável',W/2,y,{align:'center'});
@@ -173,12 +167,7 @@ Observações: ${ordem?.garantia_observacoes||'Sem observações adicionais.'}`;
     doc.save(nomeArquivoGarantia());
   }
 
-  function instalarBotaoTermo(){
-    const btn=document.getElementById('btn-termo-garantia');
-    if(!btn||btn.dataset.fsGarantiaOk==='1')return;
-    btn.dataset.fsGarantiaOk='1';
-    btn.addEventListener('click',gerarTermoGarantiaPDF);
-  }
+  function instalarBotaoTermo(){const btn=document.getElementById('btn-termo-garantia');if(!btn||btn.dataset.fsGarantiaOk==='1')return;btn.dataset.fsGarantiaOk='1';btn.addEventListener('click',gerarTermoGarantiaPDF);}
 
   async function iniciar(){
     injetarCss();
