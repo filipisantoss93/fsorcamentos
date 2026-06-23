@@ -12,19 +12,15 @@
   function ajustarEspacoHeader() {
     const header = headerVisivel();
     if (!header) return;
-
     const rect = header.getBoundingClientRect();
     const altura = Math.ceil(rect.height || header.offsetHeight || 0);
     if (!altura) return;
-
     const cs = getComputedStyle(header);
     const fixo = cs.position === 'fixed';
     const sticky = cs.position === 'sticky';
-
     document.documentElement.style.setProperty('--fs-header-altura-real', `${altura}px`);
     document.body.classList.toggle('fs-header-fixed-space', fixo);
     document.body.classList.toggle('fs-header-sticky-space', sticky);
-
     const primeiroConteudo = document.querySelector('main, .container, .cx, #home-publica, .pagina-ver, .page, .conteudo, .dashboard-wrap');
     if (primeiroConteudo) primeiroConteudo.classList.add('fs-conteudo-apos-header');
   }
@@ -43,11 +39,8 @@
   function removerFootersDuplicados() {
     const todos = Array.from(document.querySelectorAll('footer, .sobre-footer'));
     if (todos.length <= 1) return todos[0] || null;
-
-    let principal = todos.find(f => f.classList.contains('fs-footer-legal')) || todos[0];
-    todos.forEach((f) => {
-      if (f !== principal) f.remove();
-    });
+    const principal = todos.find(f => f.classList.contains('fs-footer-legal')) || todos[0];
+    todos.forEach((f) => { if (f !== principal) f.remove(); });
     return principal;
   }
 
@@ -82,7 +75,6 @@
   function injetarEstilo() {
     const antigo = document.getElementById('fs-footer-legal-style');
     if (antigo) antigo.remove();
-
     const style = document.createElement('style');
     style.id = 'fs-footer-legal-style';
     style.textContent = `
@@ -108,17 +100,15 @@
         box-sizing: border-box !important;
         padding: 16px 14px !important;
         text-align: center !important;
-        color: #fffaf0 !important;
-        background: #2f211d !important;
-        border: 1px solid #3e2723 !important;
-        border-radius: 8px !important;
-        box-shadow: 0 8px 24px rgba(47,33,29,.14) !important;
+        color: #f8fafc !important;
+        background: #1f2937 !important;
+        border: 1px solid #374151 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .14) !important;
         overflow: hidden !important;
       }
 
-      .fs-footer-legal * {
-        box-sizing: border-box !important;
-      }
+      .fs-footer-legal * { box-sizing: border-box !important; }
 
       .fs-footer-inner {
         display: flex !important;
@@ -129,7 +119,7 @@
       }
 
       .fs-footer-copy {
-        color: #fffaf0 !important;
+        color: #f8fafc !important;
         opacity: .96 !important;
         font-size: 13px !important;
         font-weight: 900 !important;
@@ -149,7 +139,7 @@
 
       .fs-footer-legal-links a {
         display: inline-flex !important;
-        color: #ffc400 !important;
+        color: #e5e7eb !important;
         text-decoration: none !important;
         font-weight: 950 !important;
         opacity: 1 !important;
@@ -157,13 +147,13 @@
 
       .fs-footer-legal-links a + a::before {
         content: '•' !important;
-        color: rgba(255,250,240,.55) !important;
+        color: rgba(229, 231, 235, .55) !important;
         margin-right: 12px !important;
         font-weight: 900 !important;
       }
 
       .fs-footer-legal-links a:hover {
-        color: #fff2a8 !important;
+        color: #ffffff !important;
         text-decoration: underline !important;
       }
 
@@ -197,13 +187,8 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
   else iniciar();
 
-  let tentativas = 0;
-  const timer = setInterval(() => {
-    removerLinksLegaisDoHeader();
-    garantirFooter();
-    ajustarEspacoHeader();
-    if (++tentativas > 30) clearInterval(timer);
-  }, 400);
+  setTimeout(() => { removerLinksLegaisDoHeader(); garantirFooter(); ajustarEspacoHeader(); }, 400);
+  setTimeout(() => { removerLinksLegaisDoHeader(); garantirFooter(); ajustarEspacoHeader(); }, 1200);
 
   window.addEventListener('resize', ajustarEspacoHeader);
   window.addEventListener('orientationchange', () => setTimeout(ajustarEspacoHeader, 300));
