@@ -56,46 +56,44 @@ window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 
 const FS_CONFIG_CSS_GLOBAIS = [
-  ['fs-theme-cinza.css?v=20260622-relatorios-fix-2', 'fs-theme-cinza-css'],
-  ['fs-theme-cinza-hotfix.css?v=20260622-relatorios-fix-2', 'fs-theme-cinza-hotfix-css']
+  ['fs-theme-cinza.css?v=20260622-limpeza-pro-1', 'fs-theme-cinza-css'],
+  ['fs-theme-cinza-hotfix.css?v=20260622-limpeza-pro-1', 'fs-theme-cinza-hotfix-css']
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
-  ['fs-auth-redirect-guard.js?v=20260622-relatorios-fix-2', 'fs-auth-redirect-guard-js'],
-  ['fs-pwa-register.js?v=20260622-relatorios-fix-2', 'fs-pwa-register-js'],
-  ['fs-home-auth-fix.js?v=20260622-relatorios-fix-2', 'fs-home-auth-fix-js'],
-  ['fs-home-premium-dashboard.js?v=20260622-relatorios-fix-2', 'fs-home-premium-dashboard-js'],
-  ['fs-no-zoom.js?v=20260622-relatorios-fix-2', 'fs-no-zoom-js'],
-  ['fs-session-cache.js?v=20260622-relatorios-fix-2', 'fs-session-cache-js'],
-  ['fs-menu-close-outside.js?v=20260622-relatorios-fix-2', 'fs-menu-close-outside-js'],
-  ['fs-format-br.js?v=20260622-relatorios-fix-2', 'fs-format-br-js'],
-  ['fs-footer-legal.js?v=20260622-relatorios-fix-2', 'fs-footer-legal-js'],
-  ['layout-grid-global-fix.js?v=20260622-relatorios-fix-2', 'fs-layout-grid-global-fix-js']
+  ['fs-auth-redirect-guard.js?v=20260622-limpeza-pro-1', 'fs-auth-redirect-guard-js'],
+  ['fs-pwa-register.js?v=20260622-limpeza-pro-1', 'fs-pwa-register-js'],
+  ['fs-home-auth-fix.js?v=20260622-limpeza-pro-1', 'fs-home-auth-fix-js'],
+  ['fs-home-premium-dashboard.js?v=20260622-limpeza-pro-1', 'fs-home-premium-dashboard-js'],
+  ['fs-no-zoom.js?v=20260622-limpeza-pro-1', 'fs-no-zoom-js'],
+  ['fs-session-cache.js?v=20260622-limpeza-pro-1', 'fs-session-cache-js'],
+  ['fs-menu-close-outside.js?v=20260622-limpeza-pro-1', 'fs-menu-close-outside-js'],
+  ['fs-format-br.js?v=20260622-limpeza-pro-1', 'fs-format-br-js'],
+  ['fs-footer-legal.js?v=20260622-limpeza-pro-1', 'fs-footer-legal-js'],
+  ['layout-grid-global-fix.js?v=20260622-limpeza-pro-1', 'fs-layout-grid-global-fix-js']
 ];
 
 const FS_CONFIG_SCRIPTS_FINAIS = [
-  ['fs-stable-visual-fix.js?v=20260622-relatorios-fix-2', 'fs-stable-visual-fix-js']
+  ['fs-stable-visual-fix.js?v=20260622-limpeza-pro-1', 'fs-stable-visual-fix-js']
 ];
 
 const FS_CONFIG_CSS_POR_PAGINA = [
-  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css?v=20260622-relatorios-fix-2', 'fs-gerador-css']] },
-  { paginas: ['/orcamentos', '/orcamentos.html'], estilos: [['orcamentos.css?v=20260622-relatorios-fix-2', 'fs-orcamentos-css']] }
+  { paginas: ['/gerador', '/gerador.html'], estilos: [['gerador.css?v=20260622-limpeza-pro-1', 'fs-gerador-css']] },
+  { paginas: ['/orcamentos', '/orcamentos.html'], estilos: [['orcamentos.css?v=20260622-limpeza-pro-1', 'fs-orcamentos-css']] }
 ];
 
 const FS_CONFIG_SCRIPTS_POR_PAGINA = [
-  { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js?v=20260622-relatorios-fix-2', 'fs-ver-cliente-fix-js']] },
-  { paginas: ['/gerador', '/gerador.html'], scripts: [['gerador-pdf-fix.js?v=20260622-relatorios-fix-2', 'fs-gerador-pdf-fix-js'], ['gerador-cleanup-fix.js?v=20260622-relatorios-fix-2', 'fs-gerador-cleanup-fix-js'], ['gerador-token-link-fix.js?v=20260622-relatorios-fix-2', 'fs-gerador-token-link-fix-js']] },
-  { paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html', '/recorrentes', '/recorrentes.html'], scripts: [['fs-premium-mobile-layout-fix.js?v=20260622-relatorios-fix-2', 'fs-premium-mobile-layout-fix-js']] },
-  { paginas: ['/clientes', '/clientes.html'], scripts: [['clientes-toggle-fix.js?v=20260622-relatorios-fix-2', 'fs-clientes-toggle-fix-js']] },
-  { paginas: ['/veiculos', '/veiculos.html'], scripts: [['veiculos-ficha-link.js?v=20260622-relatorios-fix-2', 'fs-veiculos-ficha-link-js']] },
-  { paginas: ['/estoque', '/estoque.html'], scripts: [['estoque-compra-caixa.js?v=20260622-relatorios-fix-2', 'fs-estoque-compra-caixa-js']] },
-  { paginas: ['/recorrentes', '/recorrentes.html'], scripts: [['recorrentes-pro.js?v=20260622-relatorios-fix-2', 'fs-recorrentes-pro-js']] },
-  { paginas: ['/relatorios', '/relatorios.html'], scripts: [['relatorios-pro.js?v=20260622-relatorios-fix-2', 'fs-relatorios-pro-js']] },
-  { paginas: ['/painel', '/painel.html'], scripts: [['painel-logo-fix.js?v=20260622-relatorios-fix-2', 'fs-painel-logo-fix-js'], ['painel-perfil-fix.js?v=20260622-relatorios-fix-2', 'fs-painel-perfil-fix-js']] },
-  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js?v=20260622-relatorios-fix-2', 'fs-orcamentos-pdf-js'], ['orcamentos-token-link-fix.js?v=20260622-relatorios-fix-2', 'fs-orcamentos-token-link-fix-js']] },
-  { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js?v=20260622-relatorios-fix-2', 'fs-ordens-recorrente-prefill-js']] },
-  { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js?v=20260622-relatorios-fix-2', 'fs-cliente-modal-js']] },
-  { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js?v=20260622-relatorios-fix-2', 'fs-ordem-extras-js'], ['ordem-fotos-depois.js?v=20260622-relatorios-fix-2', 'fs-ordem-fotos-depois-js'], ['ordem-pdf-fotos-depois.js?v=20260622-relatorios-fix-2', 'fs-ordem-pdf-fotos-depois-js'], ['ordem-financeiro-nativo-fix.js?v=20260622-relatorios-fix-2', 'fs-ordem-financeiro-nativo-fix-js'], ['ordem-garantia.js?v=20260622-relatorios-fix-2', 'fs-ordem-garantia-js'], ['ordem-recibo.js?v=20260622-relatorios-fix-2', 'fs-ordem-recibo-js']] }
+  { paginas: ['/ver', '/ver.html'], scripts: [['ver-cliente-fix.js?v=20260622-limpeza-pro-1', 'fs-ver-cliente-fix-js']] },
+  { paginas: ['/gerador', '/gerador.html'], scripts: [['gerador-pdf-fix.js?v=20260622-limpeza-pro-1', 'fs-gerador-pdf-fix-js'], ['gerador-cleanup-fix.js?v=20260622-limpeza-pro-1', 'fs-gerador-cleanup-fix-js'], ['gerador-token-link-fix.js?v=20260622-limpeza-pro-1', 'fs-gerador-token-link-fix-js']] },
+  { paginas: ['/agenda', '/agenda.html', '/ordens', '/ordens.html', '/clientes', '/clientes.html', '/veiculos', '/veiculos.html', '/estoque', '/estoque.html', '/forum', '/forum.html', '/recorrentes', '/recorrentes.html'], scripts: [['fs-premium-mobile-layout-fix.js?v=20260622-limpeza-pro-1', 'fs-premium-mobile-layout-fix-js']] },
+  { paginas: ['/clientes', '/clientes.html'], scripts: [['clientes-toggle-fix.js?v=20260622-limpeza-pro-1', 'fs-clientes-toggle-fix-js']] },
+  { paginas: ['/veiculos', '/veiculos.html'], scripts: [['veiculos-ficha-link.js?v=20260622-limpeza-pro-1', 'fs-veiculos-ficha-link-js']] },
+  { paginas: ['/estoque', '/estoque.html'], scripts: [['estoque-compra-caixa.js?v=20260622-limpeza-pro-1', 'fs-estoque-compra-caixa-js']] },
+  { paginas: ['/painel', '/painel.html'], scripts: [['painel-logo-fix.js?v=20260622-limpeza-pro-1', 'fs-painel-logo-fix-js'], ['painel-perfil-fix.js?v=20260622-limpeza-pro-1', 'fs-painel-perfil-fix-js']] },
+  { paginas: ['/orcamentos', '/orcamentos.html'], scripts: [['orcamentos-pdf.js?v=20260622-limpeza-pro-1', 'fs-orcamentos-pdf-js'], ['orcamentos-token-link-fix.js?v=20260622-limpeza-pro-1', 'fs-orcamentos-token-link-fix-js']] },
+  { paginas: ['/ordens', '/ordens.html'], scripts: [['ordens-recorrente-prefill.js?v=20260622-limpeza-pro-1', 'fs-ordens-recorrente-prefill-js']] },
+  { paginas: ['/ordens', '/ordens.html', '/recorrentes', '/recorrentes.html', '/clientes', '/clientes.html'], scripts: [['fs-cliente-modal.js?v=20260622-limpeza-pro-1', 'fs-cliente-modal-js']] },
+  { paginas: ['/ordem', '/ordem.html'], scripts: [['ordem-extras.js?v=20260622-limpeza-pro-1', 'fs-ordem-extras-js'], ['ordem-fotos-depois.js?v=20260622-limpeza-pro-1', 'fs-ordem-fotos-depois-js'], ['ordem-pdf-fotos-depois.js?v=20260622-limpeza-pro-1', 'fs-ordem-pdf-fotos-depois-js'], ['ordem-financeiro-nativo-fix.js?v=20260622-limpeza-pro-1', 'fs-ordem-financeiro-nativo-fix-js'], ['ordem-garantia.js?v=20260622-limpeza-pro-1', 'fs-ordem-garantia-js'], ['ordem-recibo.js?v=20260622-limpeza-pro-1', 'fs-ordem-recibo-js']] }
 ];
 
 function fsConfigNormalizarPathAtual() {
