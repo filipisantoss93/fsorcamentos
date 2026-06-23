@@ -11,7 +11,7 @@
   window.fsListasCompactasCache = window.fsListasCompactasCache || {};
 
   const CAMPOS_ESTOQUE_SUPABASE = [
-    'id', 'user_id', 'descricao', 'categoria', 'subcategoria', 'codigo', 'unidade',
+    'id', 'user_id', 'descricao', 'fabricante', 'categoria', 'subcategoria', 'codigo', 'unidade',
     'quantidade_atual', 'estoque_minimo', 'valor_custo', 'valor_venda',
     'controlar_estoque', 'ativo', 'observacoes', 'created_at', 'updated_at',
     'marca_veiculo', 'modelo_veiculo', 'ano_inicial', 'ano_final', 'versao_veiculo',
@@ -19,13 +19,13 @@
   ];
 
   const ROTULOS_ESTOQUE = {
-    id: 'ID', user_id: 'Usuário', descricao: 'Descrição', categoria: 'Categoria',
+    id: 'ID', user_id: 'Usuário', descricao: 'Descrição', fabricante: 'Fabricante', categoria: 'Categoria',
     subcategoria: 'Subcategoria', codigo: 'Código', unidade: 'Unidade',
     quantidade_atual: 'Qtd disponível', estoque_minimo: 'Estoque mínimo',
     valor_custo: 'Valor de custo', valor_venda: 'Valor de venda',
     controlar_estoque: 'Controlar estoque', ativo: 'Ativo', observacoes: 'Observações',
-    created_at: 'Criado em', updated_at: 'Atualizado em', marca_veiculo: 'Marca',
-    modelo_veiculo: 'Modelo', ano_inicial: 'Ano inicial', ano_final: 'Ano final',
+    created_at: 'Criado em', updated_at: 'Atualizado em', marca_veiculo: 'Marca do veículo',
+    modelo_veiculo: 'Modelo do veículo', ano_inicial: 'Ano inicial', ano_final: 'Ano final',
     versao_veiculo: 'Versão', motor_veiculo: 'Motor', codigo_original: 'Código original',
     codigo_fabricante: 'Código fabricante', aplicacao: 'Aplicação', produto_universal: 'Produto universal'
   };
@@ -88,15 +88,6 @@
     return String(produto?.descricao || produto?.nome || '').trim() || 'Produto sem descrição';
   }
 
-  function textoAnoProduto(produto) {
-    const inicial = produto?.ano_inicial;
-    const final = produto?.ano_final;
-    if (inicial && final) return `${inicial} a ${final}`;
-    if (inicial) return `A partir de ${inicial}`;
-    if (final) return `Até ${final}`;
-    return '';
-  }
-
   function valorModalEstoque(campo, valor) {
     if (campo === 'valor_custo' || campo === 'valor_venda') return moeda(valor);
     if (campo === 'quantidade_atual' || campo === 'estoque_minimo') return quantidade(valor);
@@ -145,7 +136,7 @@
       .fs-modal-acoes-geradas,.fs-item-modal-corpo .cliente-acoes,.fs-item-modal-corpo .veiculo-acoes,.fs-item-modal-corpo .ordem-acoes,.fs-item-modal-corpo .estoque-produto-acoes,.fs-item-modal-corpo .estoque-acoes,.fs-item-modal-corpo .agenda-acoes,.fs-item-modal-corpo .forum-topico-acoes { display:flex !important; flex-wrap:wrap !important; gap:6px !important; margin-top:12px !important; padding-top:10px !important; border-top:1px solid var(--fs-borda-suave,#e5e7eb) !important; }
       .fs-modal-acoes-geradas button,.fs-modal-acoes-geradas a,.fs-item-modal-corpo button,.fs-item-modal-corpo a[class*="btn"] { min-height:31px !important; padding:7px 10px !important; border-radius:4px !important; font-size:12px !important; box-shadow:none !important; }
       .fs-modal-fechar { width:32px !important; height:32px !important; border-radius:4px !important; border:1px solid #d1d5db !important; background:#fff !important; color:#991b1b !important; font-size:20px !important; font-weight:900 !important; cursor:pointer !important; }
-      @media (max-width:760px) { .fs-tabela-lista-wrapper { overflow-x:auto !important; } .fs-tabela-lista { min-width:920px !important; } .fs-tabela-lista th,.fs-tabela-lista td { padding:6px 4px !important; font-size:10.5px !important; line-height:1.15 !important; } .fs-item-modal-overlay { padding:10px !important; } .fs-modal-acoes-geradas { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; } }
+      @media (max-width:760px) { .fs-tabela-lista-wrapper { overflow-x:auto !important; } .fs-tabela-lista { min-width:1040px !important; } .fs-tabela-lista th,.fs-tabela-lista td { padding:6px 4px !important; font-size:10.5px !important; line-height:1.15 !important; } .fs-item-modal-overlay { padding:10px !important; } .fs-modal-acoes-geradas { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; } }
     `;
     document.head.appendChild(style);
   }
@@ -185,7 +176,7 @@
       ? textoProdutoEstoque(item)
       : (item.nome || item.titulo || item.placa || item.numero_os || item.nome_cliente || item.cliente_nome || item.nome_produto || 'Detalhes');
     const subtitulo = tipo === 'estoque'
-      ? [item.codigo, item.marca_veiculo, item.modelo_veiculo].filter(Boolean).join(' • ') || 'Produto do estoque.'
+      ? [item.codigo, item.fabricante, item.marca_veiculo, item.modelo_veiculo].filter(Boolean).join(' • ') || 'Produto do estoque.'
       : [item.whatsapp, item.email, item.status, item.categoria, item.data_servico, item.hora_inicio].filter(Boolean).slice(0, 3).join(' • ') || 'Ações disponíveis abaixo.';
 
     const overlay = document.createElement('div');
@@ -234,10 +225,11 @@
   function renderizarEstoqueCompacto(lista) {
     const produtos = Array.isArray(lista) ? lista : [];
     window.fsListasCompactasCache.estoque = produtos;
-    tabela('lista-produtos-estoque', ['Código', 'Descrição', 'Qtd disponível', 'Valor', 'Marca', 'Modelo', 'Categoria', 'Subcategoria'], produtos.map(p => `
+    tabela('lista-produtos-estoque', ['Código', 'Descrição', 'Fabricante', 'Qtd disponível', 'Valor', 'Marca veículo', 'Modelo', 'Categoria', 'Subcategoria'], produtos.map(p => `
       <tr onclick="fsAbrirModalRegistro('estoque','${esc(p.id)}')">
         ${td(esc(p.codigo || p.codigo_original || p.codigo_fabricante || '-'))}
         ${td(`<strong>${esc(textoProdutoEstoque(p))}</strong><small>${esc(p.aplicacao || '')}</small>`)}
+        ${td(esc(p.fabricante || '-'))}
         ${td(`<strong>${esc(quantidade(p.quantidade_atual))} ${esc(p.unidade || 'un')}</strong><small>mín. ${esc(quantidade(p.estoque_minimo))} ${esc(p.unidade || 'un')}</small>`)}
         ${td(`<strong>${moeda(p.valor_venda || 0)}</strong>`)}
         ${td(esc(p.marca_veiculo || '-'))}
@@ -329,7 +321,7 @@
 
       if (termo) {
         const t = `%${termo}%`;
-        query = query.or(`descricao.ilike.${t},codigo.ilike.${t},categoria.ilike.${t},subcategoria.ilike.${t},marca_veiculo.ilike.${t},modelo_veiculo.ilike.${t},versao_veiculo.ilike.${t},motor_veiculo.ilike.${t},codigo_original.ilike.${t},codigo_fabricante.ilike.${t},aplicacao.ilike.${t},observacoes.ilike.${t},unidade.ilike.${t}`);
+        query = query.or(`descricao.ilike.${t},fabricante.ilike.${t},codigo.ilike.${t},categoria.ilike.${t},subcategoria.ilike.${t},marca_veiculo.ilike.${t},modelo_veiculo.ilike.${t},versao_veiculo.ilike.${t},motor_veiculo.ilike.${t},codigo_original.ilike.${t},codigo_fabricante.ilike.${t},aplicacao.ilike.${t},observacoes.ilike.${t},unidade.ilike.${t}`);
       }
       if (status === 'ativo') query = query.eq('ativo', true);
       if (status === 'inativo') query = query.eq('ativo', false);
@@ -357,6 +349,7 @@
   function montarProdutoFormularioDescricao() {
     return {
       descricao: valorInput('produto-nome') || valorInput('produto-descricao'),
+      fabricante: valorInput('produto-fabricante'),
       categoria: (valorInput('produto-categoria') === '__outra__' ? valorInput('produto-categoria-outra') : valorInput('produto-categoria')) || '',
       subcategoria: valorInput('produto-subcategoria'),
       marca_veiculo: valorInput('produto-marca-veiculo'),
@@ -420,6 +413,7 @@
     setValor('produto-id', produto.id);
     setValor('produto-nome', textoProdutoEstoque(produto));
     setValor('produto-descricao', '');
+    setValor('produto-fabricante', produto.fabricante || '');
     setValor('produto-categoria', produto.categoria || '');
     setValor('produto-subcategoria', produto.subcategoria || '');
     setValor('produto-marca-veiculo', produto.marca_veiculo || '');
@@ -499,16 +493,33 @@
     }
   }
 
+  function garantirCampoFabricante() {
+    if (document.getElementById('produto-fabricante')) return;
+    const campoNome = document.getElementById('produto-nome')?.closest('.campo');
+    if (!campoNome) return;
+    const campo = document.createElement('div');
+    campo.className = 'campo';
+    campo.innerHTML = `
+      <label for="produto-fabricante">Fabricante / marca da peça</label>
+      <input type="text" id="produto-fabricante" placeholder="Ex: Bosch, Cofap, Nakata, Gates" autocomplete="off" />
+      <small>Use para informar a marca/fabricante da peça. Não é a marca do veículo.</small>
+    `;
+    campoNome.insertAdjacentElement('afterend', campo);
+  }
+
   function ajustarFormularioEstoqueDescricao() {
     if (!isEstoque) return;
+    garantirCampoFabricante();
     const labelNome = document.querySelector('label[for="produto-nome"]');
     if (labelNome) labelNome.textContent = 'Descrição do produto *';
     const inputNome = document.getElementById('produto-nome');
     if (inputNome) inputNome.placeholder = 'Ex: Correia dentada, Palheta, Disco de freio';
     const campoDescricao = document.getElementById('produto-descricao')?.closest('.campo');
     if (campoDescricao) campoDescricao.style.display = 'none';
+    const labelMarcaVeiculo = document.querySelector('label[for="produto-marca-veiculo"]');
+    if (labelMarcaVeiculo) labelMarcaVeiculo.textContent = 'Marca do veículo compatível';
     const busca = document.getElementById('busca-produtos');
-    if (busca) busca.placeholder = 'Descrição, código, marca, modelo, categoria ou subcategoria';
+    if (busca) busca.placeholder = 'Descrição, fabricante, código, marca, modelo, categoria ou subcategoria';
 
     const form = document.getElementById('form-produto-estoque');
     if (form && form.dataset.fsDescricaoSubmit !== '1') {
