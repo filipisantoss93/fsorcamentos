@@ -43,35 +43,15 @@
         <div id="auth-container" class="auth-container-index">
           <form id="form-autenticacao" onsubmit="return false;">
             <h3 id="auth-titulo" class="auth-titulo-index">Acesse sua Conta</h3>
-            <div id="grupo-nome" class="auth-campo-index oculto">
-              <label for="auth-nome">Nome</label>
-              <input type="text" id="auth-nome" placeholder="Seu nome">
-            </div>
-            <div class="auth-campo-index">
-              <label for="auth-email">E-mail</label>
-              <input type="email" id="auth-email" placeholder="seu@email.com">
-            </div>
-            <div id="grupo-nome-empresa" class="auth-campo-index oculto">
-              <label for="reg-nome-empresa">Nome da Empresa</label>
-              <input type="text" id="reg-nome-empresa" placeholder="Nome da sua empresa">
-            </div>
-            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto">
-              <label for="reg-telefone-empresa">WhatsApp da Empresa</label>
-              <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da empresa">
-            </div>
-            <div class="auth-campo-index">
-              <label for="auth-senha">Senha</label>
-              <input type="password" id="auth-senha" placeholder="******">
-            </div>
-            <div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto">
-              <label for="auth-confirmar-senha">Confirmar Senha</label>
-              <input type="password" id="auth-confirmar-senha" placeholder="******">
-            </div>
+            <div id="grupo-nome" class="auth-campo-index oculto"><label for="auth-nome">Nome</label><input type="text" id="auth-nome" placeholder="Seu nome"></div>
+            <div class="auth-campo-index"><label for="auth-email">E-mail</label><input type="email" id="auth-email" placeholder="seu@email.com"></div>
+            <div id="grupo-nome-empresa" class="auth-campo-index oculto"><label for="reg-nome-empresa">Nome da Empresa</label><input type="text" id="reg-nome-empresa" placeholder="Nome da sua empresa"></div>
+            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto"><label for="reg-telefone-empresa">WhatsApp da Empresa</label><input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da empresa"></div>
+            <div class="auth-campo-index"><label for="auth-senha">Senha</label><input type="password" id="auth-senha" placeholder="******"></div>
+            <div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto"><label for="auth-confirmar-senha">Confirmar Senha</label><input type="password" id="auth-confirmar-senha" placeholder="******"></div>
             <button type="button" id="btn-principal" class="btn-principal-index" onclick="enviarFormulario()">Entrar</button>
           </form>
-          <div class="auth-alternar-index">
-            <a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a>
-          </div>
+          <div class="auth-alternar-index"><a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a></div>
         </div>
       </div>
     </div>
@@ -120,33 +100,21 @@
           <h3>Grátis</h3>
           <div class="plano-preco">R$ 0</div>
           <p>Para experimentar o gerador e criar PDFs profissionais com limitações.</p>
-          <ul class="planos-lista">
-            <li>Gerador de orçamento</li>
-            <li>Prévia e PDF</li>
-            <li>Anúncios na plataforma</li>
-          </ul>
+          <ul class="planos-lista"><li>Gerador de orçamento</li><li>Prévia e PDF</li><li>Anúncios na plataforma</li></ul>
         </article>
         <article class="plano-card plano-basico-card recomendado">
           <span class="plano-tag">Comercial</span>
           <h3>Básico</h3>
-          <div class="plano-preco">R$ 19,90 <small>/mês</small></div>
+          <div class="plano-preco">R$ 29,90 <small>/mês</small></div>
           <p>Para vender melhor, salvar histórico e acompanhar aprovação do cliente.</p>
-          <ul class="planos-lista">
-            <li>Orçamentos salvos</li>
-            <li>Status e histórico</li>
-            <li>Link de aprovação</li>
-          </ul>
+          <ul class="planos-lista"><li>Orçamentos salvos</li><li>Status e histórico</li><li>Link de aprovação</li></ul>
         </article>
         <article class="plano-card plano-premium-card destaque mais-escolhido-card">
           <span class="plano-pix-selo">Mais escolhido</span>
           <h3>Premium / Gestão</h3>
-          <div class="plano-preco">R$ 69,90 <small>/mês</small></div>
+          <div class="plano-preco">R$ 89,90 <small>/mês</small></div>
           <p>Para controlar a operação completa da empresa, da venda ao serviço finalizado.</p>
-          <ul class="planos-lista">
-            <li>Clientes, veículos e OS</li>
-            <li>Estoque e agenda</li>
-            <li>Dashboard e histórico</li>
-          </ul>
+          <ul class="planos-lista"><li>Clientes, veículos e OS</li><li>Estoque e agenda</li><li>Dashboard e histórico</li></ul>
         </article>
       </div>
     </section>
@@ -159,9 +127,7 @@
       </div>
       <div class="comparativo-wrapper">
         <table class="tabela-comparativo">
-          <thead>
-            <tr><th>Recurso</th><th>Grátis</th><th>Básico</th><th>Premium</th></tr>
-          </thead>
+          <thead><tr><th>Recurso</th><th>Grátis</th><th>Básico</th><th>Premium</th></tr></thead>
           <tbody>
             <tr><td>Gerar orçamento em PDF</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
             <tr><td>Anúncios na plataforma</td><td class="sim">Sim</td><td class="nao">Não</td><td class="nao premium-coluna">Não</td></tr>
@@ -191,24 +157,24 @@
       <div class="planos-pix-grid">
         <div class="plano-pix-card">
           <div class="plano-pix-periodo">1 mês</div>
-          <div class="plano-pix-preco">R$ 19,90</div>
+          <div class="plano-pix-preco">R$ 29,90</div>
           <p>Ideal para testar todos os recursos pagos por 30 dias.</p>
-          <button type="button" data-botao-pix data-plano="basico" data-periodo="mensal" onclick="gerarPixPlanoBasico('mensal')">Gerar Pix</button>
+          <button type="button" data-botao-pix data-plano="basico" data-periodo="mensal" onclick="window.gerarPixPlano && window.gerarPixPlano('basico','mensal')">Assinar via Pix</button>
         </div>
         <div class="plano-pix-card destaque">
           <div class="plano-pix-selo">Mais escolhido</div>
           <div class="plano-pix-periodo">6 meses</div>
-          <div class="plano-pix-preco">R$ 109,90</div>
+          <div class="plano-pix-preco">R$ 159,90</div>
           <span class="plano-pix-economia">Economia no período</span>
           <p>Melhor equilíbrio para usar por mais tempo pagando menos que mensalmente.</p>
-          <button type="button" data-botao-pix data-plano="basico" data-periodo="semestral" onclick="gerarPixPlanoBasico('semestral')">Gerar Pix</button>
+          <button type="button" data-botao-pix data-plano="basico" data-periodo="semestral" onclick="window.gerarPixPlano && window.gerarPixPlano('basico','semestral')">Assinar via Pix</button>
         </div>
         <div class="plano-pix-card">
           <div class="plano-pix-periodo">12 meses</div>
-          <div class="plano-pix-preco">R$ 209,90</div>
+          <div class="plano-pix-preco">R$ 299,90</div>
           <span class="plano-pix-economia">Melhor custo-benefício</span>
           <p>Perfeito para usar o FS Orçamentos durante o ano todo.</p>
-          <button type="button" data-botao-pix data-plano="basico" data-periodo="anual" onclick="gerarPixPlanoBasico('anual')">Gerar Pix</button>
+          <button type="button" data-botao-pix data-plano="basico" data-periodo="anual" onclick="window.gerarPixPlano && window.gerarPixPlano('basico','anual')">Assinar via Pix</button>
         </div>
       </div>
       <div class="plano-pix-beneficios">
@@ -226,24 +192,24 @@
       <div class="planos-pix-grid">
         <div class="plano-pix-card premium-card-pagamento">
           <div class="plano-pix-periodo">1 mês</div>
-          <div class="plano-pix-preco">R$ 69,90</div>
+          <div class="plano-pix-preco">R$ 89,90</div>
           <p>Ideal para testar a gestão completa por 30 dias.</p>
-          <button type="button" data-botao-pix data-plano="premium" data-periodo="mensal" onclick="gerarPixPlanoPremium('mensal')">Gerar Pix Premium</button>
+          <button type="button" data-botao-pix data-plano="premium" data-periodo="mensal" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','mensal')">Assinar Premium via Pix</button>
         </div>
         <div class="plano-pix-card destaque premium-card-pagamento premium-mais-escolhido">
           <div class="plano-pix-selo">Mais escolhido</div>
           <div class="plano-pix-periodo">6 meses</div>
-          <div class="plano-pix-preco">R$ 399,90</div>
+          <div class="plano-pix-preco">R$ 499,90</div>
           <span class="plano-pix-economia">Gestão por semestre</span>
           <p>Melhor opção para oficinas que querem organizar atendimentos, veículos, OS e estoque.</p>
-          <button type="button" data-botao-pix data-plano="premium" data-periodo="semestral" onclick="gerarPixPlanoPremium('semestral')">Gerar Pix Premium</button>
+          <button type="button" data-botao-pix data-plano="premium" data-periodo="semestral" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','semestral')">Assinar Premium via Pix</button>
         </div>
         <div class="plano-pix-card premium-card-pagamento">
           <div class="plano-pix-periodo">12 meses</div>
-          <div class="plano-pix-preco">R$ 599,90</div>
+          <div class="plano-pix-preco">R$ 999,90</div>
           <span class="plano-pix-economia">Melhor custo-benefício</span>
           <p>Use o sistema completo durante o ano todo pagando menos por mês.</p>
-          <button type="button" data-botao-pix data-plano="premium" data-periodo="anual" onclick="gerarPixPlanoPremium('anual')">Gerar Pix Premium</button>
+          <button type="button" data-botao-pix data-plano="premium" data-periodo="anual" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','anual')">Assinar Premium via Pix</button>
         </div>
       </div>
       <div class="plano-pix-beneficios premium-beneficios">
@@ -254,11 +220,7 @@
     </section>
 
     <section class="faq-section">
-      <div class="section-topo">
-        <span class="tag-plano-pix">Dúvidas frequentes</span>
-        <h2>Antes de assinar</h2>
-        <p>Informações importantes sobre os planos, pagamento via Pix e liberação dos recursos.</p>
-      </div>
+      <div class="section-topo"><span class="tag-plano-pix">Dúvidas frequentes</span><h2>Antes de assinar</h2><p>Informações importantes sobre os planos, pagamento via Pix e liberação dos recursos.</p></div>
       <div class="faq-grid">
         <div class="faq-card"><strong>O Plano Grátis continua existindo?</strong><p>Sim. Você pode gerar prévia e baixar PDF no Plano Grátis, com limitações e anúncios.</p></div>
         <div class="faq-card"><strong>Quando o plano pago é liberado?</strong><p>A liberação acontece automaticamente quando o pagamento Pix for confirmado e registrado no sistema.</p></div>
@@ -283,10 +245,7 @@
         <div class="pix-qrcode-box"><img id="pix-qrcode-img" src="" alt="QR Code Pix"></div>
         <label class="pix-label">Pix copia e cola</label>
         <textarea id="pix-copia-cola" readonly></textarea>
-        <div class="pix-acoes">
-          <button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button>
-          <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button>
-        </div>
+        <div class="pix-acoes"><button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button><button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button></div>
         <p class="pix-aviso">Após o pagamento, seu plano será liberado automaticamente quando a confirmação chegar.</p>
       </div>
       <div id="pix-erro" class="pix-erro" style="display:none;"></div>
