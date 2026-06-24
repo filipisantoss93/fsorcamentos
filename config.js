@@ -8,7 +8,7 @@
    ========================================================= */
 
 const SUPABASE_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2anZob3ppcWNldmt6eXN6ZGtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3ODc4MTksImV4cCI6MjA5MDM2MzgxOX0.ptXSP5LeasQgLuIicmTrtw_on5MfijUk26hllMsegfI';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdmp2aG96aXFjZXZrenlzemRrZSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzc0Nzg3ODE5LCJleHAiOjIwOTAzNjM4MTl9.ptXSP5LeasQgLuIicmTrtw_on5MfijUk26hllMsegfI';
 
 window.SUPABASE_URL = SUPABASE_URL;
 window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
@@ -62,7 +62,7 @@ const FS_CONFIG_CSS_GLOBAIS = [
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
   ['fs-auth-redirect-guard.js?v=20260622-limpeza-gerador-1', 'fs-auth-redirect-guard-js'],
   ['fs-pwa-register.js?v=20260622-limpeza-gerador-1', 'fs-pwa-register-js'],
-  ['fs-session-cache.js?v=20260622-limpeza-gerador-1', 'fs-session-cache-js'],
+  ['fs-session-cache.js?v=20260623-cache-dados-1', 'fs-session-cache-js'],
   ['fs-menu-close-outside.js?v=20260622-limpeza-gerador-1', 'fs-menu-close-outside-js'],
   ['fs-footer-legal.js?v=20260622-limpeza-gerador-1', 'fs-footer-legal-js']
 ];
