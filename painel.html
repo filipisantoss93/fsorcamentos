@@ -9,13 +9,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Painel de Controle - FS Orçamentos</title>
+  <title>Painel - Perfil e Assinatura | FS Orçamentos</title>
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
 
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,80 +24,287 @@
   </script>
 
   <link id="fs-painel-inline-css" rel="stylesheet" href="painel-inline.css">
+  <style>
+    .painel-container-simples {
+      max-width: 980px;
+    }
+
+    .painel-header-simples {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .painel-header-simples h1 {
+      margin-bottom: 8px;
+    }
+
+    .painel-assinatura-pix {
+      display: grid;
+      gap: 16px;
+    }
+
+    .painel-pix-intro {
+      padding: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 14px;
+      background: #f8fafc;
+      color: #334155;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .painel-pix-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .painel-pix-plano {
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      background: #fff;
+      padding: 16px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .06);
+    }
+
+    .painel-pix-plano.destaque {
+      border-color: #64748b;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .10);
+    }
+
+    .painel-pix-plano h3 {
+      margin: 0 0 6px;
+      color: #111827;
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    .painel-pix-plano p {
+      margin: 0 0 14px;
+      color: #64748b;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .painel-pix-opcoes {
+      display: grid;
+      gap: 8px;
+    }
+
+    .painel-pix-opcoes button {
+      width: 100%;
+      min-height: 44px;
+      border: 0;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .painel-pix-opcoes button.secundario {
+      background: #475569;
+    }
+
+    .painel-pix-regra {
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 800;
+    }
+
+    .modal-pix-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, .68);
+    }
+
+    .modal-pix-card {
+      width: min(540px, 100%);
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      background: #fff;
+      border-radius: 18px;
+      border: 1px solid #d1d5db;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .35);
+      padding: 18px;
+    }
+
+    .modal-pix-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .modal-pix-topo strong {
+      display: block;
+      color: #111827;
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    .modal-pix-topo span {
+      display: block;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .modal-pix-topo button {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .pix-loading,
+    .pix-erro {
+      padding: 14px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #d1d5db;
+      color: #334155;
+      font-weight: 900;
+    }
+
+    .pix-erro {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #9a3412;
+    }
+
+    .pix-resumo {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .pix-resumo div {
+      padding: 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+    }
+
+    .pix-resumo small,
+    .pix-label {
+      display: block;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .pix-resumo strong {
+      color: #111827;
+      font-weight: 950;
+    }
+
+    .pix-qrcode-box {
+      text-align: center;
+      padding: 14px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      margin-bottom: 12px;
+    }
+
+    .pix-qrcode-box img {
+      max-width: 260px;
+      width: 100%;
+      height: auto;
+    }
+
+    #pix-copia-cola {
+      width: 100%;
+      min-height: 98px;
+      resize: vertical;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #111827;
+      box-sizing: border-box;
+    }
+
+    .pix-acoes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .pix-acoes button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 10px;
+      background: #111827;
+      color: #fff;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .pix-acoes button.secundario {
+      background: #475569;
+    }
+
+    .pix-aviso {
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 720px) {
+      .painel-header-simples,
+      .painel-pix-grid,
+      .pix-resumo,
+      .pix-acoes {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .painel-header-simples {
+        gap: 8px;
+      }
+    }
+  </style>
 </head>
 
 <body>
   <div id="header-container"></div>
 
   <div id="conteudo-protegido" style="display:none;">
-    <div class="container painel-container">
-      <div class="painel-header">
+    <div class="container painel-container painel-container-simples">
+      <div class="painel-header painel-header-simples">
         <div>
-          <h1>Painel de Controle</h1>
+          <h1>Painel</h1>
           <p class="painel-subtitulo">
-            Gerencie os dados da empresa, plano, orçamentos, ordens de serviço, estoque e faturamento.
+            Edite os dados da empresa, responsáveis, senha e mantenha seu plano de assinatura em dia.
           </p>
-        </div>
-
-        <div class="painel-topo-acoes">
-          <a href="gerador.html" class="btn-gerar-orcamento-painel">🧾 Gerar Orçamento</a>
         </div>
       </div>
 
       <div class="painel-aviso">
-        Mantenha seus dados atualizados. Essas informações aparecem no gerador, no PDF e no link enviado ao cliente.
+        Este painel é destinado somente à manutenção do perfil e da assinatura. Indicadores, OS, faturamento e orçamentos ficam na página Dashboard.
       </div>
-
-      <section id="painel-premium-gestao-avancada" class="painel-card painel-premium-gestao-avancada" data-plano-min="premium">
-        <h2>Gestão Premium avançada</h2>
-        <p class="painel-subtitulo">
-          Acesse relatórios mensais e controle manutenções recorrentes para transformar o FS Orçamentos em uma central de gestão.
-        </p>
-
-        <div class="painel-premium-atalhos-grid">
-          <a href="relatorios.html" class="painel-premium-atalho">
-            <strong>📊 Relatórios por serviço</strong>
-            <span>Faturamento, OS concluídas, serviços mais realizados, produtos usados, clientes e veículos.</span>
-          </a>
-
-          <a href="recorrentes.html" class="painel-premium-atalho">
-            <strong>🔁 Manutenção preventiva</strong>
-            <span>Serviços recorrentes, vencidos, próximos 7 dias e próximos 30 dias.</span>
-          </a>
-
-          <a href="agenda.html" class="painel-premium-atalho">
-            <strong>📅 Agenda de serviços</strong>
-            <span>Organize atendimentos por data, status, cliente, veículo e OS vinculada.</span>
-          </a>
-
-          <a href="ordens.html" class="painel-premium-atalho">
-            <strong>🛠️ Ordens de serviço</strong>
-            <span>Acompanhe execução, estoque, pagamento, recibo, garantia e assinatura.</span>
-          </a>
-        </div>
-
-        <div class="painel-premium-resumo-grid">
-          <div class="info-card">
-            <strong>Recorrências vencidas</strong>
-            <span id="painel-recorrentes-vencidas">-</span>
-          </div>
-
-          <div class="info-card">
-            <strong>Próximos 7 dias</strong>
-            <span id="painel-recorrentes-7">-</span>
-          </div>
-
-          <div class="info-card">
-            <strong>Faturado no mês em OS</strong>
-            <span id="painel-relatorio-faturado-mes">-</span>
-          </div>
-
-          <div class="info-card">
-            <strong>OS concluídas no mês</strong>
-            <span id="painel-relatorio-os-mes">-</span>
-          </div>
-        </div>
-      </section>
 
       <section class="painel-card">
         <h2>Dados da Empresa</h2>
@@ -173,172 +379,44 @@
 
           <div class="info-card info-card-assinatura full">
             <strong>Assinatura</strong>
-            <span>
-              <a href="/planos.html" class="btn-plano-painel">⭐ Gerenciar plano</a>
-            </span>
+            <span>Renove ou altere seu plano por Pix nesta página.</span>
           </div>
         </div>
       </section>
 
-      <section id="resumo-ordens-servico-painel" class="painel-card">
-        <div class="painel-os-topo">
-          <div>
-            <h2>Ordens de Serviço</h2>
-            <p>Resumo rápido das OS cadastradas, abertas, em execução, concluídas e valores vinculados às ordens de serviço.</p>
-          </div>
+      <section id="renovar-plano-pix-painel" class="painel-card painel-assinatura-pix">
+        <h2>Renovar plano via Pix</h2>
 
-          <a href="/ordens.html" class="btn-ver-ordens-painel">🧰 Ver ordens</a>
+        <div class="painel-pix-intro">
+          Ao renovar um plano ativo, os novos dias são somados ao prazo que você já possui. Se o plano estiver vencido, o período começa a contar a partir da confirmação do pagamento.
         </div>
 
-        <div class="painel-os-grid painel-os-resumo-grid">
-          <div class="painel-os-card">
-            <strong>Total de OS</strong>
-            <span id="painel-total-os">0</span>
-          </div>
+        <div class="painel-pix-grid">
+          <article class="painel-pix-plano">
+            <h3>Plano Básico</h3>
+            <p>Para salvar orçamentos, acompanhar status, histórico, link de aprovação, notificações e usar sem anúncios.</p>
 
-          <div class="painel-os-card">
-            <strong>Abertas</strong>
-            <span id="painel-os-abertas">0</span>
-          </div>
+            <div class="painel-pix-opcoes">
+              <button type="button" onclick="gerarPixPlanoBasico('mensal')">Renovar 1 mês · R$ 19,90</button>
+              <button type="button" class="secundario" onclick="gerarPixPlanoBasico('semestral')">Renovar 6 meses · R$ 109,90</button>
+              <button type="button" class="secundario" onclick="gerarPixPlanoBasico('anual')">Renovar 12 meses · R$ 209,90</button>
+            </div>
+          </article>
 
-          <div class="painel-os-card">
-            <strong>Em execução</strong>
-            <span id="painel-os-execucao">0</span>
-          </div>
+          <article class="painel-pix-plano destaque">
+            <h3>Plano Premium</h3>
+            <p>Para gestão completa com clientes, veículos, ordens de serviço, estoque, agenda, histórico e dashboard.</p>
 
-          <div class="painel-os-card">
-            <strong>Concluídas</strong>
-            <span id="painel-os-concluidas">0</span>
-          </div>
-
-          <div class="painel-os-card painel-os-card-full">
-            <strong>Total em OS</strong>
-            <span id="painel-total-valor-os">R$ 0,00</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="faturamento-os-painel" class="painel-card">
-        <div class="painel-os-topo">
-          <div>
-            <h2>Faturamento por OS</h2>
-            <p>
-              Estes valores devem considerar somente ordens de serviço concluídas e pagas,
-              evitando misturar orçamento aprovado com dinheiro realmente recebido.
-            </p>
-          </div>
+            <div class="painel-pix-opcoes">
+              <button type="button" onclick="gerarPixPlanoPremium('mensal')">Renovar 1 mês · R$ 69,90</button>
+              <button type="button" class="secundario" onclick="gerarPixPlanoPremium('semestral')">Renovar 6 meses · R$ 399,90</button>
+              <button type="button" class="secundario" onclick="gerarPixPlanoPremium('anual')">Renovar 12 meses · R$ 599,90</button>
+            </div>
+          </article>
         </div>
 
-        <div class="painel-grid-4 painel-grid-2">
-          <div class="painel-os-card">
-            <strong>Total faturado em OS</strong>
-            <span id="painel-faturamento-os-total">R$ 0,00</span>
-          </div>
-
-          <div class="painel-os-card">
-            <strong>Recebido no mês</strong>
-            <span id="painel-recebido-mes-os">R$ 0,00</span>
-          </div>
-
-          <div class="painel-os-card">
-            <strong>OS pagas no mês</strong>
-            <span id="painel-os-pagas-mes">0</span>
-          </div>
-
-          <div class="painel-os-card">
-            <strong>Ticket médio por OS</strong>
-            <span id="painel-ticket-medio-os">R$ 0,00</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="operacional-premium-painel" class="painel-card">
-        <div class="painel-os-topo">
-          <div>
-            <h2>Indicadores Operacionais</h2>
-            <p>Acompanhe conversão de orçamentos em OS, pendências de pagamento e produtos com estoque baixo.</p>
-          </div>
-        </div>
-
-        <div class="painel-grid-4 painel-grid-2">
-          <div class="painel-os-card">
-            <strong>Orçamentos aprovados</strong>
-            <span id="painel-orcamentos-aprovados">0</span>
-          </div>
-
-          <div class="painel-os-card">
-            <strong>Convertidos em OS</strong>
-            <span id="painel-orcamentos-convertidos-os">0</span>
-          </div>
-
-          <div class="painel-os-card">
-            <strong>OS pendentes pagamento</strong>
-            <span id="painel-os-pendentes-pagamento">0</span>
-          </div>
-
-          <div class="painel-os-card">
-            <strong>Produtos estoque baixo</strong>
-            <span id="painel-produtos-estoque-baixo">0</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="ultimas-os-finalizadas-painel" class="painel-card">
-        <div class="painel-os-topo">
-          <div>
-            <h2>Últimas OS Finalizadas</h2>
-            <p>Lista rápida das últimas ordens concluídas e pagas que entram no faturamento.</p>
-          </div>
-
-          <a href="/ordens.html" class="btn-ver-ordens-painel">🧰 Ver todas</a>
-        </div>
-
-        <div id="lista-ultimas-os-finalizadas-painel" class="painel-lista-operacional">
-          <div class="painel-aviso">Carregando últimas OS finalizadas...</div>
-        </div>
-      </section>
-
-      <section id="dashboard-painel" class="painel-card">
-        <h2>Resumo dos Orçamentos</h2>
-
-        <div class="perfil-dados-grid resumo-orcamentos-grid">
-          <div class="info-card">
-            <strong>Total de orçamentos</strong>
-            <span id="dash-total-orcamentos">0</span>
-          </div>
-
-          <div class="info-card">
-            <strong>Pendentes</strong>
-            <span id="dash-pendentes">0</span>
-          </div>
-
-          <div class="info-card">
-            <strong>Aprovados no mês</strong>
-            <span id="dash-aprovados-mes">0</span>
-          </div>
-
-          <div class="info-card">
-            <strong>Valor aprovado no mês</strong>
-            <span id="dash-valor-aprovado-mes">R$ 0,00</span>
-          </div>
-
-          <div class="info-card">
-            <strong>Taxa de aprovação</strong>
-            <span id="dash-taxa-aprovacao">0%</span>
-          </div>
-
-          <div class="info-card">
-            <strong>Última atualização</strong>
-            <span id="dash-atualizado-em">-</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="ultimos-orcamentos-painel" class="painel-card">
-        <h2>Últimos Orçamentos</h2>
-
-        <div id="lista-ultimos-orcamentos-painel">
-          <div class="painel-aviso">Carregando últimos orçamentos...</div>
+        <div class="painel-pix-regra">
+          A liberação ou renovação acontece automaticamente quando o Pix for confirmado. O sistema usa a data de vencimento atual como base quando ela ainda está no futuro.
         </div>
       </section>
     </div>
@@ -356,9 +434,7 @@
 
             <div class="logo-info">
               <h3>Logo da empresa</h3>
-              <p>
-                Envie uma imagem PNG, JPG, JPEG ou WEBP. A logo salva aqui aparecerá automaticamente no cabeçalho dos seus orçamentos.
-              </p>
+              <p>Envie uma imagem PNG, JPG, JPEG ou WEBP. A logo salva aqui aparecerá automaticamente no cabeçalho dos seus orçamentos.</p>
 
               <div class="upload-row">
                 <label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label>
@@ -443,9 +519,7 @@
       <div class="modal-painel pequeno">
         <h2>Alterar senha</h2>
 
-        <div class="dica-seguranca">
-          Para sua segurança, informe sua senha atual antes de cadastrar uma nova senha.
-        </div>
+        <div class="dica-seguranca">Para sua segurança, informe sua senha atual antes de cadastrar uma nova senha.</div>
 
         <div class="campo-painel">
           <label>Senha atual</label>
@@ -475,9 +549,7 @@
       <div class="modal-painel pequeno">
         <h2>Excluir conta</h2>
 
-        <div class="dica-seguranca dica-perigo">
-          Esta ação é permanente. Sua conta, perfil, orçamentos, notificações, responsáveis e logo serão removidos.
-        </div>
+        <div class="dica-seguranca dica-perigo">Esta ação é permanente. Sua conta, perfil, orçamentos, notificações, responsáveis e logo serão removidos.</div>
 
         <div class="campo-painel">
           <label>Digite EXCLUIR para confirmar</label>
@@ -492,6 +564,41 @@
         </div>
       </div>
     </div>
+
+    <div id="modal-pix-basico" class="modal-pix-overlay">
+      <div class="modal-pix-card">
+        <div class="modal-pix-topo">
+          <div>
+            <strong>Pagamento via Pix</strong>
+            <span id="pix-modal-subtitulo">Renovação de plano</span>
+          </div>
+          <button type="button" onclick="fecharModalPixBasico()">×</button>
+        </div>
+
+        <div id="pix-loading" class="pix-loading">Gerando Pix, aguarde...</div>
+
+        <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
+          <div class="pix-resumo">
+            <div><small>Plano</small><strong id="pix-plano-label">Plano</strong></div>
+            <div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div>
+          </div>
+
+          <div class="pix-qrcode-box"><img id="pix-qrcode-img" src="" alt="QR Code Pix"></div>
+
+          <label class="pix-label">Pix copia e cola</label>
+          <textarea id="pix-copia-cola" readonly></textarea>
+
+          <div class="pix-acoes">
+            <button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button>
+            <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button>
+          </div>
+
+          <p class="pix-aviso">Após a confirmação do Pix, seu plano será renovado automaticamente. Se você ainda tiver dias ativos, os novos dias serão somados ao vencimento atual.</p>
+        </div>
+
+        <div id="pix-erro" class="pix-erro" style="display:none;"></div>
+      </div>
+    </div>
   </div>
 
   <footer>
@@ -500,15 +607,11 @@
     <a href="/termos.html">Termos</a>
   </footer>
 
-  <button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">
-    🧾
-    <span>Gerar orçamento</span>
-  </button>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="auth.js"></script>
   <script src="ui.js"></script>
+  <script src="pagamentos.js"></script>
   <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
