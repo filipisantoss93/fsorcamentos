@@ -60,7 +60,7 @@ const FS_CONFIG_CSS_GLOBAIS = [
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
-  ['fs-auth-redirect-guard.js?v=20260622-limpeza-gerador-1', 'fs-auth-redirect-guard-js'],
+  ['fs-auth-redirect-guard.js?v=20260623-login-modal-1', 'fs-auth-redirect-guard-js'],
   ['fs-pwa-register.js?v=20260622-limpeza-gerador-1', 'fs-pwa-register-js'],
   ['fs-session-cache.js?v=20260623-cache-dados-1', 'fs-session-cache-js'],
   ['fs-menu-close-outside.js?v=20260622-limpeza-gerador-1', 'fs-menu-close-outside-js'],
