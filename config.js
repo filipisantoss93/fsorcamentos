@@ -45,24 +45,15 @@ function fsConfigBloquearZoomGlobal() {
 
     let ultimoToque = 0;
 
-    document.addEventListener('gesturestart', function(event) {
-      event.preventDefault();
-    }, { passive: false });
-
-    document.addEventListener('gesturechange', function(event) {
-      event.preventDefault();
-    }, { passive: false });
-
-    document.addEventListener('gestureend', function(event) {
-      event.preventDefault();
-    }, { passive: false });
+    document.addEventListener('gesturestart', function(event) { event.preventDefault(); }, { passive: false });
+    document.addEventListener('gesturechange', function(event) { event.preventDefault(); }, { passive: false });
+    document.addEventListener('gestureend', function(event) { event.preventDefault(); }, { passive: false });
 
     document.addEventListener('touchstart', function(event) {
       if (event.touches && event.touches.length > 1) {
         event.preventDefault();
         return;
       }
-
       const agora = Date.now();
       if (agora - ultimoToque < 320) event.preventDefault();
       ultimoToque = agora;
@@ -78,9 +69,7 @@ function fsConfigBloquearZoomGlobal() {
 
     document.addEventListener('keydown', function(event) {
       const tecla = String(event.key || '').toLowerCase();
-      if ((event.ctrlKey || event.metaKey) && ['+', '-', '=', '0'].includes(tecla)) {
-        event.preventDefault();
-      }
+      if ((event.ctrlKey || event.metaKey) && ['+', '-', '=', '0'].includes(tecla)) event.preventDefault();
     }, { passive: false });
   } catch (erro) {
     console.warn('Não foi possível aplicar bloqueio de zoom:', erro);
@@ -88,6 +77,397 @@ function fsConfigBloquearZoomGlobal() {
 }
 
 fsConfigBloquearZoomGlobal();
+
+function fsConfigInstalarEstilo(id, css) {
+  if (!id || !css || document.getElementById(id)) return;
+  const style = document.createElement('style');
+  style.id = id;
+  style.textContent = css;
+  document.head.appendChild(style);
+}
+
+function fsConfigNormalizarPaginaAtual() {
+  const path = (window.location.pathname || '/').toLowerCase();
+  return (path.split('/').pop() || 'index.html').replace('.html', '');
+}
+
+function fsConfigAplicarGestaoGridConsolidado() {
+  fsConfigInstalarEstilo('fs-pr8-consolidado-gestao-css', `
+    .clientes-hero,
+    .veiculos-hero,
+    .ordens-hero,
+    .estoque-hero,
+    .agenda-hero,
+    .relatorios-hero,
+    .recorrentes-hero {
+      display: none !important;
+    }
+
+    .clientes-resumo,
+    .veiculos-resumo,
+    .ordens-resumo,
+    .estoque-resumo,
+    .agenda-resumo,
+    .agenda-resumo-grid,
+    .relatorios-resumo,
+    .relatorios-dashboard,
+    .dashboard-relatorios,
+    .recorrentes-resumo,
+    .recorrentes-dashboard,
+    .fs-dashboard-gestao-bloco {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      margin: 0 0 18px !important;
+      padding: 14px !important;
+      background: #ffffff !important;
+      border: 1px solid #d1d5db !important;
+      border-radius: 14px !important;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .08) !important;
+    }
+
+    .fs-dashboard-gestao-cabecalho {
+      grid-column: 1 / -1 !important;
+    }
+
+    .fs-dashboard-gestao-cabecalho h2 {
+      margin: 0 !important;
+      color: #111827 !important;
+      font-size: 20px !important;
+      font-weight: 950 !important;
+    }
+
+    .fs-dashboard-gestao-cabecalho p {
+      margin: 5px 0 0 !important;
+      color: #64748b !important;
+      font-size: 13px !important;
+      font-weight: 800 !important;
+    }
+
+    .card-resumo,
+    .agenda-metrica {
+      min-height: 82px !important;
+      padding: 13px !important;
+      background: #ffffff !important;
+      border: 1px solid #d1d5db !important;
+      border-radius: 10px !important;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, .05) !important;
+    }
+
+    .card-resumo.destaque {
+      background: #475569 !important;
+      color: #ffffff !important;
+    }
+
+    .card-resumo span,
+    .agenda-metrica span {
+      color: #64748b !important;
+      font-size: 11px !important;
+      font-weight: 950 !important;
+      text-transform: uppercase !important;
+    }
+
+    .card-resumo strong,
+    .agenda-metrica strong {
+      color: #1f2937 !important;
+      font-size: 21px !important;
+      font-weight: 950 !important;
+    }
+
+    .card-resumo.destaque,
+    .card-resumo.destaque * {
+      color: #ffffff !important;
+    }
+
+    @media (max-width: 420px) {
+      .clientes-resumo,
+      .veiculos-resumo,
+      .ordens-resumo,
+      .estoque-resumo,
+      .agenda-resumo,
+      .agenda-resumo-grid,
+      .relatorios-resumo,
+      .relatorios-dashboard,
+      .dashboard-relatorios,
+      .recorrentes-resumo,
+      .recorrentes-dashboard,
+      .fs-dashboard-gestao-bloco {
+        gap: 8px !important;
+        padding: 10px !important;
+      }
+      .card-resumo,
+      .agenda-metrica {
+        min-height: 76px !important;
+        padding: 10px !important;
+      }
+      .card-resumo strong,
+      .agenda-metrica strong {
+        font-size: 18px !important;
+      }
+    }
+  `);
+
+  const pagina = fsConfigNormalizarPaginaAtual();
+  const titulos = {
+    clientes: ['.clientes-resumo', 'Dashboard de clientes', 'Resumo rápido da carteira de clientes para acompanhar relacionamento, status e recorrência.'],
+    veiculos: ['.veiculos-resumo', 'Dashboard de veículos', 'Resumo rápido da frota cadastrada para acompanhar veículos ativos, vínculos e histórico.'],
+    ordens: ['.ordens-resumo', 'Dashboard de ordens', 'Resumo rápido das OSs para acompanhar execução, conclusão e pagamentos.'],
+    estoque: ['.estoque-resumo', 'Dashboard de estoque', 'Resumo rápido dos produtos para acompanhar disponibilidade, estoque mínimo e valor em venda.'],
+    agenda: ['.agenda-resumo,.agenda-resumo-grid', 'Dashboard de agenda', 'Resumo rápido dos agendamentos para acompanhar serviços do dia, atrasos e próximos atendimentos.'],
+    relatorios: ['.relatorios-resumo,.relatorios-dashboard,.dashboard-relatorios', 'Dashboard de relatórios', 'Resumo rápido dos indicadores para acompanhar desempenho, faturamento e produtividade.'],
+    recorrentes: ['.recorrentes-resumo,.recorrentes-dashboard', 'Dashboard de recorrentes', 'Resumo rápido dos serviços recorrentes para acompanhar contratos, próximas cobranças e clientes ativos.']
+  };
+
+  function aplicarCabecalho() {
+    const info = titulos[pagina];
+    if (!info) return;
+    const bloco = document.querySelector(info[0]);
+    if (!bloco) return;
+    bloco.classList.add('fs-dashboard-gestao-bloco');
+    if (bloco.querySelector('.fs-dashboard-gestao-cabecalho')) return;
+    const cabecalho = document.createElement('div');
+    cabecalho.className = 'fs-dashboard-gestao-cabecalho';
+    cabecalho.innerHTML = `<h2>${info[1]}</h2><p>${info[2]}</p>`;
+    bloco.prepend(cabecalho);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', aplicarCabecalho);
+  else aplicarCabecalho();
+  setTimeout(aplicarCabecalho, 300);
+  setTimeout(aplicarCabecalho, 900);
+}
+
+function fsConfigEscaparHTML(valor) {
+  return String(valor ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function fsConfigNumero(valor) {
+  if (valor === null || valor === undefined || valor === '') return 0;
+  if (typeof valor === 'number') return Number.isFinite(valor) ? valor : 0;
+  let texto = String(valor).replace(/[^\d.,-]/g, '');
+  if (!texto) return 0;
+  if (texto.includes(',')) texto = texto.replace(/\./g, '').replace(',', '.');
+  const numero = Number(texto);
+  return Number.isFinite(numero) ? numero : 0;
+}
+
+function fsConfigMoeda(valor) {
+  return fsConfigNumero(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function fsConfigQtd(valor) {
+  const numero = fsConfigNumero(valor);
+  return numero.toLocaleString('pt-BR', {
+    minimumFractionDigits: numero % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function fsConfigInstalarEstoqueTabelaConsolidada() {
+  if (fsConfigNormalizarPaginaAtual() !== 'estoque') return;
+
+  fsConfigInstalarEstilo('fs-pr8-consolidado-estoque-css', `
+    #lista-produtos-estoque {
+      display: block !important;
+      width: 100% !important;
+      overflow: visible !important;
+    }
+
+    .fs-tabela-lista-wrapper {
+      width: 100% !important;
+      overflow-x: auto !important;
+      background: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+      border-radius: 10px !important;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .06) !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
+    .fs-tabela-lista {
+      width: 100% !important;
+      min-width: 1040px !important;
+      border-collapse: collapse !important;
+      table-layout: fixed !important;
+      margin: 0 !important;
+      background: #ffffff !important;
+    }
+
+    .fs-tabela-lista th,
+    .fs-tabela-lista td {
+      padding: 8px 9px !important;
+      border-bottom: 1px solid #e5e7eb !important;
+      text-align: left !important;
+      color: #111827 !important;
+      font-size: 12px !important;
+      vertical-align: middle !important;
+      word-break: break-word !important;
+    }
+
+    .fs-tabela-lista th {
+      background: #f3f4f6 !important;
+      color: #111827 !important;
+      text-transform: uppercase !important;
+      font-weight: 950 !important;
+      font-size: 11px !important;
+    }
+
+    .fs-tabela-lista tr:nth-child(even) { background: #f9fafb !important; }
+    .fs-tabela-lista tr:hover { background: #f3f4f6 !important; }
+    .fs-tabela-lista small { display: block !important; color: #6b7280 !important; font-size: 10.5px !important; margin-top: 2px !important; }
+
+    .fs-tabela-acoes {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 4px !important;
+      justify-content: flex-end !important;
+    }
+
+    .fs-tabela-acoes button {
+      min-height: 28px !important;
+      padding: 5px 7px !important;
+      border: 1px solid #d1d5db !important;
+      background: #ffffff !important;
+      color: #111827 !important;
+      border-radius: 6px !important;
+      font-size: 11px !important;
+      font-weight: 900 !important;
+      box-shadow: none !important;
+    }
+
+    .fs-tabela-acoes .verde { background: #ecfdf5 !important; color: #166534 !important; border-color: #bbf7d0 !important; }
+    .fs-tabela-acoes .laranja { background: #fff7ed !important; color: #9a3412 !important; border-color: #fed7aa !important; }
+    .fs-tabela-acoes .perigo { background: #fff5f5 !important; color: #b91c1c !important; border-color: #fecaca !important; }
+
+    .fs-status-mini {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-height: 20px !important;
+      padding: 2px 6px !important;
+      border-radius: 999px !important;
+      background: #f1f5f9 !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #334155 !important;
+      font-size: 10.5px !important;
+      font-weight: 950 !important;
+      margin: 1px !important;
+      white-space: nowrap !important;
+    }
+
+    .fs-status-mini.ativo { background: #ecfdf5 !important; border-color: #bbf7d0 !important; color: #166534 !important; }
+    .fs-status-mini.inativo { background: #f8fafc !important; border-color: #cbd5e1 !important; color: #475569 !important; }
+    .fs-status-mini.baixo { background: #fff7ed !important; border-color: #fed7aa !important; color: #9a3412 !important; }
+  `);
+
+  function nomeProduto(produto) {
+    return String(produto?.nome || produto?.descricao || '').trim() || 'Produto sem descrição';
+  }
+
+  function aplicacaoProduto(produto) {
+    if (produto?.produto_universal === true) return 'Universal';
+    const anos = [produto?.ano_inicial, produto?.ano_final].filter(Boolean).join(' a ');
+    return [produto?.marca_veiculo, produto?.modelo_veiculo, produto?.versao_veiculo, produto?.motor_veiculo, anos || produto?.aplicacao]
+      .filter(Boolean)
+      .join(' • ') || '-';
+  }
+
+  function estoqueBaixo(produto) {
+    if (produto?.ativo === false || produto?.controlar_estoque === false) return false;
+    return fsConfigNumero(produto?.quantidade_atual) <= fsConfigNumero(produto?.estoque_minimo);
+  }
+
+  function renderTabela(lista) {
+    const container = document.getElementById('lista-produtos-estoque');
+    if (!container) return;
+    const produtos = Array.isArray(lista) ? lista : [];
+    window.produtosEstoqueCache = produtos;
+
+    if (!produtos.length) {
+      container.innerHTML = '<div class="estado-vazio"><strong>Nenhum produto encontrado</strong><p>Cadastre produtos ou ajuste os filtros.</p></div>';
+      return;
+    }
+
+    const linhas = produtos.map((produto) => {
+      const id = fsConfigEscaparHTML(produto.id || '');
+      const nome = fsConfigEscaparHTML(nomeProduto(produto));
+      const codigo = fsConfigEscaparHTML(produto.codigo || produto.codigo_original || produto.codigo_fabricante || '-');
+      const fabricante = fsConfigEscaparHTML(produto.fabricante || produto.marca || '-');
+      const categoria = fsConfigEscaparHTML(produto.categoria || 'Sem categoria');
+      const subcategoria = fsConfigEscaparHTML(produto.subcategoria || 'Sem subcategoria');
+      const aplicacao = fsConfigEscaparHTML(aplicacaoProduto(produto));
+      const unidade = fsConfigEscaparHTML(produto.unidade || 'un');
+      const quantidade = produto.controlar_estoque === false ? 'S/ctrl' : `${fsConfigQtd(produto.quantidade_atual)} ${unidade}`;
+      const minimo = produto.controlar_estoque === false ? 'Sem controle' : `${fsConfigQtd(produto.estoque_minimo)} ${unidade}`;
+      const venda = fsConfigMoeda(produto.valor_venda);
+      const custo = fsConfigMoeda(produto.valor_custo);
+      const status = [
+        produto.ativo === false ? '<span class="fs-status-mini inativo">Inativo</span>' : '<span class="fs-status-mini ativo">Ativo</span>',
+        produto.controlar_estoque === false ? '<span class="fs-status-mini inativo">Sem controle</span>' : '',
+        estoqueBaixo(produto) ? '<span class="fs-status-mini baixo">Baixo</span>' : ''
+      ].filter(Boolean).join('');
+
+      return `
+        <tr>
+          <td><strong>${codigo}</strong><small>${categoria}</small></td>
+          <td><strong>${nome}</strong><small>${subcategoria}</small></td>
+          <td>${fabricante}<small>${aplicacao}</small></td>
+          <td style="text-align:right;"><strong>${quantidade}</strong><small>Mín: ${minimo}</small></td>
+          <td style="text-align:right;"><strong>${venda}</strong><small>Custo: ${custo}</small></td>
+          <td>${status}</td>
+          <td>
+            <div class="fs-tabela-acoes">
+              <button type="button" onclick="editarProdutoEstoque('${id}')">Editar</button>
+              <button type="button" class="verde" onclick="abrirModalMovimentacaoEstoque('${id}', 'entrada')">Entrada</button>
+              <button type="button" class="laranja" onclick="abrirModalMovimentacaoEstoque('${id}', 'saida')">Saída</button>
+              <button type="button" onclick="abrirModalMovimentacaoEstoque('${id}', 'ajuste')">Ajuste</button>
+              <button type="button" class="perigo" onclick="excluirProdutoEstoque('${id}')">Excluir</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    container.innerHTML = `
+      <div class="fs-tabela-lista-wrapper">
+        <table class="fs-tabela-lista">
+          <thead>
+            <tr>
+              <th style="width:120px;">Código</th>
+              <th style="width:210px;">Produto</th>
+              <th style="width:240px;">Aplicação</th>
+              <th style="width:120px;text-align:right;">Qtd</th>
+              <th style="width:130px;text-align:right;">Valor</th>
+              <th style="width:120px;">Status</th>
+              <th style="width:260px;text-align:right;">Ações</th>
+            </tr>
+          </thead>
+          <tbody>${linhas}</tbody>
+        </table>
+      </div>`;
+  }
+
+  function instalarOverride() {
+    if (window.__fsEstoqueTabelaConsolidada === true) return;
+    if (typeof window.renderizarProdutosEstoque !== 'function') return;
+    window.__fsEstoqueTabelaConsolidada = true;
+    window.renderizarProdutosEstoqueOriginal = window.renderizarProdutosEstoque;
+    window.renderizarProdutosEstoque = renderTabela;
+    if (Array.isArray(window.produtosEstoqueCache) && window.produtosEstoqueCache.length) renderTabela(window.produtosEstoqueCache);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', instalarOverride);
+  else instalarOverride();
+  [100, 300, 700, 1200, 2200, 4000].forEach((tempo) => setTimeout(instalarOverride, tempo));
+}
+
+function fsConfigAplicarCorrecoesPR8Consolidadas() {
+  fsConfigAplicarGestaoGridConsolidado();
+  fsConfigInstalarEstoqueTabelaConsolidada();
+}
 
 function fsConfigDecodificarPayloadJwt(token) {
   try {
@@ -131,6 +511,7 @@ else inicializarSupabaseFS();
 window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
 window.fsConfigBloquearZoomGlobal = fsConfigBloquearZoomGlobal;
+window.fsConfigAplicarCorrecoesPR8Consolidadas = fsConfigAplicarCorrecoesPR8Consolidadas;
 
 const FS_CONFIG_CSS_GLOBAIS = [
   ['fs-theme-cinza.css?v=20260622-limpeza-gerador-1', 'fs-theme-cinza-css']
@@ -200,6 +581,7 @@ function fsConfigCarregarAjustesPagina() {
   const pathAtual = fsConfigNormalizarPathAtual();
   const modoEmbed = fsConfigModoEmbed();
   fsConfigBloquearZoomGlobal();
+  fsConfigAplicarCorrecoesPR8Consolidadas();
   fsConfigCarregarListaCss(FS_CONFIG_CSS_GLOBAIS);
   fsConfigCarregarCssDaPagina(pathAtual);
   if (modoEmbed) return;
