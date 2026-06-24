@@ -13,6 +13,82 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdmp2
 window.SUPABASE_URL = SUPABASE_URL;
 window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
 
+function fsConfigBloquearZoomGlobal() {
+  try {
+    const conteudoViewport = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover';
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      viewport = document.createElement('meta');
+      viewport.setAttribute('name', 'viewport');
+      document.head.appendChild(viewport);
+    }
+    viewport.setAttribute('content', conteudoViewport);
+
+    if (!document.getElementById('fs-bloqueio-zoom-css')) {
+      const style = document.createElement('style');
+      style.id = 'fs-bloqueio-zoom-css';
+      style.textContent = `
+        html, body {
+          touch-action: manipulation;
+          -ms-touch-action: manipulation;
+          overscroll-behavior-x: none;
+        }
+        input, select, textarea, button {
+          font-size: 16px !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    if (window.__fsZoomBloqueado === true) return;
+    window.__fsZoomBloqueado = true;
+
+    let ultimoToque = 0;
+
+    document.addEventListener('gesturestart', function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gesturechange', function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gestureend', function(event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchstart', function(event) {
+      if (event.touches && event.touches.length > 1) {
+        event.preventDefault();
+        return;
+      }
+
+      const agora = Date.now();
+      if (agora - ultimoToque < 320) event.preventDefault();
+      ultimoToque = agora;
+    }, { passive: false });
+
+    document.addEventListener('touchmove', function(event) {
+      if (event.touches && event.touches.length > 1) event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('wheel', function(event) {
+      if (event.ctrlKey || event.metaKey) event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('keydown', function(event) {
+      const tecla = String(event.key || '').toLowerCase();
+      if ((event.ctrlKey || event.metaKey) && ['+', '-', '=', '0'].includes(tecla)) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+  } catch (erro) {
+    console.warn('Não foi possível aplicar bloqueio de zoom:', erro);
+  }
+}
+
+fsConfigBloquearZoomGlobal();
+
 function fsConfigDecodificarPayloadJwt(token) {
   try {
     const partes = String(token || '').split('.');
@@ -54,13 +130,14 @@ else inicializarSupabaseFS();
 
 window.inicializarSupabaseFS = inicializarSupabaseFS;
 window.fsConfigValidarChaveSupabase = fsConfigValidarChaveSupabase;
+window.fsConfigBloquearZoomGlobal = fsConfigBloquearZoomGlobal;
 
 const FS_CONFIG_CSS_GLOBAIS = [
   ['fs-theme-cinza.css?v=20260622-limpeza-gerador-1', 'fs-theme-cinza-css']
 ];
 
 const FS_CONFIG_SCRIPTS_GLOBAIS = [
-  ['fs-auth-redirect-guard.js?v=20260623-login-modal-1', 'fs-auth-redirect-guard-js'],
+  ['fs-auth-redirect-guard.js?v=20260623-login-google-2', 'fs-auth-redirect-guard-js'],
   ['fs-pwa-register.js?v=20260622-limpeza-gerador-1', 'fs-pwa-register-js'],
   ['fs-session-cache.js?v=20260623-cache-dados-1', 'fs-session-cache-js'],
   ['fs-menu-close-outside.js?v=20260622-limpeza-gerador-1', 'fs-menu-close-outside-js'],
@@ -122,6 +199,7 @@ function fsConfigModoEmbed() {
 function fsConfigCarregarAjustesPagina() {
   const pathAtual = fsConfigNormalizarPathAtual();
   const modoEmbed = fsConfigModoEmbed();
+  fsConfigBloquearZoomGlobal();
   fsConfigCarregarListaCss(FS_CONFIG_CSS_GLOBAIS);
   fsConfigCarregarCssDaPagina(pathAtual);
   if (modoEmbed) return;
