@@ -27,6 +27,14 @@ function html(v) {
     .replace(/'/g, '&#039;');
 }
 
+function normalizar(v) {
+  return String(v || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
 function iso(d) {
   return d.toISOString().slice(0, 10);
 }
@@ -92,7 +100,8 @@ function datasPadrao() {
 function configurarEventosFluxoCaixa() {
   document.getElementById('form-caixa')?.addEventListener('submit', salvarLancamento);
   document.getElementById('cx-modo')?.addEventListener('change', atualizarModoLancamentoCaixa);
-  document.getElementById('cx-produto-id')?.addEventListener('change', preencherProdutoVendaEstoqueCaixa);
+  document.getElementById('cx-produto-busca')?.addEventListener('input', renderProdutosEstoqueCaixa);
+  document.getElementById('cx-produto-busca')?.addEventListener('keydown', selecionarPrimeiroProdutoComEnter);
   document.getElementById('cx-produto-quantidade')?.addEventListener('input', atualizarTotalVendaEstoqueCaixa);
   document.getElementById('cx-produto-valor-unitario')?.addEventListener('input', atualizarTotalVendaEstoqueCaixa);
 
@@ -132,6 +141,7 @@ function ocultarFormularioCaixa() {
   setVal('cx-data', iso(new Date()));
   setVal('cx-tipo', 'entrada');
   setVal('cx-forma', 'pix');
+  limparProdutoVendaEstoqueCaixa();
   msg('');
   atualizarModoLancamentoCaixa();
 }
@@ -147,7 +157,8 @@ function atualizarModoLancamentoCaixa() {
     setVal('cx-tipo', 'entrada');
     if (tipo) tipo.disabled = true;
     if (!val('cx-categoria')) setVal('cx-categoria', 'Venda de peça');
-    preencherProdutoVendaEstoqueCaixa();
+    renderProdutosEstoqueCaixa();
+    atualizarTotalVendaEstoqueCaixa();
   } else {
     if (tipo) tipo.disabled = false;
     atualizarTotalVendaEstoqueCaixa();
@@ -155,41 +166,144 @@ function atualizarModoLancamentoCaixa() {
 }
 
 async function carregarProdutosEstoqueCaixa() {
-  const select = document.getElementById('cx-produto-id');
-  if (!select || !CX.userId) return;
+  const resultado = document.getElementById('cx-produtos-resultados');
+  const contador = document.getElementById('cx-produtos-contador');
 
   try {
+    if (contador) contador.textContent = 'Carregando produtos...';
+    if (resultado) resultado.innerHTML = '<div class="cx-empty">Carregando produtos...</div>';
+
     const { data, error } = await _supabase
       .from('produtos_estoque')
-      .select('id,nome,codigo,unidade,valor_venda,valor_custo,quantidade_atual,controlar_estoque,ativo,categoria,subcategoria')
+      .select('*')
       .eq('user_id', CX.userId)
       .eq('ativo', true)
       .order('nome', { ascending: true })
-      .limit(500);
+      .limit(1000);
 
     if (error) {
       console.warn('Não foi possível carregar produtos do estoque:', error);
       CX.produtos = [];
-      select.innerHTML = '<option value="">Erro ao carregar produtos</option>';
+      if (contador) contador.textContent = 'Erro ao carregar produtos.';
+      if (resultado) resultado.innerHTML = '<div class="cx-empty">Erro ao carregar produtos do estoque.</div>';
       return;
     }
 
     CX.produtos = Array.isArray(data) ? data : [];
-    if (!CX.produtos.length) {
-      select.innerHTML = '<option value="">Nenhum produto cadastrado no estoque</option>';
-      return;
-    }
-
-    select.innerHTML = '<option value="">Selecione um produto</option>' + CX.produtos.map(produto => {
-      const nome = produto.nome || 'Produto sem nome';
-      const qtd = produto.controlar_estoque === false ? 'sem controle' : `${Number(produto.quantidade_atual || 0)} ${produto.unidade || 'un'}`;
-      return `<option value="${html(produto.id)}">${html(nome)} — ${html(qtd)} — ${html(moeda(produto.valor_venda || 0))}</option>`;
-    }).join('');
+    renderProdutosEstoqueCaixa();
   } catch (erro) {
     console.warn('Erro inesperado ao carregar produtos:', erro);
     CX.produtos = [];
-    select.innerHTML = '<option value="">Erro ao carregar produtos</option>';
+    if (contador) contador.textContent = 'Erro ao carregar produtos.';
+    if (resultado) resultado.innerHTML = '<div class="cx-empty">Erro ao carregar produtos do estoque.</div>';
   }
+}
+
+function renderProdutosEstoqueCaixa() {
+  const resultado = document.getElementById('cx-produtos-resultados');
+  const contador = document.getElementById('cx-produtos-contador');
+  if (!resultado) return;
+
+  if (!CX.produtos.length) {
+    if (contador) contador.textContent = 'Nenhum produto ativo no estoque.';
+    resultado.innerHTML = '<div class="cx-empty">Nenhum produto ativo cadastrado no estoque.</div>';
+    return;
+  }
+
+  const termo = normalizar(val('cx-produto-busca'));
+  const selecionado = val('cx-produto-id');
+  let lista = CX.produtos;
+
+  if (termo) {
+    lista = CX.produtos.filter(produto => textoBuscaProdutoEstoque(produto).includes(termo));
+  }
+
+  const totalFiltrado = lista.length;
+  lista = lista.slice(0, 40);
+
+  if (contador) {
+    const base = termo ? `Encontrados ${totalFiltrado} de ${CX.produtos.length} produtos` : `Exibindo 40 primeiros de ${CX.produtos.length} produtos`;
+    contador.textContent = totalFiltrado > 40 ? `${base}. Refine a busca para ver menos resultados.` : base;
+  }
+
+  if (!lista.length) {
+    resultado.innerHTML = '<div class="cx-empty">Nenhum produto encontrado para essa busca.</div>';
+    return;
+  }
+
+  resultado.innerHTML = `
+    <table class="cx-produtos-table">
+      <thead>
+        <tr><th>Produto</th><th>Categoria</th><th>Estoque</th><th>Valor venda</th></tr>
+      </thead>
+      <tbody>${lista.map(produto => linhaProdutoEstoqueCaixa(produto, selecionado)).join('')}</tbody>
+    </table>`;
+}
+
+function textoBuscaProdutoEstoque(produto) {
+  return normalizar([
+    produto.nome,
+    produto.codigo,
+    produto.codigo_original,
+    produto.codigo_fabricante,
+    produto.categoria,
+    produto.subcategoria,
+    produto.descricao,
+    produto.aplicacao,
+    produto.marca_veiculo,
+    produto.modelo_veiculo,
+    produto.versao_veiculo,
+    produto.motor_veiculo
+  ].filter(Boolean).join(' '));
+}
+
+function linhaProdutoEstoqueCaixa(produto, selecionado) {
+  const id = html(produto.id);
+  const ativo = String(produto.id) === String(selecionado) ? ' selecionado' : '';
+  const nome = produto.nome || 'Produto sem nome';
+  const codigo = produto.codigo || produto.codigo_original || produto.codigo_fabricante || '';
+  const categoria = [produto.categoria, produto.subcategoria].filter(Boolean).join(' / ') || '-';
+  const aplicacao = [produto.marca_veiculo, produto.modelo_veiculo, produto.aplicacao].filter(Boolean).join(' • ');
+  const controla = produto.controlar_estoque !== false;
+  const estoque = controla ? `${Number(produto.quantidade_atual || 0)} ${produto.unidade || 'un'}` : 'Sem controle';
+  const valorVenda = Number(produto.valor_venda || produto.valor_custo || 0);
+
+  return `
+    <tr class="cx-produto-row${ativo}" onclick="selecionarProdutoVendaEstoqueCaixa('${id}')">
+      <td><strong>${html(nome)}</strong>${codigo ? `<small>Código: ${html(codigo)}</small>` : ''}${aplicacao ? `<small>${html(aplicacao)}</small>` : ''}</td>
+      <td>${html(categoria)}</td>
+      <td>${html(estoque)}</td>
+      <td><strong>${html(moeda(valorVenda))}</strong></td>
+    </tr>`;
+}
+
+function selecionarPrimeiroProdutoComEnter(event) {
+  if (event.key !== 'Enter') return;
+  event.preventDefault();
+  const termo = normalizar(val('cx-produto-busca'));
+  const lista = termo ? CX.produtos.filter(produto => textoBuscaProdutoEstoque(produto).includes(termo)) : CX.produtos;
+  if (lista.length) selecionarProdutoVendaEstoqueCaixa(lista[0].id);
+}
+
+function selecionarProdutoVendaEstoqueCaixa(id) {
+  const produto = CX.produtos.find(item => String(item.id) === String(id));
+  if (!produto) return;
+
+  setVal('cx-produto-id', produto.id);
+  setVal('cx-produto-busca', produto.nome || '');
+  preencherProdutoVendaEstoqueCaixa();
+  renderProdutosEstoqueCaixa();
+}
+
+function limparProdutoVendaEstoqueCaixa() {
+  setVal('cx-produto-id', '');
+  setVal('cx-produto-busca', '');
+  setVal('cx-produto-quantidade', '');
+  setVal('cx-produto-valor-unitario', '');
+  set('cx-produto-total', moeda(0));
+  const selecionado = document.getElementById('cx-produto-selecionado');
+  if (selecionado) selecionado.innerHTML = 'Nenhum produto selecionado.';
+  renderProdutosEstoqueCaixa();
 }
 
 function produtoSelecionadoCaixa() {
@@ -199,16 +313,28 @@ function produtoSelecionadoCaixa() {
 
 function preencherProdutoVendaEstoqueCaixa() {
   const produto = produtoSelecionadoCaixa();
+  const box = document.getElementById('cx-produto-selecionado');
 
   if (!produto) {
+    if (box) box.innerHTML = 'Nenhum produto selecionado.';
     atualizarTotalVendaEstoqueCaixa();
     return;
   }
 
+  const controla = produto.controlar_estoque !== false;
+  const estoque = controla ? `${Number(produto.quantidade_atual || 0)} ${produto.unidade || 'un'}` : 'Sem controle de estoque';
+  const codigo = produto.codigo || produto.codigo_original || produto.codigo_fabricante || '-';
+  const valorPadrao = produto.valor_venda || produto.valor_custo || 0;
+
   if (!val('cx-produto-quantidade')) setVal('cx-produto-quantidade', '1');
-  setVal('cx-produto-valor-unitario', numeroParaInput(produto.valor_venda || produto.valor_custo || 0));
+  setVal('cx-produto-valor-unitario', numeroParaInput(valorPadrao));
   setVal('cx-categoria', 'Venda de peça');
   setVal('cx-descricao', `Venda de ${produto.nome || 'produto do estoque'}`);
+
+  if (box) {
+    box.innerHTML = `<strong>${html(produto.nome || 'Produto selecionado')}</strong>Código: ${html(codigo)} • Estoque: ${html(estoque)} • Valor: ${html(moeda(valorPadrao))}`;
+  }
+
   atualizarTotalVendaEstoqueCaixa();
 }
 
@@ -257,7 +383,7 @@ async function salvarLancamento(e) {
 
 async function salvarVendaEstoqueCaixa() {
   const produto = produtoSelecionadoCaixa();
-  if (!produto) return msg('Selecione um produto do estoque.', 'erro');
+  if (!produto) return msg('Selecione um produto do estoque clicando em uma linha da tabela.', 'erro');
 
   const quantidade = numero('cx-produto-quantidade');
   const valorUnitario = numero('cx-produto-valor-unitario');
@@ -444,3 +570,4 @@ window.carregarFluxoCaixa = carregarFluxoCaixa;
 window.mostrarFormularioCaixa = mostrarFormularioCaixa;
 window.ocultarFormularioCaixa = ocultarFormularioCaixa;
 window.excluirLancamentoCaixa = excluirLancamentoCaixa;
+window.selecionarProdutoVendaEstoqueCaixa = selecionarProdutoVendaEstoqueCaixa;
