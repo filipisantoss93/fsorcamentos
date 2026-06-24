@@ -19,6 +19,26 @@ const FS_ROTAS_PROTEGIDAS_MENU = [
   '/fluxo-caixa.html', '/fluxo-caixa'
 ];
 
+const FS_ROTAS_BASICO_MENU = [
+  '/painel.html', '/painel',
+  '/orcamentos.html', '/orcamentos',
+  '/forum.html', '/forum'
+];
+
+const FS_ROTAS_PREMIUM_MENU = [
+  '/dashboard.html', '/dashboard',
+  '/gestao.html', '/gestao',
+  '/clientes.html', '/clientes',
+  '/veiculos.html', '/veiculos',
+  '/ordens.html', '/ordens',
+  '/ordem.html', '/ordem',
+  '/estoque.html', '/estoque',
+  '/agenda.html', '/agenda',
+  '/relatorios.html', '/relatorios',
+  '/recorrentes.html', '/recorrentes',
+  '/fluxo-caixa.html', '/fluxo-caixa'
+];
+
 function fsModoEmbedGestao() {
   try {
     const params = new URLSearchParams(window.location.search);
@@ -89,7 +109,7 @@ function fsPaginaAtual() {
 
 function fsEstaNaPaginaGerador() {
   const path = fsPaginaAtual();
-  return path.endsWith('/gerador.html') || path.endsWith('gerador.html');
+  return path.endsWith('/gerador.html') || path.endsWith('gerador.html') || path.endsWith('/gerador');
 }
 
 function fsEstaNaHome() {
@@ -108,9 +128,53 @@ function fsDestinoProtegidoMenu(href) {
   }
 }
 
+function fsNormalizarPathMenu(destino) {
+  let path = String(destino || '').split('?')[0].split('#')[0].replace(/\/$/, '').toLowerCase();
+  if (!path) path = '/index.html';
+  return path;
+}
+
+function fsListaContemRotaMenu(lista, destino) {
+  const path = fsNormalizarPathMenu(destino);
+  return lista.some(rota => path === rota || path === rota.replace(/\.html$/, ''));
+}
+
 function fsEhRotaProtegidaMenu(destino) {
-  const path = String(destino || '').split('?')[0].split('#')[0].replace(/\/$/, '').toLowerCase();
-  return FS_ROTAS_PROTEGIDAS_MENU.some(rota => path === rota || path === rota.replace(/\.html$/, ''));
+  return fsListaContemRotaMenu(FS_ROTAS_PROTEGIDAS_MENU, destino);
+}
+
+function fsPlanoMinimoDaRotaMenu(destino) {
+  if (!fsEhRotaProtegidaMenu(destino)) return 'publico';
+  if (fsListaContemRotaMenu(FS_ROTAS_PREMIUM_MENU, destino)) return 'premium';
+  if (fsListaContemRotaMenu(FS_ROTAS_BASICO_MENU, destino)) return 'basico';
+  return 'gratis';
+}
+
+function fsPlanoMenuAtual() {
+  return fsNormalizarTextoMenu(localStorage.getItem('usuario_plano') || 'gratis');
+}
+
+function fsPlanoMenuOrdem(plano) {
+  const p = fsNormalizarTextoMenu(plano);
+  if (p === 'premium') return 2;
+  if (p === 'basico') return 1;
+  return 0;
+}
+
+function fsPlanoPermiteDestinoMenu(destino, plano = fsPlanoMenuAtual()) {
+  const minimo = fsPlanoMinimoDaRotaMenu(destino);
+  if (minimo === 'publico') return true;
+  return fsPlanoMenuOrdem(plano) >= fsPlanoMenuOrdem(minimo);
+}
+
+function fsRedirecionarIndexSePlanoNaoPermite(session, destino = fsPaginaAtual()) {
+  if (!session?.user?.id) return false;
+  if (!fsEhRotaProtegidaMenu(destino)) return false;
+  if (fsPlanoPermiteDestinoMenu(destino)) return false;
+
+  try { localStorage.removeItem('fs_destino_apos_login'); } catch (_) {}
+  window.location.replace('/index.html');
+  return true;
 }
 
 function fsSalvarDestinoProtegidoMenu(destino) {
@@ -189,14 +253,22 @@ function configurarLinksDoHeader() {
       }
 
       const session = await obterSessaoAtualMenu();
-      if (session?.user?.id) {
-        fecharMenuMobileSeAberto();
+      if (!session?.user?.id) {
+        event.preventDefault();
+        event.stopPropagation();
+        fsAbrirLoginParaDestinoProtegido(destino);
         return;
       }
 
-      event.preventDefault();
-      event.stopPropagation();
-      fsAbrirLoginParaDestinoProtegido(destino);
+      if (!fsPlanoPermiteDestinoMenu(destino)) {
+        event.preventDefault();
+        event.stopPropagation();
+        fecharMenuMobileSeAberto();
+        window.location.href = '/index.html';
+        return;
+      }
+
+      fecharMenuMobileSeAberto();
     });
   });
 }
@@ -213,17 +285,6 @@ function marcarLinkAtivoHeader() {
     link.classList.remove('ativo');
     if (hrefNormalizado && (paginaAtual === hrefNormalizado || paginaAtual.endsWith(hrefNormalizado))) link.classList.add('ativo');
   });
-}
-
-function fsPlanoMenuAtual() {
-  return fsNormalizarTextoMenu(localStorage.getItem('usuario_plano') || 'gratis');
-}
-
-function fsPlanoMenuOrdem(plano) {
-  const p = fsNormalizarTextoMenu(plano);
-  if (p === 'premium') return 2;
-  if (p === 'basico') return 1;
-  return 0;
 }
 
 function aplicarVisibilidadeMenuPorPlano() {
@@ -299,12 +360,15 @@ async function atualizarHeaderUsuario(session) {
     }
   } catch (_) {}
 
+  const nivelAtual = fsPlanoMenuOrdem(fsPlanoMenuAtual());
+
   saudacao.innerText = `Olá, ${nomeFinal}`;
   if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'none';
   if (btnSairDesktop) btnSairDesktop.style.display = 'inline-flex';
   if (btnEntrarMobile) btnEntrarMobile.style.display = 'none';
   if (btnSairMobile) btnSairMobile.style.display = 'inline-flex';
-  if (btnNotificacoes) btnNotificacoes.style.display = 'inline-flex';
+  if (btnNotificacoes) btnNotificacoes.style.display = nivelAtual >= 1 ? 'inline-flex' : 'none';
+  if (contadorNotificacoes && nivelAtual < 1) contadorNotificacoes.style.display = 'none';
   aplicarVisibilidadeMenuPorPlano();
 }
 
@@ -426,6 +490,7 @@ async function carregarMenu(sessionRecebida = undefined) {
     const session = sessionRecebida === undefined ? await obterSessaoAtualMenu() : sessionRecebida;
     await atualizarHeaderUsuario(session || null);
     aplicarVisibilidadeMenuPorPlano();
+    if (fsRedirecionarIndexSePlanoNaoPermite(session || null, fsPaginaAtual())) return;
     await controlarBotaoFlutuanteGeradorGlobal(session || null);
     configurarHeaderInteligente();
   } catch (error) {
@@ -448,6 +513,8 @@ async function inicializarMenuFS() {
     return;
   }
 
+  if (fsRedirecionarIndexSePlanoNaoPermite(sessionInicial || null, destinoAtual)) return;
+
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
 
@@ -456,6 +523,7 @@ async function inicializarMenuFS() {
       removerCssObsoletoTemaMarrom();
       await atualizarHeaderUsuario(session || null);
       aplicarVisibilidadeMenuPorPlano();
+      if (fsRedirecionarIndexSePlanoNaoPermite(session || null, fsPaginaAtual())) return;
       await controlarBotaoFlutuanteGeradorGlobal(session || null);
       if (!session) removerBotaoFlutuanteGeradorGlobal();
       configurarHeaderInteligente();
@@ -481,3 +549,5 @@ window.inicializarMenuFS = inicializarMenuFS;
 window.fsAbrirLoginParaDestinoProtegido = fsAbrirLoginParaDestinoProtegido;
 window.fsSalvarDestinoProtegidoMenu = fsSalvarDestinoProtegidoMenu;
 window.removerCssObsoletoTemaMarrom = removerCssObsoletoTemaMarrom;
+window.fsRedirecionarIndexSePlanoNaoPermite = fsRedirecionarIndexSePlanoNaoPermite;
+window.fsPlanoPermiteDestinoMenu = fsPlanoPermiteDestinoMenu;
