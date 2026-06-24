@@ -1,949 +1,31 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#f8fafc">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Ordens de Serviço - FS Orçamentos</title>
+  <meta name="description" content="Gerencie ordens de serviço, clientes, execução, pagamentos e histórico no FS Orçamentos.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
 
-  <meta name="description" content="Gerencie ordens de serviço, clientes, execução, pagamentos e histórico no FS Orçamentos." />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
-
-  <link rel="stylesheet" href="style.css" />
-  <link id="fs-ordens-inline-css" rel="stylesheet" href="ordens-inline.css" />
-
-<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
-<style id="fs-formal-theme-overrides">
-  :root {
-    --fs-marrom: #3e2723;
-    --fs-marrom-2: #5d4037;
-    --fs-fundo-escuro: #f7f2ea;
-    --fs-fundo: #f7f2ea;
-    --fs-page-bg: #f7f2ea;
-    --fs-page-bg-2: #efe3d2;
-    --fs-card: #ffffff;
-    --fs-creme: #f4ece1;
-    --fs-creme-2: #fffaf0;
-    --fs-bege: #f4ece1;
-    --fs-bege-2: #fffaf0;
-    --fs-amarelo: #ffc400;
-    --fs-borda: #e8dccb;
-    --fs-texto: #2f241f;
-    --fs-texto-suave: #6d5b52;
-    --bg-dark: #f7f2ea;
-    --body-brown: #ffffff;
-    --text-dark: #2f241f;
-    --accent-yellow: #ffc400;
-  }
-
-  body:not(.gerando-pdf) {
-    background:
-      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
-    color: #2f241f !important;
-  }
-
-  #header-container,
-  .main-header,
-  .header-topo,
-  .header-menu-linha {
-    background: #3e2723 !important;
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav,
-  .logo-nav span,
-  #usuario-saudacao,
-  .header-menu-linha a,
-  .nav-menu a {
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav strong,
-  .fs-box,
-  .sobre-fs-box {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-  }
-
-  .link-destaque-gerador,
-  .btn-header-entrar,
-  .btn-menu-mobile-entrar,
-  .btn-home-grande,
-  .btn-home-medio,
-  .btn-home-atalho.btn-principal,
-  .btn-gerar-orcamento-home,
-  .btn-previa-profissional,
-  .btn-hero-principal,
-  .btn-ir-planos-home,
-  .btn-home-planos-forte,
-  .btn-add,
-  .btn-extra,
-  .btn-primario,
-  .btn-primary,
-  .btn-salvar,
-  .btn-acao-pdf,
-  .plano-pix-card button,
-  .btn-editar-dados-empresa {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .link-destaque-gerador:hover,
-  .btn-header-entrar:hover,
-  .btn-menu-mobile-entrar:hover,
-  .btn-home-grande:hover,
-  .btn-home-medio:hover,
-  .btn-gerar-orcamento-home:hover,
-  .btn-previa-profissional:hover,
-  .btn-hero-principal:hover,
-  .btn-ir-planos-home:hover,
-  .btn-home-planos-forte:hover,
-  .btn-add:hover,
-  .btn-extra:hover,
-  .btn-primario:hover,
-  .btn-primary:hover,
-  .btn-salvar:hover,
-  .btn-acao-pdf:hover,
-  .plano-pix-card button:hover,
-  .btn-editar-dados-empresa:hover {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-    border-color: #3e2723 !important;
-  }
-
-  .hero-publico,
-  .home-plano-hero,
-  .gerador-hero,
-  .planos-hero,
-  .clientes-hero,
-  .veiculos-hero,
-  .ordens-hero,
-  .ordem-hero,
-  .estoque-hero,
-  .sobre-hero,
-  .manual-hero,
-  .termos-hero,
-  .privacidade-hero,
-  .orcamentos-hero,
-  .painel-hero,
-  .secao-como-funciona,
-  .whatsapp-preview-home,
-  .cliente-aprovacao-home,
-  .comparativo-home,
-  .status-orcamentos-home,
-  .home-story-section,
-  .home-whatsapp-section,
-  .home-aprovacao-section,
-  .home-status-section,
-  .home-comparativo-section,
-  .planos-pix-section,
-  .comparativo-section,
-  .faq-section,
-  .container-sobre,
-  .container-termos,
-  .container-privacidade,
-  .home-premium-showcase {
-    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-    color: #2f241f !important;
-    border-top-color: #ffc400 !important;
-    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
-  }
-
-  .hero-publico h1,
-  .home-plano-hero h1,
-  .gerador-hero h1,
-  .planos-hero h1,
-  .clientes-hero h1,
-  .veiculos-hero h1,
-  .ordens-hero h1,
-  .ordem-hero h1,
-  .estoque-hero h1,
-  .sobre-hero h1,
-  .manual-hero h1,
-  .home-premium-showcase h2,
-  .container-sobre h1,
-  .container-sobre h2,
-  .container-termos h1,
-  .container-termos h2,
-  .section-topo h2,
-  .dadositens,
-  .card-header h2,
-  .clientes-card-header h2,
-  .veiculos-card-header h2,
-  .ordens-card-header h2,
-  .estoque-card-header h2 {
-    color: #3e2723 !important;
-  }
-
-  .hero-publico p,
-  .home-plano-hero p,
-  .gerador-hero p,
-  .planos-hero p,
-  .clientes-hero p,
-  .veiculos-hero p,
-  .ordens-hero p,
-  .ordem-hero p,
-  .estoque-hero p,
-  .sobre-hero p,
-  .manual-hero p,
-  .home-premium-showcase p,
-  .container-sobre p,
-  .container-termos p,
-  .section-topo p {
-    color: #6d5b52 !important;
-  }
-
-  .container,
-  .card,
-  .clientes-card,
-  .veiculos-card,
-  .ordens-card,
-  .estoque-card,
-  .gerador-card-principal,
-  .sidebar-card,
-  .plano-pix-card,
-  .faq-card,
-  .home-promo-card,
-  .home-metrica-card,
-  .home-relatorio-card,
-  .home-painel-card,
-  .card-sobre,
-  .plano-card,
-  .manual-card,
-  .manual-section,
-  .manual-step,
-  .manual-demo-card,
-  .cliente-item,
-  .veiculo-item,
-  .ordem-item,
-  .estoque-categoria-grupo,
-  .emissor-readonly-card,
-  .cliente-tela-preview,
-  .home-cliente-preview {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #e8dccb !important;
-    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
-  }
-
-  .card-header,
-  .clientes-card-header,
-  .veiculos-card-header,
-  .ordens-card-header,
-  .estoque-card-header,
-  .modal-busca-cliente-header,
-  .modal-busca-produto-header,
-  .modal-pix-topo,
-  .home-cliente-topo,
-  .mock-card-head,
-  .orcamento-whatsapp-header,
-  .home-orcamento-whatsapp-header,
-  .total-container,
-  .cliente-total-demo,
-  .home-cliente-total,
-  .manual-flow div,
-  .mini-dashboard {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .card-body,
-  .clientes-card-body,
-  .veiculos-card-body,
-  .ordens-card-body,
-  .estoque-card-body {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  input,
-  select,
-  textarea {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #d8c9b8 !important;
-  }
-
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #ffc400 !important;
-    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-    outline: none !important;
-  }
-
-  table,
-  .tabela-comparativo,
-  .home-tabela-comparativo,
-  .manual-table,
-  .comparativo {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  th,
-  .tabela-comparativo th,
-  .home-tabela-comparativo th,
-  .manual-table th,
-  .comparativo th {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-  }
-
-  tr:nth-child(even),
-  tbody tr:nth-child(even) {
-    background: #fffaf0 !important;
-  }
-
-  footer,
-  .sobre-footer {
-    color: #6d5b52 !important;
-  }
-
-  footer a,
-  .sobre-footer a {
-    color: #3e2723 !important;
-    font-weight: 800 !important;
-  }
-</style>
-
-
-<style id="fs-contrast-fix-final">
-
-/* =========================================================
-   FS CONTRAST FIX - textos legíveis no tema claro profissional
-   Mantém marrom no header/títulos principais e corrige textos
-   que estavam ficando da mesma cor do fundo.
-   ========================================================= */
-:root {
-  --fs-marrom: #3e2723;
-  --fs-marrom-2: #5d4037;
-  --fs-fundo: #f7f2ea;
-  --fs-fundo-2: #efe3d2;
-  --fs-card: #ffffff;
-  --fs-creme: #fffaf0;
-  --fs-amarelo: #ffc400;
-  --fs-borda: #e8dccb;
-  --fs-texto: #2f241f;
-  --fs-texto-suave: #6d5b52;
-}
-
-html,
-body {
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) {
-  background:
-    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
-}
-
-main,
-section,
-.container,
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box,
-.modal-login-box,
-.modal-responsavel-card,
-.modal-busca-produto-box,
-.modal-busca-cliente-box,
-.modal-pix-card {
-  color: var(--fs-texto) !important;
-}
-
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.container,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box {
-  background: #ffffff !important;
-  border-color: var(--fs-borda) !important;
-}
-
-/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
-.card-header,
-.clientes-card-header,
-.veiculos-card-header,
-.ordens-card-header,
-.estoque-card-header,
-.modal-busca-cliente-header,
-.modal-busca-produto-header,
-.modal-pix-topo,
-.home-cliente-topo,
-.mock-card-head,
-.orcamento-whatsapp-header,
-.home-orcamento-whatsapp-header,
-.total-container,
-.valor-total,
-.cliente-total-demo,
-.home-cliente-total,
-.manual-flow div,
-.mini-dashboard,
-.auth-logo-box,
-.banner-topo {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.card-header h1,
-.card-header h2,
-.card-header h3,
-.card-header strong,
-.clientes-card-header h1,
-.clientes-card-header h2,
-.clientes-card-header h3,
-.clientes-card-header strong,
-.veiculos-card-header h1,
-.veiculos-card-header h2,
-.veiculos-card-header h3,
-.veiculos-card-header strong,
-.ordens-card-header h1,
-.ordens-card-header h2,
-.ordens-card-header h3,
-.ordens-card-header strong,
-.estoque-card-header h1,
-.estoque-card-header h2,
-.estoque-card-header h3,
-.estoque-card-header strong,
-.modal-busca-cliente-header h1,
-.modal-busca-cliente-header h2,
-.modal-busca-cliente-header h3,
-.modal-busca-cliente-header strong,
-.modal-busca-produto-header h1,
-.modal-busca-produto-header h2,
-.modal-busca-produto-header h3,
-.modal-busca-produto-header strong,
-.modal-pix-topo h1,
-.modal-pix-topo h2,
-.modal-pix-topo h3,
-.modal-pix-topo strong,
-.total-container strong,
-.valor-total strong,
-.valor-total span,
-.cliente-total-demo,
-.home-cliente-total,
-.auth-logo-box .auth-logo-text span,
-.auth-logo-box strong,
-.banner-topo h1,
-.banner-topo h2,
-.banner-topo h3,
-.banner-topo strong {
-  color: var(--fs-amarelo) !important;
-}
-
-.card-header p,
-.card-header span,
-.card-header small,
-.clientes-card-header p,
-.clientes-card-header span,
-.clientes-card-header small,
-.veiculos-card-header p,
-.veiculos-card-header span,
-.veiculos-card-header small,
-.ordens-card-header p,
-.ordens-card-header span,
-.ordens-card-header small,
-.estoque-card-header p,
-.estoque-card-header span,
-.estoque-card-header small,
-.modal-busca-cliente-header p,
-.modal-busca-cliente-header span,
-.modal-busca-cliente-header small,
-.modal-busca-produto-header p,
-.modal-busca-produto-header span,
-.modal-busca-produto-header small,
-.modal-pix-topo p,
-.modal-pix-topo span,
-.modal-pix-topo small,
-.auth-logo-box p {
-  color: #fffaf0 !important;
-}
-
-/* Heróis/seções claras */
-.hero-publico,
-.home-plano-hero,
-.gerador-hero,
-.planos-hero,
-.clientes-hero,
-.veiculos-hero,
-.ordens-hero,
-.ordem-hero,
-.estoque-hero,
-.sobre-hero,
-.manual-hero,
-.termos-hero,
-.privacidade-hero,
-.orcamentos-hero,
-.painel-hero,
-.secao-como-funciona,
-.whatsapp-preview-home,
-.cliente-aprovacao-home,
-.comparativo-home,
-.status-orcamentos-home,
-.home-story-section,
-.home-whatsapp-section,
-.home-aprovacao-section,
-.home-status-section,
-.home-comparativo-section,
-.planos-pix-section,
-.comparativo-section,
-.faq-section,
-.container-sobre,
-.container-termos,
-.container-privacidade {
-  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
-.hero-publico h1,
-.home-plano-hero h1,
-.gerador-hero h1,
-.planos-hero h1,
-.clientes-hero h1,
-.veiculos-hero h1,
-.ordens-hero h1,
-.ordem-hero h1,
-.estoque-hero h1,
-.sobre-hero h1,
-.manual-hero h1,
-.termos-hero h1,
-.privacidade-hero h1,
-.orcamentos-hero h1,
-.painel-hero h1,
-.section-topo h2,
-.container-sobre h1,
-.container-sobre h2,
-.container-termos h1,
-.container-termos h2,
-.container-privacidade h1,
-.container-privacidade h2,
-.dadositens,
-.campo label,
-label {
-  color: var(--fs-marrom) !important;
-}
-
-.hero-publico p,
-.home-plano-hero p,
-.gerador-hero p,
-.planos-hero p,
-.clientes-hero p,
-.veiculos-hero p,
-.ordens-hero p,
-.ordem-hero p,
-.estoque-hero p,
-.sobre-hero p,
-.manual-hero p,
-.termos-hero p,
-.privacidade-hero p,
-.orcamentos-hero p,
-.painel-hero p,
-.section-topo p,
-.info-item span,
-.texto-bloco,
-.campo small,
-small,
-.help-item,
-.valor-linha span,
-.home-metrica-card span,
-.home-relatorio-card span,
-.home-promo-card p,
-.home-painel-card p {
-  color: var(--fs-texto-suave) !important;
-}
-
-.info-item strong,
-.valor-linha strong,
-.home-metrica-card strong,
-.home-relatorio-card strong,
-.card strong,
-.card h1,
-.card h2,
-.card h3,
-.cliente-item strong,
-.veiculo-item strong,
-.ordem-item strong,
-.estoque-item strong {
-  color: var(--fs-marrom) !important;
-}
-
-input,
-select,
-textarea {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border-color: #d8c9b8 !important;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #8a7a70 !important;
-  opacity: 1 !important;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--fs-amarelo) !important;
-  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-  outline: none !important;
-}
-
-/* Header e menus */
-#header-container,
-.main-header,
-.header-topo,
-.header-menu-linha,
-.header-dropdown-menu {
-  background: var(--fs-marrom) !important;
-  color: #fffaf0 !important;
-}
-
-.logo-nav,
-.logo-nav span,
-#usuario-saudacao,
-.header-menu-linha a,
-.nav-menu a,
-.header-dropdown-toggle,
-.header-dropdown-menu a {
-  color: #fffaf0 !important;
-}
-
-.header-menu-linha a:hover,
-.nav-menu a:hover,
-.header-dropdown-toggle:hover,
-.header-dropdown-menu a:hover,
-.header-menu-linha a.ativo,
-.nav-menu a.ativo {
-  color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador,
-.btn-header-entrar,
-.btn-menu-mobile-entrar,
-.btn-primario,
-.btn-primary,
-.btn-salvar,
-.btn-add,
-.btn-extra,
-.btn-download,
-.btn-acao-pdf,
-.btn-gerar-orcamento-home,
-.btn-home-grande,
-.btn-home-medio,
-.btn-ir-planos-home,
-.btn-home-planos-forte,
-.plano-pix-card button {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador:hover,
-.btn-header-entrar:hover,
-.btn-menu-mobile-entrar:hover,
-.btn-primario:hover,
-.btn-primary:hover,
-.btn-salvar:hover,
-.btn-add:hover,
-.btn-extra:hover,
-.btn-download:hover,
-.btn-acao-pdf:hover,
-.btn-gerar-orcamento-home:hover,
-.btn-home-grande:hover,
-.btn-home-medio:hover,
-.btn-ir-planos-home:hover,
-.btn-home-planos-forte:hover,
-.plano-pix-card button:hover {
-  background: var(--fs-amarelo) !important;
-  color: var(--fs-marrom) !important;
-  border-color: var(--fs-marrom) !important;
-}
-
-/* Tabelas */
-table,
-.tabela-comparativo,
-.home-tabela-comparativo,
-.manual-table,
-.comparativo {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-}
-
-th,
-.tabela-comparativo th,
-.home-tabela-comparativo th,
-.manual-table th,
-.comparativo th {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-td,
-.tabela-comparativo td,
-.home-tabela-comparativo td,
-.manual-table td,
-.comparativo td {
-  color: var(--fs-texto) !important;
-}
-
-tr:nth-child(even),
-tbody tr:nth-child(even) {
-  background: #fffaf0 !important;
-}
-
-/* Estados e tags mantêm contraste */
-.tag,
-.cliente-status,
-.home-cliente-status,
-.home-preco-destaque,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home,
-.tag-plano-pix {
-  color: var(--fs-marrom) !important;
-}
-
-.tag-plano-pix,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
-.btn-whatsapp,
-.btn-verde {
-  background: #25D366 !important;
-  color: #083b2f !important;
-  border-color: #128c4a !important;
-}
-
-.btn-whatsapp:hover,
-.btn-verde:hover {
-  background: #20ba5a !important;
-  color: #ffffff !important;
-}
-
-/* PDF deve continuar preto e branco quando gerando */
-body.gerando-pdf,
-body.gerando-pdf * {
-  color: inherit;
-}
-
-</style>
+  <link rel="stylesheet" href="style.css">
+  <link id="fs-ordens-inline-css" rel="stylesheet" href="ordens-inline.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
-
 <body>
   <div id="header-container"></div>
 
   <main class="pagina-ordens">
-    <section class="ordens-grid">
-      <aside class="ordens-card card-form-mobile" id="card-form-ordem">
-        <div class="ordens-card-header header-form-mobile">
-          <div>
-            <h2 id="titulo-form-ordem">Nova ordem de serviço</h2>
-            <p>
-              Crie a OS com cliente, solicitação e status inicial. Valores, itens, pagamento,
-              estoque e faturamento serão definidos dentro da OS aberta.
-            </p>
-          </div>
-
-          <button type="button" id="btn-toggle-form-ordem" class="btn-toggle-form-mobile">
-            Abrir
-          </button>
-        </div>
-
-        <div class="ordens-card-body corpo-form-mobile" id="corpo-form-ordem">
-          <div id="mensagem-ordens-form" class="mensagem-ordens"></div>
-
-          <form id="form-ordem" class="form-ordens">
-            <input type="hidden" id="ordem-id" />
-
-            <div class="campo campo-cliente-modal">
-              <label for="ordem-cliente-visual">Cliente</label>
-              <input type="hidden" id="ordem-cliente-id" value="" />
-
-              <div class="cliente-selecionado-box" id="ordem-cliente-box">
-                <div>
-                  <strong id="ordem-cliente-visual">Nenhum cliente selecionado</strong>
-                  <span id="ordem-cliente-detalhes">Busque um cliente cadastrado para preencher a OS automaticamente.</span>
-                </div>
-              </div>
-
-              <div class="cliente-modal-acoes">
-                <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteOS()">
-                  Buscar cliente
-                </button>
-
-                <a href="clientes.html?novo=1" class="btn btn-primario">
-                  Cadastrar novo cliente
-                </a>
-
-                <button type="button" class="btn btn-perigo" onclick="limparClienteSelecionadoOS()">
-                  Limpar
-                </button>
-              </div>
-
-              <small>Pesquise por nome, telefone, e-mail, rua, cidade ou CEP. Se veio de um orçamento ou cliente, será preenchido automaticamente.</small>
-            </div>
-
-            <div class="campo">
-              <label for="ordem-veiculo-id">Veículo</label>
-              <select id="ordem-veiculo-id" disabled>
-                <option value="">Selecione um cliente primeiro</option>
-              </select>
-              <small>
-                Ao escolher o cliente, o sistema carrega os veículos vinculados. Esse veículo aparecerá na OS e no PDF.
-              </small>
-            </div>
-
-            <div class="campo">
-              <label for="ordem-titulo">Título da OS *</label>
-              <input
-                type="text"
-                id="ordem-titulo"
-                placeholder="Ex: Manutenção de ar-condicionado"
-                required
-              />
-            </div>
-
-            <div class="campo">
-              <label for="ordem-descricao-problema">Solicitação / problema informado</label>
-              <textarea
-                id="ordem-descricao-problema"
-                placeholder="Ex: Cliente informou que o equipamento não está gelando..."
-              ></textarea>
-            </div>
-
-            <div class="campo">
-              <label for="ordem-descricao-servico">Serviço a executar</label>
-              <textarea
-                id="ordem-descricao-servico"
-                placeholder="Ex: Verificar gás, limpeza dos filtros, teste elétrico..."
-              ></textarea>
-            </div>
-
-            <div class="campo">
-              <label>Consultor Técnico</label>
-              <input
-                type="text"
-                id="ordem-consultor-tecnico-visual"
-                value="Será puxado automaticamente do Painel de Controle"
-                readonly
-              />
-              <small>
-                Não é preenchido manualmente aqui. O sistema usa o consultor configurado no painel.
-              </small>
-            </div>
-
-            <div class="form-linha">
-              <div class="campo">
-                <label for="ordem-status">Status inicial</label>
-                <select id="ordem-status">
-                  <option value="aberta">Aberta</option>
-                  <option value="em_analise">Em análise</option>
-                  <option value="aguardando_aprovacao">Aguardando aprovação</option>
-                  <option value="aprovada">Aprovada</option>
-                  <option value="em_execucao">Em execução</option>
-                  <option value="aguardando_material">Aguardando peça/material</option>
-                  <option value="concluida">Concluída</option>
-                  <option value="cancelada">Cancelada</option>
-                </select>
-              </div>
-
-              <div class="campo">
-                <label for="ordem-data-abertura">Data de abertura</label>
-                <input type="date" id="ordem-data-abertura" />
-              </div>
-            </div>
-
-            <div class="campo">
-              <label for="ordem-data-prevista">Data prevista</label>
-              <input type="date" id="ordem-data-prevista" />
-            </div>
-
-            <div class="linha-divisoria"></div>
-
-            <p class="subtitulo-form">Observações</p>
-
-            <div class="campo">
-              <label for="ordem-observacoes-cliente">Observações para o cliente</label>
-              <textarea
-                id="ordem-observacoes-cliente"
-                placeholder="Essas observações podem aparecer futuramente no PDF da OS."
-              ></textarea>
-            </div>
-
-            <div class="campo">
-              <label for="ordem-observacoes-internas">Observações internas</label>
-              <textarea
-                id="ordem-observacoes-internas"
-                placeholder="Informações internas da empresa, não exibidas ao cliente."
-              ></textarea>
-            </div>
-
-            <div class="ordens-acoes-form">
-              <button type="submit" id="btn-salvar-ordem" class="btn btn-primario">
-                Salvar OS
-              </button>
-
-              <button type="button" id="btn-limpar-ordem" class="btn btn-secundario">
-                Limpar
-              </button>
-            </div>
-          </form>
-        </div>
-      </aside>
-
-      <section class="ordens-card">
+    <section class="ordens-grid ordens-grid-lista-unica">
+      <section class="ordens-card ordens-lista-card">
         <div class="ordens-card-header">
           <div class="ordens-topo-acoes">
             <div>
@@ -951,9 +33,15 @@ body.gerando-pdf * {
               <p>Acompanhe as ordens cadastradas. Valores e pagamento são ajustados dentro da OS aberta.</p>
             </div>
 
-            <button type="button" id="btn-atualizar-ordens" class="btn btn-secundario">
-              Buscar
-            </button>
+            <div class="ordens-header-botoes">
+              <button type="button" id="btn-nova-os-modal" class="btn btn-nova-os" onclick="abrirModalNovaOS()">
+                <span aria-hidden="true">＋</span> Nova OS
+              </button>
+
+              <button type="button" id="btn-atualizar-ordens" class="btn btn-secundario">
+                Buscar
+              </button>
+            </div>
           </div>
         </div>
 
@@ -963,11 +51,7 @@ body.gerando-pdf * {
           <div class="ordens-filtros">
             <div class="campo">
               <label for="busca-ordens">Buscar</label>
-              <input
-                type="search"
-                id="busca-ordens"
-                placeholder="Buscar por cliente, veículo, placa, título, consultor técnico ou número da OS"
-              />
+              <input type="search" id="busca-ordens" placeholder="Buscar por cliente, veículo, placa, título, consultor técnico ou número da OS">
             </div>
 
             <div class="campo">
@@ -997,22 +81,18 @@ body.gerando-pdf * {
 
             <div class="campo">
               <label for="filtro-veiculo-ordens">Veículo</label>
-              <input
-                type="search"
-                id="filtro-veiculo-ordens"
-                placeholder="Placa, marca ou modelo"
-              />
+              <input type="search" id="filtro-veiculo-ordens" placeholder="Placa, marca ou modelo">
             </div>
+
             <div class="campo">
               <label for="filtro-data-inicio-ordens">De</label>
-              <input type="date" id="filtro-data-inicio-ordens" />
+              <input type="date" id="filtro-data-inicio-ordens">
             </div>
 
             <div class="campo">
               <label for="filtro-data-fim-ordens">Até</label>
-              <input type="date" id="filtro-data-fim-ordens" />
+              <input type="date" id="filtro-data-fim-ordens">
             </div>
-
           </div>
 
           <div id="loading-ordens" class="loading-ordens">
@@ -1037,6 +117,133 @@ body.gerando-pdf * {
     </section>
   </main>
 
+  <div id="modal-nova-os" class="modal-nova-os-overlay" aria-hidden="true">
+    <section class="ordens-card modal-nova-os-box" id="card-form-ordem" role="dialog" aria-modal="true" aria-labelledby="titulo-form-ordem">
+      <div class="ordens-card-header header-form-mobile">
+        <div>
+          <h2 id="titulo-form-ordem">Nova ordem de serviço</h2>
+          <p>Preencha os dados iniciais da OS. Valores, itens, estoque e pagamento serão ajustados dentro da OS aberta.</p>
+        </div>
+
+        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalNovaOS()" aria-label="Fechar modal">×</button>
+      </div>
+
+      <div class="ordens-card-body corpo-form-mobile" id="corpo-form-ordem">
+        <div id="mensagem-ordens-form" class="mensagem-ordens"></div>
+
+        <form id="form-ordem" class="form-ordens">
+          <input type="hidden" id="ordem-id">
+          <input type="hidden" id="ordem-consultor-tecnico">
+
+          <div class="campo campo-cliente-modal">
+            <label for="ordem-cliente-visual">Cliente</label>
+            <input type="hidden" id="ordem-cliente-id" value="">
+
+            <div class="cliente-selecionado-box" id="ordem-cliente-box">
+              <div>
+                <strong id="ordem-cliente-visual">Nenhum cliente selecionado</strong>
+                <span id="ordem-cliente-detalhes">Busque um cliente cadastrado para preencher a OS automaticamente.</span>
+              </div>
+            </div>
+
+            <div class="cliente-modal-acoes">
+              <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteOS()">Buscar cliente</button>
+              <a href="/gestao.html?modulo=clientes&novo=1" class="btn btn-primario">Cadastrar cliente</a>
+              <button type="button" class="btn btn-perigo" onclick="limparClienteSelecionadoOS()">Limpar</button>
+            </div>
+
+            <small>Pesquise por nome, telefone, e-mail, rua, cidade ou CEP. Se veio de um orçamento ou cliente, será preenchido automaticamente.</small>
+          </div>
+
+          <div class="campo">
+            <label for="ordem-veiculo-id">Veículo</label>
+            <select id="ordem-veiculo-id" disabled>
+              <option value="">Selecione um cliente primeiro</option>
+            </select>
+            <small>Ao escolher o cliente, o sistema carrega os veículos vinculados.</small>
+          </div>
+
+          <div class="campo">
+            <label for="ordem-titulo">Título da OS *</label>
+            <input type="text" id="ordem-titulo" placeholder="Ex: Manutenção de ar-condicionado" required>
+          </div>
+
+          <div class="campo">
+            <label for="ordem-descricao-problema">Solicitação / problema informado</label>
+            <textarea id="ordem-descricao-problema" placeholder="Ex: Cliente informou que o equipamento não está gelando..."></textarea>
+          </div>
+
+          <div class="campo">
+            <label for="ordem-descricao-servico">Serviço a executar</label>
+            <textarea id="ordem-descricao-servico" placeholder="Ex: Verificar gás, limpeza dos filtros, teste elétrico..."></textarea>
+          </div>
+
+          <div class="campo">
+            <label>Consultor Técnico</label>
+            <input type="text" id="ordem-consultor-tecnico-visual" value="Será puxado automaticamente do Painel de Controle" readonly>
+            <small>O sistema usa o consultor configurado no painel.</small>
+          </div>
+
+          <div class="form-linha">
+            <div class="campo">
+              <label for="ordem-status">Status inicial</label>
+              <select id="ordem-status">
+                <option value="aberta">Aberta</option>
+                <option value="em_analise">Em análise</option>
+                <option value="aguardando_aprovacao">Aguardando aprovação</option>
+                <option value="aprovada">Aprovada</option>
+                <option value="em_execucao">Em execução</option>
+                <option value="aguardando_material">Aguardando peça/material</option>
+                <option value="concluida">Concluída</option>
+                <option value="cancelada">Cancelada</option>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="ordem-data-abertura">Data de abertura</label>
+              <input type="date" id="ordem-data-abertura">
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="ordem-data-prevista">Data prevista</label>
+            <input type="date" id="ordem-data-prevista">
+          </div>
+
+          <div class="form-linha">
+            <div class="campo">
+              <label for="ordem-garantia-dias">Garantia em dias</label>
+              <input type="number" id="ordem-garantia-dias" min="0" step="1" placeholder="Ex: 90">
+            </div>
+
+            <div class="campo">
+              <label for="ordem-garantia-observacoes">Observação da garantia</label>
+              <input type="text" id="ordem-garantia-observacoes" placeholder="Ex: Garantia somente da mão de obra">
+            </div>
+          </div>
+
+          <div class="linha-divisoria"></div>
+          <p class="subtitulo-form">Observações</p>
+
+          <div class="campo">
+            <label for="ordem-observacoes-cliente">Observações para o cliente</label>
+            <textarea id="ordem-observacoes-cliente" placeholder="Essas observações podem aparecer futuramente no PDF da OS."></textarea>
+          </div>
+
+          <div class="campo">
+            <label for="ordem-observacoes-internas">Observações internas</label>
+            <textarea id="ordem-observacoes-internas" placeholder="Informações internas da empresa, não exibidas ao cliente."></textarea>
+          </div>
+
+          <div class="ordens-acoes-form">
+            <button type="submit" id="btn-salvar-ordem" class="btn btn-primario">Gerar OS</button>
+            <button type="button" id="btn-limpar-ordem" class="btn btn-secundario">Limpar</button>
+            <button type="button" class="btn btn-perigo" onclick="fecharModalNovaOS()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
 
   <div id="modal-busca-cliente-os" class="modal-busca-cliente-overlay" aria-hidden="true">
     <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca-cliente-os">
@@ -1055,7 +262,7 @@ body.gerando-pdf * {
             <input type="search" id="campo-busca-cliente-os" placeholder="Ex: João, 18999999999, Rua Brasil, Assis ou 19800-000" autocomplete="off">
           </div>
           <button type="button" class="btn btn-primario" onclick="buscarClientesModalOS()">Buscar</button>
-          <a href="clientes.html?novo=1" class="btn btn-secundario">Cadastrar novo cliente</a>
+          <a href="/gestao.html?modulo=clientes&novo=1" class="btn btn-secundario">Cadastrar cliente</a>
         </div>
 
         <div id="resultado-busca-clientes-os" class="resultado-busca-clientes-modal">
@@ -1066,50 +273,115 @@ body.gerando-pdf * {
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script src="config.js"></script>
   <script src="auth.js"></script>
   <script src="ui.js"></script>
   <script src="planos.js"></script>
-<script src="carregar-menu.js"></script>
-  <script>
-(async function() {
-  if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
-    const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Ordens de serviço fazem parte do Plano Premium.');
-    if (bloqueado) return;
-  }
-  const script = document.createElement('script');
-  script.src = 'ordens.js';
-  script.defer = false;
-  document.body.appendChild(script);
-})();
-</script>
+  <script src="carregar-menu.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async function () {
+    function abrirModalNovaOS() {
+      const modal = document.getElementById('modal-nova-os');
+      if (!modal) return;
+
+      try {
+        if (typeof limparFormularioOrdem === 'function') limparFormularioOrdem();
+        if (typeof definirDataAberturaPadrao === 'function') definirDataAberturaPadrao();
+        if (typeof preencherConsultorTecnicoVisual === 'function') preencherConsultorTecnicoVisual();
+      } catch (erro) {
+        console.warn('Não foi possível preparar o formulário da OS:', erro);
+      }
+
+      const titulo = document.getElementById('titulo-form-ordem');
+      const btnSalvar = document.getElementById('btn-salvar-ordem');
+      if (titulo) titulo.textContent = 'Nova ordem de serviço';
+      if (btnSalvar) btnSalvar.textContent = 'Gerar OS';
+
+      modal.classList.add('ativo');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-os-aberto');
+
+      setTimeout(() => document.getElementById('ordem-titulo')?.focus(), 180);
+    }
+
+    function fecharModalNovaOS() {
+      const modal = document.getElementById('modal-nova-os');
+      if (!modal) return;
+      modal.classList.remove('ativo');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-os-aberto');
+    }
+
+    function fsInstalarModalOrdens() {
+      const modal = document.getElementById('modal-nova-os');
+      if (!modal || modal.dataset.fsModalInstalado === 'sim') return;
+      modal.dataset.fsModalInstalado = 'sim';
+
+      const abrirOriginal = window.abrirFormularioMobileOrdem;
+      window.abrirFormularioMobileOrdem = function() {
+        modal.classList.add('ativo');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-os-aberto');
+        if (typeof abrirOriginal === 'function') {
+          try { abrirOriginal(); } catch (_) {}
+        }
+      };
+
+      modal.addEventListener('click', function(event) {
+        if (event.target === modal) fecharModalNovaOS();
+      });
+
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.classList.contains('ativo')) fecharModalNovaOS();
+      });
+
+      const params = new URLSearchParams(window.location.search || '');
+      if (params.get('novo') === '1') {
+        setTimeout(abrirModalNovaOS, 500);
+      }
+    }
+
+    window.abrirModalNovaOS = abrirModalNovaOS;
+    window.fecharModalNovaOS = fecharModalNovaOS;
+    window.fsInstalarModalOrdens = fsInstalarModalOrdens;
+  </script>
+
+  <script src="notificacoes.js"></script>
+  <script>
+    (async function() {
+      if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
+        const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Ordens de serviço fazem parte do Plano Premium.');
+        if (bloqueado) return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'ordens.js';
+      script.defer = false;
+      script.onload = function() {
+        if (typeof fsInstalarModalOrdens === 'function') fsInstalarModalOrdens();
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
       try {
         if (!window._supabase && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
-          window._supabase = window.supabase.createClient(
-            window.SUPABASE_URL,
-            window.SUPABASE_ANON_KEY
-          );
+          window._supabase = window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_ANON_KEY);
         }
 
-        if (!window._supabase) {
-          console.warn("Supabase não foi inicializado. Verifique o config.js.");
-          return;
-        }
+        if (!window._supabase) return;
 
         const { data } = await window._supabase.auth.getSession();
         const session = data && data.session ? data.session : null;
 
         if (!session) {
-          const destino = encodeURIComponent("ordens.html");
-          window.location.href = "index.html?redirect=" + destino;
-          return;
+          const destino = encodeURIComponent('ordens.html');
+          window.location.href = 'index.html?redirect=' + destino;
         }
       } catch (erro) {
-        console.error("Erro ao validar sessão em ordens.html:", erro);
+        console.error('Erro ao validar sessão em ordens.html:', erro);
       }
     });
   </script>
