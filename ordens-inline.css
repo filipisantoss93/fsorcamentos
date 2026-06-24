@@ -1,54 +1,57 @@
 /* =========================================================
    FS ORÇAMENTOS — ORDENS DE SERVIÇO
-   CSS específico da página Ordens com tema cinza consolidado.
+   Lista como tela principal + Nova OS em modal.
    ========================================================= */
 
 :root {
-  --fs-marrom: var(--fs-cinza-800, #1f2937);
-  --fs-marrom-2: var(--fs-cinza-950, #0f172a);
-  --fs-marrom-claro: var(--fs-cinza-700, #374151);
-  --fs-fundo-escuro: var(--fs-cinza-100, #f3f4f6);
-  --fs-bege: #ffffff;
-  --fs-bege-2: var(--fs-cinza-50, #f9fafb);
-  --fs-branco: #ffffff;
-  --fs-borda: var(--fs-cinza-200, #e5e7eb);
-  --fs-texto: var(--fs-cinza-900, #111827);
-  --fs-texto-suave: var(--fs-muted, #4b5563);
-  --fs-perigo: #dc2626;
+  --ordens-texto: #111827;
+  --ordens-muted: #475569;
+  --ordens-card: #ffffff;
+  --ordens-soft: #f8fafc;
+  --ordens-soft-2: #eef2f7;
+  --ordens-border: #dbe3ee;
+  --ordens-border-strong: #cbd5e1;
+  --ordens-dark: #334155;
+  --ordens-dark-2: #1e293b;
+  --ordens-green: #22c55e;
+  --ordens-green-dark: #166534;
+  --ordens-red: #dc2626;
+  --ordens-yellow-soft: #fef9c3;
+  --ordens-shadow: 0 8px 22px rgba(15, 23, 42, .08);
+  --fs-texto: var(--ordens-texto);
+  --fs-texto-suave: var(--ordens-muted);
+  --fs-borda: var(--ordens-border);
+  --fs-radius: 14px;
+  --fs-shadow: var(--ordens-shadow);
+  --fs-perigo: var(--ordens-red);
   --fs-sucesso: #25D366;
   --fs-verde-escuro: #083b2f;
-  --fs-radius: 14px;
-  --fs-shadow: var(--fs-shadow-soft, 0 6px 18px rgba(15, 23, 42, .08));
-  --fs-amarelo-claro: var(--fs-cinza-50, #f9fafb);
-  --fs-azul: var(--fs-cinza-800, #1f2937);
-  --fs-azul-escuro: var(--fs-cinza-950, #0f172a);
-  --fs-azul-claro: var(--fs-cinza-100, #f3f4f6);
-  --fs-verde: #25D366;
-  --fs-vermelho: #dc2626;
-  --fs-cinza: var(--fs-cinza-600, #4b5563);
-  --fs-fundo: var(--fs-cinza-100, #f3f4f6);
-  --fs-texto-claro: #ffffff;
 }
 
 body:not(.gerando-pdf) {
   margin: 0;
-  background: linear-gradient(180deg, var(--fs-cinza-100, #f3f4f6) 0%, var(--fs-cinza-200, #e5e7eb) 100%) !important;
-  color: var(--fs-texto) !important;
+  background: linear-gradient(180deg, #ffffff 0%, var(--ordens-soft) 48%, var(--ordens-soft-2) 100%) !important;
+  color: var(--ordens-texto) !important;
 }
+
+body.modal-os-aberto { overflow: hidden !important; }
 
 .pagina-ordens {
   max-width: 1220px;
   margin: 0 auto;
   padding: 24px 16px 60px;
-  color: var(--fs-texto);
+  color: var(--ordens-texto);
 }
 
 .ordens-grid {
   display: grid;
-  grid-template-columns: 440px 1fr;
+  grid-template-columns: 1fr;
   gap: 18px;
   align-items: start;
 }
+
+.ordens-grid-lista-unica { grid-template-columns: 1fr !important; }
+.ordens-lista-card { width: 100%; }
 
 .ordens-card,
 .ordem-item,
@@ -58,26 +61,27 @@ body:not(.gerando-pdf) {
 .modal-resumo-texto,
 .cliente-selecionado-box,
 .modal-busca-cliente-box,
-.cliente-modal-item {
+.cliente-modal-item,
+.modal-nova-os-box {
   background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border: 1px solid var(--fs-borda) !important;
+  color: var(--ordens-texto) !important;
+  border: 1px solid var(--ordens-border) !important;
   border-radius: var(--fs-radius) !important;
-  box-shadow: var(--fs-shadow) !important;
+  box-shadow: var(--ordens-shadow) !important;
 }
 
 .ordens-card {
   overflow: hidden;
-  border-top: 4px solid var(--fs-cinza-700, #374151) !important;
+  border-top: 4px solid var(--ordens-dark) !important;
 }
 
 .ordens-card-header,
 .modal-resumo-ordem-header,
 .modal-busca-cliente-header {
   padding: 18px 20px;
-  background: var(--fs-cinza-800, #1f2937) !important;
+  background: var(--ordens-dark) !important;
   color: #ffffff !important;
-  border-bottom: 1px solid var(--fs-cinza-700, #374151) !important;
+  border-bottom: 1px solid var(--ordens-dark-2) !important;
 }
 
 .ordens-card-header h2,
@@ -86,16 +90,18 @@ body:not(.gerando-pdf) {
   margin: 0;
   color: #ffffff !important;
   font-size: 20px;
+  font-weight: 950;
+  line-height: 1.15;
 }
 
 .ordens-card-header p,
 .modal-resumo-ordem-header p,
 .modal-busca-cliente-header p {
   margin: 6px 0 0;
-  color: var(--fs-cinza-200, #e5e7eb) !important;
+  color: #e5e7eb !important;
   font-size: 13px;
   line-height: 1.5;
-  font-weight: 700;
+  font-weight: 720;
 }
 
 .ordens-card-body,
@@ -103,7 +109,7 @@ body:not(.gerando-pdf) {
 .modal-busca-cliente-body {
   padding: 20px;
   background: #ffffff !important;
-  color: var(--fs-texto);
+  color: var(--ordens-texto);
 }
 
 .ordens-topo-acoes,
@@ -119,6 +125,17 @@ body:not(.gerando-pdf) {
 .header-form-mobile {
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.ordens-topo-acoes > div:first-child { min-width: 0; }
+
+.ordens-header-botoes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-left: auto;
 }
 
 .form-ordens,
@@ -150,7 +167,7 @@ body:not(.gerando-pdf) {
 .campo label {
   font-size: 13px;
   font-weight: 900;
-  color: var(--fs-cinza-700, #374151) !important;
+  color: var(--ordens-dark) !important;
 }
 
 .campo input,
@@ -158,13 +175,13 @@ body:not(.gerando-pdf) {
 .campo textarea,
 .busca-cliente-modal-linha input {
   width: 100%;
-  border: 1px solid var(--fs-cinza-300, #d1d5db) !important;
+  border: 1px solid var(--ordens-border-strong) !important;
   border-radius: 10px;
   padding: 11px 12px;
   font-size: 14px;
   outline: none;
   background: #ffffff !important;
-  color: var(--fs-texto) !important;
+  color: var(--ordens-texto) !important;
   box-sizing: border-box;
   transition: border-color .16s ease, box-shadow .16s ease;
 }
@@ -178,19 +195,19 @@ body:not(.gerando-pdf) {
 .campo select:focus,
 .campo textarea:focus,
 .busca-cliente-modal-linha input:focus {
-  border-color: var(--fs-cinza-700, #374151) !important;
-  box-shadow: 0 0 0 3px rgba(55, 65, 81, .14) !important;
+  border-color: var(--ordens-dark) !important;
+  box-shadow: 0 0 0 3px rgba(51, 65, 85, .14) !important;
 }
 
 .campo small {
-  color: var(--fs-texto-suave);
+  color: var(--ordens-muted) !important;
   font-size: 12px;
   line-height: 1.4;
 }
 
 .linha-divisoria {
   height: 1px;
-  background: var(--fs-borda);
+  background: var(--ordens-border);
   margin: 4px 0;
 }
 
@@ -198,7 +215,7 @@ body:not(.gerando-pdf) {
   margin: 2px 0 -2px;
   font-size: 14px;
   font-weight: 900;
-  color: var(--fs-cinza-950, #0f172a) !important;
+  color: var(--ordens-texto) !important;
 }
 
 .btn,
@@ -215,15 +232,16 @@ body:not(.gerando-pdf) {
   gap: 8px;
   transition: .16s ease;
   min-height: 42px;
-  border: 1px solid var(--fs-cinza-300, #d1d5db);
+  border: 1px solid var(--ordens-border-strong);
   background: #ffffff;
-  color: var(--fs-cinza-900, #111827);
+  color: var(--ordens-texto);
+  box-sizing: border-box;
 }
 
 .btn:hover,
 .btn-toggle-form-mobile:hover {
   transform: translateY(-1px);
-  border-color: var(--fs-cinza-500, #6b7280);
+  border-color: #94a3b8;
 }
 
 .btn:disabled {
@@ -235,9 +253,35 @@ body:not(.gerando-pdf) {
 .btn-primario,
 .btn-secundario,
 .btn-toggle-form-mobile {
-  background: var(--fs-cinza-900, #111827) !important;
+  background: var(--ordens-dark) !important;
   color: #ffffff !important;
-  border-color: var(--fs-cinza-900, #111827) !important;
+  border-color: var(--ordens-dark) !important;
+}
+
+.btn-nova-os {
+  background: #ffffff !important;
+  color: var(--ordens-texto) !important;
+  border-color: var(--ordens-border-strong) !important;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, .16) !important;
+  min-width: 140px;
+}
+
+.btn-nova-os span {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 2px solid var(--ordens-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 17px;
+  font-weight: 950;
+}
+
+.btn-nova-os:hover {
+  background: #f8fafc !important;
+  color: var(--ordens-texto) !important;
 }
 
 .btn-verde {
@@ -253,12 +297,12 @@ body:not(.gerando-pdf) {
 
 .btn-perigo {
   background: #fff1f1 !important;
-  color: var(--fs-perigo) !important;
+  color: var(--ordens-red) !important;
   border-color: #fecaca !important;
 }
 
 .btn-perigo:hover {
-  background: var(--fs-perigo) !important;
+  background: var(--ordens-red) !important;
   color: #ffffff !important;
 }
 
@@ -276,14 +320,14 @@ body:not(.gerando-pdf) {
 
 .ordem-item:hover,
 .cliente-modal-item:hover {
-  border-color: var(--fs-cinza-500, #6b7280) !important;
+  border-color: #94a3b8 !important;
   box-shadow: 0 8px 18px rgba(15, 23, 42, .12) !important;
   transform: translateY(-1px);
 }
 
 .ordem-item-resumida { cursor: pointer; }
 .ordem-item-resumida:focus {
-  outline: 3px solid rgba(55, 65, 81, .25);
+  outline: 3px solid rgba(51, 65, 85, .25);
   outline-offset: 2px;
 }
 
@@ -301,7 +345,7 @@ body:not(.gerando-pdf) {
 .cliente-selecionado-box strong,
 .modal-resumo-grid span {
   margin: 0 0 4px;
-  color: var(--fs-cinza-950, #0f172a) !important;
+  color: var(--ordens-texto) !important;
   font-size: 18px;
   font-weight: 950;
 }
@@ -312,7 +356,7 @@ body:not(.gerando-pdf) {
 .cliente-modal-item span,
 .modal-resumo-texto p {
   margin: 0;
-  color: var(--fs-texto-suave) !important;
+  color: var(--ordens-muted) !important;
   font-size: 13px;
   line-height: 1.5;
   word-break: break-word;
@@ -337,9 +381,9 @@ body:not(.gerando-pdf) {
   padding: 5px 9px;
   font-size: 12px;
   font-weight: 850;
-  background: var(--fs-cinza-100, #f3f4f6) !important;
-  color: var(--fs-cinza-900, #111827) !important;
-  border: 1px solid var(--fs-cinza-300, #d1d5db) !important;
+  background: #f3f4f6 !important;
+  color: var(--ordens-texto) !important;
+  border: 1px solid var(--ordens-border-strong) !important;
 }
 
 .tag.aberta,
@@ -355,9 +399,9 @@ body:not(.gerando-pdf) {
 .tag.aprovada,
 .tag.em_execucao,
 .tag.parcial {
-  background: var(--fs-cinza-100, #f3f4f6) !important;
-  color: var(--fs-cinza-900, #111827) !important;
-  border-color: var(--fs-cinza-300, #d1d5db) !important;
+  background: #eef2f7 !important;
+  color: var(--ordens-texto) !important;
+  border-color: var(--ordens-border-strong) !important;
 }
 
 .tag.concluida,
@@ -377,7 +421,7 @@ body:not(.gerando-pdf) {
   text-align: center;
   padding: 36px 20px;
   border-style: dashed !important;
-  background: var(--fs-cinza-50, #f9fafb) !important;
+  background: #f8fafc !important;
 }
 
 .mensagem-ordens {
@@ -394,7 +438,7 @@ body:not(.gerando-pdf) {
 .mensagem-ordens.info { display: block; }
 .mensagem-ordens.sucesso { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
 .mensagem-ordens.erro { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-.mensagem-ordens.info { background: var(--fs-cinza-50, #f9fafb); color: var(--fs-cinza-900, #111827); border: 1px solid var(--fs-borda); }
+.mensagem-ordens.info { background: #f8fafc; color: var(--ordens-texto); border: 1px solid var(--ordens-border); }
 
 .loading-ordens {
   display: none;
@@ -402,7 +446,7 @@ body:not(.gerando-pdf) {
   justify-content: center;
   gap: 10px;
   padding: 18px;
-  color: var(--fs-cinza-700, #374151);
+  color: var(--ordens-dark);
   font-weight: 850;
 }
 
@@ -411,8 +455,8 @@ body:not(.gerando-pdf) {
 .spinner {
   width: 18px;
   height: 18px;
-  border: 3px solid var(--fs-cinza-200, #e5e7eb);
-  border-top-color: var(--fs-cinza-700, #374151);
+  border: 3px solid #e5e7eb;
+  border-top-color: var(--ordens-dark);
   border-radius: 50%;
   animation: girar .8s linear infinite;
 }
@@ -420,13 +464,14 @@ body:not(.gerando-pdf) {
 @keyframes girar { to { transform: rotate(360deg); } }
 
 .btn-toggle-form-mobile { display: none; text-transform: uppercase; white-space: nowrap; }
-.header-form-mobile p { margin: 0; }
+.header-form-mobile p { margin: 6px 0 0; }
 
 .modal-resumo-ordem-overlay,
-.modal-busca-cliente-overlay {
+.modal-busca-cliente-overlay,
+.modal-nova-os-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, .72);
+  background: rgba(15, 23, 42, .72);
   display: none;
   align-items: center;
   justify-content: center;
@@ -438,19 +483,36 @@ body:not(.gerando-pdf) {
 
 .modal-busca-cliente-overlay {
   align-items: flex-start;
-  z-index: 20000;
-  background: rgba(0, 0, 0, .78);
+  z-index: 31000;
+  background: rgba(15, 23, 42, .78);
   padding: 18px;
 }
 
 .modal-resumo-ordem-overlay.ativo,
-.modal-busca-cliente-overlay.ativo { display: flex; }
+.modal-busca-cliente-overlay.ativo,
+.modal-nova-os-overlay.ativo { display: flex; }
+
+.modal-nova-os-overlay { align-items: flex-start; }
+
+.modal-nova-os-box {
+  width: min(100%, 820px);
+  margin: 20px auto;
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  border-top: 5px solid var(--ordens-dark) !important;
+}
+
+.modal-nova-os-box .ordens-card-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
 
 .modal-resumo-ordem-box {
   width: min(100%, 820px);
   max-height: 90vh;
   overflow: auto;
-  border-top: 5px solid var(--fs-cinza-700, #374151) !important;
+  border-top: 5px solid var(--ordens-dark) !important;
 }
 
 .modal-resumo-ordem-header,
@@ -471,14 +533,14 @@ body:not(.gerando-pdf) {
 .modal-resumo-texto,
 .cliente-selecionado-box,
 .cliente-modal-item {
-  border-left: 5px solid var(--fs-cinza-500, #6b7280) !important;
+  border-left: 5px solid #64748b !important;
   padding: 12px;
 }
 
 .modal-resumo-grid strong,
 .modal-resumo-texto strong {
   display: block;
-  color: var(--fs-texto-suave) !important;
+  color: var(--ordens-muted) !important;
   text-transform: uppercase;
   font-size: 11px;
   margin-bottom: 5px;
@@ -505,12 +567,12 @@ body:not(.gerando-pdf) {
   width: min(100%, 760px);
   margin: 24px auto;
   overflow: hidden;
-  border-top: 5px solid var(--fs-cinza-700, #374151) !important;
+  border-top: 5px solid var(--ordens-dark) !important;
 }
 
 .btn-fechar-modal-cliente {
   border: none;
-  background: var(--fs-perigo);
+  background: var(--ordens-red);
   color: #ffffff;
   width: 36px;
   height: 36px;
@@ -522,12 +584,12 @@ body:not(.gerando-pdf) {
 }
 
 .estado-busca-cliente-modal {
-  background: var(--fs-cinza-50, #f9fafb) !important;
-  border: 1px dashed var(--fs-cinza-400, #9ca3af) !important;
+  background: #f8fafc !important;
+  border: 1px dashed #94a3b8 !important;
   border-radius: 14px;
   padding: 18px;
   text-align: center;
-  color: var(--fs-texto-suave) !important;
+  color: var(--ordens-muted) !important;
   font-weight: 800;
   line-height: 1.45;
 }
@@ -543,19 +605,47 @@ body:not(.gerando-pdf) {
   .modal-resumo-grid { grid-template-columns: 1fr; }
 
   .cliente-modal-acoes .btn,
-  .cliente-modal-acoes a { width: 100%; }
+  .cliente-modal-acoes a,
+  .busca-cliente-modal-linha .btn,
+  .busca-cliente-modal-linha a { width: 100%; }
 }
 
 @media (max-width: 700px) {
-  .pagina-ordens { padding: 18px 12px 42px; }
+  .pagina-ordens { padding: 18px 8px 42px; }
   .form-linha,
   .ordens-filtros { grid-template-columns: 1fr; }
   .ordem-linha-topo { flex-direction: column; }
   .ordem-valor { text-align: left; }
   .ordens-acoes-form .btn,
   .ordem-acoes .btn { width: 100%; }
-  .btn-toggle-form-mobile { display: inline-flex; align-items: center; justify-content: center; }
-  .card-form-mobile.form-fechado .corpo-form-mobile { display: none; }
-  .card-form-mobile.form-fechado .ordens-card-header { border-bottom: none; }
-  .header-form-mobile p { display: none; }
+  .btn-toggle-form-mobile { display: none; }
+  .header-form-mobile p { display: block; }
+
+  .ordens-card-header { padding: 16px 14px; }
+  .ordens-card-body { padding: 16px 14px; }
+
+  .ordens-topo-acoes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ordens-header-botoes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .75fr);
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .btn-nova-os,
+  #btn-atualizar-ordens { width: 100%; }
+
+  .modal-nova-os-overlay { padding: 8px; }
+  .modal-nova-os-box {
+    margin: 8px auto;
+    max-height: calc(100vh - 16px);
+    border-radius: 12px !important;
+  }
+
+  .modal-nova-os-box .ordens-card-body { padding: 14px; }
 }
