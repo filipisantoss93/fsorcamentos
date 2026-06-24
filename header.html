@@ -5,9 +5,55 @@
     transform: translateY(8px) !important;
   }
 
+  #btn-notificacoes,
+  .btn-notificacoes-header {
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 4px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: var(--fs-amarelo, #ffc400) !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  #btn-notificacoes:hover,
+  #btn-notificacoes:focus,
+  #btn-notificacoes:active,
+  .btn-notificacoes-header:hover,
+  .btn-notificacoes-header:focus,
+  .btn-notificacoes-header:active {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: var(--fs-amarelo, #ffc400) !important;
+    transform: none !important;
+  }
+
+  #btn-notificacoes .contador-notificacoes,
+  .btn-notificacoes-header .contador-notificacoes {
+    top: -10px !important;
+    right: -8px !important;
+  }
+
   @media (max-width: 720px) {
     .perfil-identidade {
       transform: translateY(10px) !important;
+    }
+
+    #btn-notificacoes,
+    .btn-notificacoes-header {
+      width: auto !important;
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 0 3px !important;
+      font-size: 19px !important;
     }
   }
 </style>
