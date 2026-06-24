@@ -1,1 +1,129 @@
-<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Fluxo de Caixa - FS Orçamentos</title><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="style.css"><link rel="icon" type="image/png" href="favicon.png"><style>:root{--m:#475569;--m2:#334155;--a:#94a3b8;--b:#dbe3ee;--t:#1f2937;--s:#64748b}body{background:#f8fafc!important;color:var(--t)!important}.cx{width:min(1180px,calc(100% - 16px));margin:10px auto 28px;display:grid;gap:10px}.card{background:#fff;border:1px solid var(--b);border-radius:8px;box-shadow:0 4px 14px rgba(51,65,85,.08);overflow:hidden}.hero{padding:13px;display:grid;grid-template-columns:1fr auto;gap:10px}.tag{display:inline-flex;padding:4px 7px;border-radius:4px;background:#e2e8f0;border:1px solid #cbd5e1;color:var(--m2);font-size:10px;font-weight:950;text-transform:uppercase;margin-bottom:7px}.hero h1{margin:0 0 4px;color:var(--m2);font-size:30px}.hero p{margin:0;color:var(--s);font-size:13px;font-weight:720}.acoes{display:flex;gap:7px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:8px 11px;border-radius:4px;border:1px solid #cbd5e1;background:#fff;color:var(--m2);font-size:12px;font-weight:950;cursor:pointer;text-decoration:none}.btnp{background:var(--m2)!important;color:#fff!important;border-color:var(--m2)!important}.mets{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.met{background:#fff;border:1px solid var(--b);border-left:4px solid var(--a);border-radius:7px;padding:10px}.met.e{border-left-color:#64748b}.met.s{border-left-color:#64748b}.met.sd{border-left-color:#64748b}.met span{display:block;color:var(--s);font-size:10px;font-weight:950;text-transform:uppercase;margin-bottom:5px}.met strong{display:block;color:var(--m2);font-size:22px;font-weight:950}.head{display:flex;justify-content:space-between;gap:10px;background:#f8fafc;border-bottom:1px solid #e5e7eb;padding:10px 12px}.head h2{margin:0;color:var(--m2);font-size:18px}.head p{margin:3px 0 0;color:var(--s);font-size:12px;font-weight:700}.body{padding:10px}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:end}.campo{display:grid;gap:4px}.campo label{font-size:10px;text-transform:uppercase;font-weight:950;color:var(--m2)}.campo input,.campo select,.campo textarea{border:1px solid #cbd5e1;border-radius:4px;padding:8px;color:var(--t);font-size:12.5px;background:#fff;box-sizing:border-box;width:100%}.full{grid-column:1/-1}.twrap{overflow:auto;border:1px solid var(--b);border-radius:7px}.tab{width:100%;border-collapse:collapse;min-width:760px}.tab th{background:#e2e8f0;color:var(--t);font-size:10px;text-transform:uppercase;text-align:left;padding:8px;font-weight:950}.tab td{padding:8px;border-bottom:1px solid #e5e7eb;color:var(--t);font-size:12px}.tab tbody tr:nth-child(even){background:#f8fafc}.tipo{display:inline-flex;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:950;text-transform:uppercase}.tipo.entrada{background:#f1f5f9;color:#334155}.tipo.saida{background:#f1f5f9;color:#334155}.vazio{padding:16px;text-align:center;color:var(--s);font-size:13px;font-weight:780}.msg{display:none;padding:9px;border-radius:6px;font-size:12px;font-weight:850}.msg.ok{display:block;background:#f1f5f9;color:#334155}.msg.erro{display:block;background:#fee2e2;color:#991b1b}@media(max-width:900px){.hero{grid-template-columns:1fr}.mets{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}@media(max-width:560px){.cx{width:min(100% - 10px,1180px)}.mets,.grid{grid-template-columns:1fr}.btn{width:100%}}</style></head><body><div id="header-container"></div><main class="cx"><section class="card hero"><div><span class="tag">Financeiro</span><h1>Fluxo de caixa</h1><p>Controle entradas, saídas, saldo do período, despesas e recebimentos manuais.</p></div><div class="acoes"><a href="dashboard.html" class="btn">Dashboard</a><button class="btn btnp" onclick="mostrarFormularioCaixa()">Novo lançamento</button></div></section><section class="mets"><div class="met e"><span>Entradas</span><strong id="cx-entradas">R$ 0,00</strong></div><div class="met s"><span>Saídas</span><strong id="cx-saidas">R$ 0,00</strong></div><div class="met sd"><span>Saldo</span><strong id="cx-saldo">R$ 0,00</strong></div><div class="met"><span>Lançamentos</span><strong id="cx-total">0</strong></div><div class="met"><span>Ticket entrada</span><strong id="cx-ticket">R$ 0,00</strong></div></section><section id="card-form-caixa" class="card" style="display:none"><div class="head"><div><h2>Novo lançamento</h2><p>Registre entrada ou saída manual.</p></div></div><div class="body"><div id="cx-msg" class="msg"></div><form id="form-caixa" class="grid"><div class="campo"><label>Tipo</label><select id="cx-tipo"><option value="entrada">Entrada</option><option value="saida">Saída</option></select></div><div class="campo"><label>Data</label><input id="cx-data" type="date"></div><div class="campo"><label>Valor</label><input id="cx-valor" type="number" step="0.01" min="0"></div><div class="campo"><label>Forma</label><select id="cx-forma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="cartao_credito">Cartão crédito</option><option value="cartao_debito">Cartão débito</option><option value="outro">Outro</option></select></div><div class="campo"><label>Categoria</label><input id="cx-categoria" placeholder="Peças, aluguel, OS"></div><div class="campo full"><label>Descrição</label><input id="cx-descricao" placeholder="Descrição do lançamento"></div><div class="campo full"><label>Observações</label><textarea id="cx-observacoes"></textarea></div><div class="full acoes"><button type="submit" class="btn btnp">Salvar</button><button type="button" class="btn" onclick="ocultarFormularioCaixa()">Cancelar</button></div></form></div></section><section class="card"><div class="head"><div><h2>Período</h2><p>Filtre os lançamentos.</p></div><div class="grid"><div class="campo"><label>De</label><input id="cx-inicio" type="date"></div><div class="campo"><label>Até</label><input id="cx-fim" type="date"></div><div class="campo"><label>Tipo</label><select id="cx-filtro-tipo"><option value="">Todos</option><option value="entrada">Entradas</option><option value="saida">Saídas</option></select></div><button class="btn btnp" onclick="carregarFluxoCaixa()">Atualizar</button></div></div><div class="body"><div id="cx-lista" class="twrap"><div class="vazio">Carregando...</div></div></div></section></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="auth.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script src="notificacoes.js"></script><script src="fluxo-caixa.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxo de Caixa - FS Orçamentos</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root{--cx-t:#111827;--cx-m:#475569;--cx-d:#1f2937;--cx-d2:#374151;--cx-b:#dbe3ee;--cx-b2:#cbd5e1;--cx-bg:#f3f4f6;--cx-card:#fff;--cx-red:#dc2626;--cx-green:#16a34a;--cx-shadow:0 6px 18px rgba(15,23,42,.08)}
+    body{margin:0;background:linear-gradient(180deg,#f3f4f6 0%,#e5e7eb 100%)!important;color:var(--cx-t)!important}body.cx-modal-aberto{overflow:hidden!important}.cx{width:min(1220px,calc(100% - 24px));margin:0 auto;padding:22px 0 56px;display:grid;gap:16px}.cx-hero,.cx-card,.cx-met,.cx-modal-box{background:#fff!important;color:var(--cx-t)!important;border:1px solid var(--cx-b)!important;border-radius:14px!important;box-shadow:var(--cx-shadow)!important;overflow:hidden}.cx-hero{padding:24px;border-top:5px solid var(--cx-d2)!important;background:linear-gradient(135deg,#fff,#f9fafb)!important;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}.cx-tag{display:inline-flex;padding:4px 8px;border-radius:6px;background:#e2e8f0;border:1px solid var(--cx-b2);color:var(--cx-d);font-size:10px;font-weight:950;text-transform:uppercase;margin-bottom:8px}.cx-hero h1{margin:0 0 8px;color:#0f172a!important;font-size:clamp(26px,4vw,36px);line-height:1.1}.cx-hero p{margin:0;color:var(--cx-m)!important;font-size:15px;line-height:1.55;font-weight:650}.cx-top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.cx-btn{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;border:1px solid var(--cx-b2);padding:10px 14px;background:#fff;color:#111827;font-size:14px;font-weight:900;text-decoration:none;cursor:pointer;box-sizing:border-box}.cx-btn:hover{border-color:#94a3b8}.cx-btn.primary{background:#111827!important;color:#fff!important;border-color:#111827!important}.cx-btn.danger{background:#fff1f1!important;color:var(--cx-red)!important;border-color:#fecaca!important}.cx-btn.new{background:#fff!important;color:#0f172a!important;border-color:#d1d5db!important;box-shadow:0 6px 16px rgba(15,23,42,.16)!important;min-width:168px}.cx-metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.cx-met{padding:16px;border-left:4px solid #4b5563!important}.cx-met.entrada{border-left-color:var(--cx-green)!important}.cx-met.saida{border-left-color:var(--cx-red)!important}.cx-met.saldo{border-left-color:#2563eb!important}.cx-met span{display:block;color:var(--cx-m);font-size:12px;font-weight:900;text-transform:uppercase;margin-bottom:7px}.cx-met strong{display:block;color:#0f172a!important;font-size:24px;font-weight:950;line-height:1}.cx-head{padding:16px 18px;background:#1f2937!important;color:#fff!important;border-bottom:1px solid #374151!important}.cx-head-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}.cx-head h2{margin:0;color:#fff!important;font-size:20px;line-height:1.15}.cx-head p{margin:6px 0 0;color:#e5e7eb!important;font-size:13px;line-height:1.45;font-weight:700}.cx-head-buttons{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.cx-body{padding:18px;background:#fff!important}.cx-filter-grid{display:grid;grid-template-columns:1fr 1fr .8fr auto;gap:12px;align-items:end}.cx-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cx-field{display:flex;flex-direction:column;gap:6px}.cx-field.full{grid-column:1/-1}.cx-field label{font-size:12px;font-weight:900;text-transform:uppercase;color:#374151!important}.cx-field input,.cx-field select,.cx-field textarea{width:100%;border:1px solid #d1d5db!important;border-radius:10px;padding:10px 11px;font-size:14px;outline:none;background:#fff!important;color:#111827!important;box-sizing:border-box}.cx-field textarea{min-height:86px;resize:vertical}.cx-field small{color:var(--cx-m)!important;font-size:12px;line-height:1.35}.cx-stock-box{display:none;grid-column:1/-1;border:1px solid var(--cx-b);border-radius:12px;background:#f8fafc;padding:12px}.cx-stock-box.ativo{display:grid;gap:12px}.cx-total-venda{font-weight:950;color:#0f172a!important}.cx-table-wrap{overflow:auto;border:1px solid var(--cx-b);border-radius:12px;background:#fff}.cx-table{width:100%;border-collapse:collapse;min-width:780px}.cx-table th{background:#e2e8f0;color:#111827;font-size:11px;text-transform:uppercase;text-align:left;padding:9px;font-weight:950}.cx-table td{padding:9px;border-bottom:1px solid #e5e7eb;color:#111827;font-size:13px;vertical-align:top}.cx-table tbody tr:nth-child(even){background:#f8fafc}.cx-badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:950;text-transform:uppercase;border:1px solid #d1d5db;background:#f3f4f6;color:#1f2937}.cx-badge.entrada{background:#dcfce7;color:#166534;border-color:#bbf7d0}.cx-badge.saida{background:#fee2e2;color:#991b1b;border-color:#fecaca}.cx-empty{padding:32px 20px;text-align:center;background:#f9fafb!important;border:1px dashed #9ca3af!important;border-radius:14px;color:var(--cx-m);font-weight:800}.cx-msg{display:none;margin-bottom:14px;padding:12px 14px;border-radius:10px;font-size:14px;font-weight:800}.cx-msg.ok{display:block;background:#dcfce7;color:#166534;border:1px solid #bbf7d0}.cx-msg.erro{display:block;background:#fee2e2;color:#991b1b;border:1px solid #fecaca}.cx-msg.info{display:block;background:#f3f4f6;color:#1f2937;border:1px solid #d1d5db}.cx-modal{position:fixed;inset:0;z-index:42000;display:none;align-items:flex-start;justify-content:center;background:rgba(15,23,42,.72);padding:18px;overflow-y:auto}.cx-modal.ativo{display:flex}.cx-modal-box{width:min(900px,100%);margin:18px auto;max-height:calc(100dvh - 36px);display:flex;flex-direction:column;border-top:5px solid #1f2937!important}.cx-modal-head{flex:0 0 auto;display:flex;justify-content:space-between;gap:10px;padding:14px 16px;background:#1f2937!important;color:#fff!important}.cx-modal-head h2{margin:0;color:#fff!important;font-size:20px}.cx-modal-head p{margin:5px 0 0;color:#e5e7eb!important;font-size:13px;font-weight:700}.cx-modal-close{width:38px;height:38px;min-width:38px;border-radius:999px;border:1px solid #d1d5db;background:#fff;color:#111827;font-size:27px;font-weight:950;line-height:1;cursor:pointer}.cx-modal-body{padding:16px;background:#fff;overflow-y:auto}.cx-modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.cx-list-mobile{display:none}.cx-item{background:#fff;border:1px solid var(--cx-b);border-left:5px solid #4b5563;border-radius:12px;padding:10px;display:grid;gap:8px}.cx-item.entrada{border-left-color:var(--cx-green)}.cx-item.saida{border-left-color:var(--cx-red)}.cx-item-top{display:flex;justify-content:space-between;gap:8px}.cx-item strong{color:#0f172a}.cx-item small{color:var(--cx-m);line-height:1.35}@media(max-width:980px){.cx-hero{grid-template-columns:1fr}.cx-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.cx-filter-grid{grid-template-columns:1fr 1fr}.cx-filter-grid .cx-btn{width:100%}}@media(max-width:700px){.cx{width:min(100% - 20px,1220px);padding:16px 0 42px}.cx-hero{padding:20px}.cx-top-actions,.cx-head-buttons{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:8px}.cx-btn{width:100%;font-size:12.5px;padding-inline:8px}.cx-filter-grid,.cx-form-grid{grid-template-columns:1fr}.cx-table-wrap{display:none}.cx-list-mobile{display:grid;gap:8px}.cx-modal{padding:8px}.cx-modal-box{margin:8px auto;max-height:calc(100dvh - 16px)}.cx-modal-actions{display:grid;grid-template-columns:1fr}.cx-modal-actions .cx-btn{width:100%}}
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="cx">
+    <section class="cx-hero">
+      <div>
+        <span class="cx-tag">Financeiro</span>
+        <h1>Fluxo de caixa</h1>
+        <p>Controle entradas, saídas, saldo do período, despesas, recebimentos manuais e venda de peças do estoque.</p>
+      </div>
+      <div class="cx-top-actions">
+        <a href="/dashboard.html" class="cx-btn">Dashboard</a>
+        <button type="button" id="btn-novo-lancamento" class="cx-btn new" onclick="mostrarFormularioCaixa()">＋ Novo lançamento</button>
+      </div>
+    </section>
+
+    <section class="cx-metrics">
+      <div class="cx-met entrada"><span>Entradas</span><strong id="cx-entradas">R$ 0,00</strong></div>
+      <div class="cx-met saida"><span>Saídas</span><strong id="cx-saidas">R$ 0,00</strong></div>
+      <div class="cx-met saldo"><span>Saldo</span><strong id="cx-saldo">R$ 0,00</strong></div>
+      <div class="cx-met"><span>Lançamentos</span><strong id="cx-total">0</strong></div>
+      <div class="cx-met"><span>Ticket entrada</span><strong id="cx-ticket">R$ 0,00</strong></div>
+    </section>
+
+    <section class="cx-card">
+      <div class="cx-head">
+        <div class="cx-head-row">
+          <div>
+            <h2>Extrato financeiro</h2>
+            <p>Filtre e acompanhe lançamentos de caixa do período.</p>
+          </div>
+          <div class="cx-head-buttons">
+            <button type="button" class="cx-btn new" onclick="mostrarFormularioCaixa()">＋ Novo lançamento</button>
+            <button type="button" class="cx-btn primary" onclick="carregarFluxoCaixa()">Buscar</button>
+          </div>
+        </div>
+      </div>
+      <div class="cx-body">
+        <div class="cx-filter-grid">
+          <div class="cx-field"><label for="cx-inicio">De</label><input id="cx-inicio" type="date"></div>
+          <div class="cx-field"><label for="cx-fim">Até</label><input id="cx-fim" type="date"></div>
+          <div class="cx-field"><label for="cx-filtro-tipo">Tipo</label><select id="cx-filtro-tipo"><option value="">Todos</option><option value="entrada">Entradas</option><option value="saida">Saídas</option></select></div>
+          <button type="button" class="cx-btn primary" onclick="carregarFluxoCaixa()">Atualizar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="cx-card">
+      <div class="cx-head">
+        <h2>Lançamentos</h2>
+        <p>Lista enxuta com entradas e saídas do período selecionado.</p>
+      </div>
+      <div class="cx-body">
+        <div id="cx-lista" class="cx-table-wrap"><div class="cx-empty">Carregando...</div></div>
+        <div id="cx-lista-mobile" class="cx-list-mobile"></div>
+      </div>
+    </section>
+  </main>
+
+  <section id="card-form-caixa" class="cx-modal" aria-hidden="true">
+    <div class="cx-modal-box" role="dialog" aria-modal="true" aria-labelledby="cx-modal-titulo">
+      <div class="cx-modal-head">
+        <div>
+          <h2 id="cx-modal-titulo">Novo lançamento</h2>
+          <p>Registre entrada, saída manual ou venda de peça do estoque.</p>
+        </div>
+        <button type="button" class="cx-modal-close" onclick="ocultarFormularioCaixa()" aria-label="Fechar">×</button>
+      </div>
+      <div class="cx-modal-body">
+        <div id="cx-msg" class="cx-msg"></div>
+        <form id="form-caixa" class="cx-form-grid">
+          <div class="cx-field full">
+            <label for="cx-modo">Tipo de lançamento</label>
+            <select id="cx-modo">
+              <option value="manual">Lançamento manual</option>
+              <option value="venda_estoque">Venda de peça/produto do estoque</option>
+            </select>
+          </div>
+
+          <div id="cx-venda-estoque-box" class="cx-stock-box">
+            <div class="cx-field full">
+              <label for="cx-produto-id">Produto do estoque</label>
+              <select id="cx-produto-id"><option value="">Carregando produtos...</option></select>
+              <small>Ao salvar a venda, será gerada uma entrada no caixa e uma saída no estoque quando o produto controlar estoque.</small>
+            </div>
+            <div class="cx-form-grid">
+              <div class="cx-field"><label for="cx-produto-quantidade">Quantidade</label><input id="cx-produto-quantidade" type="number" step="0.01" min="0" placeholder="1"></div>
+              <div class="cx-field"><label for="cx-produto-valor-unitario">Valor unitário</label><input id="cx-produto-valor-unitario" type="number" step="0.01" min="0" placeholder="0,00"></div>
+            </div>
+            <div class="cx-field full"><small>Total da venda: <span id="cx-produto-total" class="cx-total-venda">R$ 0,00</span></small></div>
+          </div>
+
+          <div class="cx-field"><label for="cx-tipo">Entrada/Saída</label><select id="cx-tipo"><option value="entrada">Entrada</option><option value="saida">Saída</option></select></div>
+          <div class="cx-field"><label for="cx-data">Data</label><input id="cx-data" type="date"></div>
+          <div class="cx-field"><label for="cx-valor">Valor</label><input id="cx-valor" type="number" step="0.01" min="0"></div>
+          <div class="cx-field"><label for="cx-forma">Forma</label><select id="cx-forma"><option value="pix">Pix</option><option value="dinheiro">Dinheiro</option><option value="cartao_credito">Cartão crédito</option><option value="cartao_debito">Cartão débito</option><option value="outro">Outro</option></select></div>
+          <div class="cx-field full"><label for="cx-categoria">Categoria</label><input id="cx-categoria" placeholder="Peças, aluguel, OS, venda de produto"></div>
+          <div class="cx-field full"><label for="cx-descricao">Descrição</label><input id="cx-descricao" placeholder="Descrição do lançamento"></div>
+          <div class="cx-field full"><label for="cx-observacoes">Observações</label><textarea id="cx-observacoes"></textarea></div>
+          <div class="cx-field full"><div class="cx-modal-actions"><button type="submit" class="cx-btn primary">Salvar lançamento</button><button type="button" class="cx-btn" onclick="ocultarFormularioCaixa()">Cancelar</button></div></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
+  <script src="fluxo-caixa.js?v=20260624-modal-venda-estoque-1"></script>
+</body>
+</html>
