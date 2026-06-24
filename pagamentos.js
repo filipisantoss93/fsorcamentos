@@ -164,7 +164,7 @@
       return false;
     }
 
-    modal.style.display = 'flex';
+    modal.style.setProperty('display', 'flex', 'important');
     document.body.style.overflow = 'hidden';
     return true;
   }
@@ -172,7 +172,7 @@
   function fecharModalPixBasico() {
     const modal = fsPagamentoEl('modal-pix-basico');
     if (!modal) return;
-    modal.style.display = 'none';
+    modal.style.setProperty('display', 'none', 'important');
     document.body.style.overflow = '';
   }
 
@@ -459,28 +459,57 @@
     });
   }
 
+  function configurarCliqueDiretoBotoesPix() {
+    if (window.fsCliqueDiretoBotoesPixConfigurado === true) return;
+    window.fsCliqueDiretoBotoesPixConfigurado = true;
+
+    document.addEventListener('click', function (event) {
+      const botao = event.target?.closest?.('[data-botao-pix]');
+      if (!botao) return;
+      if (botao.disabled) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const plano = fsNormalizarPlanoPix(botao.dataset.plano || 'basico');
+      const periodo = fsPeriodoPixValido(botao.dataset.periodo) ? botao.dataset.periodo : 'mensal';
+      gerarPixPlano(plano, periodo);
+    }, true);
+  }
+
+  function exporFuncoesPagamento() {
+    window.FS_PLANOS_PIX = FS_PLANOS_PIX;
+    window.gerarPixPlano = gerarPixPlano;
+    window.gerarPixPlanoBasico = gerarPixPlanoBasico;
+    window.gerarPixPlanoPremium = gerarPixPlanoPremium;
+    window.gerarPixPremium = gerarPixPlanoPremium;
+    window.abrirModalPixBasico = abrirModalPixBasico;
+    window.fecharModalPixBasico = fecharModalPixBasico;
+    window.setEstadoModalPixCarregando = setEstadoModalPixCarregando;
+    window.setEstadoModalPixErro = setEstadoModalPixErro;
+    window.setEstadoModalPixConteudo = setEstadoModalPixConteudo;
+    window.copiarPixCopiaCola = copiarPixCopiaCola;
+    window.copiarPixCopiaColaOriginal = copiarPixCopiaCola;
+    window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
+    window.verificarPagamentoPixAtualOriginal = verificarPagamentoPixAtual;
+    window.formatarMoedaPix = fsFormatarMoedaPix;
+    window.fsFormatarMoedaPix = fsFormatarMoedaPix;
+    window.fsAtualizarTextosValoresPlanos = fsAtualizarTextosValoresPlanos;
+    window.fsAtualizarDadosAposPagamentoConfirmado = fsAtualizarDadosAposPagamentoConfirmado;
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     configurarEventosModalPix();
+    configurarCliqueDiretoBotoesPix();
+    exporFuncoesPagamento();
     fsAtualizarTextosValoresPlanos();
+    setTimeout(exporFuncoesPagamento, 300);
+    setTimeout(exporFuncoesPagamento, 1200);
     setTimeout(fsAtualizarTextosValoresPlanos, 300);
     setTimeout(fsAtualizarTextosValoresPlanos, 1200);
     fsAbrirPixPorParametroUrl();
   });
 
-  window.FS_PLANOS_PIX = FS_PLANOS_PIX;
-  window.gerarPixPlano = gerarPixPlano;
-  window.gerarPixPlanoBasico = gerarPixPlanoBasico;
-  window.gerarPixPlanoPremium = gerarPixPlanoPremium;
-  window.gerarPixPremium = gerarPixPlanoPremium;
-  window.abrirModalPixBasico = abrirModalPixBasico;
-  window.fecharModalPixBasico = fecharModalPixBasico;
-  window.setEstadoModalPixCarregando = setEstadoModalPixCarregando;
-  window.setEstadoModalPixErro = setEstadoModalPixErro;
-  window.setEstadoModalPixConteudo = setEstadoModalPixConteudo;
-  window.copiarPixCopiaCola = copiarPixCopiaCola;
-  window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
-  window.formatarMoedaPix = fsFormatarMoedaPix;
-  window.fsFormatarMoedaPix = fsFormatarMoedaPix;
-  window.fsAtualizarTextosValoresPlanos = fsAtualizarTextosValoresPlanos;
-  window.fsAtualizarDadosAposPagamentoConfirmado = fsAtualizarDadosAposPagamentoConfirmado;
+  configurarCliqueDiretoBotoesPix();
+  exporFuncoesPagamento();
 })();
