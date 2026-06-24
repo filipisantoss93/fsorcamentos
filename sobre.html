@@ -2,54 +2,39 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#3e2723">
+  <meta name="theme-color" content="#f8fafc">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Sobre o FS Orçamentos - Orçamentos, Clientes, Veículos, OS e Estoque</title>
-
-  <meta name="description" content="Conheça o FS Orçamentos: plataforma para gerar orçamentos profissionais em PDF, enviar link pelo WhatsApp, gerenciar clientes, veículos, ordens de serviço e estoque conforme o plano contratado.">
-  <meta name="keywords" content="FS Orçamentos, gerador de orçamento, orçamento PDF, orçamento profissional, MEI, autônomo, prestador de serviço, oficina, gestão de oficina, ordem de serviço, controle de estoque, cadastro de clientes, cadastro de veículos">
+  <title>Sobre o FS Orçamentos | Orçamentos profissionais e gestão para prestadores</title>
+  <meta name="description" content="Conheça o FS Orçamentos: plataforma brasileira para gerar orçamentos em PDF, acompanhar aprovações e evoluir para gestão com clientes, veículos, ordens de serviço, estoque e agenda.">
+  <meta name="keywords" content="FS Orçamentos, orçamento PDF, sistema de orçamento, gestão de oficina, ordem de serviço, prestadores de serviço, MEI, orçamento profissional">
   <meta name="author" content="Filipi Aparecido dos Santos">
+  <meta name="robots" content="index, follow">
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fsorcamentos.com.br/sobre.html">
   <meta property="og:title" content="Sobre o FS Orçamentos">
-  <meta property="og:description" content="Gere orçamentos profissionais, envie links pelo WhatsApp e evolua para gestão completa com clientes, veículos, OS e estoque.">
+  <meta property="og:description" content="Uma plataforma para gerar orçamentos profissionais e organizar o serviço do orçamento ao pós-venda.">
   <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
 
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://fsorcamentos.com.br/sobre.html">
   <meta property="twitter:title" content="Sobre o FS Orçamentos">
-  <meta property="twitter:description" content="Uma plataforma criada para gerar, organizar e acompanhar orçamentos, clientes, veículos e ordens de serviço.">
+  <meta property="twitter:description" content="Orçamentos em PDF, aprovação por link e gestão completa para prestadores e oficinas.">
   <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
 
   <link rel="stylesheet" href="style.css">
+  <link id="fs-sobre-inline-css" rel="stylesheet" href="sobre-inline.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077" crossorigin="anonymous"></script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "FS Orçamentos",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "url": "https://fsorcamentos.com.br/",
-    "description": "Plataforma para gerar orçamentos profissionais, acompanhar aprovações e gerenciar clientes, veículos, ordens de serviço e estoque."
-  }
-  </script>
-
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -57,1220 +42,169 @@
     gtag('js', new Date());
     gtag('config', 'AW-17435932696');
   </script>
-  <link id="fs-sobre-inline-css" rel="stylesheet" href="sobre-inline.css">
 
-<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
-<style id="fs-formal-theme-overrides">
-  :root {
-    --fs-marrom: #3e2723;
-    --fs-marrom-2: #5d4037;
-    --fs-fundo-escuro: #f7f2ea;
-    --fs-fundo: #f7f2ea;
-    --fs-page-bg: #f7f2ea;
-    --fs-page-bg-2: #efe3d2;
-    --fs-card: #ffffff;
-    --fs-creme: #f4ece1;
-    --fs-creme-2: #fffaf0;
-    --fs-bege: #f4ece1;
-    --fs-bege-2: #fffaf0;
-    --fs-amarelo: #ffc400;
-    --fs-borda: #e8dccb;
-    --fs-texto: #2f241f;
-    --fs-texto-suave: #6d5b52;
-    --bg-dark: #f7f2ea;
-    --body-brown: #ffffff;
-    --text-dark: #2f241f;
-    --accent-yellow: #ffc400;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "FS Orçamentos",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web, Android",
+    "url": "https://fsorcamentos.com.br/",
+    "description": "Plataforma para gerar orçamentos profissionais em PDF, acompanhar aprovações e gerenciar clientes, veículos, ordens de serviço, estoque e agenda conforme o plano contratado.",
+    "author": {
+      "@type": "Person",
+      "name": "Filipi Aparecido dos Santos"
+    },
+    "offers": [
+      { "@type": "Offer", "name": "Plano Grátis", "price": "0", "priceCurrency": "BRL" },
+      { "@type": "Offer", "name": "Plano Básico", "price": "29.90", "priceCurrency": "BRL" },
+      { "@type": "Offer", "name": "Plano Premium", "price": "89.90", "priceCurrency": "BRL" }
+    ]
   }
-
-  body:not(.gerando-pdf) {
-    background:
-      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
-    color: #2f241f !important;
-  }
-
-  #header-container,
-  .main-header,
-  .header-topo,
-  .header-menu-linha {
-    background: #3e2723 !important;
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav,
-  .logo-nav span,
-  #usuario-saudacao,
-  .header-menu-linha a,
-  .nav-menu a {
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav strong,
-  .fs-box,
-  .sobre-fs-box {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-  }
-
-  .link-destaque-gerador,
-  .btn-header-entrar,
-  .btn-menu-mobile-entrar,
-  .btn-home-grande,
-  .btn-home-medio,
-  .btn-home-atalho.btn-principal,
-  .btn-gerar-orcamento-home,
-  .btn-previa-profissional,
-  .btn-hero-principal,
-  .btn-ir-planos-home,
-  .btn-home-planos-forte,
-  .btn-add,
-  .btn-extra,
-  .btn-primario,
-  .btn-primary,
-  .btn-salvar,
-  .btn-acao-pdf,
-  .plano-pix-card button,
-  .btn-editar-dados-empresa {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .link-destaque-gerador:hover,
-  .btn-header-entrar:hover,
-  .btn-menu-mobile-entrar:hover,
-  .btn-home-grande:hover,
-  .btn-home-medio:hover,
-  .btn-gerar-orcamento-home:hover,
-  .btn-previa-profissional:hover,
-  .btn-hero-principal:hover,
-  .btn-ir-planos-home:hover,
-  .btn-home-planos-forte:hover,
-  .btn-add:hover,
-  .btn-extra:hover,
-  .btn-primario:hover,
-  .btn-primary:hover,
-  .btn-salvar:hover,
-  .btn-acao-pdf:hover,
-  .plano-pix-card button:hover,
-  .btn-editar-dados-empresa:hover {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-    border-color: #3e2723 !important;
-  }
-
-  .hero-publico,
-  .home-plano-hero,
-  .gerador-hero,
-  .planos-hero,
-  .clientes-hero,
-  .veiculos-hero,
-  .ordens-hero,
-  .ordem-hero,
-  .estoque-hero,
-  .sobre-hero,
-  .manual-hero,
-  .termos-hero,
-  .privacidade-hero,
-  .orcamentos-hero,
-  .painel-hero,
-  .secao-como-funciona,
-  .whatsapp-preview-home,
-  .cliente-aprovacao-home,
-  .comparativo-home,
-  .status-orcamentos-home,
-  .home-story-section,
-  .home-whatsapp-section,
-  .home-aprovacao-section,
-  .home-status-section,
-  .home-comparativo-section,
-  .planos-pix-section,
-  .comparativo-section,
-  .faq-section,
-  .container-sobre,
-  .container-termos,
-  .container-privacidade,
-  .home-premium-showcase {
-    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-    color: #2f241f !important;
-    border-top-color: #ffc400 !important;
-    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
-  }
-
-  .hero-publico h1,
-  .home-plano-hero h1,
-  .gerador-hero h1,
-  .planos-hero h1,
-  .clientes-hero h1,
-  .veiculos-hero h1,
-  .ordens-hero h1,
-  .ordem-hero h1,
-  .estoque-hero h1,
-  .sobre-hero h1,
-  .manual-hero h1,
-  .home-premium-showcase h2,
-  .container-sobre h1,
-  .container-sobre h2,
-  .container-termos h1,
-  .container-termos h2,
-  .section-topo h2,
-  .dadositens,
-  .card-header h2,
-  .clientes-card-header h2,
-  .veiculos-card-header h2,
-  .ordens-card-header h2,
-  .estoque-card-header h2 {
-    color: #3e2723 !important;
-  }
-
-  .hero-publico p,
-  .home-plano-hero p,
-  .gerador-hero p,
-  .planos-hero p,
-  .clientes-hero p,
-  .veiculos-hero p,
-  .ordens-hero p,
-  .ordem-hero p,
-  .estoque-hero p,
-  .sobre-hero p,
-  .manual-hero p,
-  .home-premium-showcase p,
-  .container-sobre p,
-  .container-termos p,
-  .section-topo p {
-    color: #6d5b52 !important;
-  }
-
-  .container,
-  .card,
-  .clientes-card,
-  .veiculos-card,
-  .ordens-card,
-  .estoque-card,
-  .gerador-card-principal,
-  .sidebar-card,
-  .plano-pix-card,
-  .faq-card,
-  .home-promo-card,
-  .home-metrica-card,
-  .home-relatorio-card,
-  .home-painel-card,
-  .card-sobre,
-  .plano-card,
-  .manual-card,
-  .manual-section,
-  .manual-step,
-  .manual-demo-card,
-  .cliente-item,
-  .veiculo-item,
-  .ordem-item,
-  .estoque-categoria-grupo,
-  .emissor-readonly-card,
-  .cliente-tela-preview,
-  .home-cliente-preview {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #e8dccb !important;
-    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
-  }
-
-  .card-header,
-  .clientes-card-header,
-  .veiculos-card-header,
-  .ordens-card-header,
-  .estoque-card-header,
-  .modal-busca-cliente-header,
-  .modal-busca-produto-header,
-  .modal-pix-topo,
-  .home-cliente-topo,
-  .mock-card-head,
-  .orcamento-whatsapp-header,
-  .home-orcamento-whatsapp-header,
-  .total-container,
-  .cliente-total-demo,
-  .home-cliente-total,
-  .manual-flow div,
-  .mini-dashboard {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .card-body,
-  .clientes-card-body,
-  .veiculos-card-body,
-  .ordens-card-body,
-  .estoque-card-body {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  input,
-  select,
-  textarea {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #d8c9b8 !important;
-  }
-
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #ffc400 !important;
-    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-    outline: none !important;
-  }
-
-  table,
-  .tabela-comparativo,
-  .home-tabela-comparativo,
-  .manual-table,
-  .comparativo {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  th,
-  .tabela-comparativo th,
-  .home-tabela-comparativo th,
-  .manual-table th,
-  .comparativo th {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-  }
-
-  tr:nth-child(even),
-  tbody tr:nth-child(even) {
-    background: #fffaf0 !important;
-  }
-
-  footer,
-  .sobre-footer {
-    color: #6d5b52 !important;
-  }
-
-  footer a,
-  .sobre-footer a {
-    color: #3e2723 !important;
-    font-weight: 800 !important;
-  }
-</style>
-
-
-<style id="fs-contrast-fix-final">
-
-/* =========================================================
-   FS CONTRAST FIX - textos legíveis no tema claro profissional
-   Mantém marrom no header/títulos principais e corrige textos
-   que estavam ficando da mesma cor do fundo.
-   ========================================================= */
-:root {
-  --fs-marrom: #3e2723;
-  --fs-marrom-2: #5d4037;
-  --fs-fundo: #f7f2ea;
-  --fs-fundo-2: #efe3d2;
-  --fs-card: #ffffff;
-  --fs-creme: #fffaf0;
-  --fs-amarelo: #ffc400;
-  --fs-borda: #e8dccb;
-  --fs-texto: #2f241f;
-  --fs-texto-suave: #6d5b52;
-}
-
-html,
-body {
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) {
-  background:
-    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
-}
-
-main,
-section,
-.container,
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box,
-.modal-login-box,
-.modal-responsavel-card,
-.modal-busca-produto-box,
-.modal-busca-cliente-box,
-.modal-pix-card {
-  color: var(--fs-texto) !important;
-}
-
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.container,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box {
-  background: #ffffff !important;
-  border-color: var(--fs-borda) !important;
-}
-
-/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
-.card-header,
-.clientes-card-header,
-.veiculos-card-header,
-.ordens-card-header,
-.estoque-card-header,
-.modal-busca-cliente-header,
-.modal-busca-produto-header,
-.modal-pix-topo,
-.home-cliente-topo,
-.mock-card-head,
-.orcamento-whatsapp-header,
-.home-orcamento-whatsapp-header,
-.total-container,
-.valor-total,
-.cliente-total-demo,
-.home-cliente-total,
-.manual-flow div,
-.mini-dashboard,
-.auth-logo-box,
-.banner-topo {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.card-header h1,
-.card-header h2,
-.card-header h3,
-.card-header strong,
-.clientes-card-header h1,
-.clientes-card-header h2,
-.clientes-card-header h3,
-.clientes-card-header strong,
-.veiculos-card-header h1,
-.veiculos-card-header h2,
-.veiculos-card-header h3,
-.veiculos-card-header strong,
-.ordens-card-header h1,
-.ordens-card-header h2,
-.ordens-card-header h3,
-.ordens-card-header strong,
-.estoque-card-header h1,
-.estoque-card-header h2,
-.estoque-card-header h3,
-.estoque-card-header strong,
-.modal-busca-cliente-header h1,
-.modal-busca-cliente-header h2,
-.modal-busca-cliente-header h3,
-.modal-busca-cliente-header strong,
-.modal-busca-produto-header h1,
-.modal-busca-produto-header h2,
-.modal-busca-produto-header h3,
-.modal-busca-produto-header strong,
-.modal-pix-topo h1,
-.modal-pix-topo h2,
-.modal-pix-topo h3,
-.modal-pix-topo strong,
-.total-container strong,
-.valor-total strong,
-.valor-total span,
-.cliente-total-demo,
-.home-cliente-total,
-.auth-logo-box .auth-logo-text span,
-.auth-logo-box strong,
-.banner-topo h1,
-.banner-topo h2,
-.banner-topo h3,
-.banner-topo strong {
-  color: var(--fs-amarelo) !important;
-}
-
-.card-header p,
-.card-header span,
-.card-header small,
-.clientes-card-header p,
-.clientes-card-header span,
-.clientes-card-header small,
-.veiculos-card-header p,
-.veiculos-card-header span,
-.veiculos-card-header small,
-.ordens-card-header p,
-.ordens-card-header span,
-.ordens-card-header small,
-.estoque-card-header p,
-.estoque-card-header span,
-.estoque-card-header small,
-.modal-busca-cliente-header p,
-.modal-busca-cliente-header span,
-.modal-busca-cliente-header small,
-.modal-busca-produto-header p,
-.modal-busca-produto-header span,
-.modal-busca-produto-header small,
-.modal-pix-topo p,
-.modal-pix-topo span,
-.modal-pix-topo small,
-.auth-logo-box p {
-  color: #fffaf0 !important;
-}
-
-/* Heróis/seções claras */
-.hero-publico,
-.home-plano-hero,
-.gerador-hero,
-.planos-hero,
-.clientes-hero,
-.veiculos-hero,
-.ordens-hero,
-.ordem-hero,
-.estoque-hero,
-.sobre-hero,
-.manual-hero,
-.termos-hero,
-.privacidade-hero,
-.orcamentos-hero,
-.painel-hero,
-.secao-como-funciona,
-.whatsapp-preview-home,
-.cliente-aprovacao-home,
-.comparativo-home,
-.status-orcamentos-home,
-.home-story-section,
-.home-whatsapp-section,
-.home-aprovacao-section,
-.home-status-section,
-.home-comparativo-section,
-.planos-pix-section,
-.comparativo-section,
-.faq-section,
-.container-sobre,
-.container-termos,
-.container-privacidade {
-  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
-.hero-publico h1,
-.home-plano-hero h1,
-.gerador-hero h1,
-.planos-hero h1,
-.clientes-hero h1,
-.veiculos-hero h1,
-.ordens-hero h1,
-.ordem-hero h1,
-.estoque-hero h1,
-.sobre-hero h1,
-.manual-hero h1,
-.termos-hero h1,
-.privacidade-hero h1,
-.orcamentos-hero h1,
-.painel-hero h1,
-.section-topo h2,
-.container-sobre h1,
-.container-sobre h2,
-.container-termos h1,
-.container-termos h2,
-.container-privacidade h1,
-.container-privacidade h2,
-.dadositens,
-.campo label,
-label {
-  color: var(--fs-marrom) !important;
-}
-
-.hero-publico p,
-.home-plano-hero p,
-.gerador-hero p,
-.planos-hero p,
-.clientes-hero p,
-.veiculos-hero p,
-.ordens-hero p,
-.ordem-hero p,
-.estoque-hero p,
-.sobre-hero p,
-.manual-hero p,
-.termos-hero p,
-.privacidade-hero p,
-.orcamentos-hero p,
-.painel-hero p,
-.section-topo p,
-.info-item span,
-.texto-bloco,
-.campo small,
-small,
-.help-item,
-.valor-linha span,
-.home-metrica-card span,
-.home-relatorio-card span,
-.home-promo-card p,
-.home-painel-card p {
-  color: var(--fs-texto-suave) !important;
-}
-
-.info-item strong,
-.valor-linha strong,
-.home-metrica-card strong,
-.home-relatorio-card strong,
-.card strong,
-.card h1,
-.card h2,
-.card h3,
-.cliente-item strong,
-.veiculo-item strong,
-.ordem-item strong,
-.estoque-item strong {
-  color: var(--fs-marrom) !important;
-}
-
-input,
-select,
-textarea {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border-color: #d8c9b8 !important;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #8a7a70 !important;
-  opacity: 1 !important;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--fs-amarelo) !important;
-  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-  outline: none !important;
-}
-
-/* Header e menus */
-#header-container,
-.main-header,
-.header-topo,
-.header-menu-linha,
-.header-dropdown-menu {
-  background: var(--fs-marrom) !important;
-  color: #fffaf0 !important;
-}
-
-.logo-nav,
-.logo-nav span,
-#usuario-saudacao,
-.header-menu-linha a,
-.nav-menu a,
-.header-dropdown-toggle,
-.header-dropdown-menu a {
-  color: #fffaf0 !important;
-}
-
-.header-menu-linha a:hover,
-.nav-menu a:hover,
-.header-dropdown-toggle:hover,
-.header-dropdown-menu a:hover,
-.header-menu-linha a.ativo,
-.nav-menu a.ativo {
-  color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador,
-.btn-header-entrar,
-.btn-menu-mobile-entrar,
-.btn-primario,
-.btn-primary,
-.btn-salvar,
-.btn-add,
-.btn-extra,
-.btn-download,
-.btn-acao-pdf,
-.btn-gerar-orcamento-home,
-.btn-home-grande,
-.btn-home-medio,
-.btn-ir-planos-home,
-.btn-home-planos-forte,
-.plano-pix-card button {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador:hover,
-.btn-header-entrar:hover,
-.btn-menu-mobile-entrar:hover,
-.btn-primario:hover,
-.btn-primary:hover,
-.btn-salvar:hover,
-.btn-add:hover,
-.btn-extra:hover,
-.btn-download:hover,
-.btn-acao-pdf:hover,
-.btn-gerar-orcamento-home:hover,
-.btn-home-grande:hover,
-.btn-home-medio:hover,
-.btn-ir-planos-home:hover,
-.btn-home-planos-forte:hover,
-.plano-pix-card button:hover {
-  background: var(--fs-amarelo) !important;
-  color: var(--fs-marrom) !important;
-  border-color: var(--fs-marrom) !important;
-}
-
-/* Tabelas */
-table,
-.tabela-comparativo,
-.home-tabela-comparativo,
-.manual-table,
-.comparativo {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-}
-
-th,
-.tabela-comparativo th,
-.home-tabela-comparativo th,
-.manual-table th,
-.comparativo th {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-td,
-.tabela-comparativo td,
-.home-tabela-comparativo td,
-.manual-table td,
-.comparativo td {
-  color: var(--fs-texto) !important;
-}
-
-tr:nth-child(even),
-tbody tr:nth-child(even) {
-  background: #fffaf0 !important;
-}
-
-/* Estados e tags mantêm contraste */
-.tag,
-.cliente-status,
-.home-cliente-status,
-.home-preco-destaque,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home,
-.tag-plano-pix {
-  color: var(--fs-marrom) !important;
-}
-
-.tag-plano-pix,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
-.btn-whatsapp,
-.btn-verde {
-  background: #25D366 !important;
-  color: #083b2f !important;
-  border-color: #128c4a !important;
-}
-
-.btn-whatsapp:hover,
-.btn-verde:hover {
-  background: #20ba5a !important;
-  color: #ffffff !important;
-}
-
-/* PDF deve continuar preto e branco quando gerando */
-body.gerando-pdf,
-body.gerando-pdf * {
-  color: inherit;
-}
-
-</style>
+  </script>
 </head>
-
 <body>
-
-<div id="header-container"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script src="auth.js"></script>
-<script src="ui.js"></script>
-<script src="planos.js"></script>
-<script src="carregar-menu.js"></script>
-<script src="notificacoes.js"></script>
-
-<script>
-function normalizarPlanoSobre(valor) {
-  return String(valor || 'gratis')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim();
-}
-
-async function obterPlanoAtualSobre() {
-  let plano = localStorage.getItem('usuario_plano') || 'gratis';
-
-  try {
-    if (!window._supabase) return normalizarPlanoSobre(plano);
-
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    if (!session?.user?.id) {
-      return 'gratis';
-    }
-
-    const { data: perfil, error } = await _supabase
-      .from('perfis')
-      .select('plano, plano_status, plano_expira_em')
-      .eq('id', session.user.id)
-      .maybeSingle();
-
-    if (error) {
-      console.warn('Não foi possível verificar plano para anúncios:', error);
-      return normalizarPlanoSobre(plano);
-    }
-
-    const planoBanco = perfil?.plano || plano || 'gratis';
-    const status = normalizarPlanoSobre(perfil?.plano_status || 'ativo');
-    const expiraEm = perfil?.plano_expira_em || '';
-    let planoFinal = normalizarPlanoSobre(planoBanco);
-
-    if ((planoFinal === 'basico' || planoFinal === 'premium') && (status === 'cancelado' || status === 'expirado')) {
-      planoFinal = 'gratis';
-    }
-
-    if (expiraEm) {
-      const expira = new Date(expiraEm);
-      if (!isNaN(expira.getTime()) && expira < new Date()) {
-        planoFinal = 'gratis';
-      }
-    }
-
-    localStorage.setItem('usuario_plano', planoFinal);
-    return planoFinal;
-  } catch (e) {
-    console.warn('Não foi possível verificar plano para anúncios:', e);
-    return normalizarPlanoSobre(plano);
-  }
-}
-
-async function controlarAnunciosSobre() {
-  const blocos = document.querySelectorAll('.fs-adsense-bloco');
-  if (!blocos.length) return;
-
-  const plano = await obterPlanoAtualSobre();
-  const deveExibir = plano !== 'basico' && plano !== 'premium';
-
-  blocos.forEach(bloco => {
-    bloco.style.display = deveExibir ? 'block' : 'none';
-  });
-
-  if (!deveExibir) return;
-
-  setTimeout(() => {
-    blocos.forEach(bloco => {
-      const anuncio = bloco.querySelector('ins.adsbygoogle');
-
-      if (!anuncio) return;
-      if (anuncio.dataset.carregado === 'true') return;
-
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        anuncio.dataset.carregado = 'true';
-      } catch (e) {
-        console.warn('AdSense não carregado:', e);
-      }
-    });
-  }, 300);
-}
-
-function configurarAtualizacaoAnunciosSobre() {
-  controlarAnunciosSobre();
-
-  if (window._supabase) {
-    _supabase.auth.onAuthStateChange(() => {
-      setTimeout(controlarAnunciosSobre, 500);
-    });
-  }
-
-  setTimeout(controlarAnunciosSobre, 1200);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  configurarAtualizacaoAnunciosSobre();
-});
-</script>
-
-<section class="sobre-hero">
-  <div class="sobre-hero-logo">
-    <span class="sobre-fs-box">FS</span>
-    <span class="sobre-fs-text">Orçamentos</span>
-  </div>
-
-  <h1>Do orçamento em PDF à gestão completa do serviço.</h1>
-
-  <p>
-    O FS Orçamentos ajuda profissionais, MEIs, prestadores de serviço e oficinas a gerar propostas profissionais,
-    acompanhar aprovações, organizar clientes, veículos, ordens de serviço e estoque conforme o plano contratado.
-  </p>
-
-  <div class="sobre-hero-acoes">
-    <a href="/gerador.html" class="sobre-btn sobre-btn-principal">🧾 Gerar orçamento</a>
-    <a href="/planos.html" class="sobre-btn sobre-btn-secundario">⭐ Ver planos</a>
-  </div>
-</section>
-
-<main class="container-sobre">
-  <h2>O que é o FS Orçamentos?</h2>
-
-  <p class="highlight">
-    O FS Orçamentos é uma plataforma criada para profissionalizar o atendimento de quem vende serviços ou produtos.
-    Ela começa com um gerador de orçamento em PDF e evolui, no Premium, para um sistema de gestão com clientes,
-    veículos, ordens de serviço, estoque e histórico operacional.
-  </p>
-
-  <p>
-    A ideia é simples: o profissional não deve depender apenas de conversa perdida no WhatsApp, papel ou planilha.
-    Com a plataforma, ele cria o orçamento, envia para o cliente, acompanha a resposta e, no plano Premium,
-    transforma o orçamento aprovado em uma ordem de serviço com controle financeiro e operacional.
-  </p>
-
-  <div class="fs-adsense-bloco fs-adsense-bloco-horizontal" data-local="sobre-topo">
-    <span class="ads-label">Publicidade</span>
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-5628949951885077"
-      data-ad-slot="6308389759"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
-
-  <div class="cards-sobre">
-    <div class="card-sobre">
-      <strong>📄 Orçamento profissional</strong>
-      Gere prévia e PDF com dados da empresa, logo, cliente, itens, total, condições e observações.
-    </div>
-
-    <div class="card-sobre">
-      <strong>🔗 Link com aprovação</strong>
-      No Básico, envie o link do orçamento pelo WhatsApp e permita que o cliente aprove ou recuse online.
-    </div>
-
-    <div class="card-sobre">
-      <strong>🧰 Gestão completa no Premium</strong>
-      Controle clientes, veículos, ordens de serviço, itens, pagamento, estoque e PDF da OS.
-    </div>
-  </div>
-
-  <h2>Nossa missão</h2>
-
-  <p>
-    Nossa missão é dar mais organização, credibilidade e controle para profissionais que precisam vender e executar serviços.
-    Um orçamento bem apresentado transmite confiança, reduz dúvidas e aumenta a chance de fechamento.
-  </p>
-
-  <p>
-    Para quem trabalha com oficina, manutenção, instalação, elétrica, estética automotiva, assistência técnica,
-    construção, marcenaria, ar-condicionado, limpeza ou serviços recorrentes, o FS Orçamentos ajuda a transformar
-    o atendimento em um fluxo organizado.
-  </p>
-
-  <h2>Fluxo ideal da plataforma</h2>
-
-  <div class="fluxo-box">
-    <div class="fluxo-item">
-      Cliente
-      <small>Cadastro e contato organizado</small>
-    </div>
-
-    <div class="fluxo-item">
-      Veículo
-      <small>Placa, modelo, cor, chassi e prisma</small>
-    </div>
-
-    <div class="fluxo-item">
-      Orçamento
-      <small>PDF, link e aprovação online</small>
-    </div>
-
-    <div class="fluxo-item">
-      OS
-      <small>Serviço, itens, pagamento e garantia</small>
-    </div>
-
-    <div class="fluxo-item">
-      Estoque
-      <small>Produtos, peças e baixa ao finalizar</small>
-    </div>
-  </div>
-
-  <h2>Como cada plano funciona</h2>
-
-  <div class="plano-box">
-    <div class="plano-card">
-      <span class="tag-plano tag-gratis">Com anúncios</span>
-      <h3>Plano Grátis</h3>
-      <span class="plano-preco">R$ 0</span>
-
-      <p>
-        Ideal para quem quer começar agora e gerar um orçamento profissional em PDF.
-      </p>
-
-      <ul>
-        <li>Gera orçamento.</li>
-        <li>Mostra prévia do documento.</li>
-        <li>Baixa PDF.</li>
-        <li>Exibe anúncios na plataforma.</li>
-        <li>Não salva orçamento na nuvem.</li>
-        <li>Não gera link de aprovação.</li>
-        <li>Não libera gestão de clientes, veículos, OS ou estoque.</li>
-      </ul>
-
-      <small>Recomendado para uso simples, pontual ou para testar a plataforma.</small>
-    </div>
-
-    <div class="plano-card">
-      <span class="tag-plano tag-basico">Sem anúncios</span>
-      <h3>Plano Básico</h3>
-      <span class="plano-preco">R$ 19,90/mês</span>
-
-      <p>
-        Ideal para quem gera orçamentos com frequência e precisa acompanhar propostas.
-      </p>
-
-      <ul>
-        <li>Tudo do Grátis.</li>
-        <li>Remove anúncios da plataforma.</li>
-        <li>Salva orçamento na nuvem.</li>
-        <li>Gera link para enviar pelo WhatsApp.</li>
-        <li>Cliente aprova ou recusa online.</li>
-        <li>Gestão de orçamentos pendentes, aprovados e recusados.</li>
-        <li>Resumo financeiro básico.</li>
-        <li>Até 5 consultores técnicos.</li>
-      </ul>
-
-      <small>Recomendado para prestadores que querem vender mais e acompanhar as propostas.</small>
-    </div>
-
-    <div class="plano-card premium-destaque">
-      <span class="tag-plano tag-premium">Gestão completa</span>
-      <h3>Plano Premium</h3>
-      <span class="plano-preco">R$ 69,90/mês</span>
-
-      <p>
-        Ideal para quem quer transformar o orçamento em gestão de serviço, oficina ou operação.
-      </p>
-
-      <ul>
-        <li>Tudo do Básico.</li>
-        <li>Cadastro de clientes.</li>
-        <li>Cadastro de veículos com placa, chassi, marca, modelo, cor e prisma.</li>
-        <li>Ordens de serviço.</li>
-        <li>Orçamento aprovado vira OS.</li>
-        <li>PDF profissional da OS.</li>
-        <li>Controle de estoque.</li>
-        <li>Itens, mão de obra, pagamento e garantia dentro da OS.</li>
-        <li>Histórico por cliente e veículo em evolução.</li>
-      </ul>
-
-      <small>Recomendado para oficinas e prestadores que precisam controlar execução, histórico e operação.</small>
-    </div>
-  </div>
-
-  <div class="fs-adsense-bloco" data-local="sobre-meio">
-    <span class="ads-label">Publicidade</span>
-    <ins class="adsbygoogle"
-      style="display:block; text-align:center;"
-      data-ad-layout="in-article"
-      data-ad-format="fluid"
-      data-ad-client="ca-pub-5628949951885077"
-      data-ad-slot="8513105369"></ins>
-  </div>
-
-  <h2>Comparativo rápido</h2>
-
-  <div class="comparativo-wrapper">
-    <table class="comparativo">
-      <thead>
-        <tr>
-          <th>Recurso</th>
-          <th>Grátis</th>
-          <th>Básico</th>
-          <th>Premium</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Gerar orçamento</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Pré-visualizar e baixar PDF</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Anúncios na plataforma</td>
-          <td class="obs">Sim</td>
-          <td class="sim">Não</td>
-          <td class="sim">Não</td>
-        </tr>
-        <tr>
-          <td>Salvar orçamentos na nuvem</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Link do orçamento por WhatsApp</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Aprovação ou recusa pelo cliente</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Histórico e status dos orçamentos</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Resumo financeiro de orçamentos</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Cadastro de clientes</td>
-          <td class="nao">Não</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Cadastro de veículos</td>
-          <td class="nao">Não</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Ordens de serviço</td>
-          <td class="nao">Não</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>PDF da OS</td>
-          <td class="nao">Não</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-        </tr>
-        <tr>
-          <td>Controle de estoque</td>
-          <td class="nao">Não</td>
-          <td class="nao">Não</td>
-          <td class="sim">Sim</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>Por que usar?</h2>
-
-  <ul class="lista-beneficios">
-    <li><strong>Agilidade:</strong> crie orçamentos em poucos minutos.</li>
-    <li><strong>Profissionalismo:</strong> envie propostas com aparência mais confiável.</li>
-    <li><strong>Organização:</strong> salve orçamentos e acompanhe status nos planos pagos.</li>
-    <li><strong>Controle:</strong> o Básico permite gestão comercial; o Premium adiciona gestão operacional.</li>
-    <li><strong>Fluxo completo:</strong> no Premium, cliente e veículo podem ser vinculados ao orçamento e à OS.</li>
-    <li><strong>Evolução contínua:</strong> a plataforma segue crescendo com recursos voltados para prestadores e oficinas.</li>
-  </ul>
-
-  <h2>Compromisso</h2>
-
-  <p>
-    O compromisso do FS Orçamentos é evoluir continuamente para ser uma ferramenta cada vez mais útil para profissionais
-    que precisam vender melhor, acompanhar propostas e executar serviços com mais organização.
-  </p>
-
-  <p>
-    A plataforma foi pensada para funcionar no celular e no computador, com foco em simplicidade, clareza e uso real no dia a dia.
-  </p>
-
-  <div class="cta-sobre">
-    <strong>Pronto para criar seu próximo orçamento?</strong>
-    <br>
-    Gere uma proposta profissional agora mesmo ou conheça os planos para liberar recursos avançados.
-    <div class="cta-sobre-acoes">
-      <a href="/gerador.html">Gerar orçamento</a>
-      <a href="/planos.html">Ver planos</a>
-    </div>
-  </div>
-
-  <div class="fs-adsense-bloco" data-local="sobre-final">
-    <span class="ads-label">Publicidade</span>
-    <ins class="adsbygoogle"
-      style="display:block"
-      data-ad-client="ca-pub-5628949951885077"
-      data-ad-slot="3260778682"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-  </div>
-</main>
-
-<footer class="sobre-footer">
-  &copy; 2026 FS Orçamentos |
-  <a href="/privacidade.html">Privacidade</a> |
-  <a href="/termos.html">Termos</a>
-</footer>
-
+  <div id="header-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
+
+  <main class="sobre-page">
+    <section class="sobre-hero">
+      <div>
+        <div class="sobre-brand" aria-label="FS Orçamentos">
+          <span class="sobre-fs-box">FS</span>
+          <span class="sobre-fs-text">Orçamentos</span>
+        </div>
+
+        <span class="sobre-kicker">Plataforma brasileira para prestadores de serviço</span>
+        <h1>Do orçamento em PDF à gestão completa do serviço.</h1>
+        <p>O FS Orçamentos foi criado para ajudar profissionais, MEIs, autônomos, prestadores de serviço e oficinas a apresentarem propostas com mais clareza, acompanharem aprovações e organizarem a rotina comercial e operacional.</p>
+
+        <div class="sobre-hero-actions">
+          <a href="/gerador.html" class="sobre-btn sobre-btn-primary">Gerar orçamento</a>
+          <a href="/planos.html" class="sobre-btn sobre-btn-secondary">Conhecer planos</a>
+          <a href="/contato.html" class="sobre-btn sobre-btn-secondary">Falar com suporte</a>
+        </div>
+      </div>
+
+      <aside class="sobre-proof-card">
+        <strong>O que a plataforma resolve</strong>
+        <p>Ela reduz orçamento perdido em conversa, melhora a apresentação para o cliente e cria uma base organizada para acompanhar vendas, serviços, clientes e histórico.</p>
+        <ul class="sobre-checks">
+          <li>PDF profissional com dados da empresa e itens do serviço.</li>
+          <li>Planos pagos com histórico, status e link de aprovação.</li>
+          <li>Premium com clientes, veículos, OS, estoque, agenda e dashboard.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="sobre-section">
+      <span class="sobre-mini-tag">Visão geral</span>
+      <h2>Uma ferramenta para transformar atendimento em processo.</h2>
+      <p>O objetivo do FS Orçamentos é simples: ajudar quem vende serviço a sair de mensagens soltas, anotações perdidas e planilhas improvisadas. O usuário cria uma proposta, organiza itens, valores e condições, gera um PDF e, nos planos pagos, acompanha o andamento até a aprovação.</p>
+      <p>No Premium, a proposta aprovada pode fazer parte de um fluxo maior: cliente, veículo, ordem de serviço, estoque, pagamento, histórico e indicadores da empresa.</p>
+
+      <div class="sobre-grid-3">
+        <article class="sobre-card"><strong>📄 Orçamento profissional</strong><p>Propostas em PDF com identificação da empresa, cliente, itens, totais, observações e condições comerciais.</p></article>
+        <article class="sobre-card"><strong>🔗 Aprovação por link</strong><p>O cliente pode receber o orçamento, visualizar e responder online quando o recurso está disponível no plano.</p></article>
+        <article class="sobre-card"><strong>🧰 Gestão no Premium</strong><p>Clientes, veículos, ordens de serviço, estoque, agenda, histórico e dashboard para acompanhar a operação.</p></article>
+      </div>
+    </section>
+
+    <section class="sobre-section">
+      <span class="sobre-mini-tag">Fluxo ideal</span>
+      <h2>Da proposta ao serviço finalizado.</h2>
+      <p>A plataforma foi pensada para acompanhar a rotina real de prestadores e oficinas, onde um orçamento pode virar serviço, gerar consumo de peças, pagamento e histórico para consultas futuras.</p>
+
+      <div class="sobre-flow">
+        <div class="sobre-flow-step"><strong>Cliente</strong><span>Dados de contato e identificação organizados.</span></div>
+        <div class="sobre-flow-step"><strong>Orçamento</strong><span>Itens, valores, PDF e condições comerciais.</span></div>
+        <div class="sobre-flow-step"><strong>Aprovação</strong><span>Status, resposta do cliente e controle de pendências.</span></div>
+        <div class="sobre-flow-step"><strong>OS</strong><span>Execução do serviço no plano Premium.</span></div>
+        <div class="sobre-flow-step"><strong>Dashboard</strong><span>Indicadores para enxergar melhor a empresa.</span></div>
+      </div>
+    </section>
+
+    <section class="sobre-section">
+      <span class="sobre-mini-tag">Planos</span>
+      <h2>Comece simples e evolua quando precisar de mais controle.</h2>
+      <p>Os planos foram separados para que o usuário comece pelo essencial e avance conforme a necessidade de organização, histórico e gestão operacional.</p>
+
+      <div class="sobre-planos-grid">
+        <article class="sobre-plan-card gratis">
+          <h3>Plano Grátis</h3>
+          <span class="sobre-plan-price">R$ 0</span>
+          <p>Para experimentar a plataforma e criar orçamentos profissionais em PDF com limitações e anúncios.</p>
+          <ul><li>Geração de PDF.</li><li>Uso inicial da ferramenta.</li><li>Pode exibir anúncios.</li></ul>
+        </article>
+
+        <article class="sobre-plan-card basico">
+          <h3>Plano Básico</h3>
+          <span class="sobre-plan-price">R$ 29,90/mês</span>
+          <p>Para quem gera orçamentos com frequência e precisa salvar, acompanhar e enviar propostas com mais controle.</p>
+          <ul><li>Histórico de orçamentos.</li><li>Status e link de aprovação.</li><li>Sem anúncios na plataforma.</li></ul>
+        </article>
+
+        <article class="sobre-plan-card premium">
+          <h3>Plano Premium</h3>
+          <span class="sobre-plan-price">R$ 89,90/mês</span>
+          <p>Para gestão completa da rotina: clientes, veículos, ordens de serviço, estoque, agenda e dashboard.</p>
+          <ul><li>Tudo do Básico.</li><li>Clientes, veículos e OS.</li><li>Estoque, agenda e indicadores.</li></ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="sobre-section">
+      <span class="sobre-mini-tag">Comparativo rápido</span>
+      <h2>O que cada plano libera.</h2>
+      <div class="sobre-table-wrap">
+        <table class="sobre-table">
+          <thead><tr><th>Recurso</th><th>Grátis</th><th>Básico</th><th>Premium</th></tr></thead>
+          <tbody>
+            <tr><td>Gerar orçamento em PDF</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr>
+            <tr><td>Anúncios na plataforma</td><td>Sim</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td></tr>
+            <tr><td>Salvar orçamentos na nuvem</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr>
+            <tr><td>Status, histórico e aprovação por link</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr>
+            <tr><td>Clientes e veículos</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr>
+            <tr><td>Ordens de serviço</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr>
+            <tr><td>Estoque, agenda e dashboard</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sobre-section">
+      <span class="sobre-mini-tag">Confiança e transparência</span>
+      <h2>Informações importantes para usuários e anunciantes.</h2>
+      <div class="sobre-grid-2">
+        <article class="sobre-card"><strong>Privacidade</strong><p>A política explica quais dados podem ser tratados, incluindo conta, empresa, orçamentos, clientes, veículos, OS, Pix, cookies e anúncios.</p></article>
+        <article class="sobre-card"><strong>Termos de uso</strong><p>Os termos descrevem regras de uso, planos, teste Premium, pagamentos via Pix, responsabilidades e exclusão de conta.</p></article>
+      </div>
+    </section>
+
+    <section class="sobre-final-cta">
+      <h2>Pronto para criar uma proposta mais profissional?</h2>
+      <p>Comece com o gerador e evolua para os planos pagos quando precisar salvar histórico, acompanhar aprovações e gerenciar melhor o serviço.</p>
+      <div class="sobre-final-actions">
+        <a href="/gerador.html" class="sobre-btn sobre-btn-primary">Gerar orçamento</a>
+        <a href="/planos.html" class="sobre-btn sobre-btn-secondary">Ver planos</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sobre-footer">
+    © 2026 FS Orçamentos |
+    <a href="/sobre.html">Sobre</a> |
+    <a href="/privacidade.html">Privacidade</a> |
+    <a href="/termos.html">Termos</a> |
+    <a href="/contato.html">Contato</a>
+  </footer>
 </body>
 </html>
