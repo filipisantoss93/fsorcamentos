@@ -22,6 +22,15 @@
     }
   };
 
+  const FS_MAPA_VALORES_ANTIGOS = {
+    'R$ 19,90': 'R$ 29,90',
+    'R$ 109,90': 'R$ 159,90',
+    'R$ 209,90': 'R$ 299,90',
+    'R$ 69,90': 'R$ 89,90',
+    'R$ 399,90': 'R$ 499,90',
+    'R$ 599,90': 'R$ 999,90'
+  };
+
   let pagamentoPixAtualIdInterno = null;
 
   function fsPagamentoEl(id) {
@@ -32,6 +41,28 @@
     return Number(valor || 0).toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
+    });
+  }
+
+  function fsAtualizarTextosValoresPlanos(root = document.body) {
+    if (!root) return;
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const textos = [];
+    while (walker.nextNode()) textos.push(walker.currentNode);
+
+    textos.forEach((node) => {
+      let valor = node.nodeValue || '';
+      let alterou = false;
+
+      Object.entries(FS_MAPA_VALORES_ANTIGOS).forEach(([antigo, novo]) => {
+        if (valor.includes(antigo)) {
+          valor = valor.split(antigo).join(novo);
+          alterou = true;
+        }
+      });
+
+      if (alterou) node.nodeValue = valor;
     });
   }
 
@@ -430,6 +461,9 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     configurarEventosModalPix();
+    fsAtualizarTextosValoresPlanos();
+    setTimeout(fsAtualizarTextosValoresPlanos, 300);
+    setTimeout(fsAtualizarTextosValoresPlanos, 1200);
     fsAbrirPixPorParametroUrl();
   });
 
@@ -447,5 +481,6 @@
   window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
   window.formatarMoedaPix = fsFormatarMoedaPix;
   window.fsFormatarMoedaPix = fsFormatarMoedaPix;
+  window.fsAtualizarTextosValoresPlanos = fsAtualizarTextosValoresPlanos;
   window.fsAtualizarDadosAposPagamentoConfirmado = fsAtualizarDadosAposPagamentoConfirmado;
 })();
