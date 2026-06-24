@@ -7,423 +7,98 @@
   <meta name="description" content="Agenda profissional de serviços do FS Orçamentos." />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#f8fafc" />
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
-    :root {
-      --fs-agenda-fundo: #f8fafc;
-      --fs-agenda-card: #ffffff;
-      --fs-agenda-borda: #e5e7eb;
-      --fs-agenda-texto: #111827;
-      --fs-agenda-suave: #4b5563;
-      --fs-agenda-escuro: #1f2937;
-      --fs-agenda-escuro-2: #0f172a;
-      --fs-agenda-cinza: #374151;
-      --fs-agenda-cinza-claro: #f3f4f6;
-      --fs-agenda-amarelo: #ffc400;
-      --fs-vermelho: #dc2626;
-      --fs-verde: #166534;
-      --fs-azul: #1d4ed8;
-    }
-
-    body {
-      background: linear-gradient(180deg, #ffffff 0%, var(--fs-agenda-fundo) 100%) !important;
-      color: var(--fs-agenda-texto) !important;
-    }
-
-    .pagina-agenda {
-      width: min(1180px, calc(100% - 16px));
-      margin: 10px auto 28px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .agenda-hero,
-    .agenda-card,
-    .agenda-modal-card,
-    .agenda-metrica,
-    .agenda-detalhe,
-    .cliente-selecionado-agenda,
-    .cliente-modal-item {
-      background: var(--fs-agenda-card) !important;
-      border: 1px solid var(--fs-agenda-borda) !important;
-      color: var(--fs-agenda-texto) !important;
-      border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, .08) !important;
-      overflow: hidden;
-    }
-
-    .agenda-hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-      padding: 13px;
-      border-top: 4px solid var(--fs-agenda-cinza) !important;
-      background: linear-gradient(135deg, #ffffff, var(--fs-agenda-cinza-claro)) !important;
-    }
-
-    .agenda-hero h1 {
-      margin: 0 0 5px;
-      color: var(--fs-agenda-escuro-2) !important;
-      font-size: clamp(22px, 3vw, 32px);
-      line-height: 1.1;
-      font-weight: 950;
-    }
-
-    .agenda-hero p {
-      margin: 0;
-      color: var(--fs-agenda-suave) !important;
-      font-size: 13px;
-      line-height: 1.42;
-      font-weight: 720;
-    }
-
-    .agenda-tag,
-    .agenda-chip,
-    .status-pill {
-      display: inline-flex;
-      width: fit-content;
-      min-height: 22px;
-      align-items: center;
-      padding: 4px 7px;
-      border-radius: 999px;
-      border: 1px solid #d1d5db !important;
-      background: var(--fs-agenda-cinza-claro) !important;
-      color: var(--fs-agenda-escuro) !important;
-      font-size: 10px;
-      line-height: 1;
-      font-weight: 950;
-      text-transform: uppercase;
-      margin-bottom: 7px;
-      white-space: nowrap;
-    }
-
-    .agenda-hero-acoes,
-    .acoes-linha,
-    .agenda-modal-acoes {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-
-    .agenda-hero-acoes { justify-content: flex-end; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 34px;
-      padding: 8px 11px;
-      border-radius: 4px;
-      border: 1px solid #d1d5db !important;
-      background: #ffffff !important;
-      color: var(--fs-agenda-escuro) !important;
-      font-size: 12px;
-      font-weight: 950;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: none !important;
-    }
-
-    .btn-primario {
-      background: var(--fs-agenda-cinza) !important;
-      color: #ffffff !important;
-      border-color: var(--fs-agenda-cinza) !important;
-    }
-
-    .btn-primario:hover {
-      background: var(--fs-agenda-escuro-2) !important;
-      color: #ffffff !important;
-      border-color: var(--fs-agenda-escuro-2) !important;
-    }
-
-    .btn-perigo {
-      background: #fff1f1 !important;
-      color: #b91c1c !important;
-      border-color: #fecaca !important;
-    }
-
-    .agenda-resumo-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .agenda-metrica {
-      border-left: 4px solid var(--fs-agenda-cinza) !important;
-      padding: 10px;
-    }
-
-    .agenda-metrica span,
-    .agenda-detalhe small,
-    .cliente-modal-item span {
-      display: block;
-      color: var(--fs-agenda-suave) !important;
-      font-size: 10px;
-      font-weight: 950;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .agenda-metrica strong,
-    .agenda-detalhe strong,
-    .cliente-modal-item strong {
-      display: block;
-      color: var(--fs-agenda-escuro-2) !important;
-      font-weight: 950;
-    }
-
-    .agenda-metrica strong { font-size: 24px; line-height: 1; }
-
-    .agenda-card-header,
-    .agenda-modal-topo {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      background: var(--fs-agenda-escuro) !important;
-      color: #ffffff !important;
-      border-bottom: 1px solid #374151 !important;
-      padding: 10px 12px;
-    }
-
-    .agenda-card-header h2,
-    .agenda-modal-topo strong {
-      margin: 0;
-      color: #ffffff !important;
-      font-size: 18px;
-      line-height: 1.15;
-      font-weight: 950;
-    }
-
-    .agenda-card-header p,
-    .agenda-modal-topo span {
-      margin: 3px 0 0;
-      color: #e5e7eb !important;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.3;
-    }
-
-    .agenda-card-body,
-    .agenda-modal-body {
-      padding: 10px;
-    }
-
-    .agenda-modal-body {
-      display: grid;
-      gap: 9px;
-    }
-
-    .agenda-filtros,
-    .campo,
-    .resultado-clientes-modal {
-      display: grid;
-      gap: 8px;
-    }
-
-    .agenda-filtros {
-      grid-template-columns: 1.3fr .65fr .65fr .7fr auto;
-      align-items: end;
-      margin-bottom: 9px;
-    }
-
-    .campo { gap: 4px; }
-
-    .campo label {
-      color: var(--fs-agenda-escuro) !important;
-      font-size: 10.5px;
-      font-weight: 950;
-      text-transform: uppercase;
-    }
-
-    .campo input,
-    .campo select,
-    .campo textarea,
-    .agenda-filtros input {
-      width: 100%;
-      border: 1px solid #d1d5db !important;
-      border-radius: 4px;
-      padding: 8px;
-      color: var(--fs-agenda-texto) !important;
-      font-size: 12.5px;
-      background: #ffffff !important;
-      box-sizing: border-box;
-    }
-
-    .campo input:focus,
-    .campo select:focus,
-    .campo textarea:focus,
-    .agenda-filtros input:focus {
-      border-color: var(--fs-agenda-cinza) !important;
-      box-shadow: 0 0 0 3px rgba(55, 65, 81, .14) !important;
-      outline: none !important;
-    }
-
-    .campo textarea {
-      min-height: 72px;
-      resize: vertical;
-    }
-
-    .agenda-tabela-wrap {
-      overflow: auto;
-      border: 1px solid var(--fs-agenda-borda) !important;
-      border-radius: 7px;
-    }
-
-    .agenda-tabela {
-      width: 100%;
-      border-collapse: collapse;
-      background: #ffffff !important;
-      min-width: 760px;
-    }
-
-    .agenda-tabela th {
-      background: var(--fs-agenda-cinza-claro) !important;
-      color: var(--fs-agenda-escuro-2) !important;
-      font-size: 10px;
-      text-transform: uppercase;
-      text-align: left;
-      padding: 8px;
-      font-weight: 950;
-      border-bottom: 1px solid var(--fs-agenda-borda) !important;
-    }
-
-    .agenda-tabela td {
-      padding: 8px;
-      border-bottom: 1px solid var(--fs-agenda-borda) !important;
-      color: var(--fs-agenda-texto) !important;
-      font-size: 12px;
-      line-height: 1.3;
-      vertical-align: middle;
-    }
-
-    .agenda-tabela tr { cursor: pointer; }
-    .agenda-tabela tbody tr:hover { background: #f3f4f6 !important; }
-    .agenda-tabela tbody tr:nth-child(even) { background: #f9fafb !important; }
-    .agenda-tabela tbody tr:nth-child(even):hover { background: #f3f4f6 !important; }
-
-    .status-pill.confirmado { background:#dbeafe !important; color:#1e40af !important; border-color:#bfdbfe !important; }
-    .status-pill.em_execucao { background:#dcfce7 !important; color:#166534 !important; border-color:#bbf7d0 !important; }
-    .status-pill.concluido { background:#ede9fe !important; color:#5b21b6 !important; border-color:#ddd6fe !important; }
-    .status-pill.cancelado,
-    .status-pill.atrasado { background:#fee2e2 !important; color:#991b1b !important; border-color:#fecaca !important; }
-
-    .agenda-vazio {
-      padding: 18px;
-      text-align: center;
-      color: var(--fs-agenda-suave) !important;
-      background: #f9fafb !important;
-      border: 1px dashed #d1d5db !important;
-      font-size: 13px;
-      font-weight: 780;
-    }
-
-    .agenda-modal-overlay,
-    .modal-cliente-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 25000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(15, 23, 42, .72) !important;
-      padding: 14px;
-      box-sizing: border-box;
-    }
-
-    .agenda-modal-overlay.ativo,
-    .modal-cliente-overlay.ativo { display: flex; }
-
-    .agenda-modal-card {
-      width: min(720px, 100%);
-      max-height: 90vh;
-      overflow: auto;
-      border-top: 4px solid var(--fs-agenda-cinza) !important;
-    }
-
-    .btn-fechar-modal {
-      width: 30px;
-      height: 30px;
-      border-radius: 4px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.08) !important;
-      color: #ffffff !important;
-      font-size: 20px;
-      font-weight: 950;
-      cursor: pointer;
-    }
-
-    .agenda-form-grid,
-    .agenda-detalhes-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .span-2 { grid-column: 1 / -1; }
-
-    .cliente-selecionado-agenda,
-    .cliente-modal-item,
-    .agenda-detalhe {
-      border-left: 4px solid var(--fs-agenda-cinza) !important;
-      padding: 8px;
-    }
-
-    .mensagem-agenda {
-      display: none;
-      padding: 8px 9px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 850;
-    }
-
-    .mensagem-agenda.sucesso { display:block; background:#dcfce7 !important; color:#166534 !important; border:1px solid #bbf7d0 !important; }
-    .mensagem-agenda.erro { display:block; background:#fee2e2 !important; color:#991b1b !important; border:1px solid #fecaca !important; }
-    .mensagem-agenda.info { display:block; background:#f9fafb !important; color:var(--fs-agenda-texto) !important; border:1px solid #d1d5db !important; }
-
-    .agenda-detalhe p {
-      margin: 0;
-      color: var(--fs-agenda-texto) !important;
-      font-size: 12.5px;
-      line-height: 1.4;
-      font-weight: 720;
-    }
-
-    @media (max-width: 860px) {
-      .agenda-hero { grid-template-columns: 1fr; }
-      .agenda-hero-acoes { justify-content: flex-start; }
-      .agenda-resumo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .agenda-filtros { grid-template-columns: 1fr 1fr; }
-      .agenda-filtros .btn { grid-column: 1 / -1; }
-      .agenda-form-grid,
-      .agenda-detalhes-grid { grid-template-columns: 1fr; }
-      .span-2 { grid-column: auto; }
-    }
-
-    @media (max-width: 520px) {
-      .pagina-agenda { width: min(100% - 10px, 1180px); margin-top: 8px; }
-      .agenda-resumo-grid,
-      .agenda-filtros { grid-template-columns: 1fr; }
-      .btn { width: 100%; }
-      .agenda-modal-acoes .btn { width: 100%; }
-    }
+    :root{--ag-bg:#f3f4f6;--ag-card:#fff;--ag-b:#e5e7eb;--ag-b2:#d1d5db;--ag-t:#111827;--ag-m:#4b5563;--ag-d:#1f2937;--ag-d2:#0f172a;--ag-g:#374151;--ag-red:#dc2626;--ag-shadow:0 6px 18px rgba(15,23,42,.08)}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f3f4f6 0%,#e5e7eb 100%)!important;color:var(--ag-t)!important;font-family:Arial,Helvetica,sans-serif}.pagina-agenda{width:min(1220px,calc(100% - 24px));margin:0 auto;padding:22px 0 56px;display:grid;gap:16px}.agenda-hero,.agenda-card,.agenda-modal-card,.agenda-metrica,.agenda-detalhe,.cliente-selecionado-agenda,.cliente-modal-item{background:#fff!important;color:var(--ag-t)!important;border:1px solid var(--ag-b)!important;border-radius:14px!important;box-shadow:var(--ag-shadow)!important;overflow:hidden}.agenda-hero{padding:24px;border-top:5px solid var(--ag-g)!important;background:linear-gradient(135deg,#fff,#f9fafb)!important}.agenda-hero h1{margin:0 0 8px;color:var(--ag-d2)!important;font-size:clamp(26px,4vw,36px);line-height:1.1;font-weight:950}.agenda-hero p{margin:0;max-width:900px;color:var(--ag-m)!important;font-size:15px;line-height:1.55;font-weight:650}.agenda-tag,.agenda-chip,.status-pill{display:inline-flex;align-items:center;width:fit-content;min-height:22px;padding:4px 8px;border-radius:999px;border:1px solid #d1d5db!important;background:#f3f4f6!important;color:var(--ag-d)!important;font-size:10.5px;line-height:1;font-weight:950;text-transform:uppercase;margin-bottom:8px;white-space:nowrap}.agenda-resumo-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.agenda-metrica{border-left:4px solid var(--ag-g)!important;padding:16px}.agenda-metrica span,.agenda-detalhe small,.cliente-modal-item span{display:block;color:var(--ag-m)!important;font-size:12px;font-weight:900;text-transform:uppercase;margin-bottom:7px}.agenda-metrica strong,.agenda-detalhe strong,.cliente-modal-item strong{display:block;color:var(--ag-d2)!important;font-weight:950}.agenda-metrica strong{font-size:24px;line-height:1}.agenda-card{border-top:4px solid var(--ag-g)!important}.agenda-card-header,.agenda-modal-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;background:var(--ag-d)!important;color:#fff!important;border-bottom:1px solid #374151!important;padding:16px 18px}.agenda-card-header h2,.agenda-modal-topo strong{margin:0;color:#fff!important;font-size:20px;line-height:1.15;font-weight:950}.agenda-card-header p,.agenda-modal-topo span{margin:6px 0 0;color:#e5e7eb!important;font-size:13px;font-weight:700;line-height:1.45}.agenda-card-header-botoes,.acoes-linha,.agenda-modal-acoes{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:10px 14px;border-radius:10px;border:1px solid #d1d5db!important;background:#fff!important;color:var(--ag-d)!important;font-size:14px;font-weight:900;cursor:pointer;text-decoration:none;box-shadow:none!important}.btn-primario{background:#111827!important;color:#fff!important;border-color:#111827!important}.btn-novo-agenda{background:#fff!important;color:#0f172a!important;border-color:#d1d5db!important;box-shadow:0 6px 16px rgba(15,23,42,.16)!important;min-width:178px}.btn-perigo{background:#fff1f1!important;color:#b91c1c!important;border-color:#fecaca!important}.agenda-card-body,.agenda-modal-body{padding:18px;background:#fff!important}.agenda-filtros,.campo,.resultado-clientes-modal{display:grid;gap:8px}.agenda-filtros{grid-template-columns:1.3fr .65fr .65fr .7fr;align-items:end;margin-bottom:14px}.campo label{color:var(--ag-g)!important;font-size:12px;font-weight:900;text-transform:uppercase}.campo input,.campo select,.campo textarea,.agenda-filtros input{width:100%;border:1px solid #d1d5db!important;border-radius:10px;padding:10px 11px;color:var(--ag-t)!important;font-size:14px;background:#fff!important;box-sizing:border-box}.campo input:focus,.campo select:focus,.campo textarea:focus,.agenda-filtros input:focus{border-color:var(--ag-g)!important;box-shadow:0 0 0 3px rgba(55,65,81,.14)!important;outline:none!important}.campo textarea{min-height:86px;resize:vertical}.agenda-tabela-wrap{overflow:auto;border:1px solid var(--ag-b)!important;border-radius:12px;background:#fff!important}.agenda-tabela{width:100%;border-collapse:collapse;background:#fff!important;min-width:760px}.agenda-tabela th{background:#f3f4f6!important;color:var(--ag-d2)!important;font-size:11px;text-transform:uppercase;text-align:left;padding:9px;font-weight:950;border-bottom:1px solid var(--ag-b)!important}.agenda-tabela td{padding:9px;border-bottom:1px solid var(--ag-b)!important;color:var(--ag-t)!important;font-size:13px;line-height:1.35;vertical-align:middle}.agenda-tabela tr{cursor:pointer}.agenda-tabela tbody tr:hover{background:#f3f4f6!important}.agenda-tabela tbody tr:nth-child(even){background:#f9fafb!important}.status-pill.confirmado{background:#dbeafe!important;color:#1e40af!important;border-color:#bfdbfe!important}.status-pill.em_execucao{background:#dcfce7!important;color:#166534!important;border-color:#bbf7d0!important}.status-pill.concluido{background:#ede9fe!important;color:#5b21b6!important;border-color:#ddd6fe!important}.status-pill.cancelado,.status-pill.atrasado{background:#fee2e2!important;color:#991b1b!important;border-color:#fecaca!important}.agenda-vazio{padding:24px;text-align:center;color:var(--ag-m)!important;background:#f9fafb!important;border:1px dashed #d1d5db!important;border-radius:12px;font-size:14px;font-weight:800}.agenda-modal-overlay,.modal-cliente-overlay{position:fixed;inset:0;z-index:25000;display:none;align-items:flex-start;justify-content:center;background:rgba(15,23,42,.72)!important;padding:18px;overflow-y:auto;box-sizing:border-box}.agenda-modal-overlay.ativo,.modal-cliente-overlay.ativo{display:flex}.agenda-modal-card{width:min(820px,100%);max-height:calc(100dvh - 36px);overflow:auto;margin:18px auto;border-top:5px solid var(--ag-d)!important}.agenda-modal-topo{position:sticky;top:0;z-index:2}.btn-fechar-modal{width:38px;height:38px;min-width:38px;border-radius:999px;border:1px solid #d1d5db;background:#fff!important;color:#111827!important;font-size:27px;font-weight:950;line-height:1;cursor:pointer}.agenda-form-grid,.agenda-detalhes-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.span-2{grid-column:1/-1}.cliente-selecionado-agenda,.cliente-modal-item,.agenda-detalhe{border-left:4px solid var(--ag-g)!important;padding:12px;border-radius:12px!important}.cliente-modal-item{width:100%;text-align:left;cursor:pointer}.mensagem-agenda{display:none;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:850}.mensagem-agenda.sucesso{display:block;background:#dcfce7!important;color:#166534!important;border:1px solid #bbf7d0!important}.mensagem-agenda.erro{display:block;background:#fee2e2!important;color:#991b1b!important;border:1px solid #fecaca!important}.mensagem-agenda.info{display:block;background:#f9fafb!important;color:var(--ag-t)!important;border:1px solid #d1d5db!important}.agenda-detalhe p{margin:0;color:var(--ag-t)!important;font-size:13px;line-height:1.4;font-weight:720}.modal-cliente-busca{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}.modal-cliente-busca input{width:100%;border:1px solid #d1d5db!important;border-radius:10px;padding:10px 11px;color:#111827!important;background:#fff!important}@media(max-width:980px){.agenda-resumo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.agenda-filtros{grid-template-columns:1fr 1fr}.agenda-form-grid,.agenda-detalhes-grid{grid-template-columns:1fr}.span-2{grid-column:auto}.modal-cliente-busca{grid-template-columns:1fr}}@media(max-width:700px){.pagina-agenda{width:min(100% - 20px,1220px);padding:16px 0 42px}.agenda-hero{padding:20px}.agenda-card-header{display:grid;grid-template-columns:1fr;gap:14px}.agenda-card-header-botoes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);width:100%;gap:8px}.agenda-card-header-botoes .btn,.agenda-filtros .btn,.agenda-modal-acoes .btn,.acoes-linha .btn,.acoes-linha a,.modal-cliente-busca .btn,.modal-cliente-busca a{width:100%}.agenda-filtros{grid-template-columns:1fr}.agenda-modal-overlay,.modal-cliente-overlay{padding:8px}.agenda-modal-card{margin:8px auto;max-height:calc(100dvh - 16px)}.agenda-tabela{min-width:620px}.agenda-tabela th,.agenda-tabela td{padding:8px 7px;font-size:12px}.agenda-resumo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.agenda-metrica{padding:13px}.agenda-metrica strong{font-size:22px}}
   </style>
 </head>
 <body>
   <div id="header-container"></div>
+
   <main class="pagina-agenda">
     <section class="agenda-hero">
-      <div><span class="agenda-tag">Premium • Agenda operacional</span><h1>Agenda profissional da oficina</h1><p>Controle o dia, os serviços de amanhã, atrasos, retornos e agenda da semana com visual compacto de sistema.</p></div>
-      <div class="agenda-hero-acoes"><button class="btn btn-primario" type="button" onclick="abrirModalNovoAgenda()">Novo agendamento</button><button class="btn" type="button" onclick="aplicarVisaoAgenda('hoje')">Hoje</button><button class="btn" type="button" onclick="aplicarVisaoAgenda('semana')">Semana</button></div>
+      <div>
+        <span class="agenda-tag">Premium • Agenda operacional</span>
+        <h1>Agenda profissional da oficina</h1>
+        <p>Controle o dia, os serviços de amanhã, atrasos, retornos e agenda da semana com visual compacto de sistema.</p>
+      </div>
     </section>
-    <section class="agenda-resumo-grid"><div class="agenda-metrica"><span>Hoje</span><strong id="agenda-resumo-hoje">0</strong></div><div class="agenda-metrica"><span>Amanhã</span><strong id="agenda-resumo-amanha">0</strong></div><div class="agenda-metrica"><span>Semana</span><strong id="agenda-resumo-semana">0</strong></div><div class="agenda-metrica"><span>Atrasados</span><strong id="agenda-resumo-atrasados">0</strong></div><div class="agenda-metrica"><span>Em execução</span><strong id="agenda-resumo-execucao">0</strong></div></section>
-    <section class="agenda-card"><div class="agenda-card-header"><div><h2>Serviços agendados</h2><p>Lista compacta. Clique na linha para ver detalhes e ações.</p></div></div><div class="agenda-card-body"><div id="mensagem-agenda-lista" class="mensagem-agenda"></div><div class="agenda-filtros"><div class="campo"><label for="busca-agenda">Buscar</label><input id="busca-agenda" placeholder="Cliente, placa, OS, serviço..." /></div><div class="campo"><label for="filtro-agenda-inicio">De</label><input type="date" id="filtro-agenda-inicio" /></div><div class="campo"><label for="filtro-agenda-fim">Até</label><input type="date" id="filtro-agenda-fim" /></div><div class="campo"><label for="filtro-agenda-status">Status</label><select id="filtro-agenda-status"><option value="">Todos</option><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="em_execucao">Em execução</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select></div><button type="button" id="btn-atualizar-agenda" class="btn btn-primario">Atualizar</button></div><div id="lista-agenda" class="agenda-tabela-wrap"><div class="agenda-vazio">Carregando agenda...</div></div></div></section>
+
+    <section class="agenda-resumo-grid">
+      <div class="agenda-metrica"><span>Hoje</span><strong id="agenda-resumo-hoje">0</strong></div>
+      <div class="agenda-metrica"><span>Amanhã</span><strong id="agenda-resumo-amanha">0</strong></div>
+      <div class="agenda-metrica"><span>Semana</span><strong id="agenda-resumo-semana">0</strong></div>
+      <div class="agenda-metrica"><span>Atrasados</span><strong id="agenda-resumo-atrasados">0</strong></div>
+      <div class="agenda-metrica"><span>Em execução</span><strong id="agenda-resumo-execucao">0</strong></div>
+    </section>
+
+    <section class="agenda-card">
+      <div class="agenda-card-header">
+        <div>
+          <h2>Serviços agendados</h2>
+          <p>Lista compacta. Clique na linha para ver detalhes e ações.</p>
+        </div>
+        <div class="agenda-card-header-botoes">
+          <button class="btn btn-novo-agenda" type="button" onclick="abrirModalNovoAgenda()">＋ Novo agendamento</button>
+          <button class="btn btn-primario" type="button" id="btn-atualizar-agenda">Buscar</button>
+        </div>
+      </div>
+      <div class="agenda-card-body">
+        <div id="mensagem-agenda-lista" class="mensagem-agenda"></div>
+        <div class="agenda-filtros">
+          <div class="campo"><label for="busca-agenda">Buscar</label><input id="busca-agenda" placeholder="Cliente, placa, OS, serviço..." /></div>
+          <div class="campo"><label for="filtro-agenda-inicio">De</label><input type="date" id="filtro-agenda-inicio" /></div>
+          <div class="campo"><label for="filtro-agenda-fim">Até</label><input type="date" id="filtro-agenda-fim" /></div>
+          <div class="campo"><label for="filtro-agenda-status">Status</label><select id="filtro-agenda-status"><option value="">Todos</option><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="em_execucao">Em execução</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select></div>
+        </div>
+        <div class="agenda-card-header-botoes" style="justify-content:flex-start;margin-bottom:14px"><button class="btn" type="button" onclick="aplicarVisaoAgenda('hoje')">Hoje</button><button class="btn" type="button" onclick="aplicarVisaoAgenda('semana')">Semana</button></div>
+        <div id="lista-agenda" class="agenda-tabela-wrap"><div class="agenda-vazio">Carregando agenda...</div></div>
+      </div>
+    </section>
   </main>
-  <div id="modal-agenda-form" class="agenda-modal-overlay" aria-hidden="true"><div class="agenda-modal-card"><div class="agenda-modal-topo"><div><strong id="titulo-form-agenda">Novo agendamento</strong><span>Cadastre ou edite um compromisso operacional.</span></div><button class="btn-fechar-modal" type="button" onclick="fecharModalAgendaForm()">×</button></div><div class="agenda-modal-body"><div id="mensagem-agenda-form" class="mensagem-agenda"></div><form id="form-agenda"><input type="hidden" id="agenda-id"><input type="hidden" id="agenda-cliente-id"><div class="agenda-form-grid"><div class="campo span-2"><label>Cliente vinculado</label><div id="agenda-cliente-selecionado" class="cliente-selecionado-agenda">Nenhum cliente selecionado</div><div class="acoes-linha"><button type="button" id="btn-buscar-cliente-agenda" class="btn">Buscar cliente</button><button type="button" id="btn-limpar-cliente-agenda" class="btn">Limpar</button></div></div><div class="campo"><label for="agenda-veiculo-id">Veículo</label><select id="agenda-veiculo-id"><option value="">Selecione um cliente primeiro</option></select></div><div class="campo"><label for="agenda-ordem-id">OS vinculada</label><select id="agenda-ordem-id"><option value="">Opcional</option></select></div><div class="campo span-2"><label for="agenda-titulo">Título</label><input id="agenda-titulo" placeholder="Ex: Troca de óleo, revisão, retorno..." /></div><div class="campo span-2"><label for="agenda-descricao">Descrição</label><textarea id="agenda-descricao" placeholder="Resumo do serviço"></textarea></div><div class="campo"><label for="agenda-data">Data</label><input type="date" id="agenda-data" /></div><div class="campo"><label for="agenda-status">Status</label><select id="agenda-status"><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="em_execucao">Em execução</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select></div><div class="campo"><label for="agenda-hora-inicio">Início</label><input type="time" id="agenda-hora-inicio" /></div><div class="campo"><label for="agenda-hora-fim">Fim</label><input type="time" id="agenda-hora-fim" /></div><div class="campo"><label for="agenda-responsavel">Responsável</label><input id="agenda-responsavel" placeholder="Consultor técnico" /></div><div class="campo span-2"><label for="agenda-observacoes">Observações internas</label><textarea id="agenda-observacoes"></textarea></div></div><div class="agenda-modal-acoes" style="margin-top:10px"><button type="submit" id="btn-salvar-agenda" class="btn btn-primario">Salvar agendamento</button><button type="button" id="btn-limpar-agenda" class="btn">Limpar</button></div></form></div></div></div>
-  <div id="modal-agenda-detalhe" class="agenda-modal-overlay" aria-hidden="true"><div class="agenda-modal-card"><div class="agenda-modal-topo"><div><strong id="agenda-detalhe-titulo">Agendamento</strong><span id="agenda-detalhe-subtitulo">Detalhes do compromisso</span></div><button class="btn-fechar-modal" type="button" onclick="fecharModalAgendaDetalhe()">×</button></div><div class="agenda-modal-body"><div id="agenda-detalhe-conteudo" class="agenda-detalhes-grid"></div><div class="agenda-modal-acoes"><button class="btn btn-primario" type="button" onclick="editarAgendamentoSelecionado()">Editar</button><button class="btn" type="button" onclick="abrirOrdemAgendamentoSelecionado()">Abrir OS</button><button class="btn btn-perigo" type="button" onclick="excluirAgendamentoSelecionado()">Excluir</button></div></div></div></div>
-  <div id="modal-busca-cliente-agenda" class="modal-cliente-overlay" aria-hidden="true"><div class="agenda-modal-card"><div class="agenda-modal-topo"><div><strong>Buscar cliente</strong><span>Pesquise por ID, nome, telefone ou endereço.</span></div><button type="button" class="btn-fechar-modal" onclick="fecharModalClienteAgenda()">×</button></div><div class="agenda-modal-body"><div class="agenda-filtros" style="grid-template-columns:1fr auto auto;margin-bottom:0"><input type="text" id="campo-busca-cliente-agenda" placeholder="Ex: CLI-000001, João, telefone..." /><button type="button" class="btn btn-primario" onclick="buscarClientesModalAgenda()">Buscar</button><a href="clientes.html" class="btn">Cadastrar</a></div><div id="resultado-clientes-agenda" class="resultado-clientes-modal"><div class="agenda-vazio">Pesquise um cliente.</div></div></div></div></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="auth.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script src="notificacoes.js"></script><script>(async function(){if(typeof bloquearPaginaSeNaoPremiumAsync==='function'){const bloqueado=await bloquearPaginaSeNaoPremiumAsync('Agenda de serviços faz parte do Plano Premium.');if(bloqueado)return;}const script=document.createElement('script');script.src='agenda.js';script.defer=false;document.body.appendChild(script);})();</script>
+
+  <div id="modal-agenda-form" class="agenda-modal-overlay" aria-hidden="true">
+    <div class="agenda-modal-card">
+      <div class="agenda-modal-topo">
+        <div><strong id="titulo-form-agenda">Novo agendamento</strong><span>Cadastre ou edite um compromisso operacional.</span></div>
+        <button class="btn-fechar-modal" type="button" onclick="fecharModalAgendaForm()">×</button>
+      </div>
+      <div class="agenda-modal-body">
+        <div id="mensagem-agenda-form" class="mensagem-agenda"></div>
+        <form id="form-agenda">
+          <input type="hidden" id="agenda-id"><input type="hidden" id="agenda-cliente-id">
+          <div class="agenda-form-grid">
+            <div class="campo span-2"><label>Cliente vinculado</label><div id="agenda-cliente-selecionado" class="cliente-selecionado-agenda">Nenhum cliente selecionado</div><div class="acoes-linha"><button type="button" id="btn-buscar-cliente-agenda" class="btn">Buscar cliente</button><button type="button" id="btn-limpar-cliente-agenda" class="btn">Limpar</button><a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn btn-primario">Cadastrar cliente</a></div></div>
+            <div class="campo"><label for="agenda-veiculo-id">Veículo</label><select id="agenda-veiculo-id"><option value="">Selecione um cliente primeiro</option></select></div>
+            <div class="campo"><label for="agenda-ordem-id">OS vinculada</label><select id="agenda-ordem-id"><option value="">Opcional</option></select></div>
+            <div class="campo span-2"><label for="agenda-titulo">Título</label><input id="agenda-titulo" placeholder="Ex: Troca de óleo, revisão, retorno..." /></div>
+            <div class="campo span-2"><label for="agenda-descricao">Descrição</label><textarea id="agenda-descricao" placeholder="Resumo do serviço"></textarea></div>
+            <div class="campo"><label for="agenda-data">Data</label><input type="date" id="agenda-data" /></div>
+            <div class="campo"><label for="agenda-status">Status</label><select id="agenda-status"><option value="agendado">Agendado</option><option value="confirmado">Confirmado</option><option value="em_execucao">Em execução</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select></div>
+            <div class="campo"><label for="agenda-hora-inicio">Início</label><input type="time" id="agenda-hora-inicio" /></div>
+            <div class="campo"><label for="agenda-hora-fim">Fim</label><input type="time" id="agenda-hora-fim" /></div>
+            <div class="campo"><label for="agenda-responsavel">Responsável</label><input id="agenda-responsavel" placeholder="Consultor técnico" /></div>
+            <div class="campo span-2"><label for="agenda-observacoes">Observações internas</label><textarea id="agenda-observacoes"></textarea></div>
+          </div>
+          <div class="agenda-modal-acoes" style="margin-top:14px"><button type="submit" id="btn-salvar-agenda" class="btn btn-primario">Salvar agendamento</button><button type="button" id="btn-limpar-agenda" class="btn">Limpar</button><button type="button" class="btn btn-perigo" onclick="fecharModalAgendaForm()">Cancelar</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-agenda-detalhe" class="agenda-modal-overlay" aria-hidden="true"><div class="agenda-modal-card"><div class="agenda-modal-topo"><div><strong id="agenda-detalhe-titulo">Agendamento</strong><span id="agenda-detalhe-subtitulo">Detalhes do compromisso</span></div><button class="btn-fechar-modal" type="button" onclick="fecharModalAgendaDetalhe()">×</button></div><div class="agenda-modal-body"><div id="agenda-detalhe-conteudo" class="agenda-detalhes-grid"></div><div class="agenda-modal-acoes" style="margin-top:14px"><button class="btn btn-primario" type="button" onclick="editarAgendamentoSelecionado()">Editar</button><button class="btn" type="button" onclick="abrirOrdemAgendamentoSelecionado()">Abrir OS</button><button class="btn btn-perigo" type="button" onclick="excluirAgendamentoSelecionado()">Excluir</button></div></div></div></div>
+
+  <div id="modal-busca-cliente-agenda" class="modal-cliente-overlay" aria-hidden="true"><div class="agenda-modal-card"><div class="agenda-modal-topo"><div><strong>Buscar cliente</strong><span>Pesquise por ID, nome, telefone ou endereço.</span></div><button type="button" class="btn-fechar-modal" onclick="fecharModalClienteAgenda()">×</button></div><div class="agenda-modal-body"><div class="modal-cliente-busca"><input type="text" id="campo-busca-cliente-agenda" placeholder="Ex: CLI-000001, João, telefone..." /><button type="button" class="btn btn-primario" onclick="buscarClientesModalAgenda()">Buscar</button><a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn">Cadastrar</a></div><div id="resultado-clientes-agenda" class="resultado-clientes-modal" style="margin-top:12px"><div class="agenda-vazio">Pesquise um cliente.</div></div></div></div></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
+  <script src="agenda.js?v=20260624-padrao-gestao-1"></script>
 </body>
 </html>
