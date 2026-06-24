@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#3e2723">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#f8fafc">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Termos de Uso - FS Orçamentos</title>
-
-  <meta name="description" content="Termos de Uso do FS Orçamentos: regras da plataforma, contas, planos, pagamentos, orçamentos, responsabilidades, privacidade e exclusão de conta.">
+  <title>Termos de Uso | FS Orçamentos</title>
+  <meta name="description" content="Termos de Uso do FS Orçamentos: regras da plataforma, contas, planos Grátis, Básico e Premium, teste grátis, Pix, anúncios, responsabilidades e exclusão de conta.">
   <meta name="robots" content="index, follow">
-  <meta name="author" content="FS Orçamentos">
-  <meta name="theme-color" content="#3e2723">
+  <meta name="author" content="Filipi Aparecido dos Santos">
+  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fsorcamentos.com.br/termos.html">
-  <meta property="og:title" content="Termos de Uso - FS Orçamentos">
-  <meta property="og:description" content="Conheça as regras de uso da plataforma FS Orçamentos.">
+  <meta property="og:title" content="Termos de Uso | FS Orçamentos">
+  <meta property="og:description" content="Regras de uso da plataforma FS Orçamentos, incluindo planos, pagamentos, teste grátis, anúncios e responsabilidades.">
   <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
 
   <link rel="stylesheet" href="style.css">
@@ -27,1668 +26,301 @@
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17435932696');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Termos de Uso - FS Orçamentos",
+    "url": "https://fsorcamentos.com.br/termos.html",
+    "dateModified": "2026-06-24"
+  }
+  </script>
+
   <style>
     :root {
-      --fs-marrom: #3e2723;
-      --fs-marrom-2: #2c1b17;
-      --fs-creme: #f4ece1;
-      --fs-creme-2: #fffaf0;
-      --fs-amarelo: #ffc400;
-      --fs-verde: #25d366;
-      --fs-azul: #2563eb;
-      --fs-vermelho: #dc2626;
-      --fs-borda: #e0d6c8;
-      --fs-texto: #3e2723;
-      --fs-sombra: 0 18px 46px rgba(0,0,0,0.22);
+      --legal-text: #0f172a;
+      --legal-muted: #475569;
+      --legal-card: #ffffff;
+      --legal-soft: #f8fafc;
+      --legal-soft-2: #eef2f7;
+      --legal-border: #dbe3ee;
+      --legal-border-strong: #cbd5e1;
+      --legal-gray: #334155;
+      --legal-yellow: #facc15;
+      --legal-yellow-soft: #fef9c3;
+      --legal-green: #22c55e;
+      --legal-green-soft: #dcfce7;
+      --legal-blue: #2563eb;
+      --legal-blue-soft: #dbeafe;
+      --legal-shadow: 0 10px 28px rgba(15, 23, 42, .08);
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background:
-        radial-gradient(circle at top left, rgba(255,196,0,0.16), transparent 30%),
-        linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+    body:not(.gerando-pdf) {
+      margin: 0;
       min-height: 100vh;
-      color: var(--fs-texto);
-      overflow-x: hidden;
+      background: linear-gradient(180deg, #ffffff 0%, var(--legal-soft) 48%, var(--legal-soft-2) 100%) !important;
+      color: var(--legal-text) !important;
     }
 
-    .termos-page {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 28px 14px 46px;
-    }
-
-    .termos-hero {
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, #fff7df, var(--fs-creme));
-      border-radius: 28px;
-      border-top: 7px solid var(--fs-amarelo);
-      box-shadow: var(--fs-sombra);
-      padding: 34px 28px;
-      margin-bottom: 22px;
-    }
-
-    .termos-hero::before {
-      content: "";
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: rgba(255,196,0,0.18);
-      right: -95px;
-      top: -115px;
-    }
-
-    .termos-hero-conteudo {
-      position: relative;
-      max-width: 850px;
-    }
-
-    .termos-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--fs-marrom);
-      color: var(--fs-amarelo);
-      border: 1px solid var(--fs-amarelo);
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .3px;
-      margin-bottom: 14px;
-    }
-
-    .termos-hero h1 {
-      margin: 0 0 12px;
-      color: var(--fs-marrom);
-      font-size: 38px;
-      line-height: 1.12;
-    }
-
-    .termos-hero p {
-      margin: 0;
-      color: #5d4037;
-      font-size: 16px;
-      line-height: 1.65;
-    }
-
-    .termos-meta {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .termos-meta span {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: #ffffff;
-      color: #5d4037;
-      border: 1px solid var(--fs-borda);
-      border-left: 5px solid var(--fs-amarelo);
-      border-radius: 999px;
-      padding: 9px 13px;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .termos-layout {
+    .legal-page {
+      width: min(1120px, calc(100% - 18px));
+      margin: 12px auto 28px;
       display: grid;
-      grid-template-columns: 300px minmax(0, 1fr);
-      gap: 22px;
-      align-items: start;
+      gap: 14px;
     }
 
-    .termos-sidebar {
-      position: sticky;
-      top: 92px;
-      background: var(--fs-creme-2);
-      border-radius: 20px;
-      border: 1px solid var(--fs-borda);
-      border-left: 7px solid var(--fs-amarelo);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
-      padding: 18px;
-    }
-
-    .termos-sidebar h2 {
-      margin: 0 0 12px;
-      font-size: 18px;
-      color: var(--fs-marrom);
-    }
-
-    .termos-menu {
-      display: grid;
-      gap: 8px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .termos-menu a {
-      display: block;
-      background: #ffffff;
-      color: #5d4037;
-      text-decoration: none;
-      border-radius: 11px;
-      padding: 10px 11px;
-      border-left: 4px solid var(--fs-amarelo);
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.35;
-      transition: .2s ease;
-    }
-
-    .termos-menu a:hover {
-      background: #fff8d6;
-      color: var(--fs-marrom);
-      transform: translateX(2px);
-    }
-
-    .termos-card {
-      background: var(--fs-creme);
-      border-radius: 24px;
-      border-top: 7px solid var(--fs-amarelo);
-      box-shadow: var(--fs-sombra);
-      padding: 24px;
-      min-width: 0;
-    }
-
-    .termos-alerta {
-      background: #fff8e1;
-      border-left: 7px solid var(--fs-amarelo);
-      border-radius: 16px;
-      padding: 16px;
-      color: #5d4037;
-      line-height: 1.55;
-      font-weight: 800;
-      margin-bottom: 20px;
-    }
-
-    .termos-secao {
-      background: #ffffff;
-      border-radius: 18px;
-      border: 1px solid var(--fs-borda);
-      border-left: 7px solid var(--fs-amarelo);
-      padding: 20px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-    }
-
-    .termos-secao h2 {
-      margin: 0 0 10px;
-      color: var(--fs-marrom);
-      font-size: 23px;
-      line-height: 1.25;
-    }
-
-    .termos-secao h3 {
-      margin: 18px 0 8px;
-      color: #4e342e;
-      font-size: 17px;
-    }
-
-    .termos-secao p {
-      margin: 0 0 12px;
-      color: #4d342f;
-      font-size: 15px;
-      line-height: 1.72;
-    }
-
-    .termos-secao ul {
-      margin: 10px 0 0;
-      padding-left: 20px;
-      color: #4d342f;
-    }
-
-    .termos-secao li {
-      margin-bottom: 8px;
-      line-height: 1.62;
-    }
-
-    .termos-destaque {
-      background: linear-gradient(135deg, var(--fs-marrom), #251714);
-      color: #ffffff;
-      border-radius: 18px;
-      border: 2px solid var(--fs-amarelo);
-      padding: 20px;
-      margin: 18px 0 0;
-    }
-
-    .termos-destaque strong {
-      color: var(--fs-amarelo);
-      display: block;
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
-
-    .termos-destaque p {
-      margin: 0;
-      color: var(--fs-creme);
-      line-height: 1.6;
-    }
-
-    .termos-contato-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .termos-contato-card {
-      background: #fffaf0;
-      border: 1px solid var(--fs-borda);
-      border-left: 5px solid var(--fs-amarelo);
+    .legal-hero,
+    .legal-layout,
+    .legal-card,
+    .legal-final {
+      background: var(--legal-card);
+      border: 1px solid var(--legal-border);
       border-radius: 14px;
-      padding: 14px;
+      box-shadow: var(--legal-shadow);
+      overflow: hidden;
     }
 
-    .termos-contato-card strong {
-      display: block;
-      color: #6d4c41;
-      font-size: 12px;
+    .legal-hero {
+      padding: 20px;
+      border-top: 5px solid var(--legal-yellow);
+      background: linear-gradient(135deg, #ffffff 0%, #ffffff 78%, rgba(250, 204, 21, .16) 100%);
+    }
+
+    .legal-tag {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: 22px;
+      padding: 5px 9px;
+      border-radius: 7px;
+      background: var(--legal-yellow-soft);
+      border: 1px solid #fde68a;
+      color: #422006;
+      font-size: 10.5px;
+      font-weight: 950;
       text-transform: uppercase;
-      letter-spacing: .3px;
-      margin-bottom: 5px;
+      letter-spacing: .03em;
+      margin-bottom: 10px;
     }
 
-    .termos-contato-card a,
-    .termos-contato-card span {
-      color: var(--fs-marrom);
-      font-weight: 900;
-      text-decoration: none;
-      word-break: break-word;
+    .legal-hero h1,
+    .legal-card h2,
+    .legal-final h2 {
+      margin: 0;
+      color: var(--legal-text);
+      font-weight: 950;
+      letter-spacing: -.035em;
+      line-height: 1.08;
     }
 
-    .termos-acoes {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 24px;
-    }
+    .legal-hero h1 { font-size: clamp(32px, 5vw, 52px); max-width: 900px; }
+    .legal-card h2,
+    .legal-final h2 { font-size: clamp(21px, 3vw, 30px); }
 
-    .btn-termos {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      border-radius: 999px;
-      padding: 13px 19px;
-      font-size: 14px;
-      font-weight: 900;
-      text-decoration: none;
-      transition: .2s ease;
-      min-height: 46px;
-      box-sizing: border-box;
-    }
-
-    .btn-termos-principal {
-      background: var(--fs-amarelo);
-      color: var(--fs-marrom);
-      border: 2px solid var(--fs-marrom);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.16);
-    }
-
-    .btn-termos-secundario {
-      background: var(--fs-marrom);
-      color: var(--fs-amarelo);
-      border: 2px solid var(--fs-amarelo);
-    }
-
-    .btn-termos:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.03);
-    }
-
-    #btn-flutuante-gerador-global {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      z-index: 18000;
-      border: 2px solid var(--fs-marrom);
-      background: var(--fs-amarelo);
-      color: var(--fs-marrom);
-      border-radius: 999px;
-      padding: 12px 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .legal-hero p,
+    .legal-card p,
+    .legal-card li,
+    .legal-final p {
+      color: var(--legal-muted);
       font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.30);
+      line-height: 1.62;
+      font-weight: 720;
     }
 
-    #btn-flutuante-gerador-global:hover {
-      background: #ffffff;
-      transform: translateY(-1px);
+    .legal-hero p { margin: 12px 0 0; max-width: 860px; }
+    .legal-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .legal-meta span { display: inline-flex; padding: 7px 10px; border-radius: 999px; background: var(--legal-soft); border: 1px solid var(--legal-border); color: var(--legal-text); font-size: 12px; font-weight: 900; }
+
+    .legal-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 0; }
+    .legal-sidebar { padding: 16px; background: var(--legal-soft); border-right: 1px solid var(--legal-border); }
+    .legal-sidebar strong { display: block; margin-bottom: 10px; color: var(--legal-text); font-size: 16px; font-weight: 950; }
+    .legal-menu { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; }
+    .legal-menu a { display: block; padding: 9px 10px; border-radius: 9px; background: #ffffff; border: 1px solid var(--legal-border); color: var(--legal-text); text-decoration: none; font-size: 12.5px; font-weight: 880; }
+    .legal-menu a:hover { background: var(--legal-blue-soft); border-color: #bfdbfe; color: #1e40af; }
+
+    .legal-content { padding: 16px; display: grid; gap: 14px; }
+    .legal-card { box-shadow: none; padding: 16px; border-left: 5px solid var(--legal-gray); }
+    .legal-card.alerta { border-left-color: var(--legal-yellow); background: linear-gradient(135deg, #ffffff 0%, var(--legal-yellow-soft) 100%); }
+    .legal-card.premium { border-left-color: var(--legal-green); background: linear-gradient(135deg, #ffffff 0%, var(--legal-green-soft) 100%); }
+    .legal-card.info { border-left-color: var(--legal-blue); background: linear-gradient(135deg, #ffffff 0%, var(--legal-blue-soft) 100%); }
+    .legal-card p { margin: 8px 0 0; }
+    .legal-card ul { margin: 10px 0 0; padding-left: 20px; }
+    .legal-card li { margin-bottom: 7px; }
+
+    .legal-final { padding: 18px; border-left: 5px solid var(--legal-yellow); background: linear-gradient(135deg, #ffffff 0%, var(--legal-yellow-soft) 100%); }
+    .legal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .legal-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 10px 14px; border-radius: 9px; text-decoration: none; border: 1px solid var(--legal-border-strong); background: #ffffff; color: var(--legal-text); font-size: 13px; font-weight: 950; }
+    .legal-btn.primary { background: var(--legal-yellow); color: #422006; border-color: #eab308; }
+
+    .legal-footer { width: min(1120px, calc(100% - 18px)); margin: 10px auto 24px; padding: 18px 0; text-align: center; color: var(--legal-muted); font-size: 13px; font-weight: 800; }
+    .legal-footer a { color: var(--legal-text); text-decoration: none; font-weight: 950; }
+
+    @media (max-width: 840px) {
+      .legal-layout { grid-template-columns: 1fr; }
+      .legal-sidebar { border-right: 0; border-bottom: 1px solid var(--legal-border); }
+      .legal-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    footer {
-      text-align: center;
-      color: #bdbdbd;
-      padding: 25px 10px;
-      font-size: 13px;
-    }
-
-    footer a {
-      color: #ffc400;
-      text-decoration: none;
-    }
-
-    @media (max-width: 980px) {
-      .termos-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .termos-sidebar {
-        position: static;
-      }
-
-      .termos-menu {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .termos-contato-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .termos-page {
-        padding: 18px 10px 36px;
-      }
-
-      .termos-hero {
-        padding: 24px 18px;
-        border-radius: 20px;
-      }
-
-      .termos-hero h1 {
-        font-size: 29px;
-      }
-
-      .termos-card {
-        padding: 15px;
-        border-radius: 18px;
-      }
-
-      .termos-secao {
-        padding: 16px;
-        border-radius: 15px;
-      }
-
-      .termos-secao h2 {
-        font-size: 20px;
-      }
-
-      .termos-menu {
-        grid-template-columns: 1fr;
-      }
-
-      .btn-termos {
-        width: 100%;
-      }
-
-      #btn-flutuante-gerador-global span {
-        display: none;
-      }
-
-      #btn-flutuante-gerador-global {
-        width: 58px;
-        height: 58px;
-        padding: 0;
-        justify-content: center;
-        font-size: 24px;
-      }
+    @media (max-width: 620px) {
+      .legal-page { width: min(100% - 10px, 1120px); margin-top: 8px; }
+      .legal-hero, .legal-content, .legal-final { padding: 12px; }
+      .legal-hero h1 { font-size: 31px; }
+      .legal-menu { grid-template-columns: 1fr; }
+      .legal-actions { display: grid; grid-template-columns: 1fr; }
+      .legal-btn { width: 100%; box-sizing: border-box; }
     }
   </style>
-
-
-<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
-<style id="fs-formal-theme-overrides">
-  :root {
-    --fs-marrom: #3e2723;
-    --fs-marrom-2: #5d4037;
-    --fs-fundo-escuro: #f7f2ea;
-    --fs-fundo: #f7f2ea;
-    --fs-page-bg: #f7f2ea;
-    --fs-page-bg-2: #efe3d2;
-    --fs-card: #ffffff;
-    --fs-creme: #f4ece1;
-    --fs-creme-2: #fffaf0;
-    --fs-bege: #f4ece1;
-    --fs-bege-2: #fffaf0;
-    --fs-amarelo: #ffc400;
-    --fs-borda: #e8dccb;
-    --fs-texto: #2f241f;
-    --fs-texto-suave: #6d5b52;
-    --bg-dark: #f7f2ea;
-    --body-brown: #ffffff;
-    --text-dark: #2f241f;
-    --accent-yellow: #ffc400;
-  }
-
-  body:not(.gerando-pdf) {
-    background:
-      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
-    color: #2f241f !important;
-  }
-
-  #header-container,
-  .main-header,
-  .header-topo,
-  .header-menu-linha {
-    background: #3e2723 !important;
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav,
-  .logo-nav span,
-  #usuario-saudacao,
-  .header-menu-linha a,
-  .nav-menu a {
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav strong,
-  .fs-box,
-  .sobre-fs-box {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-  }
-
-  .link-destaque-gerador,
-  .btn-header-entrar,
-  .btn-menu-mobile-entrar,
-  .btn-home-grande,
-  .btn-home-medio,
-  .btn-home-atalho.btn-principal,
-  .btn-gerar-orcamento-home,
-  .btn-previa-profissional,
-  .btn-hero-principal,
-  .btn-ir-planos-home,
-  .btn-home-planos-forte,
-  .btn-add,
-  .btn-extra,
-  .btn-primario,
-  .btn-primary,
-  .btn-salvar,
-  .btn-acao-pdf,
-  .plano-pix-card button,
-  .btn-editar-dados-empresa {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .link-destaque-gerador:hover,
-  .btn-header-entrar:hover,
-  .btn-menu-mobile-entrar:hover,
-  .btn-home-grande:hover,
-  .btn-home-medio:hover,
-  .btn-gerar-orcamento-home:hover,
-  .btn-previa-profissional:hover,
-  .btn-hero-principal:hover,
-  .btn-ir-planos-home:hover,
-  .btn-home-planos-forte:hover,
-  .btn-add:hover,
-  .btn-extra:hover,
-  .btn-primario:hover,
-  .btn-primary:hover,
-  .btn-salvar:hover,
-  .btn-acao-pdf:hover,
-  .plano-pix-card button:hover,
-  .btn-editar-dados-empresa:hover {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-    border-color: #3e2723 !important;
-  }
-
-  .hero-publico,
-  .home-plano-hero,
-  .gerador-hero,
-  .planos-hero,
-  .clientes-hero,
-  .veiculos-hero,
-  .ordens-hero,
-  .ordem-hero,
-  .estoque-hero,
-  .sobre-hero,
-  .manual-hero,
-  .termos-hero,
-  .privacidade-hero,
-  .orcamentos-hero,
-  .painel-hero,
-  .secao-como-funciona,
-  .whatsapp-preview-home,
-  .cliente-aprovacao-home,
-  .comparativo-home,
-  .status-orcamentos-home,
-  .home-story-section,
-  .home-whatsapp-section,
-  .home-aprovacao-section,
-  .home-status-section,
-  .home-comparativo-section,
-  .planos-pix-section,
-  .comparativo-section,
-  .faq-section,
-  .container-sobre,
-  .container-termos,
-  .container-privacidade,
-  .home-premium-showcase {
-    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-    color: #2f241f !important;
-    border-top-color: #ffc400 !important;
-    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
-  }
-
-  .hero-publico h1,
-  .home-plano-hero h1,
-  .gerador-hero h1,
-  .planos-hero h1,
-  .clientes-hero h1,
-  .veiculos-hero h1,
-  .ordens-hero h1,
-  .ordem-hero h1,
-  .estoque-hero h1,
-  .sobre-hero h1,
-  .manual-hero h1,
-  .home-premium-showcase h2,
-  .container-sobre h1,
-  .container-sobre h2,
-  .container-termos h1,
-  .container-termos h2,
-  .section-topo h2,
-  .dadositens,
-  .card-header h2,
-  .clientes-card-header h2,
-  .veiculos-card-header h2,
-  .ordens-card-header h2,
-  .estoque-card-header h2 {
-    color: #3e2723 !important;
-  }
-
-  .hero-publico p,
-  .home-plano-hero p,
-  .gerador-hero p,
-  .planos-hero p,
-  .clientes-hero p,
-  .veiculos-hero p,
-  .ordens-hero p,
-  .ordem-hero p,
-  .estoque-hero p,
-  .sobre-hero p,
-  .manual-hero p,
-  .home-premium-showcase p,
-  .container-sobre p,
-  .container-termos p,
-  .section-topo p {
-    color: #6d5b52 !important;
-  }
-
-  .container,
-  .card,
-  .clientes-card,
-  .veiculos-card,
-  .ordens-card,
-  .estoque-card,
-  .gerador-card-principal,
-  .sidebar-card,
-  .plano-pix-card,
-  .faq-card,
-  .home-promo-card,
-  .home-metrica-card,
-  .home-relatorio-card,
-  .home-painel-card,
-  .card-sobre,
-  .plano-card,
-  .manual-card,
-  .manual-section,
-  .manual-step,
-  .manual-demo-card,
-  .cliente-item,
-  .veiculo-item,
-  .ordem-item,
-  .estoque-categoria-grupo,
-  .emissor-readonly-card,
-  .cliente-tela-preview,
-  .home-cliente-preview {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #e8dccb !important;
-    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
-  }
-
-  .card-header,
-  .clientes-card-header,
-  .veiculos-card-header,
-  .ordens-card-header,
-  .estoque-card-header,
-  .modal-busca-cliente-header,
-  .modal-busca-produto-header,
-  .modal-pix-topo,
-  .home-cliente-topo,
-  .mock-card-head,
-  .orcamento-whatsapp-header,
-  .home-orcamento-whatsapp-header,
-  .total-container,
-  .cliente-total-demo,
-  .home-cliente-total,
-  .manual-flow div,
-  .mini-dashboard {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .card-body,
-  .clientes-card-body,
-  .veiculos-card-body,
-  .ordens-card-body,
-  .estoque-card-body {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  input,
-  select,
-  textarea {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #d8c9b8 !important;
-  }
-
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #ffc400 !important;
-    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-    outline: none !important;
-  }
-
-  table,
-  .tabela-comparativo,
-  .home-tabela-comparativo,
-  .manual-table,
-  .comparativo {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  th,
-  .tabela-comparativo th,
-  .home-tabela-comparativo th,
-  .manual-table th,
-  .comparativo th {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-  }
-
-  tr:nth-child(even),
-  tbody tr:nth-child(even) {
-    background: #fffaf0 !important;
-  }
-
-  footer,
-  .sobre-footer {
-    color: #6d5b52 !important;
-  }
-
-  footer a,
-  .sobre-footer a {
-    color: #3e2723 !important;
-    font-weight: 800 !important;
-  }
-</style>
-
-
-<style id="fs-contrast-fix-final">
-
-/* =========================================================
-   FS CONTRAST FIX - textos legíveis no tema claro profissional
-   Mantém marrom no header/títulos principais e corrige textos
-   que estavam ficando da mesma cor do fundo.
-   ========================================================= */
-:root {
-  --fs-marrom: #3e2723;
-  --fs-marrom-2: #5d4037;
-  --fs-fundo: #f7f2ea;
-  --fs-fundo-2: #efe3d2;
-  --fs-card: #ffffff;
-  --fs-creme: #fffaf0;
-  --fs-amarelo: #ffc400;
-  --fs-borda: #e8dccb;
-  --fs-texto: #2f241f;
-  --fs-texto-suave: #6d5b52;
-}
-
-html,
-body {
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) {
-  background:
-    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
-}
-
-main,
-section,
-.container,
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box,
-.modal-login-box,
-.modal-responsavel-card,
-.modal-busca-produto-box,
-.modal-busca-cliente-box,
-.modal-pix-card {
-  color: var(--fs-texto) !important;
-}
-
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.container,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box {
-  background: #ffffff !important;
-  border-color: var(--fs-borda) !important;
-}
-
-/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
-.card-header,
-.clientes-card-header,
-.veiculos-card-header,
-.ordens-card-header,
-.estoque-card-header,
-.modal-busca-cliente-header,
-.modal-busca-produto-header,
-.modal-pix-topo,
-.home-cliente-topo,
-.mock-card-head,
-.orcamento-whatsapp-header,
-.home-orcamento-whatsapp-header,
-.total-container,
-.valor-total,
-.cliente-total-demo,
-.home-cliente-total,
-.manual-flow div,
-.mini-dashboard,
-.auth-logo-box,
-.banner-topo {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.card-header h1,
-.card-header h2,
-.card-header h3,
-.card-header strong,
-.clientes-card-header h1,
-.clientes-card-header h2,
-.clientes-card-header h3,
-.clientes-card-header strong,
-.veiculos-card-header h1,
-.veiculos-card-header h2,
-.veiculos-card-header h3,
-.veiculos-card-header strong,
-.ordens-card-header h1,
-.ordens-card-header h2,
-.ordens-card-header h3,
-.ordens-card-header strong,
-.estoque-card-header h1,
-.estoque-card-header h2,
-.estoque-card-header h3,
-.estoque-card-header strong,
-.modal-busca-cliente-header h1,
-.modal-busca-cliente-header h2,
-.modal-busca-cliente-header h3,
-.modal-busca-cliente-header strong,
-.modal-busca-produto-header h1,
-.modal-busca-produto-header h2,
-.modal-busca-produto-header h3,
-.modal-busca-produto-header strong,
-.modal-pix-topo h1,
-.modal-pix-topo h2,
-.modal-pix-topo h3,
-.modal-pix-topo strong,
-.total-container strong,
-.valor-total strong,
-.valor-total span,
-.cliente-total-demo,
-.home-cliente-total,
-.auth-logo-box .auth-logo-text span,
-.auth-logo-box strong,
-.banner-topo h1,
-.banner-topo h2,
-.banner-topo h3,
-.banner-topo strong {
-  color: var(--fs-amarelo) !important;
-}
-
-.card-header p,
-.card-header span,
-.card-header small,
-.clientes-card-header p,
-.clientes-card-header span,
-.clientes-card-header small,
-.veiculos-card-header p,
-.veiculos-card-header span,
-.veiculos-card-header small,
-.ordens-card-header p,
-.ordens-card-header span,
-.ordens-card-header small,
-.estoque-card-header p,
-.estoque-card-header span,
-.estoque-card-header small,
-.modal-busca-cliente-header p,
-.modal-busca-cliente-header span,
-.modal-busca-cliente-header small,
-.modal-busca-produto-header p,
-.modal-busca-produto-header span,
-.modal-busca-produto-header small,
-.modal-pix-topo p,
-.modal-pix-topo span,
-.modal-pix-topo small,
-.auth-logo-box p {
-  color: #fffaf0 !important;
-}
-
-/* Heróis/seções claras */
-.hero-publico,
-.home-plano-hero,
-.gerador-hero,
-.planos-hero,
-.clientes-hero,
-.veiculos-hero,
-.ordens-hero,
-.ordem-hero,
-.estoque-hero,
-.sobre-hero,
-.manual-hero,
-.termos-hero,
-.privacidade-hero,
-.orcamentos-hero,
-.painel-hero,
-.secao-como-funciona,
-.whatsapp-preview-home,
-.cliente-aprovacao-home,
-.comparativo-home,
-.status-orcamentos-home,
-.home-story-section,
-.home-whatsapp-section,
-.home-aprovacao-section,
-.home-status-section,
-.home-comparativo-section,
-.planos-pix-section,
-.comparativo-section,
-.faq-section,
-.container-sobre,
-.container-termos,
-.container-privacidade {
-  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
-.hero-publico h1,
-.home-plano-hero h1,
-.gerador-hero h1,
-.planos-hero h1,
-.clientes-hero h1,
-.veiculos-hero h1,
-.ordens-hero h1,
-.ordem-hero h1,
-.estoque-hero h1,
-.sobre-hero h1,
-.manual-hero h1,
-.termos-hero h1,
-.privacidade-hero h1,
-.orcamentos-hero h1,
-.painel-hero h1,
-.section-topo h2,
-.container-sobre h1,
-.container-sobre h2,
-.container-termos h1,
-.container-termos h2,
-.container-privacidade h1,
-.container-privacidade h2,
-.dadositens,
-.campo label,
-label {
-  color: var(--fs-marrom) !important;
-}
-
-.hero-publico p,
-.home-plano-hero p,
-.gerador-hero p,
-.planos-hero p,
-.clientes-hero p,
-.veiculos-hero p,
-.ordens-hero p,
-.ordem-hero p,
-.estoque-hero p,
-.sobre-hero p,
-.manual-hero p,
-.termos-hero p,
-.privacidade-hero p,
-.orcamentos-hero p,
-.painel-hero p,
-.section-topo p,
-.info-item span,
-.texto-bloco,
-.campo small,
-small,
-.help-item,
-.valor-linha span,
-.home-metrica-card span,
-.home-relatorio-card span,
-.home-promo-card p,
-.home-painel-card p {
-  color: var(--fs-texto-suave) !important;
-}
-
-.info-item strong,
-.valor-linha strong,
-.home-metrica-card strong,
-.home-relatorio-card strong,
-.card strong,
-.card h1,
-.card h2,
-.card h3,
-.cliente-item strong,
-.veiculo-item strong,
-.ordem-item strong,
-.estoque-item strong {
-  color: var(--fs-marrom) !important;
-}
-
-input,
-select,
-textarea {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border-color: #d8c9b8 !important;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #8a7a70 !important;
-  opacity: 1 !important;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--fs-amarelo) !important;
-  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-  outline: none !important;
-}
-
-/* Header e menus */
-#header-container,
-.main-header,
-.header-topo,
-.header-menu-linha,
-.header-dropdown-menu {
-  background: var(--fs-marrom) !important;
-  color: #fffaf0 !important;
-}
-
-.logo-nav,
-.logo-nav span,
-#usuario-saudacao,
-.header-menu-linha a,
-.nav-menu a,
-.header-dropdown-toggle,
-.header-dropdown-menu a {
-  color: #fffaf0 !important;
-}
-
-.header-menu-linha a:hover,
-.nav-menu a:hover,
-.header-dropdown-toggle:hover,
-.header-dropdown-menu a:hover,
-.header-menu-linha a.ativo,
-.nav-menu a.ativo {
-  color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador,
-.btn-header-entrar,
-.btn-menu-mobile-entrar,
-.btn-primario,
-.btn-primary,
-.btn-salvar,
-.btn-add,
-.btn-extra,
-.btn-download,
-.btn-acao-pdf,
-.btn-gerar-orcamento-home,
-.btn-home-grande,
-.btn-home-medio,
-.btn-ir-planos-home,
-.btn-home-planos-forte,
-.plano-pix-card button {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador:hover,
-.btn-header-entrar:hover,
-.btn-menu-mobile-entrar:hover,
-.btn-primario:hover,
-.btn-primary:hover,
-.btn-salvar:hover,
-.btn-add:hover,
-.btn-extra:hover,
-.btn-download:hover,
-.btn-acao-pdf:hover,
-.btn-gerar-orcamento-home:hover,
-.btn-home-grande:hover,
-.btn-home-medio:hover,
-.btn-ir-planos-home:hover,
-.btn-home-planos-forte:hover,
-.plano-pix-card button:hover {
-  background: var(--fs-amarelo) !important;
-  color: var(--fs-marrom) !important;
-  border-color: var(--fs-marrom) !important;
-}
-
-/* Tabelas */
-table,
-.tabela-comparativo,
-.home-tabela-comparativo,
-.manual-table,
-.comparativo {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-}
-
-th,
-.tabela-comparativo th,
-.home-tabela-comparativo th,
-.manual-table th,
-.comparativo th {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-td,
-.tabela-comparativo td,
-.home-tabela-comparativo td,
-.manual-table td,
-.comparativo td {
-  color: var(--fs-texto) !important;
-}
-
-tr:nth-child(even),
-tbody tr:nth-child(even) {
-  background: #fffaf0 !important;
-}
-
-/* Estados e tags mantêm contraste */
-.tag,
-.cliente-status,
-.home-cliente-status,
-.home-preco-destaque,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home,
-.tag-plano-pix {
-  color: var(--fs-marrom) !important;
-}
-
-.tag-plano-pix,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
-.btn-whatsapp,
-.btn-verde {
-  background: #25D366 !important;
-  color: #083b2f !important;
-  border-color: #128c4a !important;
-}
-
-.btn-whatsapp:hover,
-.btn-verde:hover {
-  background: #20ba5a !important;
-  color: #ffffff !important;
-}
-
-/* PDF deve continuar preto e branco quando gerando */
-body.gerando-pdf,
-body.gerando-pdf * {
-  color: inherit;
-}
-
-</style>
 </head>
-
 <body>
+  <div id="header-container"></div>
 
-<div id="header-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="ui.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="notificacoes.js"></script>
 
-<main class="termos-page">
-  <section class="termos-hero">
-    <div class="termos-hero-conteudo">
-      <span class="termos-tag">📄 Termos oficiais da plataforma</span>
-
+  <main class="legal-page">
+    <section class="legal-hero">
+      <span class="legal-tag">Documento legal</span>
       <h1>Termos de Uso do FS Orçamentos</h1>
-
-      <p>
-        Estes Termos explicam as regras para acessar e usar o FS Orçamentos,
-        incluindo geração de orçamentos em PDF, contas de usuário, login social,
-        planos pagos, pagamentos via Pix, histórico de orçamentos, aprovação por cliente,
-        responsabilidades e exclusão de conta.
-      </p>
-
-      <div class="termos-meta">
-        <span>📅 Vigência: 05/06/2026</span>
-        <span>🌐 Plataforma: fsorcamentos.com.br</span>
-        <span>🇧🇷 Aplicável no Brasil</span>
+      <p>Estes Termos explicam as regras para acessar e usar o FS Orçamentos, incluindo criação de conta, geração de orçamentos, planos pagos, teste grátis Premium, pagamentos via Pix, anúncios, responsabilidades e exclusão de conta.</p>
+      <div class="legal-meta">
+        <span>Última atualização: 24/06/2026</span>
+        <span>Domínio: fsorcamentos.com.br</span>
+        <span>Aplicável no Brasil</span>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="termos-layout">
-    <aside class="termos-sidebar">
-      <h2>Navegação rápida</h2>
+    <section class="legal-layout">
+      <aside class="legal-sidebar">
+        <strong>Navegação rápida</strong>
+        <ul class="legal-menu">
+          <li><a href="#aceitacao">1. Aceitação</a></li>
+          <li><a href="#servico">2. Serviço</a></li>
+          <li><a href="#conta">3. Conta</a></li>
+          <li><a href="#planos">4. Planos</a></li>
+          <li><a href="#teste">5. Teste grátis</a></li>
+          <li><a href="#pix">6. Pix</a></li>
+          <li><a href="#anuncios">7. Anúncios</a></li>
+          <li><a href="#responsabilidades">8. Responsabilidades</a></li>
+          <li><a href="#exclusao">9. Exclusão</a></li>
+          <li><a href="#contato">10. Contato</a></li>
+        </ul>
+      </aside>
 
-      <ul class="termos-menu">
-        <li><a href="#aceitacao">1. Aceitação</a></li>
-        <li><a href="#servico">2. O serviço</a></li>
-        <li><a href="#conta">3. Conta e login</a></li>
-        <li><a href="#planos">4. Planos e pagamentos</a></li>
-        <li><a href="#orcamentos">5. Orçamentos gerados</a></li>
-        <li><a href="#uso">6. Uso permitido</a></li>
-        <li><a href="#responsabilidades">7. Responsabilidades</a></li>
-        <li><a href="#privacidade">8. Privacidade</a></li>
-        <li><a href="#cancelamento">9. Cancelamento e exclusão</a></li>
-        <li><a href="#alteracoes">10. Alterações</a></li>
-        <li><a href="#contato">11. Contato</a></li>
-      </ul>
-    </aside>
+      <div class="legal-content">
+        <section class="legal-card alerta">
+          <h2>Resumo importante</h2>
+          <p>Ao criar conta, acessar, gerar orçamento, contratar plano, usar teste Premium, pagar por Pix ou continuar navegando, você declara que leu e concorda com estes Termos e com a Política de Privacidade.</p>
+        </section>
 
-    <article class="termos-card">
-      <div class="termos-alerta">
-        <strong>Importante:</strong> ao criar conta, acessar, gerar orçamento, usar login com Google/Facebook,
-        contratar plano ou continuar navegando no FS Orçamentos, você declara que leu, entendeu
-        e concorda com estes Termos e com a Política de Privacidade.
+        <section id="aceitacao" class="legal-card">
+          <h2>1. Aceitação dos Termos</h2>
+          <p>O FS Orçamentos é uma plataforma online destinada a profissionais, MEIs, prestadores de serviço, oficinas, autônomos e pequenas empresas que desejam criar propostas comerciais, organizar atendimentos e acompanhar serviços.</p>
+          <p>Caso não concorde com algum ponto destes Termos, interrompa o uso da plataforma.</p>
+        </section>
+
+        <section id="servico" class="legal-card">
+          <h2>2. Descrição do serviço</h2>
+          <p>A plataforma permite criar orçamentos com dados da empresa, cliente, itens, valores, observações, condições, validade, forma de pagamento, visualização e PDF. Conforme o plano contratado, pode incluir histórico, status, link de aprovação, clientes, veículos, ordens de serviço, estoque, agenda e dashboard.</p>
+          <ul>
+            <li>Alguns recursos dependem de internet, navegador compatível, Supabase, gateway Pix, WhatsApp, serviços de autenticação e provedores externos.</li>
+            <li>Recursos podem ser ajustados, removidos, limitados ou melhorados conforme evolução técnica e comercial da plataforma.</li>
+          </ul>
+        </section>
+
+        <section id="conta" class="legal-card">
+          <h2>3. Conta, cadastro e autenticação</h2>
+          <p>Para usar recursos protegidos, o usuário deve criar uma conta e manter seus dados atualizados. O usuário é responsável pelas informações inseridas, pela senha, pelo e-mail de acesso e pelas ações feitas em sua conta.</p>
+          <p>A plataforma pode oferecer login por e-mail/senha e login social, como Google, quando habilitado.</p>
+        </section>
+
+        <section id="planos" class="legal-card premium">
+          <h2>4. Planos disponíveis</h2>
+          <p>O FS Orçamentos possui três níveis principais:</p>
+          <ul>
+            <li><strong>Grátis:</strong> permite gerar orçamentos em PDF com limitações e pode exibir anúncios.</li>
+            <li><strong>Básico:</strong> libera histórico, status, aprovação por link, notificações, recursos comerciais e remoção de anúncios internos.</li>
+            <li><strong>Premium:</strong> inclui recursos de gestão, como clientes, veículos, ordens de serviço, estoque, agenda, dashboard e histórico operacional.</li>
+          </ul>
+          <p>Os valores, períodos e benefícios podem ser consultados na página de Planos. O preço vigente é o exibido no momento da contratação.</p>
+        </section>
+
+        <section id="teste" class="legal-card info">
+          <h2>5. Teste grátis Premium</h2>
+          <p>Quando disponível, o teste grátis Premium libera recursos do plano Premium por período limitado. O teste grátis só pode ser usado uma vez por usuário, conta, e-mail ou telefone identificado pela plataforma.</p>
+          <p>Ao terminar o teste, a conta retorna ao plano anterior. Se o usuário tinha Básico ativo com vencimento futuro, o sistema deve preservar esse vencimento. Se o usuário veio do Grátis ou não possuía Básico ativo, retorna ao Grátis.</p>
+        </section>
+
+        <section id="pix" class="legal-card">
+          <h2>6. Pagamentos via Pix, renovação e liberação</h2>
+          <p>Os planos pagos podem ser contratados ou renovados por Pix. A liberação depende da confirmação do pagamento pelo gateway, banco, webhook, rotina de verificação ou revisão técnica.</p>
+          <ul>
+            <li>Pix expirado, cancelado ou antigo deve ser descartado.</li>
+            <li>Ao renovar um plano ativo, os novos dias podem ser somados ao vencimento atual.</li>
+            <li>Se o plano estiver vencido, a contagem começa a partir da confirmação do pagamento.</li>
+            <li>Pedidos de reembolso são avaliados caso a caso em situações como duplicidade, falha técnica comprovada ou erro operacional.</li>
+          </ul>
+        </section>
+
+        <section id="anuncios" class="legal-card">
+          <h2>7. Anúncios e Google AdSense</h2>
+          <p>O plano Grátis pode exibir anúncios. A plataforma pode usar Google AdSense ou outros parceiros de publicidade, conforme disponibilidade, aprovação e políticas dos provedores.</p>
+          <p>Usuários dos planos pagos podem ter anúncios internos removidos enquanto o plano estiver ativo, sem impedir que páginas públicas do site contenham códigos ou estruturas de publicidade.</p>
+        </section>
+
+        <section id="responsabilidades" class="legal-card">
+          <h2>8. Responsabilidades do usuário e da plataforma</h2>
+          <p>Os orçamentos e documentos gerados são criados com base nas informações inseridas pelo usuário. O FS Orçamentos não substitui contador, advogado, consultor fiscal, técnico responsável, engenheiro ou profissional regulamentado.</p>
+          <ul>
+            <li>O usuário deve conferir valores, descrição dos serviços, garantias, dados fiscais e informações do cliente antes de enviar.</li>
+            <li>A plataforma busca estabilidade e segurança, mas não garante disponibilidade contínua e livre de falhas.</li>
+            <li>É proibido usar a plataforma para fraude, spam, conteúdo ilegal, violação de direitos de terceiros ou atividade incompatível com a legislação.</li>
+          </ul>
+        </section>
+
+        <section id="exclusao" class="legal-card">
+          <h2>9. Cancelamento, vencimento e exclusão de conta</h2>
+          <p>O usuário pode parar de usar a plataforma a qualquer momento. Recursos pagos podem ser bloqueados quando o plano expirar, for cancelado ou não houver confirmação de pagamento.</p>
+          <p>A exclusão de conta remove ou desativa dados vinculados ao usuário conforme regras técnicas, legais e de segurança. Alguns registros podem ser mantidos temporariamente para prevenção de fraude, cumprimento legal, auditoria ou solução de problemas.</p>
+        </section>
+
+        <section id="contato" class="legal-card">
+          <h2>10. Contato</h2>
+          <p>Para dúvidas sobre estes Termos, pagamentos, privacidade, exclusão de conta ou suporte da plataforma, use a página de contato disponível no site.</p>
+        </section>
       </div>
-
-      <section id="aceitacao" class="termos-secao">
-        <h2>1. Aceitação dos Termos</h2>
-
-        <p>
-          O FS Orçamentos é uma plataforma online destinada a auxiliar profissionais, MEIs,
-          prestadores de serviços, oficinas, autônomos e pequenas empresas na criação,
-          organização e envio de orçamentos comerciais.
-        </p>
-
-        <p>
-          Ao utilizar a plataforma, você concorda em cumprir estes Termos de Uso,
-          a Política de Privacidade e as regras aplicáveis aos recursos disponibilizados.
-          Caso não concorde com algum ponto, você deve interromper o uso da plataforma.
-        </p>
-
-        <p>
-          Estes Termos valem para qualquer forma de acesso ao FS Orçamentos, incluindo
-          navegador web, atalho instalado na tela inicial do celular, PWA, dispositivos móveis
-          e futuras versões do serviço.
-        </p>
-      </section>
-
-      <section id="servico" class="termos-secao">
-        <h2>2. Descrição do serviço</h2>
-
-        <p>
-          O FS Orçamentos permite criar orçamentos profissionais com dados da empresa,
-          dados do cliente, itens, valores, observações, condições, validade, forma de pagamento,
-          visual do PDF e outras informações comerciais.
-        </p>
-
-        <h3>Recursos que podem estar disponíveis</h3>
-
-        <ul>
-          <li>Geração de orçamento em PDF.</li>
-          <li>Cadastro de dados da empresa, logo, responsável, telefone, CNPJ/CPF e endereço.</li>
-          <li>Histórico de orçamentos salvos na nuvem, conforme o plano contratado.</li>
-          <li>Envio de link do orçamento por WhatsApp, quando disponível no plano.</li>
-          <li>Página para o cliente visualizar, aprovar ou recusar o orçamento.</li>
-          <li>Resumo financeiro, status de orçamentos e notificações.</li>
-          <li>Login por e-mail/senha e, quando ativado, login com Google e Facebook.</li>
-          <li>Anúncios em páginas e contas gratuitas.</li>
-        </ul>
-
-        <p>
-          Alguns recursos podem depender de conexão com a internet, navegador compatível,
-          configurações de terceiros, permissões do dispositivo, disponibilidade do Supabase,
-          serviços de autenticação, WhatsApp, gateway de pagamento, provedores de anúncios
-          e outros serviços externos.
-        </p>
-      </section>
-
-      <section id="conta" class="termos-secao">
-        <h2>3. Conta, cadastro e autenticação</h2>
-
-        <p>
-          Para usar recursos protegidos, o usuário precisa criar uma conta e manter as
-          informações cadastradas corretas e atualizadas. Você é responsável por proteger
-          suas credenciais de acesso e por todas as ações realizadas em sua conta.
-        </p>
-
-        <h3>Formas de login</h3>
-
-        <p>
-          A plataforma poderá permitir login por e-mail e senha, além de login social com
-          provedores como Google e Facebook. Ao usar login social, você autoriza o provedor
-          a compartilhar com o FS Orçamentos informações necessárias para autenticação,
-          como nome, e-mail e foto de perfil, conforme a política do respectivo provedor.
-        </p>
-
-        <h3>Dados da empresa</h3>
-
-        <p>
-          O usuário é responsável por informar corretamente nome da empresa, responsável,
-          WhatsApp, CNPJ/CPF, endereço e demais dados exibidos nos orçamentos. O FS Orçamentos
-          não verifica automaticamente a veracidade fiscal, jurídica ou comercial dessas informações.
-        </p>
-
-        <h3>Segurança da conta</h3>
-
-        <ul>
-          <li>Não compartilhe sua senha com terceiros.</li>
-          <li>Use um e-mail válido e de sua titularidade.</li>
-          <li>Revise periodicamente os dados cadastrados no Painel de Controle.</li>
-          <li>Avise o suporte se suspeitar de acesso indevido.</li>
-        </ul>
-      </section>
-
-      <section id="planos" class="termos-secao">
-        <h2>4. Planos, pagamentos e anúncios</h2>
-
-        <p>
-          O FS Orçamentos pode oferecer plano gratuito e planos pagos, como o Plano Básico.
-          As funcionalidades disponíveis variam conforme o plano ativo no momento do uso.
-        </p>
-
-        <h3>Plano gratuito</h3>
-
-        <p>
-          O plano gratuito pode permitir geração de orçamentos em PDF, mas pode conter
-          limitações, exibição de anúncios, ausência de histórico em nuvem, ausência de envio
-          por link e outras restrições informadas na plataforma.
-        </p>
-
-        <h3>Plano pago</h3>
-
-        <p>
-          O plano pago pode liberar recursos adicionais, como salvamento em nuvem,
-          histórico de orçamentos, envio por WhatsApp com link, aprovação ou recusa pelo cliente,
-          notificações, resumo financeiro e remoção de anúncios internos da plataforma.
-        </p>
-
-        <h3>Pagamentos via Pix</h3>
-
-        <p>
-          Quando houver contratação por Pix, a ativação do plano poderá depender da confirmação
-          do pagamento pelo gateway, banco, webhook, rotina de verificação ou confirmação manual.
-          A compensação pode não ser instantânea em todos os casos.
-        </p>
-
-        <h3>Renovação, vencimento e bloqueio</h3>
-
-        <p>
-          Ao final do período contratado, os recursos pagos podem ser suspensos até nova
-          confirmação de pagamento. Orçamentos e dados salvos podem continuar armazenados
-          por período razoável, conforme regras internas e obrigações legais, mas o acesso a
-          recursos pagos poderá ser limitado.
-        </p>
-
-        <h3>Reembolsos</h3>
-
-        <p>
-          Solicitações de reembolso serão avaliadas caso a caso, considerando falhas técnicas,
-          duplicidade de pagamento, prazo de solicitação, uso efetivo do serviço e regras do
-          meio de pagamento. O pedido deve ser enviado pelos canais oficiais de contato.
-        </p>
-      </section>
-
-      <section id="orcamentos" class="termos-secao">
-        <h2>5. Orçamentos, PDFs e informações comerciais</h2>
-
-        <p>
-          Os orçamentos gerados são documentos de apoio comercial criados com base nas
-          informações inseridas pelo próprio usuário. O FS Orçamentos não atua como contador,
-          advogado, consultor financeiro, fiscal, engenheiro, despachante ou responsável técnico
-          pelo conteúdo dos orçamentos.
-        </p>
-
-        <h3>Responsabilidade pelo conteúdo</h3>
-
-        <ul>
-          <li>Você é responsável por conferir valores, quantidades, descrições e condições.</li>
-          <li>Você deve validar impostos, regras fiscais, garantias, prazos e obrigações profissionais aplicáveis ao seu negócio.</li>
-          <li>Você deve obter autorização para usar logos, marcas, imagens e dados de clientes.</li>
-          <li>Você deve revisar o PDF antes de enviar ao cliente.</li>
-        </ul>
-
-        <h3>Aprovação ou recusa pelo cliente</h3>
-
-        <p>
-          Quando o cliente aprova ou recusa um orçamento por link, a plataforma apenas registra
-          a ação realizada. Isso não substitui contrato formal, assinatura eletrônica qualificada,
-          nota fiscal, ordem de serviço ou documento jurídico específico, salvo se as partes assim
-          reconhecerem e se isso for permitido pela legislação aplicável.
-        </p>
-
-        <h3>Compartilhamento por WhatsApp</h3>
-
-        <p>
-          O envio pelo WhatsApp depende de aplicativo, navegador, número correto do cliente
-          e disponibilidade do próprio WhatsApp. O FS Orçamentos não garante entrega, leitura
-          ou resposta do cliente.
-        </p>
-      </section>
-
-      <section id="uso" class="termos-secao">
-        <h2>6. Uso permitido e condutas proibidas</h2>
-
-        <p>
-          O usuário deve utilizar a plataforma de forma lícita, responsável e compatível com
-          sua finalidade. É proibido usar o FS Orçamentos para:
-        </p>
-
-        <ul>
-          <li>Praticar fraude, golpe, falsidade ideológica ou enganar clientes.</li>
-          <li>Enviar spam, mensagens abusivas ou comunicações sem autorização.</li>
-          <li>Inserir dados de terceiros sem base legal ou autorização.</li>
-          <li>Violar direitos autorais, marcas, imagens ou propriedade intelectual.</li>
-          <li>Tentar invadir, copiar, comprometer, derrubar ou explorar falhas da plataforma.</li>
-          <li>Revender acesso, automatizar uso abusivo ou burlar limitações de plano.</li>
-          <li>Publicar conteúdo discriminatório, ofensivo, ilegal, enganoso ou prejudicial.</li>
-          <li>Usar a plataforma para atividades que exijam licença específica sem possuir autorização legal.</li>
-        </ul>
-
-        <p>
-          O descumprimento destas regras pode resultar em bloqueio, suspensão ou exclusão
-          da conta, sem prejuízo de medidas administrativas, técnicas ou legais cabíveis.
-        </p>
-      </section>
-
-      <section id="responsabilidades" class="termos-secao">
-        <h2>7. Disponibilidade, limitações e responsabilidades</h2>
-
-        <p>
-          O FS Orçamentos busca manter a plataforma estável, segura e funcional, mas não
-          garante disponibilidade ininterrupta, ausência total de erros ou compatibilidade com
-          todos os dispositivos, navegadores, extensões e configurações.
-        </p>
-
-        <h3>Serviços de terceiros</h3>
-
-        <p>
-          A plataforma pode depender de serviços externos, como Supabase, Google, Facebook,
-          WhatsApp, gateway Pix, serviços de e-mail, hospedagem, domínio, ferramentas de PDF
-          e plataformas de anúncios. Falhas, bloqueios, instabilidades ou mudanças nesses
-          serviços podem afetar funcionalidades do FS Orçamentos.
-        </p>
-
-        <h3>Limitação de responsabilidade</h3>
-
-        <p>
-          Na máxima extensão permitida pela lei, o FS Orçamentos não se responsabiliza por
-          prejuízos decorrentes de informações inseridas incorretamente pelo usuário, uso indevido
-          dos orçamentos, perda de oportunidade comercial, negociações entre usuário e cliente,
-          indisponibilidade temporária, falhas de terceiros ou decisões comerciais tomadas com
-          base nos documentos gerados.
-        </p>
-
-        <h3>Manutenção e alterações técnicas</h3>
-
-        <p>
-          Podemos realizar manutenções, atualizações, melhorias, correções, mudanças de layout,
-          ajustes de segurança e alterações em funcionalidades, com ou sem aviso prévio, buscando
-          preservar a continuidade e qualidade do serviço.
-        </p>
-      </section>
-
-      <section id="privacidade" class="termos-secao">
-        <h2>8. Privacidade, dados pessoais e LGPD</h2>
-
-        <p>
-          O tratamento de dados pessoais realizado pelo FS Orçamentos é descrito na Política
-          de Privacidade. Ao usar a plataforma, você reconhece que dados como nome, e-mail,
-          telefone, dados da empresa, dados de clientes, orçamentos e informações técnicas
-          podem ser tratados para funcionamento do serviço.
-        </p>
-
-        <h3>Dados de clientes inseridos pelo usuário</h3>
-
-        <p>
-          Ao cadastrar nome, telefone, WhatsApp, endereço ou qualquer dado de cliente dentro
-          de um orçamento, você declara possuir autorização, base legal ou finalidade legítima
-          para utilizar essas informações.
-        </p>
-
-        <h3>Direitos do titular</h3>
-
-        <p>
-          O usuário pode solicitar acesso, correção, exclusão, portabilidade, limitação ou
-          esclarecimentos sobre seus dados pessoais pelos canais oficiais de contato.
-        </p>
-
-        <p>
-          Para mais detalhes, consulte a
-          <a href="/privacidade.html">Política de Privacidade</a>.
-        </p>
-      </section>
-
-      <section id="cancelamento" class="termos-secao">
-        <h2>9. Cancelamento, exclusão de conta e dados</h2>
-
-        <p>
-          O usuário pode parar de usar a plataforma a qualquer momento. Também poderá solicitar
-          exclusão da conta e dos dados associados, observadas obrigações legais, fiscais,
-          antifraude, segurança, auditoria e defesa de direitos.
-        </p>
-
-        <h3>Como solicitar exclusão</h3>
-
-        <ul>
-          <li>Pelo Painel de Controle, quando o botão de exclusão de conta estiver disponível.</li>
-          <li>Por e-mail, informando a conta cadastrada e a solicitação de exclusão.</li>
-        </ul>
-
-        <p>
-          A exclusão pode remover ou anonimizar dados de perfil, orçamentos, responsáveis,
-          preferências e registros associados. Alguns registros mínimos podem ser preservados
-          pelo prazo necessário para cumprimento legal, prevenção de fraude, segurança e comprovação
-          de solicitação.
-        </p>
-
-        <h3>Impacto da exclusão</h3>
-
-        <p>
-          Após a exclusão, o acesso à conta poderá ser encerrado e os orçamentos salvos na nuvem
-          poderão deixar de estar disponíveis. Recomenda-se baixar ou exportar informações
-          importantes antes de solicitar a exclusão.
-        </p>
-      </section>
-
-      <section id="propriedade" class="termos-secao">
-        <h2>10. Propriedade intelectual</h2>
-
-        <p>
-          A marca FS Orçamentos, identidade visual, layout, textos, estrutura da plataforma,
-          códigos, elementos de interface e materiais próprios pertencem ao FS Orçamentos ou
-          a seus respectivos titulares.
-        </p>
-
-        <p>
-          O usuário mantém responsabilidade e titularidade sobre dados e conteúdos que inserir
-          na plataforma, como informações da empresa, dados de clientes, itens e observações.
-          Ao inserir esses dados, autoriza o FS Orçamentos a processá-los para prestar o serviço.
-        </p>
-      </section>
-
-      <section id="alteracoes" class="termos-secao">
-        <h2>11. Alterações nestes Termos</h2>
-
-        <p>
-          Estes Termos podem ser atualizados para refletir mudanças na plataforma, novas
-          funcionalidades, exigências legais, requisitos de provedores, segurança, formas de
-          pagamento ou melhorias operacionais.
-        </p>
-
-        <p>
-          Quando alterações relevantes forem realizadas, a plataforma poderá avisar por aviso
-          no site, e-mail, painel, modal ou outro meio razoável. O uso contínuo após a atualização
-          representa concordância com a nova versão.
-        </p>
-      </section>
-
-      <section id="contato" class="termos-secao">
-        <h2>12. Canais de contato</h2>
-
-        <p>
-          Para dúvidas sobre estes Termos, privacidade, conta, pagamento, exclusão de dados,
-          suporte ou funcionamento da plataforma, utilize os canais oficiais abaixo.
-        </p>
-
-        <div class="termos-contato-grid">
-          <div class="termos-contato-card">
-            <strong>E-mail</strong>
-            <a href="mailto:contato.fsorcamentos@gmail.com">contato.fsorcamentos@gmail.com</a>
-          </div>
-
-          <div class="termos-contato-card">
-            <strong>Site</strong>
-            <a href="https://fsorcamentos.com.br/">fsorcamentos.com.br</a>
-          </div>
-
-          <div class="termos-contato-card">
-            <strong>Privacidade</strong>
-            <a href="/privacidade.html">Política de Privacidade</a>
-          </div>
-        </div>
-
-        <div class="termos-destaque">
-          <strong>Resumo em linguagem simples</strong>
-          <p>
-            Use o FS Orçamentos com responsabilidade, confira os dados antes de enviar,
-            mantenha sua conta segura, respeite os dados dos seus clientes e entre em contato
-            se precisar corrigir, excluir ou esclarecer alguma informação.
-          </p>
-        </div>
-      </section>
-
-      <div class="termos-acoes">
-        <a href="/index.html" class="btn-termos btn-termos-secundario">← Voltar ao início</a>
-        <a href="/gerador.html" class="btn-termos btn-termos-principal">🧾 Gerar orçamento</a>
-        <a href="/privacidade.html" class="btn-termos btn-termos-secundario">🔒 Ver privacidade</a>
+    </section>
+
+    <section class="legal-final">
+      <h2>Documentos relacionados</h2>
+      <p>Leia também a Política de Privacidade e conheça os planos disponíveis antes de contratar recursos pagos.</p>
+      <div class="legal-actions">
+        <a href="/privacidade.html" class="legal-btn primary">Política de Privacidade</a>
+        <a href="/planos.html" class="legal-btn">Ver planos</a>
+        <a href="/contato.html" class="legal-btn">Contato</a>
       </div>
-    </article>
-  </section>
-</main>
+    </section>
+  </main>
 
-<footer>
-  &copy; 2026 FS Orçamentos |
-  <a href="/privacidade.html">Privacidade</a> |
-  <a href="/termos.html">Termos</a>
-</footer>
-
-<button type="button" id="btn-flutuante-gerador-global" onclick="abrirGeradorGlobal()">
-  🧾
-  <span>Gerar orçamento</span>
-</button>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
-<script src="auth.js"></script>
-<script src="ui.js"></script>
-<script src="planos.js"></script>
-<script src="carregar-menu.js"></script>
-<script src="notificacoes.js"></script>
-
-<script>
-function abrirGeradorGlobal() {
-  window.location.href = '/gerador.html';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', event => {
-      const destino = document.querySelector(link.getAttribute('href'));
-
-      if (!destino) return;
-
-      event.preventDefault();
-
-      destino.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    });
-  });
-});
-</script>
-
+  <footer class="legal-footer">
+    © 2026 FS Orçamentos |
+    <a href="/sobre.html">Sobre</a> |
+    <a href="/privacidade.html">Privacidade</a> |
+    <a href="/termos.html">Termos</a> |
+    <a href="/contato.html">Contato</a>
+  </footer>
 </body>
 </html>
