@@ -5,780 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Veículos - FS Orçamentos</title>
-
   <meta name="description" content="Cadastre veículos, placas, chassi, marca, modelo, cor e cliente vinculado no FS Orçamentos." />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
 
   <link rel="stylesheet" href="style.css" />
-  <link id="fs-veiculos-inline-css" rel="stylesheet" href="veiculos-inline.css" />
-
-<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
-<style id="fs-formal-theme-overrides">
-  :root {
-    --fs-marrom: #3e2723;
-    --fs-marrom-2: #5d4037;
-    --fs-fundo-escuro: #f7f2ea;
-    --fs-fundo: #f7f2ea;
-    --fs-page-bg: #f7f2ea;
-    --fs-page-bg-2: #efe3d2;
-    --fs-card: #ffffff;
-    --fs-creme: #f4ece1;
-    --fs-creme-2: #fffaf0;
-    --fs-bege: #f4ece1;
-    --fs-bege-2: #fffaf0;
-    --fs-amarelo: #ffc400;
-    --fs-borda: #e8dccb;
-    --fs-texto: #2f241f;
-    --fs-texto-suave: #6d5b52;
-    --bg-dark: #f7f2ea;
-    --body-brown: #ffffff;
-    --text-dark: #2f241f;
-    --accent-yellow: #ffc400;
-  }
-
-  body:not(.gerando-pdf) {
-    background:
-      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
-    color: #2f241f !important;
-  }
-
-  #header-container,
-  .main-header,
-  .header-topo,
-  .header-menu-linha {
-    background: #3e2723 !important;
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav,
-  .logo-nav span,
-  #usuario-saudacao,
-  .header-menu-linha a,
-  .nav-menu a {
-    color: #fffaf0 !important;
-  }
-
-  .logo-nav strong,
-  .fs-box,
-  .sobre-fs-box {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-  }
-
-  .link-destaque-gerador,
-  .btn-header-entrar,
-  .btn-menu-mobile-entrar,
-  .btn-home-grande,
-  .btn-home-medio,
-  .btn-home-atalho.btn-principal,
-  .btn-gerar-orcamento-home,
-  .btn-previa-profissional,
-  .btn-hero-principal,
-  .btn-ir-planos-home,
-  .btn-home-planos-forte,
-  .btn-add,
-  .btn-extra,
-  .btn-primario,
-  .btn-primary,
-  .btn-salvar,
-  .btn-acao-pdf,
-  .plano-pix-card button,
-  .btn-editar-dados-empresa {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .link-destaque-gerador:hover,
-  .btn-header-entrar:hover,
-  .btn-menu-mobile-entrar:hover,
-  .btn-home-grande:hover,
-  .btn-home-medio:hover,
-  .btn-gerar-orcamento-home:hover,
-  .btn-previa-profissional:hover,
-  .btn-hero-principal:hover,
-  .btn-ir-planos-home:hover,
-  .btn-home-planos-forte:hover,
-  .btn-add:hover,
-  .btn-extra:hover,
-  .btn-primario:hover,
-  .btn-primary:hover,
-  .btn-salvar:hover,
-  .btn-acao-pdf:hover,
-  .plano-pix-card button:hover,
-  .btn-editar-dados-empresa:hover {
-    background: #ffc400 !important;
-    color: #3e2723 !important;
-    border-color: #3e2723 !important;
-  }
-
-  .hero-publico,
-  .home-plano-hero,
-  .gerador-hero,
-  .planos-hero,
-  .clientes-hero,
-  .veiculos-hero,
-  .ordens-hero,
-  .ordem-hero,
-  .estoque-hero,
-  .sobre-hero,
-  .manual-hero,
-  .termos-hero,
-  .privacidade-hero,
-  .orcamentos-hero,
-  .painel-hero,
-  .secao-como-funciona,
-  .whatsapp-preview-home,
-  .cliente-aprovacao-home,
-  .comparativo-home,
-  .status-orcamentos-home,
-  .home-story-section,
-  .home-whatsapp-section,
-  .home-aprovacao-section,
-  .home-status-section,
-  .home-comparativo-section,
-  .planos-pix-section,
-  .comparativo-section,
-  .faq-section,
-  .container-sobre,
-  .container-termos,
-  .container-privacidade,
-  .home-premium-showcase {
-    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-    color: #2f241f !important;
-    border-top-color: #ffc400 !important;
-    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
-  }
-
-  .hero-publico h1,
-  .home-plano-hero h1,
-  .gerador-hero h1,
-  .planos-hero h1,
-  .clientes-hero h1,
-  .veiculos-hero h1,
-  .ordens-hero h1,
-  .ordem-hero h1,
-  .estoque-hero h1,
-  .sobre-hero h1,
-  .manual-hero h1,
-  .home-premium-showcase h2,
-  .container-sobre h1,
-  .container-sobre h2,
-  .container-termos h1,
-  .container-termos h2,
-  .section-topo h2,
-  .dadositens,
-  .card-header h2,
-  .clientes-card-header h2,
-  .veiculos-card-header h2,
-  .ordens-card-header h2,
-  .estoque-card-header h2 {
-    color: #3e2723 !important;
-  }
-
-  .hero-publico p,
-  .home-plano-hero p,
-  .gerador-hero p,
-  .planos-hero p,
-  .clientes-hero p,
-  .veiculos-hero p,
-  .ordens-hero p,
-  .ordem-hero p,
-  .estoque-hero p,
-  .sobre-hero p,
-  .manual-hero p,
-  .home-premium-showcase p,
-  .container-sobre p,
-  .container-termos p,
-  .section-topo p {
-    color: #6d5b52 !important;
-  }
-
-  .container,
-  .card,
-  .clientes-card,
-  .veiculos-card,
-  .ordens-card,
-  .estoque-card,
-  .gerador-card-principal,
-  .sidebar-card,
-  .plano-pix-card,
-  .faq-card,
-  .home-promo-card,
-  .home-metrica-card,
-  .home-relatorio-card,
-  .home-painel-card,
-  .card-sobre,
-  .plano-card,
-  .manual-card,
-  .manual-section,
-  .manual-step,
-  .manual-demo-card,
-  .cliente-item,
-  .veiculo-item,
-  .ordem-item,
-  .estoque-categoria-grupo,
-  .emissor-readonly-card,
-  .cliente-tela-preview,
-  .home-cliente-preview {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #e8dccb !important;
-    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
-  }
-
-  .card-header,
-  .clientes-card-header,
-  .veiculos-card-header,
-  .ordens-card-header,
-  .estoque-card-header,
-  .modal-busca-cliente-header,
-  .modal-busca-produto-header,
-  .modal-pix-topo,
-  .home-cliente-topo,
-  .mock-card-head,
-  .orcamento-whatsapp-header,
-  .home-orcamento-whatsapp-header,
-  .total-container,
-  .cliente-total-demo,
-  .home-cliente-total,
-  .manual-flow div,
-  .mini-dashboard {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-    border-color: #ffc400 !important;
-  }
-
-  .card-body,
-  .clientes-card-body,
-  .veiculos-card-body,
-  .ordens-card-body,
-  .estoque-card-body {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  input,
-  select,
-  textarea {
-    background: #ffffff !important;
-    color: #2f241f !important;
-    border-color: #d8c9b8 !important;
-  }
-
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #ffc400 !important;
-    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-    outline: none !important;
-  }
-
-  table,
-  .tabela-comparativo,
-  .home-tabela-comparativo,
-  .manual-table,
-  .comparativo {
-    background: #ffffff !important;
-    color: #2f241f !important;
-  }
-
-  th,
-  .tabela-comparativo th,
-  .home-tabela-comparativo th,
-  .manual-table th,
-  .comparativo th {
-    background: #3e2723 !important;
-    color: #ffc400 !important;
-  }
-
-  tr:nth-child(even),
-  tbody tr:nth-child(even) {
-    background: #fffaf0 !important;
-  }
-
-  footer,
-  .sobre-footer {
-    color: #6d5b52 !important;
-  }
-
-  footer a,
-  .sobre-footer a {
-    color: #3e2723 !important;
-    font-weight: 800 !important;
-  }
-</style>
-
-
-<style id="fs-contrast-fix-final">
-
-/* =========================================================
-   FS CONTRAST FIX - textos legíveis no tema claro profissional
-   Mantém marrom no header/títulos principais e corrige textos
-   que estavam ficando da mesma cor do fundo.
-   ========================================================= */
-:root {
-  --fs-marrom: #3e2723;
-  --fs-marrom-2: #5d4037;
-  --fs-fundo: #f7f2ea;
-  --fs-fundo-2: #efe3d2;
-  --fs-card: #ffffff;
-  --fs-creme: #fffaf0;
-  --fs-amarelo: #ffc400;
-  --fs-borda: #e8dccb;
-  --fs-texto: #2f241f;
-  --fs-texto-suave: #6d5b52;
-}
-
-html,
-body {
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) {
-  background:
-    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
-    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
-}
-
-main,
-section,
-.container,
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box,
-.modal-login-box,
-.modal-responsavel-card,
-.modal-busca-produto-box,
-.modal-busca-cliente-box,
-.modal-pix-card {
-  color: var(--fs-texto) !important;
-}
-
-.card,
-.card-body,
-.info-item,
-.texto-bloco,
-.container,
-.home-promo-card,
-.home-metrica-card,
-.home-relatorio-card,
-.home-painel-card,
-.cliente-item,
-.veiculo-item,
-.ordem-item,
-.estoque-item,
-.estoque-categoria-grupo,
-.plano-card,
-.plano-pix-card,
-.faq-card,
-.manual-card,
-.manual-section,
-.manual-step,
-.manual-demo-card,
-.responsaveis-box {
-  background: #ffffff !important;
-  border-color: var(--fs-borda) !important;
-}
-
-/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
-.card-header,
-.clientes-card-header,
-.veiculos-card-header,
-.ordens-card-header,
-.estoque-card-header,
-.modal-busca-cliente-header,
-.modal-busca-produto-header,
-.modal-pix-topo,
-.home-cliente-topo,
-.mock-card-head,
-.orcamento-whatsapp-header,
-.home-orcamento-whatsapp-header,
-.total-container,
-.valor-total,
-.cliente-total-demo,
-.home-cliente-total,
-.manual-flow div,
-.mini-dashboard,
-.auth-logo-box,
-.banner-topo {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.card-header h1,
-.card-header h2,
-.card-header h3,
-.card-header strong,
-.clientes-card-header h1,
-.clientes-card-header h2,
-.clientes-card-header h3,
-.clientes-card-header strong,
-.veiculos-card-header h1,
-.veiculos-card-header h2,
-.veiculos-card-header h3,
-.veiculos-card-header strong,
-.ordens-card-header h1,
-.ordens-card-header h2,
-.ordens-card-header h3,
-.ordens-card-header strong,
-.estoque-card-header h1,
-.estoque-card-header h2,
-.estoque-card-header h3,
-.estoque-card-header strong,
-.modal-busca-cliente-header h1,
-.modal-busca-cliente-header h2,
-.modal-busca-cliente-header h3,
-.modal-busca-cliente-header strong,
-.modal-busca-produto-header h1,
-.modal-busca-produto-header h2,
-.modal-busca-produto-header h3,
-.modal-busca-produto-header strong,
-.modal-pix-topo h1,
-.modal-pix-topo h2,
-.modal-pix-topo h3,
-.modal-pix-topo strong,
-.total-container strong,
-.valor-total strong,
-.valor-total span,
-.cliente-total-demo,
-.home-cliente-total,
-.auth-logo-box .auth-logo-text span,
-.auth-logo-box strong,
-.banner-topo h1,
-.banner-topo h2,
-.banner-topo h3,
-.banner-topo strong {
-  color: var(--fs-amarelo) !important;
-}
-
-.card-header p,
-.card-header span,
-.card-header small,
-.clientes-card-header p,
-.clientes-card-header span,
-.clientes-card-header small,
-.veiculos-card-header p,
-.veiculos-card-header span,
-.veiculos-card-header small,
-.ordens-card-header p,
-.ordens-card-header span,
-.ordens-card-header small,
-.estoque-card-header p,
-.estoque-card-header span,
-.estoque-card-header small,
-.modal-busca-cliente-header p,
-.modal-busca-cliente-header span,
-.modal-busca-cliente-header small,
-.modal-busca-produto-header p,
-.modal-busca-produto-header span,
-.modal-busca-produto-header small,
-.modal-pix-topo p,
-.modal-pix-topo span,
-.modal-pix-topo small,
-.auth-logo-box p {
-  color: #fffaf0 !important;
-}
-
-/* Heróis/seções claras */
-.hero-publico,
-.home-plano-hero,
-.gerador-hero,
-.planos-hero,
-.clientes-hero,
-.veiculos-hero,
-.ordens-hero,
-.ordem-hero,
-.estoque-hero,
-.sobre-hero,
-.manual-hero,
-.termos-hero,
-.privacidade-hero,
-.orcamentos-hero,
-.painel-hero,
-.secao-como-funciona,
-.whatsapp-preview-home,
-.cliente-aprovacao-home,
-.comparativo-home,
-.status-orcamentos-home,
-.home-story-section,
-.home-whatsapp-section,
-.home-aprovacao-section,
-.home-status-section,
-.home-comparativo-section,
-.planos-pix-section,
-.comparativo-section,
-.faq-section,
-.container-sobre,
-.container-termos,
-.container-privacidade {
-  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
-.hero-publico h1,
-.home-plano-hero h1,
-.gerador-hero h1,
-.planos-hero h1,
-.clientes-hero h1,
-.veiculos-hero h1,
-.ordens-hero h1,
-.ordem-hero h1,
-.estoque-hero h1,
-.sobre-hero h1,
-.manual-hero h1,
-.termos-hero h1,
-.privacidade-hero h1,
-.orcamentos-hero h1,
-.painel-hero h1,
-.section-topo h2,
-.container-sobre h1,
-.container-sobre h2,
-.container-termos h1,
-.container-termos h2,
-.container-privacidade h1,
-.container-privacidade h2,
-.dadositens,
-.campo label,
-label {
-  color: var(--fs-marrom) !important;
-}
-
-.hero-publico p,
-.home-plano-hero p,
-.gerador-hero p,
-.planos-hero p,
-.clientes-hero p,
-.veiculos-hero p,
-.ordens-hero p,
-.ordem-hero p,
-.estoque-hero p,
-.sobre-hero p,
-.manual-hero p,
-.termos-hero p,
-.privacidade-hero p,
-.orcamentos-hero p,
-.painel-hero p,
-.section-topo p,
-.info-item span,
-.texto-bloco,
-.campo small,
-small,
-.help-item,
-.valor-linha span,
-.home-metrica-card span,
-.home-relatorio-card span,
-.home-promo-card p,
-.home-painel-card p {
-  color: var(--fs-texto-suave) !important;
-}
-
-.info-item strong,
-.valor-linha strong,
-.home-metrica-card strong,
-.home-relatorio-card strong,
-.card strong,
-.card h1,
-.card h2,
-.card h3,
-.cliente-item strong,
-.veiculo-item strong,
-.ordem-item strong,
-.estoque-item strong {
-  color: var(--fs-marrom) !important;
-}
-
-input,
-select,
-textarea {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border-color: #d8c9b8 !important;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #8a7a70 !important;
-  opacity: 1 !important;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--fs-amarelo) !important;
-  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
-  outline: none !important;
-}
-
-/* Header e menus */
-#header-container,
-.main-header,
-.header-topo,
-.header-menu-linha,
-.header-dropdown-menu {
-  background: var(--fs-marrom) !important;
-  color: #fffaf0 !important;
-}
-
-.logo-nav,
-.logo-nav span,
-#usuario-saudacao,
-.header-menu-linha a,
-.nav-menu a,
-.header-dropdown-toggle,
-.header-dropdown-menu a {
-  color: #fffaf0 !important;
-}
-
-.header-menu-linha a:hover,
-.nav-menu a:hover,
-.header-dropdown-toggle:hover,
-.header-dropdown-menu a:hover,
-.header-menu-linha a.ativo,
-.nav-menu a.ativo {
-  color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador,
-.btn-header-entrar,
-.btn-menu-mobile-entrar,
-.btn-primario,
-.btn-primary,
-.btn-salvar,
-.btn-add,
-.btn-extra,
-.btn-download,
-.btn-acao-pdf,
-.btn-gerar-orcamento-home,
-.btn-home-grande,
-.btn-home-medio,
-.btn-ir-planos-home,
-.btn-home-planos-forte,
-.plano-pix-card button {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-  border-color: var(--fs-amarelo) !important;
-}
-
-.link-destaque-gerador:hover,
-.btn-header-entrar:hover,
-.btn-menu-mobile-entrar:hover,
-.btn-primario:hover,
-.btn-primary:hover,
-.btn-salvar:hover,
-.btn-add:hover,
-.btn-extra:hover,
-.btn-download:hover,
-.btn-acao-pdf:hover,
-.btn-gerar-orcamento-home:hover,
-.btn-home-grande:hover,
-.btn-home-medio:hover,
-.btn-ir-planos-home:hover,
-.btn-home-planos-forte:hover,
-.plano-pix-card button:hover {
-  background: var(--fs-amarelo) !important;
-  color: var(--fs-marrom) !important;
-  border-color: var(--fs-marrom) !important;
-}
-
-/* Tabelas */
-table,
-.tabela-comparativo,
-.home-tabela-comparativo,
-.manual-table,
-.comparativo {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-}
-
-th,
-.tabela-comparativo th,
-.home-tabela-comparativo th,
-.manual-table th,
-.comparativo th {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-td,
-.tabela-comparativo td,
-.home-tabela-comparativo td,
-.manual-table td,
-.comparativo td {
-  color: var(--fs-texto) !important;
-}
-
-tr:nth-child(even),
-tbody tr:nth-child(even) {
-  background: #fffaf0 !important;
-}
-
-/* Estados e tags mantêm contraste */
-.tag,
-.cliente-status,
-.home-cliente-status,
-.home-preco-destaque,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home,
-.tag-plano-pix {
-  color: var(--fs-marrom) !important;
-}
-
-.tag-plano-pix,
-.home-section-tag,
-.home-plano-tag,
-.tag-demo,
-.tag-aprovacao,
-.tag-status-home {
-  background: var(--fs-marrom) !important;
-  color: var(--fs-amarelo) !important;
-}
-
-/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
-.btn-whatsapp,
-.btn-verde {
-  background: #25D366 !important;
-  color: #083b2f !important;
-  border-color: #128c4a !important;
-}
-
-.btn-whatsapp:hover,
-.btn-verde:hover {
-  background: #20ba5a !important;
-  color: #ffffff !important;
-}
-
-/* PDF deve continuar preto e branco quando gerando */
-body.gerando-pdf,
-body.gerando-pdf * {
-  color: inherit;
-}
-
-</style>
+  <link id="fs-veiculos-inline-css" rel="stylesheet" href="veiculos-inline.css?v=20260624-modal-veiculos-1" />
 </head>
 
 <body>
@@ -798,39 +30,22 @@ body.gerando-pdf * {
     </div>
 
     <section class="veiculos-resumo">
-      <div class="card-resumo">
-        <span>Total de veículos</span>
-        <strong id="resumo-total-veiculos">0</strong>
-      </div>
-
-      <div class="card-resumo">
-        <span>Veículos ativos</span>
-        <strong id="resumo-veiculos-ativos">0</strong>
-      </div>
-
-      <div class="card-resumo">
-        <span>Clientes vinculados</span>
-        <strong id="resumo-clientes-vinculados">0</strong>
-      </div>
-
-      <div class="card-resumo">
-        <span>Sem cliente</span>
-        <strong id="resumo-veiculos-sem-cliente">0</strong>
-      </div>
+      <div class="card-resumo"><span>Total de veículos</span><strong id="resumo-total-veiculos">0</strong></div>
+      <div class="card-resumo"><span>Veículos ativos</span><strong id="resumo-veiculos-ativos">0</strong></div>
+      <div class="card-resumo"><span>Clientes vinculados</span><strong id="resumo-clientes-vinculados">0</strong></div>
+      <div class="card-resumo"><span>Sem cliente</span><strong id="resumo-veiculos-sem-cliente">0</strong></div>
     </section>
 
     <section class="veiculos-grid">
-      <aside class="veiculos-card card-form-mobile" id="card-form-veiculo">
+      <aside class="veiculos-card card-form-mobile form-fechado" id="card-form-veiculo" role="dialog" aria-modal="true" aria-labelledby="titulo-form-veiculo" aria-hidden="true">
         <div class="veiculos-card-header header-form-mobile">
           <div>
             <h2 id="titulo-form-veiculo">Novo veículo</h2>
-            <p>
-              Cadastre o veículo e vincule ao cliente para usar em orçamentos e ordens de serviço.
-            </p>
+            <p>Cadastre o veículo e vincule ao cliente para usar em orçamentos e ordens de serviço.</p>
           </div>
 
-          <button type="button" id="btn-toggle-form-veiculo" class="btn-toggle-form-mobile">
-            Abrir
+          <button type="button" id="btn-toggle-form-veiculo" class="btn-toggle-form-mobile" aria-label="Fechar cadastro de veículo">
+            ×
           </button>
         </div>
 
@@ -852,17 +67,9 @@ body.gerando-pdf * {
               </div>
 
               <div class="cliente-modal-acoes">
-                <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteVeiculo()">
-                  Buscar cliente
-                </button>
-
-                <a href="clientes.html?novo=1" class="btn btn-primario">
-                  Cadastrar novo cliente
-                </a>
-
-                <button type="button" class="btn btn-perigo" onclick="limparClienteSelecionadoVeiculo()">
-                  Limpar
-                </button>
+                <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteVeiculo()">Buscar cliente</button>
+                <a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn btn-primario">Cadastrar cliente</a>
+                <button type="button" class="btn btn-perigo" onclick="limparClienteSelecionadoVeiculo()">Limpar</button>
               </div>
 
               <small>Pesquise por nome, telefone, e-mail, rua, cidade ou CEP. Se o cliente ainda não existir, use o atalho para cadastrar.</small>
@@ -871,24 +78,13 @@ body.gerando-pdf * {
             <div class="form-linha">
               <div class="campo">
                 <label for="veiculo-placa">Placa *</label>
-                <input
-                  type="text"
-                  id="veiculo-placa"
-                  placeholder="Ex: ABC1D23"
-                  maxlength="8"
-                  required
-                />
+                <input type="text" id="veiculo-placa" placeholder="Ex: ABC1D23" maxlength="8" required />
                 <small>A placa será salva em maiúsculo e sem espaços.</small>
               </div>
 
               <div class="campo">
                 <label for="veiculo-chassi">Chassi</label>
-                <input
-                  type="text"
-                  id="veiculo-chassi"
-                  placeholder="Opcional"
-                  maxlength="30"
-                />
+                <input type="text" id="veiculo-chassi" placeholder="Opcional" maxlength="30" />
               </div>
             </div>
 
@@ -940,26 +136,19 @@ body.gerando-pdf * {
 
             <div class="campo">
               <label for="veiculo-observacoes">Observações</label>
-              <textarea
-                id="veiculo-observacoes"
-                placeholder="Informações importantes, histórico, detalhes do veículo, localização, observações internas..."
-              ></textarea>
+              <textarea id="veiculo-observacoes" placeholder="Informações importantes, histórico, detalhes do veículo, localização, observações internas..."></textarea>
             </div>
 
             <div class="veiculos-acoes-form">
-              <button type="submit" id="btn-salvar-veiculo" class="btn btn-primario">
-                Salvar veículo
-              </button>
-
-              <button type="button" id="btn-limpar-veiculo" class="btn btn-secundario">
-                Limpar
-              </button>
+              <button type="submit" id="btn-salvar-veiculo" class="btn btn-primario">Salvar veículo</button>
+              <button type="button" id="btn-limpar-veiculo" class="btn btn-secundario">Limpar</button>
+              <button type="button" class="btn btn-perigo" onclick="fsFecharModalVeiculo(event)">Cancelar</button>
             </div>
           </form>
         </div>
       </aside>
 
-      <section class="veiculos-card">
+      <section class="veiculos-card veiculos-lista-card">
         <div class="veiculos-card-header">
           <div class="veiculos-topo-acoes">
             <div>
@@ -967,9 +156,15 @@ body.gerando-pdf * {
               <p>Consulte por placa, cliente, marca, modelo ou cor.</p>
             </div>
 
-            <button type="button" id="btn-atualizar-veiculos" class="btn btn-secundario">
-              Buscar
-            </button>
+            <div class="veiculos-topo-botoes">
+              <button type="button" id="btn-novo-veiculo-atalho" class="btn btn-primario" aria-controls="card-form-veiculo">
+                ＋ Novo veículo
+              </button>
+
+              <button type="button" id="btn-atualizar-veiculos" class="btn btn-secundario">
+                Buscar
+              </button>
+            </div>
           </div>
         </div>
 
@@ -977,19 +172,13 @@ body.gerando-pdf * {
           <div id="mensagem-veiculos-lista" class="mensagem-veiculos"></div>
 
           <div class="veiculos-lista-toggle-mobile">
-            <button type="button" id="btn-toggle-lista-veiculos" class="btn-toggle-lista-mobile">
-              Ver veículos
-            </button>
+            <button type="button" id="btn-toggle-lista-veiculos" class="btn-toggle-lista-mobile">Ver veículos</button>
           </div>
 
           <div class="veiculos-filtros">
             <div class="campo">
               <label for="busca-veiculos">Buscar</label>
-              <input
-                type="search"
-                id="busca-veiculos"
-                placeholder="Placa, cliente, marca, modelo, cor..."
-              />
+              <input type="search" id="busca-veiculos" placeholder="Placa, cliente, marca, modelo, cor..." />
             </div>
 
             <div class="campo">
@@ -1026,7 +215,6 @@ body.gerando-pdf * {
     </section>
   </main>
 
-
   <div id="modal-busca-cliente-veiculo" class="modal-busca-cliente-overlay" aria-hidden="true">
     <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca-cliente-veiculo">
       <div class="modal-busca-cliente-header">
@@ -1044,7 +232,7 @@ body.gerando-pdf * {
             <input type="search" id="campo-busca-cliente-veiculo" placeholder="Ex: João, 18999999999, Rua Brasil, Assis ou 19800-000" autocomplete="off">
           </div>
           <button type="button" class="btn btn-primario" onclick="buscarClientesModalVeiculo()">Buscar</button>
-          <a href="clientes.html?novo=1" class="btn btn-secundario">Novo cliente</a>
+          <a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn btn-secundario">Novo cliente</a>
         </div>
 
         <div id="resultado-busca-clientes-veiculo" class="resultado-busca-clientes-modal">
@@ -1107,47 +295,111 @@ body.gerando-pdf * {
   <script src="auth.js"></script>
   <script src="ui.js"></script>
   <script src="planos.js"></script>
-<script src="carregar-menu.js"></script>
-  <script>
-(async function() {
-  if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
-    const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Cadastro de veículos faz parte do Plano Premium.');
-    if (bloqueado) return;
-  }
-  const script = document.createElement('script');
-  script.src = 'veiculos.js';
-  script.defer = false;
-  document.body.appendChild(script);
-})();
-</script>
+  <script src="carregar-menu.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async function () {
-      try {
-        if (!window._supabase && window.supabase && window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
-          window._supabase = window.supabase.createClient(
-            window.SUPABASE_URL,
-            window.SUPABASE_ANON_KEY
-          );
-        }
-
-        if (!window._supabase) {
-          console.warn("Supabase não foi inicializado. Verifique o config.js.");
-          return;
-        }
-
-        const { data } = await window._supabase.auth.getSession();
-        const session = data && data.session ? data.session : null;
-
-        if (!session) {
-          const destino = encodeURIComponent("veiculos.html");
-          window.location.href = "index.html?redirect=" + destino;
-          return;
-        }
-      } catch (erro) {
-        console.error("Erro ao validar sessão em veiculos.html:", erro);
+    function fsAbrirModalVeiculo(event, modoEdicao) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
       }
+
+      const card = document.getElementById('card-form-veiculo');
+      const corpo = document.getElementById('corpo-form-veiculo');
+      const titulo = document.getElementById('titulo-form-veiculo');
+      const btnSalvar = document.getElementById('btn-salvar-veiculo');
+      const placa = document.getElementById('veiculo-placa');
+
+      if (!card) return;
+      if (!modoEdicao && typeof window.limparFormularioVeiculo === 'function') window.limparFormularioVeiculo();
+      if (titulo && !modoEdicao) titulo.textContent = 'Novo veículo';
+      if (btnSalvar && !modoEdicao) btnSalvar.textContent = 'Salvar veículo';
+
+      card.classList.remove('form-fechado');
+      card.classList.add('veiculos-form-modal-aberto');
+      card.setAttribute('aria-hidden', 'false');
+      if (corpo) corpo.scrollTop = 0;
+      document.body.classList.add('veiculos-modal-aberto');
+      setTimeout(() => placa?.focus(), 180);
+    }
+
+    function fsFecharModalVeiculo(event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+      }
+
+      const card = document.getElementById('card-form-veiculo');
+      if (!card) return;
+      card.classList.remove('veiculos-form-modal-aberto');
+      card.classList.add('form-fechado');
+      card.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('veiculos-modal-aberto');
+    }
+
+    function fsInstalarModalVeiculos() {
+      const btnNovo = document.getElementById('btn-novo-veiculo-atalho');
+      const btnFechar = document.getElementById('btn-toggle-form-veiculo');
+
+      if (btnNovo && btnNovo.dataset.fsModalConfigurado !== 'sim') {
+        btnNovo.dataset.fsModalConfigurado = 'sim';
+        btnNovo.addEventListener('click', event => fsAbrirModalVeiculo(event, false), true);
+      }
+
+      if (btnFechar && btnFechar.dataset.fsModalConfigurado !== 'sim') {
+        btnFechar.dataset.fsModalConfigurado = 'sim';
+        btnFechar.textContent = '×';
+        btnFechar.setAttribute('aria-label', 'Fechar cadastro de veículo');
+        btnFechar.addEventListener('click', fsFecharModalVeiculo, true);
+      }
+
+      if (typeof window.editarVeiculo === 'function' && !window.__fsEditarVeiculoModal) {
+        window.__fsEditarVeiculoModal = true;
+        const editarOriginal = window.editarVeiculo;
+        window.editarVeiculo = function(id) {
+          editarOriginal(id);
+          fsAbrirModalVeiculo(null, true);
+        };
+      }
+
+      const abrirOriginal = window.abrirFormularioMobileVeiculo;
+      if (typeof abrirOriginal === 'function' && !window.__fsAbrirVeiculoModal) {
+        window.__fsAbrirVeiculoModal = true;
+        window.abrirFormularioMobileVeiculo = function() {
+          try { abrirOriginal(); } catch (_) {}
+          fsAbrirModalVeiculo(null, true);
+        };
+      }
+
+      const params = new URLSearchParams(window.location.search || '');
+      if ((params.get('novo') === '1' || params.get('cliente_id')) && !window.__fsVeiculoNovoAberto) {
+        window.__fsVeiculoNovoAberto = true;
+        setTimeout(() => fsAbrirModalVeiculo(null, true), 250);
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') fsFecharModalVeiculo(event);
     });
+  </script>
+
+  <script>
+    (async function() {
+      if (typeof bloquearPaginaSeNaoPremiumAsync === 'function') {
+        const bloqueado = await bloquearPaginaSeNaoPremiumAsync('Cadastro de veículos faz parte do Plano Premium.');
+        if (bloqueado) return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'veiculos.js?v=20260624-modal-veiculos-1';
+      script.defer = false;
+      script.onload = function() {
+        if (typeof fsInstalarModalVeiculos === 'function') fsInstalarModalVeiculos();
+      };
+      document.body.appendChild(script);
+    })();
   </script>
 </body>
 </html>
