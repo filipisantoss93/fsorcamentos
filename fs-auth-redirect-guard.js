@@ -41,10 +41,26 @@
     return `${location.pathname || '/index.html'}${location.search || ''}${location.hash || ''}`;
   }
 
+  function destinoLoginPadrao(){
+    return '/painel.html';
+  }
+
+  function destinoEhIndex(destino){
+    const valor = String(destino || '').split('?')[0].split('#')[0].replace(/\/$/, '').toLowerCase();
+    return !valor || valor === '/' || valor === '/index' || valor === '/index.html';
+  }
+
   function salvarDestino(destino){
     try {
-      const final = destino || destinoAtual() || '/gerador.html';
-      if (!final.includes('/index.html') && final !== '/') localStorage.setItem('fs_destino_apos_login', final);
+      const final = destino || destinoAtual() || destinoLoginPadrao();
+      if (!destinoEhIndex(final)) localStorage.setItem('fs_destino_apos_login', final);
+    } catch (_) {}
+  }
+
+  function garantirDestinoModalLogin(){
+    try {
+      const salvo = localStorage.getItem('fs_destino_apos_login') || '';
+      if (!salvo || destinoEhIndex(salvo)) localStorage.setItem('fs_destino_apos_login', destinoLoginPadrao());
     } catch (_) {}
   }
 
@@ -95,17 +111,33 @@
 
   async function redirecionarDepoisLogin(){
     if (!ehIndex()) return;
-    const destino = destinoSalvo();
-    if (!destino || destino === '/' || destino.includes('/index.html')) return;
     const session = await sessaoAtual();
     if (!session?.user?.id) return;
+
+    let destino = destinoSalvo();
+    if (!destino || destinoEhIndex(destino)) destino = destinoLoginPadrao();
+
     limparDestino();
     location.replace(destino);
   }
 
+  function instalarSubmitModalLogin(){
+    const form = document.getElementById('form-autenticacao');
+    if (!form || form.dataset.fsSubmitSeguro === 'sim') return;
+    form.dataset.fsSubmitSeguro = 'sim';
+    form.addEventListener('submit', function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof window.enviarFormulario === 'function') window.enviarFormulario();
+    }, true);
+  }
+
   function instalarOverrideLogin(){
-    const abrir = function(){
+    const abrir = function(destino){
       if (ehIndex()) {
+        if (destino) salvarDestino(destino);
+        else garantirDestinoModalLogin();
+
         const modal = document.getElementById('modal-login');
         const authArea = document.getElementById('auth-area');
         const authContainer = document.getElementById('auth-container');
@@ -114,18 +146,22 @@
         if (authArea) authArea.style.display = 'block';
         if (authContainer) authContainer.style.display = 'block';
         modal.style.display = 'flex';
+        modal.classList.add('ativo', 'active');
         modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('login-modal-aberto');
         document.body.style.overflow = 'hidden';
+        instalarSubmitModalLogin();
+        setTimeout(() => document.getElementById('auth-email')?.focus(), 80);
         return;
       }
-      redirecionarParaLogin(destinoAtual());
+      redirecionarParaLogin(destino || destinoAtual());
     };
 
     const fechar = function(){
       const modal = document.getElementById('modal-login');
       if (!modal) return;
       modal.style.display = 'none';
+      modal.classList.remove('ativo', 'active');
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('login-modal-aberto');
       document.body.style.overflow = '';
@@ -133,6 +169,7 @@
 
     window.abrirModalLogin = abrir;
     window.fecharModalLogin = fechar;
+    instalarSubmitModalLogin();
   }
 
   function instalar(){
@@ -149,7 +186,7 @@
   const timer = setInterval(() => {
     instalarOverrideLogin();
     removerModalForaDoIndex();
-    if (++tentativas > 24) clearInterval(timer);
+    if (++tentativas > 40) clearInterval(timer);
   }, 250);
 
   if (window._supabase?.auth) {
