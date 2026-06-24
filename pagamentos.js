@@ -1,13 +1,9 @@
 // ==================== PAGAMENTOS.JS ====================
-// FS Orçamentos - Pagamento Pix Planos Básico e Premium
+// FS Orçamentos - Pagamento Pix dos planos Básico e Premium
 // Arquivo central do pagamento via Pix.
-// Use este arquivo principalmente na página planos.html.
-// As demais páginas devem apenas redirecionar para /planos.html.
 
 (function () {
   'use strict';
-
-  // ==================== CONFIGURAÇÕES ====================
 
   const FS_SUPABASE_FUNCTIONS_URL =
     window.FS_SUPABASE_FUNCTIONS_URL ||
@@ -15,38 +11,18 @@
 
   const FS_PLANOS_PIX = {
     basico: {
-      mensal: {
-        label: 'Plano Básico - 1 mês',
-        valor: 19.90
-      },
-      semestral: {
-        label: 'Plano Básico - 6 meses',
-        valor: 109.90
-      },
-      anual: {
-        label: 'Plano Básico - 12 meses',
-        valor: 209.90
-      }
+      mensal: { label: 'Plano Básico - 1 mês', valor: 29.90, dias: 30 },
+      semestral: { label: 'Plano Básico - 6 meses', valor: 159.90, dias: 180 },
+      anual: { label: 'Plano Básico - 12 meses', valor: 299.90, dias: 365 }
     },
     premium: {
-      mensal: {
-        label: 'Plano Premium - 1 mês',
-        valor: 69.90
-      },
-      semestral: {
-        label: 'Plano Premium - 6 meses',
-        valor: 399.90
-      },
-      anual: {
-        label: 'Plano Premium - 12 meses',
-        valor: 599.90
-      }
+      mensal: { label: 'Plano Premium - 1 mês', valor: 89.90, dias: 30 },
+      semestral: { label: 'Plano Premium - 6 meses', valor: 499.90, dias: 180 },
+      anual: { label: 'Plano Premium - 12 meses', valor: 999.90, dias: 365 }
     }
   };
 
   let pagamentoPixAtualIdInterno = null;
-
-  // ==================== HELPERS ====================
 
   function fsPagamentoEl(id) {
     return document.getElementById(id);
@@ -78,7 +54,8 @@
 
   function fsObterPlanoPix(periodo, plano = 'basico') {
     const planoFinal = fsNormalizarPlanoPix(plano);
-    return FS_PLANOS_PIX[planoFinal][periodo] || FS_PLANOS_PIX[planoFinal].mensal;
+    const periodoFinal = fsPeriodoPixValido(periodo) ? periodo : 'mensal';
+    return FS_PLANOS_PIX[planoFinal][periodoFinal] || FS_PLANOS_PIX[planoFinal].mensal;
   }
 
   function fsPlanoLabelPix(plano) {
@@ -91,7 +68,8 @@
 
   function fsSalvarDestinoAposLogin() {
     try {
-      localStorage.setItem('fs_destino_apos_login', '/planos.html');
+      const destino = `${window.location.pathname || '/planos.html'}${window.location.search || ''}${window.location.hash || ''}`;
+      localStorage.setItem('fs_destino_apos_login', destino || '/planos.html');
     } catch (error) {
       console.warn('Não foi possível salvar destino após login:', error);
     }
@@ -100,11 +78,8 @@
   async function fsObterSessaoPagamento() {
     try {
       if (!window._supabase) return null;
-
       const { data: { session }, error } = await _supabase.auth.getSession();
-
       if (error || !session) return null;
-
       return session;
     } catch (error) {
       console.error('Erro ao obter sessão para pagamento:', error);
@@ -125,53 +100,21 @@
 
   function fsMontarQrCodeSrc(valor) {
     const qr = String(valor || '').trim();
-
     if (!qr) return '';
-
-    if (
-      qr.startsWith('data:image') ||
-      qr.startsWith('http://') ||
-      qr.startsWith('https://')
-    ) {
-      return qr;
-    }
-
+    if (qr.startsWith('data:image') || qr.startsWith('http://') || qr.startsWith('https://')) return qr;
     return `data:image/png;base64,${qr}`;
   }
 
   function fsExtrairQrCode(dados) {
-    return (
-      dados?.qr_code ||
-      dados?.qrcode ||
-      dados?.qrCode ||
-      dados?.imagem_qrcode ||
-      dados?.imagemQrcode ||
-      dados?.base64 ||
-      dados?.qrcode_base64 ||
-      ''
-    );
+    return dados?.qr_code || dados?.qrcode || dados?.qrCode || dados?.imagem_qrcode || dados?.imagemQrcode || dados?.base64 || dados?.qrcode_base64 || '';
   }
 
   function fsExtrairPixCopiaCola(dados) {
-    return (
-      dados?.pix_copia_cola ||
-      dados?.copia_cola ||
-      dados?.pixCopiaCola ||
-      dados?.brcode ||
-      dados?.copiaECola ||
-      dados?.pix ||
-      ''
-    );
+    return dados?.pix_copia_cola || dados?.copia_cola || dados?.pixCopiaCola || dados?.brcode || dados?.copiaECola || dados?.pix || '';
   }
 
   function fsExtrairPagamentoId(dados) {
-    return (
-      dados?.pagamento_id ||
-      dados?.pagamentoId ||
-      dados?.id_pagamento ||
-      dados?.id ||
-      null
-    );
+    return dados?.pagamento_id || dados?.pagamentoId || dados?.id_pagamento || dados?.id || null;
   }
 
   function fsSetPagamentoAtual(id) {
@@ -183,11 +126,8 @@
     return pagamentoPixAtualIdInterno || window.pagamentoPixAtualId || null;
   }
 
-  // ==================== MODAL PIX ====================
-
   function abrirModalPixBasico() {
     const modal = fsPagamentoEl('modal-pix-basico');
-
     if (!modal) {
       console.warn('Modal Pix não encontrado nesta página.');
       return false;
@@ -195,30 +135,23 @@
 
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-
     return true;
   }
 
   function fecharModalPixBasico() {
     const modal = fsPagamentoEl('modal-pix-basico');
-
     if (!modal) return;
-
     modal.style.display = 'none';
     document.body.style.overflow = '';
   }
 
   function setEstadoModalPixCarregando(periodo = 'mensal', planoSelecionado = 'basico') {
-    const abriu = abrirModalPixBasico();
-
-    if (!abriu) return;
+    if (!abrirModalPixBasico()) return;
 
     const plano = fsObterPlanoPix(periodo, planoSelecionado);
-
     const loading = fsPagamentoEl('pix-loading');
     const conteudo = fsPagamentoEl('pix-conteudo');
     const erro = fsPagamentoEl('pix-erro');
-
     const subtitulo = fsPagamentoEl('pix-modal-subtitulo');
     const planoLabel = fsPagamentoEl('pix-plano-label');
     const pixValor = fsPagamentoEl('pix-valor');
@@ -231,42 +164,23 @@
       loading.style.display = 'block';
       loading.innerText = 'Gerando Pix, aguarde...';
     }
-
-    if (conteudo) {
-      conteudo.style.display = 'none';
-    }
-
+    if (conteudo) conteudo.style.display = 'none';
     if (erro) {
       erro.style.display = 'none';
       erro.innerText = '';
     }
-
-    if (subtitulo) {
-      subtitulo.innerText = `${plano.label} - ${fsFormatarMoedaPix(plano.valor)}`;
-    }
-
-    if (planoLabel) {
-      planoLabel.innerText = plano.label;
-    }
-
-    if (pixValor) {
-      pixValor.innerText = fsFormatarMoedaPix(plano.valor);
-    }
-
+    if (subtitulo) subtitulo.innerText = `${plano.label} - ${fsFormatarMoedaPix(plano.valor)}`;
+    if (planoLabel) planoLabel.innerText = plano.label;
+    if (pixValor) pixValor.innerText = fsFormatarMoedaPix(plano.valor);
     if (qrImg) {
       qrImg.removeAttribute('src');
       qrImg.style.display = 'none';
     }
-
-    if (copiaCola) {
-      copiaCola.value = '';
-    }
+    if (copiaCola) copiaCola.value = '';
   }
 
   function setEstadoModalPixErro(mensagem) {
-    const abriu = abrirModalPixBasico();
-
-    if (!abriu) {
+    if (!abrirModalPixBasico()) {
       alert(mensagem || 'Não foi possível gerar o Pix.');
       return;
     }
@@ -275,14 +189,8 @@
     const conteudo = fsPagamentoEl('pix-conteudo');
     const erro = fsPagamentoEl('pix-erro');
 
-    if (loading) {
-      loading.style.display = 'none';
-    }
-
-    if (conteudo) {
-      conteudo.style.display = 'none';
-    }
-
+    if (loading) loading.style.display = 'none';
+    if (conteudo) conteudo.style.display = 'none';
     if (erro) {
       erro.style.display = 'block';
       erro.innerText = mensagem || 'Não foi possível gerar o Pix.';
@@ -293,7 +201,6 @@
     const loading = fsPagamentoEl('pix-loading');
     const conteudo = fsPagamentoEl('pix-conteudo');
     const erro = fsPagamentoEl('pix-erro');
-
     const subtitulo = fsPagamentoEl('pix-modal-subtitulo');
     const planoLabel = fsPagamentoEl('pix-plano-label');
     const pixValor = fsPagamentoEl('pix-valor');
@@ -306,34 +213,17 @@
 
     fsSetPagamentoAtual(pagamentoId);
 
-    if (loading) {
-      loading.style.display = 'none';
-    }
-
-    if (conteudo) {
-      conteudo.style.display = 'block';
-    }
-
+    if (loading) loading.style.display = 'none';
+    if (conteudo) conteudo.style.display = 'block';
     if (erro) {
       erro.style.display = 'none';
       erro.innerText = '';
     }
-
-    if (subtitulo) {
-      subtitulo.innerText = `${dados?.label || 'Plano Básico'} - ${fsFormatarMoedaPix(dados?.valor)}`;
-    }
-
-    if (planoLabel) {
-      planoLabel.innerText = dados?.label || 'Plano Básico';
-    }
-
-    if (pixValor) {
-      pixValor.innerText = fsFormatarMoedaPix(dados?.valor);
-    }
-
+    if (subtitulo) subtitulo.innerText = `${dados?.label || 'Plano'} - ${fsFormatarMoedaPix(dados?.valor)}`;
+    if (planoLabel) planoLabel.innerText = dados?.label || 'Plano';
+    if (pixValor) pixValor.innerText = fsFormatarMoedaPix(dados?.valor);
     if (qrImg) {
       const src = fsMontarQrCodeSrc(qrCode);
-
       if (src) {
         qrImg.src = src;
         qrImg.style.display = 'inline-block';
@@ -342,26 +232,14 @@
         qrImg.style.display = 'none';
       }
     }
-
-    if (copiaCola) {
-      copiaCola.value = pixCopiaCola || '';
-    }
-
-    if (!pagamentoId) {
-      console.warn('A Edge Function não retornou pagamento_id/id.');
-    }
-
-    if (!pixCopiaCola) {
-      console.warn('A Edge Function não retornou Pix copia e cola.');
-    }
+    if (copiaCola) copiaCola.value = pixCopiaCola || '';
   }
-
-  // ==================== GERAR PIX ====================
 
   async function gerarPixPlano(planoSelecionado = 'basico', periodo = 'mensal') {
     try {
       const planoFinal = fsNormalizarPlanoPix(planoSelecionado);
       const periodoFinal = fsPeriodoPixValido(periodo) ? periodo : 'mensal';
+      const plano = fsObterPlanoPix(periodoFinal, planoFinal);
 
       if (!window._supabase) {
         alert('Supabase não carregou. Atualize a página e tente novamente.');
@@ -374,7 +252,6 @@
       }
 
       const session = await fsObterSessaoPagamento();
-
       if (!session) {
         fsUsuarioLogadoObrigatorioPagamento();
         return;
@@ -390,26 +267,29 @@
         },
         body: JSON.stringify({
           plano: planoFinal,
-          periodo: periodoFinal
+          periodo: periodoFinal,
+          valor: plano.valor,
+          dias: plano.dias,
+          label: plano.label
         })
       });
 
-      const dados = await resposta.json().catch(() => ({}));
+      const dadosResposta = await resposta.json().catch(() => ({}));
 
       if (!resposta.ok) {
-        console.error('Erro ao gerar Pix:', dados);
-
-        setEstadoModalPixErro(
-          dados?.erro ||
-          dados?.message ||
-          'Erro ao gerar Pix. Verifique a configuração da função no Supabase.'
-        );
-
+        console.error('Erro ao gerar Pix:', dadosResposta);
+        setEstadoModalPixErro(dadosResposta?.erro || dadosResposta?.message || 'Erro ao gerar Pix. Verifique a configuração da função no Supabase.');
         return;
       }
 
-      setEstadoModalPixConteudo(dados);
-
+      setEstadoModalPixConteudo({
+        ...dadosResposta,
+        plano: dadosResposta?.plano || planoFinal,
+        periodo: dadosResposta?.periodo || periodoFinal,
+        label: dadosResposta?.label || plano.label,
+        valor: dadosResposta?.valor ?? plano.valor,
+        dias: dadosResposta?.dias ?? plano.dias
+      });
     } catch (error) {
       console.error('Erro inesperado ao gerar Pix:', error);
       setEstadoModalPixErro('Erro inesperado ao gerar Pix.');
@@ -424,11 +304,8 @@
     return gerarPixPlano('premium', periodo);
   }
 
-  // ==================== COPIAR PIX ====================
-
   async function copiarPixCopiaCola() {
     const campo = fsPagamentoEl('pix-copia-cola');
-
     if (!campo || !campo.value) {
       alert('Pix copia e cola não disponível.');
       return;
@@ -450,12 +327,9 @@
     }
   }
 
-  // ==================== VERIFICAR PAGAMENTO ====================
-
   async function verificarPagamentoPixAtual() {
     try {
       const idPagamento = fsGetPagamentoAtual();
-
       if (!idPagamento) {
         alert('Nenhum pagamento Pix foi gerado nesta tela.');
         return;
@@ -467,7 +341,6 @@
       }
 
       const session = await fsObterSessaoPagamento();
-
       if (!session) {
         alert('Faça login novamente para verificar o pagamento.');
         return;
@@ -492,23 +365,19 @@
 
       const status = fsNormalizarTextoPagamento(data.status);
 
-      if (status === 'pago' || status === 'confirmado' || status === 'paid') {
-        alert(`Pagamento confirmado! Seu ${fsPlanoLabelPix(data.plano)} já foi liberado.`);
-
+      if (['pago', 'confirmado', 'paid'].includes(status)) {
+        alert(`Pagamento confirmado! Seu ${fsPlanoLabelPix(data.plano)} já foi liberado ou renovado.`);
         fecharModalPixBasico();
-
         await fsAtualizarDadosAposPagamentoConfirmado();
-
         return;
       }
 
-      if (status === 'cancelado' || status === 'expirado' || status === 'expired' || status === 'canceled') {
+      if (['cancelado', 'expirado', 'expired', 'canceled'].includes(status)) {
         alert('Este Pix não está mais ativo. Gere um novo Pix para continuar.');
         return;
       }
 
       alert('Pagamento ainda não confirmado. Aguarde alguns instantes e tente novamente.');
-
     } catch (error) {
       console.error('Erro inesperado ao verificar pagamento:', error);
       alert('Erro inesperado ao verificar pagamento.');
@@ -517,98 +386,45 @@
 
   async function fsAtualizarDadosAposPagamentoConfirmado() {
     try {
-      if (typeof window.atualizarStatusPlanoPlanos === 'function') {
-        await window.atualizarStatusPlanoPlanos();
-      }
-
-      if (typeof window.carregarPerfil === 'function') {
-        await window.carregarPerfil();
-      }
-
-      if (typeof window.atualizarPainelAssinaturaBasico === 'function') {
-        window.atualizarPainelAssinaturaBasico(window.perfilAtual || null);
-      }
-
-      if (typeof window.atualizarBotaoPlanosHome === 'function') {
-        await window.atualizarBotaoPlanosHome();
-      }
-
-      if (typeof window.atualizarPainelPlanoBasicoHome === 'function') {
-        await window.atualizarPainelPlanoBasicoHome();
-      }
-
-      if (typeof window.atualizarAnunciosGratisHome === 'function') {
-        await window.atualizarAnunciosGratisHome();
-      }
-
-      if (typeof window.fsAtualizarAnunciosGratisGerador === 'function') {
-        await window.fsAtualizarAnunciosGratisGerador();
-      }
-
-      if (typeof window.carregarDashboardPainel === 'function') {
-        await window.carregarDashboardPainel();
-      }
-
-      if (typeof window.carregarUltimosOrcamentosPainel === 'function') {
-        await window.carregarUltimosOrcamentosPainel();
-      }
-
+      if (typeof window.atualizarStatusPlanoPlanos === 'function') await window.atualizarStatusPlanoPlanos();
+      if (typeof window.carregarPerfil === 'function') await window.carregarPerfil();
+      if (typeof window.atualizarPainelAssinaturaBasico === 'function') window.atualizarPainelAssinaturaBasico(window.perfilAtual || null);
+      if (typeof window.atualizarBotaoPlanosHome === 'function') await window.atualizarBotaoPlanosHome();
+      if (typeof window.atualizarPainelPlanoBasicoHome === 'function') await window.atualizarPainelPlanoBasicoHome();
+      if (typeof window.atualizarAnunciosGratisHome === 'function') await window.atualizarAnunciosGratisHome();
+      if (typeof window.fsAtualizarAnunciosGratisGerador === 'function') await window.fsAtualizarAnunciosGratisGerador();
       if (typeof window.carregarMenu === 'function') {
         const session = await fsObterSessaoPagamento();
-
-        if (session) {
-          await window.carregarMenu(session);
-        }
+        if (session) await window.carregarMenu(session);
       }
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 800);
-
+      setTimeout(() => window.location.reload(), 800);
     } catch (error) {
       console.warn('Pagamento confirmado, mas não foi possível atualizar toda a interface:', error);
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 800);
+      setTimeout(() => window.location.reload(), 800);
     }
   }
-
-  // ==================== ABRIR PERÍODO PELA URL ====================
 
   async function fsAbrirPixPorParametroUrl() {
     const params = new URLSearchParams(window.location.search);
     const periodo = params.get('periodo');
     const plano = fsNormalizarPlanoPix(params.get('plano') || 'basico');
-
     if (!periodo || !fsPeriodoPixValido(periodo)) return;
-
     if (!fsExisteModalPixNaPagina()) return;
-
-    setTimeout(() => {
-      gerarPixPlano(plano, periodo);
-    }, 700);
+    setTimeout(() => gerarPixPlano(plano, periodo), 700);
   }
-
-  // ==================== FECHAR MODAL POR CLIQUE / ESC ====================
 
   function configurarEventosModalPix() {
     if (window.fsEventosModalPixConfigurados === true) return;
-
     window.fsEventosModalPixConfigurados = true;
 
     document.addEventListener('click', function (event) {
       const modalPix = fsPagamentoEl('modal-pix-basico');
-
-      if (event.target === modalPix) {
-        fecharModalPixBasico();
-      }
+      if (event.target === modalPix) fecharModalPixBasico();
     });
 
     document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape') {
-        fecharModalPixBasico();
-      }
+      if (event.key === 'Escape') fecharModalPixBasico();
     });
   }
 
@@ -617,23 +433,18 @@
     fsAbrirPixPorParametroUrl();
   });
 
-  // ==================== EXPORTAÇÕES GLOBAIS ====================
-
+  window.FS_PLANOS_PIX = FS_PLANOS_PIX;
   window.gerarPixPlano = gerarPixPlano;
   window.gerarPixPlanoBasico = gerarPixPlanoBasico;
   window.gerarPixPlanoPremium = gerarPixPlanoPremium;
   window.gerarPixPremium = gerarPixPlanoPremium;
-
   window.abrirModalPixBasico = abrirModalPixBasico;
   window.fecharModalPixBasico = fecharModalPixBasico;
-
   window.setEstadoModalPixCarregando = setEstadoModalPixCarregando;
   window.setEstadoModalPixErro = setEstadoModalPixErro;
   window.setEstadoModalPixConteudo = setEstadoModalPixConteudo;
-
   window.copiarPixCopiaCola = copiarPixCopiaCola;
   window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
-
   window.formatarMoedaPix = fsFormatarMoedaPix;
   window.fsFormatarMoedaPix = fsFormatarMoedaPix;
   window.fsAtualizarDadosAposPagamentoConfirmado = fsAtualizarDadosAposPagamentoConfirmado;
