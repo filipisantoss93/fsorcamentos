@@ -96,12 +96,12 @@
       <section class="premium-home-card">
         <div class="premium-card-head"><div><h2>Ações rápidas</h2><p>Comece as tarefas principais sem procurar no menu.</p></div></div>
         <div class="premium-card-body"><div class="premium-acoes-grid">
-          <a class="premium-action" href="/ordens.html?novo=1"><strong>+ Nova OS</strong><span>Abrir atendimento</span></a>
-          <a class="premium-action" href="/gerador.html"><strong>+ Orçamento</strong><span>Criar proposta</span></a>
-          <a class="premium-action" href="/clientes.html?novo=1"><strong>+ Cliente</strong><span>Cadastrar contato</span></a>
-          <a class="premium-action" href="/veiculos.html?novo=1"><strong>+ Veículo</strong><span>Vincular cliente</span></a>
-          <a class="premium-action" href="/fluxo-caixa.html"><strong>+ Caixa</strong><span>Lançar entrada/saída</span></a>
-          <a class="premium-action" href="/agenda.html?novo=1"><strong>+ Agenda</strong><span>Marcar serviço</span></a>
+          <a class="premium-action" href="/gestao.html?modulo=ordens&novo=1"><strong>+ Nova OS</strong><span>Abrir atendimento</span></a>
+          <a class="premium-action" href="/gestao.html?modulo=gerador"><strong>+ Orçamento</strong><span>Criar proposta</span></a>
+          <a class="premium-action" href="/gestao.html?modulo=clientes&novo=1"><strong>+ Cliente</strong><span>Cadastrar contato</span></a>
+          <a class="premium-action" href="/gestao.html?modulo=veiculos&novo=1"><strong>+ Veículo</strong><span>Vincular cliente</span></a>
+          <a class="premium-action" href="/gestao.html?modulo=fluxo-caixa&novo=1"><strong>+ Caixa</strong><span>Lançar entrada/saída</span></a>
+          <a class="premium-action" href="/gestao.html?modulo=agenda&novo=1"><strong>+ Agenda</strong><span>Marcar serviço</span></a>
         </div></div>
       </section>
 
@@ -111,7 +111,7 @@
           <div class="premium-card-body"><div id="ph-alertas" class="premium-alert-list"><div class="premium-alert-item"><strong>Carregando alertas...</strong><span class="premium-alert-badge">Aguarde</span></div></div></div>
         </article>
         <article class="premium-home-financeiro">
-          <div class="premium-card-head"><div><h2>Resumo financeiro</h2><p>Movimento do mês no fluxo de caixa.</p></div><a href="/fluxo-caixa.html" class="premium-status-pill">Ver caixa</a></div>
+          <div class="premium-card-head"><div><h2>Resumo financeiro</h2><p>Movimento do mês no fluxo de caixa.</p></div><a href="/gestao.html?modulo=fluxo-caixa" class="premium-status-pill">Ver caixa</a></div>
           <div class="premium-card-body"><div class="premium-fin-list">
             <div class="premium-fin-row entrada"><span>Entradas no mês</span><strong id="ph-fin-entradas">—</strong></div>
             <div class="premium-fin-row saida"><span>Saídas no mês</span><strong id="ph-fin-saidas">—</strong></div>
@@ -122,18 +122,18 @@
 
       <section class="premium-layout-2">
         <article class="premium-home-card">
-          <div class="premium-card-head"><div><h2>Serviços de hoje</h2><p>Próximos compromissos da agenda.</p></div><a href="/agenda.html" class="premium-status-pill">Agenda</a></div>
+          <div class="premium-card-head"><div><h2>Serviços de hoje</h2><p>Próximos compromissos da agenda.</p></div><a href="/gestao.html?modulo=agenda" class="premium-status-pill">Agenda</a></div>
           <div class="premium-card-body"><div id="ph-agenda" class="premium-agenda-list"><div class="premium-agenda-item"><strong>Carregando agenda...</strong><span>Aguarde</span></div></div></div>
         </article>
         <article class="premium-home-card">
           <div class="premium-card-head"><div><h2>Atalhos principais</h2><p>Áreas mais usadas da gestão Premium.</p></div></div>
           <div class="premium-card-body"><div class="premium-atalhos-grid">
             <a class="premium-atalho" href="/dashboard.html"><strong>Dashboard</strong><span>Indicadores</span></a>
-            <a class="premium-atalho" href="/ordens.html"><strong>OS</strong><span>Execução</span></a>
-            <a class="premium-atalho" href="/clientes.html"><strong>Clientes</strong><span>Histórico</span></a>
-            <a class="premium-atalho" href="/veiculos.html"><strong>Veículos</strong><span>Fichas</span></a>
-            <a class="premium-atalho" href="/estoque.html"><strong>Estoque</strong><span>Peças</span></a>
-            <a class="premium-atalho" href="/relatorios.html"><strong>Relatórios</strong><span>Análise</span></a>
+            <a class="premium-atalho" href="/gestao.html?modulo=ordens"><strong>OS</strong><span>Execução</span></a>
+            <a class="premium-atalho" href="/gestao.html?modulo=clientes"><strong>Clientes</strong><span>Histórico</span></a>
+            <a class="premium-atalho" href="/gestao.html?modulo=veiculos"><strong>Veículos</strong><span>Fichas</span></a>
+            <a class="premium-atalho" href="/gestao.html?modulo=estoque"><strong>Estoque</strong><span>Peças</span></a>
+            <a class="premium-atalho" href="/gestao.html?modulo=relatorios"><strong>Relatórios</strong><span>Análise</span></a>
           </div></div>
         </article>
       </section>
@@ -245,7 +245,7 @@
       box.innerHTML = '<div class="premium-agenda-item"><strong>Nenhum serviço agendado para hoje</strong><span>Use a agenda para programar próximos atendimentos.</span></div>';
       return;
     }
-    box.innerHTML = d.agendaHoje.map(a => `<a class="premium-agenda-item" href="/agenda.html?id=${encodeURIComponent(a.id || '')}"><div><strong>${html(a.titulo || 'Serviço agendado')}</strong><br><span>${dataCurta(a.data_servico)} às ${horaCurta(a.hora_inicio)} ${a.responsavel ? '• ' + html(a.responsavel) : ''}</span></div><span class="premium-alert-badge ok">Hoje</span></a>`).join('');
+    box.innerHTML = d.agendaHoje.map(a => `<a class="premium-agenda-item" href="/gestao.html?modulo=agenda&id=${encodeURIComponent(a.id || '')}"><div><strong>${html(a.titulo || 'Serviço agendado')}</strong><br><span>${dataCurta(a.data_servico)} às ${horaCurta(a.hora_inicio)} ${a.responsavel ? '• ' + html(a.responsavel) : ''}</span></div><span class="premium-alert-badge ok">Hoje</span></a>`).join('');
   }
 
   function renderDados(d){
