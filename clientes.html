@@ -5,289 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Clientes - FS Orçamentos</title>
-
   <meta name="description" content="Gerencie clientes, histórico, orçamentos e ordens de serviço no FS Orçamentos." />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="google-adsense-account" content="ca-pub-5628949951885077" />
 
   <link rel="stylesheet" href="style.css?v=20260620-3" />
-  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260620-clientes-cinza-6" />
-
-  <style>
-    html { scroll-padding-top: calc(var(--fs-header-real-mobile, 112px) + 18px); }
-
-    body.fs-em-iframe #header-container,
-    body.fs-em-webview #header-container {
-      position: sticky !important;
-      top: 0 !important;
-      z-index: 60000 !important;
-      background: #ffffff !important;
-    }
-
-    .clientes-card,
-    .clientes-grid,
-    .clientes-filtros,
-    .clientes-topo-botoes,
-    #card-form-cliente,
-    #lista-clientes { scroll-margin-top: calc(var(--fs-header-real-mobile, 112px) + 18px); }
-
-    .clientes-card-header .clientes-topo-acoes h2,
-    .clientes-card-header .clientes-topo-acoes p {
-      color: #ffffff !important;
-      opacity: 1 !important;
-      text-shadow: none !important;
-    }
-
-    .clientes-card-header .clientes-topo-acoes p {
-      color: #f8fafc !important;
-      font-weight: 750 !important;
-      line-height: 1.48 !important;
-    }
-
-    .clientes-topo-acoes > div:first-child {
-      flex: 1 1 280px;
-      min-width: 0;
-    }
-
-    .clientes-topo-botoes {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .clientes-topo-botoes .btn {
-      min-height: 44px;
-      white-space: nowrap;
-      box-shadow: none !important;
-    }
-
-    #btn-atualizar-clientes {
-      background: #0f172a !important;
-      color: #ffffff !important;
-      border-color: #334155 !important;
-    }
-
-    #btn-novo-cliente-atalho {
-      background: #64748b !important;
-      color: #ffc400 !important;
-      border-color: #ffc400 !important;
-      font-weight: 950 !important;
-      text-transform: uppercase;
-      letter-spacing: .2px;
-    }
-
-    #btn-novo-cliente-atalho:hover {
-      background: #475569 !important;
-      color: #ffe58a !important;
-    }
-
-    #modal-buscar-cliente,
-    #modal-busca-cliente,
-    #modal-selecionar-cliente,
-    .modal-buscar-cliente,
-    .modal-busca-cliente,
-    .modal-selecionar-cliente,
-    .modal-cliente,
-    .fs-modal-cliente,
-    [id*="modal"][id*="cliente"],
-    [class*="modal"][class*="cliente"] { color: #111827 !important; }
-
-    #modal-buscar-cliente .modal-header,
-    #modal-busca-cliente .modal-header,
-    #modal-selecionar-cliente .modal-header,
-    .modal-buscar-cliente .modal-header,
-    .modal-busca-cliente .modal-header,
-    .modal-selecionar-cliente .modal-header,
-    .modal-cliente .modal-header,
-    .fs-modal-cliente .modal-header,
-    [id*="modal"][id*="cliente"] .modal-header,
-    [class*="modal"][class*="cliente"] .modal-header,
-    #modal-buscar-cliente .modal-topo,
-    #modal-busca-cliente .modal-topo,
-    .modal-buscar-cliente .modal-topo,
-    .modal-busca-cliente .modal-topo,
-    [id*="modal"][id*="cliente"] [class*="topo"],
-    [class*="modal"][class*="cliente"] [class*="topo"] {
-      background: #1f2937 !important;
-      color: #ffffff !important;
-      border-bottom: 1px solid #374151 !important;
-    }
-
-    #modal-buscar-cliente .modal-header *,
-    #modal-busca-cliente .modal-header *,
-    #modal-selecionar-cliente .modal-header *,
-    .modal-buscar-cliente .modal-header *,
-    .modal-busca-cliente .modal-header *,
-    .modal-selecionar-cliente .modal-header *,
-    .modal-cliente .modal-header *,
-    .fs-modal-cliente .modal-header *,
-    [id*="modal"][id*="cliente"] .modal-header *,
-    [class*="modal"][class*="cliente"] .modal-header *,
-    [id*="modal"][id*="cliente"] [class*="topo"] *,
-    [class*="modal"][class*="cliente"] [class*="topo"] * {
-      color: #ffffff !important;
-      opacity: 1 !important;
-      text-shadow: none !important;
-    }
-
-    #modal-buscar-cliente input,
-    #modal-busca-cliente input,
-    #modal-selecionar-cliente input,
-    .modal-buscar-cliente input,
-    .modal-busca-cliente input,
-    .modal-selecionar-cliente input,
-    .modal-cliente input,
-    .fs-modal-cliente input,
-    [id*="modal"][id*="cliente"] input,
-    [class*="modal"][class*="cliente"] input {
-      background: #ffffff !important;
-      color: #111827 !important;
-      border: 1px solid #d1d5db !important;
-    }
-
-    @media (max-width: 680px) {
-      .card-form-mobile.form-fechado:not(.clientes-form-modal-aberto) { display: none !important; }
-
-      body.clientes-modal-aberto {
-        overflow: hidden !important;
-        overscroll-behavior: none !important;
-      }
-
-      body.clientes-modal-aberto #btn-flutuante-gerador-global,
-      body.clientes-modal-aberto .floating-actions,
-      body.clientes-modal-aberto .btn-flutuante-gerador,
-      body.clientes-modal-aberto .botao-flutuante-gerador,
-      body.clientes-modal-aberto [class*="flutuante"][class*="gerador"] {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-      }
-
-      body.clientes-modal-aberto::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: 41000;
-        background: rgba(15, 23, 42, .66);
-        backdrop-filter: blur(3px);
-      }
-
-      .card-form-mobile.clientes-form-modal-aberto {
-        display: flex !important;
-        flex-direction: column !important;
-        position: fixed !important;
-        z-index: 41001 !important;
-        top: max(10px, env(safe-area-inset-top)) !important;
-        left: 10px !important;
-        right: 10px !important;
-        bottom: max(10px, env(safe-area-inset-bottom)) !important;
-        width: auto !important;
-        max-width: none !important;
-        max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-        height: auto !important;
-        margin: 0 !important;
-        overflow: hidden !important;
-        border-radius: 16px !important;
-        box-shadow: 0 24px 70px rgba(15, 23, 42, .35) !important;
-        border-top: 4px solid #ffc400 !important;
-        background: #ffffff !important;
-      }
-
-      @supports not (height: 100dvh) {
-        .card-form-mobile.clientes-form-modal-aberto {
-          max-height: calc(100vh - 20px) !important;
-        }
-      }
-
-      .card-form-mobile.clientes-form-modal-aberto .clientes-card-header {
-        flex: 0 0 auto !important;
-        display: flex !important;
-        align-items: flex-start !important;
-        justify-content: space-between !important;
-        gap: 10px !important;
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 2 !important;
-        background: #1f2937 !important;
-        color: #ffffff !important;
-        border-bottom: 1px solid #374151 !important;
-        padding: 12px 12px !important;
-      }
-
-      .card-form-mobile.clientes-form-modal-aberto .clientes-card-header h2 {
-        display: block !important;
-        color: #ffffff !important;
-        font-size: 18px !important;
-        line-height: 1.1 !important;
-      }
-
-      .card-form-mobile.clientes-form-modal-aberto .header-form-mobile p {
-        display: block !important;
-        color: #f8fafc !important;
-        font-size: 11px !important;
-        line-height: 1.25 !important;
-        margin-top: 4px !important;
-      }
-
-      .card-form-mobile.clientes-form-modal-aberto .corpo-form-mobile {
-        display: block !important;
-        flex: 1 1 auto !important;
-        min-height: 0 !important;
-        height: auto !important;
-        max-height: none !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        -webkit-overflow-scrolling: touch !important;
-        overscroll-behavior: contain !important;
-        background: #ffffff !important;
-        padding: 16px 16px max(96px, calc(24px + env(safe-area-inset-bottom))) !important;
-      }
-
-      .card-form-mobile.clientes-form-modal-aberto .form-clientes {
-        padding-bottom: 42px !important;
-      }
-
-      .card-form-mobile.clientes-form-modal-aberto .btn-toggle-form-mobile {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex: 0 0 38px !important;
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        min-height: 38px !important;
-        padding: 0 !important;
-        border-radius: 999px !important;
-        background: #ffffff !important;
-        color: #111827 !important;
-        border: 1px solid #d1d5db !important;
-        font-size: 27px !important;
-        font-weight: 950 !important;
-        line-height: 1 !important;
-      }
-
-      .clientes-topo-acoes {
-        display: grid !important;
-        grid-template-columns: 1fr;
-        gap: 14px !important;
-      }
-
-      .clientes-topo-botoes {
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .clientes-topo-botoes .btn {
-        width: 100%;
-        min-height: 46px;
-        padding-inline: 8px;
-        font-size: 12px;
-      }
-    }
-  </style>
+  <link id="fs-clientes-inline-css" rel="stylesheet" href="clientes-inline.css?v=20260624-modal-clientes-1" />
 </head>
 
 <body>
@@ -307,29 +30,14 @@
     </div>
 
     <section class="clientes-resumo">
-      <div class="card-resumo">
-        <span>Total de clientes</span>
-        <strong id="resumo-total-clientes">0</strong>
-      </div>
-
-      <div class="card-resumo">
-        <span>Clientes ativos</span>
-        <strong id="resumo-clientes-ativos">0</strong>
-      </div>
-
-      <div class="card-resumo">
-        <span>Preferenciais</span>
-        <strong id="resumo-clientes-preferenciais">0</strong>
-      </div>
-
-      <div class="card-resumo">
-        <span>Inativos</span>
-        <strong id="resumo-clientes-inativos">0</strong>
-      </div>
+      <div class="card-resumo"><span>Total de clientes</span><strong id="resumo-total-clientes">0</strong></div>
+      <div class="card-resumo"><span>Clientes ativos</span><strong id="resumo-clientes-ativos">0</strong></div>
+      <div class="card-resumo"><span>Preferenciais</span><strong id="resumo-clientes-preferenciais">0</strong></div>
+      <div class="card-resumo"><span>Inativos</span><strong id="resumo-clientes-inativos">0</strong></div>
     </section>
 
     <section class="clientes-grid">
-      <aside class="clientes-card card-form-mobile" id="card-form-cliente">
+      <aside class="clientes-card card-form-mobile form-fechado" id="card-form-cliente" role="dialog" aria-modal="true" aria-labelledby="titulo-form-cliente">
         <div class="clientes-card-header header-form-mobile">
           <div>
             <h2 id="titulo-form-cliente">Novo cliente</h2>
@@ -432,19 +140,15 @@
             </div>
 
             <div class="clientes-acoes-form">
-              <button type="submit" id="btn-salvar-cliente" class="btn btn-primario">
-                Salvar cliente
-              </button>
-
-              <button type="button" id="btn-limpar-cliente" class="btn btn-secundario">
-                Limpar
-              </button>
+              <button type="submit" id="btn-salvar-cliente" class="btn btn-primario">Salvar cliente</button>
+              <button type="button" id="btn-limpar-cliente" class="btn btn-secundario">Limpar</button>
+              <button type="button" class="btn btn-perigo" onclick="fsFecharModalCliente(event)">Cancelar</button>
             </div>
           </form>
         </div>
       </aside>
 
-      <section class="clientes-card">
+      <section class="clientes-card clientes-lista-card">
         <div class="clientes-card-header">
           <div class="clientes-topo-acoes">
             <div>
@@ -453,12 +157,12 @@
             </div>
 
             <div class="clientes-topo-botoes">
-              <button type="button" id="btn-atualizar-clientes" class="btn btn-secundario">
-                Buscar cliente
+              <button type="button" id="btn-novo-cliente-atalho" class="btn btn-primario" aria-controls="card-form-cliente">
+                ＋ Novo cliente
               </button>
 
-              <button type="button" id="btn-novo-cliente-atalho" class="btn btn-primario" aria-controls="card-form-cliente">
-                + Novo cliente
+              <button type="button" id="btn-atualizar-clientes" class="btn btn-secundario">
+                Buscar
               </button>
             </div>
           </div>
@@ -468,9 +172,7 @@
           <div id="mensagem-clientes-lista" class="mensagem-clientes"></div>
 
           <div class="clientes-lista-toggle-mobile">
-            <button type="button" id="btn-toggle-lista-clientes">
-              Ver clientes
-            </button>
+            <button type="button" id="btn-toggle-lista-clientes">Ver clientes</button>
           </div>
 
           <div class="clientes-filtros">
@@ -528,86 +230,20 @@
   <script src="ui.js?v=20260620-3"></script>
   <script src="planos.js?v=20260620-3"></script>
   <script src="carregar-menu.js?v=20260620-3"></script>
-  <script src="clientes.js?v=20260620-clientes-cinza-6"></script>
+  <script src="clientes.js?v=20260624-modal-clientes-1"></script>
+
   <script>
     (function () {
       function estaEmIframeOuWebview() {
-        try {
-          if (window.self !== window.top) return true;
-        } catch (_) {
-          return true;
-        }
+        try { if (window.self !== window.top) return true; } catch (_) { return true; }
         return /wv|WebView|; wv\)/i.test(navigator.userAgent || '');
       }
 
       function marcarAmbiente() {
-        if (estaEmIframeOuWebview()) {
-          document.body.classList.add('fs-em-iframe', 'fs-em-webview');
-        }
+        if (estaEmIframeOuWebview()) document.body.classList.add('fs-em-iframe', 'fs-em-webview');
       }
 
-      function forcarFormularioVisivel() {
-        const card = document.getElementById('card-form-cliente');
-        const corpo = document.getElementById('corpo-form-cliente');
-        const botaoToggle = document.getElementById('btn-toggle-form-cliente');
-
-        if (card) {
-          card.classList.remove('form-fechado');
-          card.classList.add('clientes-form-modal-aberto');
-          card.style.setProperty('display', 'flex', 'important');
-          card.style.setProperty('visibility', 'visible', 'important');
-          card.style.setProperty('opacity', '1', 'important');
-        }
-
-        if (corpo) {
-          corpo.hidden = false;
-          corpo.removeAttribute('hidden');
-          corpo.scrollTop = 0;
-          corpo.style.setProperty('display', 'block', 'important');
-          corpo.style.setProperty('visibility', 'visible', 'important');
-          corpo.style.setProperty('opacity', '1', 'important');
-          corpo.style.setProperty('overflow-y', 'auto', 'important');
-          corpo.style.setProperty('-webkit-overflow-scrolling', 'touch');
-        }
-
-        if (botaoToggle) {
-          botaoToggle.textContent = '×';
-          botaoToggle.setAttribute('aria-label', 'Fechar cadastro de cliente');
-          botaoToggle.setAttribute('title', 'Fechar');
-        }
-      }
-
-      function abrirFormularioNovoCliente(event) {
-        if (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-
-        const nome = document.getElementById('cliente-nome');
-        const titulo = document.getElementById('titulo-form-cliente');
-        const btnSalvar = document.getElementById('btn-salvar-cliente');
-        const mobile = window.matchMedia('(max-width: 680px)').matches;
-
-        if (typeof window.limparFormularioCliente === 'function') {
-          window.limparFormularioCliente();
-        } else {
-          document.getElementById('form-cliente')?.reset();
-          const id = document.getElementById('cliente-id');
-          if (id) id.value = '';
-        }
-
-        if (titulo) titulo.textContent = 'Novo cliente';
-        if (btnSalvar) btnSalvar.textContent = 'Salvar cliente';
-        forcarFormularioVisivel();
-        if (mobile) document.body.classList.add('clientes-modal-aberto');
-        else document.getElementById('card-form-cliente')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        requestAnimationFrame(forcarFormularioVisivel);
-        setTimeout(forcarFormularioVisivel, 80);
-        setTimeout(() => nome?.focus(), 250);
-      }
-
-      function fecharFormularioNovoCliente(event) {
+      function abrirModalCliente(event, modoEdicao) {
         if (event) {
           event.preventDefault();
           event.stopPropagation();
@@ -616,86 +252,99 @@
 
         const card = document.getElementById('card-form-cliente');
         const corpo = document.getElementById('corpo-form-cliente');
-        const botaoToggle = document.getElementById('btn-toggle-form-cliente');
+        const titulo = document.getElementById('titulo-form-cliente');
+        const btnSalvar = document.getElementById('btn-salvar-cliente');
+        const nome = document.getElementById('cliente-nome');
 
-        if (card) {
-          card.classList.remove('clientes-form-modal-aberto');
-          card.classList.add('form-fechado');
-          card.style.removeProperty('display');
-          card.style.removeProperty('visibility');
-          card.style.removeProperty('opacity');
+        if (!card) return;
+
+        if (!modoEdicao && typeof window.limparFormularioCliente === 'function') {
+          window.limparFormularioCliente();
         }
-        if (corpo) {
-          corpo.style.removeProperty('display');
-          corpo.style.removeProperty('visibility');
-          corpo.style.removeProperty('opacity');
-          corpo.style.removeProperty('overflow-y');
-          corpo.style.removeProperty('-webkit-overflow-scrolling');
+
+        if (titulo && !modoEdicao) titulo.textContent = 'Novo cliente';
+        if (btnSalvar && !modoEdicao) btnSalvar.textContent = 'Salvar cliente';
+
+        card.classList.remove('form-fechado');
+        card.classList.add('clientes-form-modal-aberto');
+        card.setAttribute('aria-hidden', 'false');
+        if (corpo) corpo.scrollTop = 0;
+        document.body.classList.add('clientes-modal-aberto');
+
+        setTimeout(() => nome?.focus(), 180);
+      }
+
+      function fecharModalCliente(event) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
         }
-        if (botaoToggle) {
-          botaoToggle.textContent = '×';
-          botaoToggle.setAttribute('aria-label', 'Fechar cadastro de cliente');
-        }
+
+        const card = document.getElementById('card-form-cliente');
+        if (!card) return;
+        card.classList.remove('clientes-form-modal-aberto');
+        card.classList.add('form-fechado');
+        card.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('clientes-modal-aberto');
       }
 
-      function substituirBotaoPorClone(id, texto, handler) {
-        const antigo = document.getElementById(id);
-        if (!antigo) return null;
-
-        const novo = antigo.cloneNode(true);
-        novo.textContent = texto;
-        novo.dataset.fsControleProprio = 'sim';
-        antigo.replaceWith(novo);
-        novo.addEventListener('click', handler, true);
-        return novo;
-      }
-
-      function aplicarAjustesClientes() {
+      function configurarModalCliente() {
         marcarAmbiente();
 
-        const btnBuscar = document.getElementById('btn-atualizar-clientes');
-        if (btnBuscar) btnBuscar.textContent = 'Buscar cliente';
-
         const btnNovo = document.getElementById('btn-novo-cliente-atalho');
-        if (btnNovo && btnNovo.dataset.fsControleProprio !== 'sim') {
-          const novo = btnNovo.cloneNode(true);
-          novo.textContent = '+ Novo cliente';
-          novo.dataset.fsControleProprio = 'sim';
-          btnNovo.replaceWith(novo);
-          novo.addEventListener('click', abrirFormularioNovoCliente, true);
+        const btnFechar = document.getElementById('btn-toggle-form-cliente');
+        const card = document.getElementById('card-form-cliente');
+
+        if (btnNovo && btnNovo.dataset.fsModalConfigurado !== 'sim') {
+          btnNovo.dataset.fsModalConfigurado = 'sim';
+          btnNovo.textContent = '＋ Novo cliente';
+          btnNovo.addEventListener('click', function(event) { abrirModalCliente(event, false); }, true);
         }
 
-        const btnToggle = document.getElementById('btn-toggle-form-cliente');
-        if (btnToggle && btnToggle.dataset.fsControleProprio !== 'sim') {
-          const novoToggle = substituirBotaoPorClone('btn-toggle-form-cliente', '×', fecharFormularioNovoCliente);
-          if (novoToggle) {
-            novoToggle.setAttribute('aria-label', 'Fechar cadastro de cliente');
-            novoToggle.setAttribute('title', 'Fechar');
-          }
+        if (btnFechar && btnFechar.dataset.fsModalConfigurado !== 'sim') {
+          btnFechar.dataset.fsModalConfigurado = 'sim';
+          btnFechar.textContent = '×';
+          btnFechar.setAttribute('aria-label', 'Fechar cadastro de cliente');
+          btnFechar.addEventListener('click', fecharModalCliente, true);
+        }
+
+        if (card && card.dataset.fsModalConfigurado !== 'sim') {
+          card.dataset.fsModalConfigurado = 'sim';
+          card.addEventListener('click', function(event) {
+            if (event.target === card) fecharModalCliente(event);
+          });
+        }
+
+        if (typeof window.editarCliente === 'function' && window.editarCliente.dataset?.fsModalConfigurado !== 'sim') {
+          const editarOriginal = window.editarCliente;
+          const editarComModal = function(id) {
+            editarOriginal(id);
+            abrirModalCliente(null, true);
+          };
+          editarComModal.dataset = { fsModalConfigurado: 'sim' };
+          window.editarCliente = editarComModal;
+        }
+
+        const params = new URLSearchParams(window.location.search || '');
+        if (params.get('novo') === '1' && !window.__fsClienteNovoAberto) {
+          window.__fsClienteNovoAberto = true;
+          setTimeout(() => abrirModalCliente(null, false), 500);
         }
       }
 
-      document.addEventListener('keydown', function (event) {
-        if (event.key !== 'Escape') return;
-        const card = document.getElementById('card-form-cliente');
-        if (card?.classList.contains('clientes-form-modal-aberto')) fecharFormularioNovoCliente(event);
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') fecharModalCliente(event);
       });
 
-      window.addEventListener('resize', function () {
-        const card = document.getElementById('card-form-cliente');
-        if (card?.classList.contains('clientes-form-modal-aberto')) requestAnimationFrame(forcarFormularioVisivel);
-      });
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', configurarModalCliente);
+      else configurarModalCliente();
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', aplicarAjustesClientes);
-      } else {
-        aplicarAjustesClientes();
-      }
+      setTimeout(configurarModalCliente, 300);
+      setTimeout(configurarModalCliente, 1000);
 
-      setTimeout(aplicarAjustesClientes, 300);
-      setTimeout(aplicarAjustesClientes, 1000);
-      setTimeout(aplicarAjustesClientes, 2000);
+      window.fsAbrirModalCliente = abrirModalCliente;
+      window.fsFecharModalCliente = fecharModalCliente;
     })();
   </script>
 </body>
