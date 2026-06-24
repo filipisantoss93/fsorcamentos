@@ -40,144 +40,15 @@
 
     <section class="layout-recorrentes">
       <article class="card-recorrente">
-        <div class="card-header">
-          <div class="card-header-row">
-            <div>
-              <h2>Manutenções e retornos</h2>
-              <p>Filtre por placa, cliente, tipo de serviço, ID do cliente ou status.</p>
-            </div>
-            <div class="card-header-botoes">
-              <button type="button" id="btn-novo-recorrente" class="btn btn-novo-recorrente" onclick="abrirModalRecorrente()">＋ Novo recorrente</button>
-              <button type="button" class="btn btn-primario" id="btn-atualizar-recorrentes">Buscar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-body">
-          <div class="filtros-recorrentes">
-            <div class="campo">
-              <label for="busca-recorrentes">Buscar</label>
-              <input type="text" id="busca-recorrentes" placeholder="Nome, placa, serviço, CLI-000001...">
-            </div>
-            <div class="campo">
-              <label for="filtro-status-recorrentes">Status</label>
-              <select id="filtro-status-recorrentes">
-                <option value="">Todos</option>
-                <option value="ativo">Ativos</option>
-                <option value="pausado">Pausados</option>
-                <option value="concluido">Concluídos</option>
-                <option value="cancelado">Cancelados</option>
-                <option value="vencido">Vencidos</option>
-                <option value="proximo">Próximos 30 dias</option>
-              </select>
-            </div>
-            <button type="button" class="btn btn-primario" onclick="carregarRecorrentes()">Atualizar</button>
-          </div>
-
-          <div id="lista-recorrentes" class="lista-recorrentes">
-            <div class="estado-vazio">Carregando serviços recorrentes...</div>
-          </div>
-        </div>
+        <div class="card-header"><div class="card-header-row"><div><h2>Manutenções e retornos</h2><p>Filtre por placa, cliente, tipo de serviço, ID do cliente ou status.</p></div><div class="card-header-botoes"><button type="button" id="btn-novo-recorrente" class="btn btn-novo-recorrente" onclick="abrirModalRecorrente()">＋ Novo recorrente</button><button type="button" class="btn btn-primario" id="btn-atualizar-recorrentes">Buscar</button></div></div></div>
+        <div class="card-body"><div class="filtros-recorrentes"><div class="campo"><label for="busca-recorrentes">Buscar</label><input type="text" id="busca-recorrentes" placeholder="Nome, placa, serviço, CLI-000001..."></div><div class="campo"><label for="filtro-status-recorrentes">Status</label><select id="filtro-status-recorrentes"><option value="">Todos</option><option value="ativo">Ativos</option><option value="pausado">Pausados</option><option value="concluido">Concluídos</option><option value="cancelado">Cancelados</option><option value="vencido">Vencidos</option><option value="proximo">Próximos 30 dias</option></select></div><button type="button" class="btn btn-primario" onclick="carregarRecorrentes()">Atualizar</button></div><div id="lista-recorrentes" class="lista-recorrentes"><div class="estado-vazio">Carregando serviços recorrentes...</div></div></div>
       </article>
     </section>
   </main>
 
-  <section id="modal-form-recorrente" class="rec-modal" aria-hidden="true">
-    <article class="rec-modal-box" role="dialog" aria-modal="true" aria-labelledby="titulo-form-recorrente">
-      <div class="rec-modal-head">
-        <div>
-          <h2 id="titulo-form-recorrente">Novo serviço recorrente</h2>
-          <p>Use para trocas de óleo, revisões, retornos de garantia e manutenções preventivas.</p>
-        </div>
-        <button type="button" class="rec-modal-close" onclick="fecharModalRecorrente()" aria-label="Fechar">×</button>
-      </div>
-      <div class="rec-modal-body">
-        <form id="form-recorrente" class="form-recorrente">
-          <input type="hidden" id="recorrente-id">
+  <section id="modal-form-recorrente" class="rec-modal" aria-hidden="true"><article class="rec-modal-box" role="dialog" aria-modal="true" aria-labelledby="titulo-form-recorrente"><div class="rec-modal-head"><div><h2 id="titulo-form-recorrente">Novo serviço recorrente</h2><p>Use para trocas de óleo, revisões, retornos de garantia e manutenções preventivas.</p></div><button type="button" class="rec-modal-close" onclick="fecharModalRecorrente()" aria-label="Fechar">×</button></div><div class="rec-modal-body"><form id="form-recorrente" class="form-recorrente"><input type="hidden" id="recorrente-id"><div class="campo"><label for="recorrente-titulo">Título do serviço</label><input type="text" id="recorrente-titulo" placeholder="Ex: Troca de óleo / Revisão preventiva"></div><div class="form-linha"><div class="campo"><label for="recorrente-cliente-id">Cliente</label><input type="hidden" id="recorrente-cliente-id"><div id="recorrente-cliente-selecionado" class="cliente-selecionado-box">Nenhum cliente selecionado</div><div class="cliente-acoes-recorrente"><button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteRecorrentes()">Buscar cliente</button><a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn btn-primario">Cadastrar novo</a></div></div><div class="campo"><label for="recorrente-veiculo-id">Veículo</label><select id="recorrente-veiculo-id"><option value="">Selecione um cliente primeiro</option></select></div></div><div class="form-linha"><div class="campo"><label for="recorrente-tipo-servico">Tipo de serviço</label><input type="text" id="recorrente-tipo-servico" placeholder="Ex: Manutenção preventiva"></div><div class="campo"><label for="recorrente-status">Status</label><select id="recorrente-status"><option value="ativo">Ativo</option><option value="pausado">Pausado</option><option value="concluido">Concluído</option><option value="cancelado">Cancelado</option></select></div></div><div class="form-linha"><div class="campo"><label for="recorrente-ultimo-servico">Data do último serviço</label><input type="date" id="recorrente-ultimo-servico"></div><div class="campo"><label for="recorrente-proxima-data">Próxima data prevista</label><input type="date" id="recorrente-proxima-data"></div></div><div class="form-linha"><div class="campo"><label for="recorrente-intervalo-meses">Intervalo em meses</label><input type="number" id="recorrente-intervalo-meses" min="0" step="1" placeholder="Ex: 6"></div><div class="campo"><label for="recorrente-intervalo-km">Intervalo em km</label><input type="number" id="recorrente-intervalo-km" min="0" step="1" placeholder="Ex: 10000"></div></div><div class="form-linha"><div class="campo"><label for="recorrente-km-atual">Km atual/opcional</label><input type="number" id="recorrente-km-atual" min="0" step="1"></div><div class="campo"><label for="recorrente-proximo-km">Próximo km/opcional</label><input type="number" id="recorrente-proximo-km" min="0" step="1"></div></div><div class="campo"><label for="recorrente-observacoes">Observações</label><textarea id="recorrente-observacoes" placeholder="Ex: avisar cliente 7 dias antes, verificar garantia, peças utilizadas..."></textarea></div><div class="acoes-form"><button type="submit" class="btn btn-primario" id="btn-salvar-recorrente">Salvar recorrência</button><button type="button" class="btn btn-secundario" id="btn-limpar-recorrente">Limpar</button><button type="button" class="btn btn-perigo" onclick="fecharModalRecorrente()">Cancelar</button></div></form></div></article></section>
 
-          <div class="campo">
-            <label for="recorrente-titulo">Título do serviço</label>
-            <input type="text" id="recorrente-titulo" placeholder="Ex: Troca de óleo / Revisão preventiva">
-          </div>
-
-          <div class="form-linha">
-            <div class="campo">
-              <label for="recorrente-cliente-id">Cliente</label>
-              <input type="hidden" id="recorrente-cliente-id">
-              <div id="recorrente-cliente-selecionado" class="cliente-selecionado-box">Nenhum cliente selecionado</div>
-              <div class="cliente-acoes-recorrente">
-                <button type="button" class="btn btn-secundario" onclick="abrirModalBuscaClienteRecorrentes()">Buscar cliente</button>
-                <a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn btn-primario">Cadastrar novo</a>
-              </div>
-            </div>
-            <div class="campo">
-              <label for="recorrente-veiculo-id">Veículo</label>
-              <select id="recorrente-veiculo-id"><option value="">Selecione um cliente primeiro</option></select>
-            </div>
-          </div>
-
-          <div class="form-linha">
-            <div class="campo">
-              <label for="recorrente-tipo-servico">Tipo de serviço</label>
-              <input type="text" id="recorrente-tipo-servico" placeholder="Ex: Manutenção preventiva">
-            </div>
-            <div class="campo">
-              <label for="recorrente-status">Status</label>
-              <select id="recorrente-status">
-                <option value="ativo">Ativo</option>
-                <option value="pausado">Pausado</option>
-                <option value="concluido">Concluído</option>
-                <option value="cancelado">Cancelado</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-linha">
-            <div class="campo"><label for="recorrente-ultimo-servico">Data do último serviço</label><input type="date" id="recorrente-ultimo-servico"></div>
-            <div class="campo"><label for="recorrente-proxima-data">Próxima data prevista</label><input type="date" id="recorrente-proxima-data"></div>
-          </div>
-
-          <div class="form-linha">
-            <div class="campo"><label for="recorrente-intervalo-meses">Intervalo em meses</label><input type="number" id="recorrente-intervalo-meses" min="0" step="1" placeholder="Ex: 6"></div>
-            <div class="campo"><label for="recorrente-intervalo-km">Intervalo em km</label><input type="number" id="recorrente-intervalo-km" min="0" step="1" placeholder="Ex: 10000"></div>
-          </div>
-
-          <div class="form-linha">
-            <div class="campo"><label for="recorrente-km-atual">Km atual/opcional</label><input type="number" id="recorrente-km-atual" min="0" step="1"></div>
-            <div class="campo"><label for="recorrente-proximo-km">Próximo km/opcional</label><input type="number" id="recorrente-proximo-km" min="0" step="1"></div>
-          </div>
-
-          <div class="campo">
-            <label for="recorrente-observacoes">Observações</label>
-            <textarea id="recorrente-observacoes" placeholder="Ex: avisar cliente 7 dias antes, verificar garantia, peças utilizadas..."></textarea>
-          </div>
-
-          <div class="acoes-form">
-            <button type="submit" class="btn btn-primario" id="btn-salvar-recorrente">Salvar recorrência</button>
-            <button type="button" class="btn btn-secundario" id="btn-limpar-recorrente">Limpar</button>
-            <button type="button" class="btn btn-perigo" onclick="fecharModalRecorrente()">Cancelar</button>
-          </div>
-        </form>
-      </div>
-    </article>
-  </section>
-
-  <div id="modal-busca-cliente-recorrentes" class="modal-busca-cliente-overlay" aria-hidden="true">
-    <div class="modal-busca-cliente-box" role="dialog" aria-modal="true">
-      <div class="modal-busca-cliente-header">
-        <div><h3>Buscar cliente</h3><p>Selecione um cliente para vincular ao serviço recorrente.</p></div>
-        <button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalBuscaClienteRecorrentes()">×</button>
-      </div>
-      <div class="modal-busca-cliente-corpo">
-        <div class="linha-busca-cliente">
-          <input type="search" id="campo-busca-cliente-recorrentes" placeholder="Nome, WhatsApp, e-mail ou número do cliente">
-          <button type="button" class="btn btn-primario" onclick="buscarClientesModalRecorrentes()">Buscar</button>
-          <a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn btn-secundario">Cadastrar novo</a>
-        </div>
-        <div id="resultado-busca-clientes-recorrentes" class="resultado-busca-clientes-modal"><div class="estado-vazio" style="min-height:auto;">Digite pelo menos 2 caracteres e clique em Buscar.</div></div>
-      </div>
-    </div>
-  </div>
+  <div id="modal-busca-cliente-recorrentes" class="modal-busca-cliente-overlay" aria-hidden="true"><div class="modal-busca-cliente-box" role="dialog" aria-modal="true"><div class="modal-busca-cliente-header"><div><h3>Buscar cliente</h3><p>Selecione um cliente para vincular ao serviço recorrente.</p></div><button type="button" class="btn-fechar-modal-cliente" onclick="fecharModalBuscaClienteRecorrentes()">×</button></div><div class="modal-busca-cliente-corpo"><div class="linha-busca-cliente"><input type="search" id="campo-busca-cliente-recorrentes" placeholder="Nome, WhatsApp, e-mail ou número do cliente"><button type="button" class="btn btn-primario" onclick="buscarClientesModalRecorrentes()">Buscar</button><a href="/gestao.html?modulo=clientes&novo=1" target="_top" class="btn btn-secundario">Cadastrar novo</a></div><div id="resultado-busca-clientes-recorrentes" class="resultado-busca-clientes-modal"><div class="estado-vazio" style="min-height:auto;">Digite pelo menos 2 caracteres e clique em Buscar.</div></div></div></div></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -186,5 +57,46 @@
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
   <script src="recorrentes.js?v=20260624-modal-recorrentes-1"></script>
+  <script>
+    (function(){
+      function abrirModalRecorrenteBase(){
+        var modal=document.getElementById('modal-form-recorrente');
+        if(!modal)return;
+        modal.classList.add('ativo');
+        modal.setAttribute('aria-hidden','false');
+        document.body.classList.add('rec-modal-aberto');
+        setTimeout(function(){document.getElementById('recorrente-titulo')?.focus();},120);
+      }
+      function fecharModalRecorrenteBase(){
+        var modal=document.getElementById('modal-form-recorrente');
+        if(!modal)return;
+        modal.classList.remove('ativo');
+        modal.setAttribute('aria-hidden','true');
+        document.body.classList.remove('rec-modal-aberto');
+      }
+      window.abrirModalRecorrente=function(){
+        if(typeof window.limparFormularioRecorrente==='function')window.limparFormularioRecorrente();
+        abrirModalRecorrenteBase();
+      };
+      window.fecharModalRecorrente=fecharModalRecorrenteBase;
+      function instalarModalRecorrente(){
+        if(window.__fsRecorrenteModalInstalado)return;
+        if(typeof window.editarRecorrente!=='function')return;
+        window.__fsRecorrenteModalInstalado=true;
+        var editarOriginal=window.editarRecorrente;
+        window.editarRecorrente=function(id){editarOriginal(id);abrirModalRecorrenteBase();};
+        var form=document.getElementById('form-recorrente');
+        if(form)form.addEventListener('submit',function(){setTimeout(function(){var m=document.getElementById('mensagem-recorrentes');if(m&&m.classList.contains('sucesso'))fecharModalRecorrenteBase();},900);});
+        var modal=document.getElementById('modal-form-recorrente');
+        if(modal)modal.addEventListener('click',function(e){if(e.target===modal)fecharModalRecorrenteBase();});
+        document.addEventListener('keydown',function(e){if(e.key==='Escape')fecharModalRecorrenteBase();});
+        var params=new URLSearchParams(location.search||'');
+        if(params.get('novo')==='1')setTimeout(window.abrirModalRecorrente,500);
+      }
+      setTimeout(instalarModalRecorrente,300);
+      setTimeout(instalarModalRecorrente,900);
+      setTimeout(instalarModalRecorrente,1600);
+    })();
+  </script>
 </body>
 </html>
