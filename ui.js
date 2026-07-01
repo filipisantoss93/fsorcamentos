@@ -13,7 +13,6 @@ let gerandoPdfAgora = false;
 
 function definirOrcamentoAtualSalvo(id, numero = null) {
     if (!id) return;
-
     orcamentoAtualSalvoId = id;
     window.orcamentoAtualSalvoId = id;
     window.orcamentoSalvoAtualId = id;
@@ -31,7 +30,6 @@ function limparReferenciaOrcamentoAtual() {
     orcamentoAtualSalvoId = null;
     numeroOrcamentoAtual = null;
     linkOrcamentoAtual = null;
-
     window.orcamentoAtualSalvoId = null;
     window.orcamentoSalvoAtualId = null;
     window.numeroOrcamentoAtual = null;
@@ -39,18 +37,9 @@ function limparReferenciaOrcamentoAtual() {
 }
 
 function sincronizarReferenciaOrcamentoSalvo() {
-    if (!orcamentoAtualSalvoId && window.orcamentoAtualSalvoId) {
-        orcamentoAtualSalvoId = window.orcamentoAtualSalvoId;
-    }
-
-    if (!orcamentoAtualSalvoId && window.orcamentoSalvoAtualId) {
-        orcamentoAtualSalvoId = window.orcamentoSalvoAtualId;
-    }
-
-    if (!numeroOrcamentoAtual && window.numeroOrcamentoAtual) {
-        numeroOrcamentoAtual = window.numeroOrcamentoAtual;
-    }
-
+    if (!orcamentoAtualSalvoId && window.orcamentoAtualSalvoId) orcamentoAtualSalvoId = window.orcamentoAtualSalvoId;
+    if (!orcamentoAtualSalvoId && window.orcamentoSalvoAtualId) orcamentoAtualSalvoId = window.orcamentoSalvoAtualId;
+    if (!numeroOrcamentoAtual && window.numeroOrcamentoAtual) numeroOrcamentoAtual = window.numeroOrcamentoAtual;
     if (orcamentoAtualSalvoId) {
         linkOrcamentoAtual = montarLinkOrcamento(orcamentoAtualSalvoId);
         window.linkOrcamentoAtual = linkOrcamentoAtual;
@@ -73,9 +62,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setInterval(() => {
         const carousel = document.getElementById('carousel');
         if (!carousel) return;
-
         const totalSlides = document.querySelectorAll('.carousel-slide a').length;
-
         if (totalSlides > 0) {
             currentSlide = (currentSlide + 1) % totalSlides;
             carousel.style.transform = `translateX(${-currentSlide * 100}%)`;
@@ -86,7 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         link.addEventListener('click', () => {
             const menu = document.querySelector('.nav-menu');
             const menuLinha = document.querySelector('.header-menu-linha');
-
             if (menu) menu.classList.remove('active');
             if (menuLinha) menuLinha.classList.remove('menu-aberto');
         });
@@ -122,6 +108,26 @@ function obterSvgPlano(tipo) {
         </svg>`;
 }
 
+function obterSvgAntesDepois(tipo) {
+    if (tipo === 'depois') {
+        return `
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path>
+                <path d="M14 2v6h6"></path>
+                <path d="m8.5 14.2 2.2 2.2 4.8-5"></path>
+            </svg>`;
+    }
+
+    return `
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8"></path>
+            <path d="M14 2v6h6"></path>
+            <path d="M8 13h5"></path>
+            <path d="m16 15 4 4"></path>
+            <path d="m20 15-4 4"></path>
+        </svg>`;
+}
+
 function decorarCardsPlanosHome(home) {
     const planos = [
         { seletor: '.planos .plano.gratis', tipo: 'gratis', rotulo: 'Grátis' },
@@ -131,7 +137,6 @@ function decorarCardsPlanosHome(home) {
     planos.forEach(({ seletor, tipo, rotulo }) => {
         const card = home.querySelector(seletor);
         if (!card) return;
-
         card.classList.add('plano-home-decorado');
 
         const titulo = card.querySelector('h2');
@@ -213,14 +218,45 @@ function inserirSecoesComerciaisHome() {
         .home .plano.gratis .home-btn span{color:#6e84ab!important}
         .home .plano.premium .home-btn{background:linear-gradient(135deg,#4d86ff 0%,#145cff 48%,#1239b4 100%)!important;color:#fff!important;border-color:#4d86ff!important;box-shadow:0 18px 38px rgba(20,92,255,.24)!important}
         .home .plano.premium .home-btn span{color:#dfeaff!important}
-        @media(max-width:880px){.home .planos{grid-template-columns:1fr!important;gap:16px!important;padding:8px!important}.home .plano{padding:26px 22px 26px!important;border-radius:24px!important}.home .plano-topo{gap:12px!important;margin-bottom:15px!important}.home .plano-icone{width:48px!important;height:48px!important;border-radius:15px!important}.home .plano-icone svg{width:25px!important;height:25px!important}.home .plano h2{font-size:21px!important}.home .plano .preco{font-size:clamp(44px,11vw,58px)!important;margin-bottom:17px!important}.home .plano ul{margin-bottom:20px!important}.home .plano li{font-size:16px!important;line-height:1.46!important;padding-left:25px!important}.home .plano .home-btn{min-height:78px!important;padding:15px 17px!important;border-radius:16px!important;gap:11px!important}.home .plano .home-btn .plan-action-icon{width:40px!important;height:40px!important;border-radius:13px!important}.home .plano .home-btn .plan-action-icon svg{width:22px!important;height:22px!important}.home .plano .home-btn strong{font-size:19px!important}.home .plano .home-btn span{font-size:13px!important;margin-top:6px!important}}
-        @media(max-width:430px){.home .plano{padding:21px 17px 21px!important}.home .plano-icone{width:44px!important;height:44px!important}.home .plano-selo{padding:5px 9px!important;font-size:9px!important;margin-bottom:7px!important}.home .plano h2{font-size:20px!important}.home .plano .preco{font-size:46px!important}.home .plano li{font-size:15px!important;padding-left:23px!important}.home .plano .home-btn{min-height:74px!important;padding:14px 16px!important}.home .plano .home-btn strong{font-size:18px!important}.home .plano .home-btn span{font-size:11px!important}.home .plano .home-btn .plan-action-icon{width:38px!important;height:38px!important}}
-        .home-comparacao-grid,.home-faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-        .home-bloco-extra{padding:22px}.home-bloco-extra h2{margin:0 0 8px}.home-bloco-extra p{margin:0;color:#245eac;line-height:1.5;font-weight:650}
-        .home-ab-card{border:1px solid #d6e7ff;border-radius:16px;padding:18px;background:#f5f9ff}.home-ab-card h3{margin:0 0 10px;font-size:22px}.home-ab-card ul{margin:0;padding-left:18px;line-height:1.75;font-weight:800;color:#245eac}
-        .home-ab-card.antes{border-color:#fecaca;background:#fff7f7}.home-ab-card.antes h3{color:#991b1b}.home-ab-card.depois{border-color:#a7f3e5;background:#dcfff7}.home-ab-card.depois h3{color:#05765f}
+        .home-bloco-extra{padding:34px 38px!important;border-radius:28px!important;background:rgba(255,255,255,.96)!important;border:1px solid #d6e7ff!important;box-shadow:0 18px 42px rgba(20,92,255,.10)!important}
+        .home-bloco-extra>.tag{display:inline-flex!important;align-items:center!important;width:max-content!important;border-radius:999px!important;padding:8px 14px!important;background:#f5f9ff!important;border:1px solid #d6e7ff!important;color:#145cff!important;font-size:15px!important;font-weight:850!important;margin-bottom:18px!important;text-transform:none!important;letter-spacing:0!important}
+        .home-bloco-extra h2{margin:0 0 18px!important;max-width:650px!important;color:#040f2f!important;font-size:clamp(30px,4.4vw,46px)!important;line-height:1.18!important;letter-spacing:-.045em!important;font-weight:950!important}
+        .home-bloco-extra>p{max-width:780px!important;margin:0 0 28px!important;color:#65718a!important;line-height:1.45!important;font-size:20px!important;font-weight:520!important}
+        .home-comparacao-grid{display:grid!important;grid-template-columns:1fr!important;gap:22px!important;margin-top:0!important}
+        .home-ab-card{display:grid!important;grid-template-columns:220px 1fr!important;gap:24px!important;align-items:center!important;border-radius:24px!important;padding:24px!important;background:#fff!important;box-shadow:none!important}
+        .home-ab-card.antes{border:1px solid #f0cfd1!important;background:linear-gradient(135deg,#fff,#fff8f8)!important}
+        .home-ab-card.depois{position:relative!important;border:1px solid #9ec4ff!important;background:linear-gradient(135deg,#fff,#f7fbff)!important;box-shadow:0 12px 26px rgba(20,92,255,.12)!important}
+        .home-ab-card.depois::after{content:"";position:absolute;inset:0;border-radius:24px;box-shadow:0 0 0 1px rgba(20,92,255,.05) inset;pointer-events:none}
+        .ab-side{display:flex!important;flex-direction:column!important;gap:14px!important;padding-right:24px!important;border-right:1px solid #e4eaf6!important;min-height:134px!important;justify-content:center!important}
+        .ab-side-top{display:flex!important;align-items:center!important;gap:12px!important}
+        .ab-icon-box{width:76px!important;height:76px!important;border-radius:22px!important;display:grid!important;place-items:center!important;box-shadow:0 15px 30px rgba(4,15,47,.08)!important}
+        .ab-icon-box svg{width:38px!important;height:38px!important;fill:none!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+        .ab-icon-box.antes{background:#fff!important;color:#5b3a3a!important;border:1px solid #f5dddd!important;box-shadow:0 16px 28px rgba(219,92,92,.10)!important}
+        .ab-icon-box.antes svg{stroke:currentColor!important}
+        .ab-icon-box.depois{background:linear-gradient(135deg,#2f7bff,#145cff)!important;color:#fff!important;border:1px solid #2f7bff!important;box-shadow:0 16px 30px rgba(20,92,255,.28)!important}
+        .ab-icon-box.depois svg{stroke:currentColor!important}
+        .ab-stars{position:relative;min-width:58px;height:58px;color:#9ec4ff;font-weight:950}
+        .ab-stars span{position:absolute;display:inline-block;color:#9ec4ff;text-shadow:0 0 12px rgba(20,92,255,.20)}
+        .ab-stars span:first-child{font-size:26px;left:0;top:2px}.ab-stars span:last-child{font-size:34px;right:2px;bottom:0}
+        .ab-heading h3{margin:0!important;font-size:28px!important;line-height:1.05!important;font-weight:950!important;letter-spacing:-.035em!important;color:#040f2f!important}
+        .ab-heading span{display:block;margin-top:6px;color:#6a7182!important;font-weight:650!important;font-size:16px!important}
+        .home-ab-card.depois .ab-heading span{color:#145cff!important;font-weight:800!important}
+        .ab-list{display:grid!important;gap:14px!important}
+        .ab-item{display:grid!important;grid-template-columns:auto 1fr!important;align-items:start!important;gap:14px!important}
+        .ab-item p{margin:0!important;color:#040f2f!important;font-size:20px!important;line-height:1.3!important;font-weight:740!important}
+        .ab-bullet{width:26px!important;height:26px!important;border-radius:50%!important;display:grid!important;place-items:center!important;font-size:16px!important;line-height:1!important;font-weight:950!important;flex:0 0 auto!important}
+        .ab-bullet.x{background:#ffe9e9!important;color:#df8b8b!important}
+        .ab-bullet.check{background:#145cff!important;color:#fff!important;box-shadow:0 8px 16px rgba(20,92,255,.22)!important}
+        .home .fluxo{padding:34px 38px!important;border-radius:28px!important;background:rgba(255,255,255,.96)!important;border:1px solid #d6e7ff!important;box-shadow:0 18px 42px rgba(20,92,255,.10)!important}
+        .home .fluxo .home-tag{display:inline-flex!important;width:max-content!important;border-radius:999px!important;padding:9px 18px!important;background:#fff!important;border:1px solid #d6e7ff!important;color:#145cff!important;font-size:16px!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.03em!important;margin-bottom:24px!important;box-shadow:0 10px 22px rgba(20,92,255,.08)!important}
+        .home .fluxo h2{font-size:clamp(30px,4vw,42px)!important;line-height:1.15!important;font-weight:950!important;letter-spacing:-.04em!important;color:#040f2f!important;margin:0 0 20px!important}
+        .home .fluxo-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important;margin-top:18px!important}
+        .home .passo{background:linear-gradient(135deg,#fff,#f5f9ff)!important;border:1px solid #d6e7ff!important;border-radius:18px!important;padding:18px 16px!important;color:#145cff!important;font-weight:900!important;box-shadow:0 10px 22px rgba(20,92,255,.08)!important}
+        .home-faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
         .home-faq-item{border:1px solid #d6e7ff;border-radius:14px;padding:16px;background:#f5f9ff}.home-faq-item strong{display:block;margin-bottom:6px;color:#040f2f}.home-faq-item p{margin:0;color:#245eac;font-weight:650;line-height:1.5}
-        @media(max-width:860px){.home-comparacao-grid,.home-faq-grid{grid-template-columns:1fr}}
+        @media(max-width:880px){.home .planos{grid-template-columns:1fr!important;gap:16px!important;padding:8px!important}.home .plano{padding:26px 22px 26px!important;border-radius:24px!important}.home .plano-topo{gap:12px!important;margin-bottom:15px!important}.home .plano-icone{width:48px!important;height:48px!important;border-radius:15px!important}.home .plano-icone svg{width:25px!important;height:25px!important}.home .plano h2{font-size:21px!important}.home .plano .preco{font-size:clamp(44px,11vw,58px)!important;margin-bottom:17px!important}.home .plano ul{margin-bottom:20px!important}.home .plano li{font-size:16px!important;line-height:1.46!important;padding-left:25px!important}.home .plano .home-btn{min-height:78px!important;padding:15px 17px!important;border-radius:16px!important;gap:11px!important}.home .plano .home-btn .plan-action-icon{width:40px!important;height:40px!important;border-radius:13px!important}.home .plano .home-btn .plan-action-icon svg{width:22px!important;height:22px!important}.home .plano .home-btn strong{font-size:19px!important}.home .plano .home-btn span{font-size:13px!important;margin-top:6px!important}.home .fluxo-grid{grid-template-columns:1fr!important}.home-faq-grid{grid-template-columns:1fr!important}}
+        @media(max-width:760px){.home-bloco-extra{padding:28px 22px!important}.home-bloco-extra h2{font-size:31px!important;line-height:1.18!important}.home-bloco-extra>p{font-size:18px!important}.home-ab-card{grid-template-columns:1fr!important;gap:18px!important;padding:20px 18px!important}.ab-side{border-right:0!important;border-bottom:1px solid #e4eaf6!important;padding-right:0!important;padding-bottom:16px!important;min-height:0!important}.ab-item p{font-size:17px!important}.ab-heading h3{font-size:26px!important}.home .fluxo{padding:28px 22px!important}.home .fluxo .home-tag{font-size:13px!important}.home .fluxo h2{font-size:30px!important}}
+        @media(max-width:430px){.home .plano{padding:21px 17px 21px!important}.home .plano-icone{width:44px!important;height:44px!important}.home .plano-selo{padding:5px 9px!important;font-size:9px!important;margin-bottom:7px!important}.home .plano h2{font-size:20px!important}.home .plano .preco{font-size:46px!important}.home .plano li{font-size:15px!important;padding-left:23px!important}.home .plano .home-btn{min-height:74px!important;padding:14px 16px!important}.home .plano .home-btn strong{font-size:18px!important}.home .plano .home-btn span{font-size:11px!important}.home .plano .home-btn .plan-action-icon{width:38px!important;height:38px!important}.home-bloco-extra h2{font-size:28px!important}.home-bloco-extra>p{font-size:16px!important}.ab-item p{font-size:16px!important}.ab-bullet{width:24px!important;height:24px!important;font-size:14px!important}.ab-icon-box{width:68px!important;height:68px!important}.ab-icon-box svg{width:34px!important;height:34px!important}}
     `;
     document.head.appendChild(estilo);
 
@@ -234,8 +270,35 @@ function inserirSecoesComerciaisHome() {
         <h2>De proposta informal para orçamento organizado.</h2>
         <p>Mostre preço, mão de obra, produtos e total em um formato claro para o cliente decidir.</p>
         <div class="home-comparacao-grid">
-            <div class="home-ab-card antes"><h3>Antes</h3><ul><li>Valores espalhados na conversa</li><li>Sem padrão visual</li><li>Sem histórico claro</li><li>Sem controle do que virou venda</li></ul></div>
-            <div class="home-ab-card depois"><h3>Depois</h3><ul><li>Orçamento separado por mão de obra e produtos</li><li>Cliente aprova ou recusa pelo link</li><li>Histórico salvo no Premium</li><li>Venda pode ir para o Caixa</li></ul></div>
+            <article class="home-ab-card antes">
+                <div class="ab-side">
+                    <div class="ab-side-top">
+                        <span class="ab-icon-box antes">${obterSvgAntesDepois('antes')}</span>
+                    </div>
+                    <div class="ab-heading"><h3>Antes</h3><span>Como é hoje</span></div>
+                </div>
+                <div class="ab-list">
+                    <div class="ab-item"><span class="ab-bullet x">×</span><p>Valores espalhados na conversa</p></div>
+                    <div class="ab-item"><span class="ab-bullet x">×</span><p>Sem padrão visual</p></div>
+                    <div class="ab-item"><span class="ab-bullet x">×</span><p>Sem histórico claro</p></div>
+                    <div class="ab-item"><span class="ab-bullet x">×</span><p>Sem controle do que virou venda</p></div>
+                </div>
+            </article>
+            <article class="home-ab-card depois">
+                <div class="ab-side">
+                    <div class="ab-side-top">
+                        <span class="ab-icon-box depois">${obterSvgAntesDepois('depois')}</span>
+                        <span class="ab-stars"><span>✦</span><span>✦</span></span>
+                    </div>
+                    <div class="ab-heading"><h3>Depois</h3><span>Com o FS Orçamento</span></div>
+                </div>
+                <div class="ab-list">
+                    <div class="ab-item"><span class="ab-bullet check">✓</span><p>Orçamento separado por mão de obra e produtos</p></div>
+                    <div class="ab-item"><span class="ab-bullet check">✓</span><p>Cliente aprova ou recusa pelo link</p></div>
+                    <div class="ab-item"><span class="ab-bullet check">✓</span><p>Histórico salvo no Premium</p></div>
+                    <div class="ab-item"><span class="ab-bullet check">✓</span><p>Venda pode ir para o Caixa</p></div>
+                </div>
+            </article>
         </div>`;
 
     const faq = document.createElement('section');
@@ -261,9 +324,7 @@ function inserirSecoesComerciaisHome() {
 
 async function usuarioTemSessaoAtiva() {
     if (!window._supabase) return false;
-
     const { data: { session } } = await _supabase.auth.getSession();
-
     return !!session?.user?.id;
 }
 
@@ -271,12 +332,8 @@ async function abrirModalGerador() {
     const temSessao = await usuarioTemSessaoAtiva();
 
     if (!temSessao) {
-        if (typeof abrirModalLogin === 'function') {
-            abrirModalLogin();
-        } else {
-            window.location.href = '/index.html?login=1';
-        }
-
+        if (typeof abrirModalLogin === 'function') abrirModalLogin();
+        else window.location.href = '/index.html?login=1';
         return;
     }
 
@@ -296,9 +353,7 @@ async function abrirModalGerador() {
         modalAntigo.setAttribute('aria-hidden', 'false');
     }
 
-    if (formulario) {
-        formulario.style.display = 'block';
-    }
+    if (formulario) formulario.style.display = 'block';
 
     document.body.classList.add('gerador-aberto');
     document.body.classList.remove('modal-aberto');
@@ -308,19 +363,11 @@ async function abrirModalGerador() {
 
     await carregarDadosEmpresaLogada();
 
-    if (typeof carregarDadosEmissorNoModal === 'function') {
-        await carregarDadosEmissorNoModal();
-    }
+    if (typeof carregarDadosEmissorNoModal === 'function') await carregarDadosEmissorNoModal();
 
     setTimeout(() => {
         const alvo = secao || modalAntigo || formulario;
-
-        if (alvo) {
-            alvo.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
 }
 
@@ -341,9 +388,7 @@ function fecharModalGerador() {
         modalAntigo.setAttribute('aria-hidden', 'true');
     }
 
-    if (formulario && secao) {
-        formulario.style.display = 'none';
-    }
+    if (formulario && secao) formulario.style.display = 'none';
 
     document.body.classList.remove('gerador-aberto');
     document.body.classList.remove('modal-aberto');
@@ -354,12 +399,10 @@ function fecharModalGerador() {
 
 function abrirGeradorAutomaticamenteSeSolicitado() {
     const params = new URLSearchParams(window.location.search);
-
     if (params.get('abrirGerador') !== '1') return;
 
     setTimeout(async () => {
         await abrirModalGerador();
-
         const novaUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, novaUrl);
     }, 700);
