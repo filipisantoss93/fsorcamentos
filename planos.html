@@ -3,269 +3,29 @@
 <head>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#f8fafc">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Planos - FS Orçamentos</title>
-  <meta name="description" content="Conheça os planos do FS Orçamentos: Grátis para PDF, Básico para gestão de orçamentos e Premium para clientes, veículos, ordens de serviço e estoque.">
-  <meta name="keywords" content="planos fs orçamentos, plano básico orçamento, gerar orçamento PDF, orçamento online, gestão de oficina">
+  <meta name="description" content="Planos do FS Orçamentos: grátis para PDF e Premium para salvar orçamentos, enviar por WhatsApp, receber aprovação online, usar recorrentes, caixa e relatórios.">
   <meta name="author" content="Filipi Aparecido dos Santos">
-  <meta name="google-adsense-account" content="ca-pub-5628949951885077">
-
   <link rel="stylesheet" href="style.css">
-  <link id="fs-planos-inline-css" rel="stylesheet" href="planos-inline.css">
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="shortcut icon" href="/favicon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17435932696');
-  </script>
+  <style>
+    :root{--c:#0f172a;--b:#dbe3ee;--muted:#64748b;--ok:#16a34a;--red:#dc2626}.pagina-planos{width:min(1180px,calc(100% - 24px));margin:0 auto;padding:24px 0 54px;display:grid;gap:18px;color:var(--c)}body{background:linear-gradient(180deg,#fff 0%,#f8fafc 48%,#eef2f7 100%)!important;color:var(--c)!important}.card{background:#fff;border:1px solid var(--b);border-radius:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}.hero{padding:34px;display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:center;background:linear-gradient(135deg,#fff,#f1f5f9)}.tag{display:inline-flex;width:fit-content;padding:6px 10px;border-radius:999px;background:#e2e8f0;color:#334155;font-size:11px;font-weight:950;text-transform:uppercase;margin-bottom:10px}.hero h1{margin:0 0 10px;font-size:clamp(30px,5vw,50px);line-height:1.03}.hero p,.plano p,.pix p,.faq-card p{margin:0;color:var(--muted);font-size:15px;line-height:1.58;font-weight:650}.acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:11px 15px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#0f172a;text-decoration:none;font-weight:950;cursor:pointer}.btn.primary{background:#0f172a;color:#fff;border-color:#0f172a}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.plano{padding:24px;display:grid;gap:12px}.plano h2{margin:0;font-size:26px}.preco{font-size:34px;font-weight:950;color:#0f172a}.preco small{font-size:14px;color:var(--muted)}ul{margin:0;padding-left:18px;color:#334155;line-height:1.7;font-weight:750}.premium{border-top:5px solid #0f172a}.gratis{border-top:5px solid #94a3b8}.comparativo,.pix,.faq{padding:22px}.comparativo h2,.pix h2,.faq h2{margin:0 0 8px}.table-wrap{overflow:auto;border:1px solid var(--b);border-radius:12px}.tabela{width:100%;border-collapse:collapse;min-width:760px}.tabela th{background:#0f172a;color:#fff;text-align:left;padding:12px;font-size:12px;text-transform:uppercase}.tabela td{padding:12px;border-bottom:1px solid #e5e7eb;color:#334155;font-size:14px}.sim{color:var(--ok);font-weight:950}.nao{color:var(--red);font-weight:950}.pix-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.pix-card{border:1px solid var(--b);border-radius:14px;padding:18px;background:#f8fafc;display:grid;gap:8px}.pix-card.destaque{background:#fff;border-color:#0f172a;box-shadow:0 10px 24px rgba(15,23,42,.12)}.pix-card strong{font-size:20px}.pix-card b{font-size:28px}.pix-card button{min-height:42px;border:0;border-radius:10px;background:#0f172a;color:#fff;font-weight:950;cursor:pointer}.status-plano-box{padding:14px 16px;border-radius:12px;background:#e2e8f0;color:#0f172a;font-weight:850}.faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.faq-card{border:1px solid var(--b);border-radius:14px;padding:16px;background:#fff}.modal-pix-overlay{position:fixed;inset:0;background:rgba(15,23,42,.72);z-index:30000;display:none;align-items:flex-start;justify-content:center;padding:18px;overflow:auto}.modal-pix-card{width:min(520px,100%);background:#fff;border-radius:16px;margin:30px auto;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.28)}.modal-pix-topo{display:flex;justify-content:space-between;gap:12px;background:#0f172a;color:#fff;padding:14px 16px}.modal-pix-topo span{display:block;color:#cbd5e1;font-size:12px}.modal-pix-topo button{border:0;background:#fff;color:#0f172a;border-radius:8px;width:34px;height:34px;font-size:22px;font-weight:950}.pix-loading,.pix-conteudo,.pix-erro{padding:18px}.pix-resumo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.pix-resumo div{background:#f8fafc;border:1px solid var(--b);border-radius:10px;padding:10px}.pix-resumo small{display:block;color:var(--muted);font-weight:850}.pix-qrcode-box{text-align:center}.pix-qrcode-box img{max-width:230px;width:100%}.pix-label{display:block;font-size:12px;font-weight:950;text-transform:uppercase;color:#334155;margin:10px 0 5px}.pix-conteudo textarea{width:100%;height:110px;border:1px solid var(--b);border-radius:10px;padding:10px;box-sizing:border-box}.pix-acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pix-acoes button{min-height:40px;border:0;border-radius:9px;background:#0f172a;color:#fff;font-weight:950;padding:9px 12px}.pix-acoes .secundario{background:#e2e8f0;color:#0f172a}.pix-erro{color:#b91c1c;font-weight:850}@media(max-width:860px){.hero,.grid,.faq-grid{grid-template-columns:1fr}.pix-grid{grid-template-columns:1fr}.hero{padding:24px}}
+  </style>
 </head>
 <body>
   <div id="header-container"></div>
-
-  <div id="modal-login" class="modal-login-overlay">
-    <div class="modal-login-box">
-      <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button>
-      <div class="auth-logo-box">
-        <div class="auth-logo-text"><strong>FS</strong><span>Orçamentos</span></div>
-        <p>Acesse sua conta para assinar ou gerenciar seu plano</p>
-      </div>
-      <div id="auth-area" class="auth-area-index">
-        <div id="auth-container" class="auth-container-index">
-          <form id="form-autenticacao" onsubmit="return false;">
-            <h3 id="auth-titulo" class="auth-titulo-index">Acesse sua Conta</h3>
-            <div id="grupo-nome" class="auth-campo-index oculto"><label for="auth-nome">Nome</label><input type="text" id="auth-nome" placeholder="Seu nome"></div>
-            <div class="auth-campo-index"><label for="auth-email">E-mail</label><input type="email" id="auth-email" placeholder="seu@email.com"></div>
-            <div id="grupo-nome-empresa" class="auth-campo-index oculto"><label for="reg-nome-empresa">Nome da Empresa</label><input type="text" id="reg-nome-empresa" placeholder="Nome da sua empresa"></div>
-            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto"><label for="reg-telefone-empresa">WhatsApp da Empresa</label><input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da empresa"></div>
-            <div class="auth-campo-index"><label for="auth-senha">Senha</label><input type="password" id="auth-senha" placeholder="******"></div>
-            <div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto"><label for="auth-confirmar-senha">Confirmar Senha</label><input type="password" id="auth-confirmar-senha" placeholder="******"></div>
-            <button type="button" id="btn-principal" class="btn-principal-index" onclick="enviarFormulario()">Entrar</button>
-          </form>
-          <div class="auth-alternar-index"><a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <div id="modal-login" class="modal-login-overlay"><div class="modal-login-box"><button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button><div class="auth-logo-box"><div class="auth-logo-text"><strong>FS</strong><span>Orçamentos</span></div><p>Acesse sua conta para assinar ou gerenciar seu plano</p></div><div id="auth-area" class="auth-area-index"><div id="auth-container" class="auth-container-index"><form id="form-autenticacao" onsubmit="return false;"><h3 id="auth-titulo" class="auth-titulo-index">Acesse sua Conta</h3><div id="grupo-nome" class="auth-campo-index oculto"><label for="auth-nome">Nome</label><input type="text" id="auth-nome" placeholder="Seu nome"></div><div class="auth-campo-index"><label for="auth-email">E-mail</label><input type="email" id="auth-email" placeholder="seu@email.com"></div><div id="grupo-nome-empresa" class="auth-campo-index oculto"><label for="reg-nome-empresa">Nome da Empresa</label><input type="text" id="reg-nome-empresa" placeholder="Nome da sua empresa"></div><div id="grupo-whatsapp-empresa" class="auth-campo-index oculto"><label for="reg-telefone-empresa">WhatsApp da Empresa</label><input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da empresa"></div><div class="auth-campo-index"><label for="auth-senha">Senha</label><input type="password" id="auth-senha" placeholder="******"></div><div id="grupo-confirmar-senha" class="auth-campo-index auth-campo-confirmar-index oculto"><label for="auth-confirmar-senha">Confirmar Senha</label><input type="password" id="auth-confirmar-senha" placeholder="******"></div><button type="button" id="btn-principal" class="btn-principal-index" onclick="enviarFormulario()">Entrar</button></form><div class="auth-alternar-index"><a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? Clique aqui.</a></div></div></div></div></div>
   <main class="pagina-planos">
-    <section class="planos-hero planos-venda-hero">
-      <div class="planos-hero-conteudo">
-        <span class="tag-planos">Planos FS Orçamentos</span>
-        <h1>Escolha o plano para transformar orçamento em gestão.</h1>
-        <p>Comece grátis gerando PDF. Evolua para o Básico quando precisar salvar, acompanhar e enviar link de aprovação. Use o Premium para controlar clientes, veículos, ordens de serviço, estoque e rotina da empresa.</p>
-        <div class="planos-acoes-hero">
-          <a href="/gerador.html" class="btn-hero-planos btn-hero-principal">Começar grátis</a>
-          <a href="#assinar-plano-basico" class="btn-hero-planos btn-hero-secundario">Ver Básico</a>
-          <a href="#assinar-plano-premium" class="btn-hero-planos btn-hero-secundario premium-link">Ver Premium</a>
-        </div>
-      </div>
-      <aside class="planos-hero-destaque">
-        <span>Mais indicado</span>
-        <strong>Premium / Gestão</strong>
-        <p>Para quem quer sair do orçamento solto e controlar o serviço inteiro: cliente, veículo, OS, estoque, pagamento e histórico.</p>
-      </aside>
-    </section>
-
-    <section class="teste-premium-card teste-premium-topo" id="box-teste-premium">
-      <div>
-        <span class="valor-promocional">Teste grátis</span>
-        <h3>Teste Premium grátis por 7 dias</h3>
-        <p>Libere clientes, veículos, ordens de serviço, estoque e gestão completa por 7 dias. Ao vencer, sua conta volta automaticamente ao plano anterior.</p>
-        <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
-      </div>
-      <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>Verificando...</button>
-    </section>
-
-    <div id="status-plano-box" class="status-plano-box">Verificando seu plano atual...</div>
-
-    <section class="planos-resumo-section">
-      <div class="section-topo">
-        <span class="tag-plano-pix">Resumo dos planos</span>
-        <h2>O grátis mostra a ferramenta. Os pagos organizam sua empresa.</h2>
-        <p>O destaque fica no Premium porque ele entrega a ideia principal do produto: gestão completa para prestadores e oficinas.</p>
-      </div>
-      <div class="planos-grid planos-resumo-grid">
-        <article class="plano-card plano-gratis-card">
-          <span class="plano-tag">Entrada</span>
-          <h3>Grátis</h3>
-          <div class="plano-preco">R$ 0</div>
-          <p>Para experimentar o gerador e criar PDFs profissionais com limitações.</p>
-          <ul class="planos-lista"><li>Gerador de orçamento</li><li>Prévia e PDF</li><li>Anúncios na plataforma</li></ul>
-        </article>
-        <article class="plano-card plano-basico-card recomendado">
-          <span class="plano-tag">Comercial</span>
-          <h3>Básico</h3>
-          <div class="plano-preco">R$ 29,90 <small>/mês</small></div>
-          <p>Para vender melhor, salvar histórico e acompanhar aprovação do cliente.</p>
-          <ul class="planos-lista"><li>Orçamentos salvos</li><li>Status e histórico</li><li>Link de aprovação</li></ul>
-        </article>
-        <article class="plano-card plano-premium-card destaque mais-escolhido-card">
-          <span class="plano-pix-selo">Mais escolhido</span>
-          <h3>Premium / Gestão</h3>
-          <div class="plano-preco">R$ 89,90 <small>/mês</small></div>
-          <p>Para controlar a operação completa da empresa, da venda ao serviço finalizado.</p>
-          <ul class="planos-lista"><li>Clientes, veículos e OS</li><li>Estoque e agenda</li><li>Dashboard e histórico</li></ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="comparativo-section">
-      <div class="section-topo">
-        <span class="tag-plano-pix">Comparativo</span>
-        <h2>Compare antes de escolher</h2>
-        <p>Básico resolve o controle comercial. Premium resolve a operação completa.</p>
-      </div>
-      <div class="comparativo-wrapper">
-        <table class="tabela-comparativo">
-          <thead><tr><th>Recurso</th><th>Grátis</th><th>Básico</th><th>Premium</th></tr></thead>
-          <tbody>
-            <tr><td>Gerar orçamento em PDF</td><td class="sim">Sim</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Anúncios na plataforma</td><td class="sim">Sim</td><td class="nao">Não</td><td class="nao premium-coluna">Não</td></tr>
-            <tr><td>Salvar orçamento na nuvem</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Histórico e status dos orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Link para cliente aprovar/recusar</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Notificações de status</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Resumo financeiro de orçamentos</td><td class="nao">Não</td><td class="sim">Sim</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Cadastro de clientes</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Cadastro de veículos</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Ordens de serviço</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Controle de estoque</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Orçamento aprovado virar OS</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Histórico por cliente e veículo</td><td class="nao">Não</td><td class="nao">Não</td><td class="sim premium-coluna">Sim</td></tr>
-            <tr><td>Consultores Técnicos</td><td>Até 2</td><td>Até 5</td><td class="premium-coluna">Até 5</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="assinar-plano-basico" class="planos-pix-section basico-section">
-      <div class="planos-pix-topo">
-        <span class="tag-plano-pix">Plano Básico</span>
-        <h2 id="titulo-assinatura-basico">Ative o Básico via Pix</h2>
-        <p id="texto-assinatura-basico">Escolha o período, gere o Pix e libere os recursos pagos assim que o pagamento for confirmado.</p>
-      </div>
-      <div class="planos-pix-grid">
-        <div class="plano-pix-card">
-          <div class="plano-pix-periodo">1 mês</div>
-          <div class="plano-pix-preco">R$ 29,90</div>
-          <p>Ideal para testar todos os recursos pagos por 30 dias.</p>
-          <button type="button" data-botao-pix data-plano="basico" data-periodo="mensal" onclick="window.gerarPixPlano && window.gerarPixPlano('basico','mensal')">Assinar via Pix</button>
-        </div>
-        <div class="plano-pix-card destaque">
-          <div class="plano-pix-selo">Mais escolhido</div>
-          <div class="plano-pix-periodo">6 meses</div>
-          <div class="plano-pix-preco">R$ 159,90</div>
-          <span class="plano-pix-economia">Economia no período</span>
-          <p>Melhor equilíbrio para usar por mais tempo pagando menos que mensalmente.</p>
-          <button type="button" data-botao-pix data-plano="basico" data-periodo="semestral" onclick="window.gerarPixPlano && window.gerarPixPlano('basico','semestral')">Assinar via Pix</button>
-        </div>
-        <div class="plano-pix-card">
-          <div class="plano-pix-periodo">12 meses</div>
-          <div class="plano-pix-preco">R$ 299,90</div>
-          <span class="plano-pix-economia">Melhor custo-benefício</span>
-          <p>Perfeito para usar o FS Orçamentos durante o ano todo.</p>
-          <button type="button" data-botao-pix data-plano="basico" data-periodo="anual" onclick="window.gerarPixPlano && window.gerarPixPlano('basico','anual')">Assinar via Pix</button>
-        </div>
-      </div>
-      <div class="plano-pix-beneficios">
-        <strong>O Básico inclui:</strong>
-        <span>Salvar orçamentos na nuvem</span><span>Histórico de orçamentos</span><span>Envio por WhatsApp com link</span><span>Aprovação/recusa do cliente</span><span>Status dos orçamentos</span><span>Lembrete de orçamento pendente</span><span>Resumo financeiro</span><span>Até 5 responsáveis</span><span>Sem anúncios</span>
-      </div>
-    </section>
-
-    <section id="assinar-plano-premium" class="planos-pix-section premium-section plano-premium-venda">
-      <div class="planos-pix-topo">
-        <span class="tag-plano-pix premium-tag">Premium / Gestão</span>
-        <h2 id="titulo-assinatura-premium">Ative o Premium via Pix</h2>
-        <p id="texto-assinatura-premium">O Premium transforma o FS Orçamentos em um sistema completo de gestão para oficinas e prestadores: clientes, veículos, ordens de serviço, estoque, agenda, histórico e financeiro por serviço.</p>
-      </div>
-      <div class="planos-pix-grid">
-        <div class="plano-pix-card premium-card-pagamento">
-          <div class="plano-pix-periodo">1 mês</div>
-          <div class="plano-pix-preco">R$ 89,90</div>
-          <p>Ideal para testar a gestão completa por 30 dias.</p>
-          <button type="button" data-botao-pix data-plano="premium" data-periodo="mensal" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','mensal')">Assinar Premium via Pix</button>
-        </div>
-        <div class="plano-pix-card destaque premium-card-pagamento premium-mais-escolhido">
-          <div class="plano-pix-selo">Mais escolhido</div>
-          <div class="plano-pix-periodo">6 meses</div>
-          <div class="plano-pix-preco">R$ 499,90</div>
-          <span class="plano-pix-economia">Gestão por semestre</span>
-          <p>Melhor opção para oficinas que querem organizar atendimentos, veículos, OS e estoque.</p>
-          <button type="button" data-botao-pix data-plano="premium" data-periodo="semestral" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','semestral')">Assinar Premium via Pix</button>
-        </div>
-        <div class="plano-pix-card premium-card-pagamento">
-          <div class="plano-pix-periodo">12 meses</div>
-          <div class="plano-pix-preco">R$ 999,90</div>
-          <span class="plano-pix-economia">Melhor custo-benefício</span>
-          <p>Use o sistema completo durante o ano todo pagando menos por mês.</p>
-          <button type="button" data-botao-pix data-plano="premium" data-periodo="anual" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','anual')">Assinar Premium via Pix</button>
-        </div>
-      </div>
-      <div class="plano-pix-beneficios premium-beneficios">
-        <strong>O Premium inclui:</strong>
-        <span>Tudo do Básico</span><span>Cadastro de clientes</span><span>Cadastro de veículos</span><span>Ordens de serviço</span><span>PDF profissional da OS</span><span>Controle de estoque</span><span>Orçamento aprovado vira OS</span><span>Histórico por cliente</span><span>Histórico por veículo</span><span>Controle financeiro por OS</span><span>Dashboard da empresa</span><span>Selo Premium na comunidade</span>
-      </div>
-      <div class="premium-aviso">Indicado para controlar o atendimento completo: cliente → veículo → orçamento → aprovação → ordem de serviço → estoque → pagamento → histórico.</div>
-    </section>
-
-    <section class="faq-section">
-      <div class="section-topo"><span class="tag-plano-pix">Dúvidas frequentes</span><h2>Antes de assinar</h2><p>Informações importantes sobre os planos, pagamento via Pix e liberação dos recursos.</p></div>
-      <div class="faq-grid">
-        <div class="faq-card"><strong>O Plano Grátis continua existindo?</strong><p>Sim. Você pode gerar prévia e baixar PDF no Plano Grátis, com limitações e anúncios.</p></div>
-        <div class="faq-card"><strong>Quando o plano pago é liberado?</strong><p>A liberação acontece automaticamente quando o pagamento Pix for confirmado e registrado no sistema.</p></div>
-        <div class="faq-card"><strong>Qual a diferença entre Básico e Premium?</strong><p>O Básico gerencia orçamentos. O Premium gerencia o fluxo completo com clientes, veículos, OS, estoque e histórico.</p></div>
-        <div class="faq-card"><strong>Tem contrato ou fidelidade?</strong><p>Não. Você escolhe o período desejado e renova quando quiser.</p></div>
-      </div>
-    </section>
+    <section class="card hero"><div><span class="tag">Planos FS Orçamentos</span><h1>Comece grátis. Use Premium quando quiser vender pelo link.</h1><p>O Grátis gera PDF. O Premium salva orçamento, envia por WhatsApp, recebe aprovação online, reutiliza itens recorrentes e acompanha caixa e relatórios.</p><div class="acoes"><a href="/gerador.html" class="btn primary">Começar grátis</a><a href="#assinar-plano-premium" class="btn">Assinar Premium</a></div></div><div class="status-plano-box" id="status-plano-box">Verificando seu plano atual...</div></section>
+    <section class="grid"><article class="card plano gratis"><span class="tag">Grátis</span><h2>PDF simples</h2><div class="preco">R$ 0</div><p>Para criar orçamento pontual e baixar em PDF.</p><ul><li>Gerador de orçamento</li><li>Prévia do PDF</li><li>Download do PDF</li><li>Anúncios na plataforma</li><li>Sem histórico na nuvem</li></ul><a href="/gerador.html" class="btn">Usar grátis</a></article><article class="card plano premium"><span class="tag">Lançamento</span><h2>Premium</h2><div class="preco">R$ 29,90 <small>/mês</small></div><p>Para transformar orçamento em link de aprovação e histórico profissional.</p><ul><li>Salvar orçamentos na nuvem</li><li>Enviar link por WhatsApp</li><li>Aprovação e recusa online</li><li>Mão de obra recorrente</li><li>Itens/produtos recorrentes</li><li>PDF e online com mão de obra e produtos separados</li><li>Caixa manual</li><li>Relatórios financeiros gerais</li><li>Sem anúncios</li></ul><a href="#assinar-plano-premium" class="btn primary">Assinar Premium</a></article></section>
+    <section class="card comparativo"><h2>Comparativo direto</h2><div class="table-wrap"><table class="tabela"><thead><tr><th>Recurso</th><th>Grátis</th><th>Premium</th></tr></thead><tbody><tr><td>Gerar orçamento em PDF</td><td class="sim">Sim</td><td class="sim">Sim</td></tr><tr><td>Anúncios</td><td class="sim">Sim</td><td class="nao">Não</td></tr><tr><td>Salvar orçamento na nuvem</td><td class="nao">Não</td><td class="sim">Sim</td></tr><tr><td>WhatsApp com link</td><td class="nao">Não</td><td class="sim">Sim</td></tr><tr><td>Aprovação/recusa online</td><td class="nao">Não</td><td class="sim">Sim</td></tr><tr><td>Mão de obra recorrente</td><td class="nao">Não</td><td class="sim">Sim</td></tr><tr><td>Itens/produtos recorrentes</td><td class="nao">Não</td><td class="sim">Sim</td></tr><tr><td>Caixa</td><td class="nao">Não</td><td class="sim">Sim</td></tr><tr><td>Relatórios financeiros</td><td class="nao">Não</td><td class="sim">Sim</td></tr></tbody></table></div></section>
+    <section id="assinar-plano-premium" class="card pix"><span class="tag">Plano Premium</span><h2>Ative o Premium via Pix</h2><p>Escolha o período, gere o Pix e libere os recursos Premium assim que o pagamento for confirmado.</p><div class="pix-grid"><div class="pix-card"><strong>1 mês</strong><b>R$ 29,90</b><p>Ideal para começar.</p><button type="button" data-botao-pix data-plano="premium" data-periodo="mensal" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','mensal')">Assinar via Pix</button></div><div class="pix-card destaque"><strong>6 meses</strong><b>R$ 149,90</b><p>Equivale a menos de R$ 25 por mês.</p><button type="button" data-botao-pix data-plano="premium" data-periodo="semestral" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','semestral')">Assinar via Pix</button></div><div class="pix-card"><strong>12 meses</strong><b>R$ 299,90</b><p>Melhor preço anual de lançamento.</p><button type="button" data-botao-pix data-plano="premium" data-periodo="anual" onclick="window.gerarPixPlano && window.gerarPixPlano('premium','anual')">Assinar via Pix</button></div></div></section>
+    <section class="card faq"><h2>Dúvidas rápidas</h2><div class="faq-grid"><div class="faq-card"><strong>Qual a diferença entre PDF grátis e Premium?</strong><p>No Grátis você baixa o PDF. No Premium você salva histórico, envia link e acompanha aprovação.</p></div><div class="faq-card"><strong>O cliente precisa criar conta?</strong><p>Não. Ele abre o link recebido e escolhe aprovar ou recusar.</p></div><div class="faq-card"><strong>Funciona pelo WhatsApp?</strong><p>Sim. O Premium gera a mensagem com link do orçamento para envio ao cliente.</p></div><div class="faq-card"><strong>Posso controlar vendas?</strong><p>Sim. Você pode registrar entradas e saídas no Caixa e acompanhar relatórios.</p></div></div></section>
   </main>
-
-  <div id="modal-pix-basico" class="modal-pix-overlay">
-    <div class="modal-pix-card">
-      <div class="modal-pix-topo">
-        <div><strong>Pagamento via Pix</strong><span id="pix-modal-subtitulo">Plano Básico</span></div>
-        <button type="button" onclick="fecharModalPixBasico()">×</button>
-      </div>
-      <div id="pix-loading" class="pix-loading">Gerando Pix, aguarde...</div>
-      <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
-        <div class="pix-resumo">
-          <div><small>Plano</small><strong id="pix-plano-label">Plano Básico</strong></div>
-          <div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div>
-        </div>
-        <div class="pix-qrcode-box"><img id="pix-qrcode-img" src="" alt="QR Code Pix"></div>
-        <label class="pix-label">Pix copia e cola</label>
-        <textarea id="pix-copia-cola" readonly></textarea>
-        <div class="pix-acoes"><button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button><button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button></div>
-        <p class="pix-aviso">Após o pagamento, seu plano será liberado automaticamente quando a confirmação chegar.</p>
-      </div>
-      <div id="pix-erro" class="pix-erro" style="display:none;"></div>
-    </div>
-  </div>
-
-  <footer>
-    &copy; 2026 FS Orçamentos |
-    <a href="/privacidade.html">Privacidade</a> |
-    <a href="/termos.html">Termos</a> |
-    <a href="/contato.html">Contato</a>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="auth.js"></script>
-  <script src="ui.js"></script>
-  <script src="pagamentos.js"></script>
-  <script src="planos.js"></script>
-  <script src="carregar-menu.js"></script>
-  <script src="notificacoes.js"></script>
+  <div id="modal-pix-basico" class="modal-pix-overlay"><div class="modal-pix-card"><div class="modal-pix-topo"><div><strong>Pagamento via Pix</strong><span id="pix-modal-subtitulo">Plano Premium</span></div><button type="button" onclick="fecharModalPixBasico()">×</button></div><div id="pix-loading" class="pix-loading">Gerando Pix...</div><div id="pix-erro" class="pix-erro" style="display:none"></div><div id="pix-conteudo" class="pix-conteudo" style="display:none"><div class="pix-resumo"><div><small>Plano</small><strong id="pix-plano-label">Premium</strong></div><div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div></div><div class="pix-qrcode-box"><img id="pix-qrcode-img" alt="QR Code Pix" style="display:none"></div><label class="pix-label" for="pix-copia-cola">Pix copia e cola</label><textarea id="pix-copia-cola" readonly></textarea><div class="pix-acoes"><button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button><button type="button" onclick="verificarPagamentoPixAtual()">Já paguei</button><button type="button" class="secundario" onclick="fecharModalPixBasico()">Fechar</button></div></div></div></div>
+  <footer style="text-align:center;padding:24px;color:#64748b">&copy; 2026 FS Orçamentos | <a href="/privacidade.html">Privacidade</a> | <a href="/termos.html">Termos</a> | <a href="/contato.html">Contato</a></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="auth.js"></script><script src="ui.js"></script><script src="pagamentos.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script src="notificacoes.js"></script>
 </body>
 </html>

@@ -3,208 +3,51 @@
 <head>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#f8fafc">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Sobre o FS Orçamentos | Orçamentos profissionais e gestão para prestadores</title>
-  <meta name="description" content="Conheça o FS Orçamentos: plataforma brasileira para gerar orçamentos em PDF, acompanhar aprovações e evoluir para gestão com clientes, veículos, ordens de serviço, estoque e agenda.">
-  <meta name="keywords" content="FS Orçamentos, orçamento PDF, sistema de orçamento, gestão de oficina, ordem de serviço, prestadores de serviço, MEI, orçamento profissional">
+  <title>Sobre o FS Orçamentos</title>
+  <meta name="description" content="Conheça o FS Orçamentos: plataforma para gerar orçamento em PDF, salvar propostas no Premium, enviar por WhatsApp, aprovar online, controlar caixa e acompanhar relatórios financeiros.">
+  <meta name="keywords" content="FS Orçamentos, orçamento PDF, aprovação online, orçamento por WhatsApp, fluxo de caixa, relatório financeiro">
   <meta name="author" content="Filipi Aparecido dos Santos">
   <meta name="robots" content="index, follow">
   <meta name="google-adsense-account" content="ca-pub-5628949951885077">
-
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fsorcamentos.com.br/sobre.html">
   <meta property="og:title" content="Sobre o FS Orçamentos">
-  <meta property="og:description" content="Uma plataforma para gerar orçamentos profissionais e organizar o serviço do orçamento ao pós-venda.">
+  <meta property="og:description" content="Orçamentos em PDF, envio por WhatsApp, aprovação online, caixa e relatórios financeiros.">
   <meta property="og:image" content="https://fsorcamentos.com.br/favicon.png">
-
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://fsorcamentos.com.br/sobre.html">
-  <meta property="twitter:title" content="Sobre o FS Orçamentos">
-  <meta property="twitter:description" content="Orçamentos em PDF, aprovação por link e gestão completa para prestadores e oficinas.">
-  <meta property="twitter:image" content="https://fsorcamentos.com.br/favicon.png">
-
   <link rel="stylesheet" href="style.css">
   <link id="fs-sobre-inline-css" rel="stylesheet" href="sobre-inline.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077" crossorigin="anonymous"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17435932696');
-  </script>
-
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "FS Orçamentos",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web, Android",
-    "url": "https://fsorcamentos.com.br/",
-    "description": "Plataforma para gerar orçamentos profissionais em PDF, acompanhar aprovações e gerenciar clientes, veículos, ordens de serviço, estoque e agenda conforme o plano contratado.",
-    "author": {
-      "@type": "Person",
-      "name": "Filipi Aparecido dos Santos"
-    },
-    "offers": [
-      { "@type": "Offer", "name": "Plano Grátis", "price": "0", "priceCurrency": "BRL" },
-      { "@type": "Offer", "name": "Plano Básico", "price": "29.90", "priceCurrency": "BRL" },
-      { "@type": "Offer", "name": "Plano Premium", "price": "89.90", "priceCurrency": "BRL" }
-    ]
-  }
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"FS Orçamentos","applicationCategory":"BusinessApplication","operatingSystem":"Web, Android","url":"https://fsorcamentos.com.br/","description":"Plataforma para gerar orçamentos profissionais em PDF, salvar propostas no Premium, enviar por WhatsApp, aprovar online, controlar caixa e acompanhar relatórios financeiros.","author":{"@type":"Person","name":"Filipi Aparecido dos Santos"},"offers":[{"@type":"Offer","name":"Plano Grátis","price":"0","priceCurrency":"BRL"},{"@type":"Offer","name":"Plano Premium","price":"89.90","priceCurrency":"BRL"}]}
   </script>
 </head>
 <body>
   <div id="header-container"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="auth.js"></script>
-  <script src="ui.js"></script>
-  <script src="planos.js"></script>
-  <script src="carregar-menu.js"></script>
-  <script src="notificacoes.js"></script>
-
+  <script src="config.js"></script><script src="auth.js"></script><script src="ui.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script src="notificacoes.js"></script>
   <main class="sobre-page">
     <section class="sobre-hero">
       <div>
-        <div class="sobre-brand" aria-label="FS Orçamentos">
-          <span class="sobre-fs-box">FS</span>
-          <span class="sobre-fs-text">Orçamentos</span>
-        </div>
-
-        <span class="sobre-kicker">Plataforma brasileira para prestadores de serviço</span>
-        <h1>Do orçamento em PDF à gestão completa do serviço.</h1>
-        <p>O FS Orçamentos foi criado para ajudar profissionais, MEIs, autônomos, prestadores de serviço e oficinas a apresentarem propostas com mais clareza, acompanharem aprovações e organizarem a rotina comercial e operacional.</p>
-
-        <div class="sobre-hero-actions">
-          <a href="/gerador.html" class="sobre-btn sobre-btn-primary">Gerar orçamento</a>
-          <a href="/planos.html" class="sobre-btn sobre-btn-secondary">Conhecer planos</a>
-          <a href="/contato.html" class="sobre-btn sobre-btn-secondary">Falar com suporte</a>
-        </div>
+        <div class="sobre-brand" aria-label="FS Orçamentos"><span class="sobre-fs-box">FS</span><span class="sobre-fs-text">Orçamentos</span></div>
+        <span class="sobre-kicker">Plataforma brasileira para orçamentos profissionais</span>
+        <h1>Orçamentos simples, bonitos e prontos para vender melhor.</h1>
+        <p>O FS Orçamentos foi criado para ajudar profissionais, MEIs, autônomos e pequenas empresas a criarem propostas claras, com apresentação profissional, separação de mão de obra e produtos, PDF e acompanhamento comercial no plano Premium.</p>
+        <div class="sobre-hero-actions"><a href="/gerador.html" class="sobre-btn sobre-btn-primary">Gerar orçamento</a><a href="/planos.html" class="sobre-btn sobre-btn-secondary">Conhecer planos</a><a href="/contato.html" class="sobre-btn sobre-btn-secondary">Falar com suporte</a></div>
       </div>
-
-      <aside class="sobre-proof-card">
-        <strong>O que a plataforma resolve</strong>
-        <p>Ela reduz orçamento perdido em conversa, melhora a apresentação para o cliente e cria uma base organizada para acompanhar vendas, serviços, clientes e histórico.</p>
-        <ul class="sobre-checks">
-          <li>PDF profissional com dados da empresa e itens do serviço.</li>
-          <li>Planos pagos com histórico, status e link de aprovação.</li>
-          <li>Premium com clientes, veículos, OS, estoque, agenda e dashboard.</li>
-        </ul>
-      </aside>
+      <aside class="sobre-proof-card"><strong>O que a plataforma resolve</strong><p>Ela transforma orçamento em processo: criar proposta, separar serviços e produtos, enviar para o cliente, receber resposta e acompanhar o resultado financeiro.</p><ul class="sobre-checks"><li>PDF profissional com dados da empresa.</li><li>Itens/produtos e mão de obra separados.</li><li>Premium com WhatsApp, aprovação online, caixa e relatórios.</li></ul></aside>
     </section>
-
-    <section class="sobre-section">
-      <span class="sobre-mini-tag">Visão geral</span>
-      <h2>Uma ferramenta para transformar atendimento em processo.</h2>
-      <p>O objetivo do FS Orçamentos é simples: ajudar quem vende serviço a sair de mensagens soltas, anotações perdidas e planilhas improvisadas. O usuário cria uma proposta, organiza itens, valores e condições, gera um PDF e, nos planos pagos, acompanha o andamento até a aprovação.</p>
-      <p>No Premium, a proposta aprovada pode fazer parte de um fluxo maior: cliente, veículo, ordem de serviço, estoque, pagamento, histórico e indicadores da empresa.</p>
-
-      <div class="sobre-grid-3">
-        <article class="sobre-card"><strong>📄 Orçamento profissional</strong><p>Propostas em PDF com identificação da empresa, cliente, itens, totais, observações e condições comerciais.</p></article>
-        <article class="sobre-card"><strong>🔗 Aprovação por link</strong><p>O cliente pode receber o orçamento, visualizar e responder online quando o recurso está disponível no plano.</p></article>
-        <article class="sobre-card"><strong>🧰 Gestão no Premium</strong><p>Clientes, veículos, ordens de serviço, estoque, agenda, histórico e dashboard para acompanhar a operação.</p></article>
-      </div>
-    </section>
-
-    <section class="sobre-section">
-      <span class="sobre-mini-tag">Fluxo ideal</span>
-      <h2>Da proposta ao serviço finalizado.</h2>
-      <p>A plataforma foi pensada para acompanhar a rotina real de prestadores e oficinas, onde um orçamento pode virar serviço, gerar consumo de peças, pagamento e histórico para consultas futuras.</p>
-
-      <div class="sobre-flow">
-        <div class="sobre-flow-step"><strong>Cliente</strong><span>Dados de contato e identificação organizados.</span></div>
-        <div class="sobre-flow-step"><strong>Orçamento</strong><span>Itens, valores, PDF e condições comerciais.</span></div>
-        <div class="sobre-flow-step"><strong>Aprovação</strong><span>Status, resposta do cliente e controle de pendências.</span></div>
-        <div class="sobre-flow-step"><strong>OS</strong><span>Execução do serviço no plano Premium.</span></div>
-        <div class="sobre-flow-step"><strong>Dashboard</strong><span>Indicadores para enxergar melhor a empresa.</span></div>
-      </div>
-    </section>
-
-    <section class="sobre-section">
-      <span class="sobre-mini-tag">Planos</span>
-      <h2>Comece simples e evolua quando precisar de mais controle.</h2>
-      <p>Os planos foram separados para que o usuário comece pelo essencial e avance conforme a necessidade de organização, histórico e gestão operacional.</p>
-
-      <div class="sobre-planos-grid">
-        <article class="sobre-plan-card gratis">
-          <h3>Plano Grátis</h3>
-          <span class="sobre-plan-price">R$ 0</span>
-          <p>Para experimentar a plataforma e criar orçamentos profissionais em PDF com limitações e anúncios.</p>
-          <ul><li>Geração de PDF.</li><li>Uso inicial da ferramenta.</li><li>Pode exibir anúncios.</li></ul>
-        </article>
-
-        <article class="sobre-plan-card basico">
-          <h3>Plano Básico</h3>
-          <span class="sobre-plan-price">R$ 29,90/mês</span>
-          <p>Para quem gera orçamentos com frequência e precisa salvar, acompanhar e enviar propostas com mais controle.</p>
-          <ul><li>Histórico de orçamentos.</li><li>Status e link de aprovação.</li><li>Sem anúncios na plataforma.</li></ul>
-        </article>
-
-        <article class="sobre-plan-card premium">
-          <h3>Plano Premium</h3>
-          <span class="sobre-plan-price">R$ 89,90/mês</span>
-          <p>Para gestão completa da rotina: clientes, veículos, ordens de serviço, estoque, agenda e dashboard.</p>
-          <ul><li>Tudo do Básico.</li><li>Clientes, veículos e OS.</li><li>Estoque, agenda e indicadores.</li></ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="sobre-section">
-      <span class="sobre-mini-tag">Comparativo rápido</span>
-      <h2>O que cada plano libera.</h2>
-      <div class="sobre-table-wrap">
-        <table class="sobre-table">
-          <thead><tr><th>Recurso</th><th>Grátis</th><th>Básico</th><th>Premium</th></tr></thead>
-          <tbody>
-            <tr><td>Gerar orçamento em PDF</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr>
-            <tr><td>Anúncios na plataforma</td><td>Sim</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td></tr>
-            <tr><td>Salvar orçamentos na nuvem</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr>
-            <tr><td>Status, histórico e aprovação por link</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr>
-            <tr><td>Clientes e veículos</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr>
-            <tr><td>Ordens de serviço</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr>
-            <tr><td>Estoque, agenda e dashboard</td><td class="sobre-nao">Não</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="sobre-section">
-      <span class="sobre-mini-tag">Confiança e transparência</span>
-      <h2>Informações importantes para usuários e anunciantes.</h2>
-      <div class="sobre-grid-2">
-        <article class="sobre-card"><strong>Privacidade</strong><p>A política explica quais dados podem ser tratados, incluindo conta, empresa, orçamentos, clientes, veículos, OS, Pix, cookies e anúncios.</p></article>
-        <article class="sobre-card"><strong>Termos de uso</strong><p>Os termos descrevem regras de uso, planos, teste Premium, pagamentos via Pix, responsabilidades e exclusão de conta.</p></article>
-      </div>
-    </section>
-
-    <section class="sobre-final-cta">
-      <h2>Pronto para criar uma proposta mais profissional?</h2>
-      <p>Comece com o gerador e evolua para os planos pagos quando precisar salvar histórico, acompanhar aprovações e gerenciar melhor o serviço.</p>
-      <div class="sobre-final-actions">
-        <a href="/gerador.html" class="sobre-btn sobre-btn-primary">Gerar orçamento</a>
-        <a href="/planos.html" class="sobre-btn sobre-btn-secondary">Ver planos</a>
-      </div>
-    </section>
+    <section class="sobre-section"><span class="sobre-mini-tag">Visão geral</span><h2>Uma ferramenta focada em orçamento.</h2><p>O objetivo é direto: sair de mensagens soltas e anotações improvisadas para uma proposta organizada. O usuário preenche os dados, adiciona mão de obra e produtos, confere a prévia e gera um PDF.</p><p>No Premium, o orçamento também pode ser salvo na nuvem, enviado por WhatsApp com link de aprovação ou recusa, reutilizado com itens recorrentes e acompanhado nos relatórios financeiros.</p><div class="sobre-grid-3"><article class="sobre-card"><strong>📄 PDF profissional</strong><p>Propostas com empresa, cliente, itens, totais, observações e condições comerciais.</p></article><article class="sobre-card"><strong>🔗 Aprovação online</strong><p>O cliente abre o link, confere o orçamento e escolhe aprovar ou recusar.</p></article><article class="sobre-card"><strong>📊 Financeiro simples</strong><p>Fluxo de caixa manual e relatórios gerais para acompanhar vendas e saldo.</p></article></div></section>
+    <section class="sobre-section"><span class="sobre-mini-tag">Fluxo ideal</span><h2>Do orçamento ao acompanhamento financeiro.</h2><p>A plataforma acompanha o essencial da venda: proposta, resposta do cliente, registro financeiro e visão geral dos resultados.</p><div class="sobre-flow"><div class="sobre-flow-step"><strong>Orçamento</strong><span>Dados, mão de obra, produtos e valores.</span></div><div class="sobre-flow-step"><strong>PDF</strong><span>Documento pronto para baixar e enviar.</span></div><div class="sobre-flow-step"><strong>WhatsApp</strong><span>Link Premium para o cliente visualizar.</span></div><div class="sobre-flow-step"><strong>Aprovação</strong><span>Resposta online: aprovado ou recusado.</span></div><div class="sobre-flow-step"><strong>Relatórios</strong><span>Indicadores financeiros simples.</span></div></div></section>
+    <section class="sobre-section"><span class="sobre-mini-tag">Planos</span><h2>Comece grátis e ative o Premium quando precisar vender com mais controle.</h2><p>O Grátis atende quem precisa gerar PDF. O Premium atende quem quer salvar histórico, enviar link, acompanhar aprovação, usar recorrentes, registrar caixa e ver relatórios.</p><div class="sobre-planos-grid"><article class="sobre-plan-card gratis"><h3>Plano Grátis</h3><span class="sobre-plan-price">R$ 0</span><p>Para criar orçamentos profissionais em PDF.</p><ul><li>Gerador de orçamento.</li><li>Prévia e download do PDF.</li><li>Pode exibir anúncios.</li></ul></article><article class="sobre-plan-card premium"><h3>Plano Premium</h3><span class="sobre-plan-price">R$ 89,90/mês</span><p>Para salvar, enviar, acompanhar e organizar a parte financeira.</p><ul><li>Orçamentos salvos.</li><li>WhatsApp com aprovação/recusa online.</li><li>Recorrentes, caixa e relatórios.</li></ul></article></div></section>
+    <section class="sobre-section"><span class="sobre-mini-tag">Comparativo rápido</span><h2>O que cada plano libera.</h2><div class="sobre-table-wrap"><table class="sobre-table"><thead><tr><th>Recurso</th><th>Grátis</th><th>Premium</th></tr></thead><tbody><tr><td>Gerar orçamento em PDF</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr><tr><td>Separar mão de obra e produtos</td><td class="sobre-sim">Sim</td><td class="sobre-sim">Sim</td></tr><tr><td>Anúncios na plataforma</td><td>Sim</td><td class="sobre-nao">Não</td></tr><tr><td>Salvar orçamentos na nuvem</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr><tr><td>WhatsApp com link</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr><tr><td>Aprovação e recusa online</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr><tr><td>Mão de obra e itens recorrentes</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr><tr><td>Fluxo de caixa e relatórios</td><td class="sobre-nao">Não</td><td class="sobre-sim">Sim</td></tr></tbody></table></div></section>
+    <section class="sobre-section"><span class="sobre-mini-tag">Confiança e transparência</span><h2>Informações importantes para usuários e anunciantes.</h2><div class="sobre-grid-2"><article class="sobre-card"><strong>Privacidade</strong><p>A política explica quais dados podem ser tratados, incluindo conta, empresa, orçamentos, Pix, cookies, anúncios, fórum, caixa e suporte.</p></article><article class="sobre-card"><strong>Termos de uso</strong><p>Os termos descrevem regras de uso, planos, pagamentos via Pix, responsabilidades, anúncios e exclusão de conta.</p></article></div></section>
+    <section class="sobre-final-cta"><h2>Pronto para criar uma proposta mais profissional?</h2><p>Comece com o gerador grátis e ative o Premium quando quiser salvar histórico, enviar link e acompanhar aprovações.</p><div class="sobre-final-actions"><a href="/gerador.html" class="sobre-btn sobre-btn-primary">Gerar orçamento agora</a><a href="/planos.html" class="sobre-btn sobre-btn-secondary">Ver planos</a></div></section>
   </main>
-
-  <footer class="sobre-footer">
-    © 2026 FS Orçamentos |
-    <a href="/sobre.html">Sobre</a> |
-    <a href="/privacidade.html">Privacidade</a> |
-    <a href="/termos.html">Termos</a> |
-    <a href="/contato.html">Contato</a>
-  </footer>
+  <footer class="sobre-footer">© 2026 FS Orçamentos | <a href="/privacidade.html">Privacidade</a> | <a href="/termos.html">Termos</a> | <a href="/contato.html">Contato</a></footer>
 </body>
 </html>
