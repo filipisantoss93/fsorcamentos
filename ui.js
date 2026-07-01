@@ -204,10 +204,14 @@ function inserirSecoesComerciaisHome() {
     const home = document.querySelector('main.home');
     if (!home) return;
 
+    const resumo = home.querySelector('.resumo');
+    if (resumo) resumo.remove();
+
     if (!document.getElementById('home-visual-overrides')) {
         const estilo = document.createElement('style');
         estilo.id = 'home-visual-overrides';
         estilo.textContent = `
+            .home .resumo{display:none!important}
             .home .planos{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:24px!important;padding:10px!important;border:1px solid rgba(214,231,255,.88)!important;border-radius:30px!important;background:linear-gradient(180deg,rgba(234,243,255,.78),rgba(234,243,255,.42))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important}
             .home .plano{position:relative!important;overflow:hidden!important;background:#fff!important;border:1px solid #d6e7ff!important;border-radius:28px!important;padding:32px 34px 36px!important;box-shadow:0 18px 42px rgba(20,92,255,.10)!important;border-top:1px solid #d6e7ff!important;color:#040f2f!important}
             .home .plano::before{content:"";position:absolute;right:-42px;top:-42px;width:142px;height:142px;border-radius:50%;background:radial-gradient(circle,rgba(47,123,255,.12) 0%,rgba(47,123,255,0) 72%);pointer-events:none}
