@@ -6,9 +6,7 @@ const FS_ROTAS_PROTEGIDAS_MENU = [
   '/painel.html', '/painel',
   '/orcamentos.html', '/orcamentos',
   '/dashboard.html', '/dashboard',
-  '/fluxo-caixa.html', '/fluxo-caixa',
-  '/forum.html', '/forum',
-  '/social.html', '/social'
+  '/fluxo-caixa.html', '/fluxo-caixa'
 ];
 
 const FS_ROTAS_PREMIUM_MENU = [
