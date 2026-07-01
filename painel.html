@@ -2,108 +2,76 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#f8fafc">
+  <meta name="theme-color" content="#145cff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Painel - Perfil e Assinatura | FS Orçamentos</title>
-
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="painel-inline.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17435932696');
-  </script>
-
-  <link id="fs-painel-inline-css" rel="stylesheet" href="painel-inline.css">
   <style>
-    .painel-container-simples { max-width: 980px; }
-    .painel-header-simples { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
-    .painel-header-simples h1 { margin-bottom: 8px; }
-    .painel-assinatura-pix { display: grid; gap: 16px; }
-    .painel-pix-intro { padding: 16px; border: 1px solid #d1d5db; border-radius: 14px; background: #f8fafc; color: #334155; font-weight: 800; line-height: 1.45; }
-    .painel-pix-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-
-    .painel-pix-plano {
-      border: 1px solid #d1d5db;
-      border-radius: 16px;
-      background: #fff;
-      padding: 16px;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, .06);
-      position: relative;
-      overflow: hidden;
-    }
-    .painel-pix-plano::before { content: ""; position: absolute; inset: 0 0 auto; height: 5px; background: #64748b; }
-    .painel-pix-basico { background: linear-gradient(135deg, #ffffff 0%, #fef9c3 100%); border: 2px solid #facc15; box-shadow: 0 10px 26px rgba(234, 179, 8, .18); }
-    .painel-pix-basico::before { background: #facc15; }
-    .painel-pix-premium { background: linear-gradient(135deg, #ffffff 0%, #dcfce7 100%); border: 2px solid #22c55e; box-shadow: 0 10px 26px rgba(34, 197, 94, .20); }
-    .painel-pix-premium::before { background: #22c55e; }
-    .painel-pix-plano.destaque { border-color: #22c55e; box-shadow: 0 12px 30px rgba(34, 197, 94, .22); }
-
-    .painel-pix-plano h3 { margin: 0 0 6px; color: #111827; font-size: 20px; font-weight: 950; }
-    .painel-pix-basico h3 { color: #854d0e; }
-    .painel-pix-premium h3 { color: #166534; }
-    .painel-pix-plano p { margin: 0 0 14px; color: #64748b; font-weight: 800; line-height: 1.35; }
-    .painel-pix-opcoes { display: grid; gap: 8px; }
-    .painel-pix-opcoes button { width: 100%; min-height: 44px; border: 0; border-radius: 10px; font-weight: 950; cursor: pointer; }
-    .painel-pix-basico .painel-pix-opcoes button { background: #facc15; color: #422006; box-shadow: 0 8px 18px rgba(234, 179, 8, .22); }
-    .painel-pix-basico .painel-pix-opcoes button.secundario { background: #eab308; color: #422006; }
-    .painel-pix-premium .painel-pix-opcoes button { background: #22c55e; color: #ffffff; box-shadow: 0 8px 18px rgba(34, 197, 94, .22); }
-    .painel-pix-premium .painel-pix-opcoes button.secundario { background: #166534; color: #ffffff; }
-    .painel-pix-regra { font-size: 13px; color: #64748b; font-weight: 800; }
-
-    .modal-pix-overlay { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; padding: 18px; background: rgba(15, 23, 42, .68); }
-    .modal-pix-card { width: min(540px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; background: #fff; border-radius: 18px; border: 1px solid #d1d5db; box-shadow: 0 24px 70px rgba(15, 23, 42, .35); padding: 18px; }
-    .modal-pix-topo { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
-    .modal-pix-topo strong { display: block; color: #111827; font-size: 20px; font-weight: 950; }
-    .modal-pix-topo span { display: block; color: #64748b; font-size: 13px; font-weight: 800; }
-    .modal-pix-topo button { width: 38px; height: 38px; border: 0; border-radius: 10px; background: #111827; color: #fff; font-size: 22px; font-weight: 950; cursor: pointer; }
-    .pix-loading, .pix-erro { padding: 14px; border-radius: 12px; background: #f8fafc; border: 1px solid #d1d5db; color: #334155; font-weight: 900; }
-    .pix-erro { background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
-    .pix-resumo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
-    .pix-resumo div { padding: 12px; border-radius: 12px; background: #f8fafc; border: 1px solid #e5e7eb; }
-    .pix-resumo small, .pix-label { display: block; color: #64748b; font-size: 12px; font-weight: 950; text-transform: uppercase; margin-bottom: 4px; }
-    .pix-resumo strong { color: #111827; font-weight: 950; }
-    .pix-qrcode-box { text-align: center; padding: 14px; background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 14px; margin-bottom: 12px; }
-    .pix-qrcode-box img { max-width: 260px; width: 100%; height: auto; }
-    #pix-copia-cola { width: 100%; min-height: 98px; resize: vertical; border: 1px solid #d1d5db; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: #111827; box-sizing: border-box; }
-    .pix-acoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 12px 0; }
-    .pix-acoes button { min-height: 42px; border: 0; border-radius: 10px; background: #111827; color: #fff; font-weight: 950; cursor: pointer; }
-    .pix-acoes button.secundario { background: #475569; }
-    .pix-aviso { color: #64748b; font-size: 13px; font-weight: 800; line-height: 1.35; }
-
-    @media (max-width: 720px) {
-      .painel-header-simples, .painel-pix-grid, .pix-resumo, .pix-acoes { grid-template-columns: 1fr; display: grid; }
-      .painel-header-simples { gap: 8px; }
-    }
+    :root{--azul950:#040f2f;--azul900:#061846;--azul800:#082463;--azul700:#0b3fae;--azul500:#145cff;--azul400:#2f7bff;--azul100:#eaf3ff;--azul50:#f5f9ff;--verde:#19c7a4;--borda:#d6e7ff;--muted:#245eac;--red:#dc2626;--gold:#d4a73f}
+    body{background:radial-gradient(circle at 88% 0%,rgba(20,92,255,.24),transparent 34%),radial-gradient(circle at 12% 12%,rgba(25,199,164,.12),transparent 28%),linear-gradient(180deg,#fff 0%,#f5f9ff 54%,#eaf3ff 100%)!important;color:var(--azul950)!important}
+    .painel-container-simples{width:min(1120px,calc(100% - 22px))!important;max-width:1120px!important;margin:0 auto 34px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;display:grid!important;gap:18px!important}
+    .painel-header-simples{position:relative!important;overflow:hidden!important;display:grid!important;grid-template-columns:1fr auto!important;gap:18px!important;align-items:center!important;margin:0!important;padding:28px!important;border-radius:26px!important;border:1px solid var(--borda)!important;background:radial-gradient(circle at 90% 12%,rgba(20,92,255,.24),transparent 32%),linear-gradient(135deg,#fff 0%,#f8fbff 58%,#eaf3ff 100%)!important;box-shadow:0 22px 48px rgba(20,92,255,.14)!important}
+    .painel-header-simples::after{content:"✦";position:absolute;right:30px;top:22px;color:var(--gold);font-size:20px;text-shadow:0 0 16px rgba(212,167,63,.35)}
+    .painel-header-simples h1{margin:0 0 8px!important;font-size:clamp(30px,5vw,46px)!important;line-height:1.05!important;letter-spacing:-.055em!important;color:var(--azul950)!important;font-weight:950!important}
+    .painel-subtitulo{max-width:760px!important;margin:0!important;color:var(--muted)!important;font-size:17px!important;line-height:1.42!important;font-weight:780!important}
+    .painel-aviso{margin:0!important;padding:14px 16px!important;border-radius:16px!important;border:1px solid var(--borda)!important;border-left:5px solid var(--azul500)!important;background:rgba(255,255,255,.88)!important;color:var(--muted)!important;font-weight:800!important;line-height:1.45!important;box-shadow:0 12px 28px rgba(20,92,255,.08)!important}
+    .painel-card{margin:0!important;padding:22px!important;border:1px solid var(--borda)!important;border-radius:24px!important;background:rgba(255,255,255,.96)!important;color:var(--azul950)!important;box-shadow:0 18px 42px rgba(20,92,255,.11)!important;overflow:hidden!important}
+    .painel-card>h2{display:flex!important;align-items:center!important;gap:10px!important;margin:0 0 18px!important;padding:0 0 13px!important;border-bottom:1px solid var(--borda)!important;color:var(--azul950)!important;font-size:24px!important;line-height:1.1!important;font-weight:950!important;letter-spacing:-.035em!important}
+    .painel-card>h2::before{content:"";width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--azul400),var(--azul500),var(--azul700));box-shadow:0 12px 22px rgba(20,92,255,.22)}
+    .perfil-layout{display:grid!important;grid-template-columns:250px minmax(0,1fr)!important;gap:18px!important;align-items:start!important}
+    .perfil-logo-card{padding:16px!important;border-radius:20px!important;border:1px solid var(--borda)!important;background:linear-gradient(135deg,#fff,var(--azul50))!important;box-shadow:none!important}
+    .perfil-logo-box{min-height:160px!important;border:1.5px dashed #9ec4ff!important;border-radius:18px!important;background:#fff!important;display:grid!important;place-items:center!important;overflow:hidden!important;color:var(--muted)!important;font-weight:850!important;text-align:center!important;padding:14px!important}
+    .perfil-logo-box img{max-width:100%!important;max-height:150px!important;object-fit:contain!important;display:none}
+    .perfil-logo-label{display:block!important;margin-top:10px!important;color:var(--azul500)!important;font-weight:950!important;text-align:center!important}
+    .perfil-dados-grid,.plano-atual-grid,.grid-painel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+    .info-card{min-width:0!important;padding:15px!important;border:1px solid var(--borda)!important;border-left:5px solid var(--azul500)!important;border-radius:16px!important;background:#fff!important;box-shadow:0 10px 24px rgba(20,92,255,.07)!important}
+    .info-card.full,.info-card-assinatura.full,.campo-painel-full{grid-column:1/-1!important}
+    .info-card strong{display:block!important;margin:0 0 6px!important;color:var(--azul700)!important;font-size:11px!important;line-height:1.1!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.05em!important}
+    .info-card span{display:block!important;color:var(--azul950)!important;font-size:16px!important;line-height:1.25!important;font-weight:850!important;overflow-wrap:anywhere!important}
+    .plano-badge{display:inline-flex!important;width:max-content!important;max-width:100%!important;padding:7px 11px!important;border-radius:999px!important;border:1px solid var(--borda)!important;background:linear-gradient(135deg,#fff,var(--azul100))!important;color:var(--azul600)!important;font-size:12px!important;font-weight:950!important}
+    .plano-premium{background:linear-gradient(135deg,#21d6b1,#19c7a4,#08a985)!important;color:#fff!important;border-color:#19c7a4!important}.plano-gratis{background:linear-gradient(135deg,#fff,var(--azul100))!important;color:var(--azul700)!important}
+    .acoes-painel,.botoes-modal-painel,.upload-row{display:flex!important;flex-wrap:wrap!important;gap:9px!important;margin-top:14px!important;justify-content:flex-end!important;align-items:center!important}
+    button,.btn-editar-perfil,.btn-senha,.btn-salvar,.btn-confirmar,.btn-upload-logo,.painel-pix-opcoes button{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;padding:10px 14px!important;border-radius:12px!important;border:1px solid var(--azul500)!important;background:linear-gradient(135deg,var(--azul400),var(--azul500),var(--azul700))!important;color:#fff!important;font-weight:950!important;text-decoration:none!important;cursor:pointer!important;box-shadow:0 12px 24px rgba(20,92,255,.18)!important}
+    .btn-senha,.btn-cancelar,.btn-remover-logo,.painel-pix-opcoes button.secundario{background:#fff!important;color:var(--azul600)!important;border-color:var(--borda)!important;box-shadow:0 10px 22px rgba(20,92,255,.08)!important}
+    .btn-excluir-conta,.btn-perigo{background:#fff5f5!important;color:#b91c1c!important;border-color:#fecaca!important;box-shadow:none!important}.btn-excluir-conta:hover,.btn-perigo:hover{background:linear-gradient(135deg,#ff5a5f,#dc2626,#991b1b)!important;color:#fff!important}
+    .painel-plano-aviso,.painel-pix-intro,.dica-seguranca{padding:14px 16px!important;border-radius:16px!important;border:1px solid var(--borda)!important;background:var(--azul50)!important;color:var(--muted)!important;font-weight:800!important;line-height:1.45!important;margin-bottom:16px!important}.plano-ok{background:#dcfff7!important;color:#05765f!important;border-color:#a7f3e5!important}.plano-erro,.dica-perigo{background:#fff5f5!important;color:#991b1b!important;border-color:#fecaca!important}.plano-alerta,.plano-gratis{background:var(--azul100)!important;color:var(--azul700)!important;border-color:var(--borda)!important}
+    .painel-pix-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}.painel-pix-plano{position:relative!important;overflow:hidden!important;padding:18px!important;border-radius:20px!important;border:1px solid var(--borda)!important;background:#fff!important;box-shadow:0 14px 32px rgba(20,92,255,.10)!important}.painel-pix-plano::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--azul400),var(--azul500),var(--azul700))}.painel-pix-plano.destaque{border-color:#9ec4ff!important;box-shadow:0 18px 38px rgba(20,92,255,.16)!important}.painel-pix-plano h3{margin:10px 0 8px!important;color:var(--azul950)!important;font-size:22px!important;font-weight:950!important}.painel-pix-plano p{margin:0 0 14px!important;color:var(--muted)!important;font-weight:760!important;line-height:1.42!important}.painel-pix-opcoes{display:grid!important;gap:9px!important}.painel-pix-regra{font-size:13px!important;color:var(--muted)!important;font-weight:780!important;line-height:1.4!important}
+    .modal-overlay-painel,.modal-pix-overlay{position:fixed!important;inset:0!important;z-index:50000!important;display:none;align-items:center!important;justify-content:center!important;padding:18px!important;background:rgba(4,15,47,.70)!important;backdrop-filter:blur(8px)!important;overflow:auto!important}.modal-overlay-painel.ativo,.modal-pix-overlay.ativo{display:flex!important}.modal-painel,.modal-pix-card{width:min(760px,100%)!important;max-height:calc(100vh - 36px)!important;overflow:auto!important;margin:auto!important;padding:22px!important;border-radius:22px!important;border:1px solid var(--borda)!important;background:#fff!important;box-shadow:0 28px 70px rgba(4,15,47,.30)!important}.modal-painel.pequeno{width:min(460px,100%)!important}.modal-painel h2,.modal-painel h3{margin:0 0 14px!important;color:var(--azul950)!important;font-weight:950!important;letter-spacing:-.035em!important}.campo-painel{display:grid!important;gap:6px!important;margin-bottom:11px!important}.campo-painel label{color:var(--azul700)!important;font-size:12px!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.04em!important}.campo-painel input,.campo-painel select,.campo-painel textarea{width:100%!important;box-sizing:border-box!important;min-height:44px!important;border:1px solid var(--borda)!important;border-radius:12px!important;padding:10px 12px!important;background:#fff!important;color:var(--azul950)!important;font-weight:750!important;outline:none!important}.campo-painel input:focus,.campo-painel select:focus{border-color:var(--azul500)!important;box-shadow:0 0 0 3px rgba(20,92,255,.14)!important}.logo-area-modal{display:grid!important;grid-template-columns:220px 1fr!important;gap:16px!important;margin-bottom:16px!important}.logo-preview-box{min-height:150px!important;border:1.5px dashed #9ec4ff!important;border-radius:18px!important;background:var(--azul50)!important;display:grid!important;place-items:center!important;text-align:center!important;overflow:hidden}.logo-preview-box img{max-width:100%;max-height:145px;object-fit:contain}.responsaveis-box{padding:14px!important;border:1px solid var(--borda)!important;border-radius:16px!important;background:var(--azul50)!important}.lista-responsaveis{display:grid!important;gap:8px!important;margin-top:10px!important}.modal-responsavel-interno{display:none!important;margin-top:14px!important}.modal-responsavel-interno.ativo{display:block!important}.status-msg{min-height:0;margin-top:8px;font-weight:850}.modal-pix-topo{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin:-22px -22px 18px!important;padding:16px 18px!important;background:linear-gradient(135deg,var(--azul900),var(--azul700),var(--azul500))!important;color:#fff!important}.modal-pix-topo strong,.modal-pix-topo span{color:#fff!important}.modal-pix-topo button{width:38px!important;height:38px!important;padding:0!important;background:#fff!important;color:var(--azul500)!important;border-color:#fff!important}.pix-loading,.pix-erro{padding:14px;border-radius:14px;background:var(--azul50);border:1px solid var(--borda);font-weight:900}.pix-erro{background:#fff5f5;color:#991b1b;border-color:#fecaca}.pix-resumo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.pix-resumo div{padding:12px;border-radius:14px;background:var(--azul50);border:1px solid var(--borda)}.pix-label{display:block;color:var(--azul700);font-size:12px;font-weight:950;text-transform:uppercase;margin:10px 0 5px}#pix-copia-cola{width:100%;min-height:96px;border:1px solid var(--borda);border-radius:12px;padding:10px;box-sizing:border-box}.pix-acoes{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.pix-qrcode-box{text-align:center}.pix-qrcode-box img{max-width:230px;width:100%}.painel-login-card{width:min(520px,calc(100% - 22px));margin:34px auto;padding:24px;border-radius:24px;background:#fff;border:1px solid var(--borda);box-shadow:0 18px 42px rgba(20,92,255,.12);text-align:center}.painel-login-card h1{margin:0 0 8px;font-size:30px}.painel-login-card p{color:var(--muted);font-weight:760;line-height:1.45}
+    footer{text-align:center;color:var(--muted);font-weight:800;padding:24px 12px}footer a{color:var(--azul500);text-decoration:none;font-weight:950}
+    @media(max-width:820px){.painel-header-simples,.perfil-layout,.logo-area-modal{grid-template-columns:1fr!important}.painel-pix-grid{grid-template-columns:1fr!important}.perfil-dados-grid,.plano-atual-grid,.grid-painel,.pix-resumo{grid-template-columns:1fr!important}.painel-card{padding:18px!important}.painel-header-simples{padding:24px 18px!important}.acoes-painel,.botoes-modal-painel{display:grid!important;grid-template-columns:1fr!important}button,.btn-editar-perfil,.btn-senha,.btn-salvar,.btn-confirmar,.btn-cancelar,.btn-excluir-conta{width:100%!important}.painel-subtitulo{font-size:15px!important}}
   </style>
 </head>
-
 <body>
   <div id="header-container"></div>
 
+  <div id="auth-area" style="display:none;">
+    <section class="painel-login-card">
+      <h1>Acesse sua conta</h1>
+      <p>Entre para editar os dados da empresa, acompanhar seu plano e renovar o Premium.</p>
+      <a class="btn-editar-perfil" href="/index.html?login=1&dest=/painel.html">Entrar no FS Orçamentos</a>
+    </section>
+  </div>
+
   <div id="conteudo-protegido" style="display:none;">
-    <div class="container painel-container painel-container-simples">
-      <div class="painel-header painel-header-simples">
+    <main class="container painel-container painel-container-simples">
+      <section class="painel-header painel-header-simples">
         <div>
           <h1>Painel</h1>
-          <p class="painel-subtitulo">Edite os dados da empresa, responsáveis, senha e mantenha seu plano de assinatura em dia.</p>
+          <p class="painel-subtitulo">Perfil da empresa, responsáveis, segurança da conta e assinatura Premium em um só lugar.</p>
         </div>
-      </div>
+      </section>
 
-      <div class="painel-aviso">Este painel é destinado somente à manutenção do perfil e da assinatura. Indicadores, OS, faturamento e orçamentos ficam na página Dashboard.</div>
+      <div class="painel-aviso">O FS Orçamentos trabalha com dois planos: Grátis para gerar PDF e Premium para salvar, enviar link por WhatsApp, receber aprovação online, usar recorrentes, Caixa e relatórios.</div>
 
       <section class="painel-card">
-        <h2>Dados da Empresa</h2>
-
+        <h2>Dados da empresa</h2>
         <div class="perfil-layout">
           <div class="perfil-logo-card">
             <div class="perfil-logo-box">
@@ -112,16 +80,14 @@
             </div>
             <span class="perfil-logo-label">Identidade visual</span>
           </div>
-
           <div>
             <div class="perfil-dados-grid">
-              <div class="info-card"><strong>Consultor selecionado</strong><span id="perfil-responsavel-selecionado">-</span></div>
+              <div class="info-card"><strong>Responsável</strong><span id="perfil-responsavel-selecionado">-</span></div>
               <div class="info-card"><strong>Empresa</strong><span id="perfil-empresa">-</span></div>
               <div class="info-card"><strong>WhatsApp / Telefone</strong><span id="perfil-telefone">-</span></div>
               <div class="info-card"><strong>CNPJ / CPF</strong><span id="perfil-cnpj">-</span></div>
               <div class="info-card full"><strong>Endereço</strong><span id="perfil-endereco">-</span></div>
             </div>
-
             <div class="acoes-painel">
               <button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">✏️ Editar dados</button>
               <button type="button" class="btn-senha" onclick="abrirModalSenha()">🔐 Alterar senha</button>
@@ -132,61 +98,53 @@
       </section>
 
       <section id="plano-painel" class="painel-card">
-        <h2>Plano Atual</h2>
+        <h2>Plano atual</h2>
         <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
-
         <div class="perfil-dados-grid plano-atual-grid">
           <div class="info-card"><strong>Plano</strong><span id="perfil-plano" class="plano-badge">Plano Grátis</span></div>
-          <div class="info-card"><strong>Status do plano</strong><span id="perfil-plano-status">-</span></div>
+          <div class="info-card"><strong>Status</strong><span id="perfil-plano-status">-</span></div>
           <div class="info-card"><strong>Expira em</strong><span id="perfil-plano-expira">-</span></div>
-          <div class="info-card info-card-assinatura full"><strong>Assinatura</strong><span>Renove ou altere seu plano por Pix nesta página.</span></div>
+          <div class="info-card info-card-assinatura full"><strong>Assinatura</strong><span>Renove ou ative o Premium por Pix nesta página.</span></div>
         </div>
       </section>
 
       <section id="renovar-plano-pix-painel" class="painel-card painel-assinatura-pix">
-        <h2>Renovar plano via Pix</h2>
-
-        <div class="painel-pix-intro">Ao renovar um plano ativo, os novos dias são somados ao prazo que você já possui. Se o plano estiver vencido, o período começa a contar a partir da confirmação do pagamento.</div>
-
+        <h2>Assinatura Premium via Pix</h2>
+        <div class="painel-pix-intro">Ao renovar um plano ativo, os novos dias são somados ao prazo atual. Se o plano estiver vencido, o período começa a contar a partir da confirmação do pagamento.</div>
         <div class="painel-pix-grid">
-          <article class="painel-pix-plano painel-pix-basico">
-            <h3>Plano Básico</h3>
-            <p>Para salvar orçamentos, acompanhar status, histórico, link de aprovação, notificações e usar sem anúncios.</p>
-            <div class="painel-pix-opcoes">
-              <button type="button" onclick="gerarPixPlanoBasico('mensal')">Renovar 1 mês · R$ 29,90</button>
-              <button type="button" class="secundario" onclick="gerarPixPlanoBasico('semestral')">Renovar 6 meses · R$ 159,90</button>
-              <button type="button" class="secundario" onclick="gerarPixPlanoBasico('anual')">Renovar 12 meses · R$ 299,90</button>
-            </div>
+          <article class="painel-pix-plano">
+            <h3>1 mês</h3>
+            <p>Ideal para começar e validar o uso no dia a dia.</p>
+            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixPlanoPremium('mensal')">Assinar · R$ 29,90</button></div>
           </article>
-
-          <article class="painel-pix-plano painel-pix-premium destaque">
-            <h3>Plano Premium</h3>
-            <p>Para gestão completa com clientes, veículos, ordens de serviço, estoque, agenda, histórico e dashboard.</p>
-            <div class="painel-pix-opcoes">
-              <button type="button" onclick="gerarPixPlanoPremium('mensal')">Renovar 1 mês · R$ 89,90</button>
-              <button type="button" class="secundario" onclick="gerarPixPlanoPremium('semestral')">Renovar 6 meses · R$ 499,90</button>
-              <button type="button" class="secundario" onclick="gerarPixPlanoPremium('anual')">Renovar 12 meses · R$ 999,90</button>
-            </div>
+          <article class="painel-pix-plano destaque">
+            <h3>6 meses</h3>
+            <p>Melhor para economizar no lançamento. Equivale a menos de R$ 25 por mês.</p>
+            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixPlanoPremium('semestral')">Assinar · R$ 149,90</button></div>
+          </article>
+          <article class="painel-pix-plano">
+            <h3>12 meses</h3>
+            <p>Plano anual de lançamento para usar todos os recursos Premium.</p>
+            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixPlanoPremium('anual')">Assinar · R$ 299,90</button></div>
           </article>
         </div>
-
-        <div class="painel-pix-regra">A liberação ou renovação acontece automaticamente quando o Pix for confirmado. O sistema usa a data de vencimento atual como base quando ela ainda está no futuro.</div>
+        <div class="painel-pix-regra">Premium libera orçamentos salvos, link de aprovação, envio por WhatsApp, recorrentes, Caixa, relatórios e uso sem anúncios.</div>
       </section>
-    </div>
+    </main>
 
     <div id="modal-editar-perfil" class="modal-overlay-painel">
       <div class="modal-painel">
-        <h2>Editar Dados da Empresa</h2>
+        <h2>Editar dados da empresa</h2>
         <form id="form-cadastro-perfil" onsubmit="salvarPerfil(event)">
           <div class="logo-area-modal">
             <div class="logo-preview-box"><span id="logo-placeholder">Nenhuma logo cadastrada</span><img id="preview-logo" src="" alt="Pré-visualização da logo da empresa"></div>
             <div class="logo-info">
               <h3>Logo da empresa</h3>
-              <p>Envie uma imagem PNG, JPG, JPEG ou WEBP. A logo salva aqui aparecerá automaticamente no cabeçalho dos seus orçamentos.</p>
+              <p>Envie uma imagem PNG, JPG, JPEG ou WEBP. A logo salva aparecerá automaticamente nos seus orçamentos.</p>
               <div class="upload-row">
                 <label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label>
                 <button type="button" class="btn-remover-logo" onclick="removerLogoPerfil()">Remover logo</button>
-                <input type="file" id="logo_file" class="input-logo-escondido" accept="image/png, image/jpeg, image/webp">
+                <input type="file" id="logo_file" class="input-logo-escondido" accept="image/png, image/jpeg, image/webp" style="display:none;">
                 <input type="hidden" id="foto_url">
               </div>
               <div id="status-logo" class="status-msg"></div>
@@ -261,34 +219,24 @@
     <div id="modal-pix-basico" class="modal-pix-overlay">
       <div class="modal-pix-card">
         <div class="modal-pix-topo">
-          <div><strong>Pagamento via Pix</strong><span id="pix-modal-subtitulo">Renovação de plano</span></div>
+          <div><strong>Pagamento via Pix</strong><span id="pix-modal-subtitulo">Plano Premium</span></div>
           <button type="button" onclick="fecharModalPixBasico()">×</button>
         </div>
         <div id="pix-loading" class="pix-loading">Gerando Pix, aguarde...</div>
         <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
-          <div class="pix-resumo">
-            <div><small>Plano</small><strong id="pix-plano-label">Plano</strong></div>
-            <div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div>
-          </div>
+          <div class="pix-resumo"><div><small>Plano</small><strong id="pix-plano-label">Premium</strong></div><div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div></div>
           <div class="pix-qrcode-box"><img id="pix-qrcode-img" src="" alt="QR Code Pix"></div>
           <label class="pix-label">Pix copia e cola</label>
           <textarea id="pix-copia-cola" readonly></textarea>
-          <div class="pix-acoes">
-            <button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button>
-            <button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button>
-          </div>
-          <p class="pix-aviso">Após a confirmação do Pix, seu plano será renovado automaticamente. Se você ainda tiver dias ativos, os novos dias serão somados ao vencimento atual.</p>
+          <div class="pix-acoes"><button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button><button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button></div>
+          <p class="pix-aviso">Após a confirmação do Pix, seu Premium será liberado automaticamente.</p>
         </div>
         <div id="pix-erro" class="pix-erro" style="display:none;"></div>
       </div>
     </div>
   </div>
 
-  <footer>
-    &copy; 2026 FS Orçamentos |
-    <a href="/privacidade.html">Privacidade</a> |
-    <a href="/termos.html">Termos</a>
-  </footer>
+  <footer>&copy; 2026 FS Orçamentos | <a href="/privacidade.html">Privacidade</a> | <a href="/termos.html">Termos</a></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -299,5 +247,19 @@
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
   <script src="painel.js"></script>
+  <script>
+    window.planoLabel = function(plano){ return String(plano || '').toLowerCase() === 'premium' ? 'Plano Premium' : 'Plano Grátis'; };
+    window.montarAvisoPlano = function(perfil){
+      const plano = String(perfil?.plano || 'gratis').toLowerCase();
+      const status = String(perfil?.plano_status || 'ativo').toLowerCase();
+      const dias = typeof window.diasAteExpirar === 'function' ? window.diasAteExpirar(perfil?.plano_expira_em) : null;
+      if (plano !== 'premium') return { tipo:'gratis', texto:'Você está no Plano Grátis. Ative o Premium para salvar orçamentos, enviar link por WhatsApp, receber aprovação online, usar recorrentes, Caixa e relatórios.' };
+      if (status === 'cancelado') return { tipo:'erro', texto:'Seu Premium está cancelado. Renove para voltar a usar os recursos avançados.' };
+      if (status === 'expirado' || (dias !== null && dias < 0)) return { tipo:'erro', texto:'Seu Premium expirou. Renove para continuar usando os recursos avançados.' };
+      if (dias !== null && dias <= 7) return { tipo:'alerta', texto:`Seu Premium vence ${dias === 0 ? 'hoje' : `em ${dias} dia(s)`}. Renove para evitar bloqueio dos recursos avançados.` };
+      return { tipo:'ok', texto:'Seu Premium está ativo.' };
+    };
+    window.usuarioJaTemPlanoPago = function(perfil){ return String(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis').toLowerCase() === 'premium'; };
+  </script>
 </body>
 </html>
