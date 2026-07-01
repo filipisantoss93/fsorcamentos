@@ -1,6 +1,6 @@
 /* FS ORÇAMENTOS - planos oficiais
    Grátis: gera PDF.
-   Premium: salva orçamentos, envia WhatsApp com aprovação/recusa, recorrentes, caixa e relatórios.
+   Premium lançamento: salva orçamentos, envia WhatsApp com aprovação/recusa, recorrentes, caixa e relatórios.
    Compatibilidade: plano antigo "basico" passa a ser tratado como Premium.
 */
 
@@ -10,9 +10,9 @@ const FS_PLANOS = {
     label: 'Plano Premium',
     ordem: 1,
     precos: {
-      mensal: { periodo: '1 mês', valor: 89.90, label: 'R$ 89,90' },
-      semestral: { periodo: '6 meses', valor: 499.90, label: 'R$ 499,90' },
-      anual: { periodo: '12 meses', valor: 999.90, label: 'R$ 999,90' }
+      mensal: { periodo: '1 mês', valor: 29.90, label: 'R$ 29,90' },
+      semestral: { periodo: '6 meses', valor: 149.90, label: 'R$ 149,90' },
+      anual: { periodo: '12 meses', valor: 299.90, label: 'R$ 299,90' }
     }
   }
 };
