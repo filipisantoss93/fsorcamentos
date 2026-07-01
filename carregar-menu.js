@@ -6,548 +6,72 @@ const FS_ROTAS_PROTEGIDAS_MENU = [
   '/painel.html', '/painel',
   '/orcamentos.html', '/orcamentos',
   '/dashboard.html', '/dashboard',
-  '/gestao.html', '/gestao',
+  '/fluxo-caixa.html', '/fluxo-caixa',
   '/forum.html', '/forum',
-  '/clientes.html', '/clientes',
-  '/veiculos.html', '/veiculos',
-  '/ordens.html', '/ordens',
-  '/ordem.html', '/ordem',
-  '/estoque.html', '/estoque',
-  '/agenda.html', '/agenda',
-  '/relatorios.html', '/relatorios',
-  '/recorrentes.html', '/recorrentes',
-  '/fluxo-caixa.html', '/fluxo-caixa'
-];
-
-const FS_ROTAS_BASICO_MENU = [
-  '/painel.html', '/painel',
-  '/orcamentos.html', '/orcamentos',
-  '/forum.html', '/forum'
+  '/social.html', '/social'
 ];
 
 const FS_ROTAS_PREMIUM_MENU = [
+  '/orcamentos.html', '/orcamentos',
   '/dashboard.html', '/dashboard',
+  '/fluxo-caixa.html', '/fluxo-caixa'
+];
+
+const FS_ROTAS_REMOVIDAS_MENU = [
   '/gestao.html', '/gestao',
   '/clientes.html', '/clientes',
+  '/cliente.html', '/cliente',
   '/veiculos.html', '/veiculos',
   '/ordens.html', '/ordens',
   '/ordem.html', '/ordem',
   '/estoque.html', '/estoque',
   '/agenda.html', '/agenda',
-  '/relatorios.html', '/relatorios',
-  '/recorrentes.html', '/recorrentes',
-  '/fluxo-caixa.html', '/fluxo-caixa'
+  '/recorrentes.html', '/recorrentes'
 ];
 
-function fsModoEmbedGestao() {
-  try {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('embed') === '1' || params.get('iframe') === '1';
-  } catch (_) {
-    return false;
-  }
-}
-
-function aplicarModoEmbedGestao() {
-  if (!fsModoEmbedGestao()) return false;
-  document.documentElement.classList.add('modo-embed-gestao');
-  document.body?.classList.add('modo-embed-gestao');
-  const headerContainer = document.getElementById('header-container');
-  if (headerContainer) {
-    headerContainer.innerHTML = '';
-    headerContainer.style.display = 'none';
-  }
-  document.querySelectorAll('footer, .footer, .site-footer, .forum-footer').forEach(el => {
-    el.style.display = 'none';
-  });
-  return true;
-}
-
-function fsGarantirCss(id, href) {
-  if (document.getElementById(id)) return;
-  const link = document.createElement('link');
-  link.id = id;
-  link.rel = 'stylesheet';
-  link.href = href;
-  document.head.appendChild(link);
-}
-
-function garantirCssHeaderFS() {
-  fsGarantirCss('fs-header-clean-css', '/header-clean.css?v=20260617-3');
-  fsGarantirCss('fs-auth-clean-css', '/auth-clean.css?v=20260618-4');
-  fsGarantirCss('fs-brand-contrast-css', '/brand-contrast-fix.css?v=20260618-1');
-}
-
-function removerCssObsoletoTemaMarrom() {
-  const idsObsoletos = ['fs-formal-theme-overrides', 'fs-contrast-fix-final'];
-  idsObsoletos.forEach(id => {
-    document.querySelectorAll(`style#${id}`).forEach(style => style.remove());
-  });
-
-  document.querySelectorAll('style').forEach(style => {
-    const texto = style.textContent || '';
-    const pareceOverrideAntigo =
-      texto.includes('FS FORMAL THEME OVERRIDES') ||
-      texto.includes('FS CONTRAST FIX') ||
-      texto.includes('Mantém marrom no header') ||
-      texto.includes('Cores oficiais: marrom escuro + amarelo + bege');
-
-    if (pareceOverrideAntigo) style.remove();
-  });
-}
-
-removerCssObsoletoTemaMarrom();
-
-function fsNormalizarTextoMenu(valor) {
-  return String(valor || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-}
-
-function fsPaginaAtual() {
-  const path = window.location.pathname || '/';
-  return path === '/' ? '/index.html' : path;
-}
-
-function fsEstaNaPaginaGerador() {
-  const path = fsPaginaAtual();
-  return path.endsWith('/gerador.html') || path.endsWith('gerador.html') || path.endsWith('/gerador');
-}
-
-function fsEstaNaHome() {
-  const path = fsPaginaAtual();
-  return path === '/index.html' || path.endsWith('/index.html') || path.endsWith('index.html');
-}
-
-function fsDestinoProtegidoMenu(href) {
-  try {
-    if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.startsWith('mailto:') || href.startsWith('tel:')) return '';
-    const url = new URL(href, window.location.origin);
-    if (url.origin !== window.location.origin) return '';
-    return `${url.pathname || '/index.html'}${url.search || ''}${url.hash || ''}`;
-  } catch (_) {
-    return '';
-  }
-}
-
-function fsNormalizarPathMenu(destino) {
-  let path = String(destino || '').split('?')[0].split('#')[0].replace(/\/$/, '').toLowerCase();
-  if (!path) path = '/index.html';
-  return path;
-}
-
-function fsListaContemRotaMenu(lista, destino) {
-  const path = fsNormalizarPathMenu(destino);
-  return lista.some(rota => path === rota || path === rota.replace(/\.html$/, ''));
-}
-
-function fsEhRotaProtegidaMenu(destino) {
-  return fsListaContemRotaMenu(FS_ROTAS_PROTEGIDAS_MENU, destino);
-}
-
-function fsPlanoMinimoDaRotaMenu(destino) {
-  if (!fsEhRotaProtegidaMenu(destino)) return 'publico';
-  if (fsListaContemRotaMenu(FS_ROTAS_PREMIUM_MENU, destino)) return 'premium';
-  if (fsListaContemRotaMenu(FS_ROTAS_BASICO_MENU, destino)) return 'basico';
-  return 'gratis';
-}
-
-function fsPlanoMenuAtual() {
-  return fsNormalizarTextoMenu(localStorage.getItem('usuario_plano') || 'gratis');
-}
-
-function fsPlanoMenuOrdem(plano) {
-  const p = fsNormalizarTextoMenu(plano);
-  if (p === 'premium') return 2;
-  if (p === 'basico') return 1;
-  return 0;
-}
-
-function fsPlanoPermiteDestinoMenu(destino, plano = fsPlanoMenuAtual()) {
-  const minimo = fsPlanoMinimoDaRotaMenu(destino);
-  if (minimo === 'publico') return true;
-  return fsPlanoMenuOrdem(plano) >= fsPlanoMenuOrdem(minimo);
-}
-
-function fsRedirecionarIndexSePlanoNaoPermite(session, destino = fsPaginaAtual()) {
-  if (!session?.user?.id) return false;
-  if (!fsEhRotaProtegidaMenu(destino)) return false;
-  if (fsPlanoPermiteDestinoMenu(destino)) return false;
-
-  try { localStorage.removeItem('fs_destino_apos_login'); } catch (_) {}
-  window.location.replace('/index.html');
-  return true;
-}
-
-function fsSalvarDestinoProtegidoMenu(destino) {
-  try {
-    const destinoSeguro = fsDestinoProtegidoMenu(destino) || '/painel.html';
-    localStorage.setItem('fs_destino_apos_login', destinoSeguro);
-    return destinoSeguro;
-  } catch (_) {
-    return '/painel.html';
-  }
-}
-
-function fsAbrirLoginParaDestinoProtegido(destino) {
-  const destinoSeguro = fsSalvarDestinoProtegidoMenu(destino);
-  fecharMenuMobileSeAberto();
-
-  if (fsEstaNaHome() && typeof abrirModalLogin === 'function') {
-    abrirModalLogin();
-    return;
-  }
-
-  window.location.href = `/index.html?login=1&dest=${encodeURIComponent(destinoSeguro)}`;
-}
-
-async function obterSessaoAtualMenu() {
-  try {
-    if (!window._supabase) return null;
-    const { data, error } = await _supabase.auth.getSession();
-    if (error) return null;
-    return data?.session || null;
-  } catch (_) {
-    return null;
-  }
-}
-
-async function carregarHeaderHtmlMenu() {
-  const caminhos = ['/header.html', 'header.html', './header.html'];
-  let ultimoErro = null;
-  for (const caminho of caminhos) {
-    try {
-      const response = await fetch(caminho, { cache: 'no-cache' });
-      if (response.ok) return await response.text();
-      ultimoErro = new Error(`Falha ao carregar ${caminho}: ${response.status}`);
-    } catch (error) {
-      ultimoErro = error;
-    }
-  }
-  throw ultimoErro || new Error('Não foi possível carregar header.html.');
-}
-
-function fecharMenuMobileSeAberto() {
-  const menuLinha = document.querySelector('.header-menu-linha');
-  const header = document.querySelector('.main-header');
-  if (menuLinha) menuLinha.classList.remove('menu-aberto');
-  if (header) header.classList.remove('menu-aberto');
-}
-
-function toggleMenuMobile() {
-  const menuLinha = document.querySelector('.header-menu-linha');
-  const header = document.querySelector('.main-header');
-  if (menuLinha) menuLinha.classList.toggle('menu-aberto');
-  if (header) header.classList.toggle('menu-aberto', menuLinha?.classList.contains('menu-aberto'));
-}
-
-function configurarLinksDoHeader() {
-  document.querySelectorAll('.header-menu-linha a').forEach(link => {
-    if (link.dataset.fsHeaderLinkConfigurado === 'sim') return;
-    link.dataset.fsHeaderLinkConfigurado = 'sim';
-
-    link.addEventListener('click', async event => {
-      const destino = fsDestinoProtegidoMenu(link.getAttribute('href') || '');
-
-      if (!fsEhRotaProtegidaMenu(destino)) {
-        fecharMenuMobileSeAberto();
-        return;
-      }
-
-      const session = await obterSessaoAtualMenu();
-      if (!session?.user?.id) {
-        event.preventDefault();
-        event.stopPropagation();
-        fsAbrirLoginParaDestinoProtegido(destino);
-        return;
-      }
-
-      if (!fsPlanoPermiteDestinoMenu(destino)) {
-        event.preventDefault();
-        event.stopPropagation();
-        fecharMenuMobileSeAberto();
-        window.location.href = '/index.html';
-        return;
-      }
-
-      fecharMenuMobileSeAberto();
-    });
-  });
-}
-
-function configurarDropdownsHeader() {
-  return;
-}
-
-function marcarLinkAtivoHeader() {
-  const paginaAtual = fsPaginaAtual();
-  document.querySelectorAll('.header-menu-linha a').forEach(link => {
-    const href = link.getAttribute('href') || '';
-    const hrefNormalizado = href === '/' ? '/index.html' : href;
-    link.classList.remove('ativo');
-    if (hrefNormalizado && (paginaAtual === hrefNormalizado || paginaAtual.endsWith(hrefNormalizado))) link.classList.add('ativo');
-  });
-}
-
-function aplicarVisibilidadeMenuPorPlano() {
-  const nivelAtual = fsPlanoMenuOrdem(fsPlanoMenuAtual());
-  document.querySelectorAll('[data-plano-min]').forEach(link => {
-    const minimo = link.getAttribute('data-plano-min') || 'gratis';
-    const permitido = nivelAtual >= fsPlanoMenuOrdem(minimo);
-    const li = link.closest('li');
-    if (li) li.style.display = permitido ? '' : 'none';
-    else link.style.display = permitido ? '' : 'none';
-  });
-}
-
-async function verificarExpiracaoTestePremiumMenu() {
-  try {
-    if (!window._supabase) return null;
-    const { data: { session } } = await _supabase.auth.getSession();
-    if (!session?.user?.id) return null;
-    const { data, error } = await _supabase.rpc('verificar_expiracao_teste_premium');
-    if (error) return null;
-    if (data?.plano) localStorage.setItem('usuario_plano', data.plano);
-    if (data?.plano_status) localStorage.setItem('usuario_plano_status', data.plano_status);
-    else localStorage.removeItem('usuario_plano_status');
-    if (data?.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', data.plano_expira_em);
-    else if (data?.plano === 'basico') localStorage.removeItem('usuario_plano_expira_em');
-    return data || null;
-  } catch (_) {
-    return null;
-  }
-}
-
-async function atualizarHeaderUsuario(session) {
-  const saudacao = document.getElementById('usuario-saudacao');
-  const btnEntrarDesktop = document.getElementById('btn-header-entrar');
-  const btnSairDesktop = document.getElementById('btn-header-sair');
-  const btnEntrarMobile = document.getElementById('btn-menu-mobile-entrar');
-  const btnSairMobile = document.getElementById('btn-menu-mobile-sair');
-  const btnNotificacoes = document.getElementById('btn-notificacoes');
-  const contadorNotificacoes = document.getElementById('contador-notificacoes');
-  if (!saudacao) return;
-
-  if (!session?.user?.id) {
-    saudacao.innerText = 'Olá, Convidado';
-    if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'inline-flex';
-    if (btnSairDesktop) btnSairDesktop.style.display = 'none';
-    if (btnEntrarMobile) btnEntrarMobile.style.display = 'inline-flex';
-    if (btnSairMobile) btnSairMobile.style.display = 'none';
-    if (btnNotificacoes) btnNotificacoes.style.display = 'none';
-    if (contadorNotificacoes) contadorNotificacoes.style.display = 'none';
-    localStorage.removeItem('usuario_nome');
-    localStorage.removeItem('usuario_email');
-    localStorage.removeItem('usuario_plano');
-    aplicarVisibilidadeMenuPorPlano();
-    return;
-  }
-
-  let nomeFinal = localStorage.getItem('usuario_nome') || session.user.user_metadata?.nome || session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'Visitante';
-
-  try {
-    await verificarExpiracaoTestePremiumMenu();
-    if (window._supabase) {
-      const { data: perfil, error } = await _supabase.from('perfis').select('nome, nome_empresa, plano, plano_status, plano_expira_em').eq('id', session.user.id).maybeSingle();
-      if (!error && perfil) {
-        nomeFinal = perfil.nome || perfil.nome_empresa || nomeFinal;
-        localStorage.setItem('usuario_nome', nomeFinal);
-        localStorage.setItem('usuario_email', session.user.email || '');
-        localStorage.setItem('usuario_plano', perfil.plano || 'gratis');
-        if (perfil.plano_status) localStorage.setItem('usuario_plano_status', perfil.plano_status);
-        else localStorage.removeItem('usuario_plano_status');
-        if (perfil.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', perfil.plano_expira_em);
-        else localStorage.removeItem('usuario_plano_expira_em');
-      }
-    }
-  } catch (_) {}
-
-  const nivelAtual = fsPlanoMenuOrdem(fsPlanoMenuAtual());
-
-  saudacao.innerText = `Olá, ${nomeFinal}`;
-  if (btnEntrarDesktop) btnEntrarDesktop.style.display = 'none';
-  if (btnSairDesktop) btnSairDesktop.style.display = 'inline-flex';
-  if (btnEntrarMobile) btnEntrarMobile.style.display = 'none';
-  if (btnSairMobile) btnSairMobile.style.display = 'inline-flex';
-  if (btnNotificacoes) btnNotificacoes.style.display = nivelAtual >= 1 ? 'inline-flex' : 'none';
-  if (contadorNotificacoes && nivelAtual < 1) contadorNotificacoes.style.display = 'none';
-  aplicarVisibilidadeMenuPorPlano();
-}
-
-function irParaLogin() {
-  fecharMenuMobileSeAberto();
-  if (typeof abrirModalLogin === 'function') return abrirModalLogin();
-  window.location.href = '/index.html?login=1';
-}
-
-async function deslogar() {
-  try {
-    fecharMenuMobileSeAberto();
-    if (window._supabase) await _supabase.auth.signOut();
-    ['id','usuario_nome','usuario_email','usuario_plano','usuario_plano_status','usuario_plano_expira_em','nome_empresa','telefone_empresa','endereco_empresa','cnpj_empresa','foto_url'].forEach(chave => localStorage.removeItem(chave));
-    removerBotaoFlutuanteGeradorGlobal();
-    await atualizarHeaderUsuario(null);
-    window.location.href = '/index.html';
-  } catch (error) {
-    console.error('Erro ao sair:', error);
-    alert('Não foi possível sair da conta. Tente novamente.');
-  }
-}
-
-async function controlarBotaoFlutuanteGeradorGlobal(sessionRecebida = undefined) {
-  if (fsModoEmbedGestao()) return removerBotaoFlutuanteGeradorGlobal();
-  let session = sessionRecebida;
-  if (session === undefined) session = await obterSessaoAtualMenu();
-  if (!session?.user?.id || fsEstaNaPaginaGerador()) return removerBotaoFlutuanteGeradorGlobal();
-  criarBotaoFlutuanteGeradorGlobal();
-}
-
-function criarBotaoFlutuanteGeradorGlobal() {
-  if (document.getElementById('btn-flutuante-gerador-global')) return;
-  const botao = document.createElement('button');
-  botao.type = 'button';
-  botao.id = 'btn-flutuante-gerador-global';
-  botao.innerHTML = '🧾 <span>Gerar orçamento</span>';
-  botao.title = 'Gerar orçamento';
-  botao.setAttribute('aria-label', 'Gerar orçamento');
-  botao.onclick = abrirGeradorGlobal;
-  document.body.appendChild(botao);
-}
-
-function removerBotaoFlutuanteGeradorGlobal() {
-  document.getElementById('btn-flutuante-gerador-global')?.remove();
-  document.body.classList.remove('gerador-aberto');
-}
-
-async function abrirGeradorGlobal() {
-  const session = await obterSessaoAtualMenu();
-  if (!session?.user?.id) {
-    removerBotaoFlutuanteGeradorGlobal();
-    if (fsEstaNaHome() && typeof abrirModalLogin === 'function') return abrirModalLogin();
-    window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/gerador.html');
-    return;
-  }
-  window.location.href = '/gerador.html';
-}
-
-function removerParametrosUrlMenu() {
-  const novaUrl = window.location.origin + window.location.pathname;
-  window.history.replaceState({}, document.title, novaUrl);
-}
-
-function abrirLoginAutomaticamenteSeSolicitado() {
-  const params = new URLSearchParams(window.location.search);
-  const destino = params.get('dest') || '';
-  if (destino && fsEhRotaProtegidaMenu(destino)) fsSalvarDestinoProtegidoMenu(destino);
-  if (params.get('login') !== '1') return;
-  setTimeout(() => {
-    if (typeof abrirModalLogin === 'function') abrirModalLogin();
-    removerParametrosUrlMenu();
-  }, 600);
-}
-
-async function abrirGeradorAutomaticamenteSeSolicitado() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('abrirGerador') !== '1') return;
-  const session = await obterSessaoAtualMenu();
-  removerParametrosUrlMenu();
-  if (!session?.user?.id) {
-    fsSalvarDestinoProtegidoMenu('/gerador.html');
-    if (typeof abrirModalLogin === 'function') abrirModalLogin();
-    else window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/gerador.html');
-    return;
-  }
-  window.location.href = '/gerador.html';
-}
-
-function configurarHeaderInteligente() {
-  const headerContainer = document.getElementById('header-container');
-  if (!headerContainer) return;
-  headerContainer.classList.remove('header-oculto');
-  headerContainer.classList.add('header-visivel');
-}
-
-function controlarHeaderInteligente() {
-  configurarHeaderInteligente();
-}
-
-async function carregarMenu(sessionRecebida = undefined) {
-  removerCssObsoletoTemaMarrom();
-  if (aplicarModoEmbedGestao()) return;
-  garantirCssHeaderFS();
-  const headerContainer = document.getElementById('header-container');
-  if (!headerContainer) return;
-
-  try {
-    if (!headerJaCarregado) {
-      headerContainer.innerHTML = await carregarHeaderHtmlMenu();
-      headerContainer.style.display = 'block';
-      headerJaCarregado = true;
-      configurarLinksDoHeader();
-      configurarDropdownsHeader();
-      marcarLinkAtivoHeader();
-      configurarHeaderInteligente();
-    }
-
-    const session = sessionRecebida === undefined ? await obterSessaoAtualMenu() : sessionRecebida;
-    await atualizarHeaderUsuario(session || null);
-    aplicarVisibilidadeMenuPorPlano();
-    if (fsRedirecionarIndexSePlanoNaoPermite(session || null, fsPaginaAtual())) return;
-    await controlarBotaoFlutuanteGeradorGlobal(session || null);
-    configurarHeaderInteligente();
-  } catch (error) {
-    console.error('Erro ao carregar menu:', error);
-  }
-}
-
-async function inicializarMenuFS() {
-  removerCssObsoletoTemaMarrom();
-  if (fsMenuInicializado) return;
-  fsMenuInicializado = true;
-  if (aplicarModoEmbedGestao()) return;
-  garantirCssHeaderFS();
-  await carregarMenu();
-
-  const sessionInicial = await obterSessaoAtualMenu();
-  const destinoAtual = fsPaginaAtual();
-  if (!sessionInicial?.user?.id && fsEhRotaProtegidaMenu(destinoAtual) && !fsEstaNaHome()) {
-    fsAbrirLoginParaDestinoProtegido(destinoAtual);
-    return;
-  }
-
-  if (fsRedirecionarIndexSePlanoNaoPermite(sessionInicial || null, destinoAtual)) return;
-
-  abrirLoginAutomaticamenteSeSolicitado();
-  await abrirGeradorAutomaticamenteSeSolicitado();
-
-  if (window._supabase) {
-    _supabase.auth.onAuthStateChange(async (event, session) => {
-      removerCssObsoletoTemaMarrom();
-      await atualizarHeaderUsuario(session || null);
-      aplicarVisibilidadeMenuPorPlano();
-      if (fsRedirecionarIndexSePlanoNaoPermite(session || null, fsPaginaAtual())) return;
-      await controlarBotaoFlutuanteGeradorGlobal(session || null);
-      if (!session) removerBotaoFlutuanteGeradorGlobal();
-      configurarHeaderInteligente();
-    });
-  }
-}
-
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inicializarMenuFS);
-else inicializarMenuFS();
-
-window.carregarMenu = carregarMenu;
-window.verificarExpiracaoTestePremiumMenu = verificarExpiracaoTestePremiumMenu;
-window.atualizarHeaderUsuario = atualizarHeaderUsuario;
-window.irParaLogin = irParaLogin;
-window.toggleMenuMobile = toggleMenuMobile;
-window.deslogar = deslogar;
-window.abrirGeradorGlobal = abrirGeradorGlobal;
-window.controlarBotaoFlutuanteGeradorGlobal = controlarBotaoFlutuanteGeradorGlobal;
-window.configurarHeaderInteligente = configurarHeaderInteligente;
-window.controlarHeaderInteligente = controlarHeaderInteligente;
-window.aplicarVisibilidadeMenuPorPlano = aplicarVisibilidadeMenuPorPlano;
-window.inicializarMenuFS = inicializarMenuFS;
-window.fsAbrirLoginParaDestinoProtegido = fsAbrirLoginParaDestinoProtegido;
-window.fsSalvarDestinoProtegidoMenu = fsSalvarDestinoProtegidoMenu;
-window.removerCssObsoletoTemaMarrom = removerCssObsoletoTemaMarrom;
-window.fsRedirecionarIndexSePlanoNaoPermite = fsRedirecionarIndexSePlanoNaoPermite;
-window.fsPlanoPermiteDestinoMenu = fsPlanoPermiteDestinoMenu;
+function fsModoEmbedGestao(){try{const p=new URLSearchParams(location.search);return p.get('embed')==='1'||p.get('iframe')==='1'}catch(_){return false}}
+function aplicarModoEmbedGestao(){if(!fsModoEmbedGestao())return false;document.documentElement.classList.add('modo-embed-gestao');document.body?.classList.add('modo-embed-gestao');const h=document.getElementById('header-container');if(h){h.innerHTML='';h.style.display='none'}document.querySelectorAll('footer,.footer,.site-footer,.forum-footer').forEach(e=>e.style.display='none');return true}
+function fsGarantirCss(id,href){if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l)}
+function garantirCssHeaderFS(){fsGarantirCss('fs-header-clean-css','/header-clean.css?v=20260701-1');fsGarantirCss('fs-auth-clean-css','/auth-clean.css?v=20260701-1');fsGarantirCss('fs-brand-contrast-css','/brand-contrast-fix.css?v=20260701-1')}
+function removerCssObsoletoTemaMarrom(){document.querySelectorAll('style').forEach(s=>{const t=s.textContent||'';if(t.includes('FS FORMAL THEME OVERRIDES')||t.includes('FS CONTRAST FIX')||t.includes('marrom no header')||t.includes('Cores oficiais: marrom'))s.remove()})}
+function fsNormalizarTextoMenu(v){const p=String(v||'gratis').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();return p==='basico'||p==='gestao'?'premium':p}
+function fsPaginaAtual(){const p=location.pathname||'/';return p==='/'?'/index.html':p}
+function fsEstaNaPaginaGerador(){const p=fsPaginaAtual();return p.endsWith('/gerador.html')||p.endsWith('/gerador')}
+function fsEstaNaHome(){const p=fsPaginaAtual();return p==='/index.html'||p.endsWith('/index.html')}
+function fsDestinoProtegidoMenu(href){try{if(!href||href.startsWith('#')||href.startsWith('javascript:')||href.startsWith('mailto:')||href.startsWith('tel:'))return'';const u=new URL(href,location.origin);if(u.origin!==location.origin)return'';return `${u.pathname||'/index.html'}${u.search||''}${u.hash||''}`}catch(_){return''}}
+function fsNormalizarPathMenu(destino){let p=String(destino||'').split('?')[0].split('#')[0].replace(/\/$/,'').toLowerCase();return p||'/index.html'}
+function fsListaContemRotaMenu(lista,destino){const p=fsNormalizarPathMenu(destino);return lista.some(r=>p===r||p===r.replace(/\.html$/,''))}
+function fsEhRotaRemovidaMenu(destino){return fsListaContemRotaMenu(FS_ROTAS_REMOVIDAS_MENU,destino)}
+function fsEhRotaProtegidaMenu(destino){return fsListaContemRotaMenu(FS_ROTAS_PROTEGIDAS_MENU,destino)}
+function fsPlanoMinimoDaRotaMenu(destino){if(fsEhRotaRemovidaMenu(destino))return'removida';if(!fsEhRotaProtegidaMenu(destino))return'publico';if(fsListaContemRotaMenu(FS_ROTAS_PREMIUM_MENU,destino))return'premium';return'gratis'}
+function fsPlanoMenuAtual(){return fsNormalizarTextoMenu(localStorage.getItem('usuario_plano')||'gratis')}
+function fsPlanoMenuOrdem(plano){return fsNormalizarTextoMenu(plano)==='premium'?1:0}
+function fsPlanoPermiteDestinoMenu(destino,plano=fsPlanoMenuAtual()){const min=fsPlanoMinimoDaRotaMenu(destino);if(min==='removida')return false;if(min==='publico'||min==='gratis')return true;return fsPlanoMenuOrdem(plano)>=fsPlanoMenuOrdem(min)}
+function fsRedirecionarIndexSePlanoNaoPermite(session,destino=fsPaginaAtual()){if(fsEhRotaRemovidaMenu(destino)){location.replace('/gerador.html');return true}if(!session?.user?.id)return false;if(!fsEhRotaProtegidaMenu(destino))return false;if(fsPlanoPermiteDestinoMenu(destino))return false;try{localStorage.removeItem('fs_destino_apos_login')}catch(_){}location.replace('/planos.html#assinar-plano-premium');return true}
+function fsSalvarDestinoProtegidoMenu(destino){try{const d=fsDestinoProtegidoMenu(destino)||'/gerador.html';localStorage.setItem('fs_destino_apos_login',d);return d}catch(_){return'/gerador.html'}}
+function fsAbrirLoginParaDestinoProtegido(destino){const d=fsSalvarDestinoProtegidoMenu(destino);fecharMenuMobileSeAberto();if(fsEstaNaHome()&&typeof abrirModalLogin==='function'){abrirModalLogin();return}location.href=`/index.html?login=1&dest=${encodeURIComponent(d)}`}
+async function obterSessaoAtualMenu(){try{if(!window._supabase)return null;const{data,error}=await _supabase.auth.getSession();return error?null:data?.session||null}catch(_){return null}}
+async function carregarHeaderHtmlMenu(){for(const c of ['/header.html','header.html','./header.html']){try{const r=await fetch(c,{cache:'no-cache'});if(r.ok)return await r.text()}catch(_){}}throw new Error('Não foi possível carregar header.html.')}
+function fecharMenuMobileSeAberto(){document.querySelector('.header-menu-linha')?.classList.remove('menu-aberto');document.querySelector('.main-header')?.classList.remove('menu-aberto')}
+function toggleMenuMobile(){const m=document.querySelector('.header-menu-linha'),h=document.querySelector('.main-header');m?.classList.toggle('menu-aberto');h?.classList.toggle('menu-aberto',m?.classList.contains('menu-aberto'))}
+function configurarLinksDoHeader(){document.querySelectorAll('.header-menu-linha a').forEach(link=>{if(link.dataset.fsHeaderLinkConfigurado==='sim')return;link.dataset.fsHeaderLinkConfigurado='sim';link.addEventListener('click',async e=>{const d=fsDestinoProtegidoMenu(link.getAttribute('href')||'');if(fsEhRotaRemovidaMenu(d)){e.preventDefault();location.href='/gerador.html';return}if(!fsEhRotaProtegidaMenu(d)){fecharMenuMobileSeAberto();return}const s=await obterSessaoAtualMenu();if(!s?.user?.id){e.preventDefault();fsAbrirLoginParaDestinoProtegido(d);return}if(!fsPlanoPermiteDestinoMenu(d)){e.preventDefault();fecharMenuMobileSeAberto();location.href='/planos.html#assinar-plano-premium';return}fecharMenuMobileSeAberto()})})}
+function configurarDropdownsHeader(){return}
+function marcarLinkAtivoHeader(){const p=fsPaginaAtual();document.querySelectorAll('.header-menu-linha a').forEach(a=>{const h=(a.getAttribute('href')||'')==='/'?'/index.html':a.getAttribute('href')||'';a.classList.toggle('ativo',!!h&&(p===h||p.endsWith(h)))})}
+function aplicarVisibilidadeMenuPorPlano(){const n=fsPlanoMenuOrdem(fsPlanoMenuAtual());document.querySelectorAll('[data-plano-min]').forEach(link=>{const min=fsPlanoMenuOrdem(link.getAttribute('data-plano-min')||'gratis');const ok=n>=min;const li=link.closest('li');if(li)li.style.display=ok?'':'none';else link.style.display=ok?'':'none'})}
+async function verificarExpiracaoTestePremiumMenu(){try{if(!window._supabase)return null;const{data:{session}}=await _supabase.auth.getSession();if(!session?.user?.id)return null;const{data,error}=await _supabase.rpc('verificar_expiracao_teste_premium');if(error)return null;if(data?.plano)localStorage.setItem('usuario_plano',fsNormalizarTextoMenu(data.plano));if(data?.plano_status)localStorage.setItem('usuario_plano_status',data.plano_status);else localStorage.removeItem('usuario_plano_status');if(data?.plano_expira_em)localStorage.setItem('usuario_plano_expira_em',data.plano_expira_em);else localStorage.removeItem('usuario_plano_expira_em');return data||null}catch(_){return null}}
+async function atualizarHeaderUsuario(session){const saudacao=document.getElementById('usuario-saudacao'),entrarD=document.getElementById('btn-header-entrar'),sairD=document.getElementById('btn-header-sair'),entrarM=document.getElementById('btn-menu-mobile-entrar'),sairM=document.getElementById('btn-menu-mobile-sair'),not=document.getElementById('btn-notificacoes'),cont=document.getElementById('contador-notificacoes');if(!saudacao)return;if(!session?.user?.id){saudacao.innerText='Olá, Convidado';if(entrarD)entrarD.style.display='inline-flex';if(sairD)sairD.style.display='none';if(entrarM)entrarM.style.display='inline-flex';if(sairM)sairM.style.display='none';if(not)not.style.display='none';if(cont)cont.style.display='none';['usuario_nome','usuario_email','usuario_plano'].forEach(k=>localStorage.removeItem(k));aplicarVisibilidadeMenuPorPlano();return}let nome=localStorage.getItem('usuario_nome')||session.user.user_metadata?.nome||session.user.user_metadata?.name||session.user.email?.split('@')[0]||'Visitante';try{await verificarExpiracaoTestePremiumMenu();if(window._supabase){const{data:p,error}=await _supabase.from('perfis').select('nome,nome_empresa,plano,plano_status,plano_expira_em').eq('id',session.user.id).maybeSingle();if(!error&&p){nome=p.nome||p.nome_empresa||nome;localStorage.setItem('usuario_nome',nome);localStorage.setItem('usuario_email',session.user.email||'');localStorage.setItem('usuario_plano',fsNormalizarTextoMenu(p.plano||'gratis'));if(p.plano_status)localStorage.setItem('usuario_plano_status',p.plano_status);else localStorage.removeItem('usuario_plano_status');if(p.plano_expira_em)localStorage.setItem('usuario_plano_expira_em',p.plano_expira_em);else localStorage.removeItem('usuario_plano_expira_em')}}}catch(_){}saudacao.innerText=`Olá, ${nome}`;if(entrarD)entrarD.style.display='none';if(sairD)sairD.style.display='inline-flex';if(entrarM)entrarM.style.display='none';if(sairM)sairM.style.display='inline-flex';if(not)not.style.display=fsPlanoMenuAtual()==='premium'?'inline-flex':'none';if(cont&&fsPlanoMenuAtual()!=='premium')cont.style.display='none';aplicarVisibilidadeMenuPorPlano()}
+function irParaLogin(){fecharMenuMobileSeAberto();if(typeof abrirModalLogin==='function')return abrirModalLogin();location.href='/index.html?login=1'}
+async function deslogar(){try{fecharMenuMobileSeAberto();if(window._supabase)await _supabase.auth.signOut();['id','usuario_nome','usuario_email','usuario_plano','usuario_plano_status','usuario_plano_expira_em','nome_empresa','telefone_empresa','endereco_empresa','cnpj_empresa','foto_url'].forEach(k=>localStorage.removeItem(k));removerBotaoFlutuanteGeradorGlobal();await atualizarHeaderUsuario(null);location.href='/index.html'}catch(e){console.error(e);alert('Não foi possível sair da conta. Tente novamente.')}}
+async function controlarBotaoFlutuanteGeradorGlobal(sessionRecebida=undefined){if(fsModoEmbedGestao())return removerBotaoFlutuanteGeradorGlobal();let s=sessionRecebida;if(s===undefined)s=await obterSessaoAtualMenu();if(!s?.user?.id||fsEstaNaPaginaGerador())return removerBotaoFlutuanteGeradorGlobal();criarBotaoFlutuanteGeradorGlobal()}
+function criarBotaoFlutuanteGeradorGlobal(){if(document.getElementById('btn-flutuante-gerador-global'))return;const b=document.createElement('button');b.type='button';b.id='btn-flutuante-gerador-global';b.innerHTML='🧾 <span>Gerar orçamento</span>';b.title='Gerar orçamento';b.setAttribute('aria-label','Gerar orçamento');b.onclick=abrirGeradorGlobal;document.body.appendChild(b)}
+function removerBotaoFlutuanteGeradorGlobal(){document.getElementById('btn-flutuante-gerador-global')?.remove();document.body.classList.remove('gerador-aberto')}
+async function abrirGeradorGlobal(){const s=await obterSessaoAtualMenu();if(!s?.user?.id){removerBotaoFlutuanteGeradorGlobal();if(fsEstaNaHome()&&typeof abrirModalLogin==='function')return abrirModalLogin();location.href='/index.html?login=1&dest='+encodeURIComponent('/gerador.html');return}location.href='/gerador.html'}
+function removerParametrosUrlMenu(){history.replaceState({},document.title,location.origin+location.pathname)}
+function abrirLoginAutomaticamenteSeSolicitado(){const p=new URLSearchParams(location.search),d=p.get('dest')||'';if(d&&fsEhRotaProtegidaMenu(d))fsSalvarDestinoProtegidoMenu(d);if(p.get('login')!=='1')return;setTimeout(()=>{if(typeof abrirModalLogin==='function')abrirModalLogin();removerParametrosUrlMenu()},500)}
+async function abrirGeradorAutomaticamenteSeSolicitado(){const p=new URLSearchParams(location.search);if(p.get('abrirGerador')!=='1')return;const s=await obterSessaoAtualMenu();removerParametrosUrlMenu();if(!s?.user?.id){fsSalvarDestinoProtegidoMenu('/gerador.html');if(typeof abrirModalLogin==='function')abrirModalLogin();else location.href='/index.html?login=1&dest='+encodeURIComponent('/gerador.html');return}location.href='/gerador.html'}
+function configurarHeaderInteligente(){const h=document.getElementById('header-container');if(!h)return;h.classList.remove('header-oculto');h.classList.add('header-visivel')}
+function controlarHeaderInteligente(){configurarHeaderInteligente()}
+async function carregarMenu(sessionRecebida=undefined){removerCssObsoletoTemaMarrom();if(aplicarModoEmbedGestao())return;garantirCssHeaderFS();const h=document.getElementById('header-container');if(!h)return;try{if(!headerJaCarregado){h.innerHTML=await carregarHeaderHtmlMenu();h.style.display='block';headerJaCarregado=true;configurarLinksDoHeader();configurarDropdownsHeader();marcarLinkAtivoHeader();configurarHeaderInteligente()}const s=sessionRecebida===undefined?await obterSessaoAtualMenu():sessionRecebida;await atualizarHeaderUsuario(s||null);aplicarVisibilidadeMenuPorPlano();if(fsRedirecionarIndexSePlanoNaoPermite(s||null,fsPaginaAtual()))return;await controlarBotaoFlutuanteGeradorGlobal(s||null);configurarHeaderInteligente()}catch(e){console.error('Erro ao carregar menu:',e)}}
+async function inicializarMenuFS(){removerCssObsoletoTemaMarrom();if(fsMenuInicializado)return;fsMenuInicializado=true;if(aplicarModoEmbedGestao())return;garantirCssHeaderFS();await carregarMenu();const s=await obterSessaoAtualMenu(),d=fsPaginaAtual();if(!s?.user?.id&&fsEhRotaProtegidaMenu(d)&&!fsEstaNaHome()){fsAbrirLoginParaDestinoProtegido(d);return}if(fsRedirecionarIndexSePlanoNaoPermite(s||null,d))return;abrirLoginAutomaticamenteSeSolicitado();await abrirGeradorAutomaticamenteSeSolicitado();if(window._supabase){_supabase.auth.onAuthStateChange(async(_,session)=>{removerCssObsoletoTemaMarrom();await atualizarHeaderUsuario(session||null);aplicarVisibilidadeMenuPorPlano();if(fsRedirecionarIndexSePlanoNaoPermite(session||null,fsPaginaAtual()))return;await controlarBotaoFlutuanteGeradorGlobal(session||null);if(!session)removerBotaoFlutuanteGeradorGlobal();configurarHeaderInteligente()})}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inicializarMenuFS);else inicializarMenuFS();
+window.carregarMenu=carregarMenu;window.verificarExpiracaoTestePremiumMenu=verificarExpiracaoTestePremiumMenu;window.atualizarHeaderUsuario=atualizarHeaderUsuario;window.irParaLogin=irParaLogin;window.toggleMenuMobile=toggleMenuMobile;window.deslogar=deslogar;window.abrirGeradorGlobal=abrirGeradorGlobal;window.controlarBotaoFlutuanteGeradorGlobal=controlarBotaoFlutuanteGeradorGlobal;window.configurarHeaderInteligente=configurarHeaderInteligente;window.controlarHeaderInteligente=controlarHeaderInteligente;window.aplicarVisibilidadeMenuPorPlano=aplicarVisibilidadeMenuPorPlano;window.inicializarMenuFS=inicializarMenuFS;window.fsAbrirLoginParaDestinoProtegido=fsAbrirLoginParaDestinoProtegido;window.fsSalvarDestinoProtegidoMenu=fsSalvarDestinoProtegidoMenu;window.removerCssObsoletoTemaMarrom=removerCssObsoletoTemaMarrom;window.fsRedirecionarIndexSePlanoNaoPermite=fsRedirecionarIndexSePlanoNaoPermite;window.fsPlanoPermiteDestinoMenu=fsPlanoPermiteDestinoMenu;
