@@ -4,9 +4,9 @@
   const FS_SUPABASE_FUNCTIONS_URL = window.FS_SUPABASE_FUNCTIONS_URL || 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
   const FS_PLANOS_PIX = {
     premium: {
-      mensal: { label: 'Plano Premium - 1 mês', valor: 89.90, dias: 30 },
-      semestral: { label: 'Plano Premium - 6 meses', valor: 499.90, dias: 180 },
-      anual: { label: 'Plano Premium - 12 meses', valor: 999.90, dias: 365 }
+      mensal: { label: 'Plano Premium Lançamento - 1 mês', valor: 29.90, dias: 30 },
+      semestral: { label: 'Plano Premium Lançamento - 6 meses', valor: 149.90, dias: 180 },
+      anual: { label: 'Plano Premium Lançamento - 12 meses', valor: 299.90, dias: 365 }
     }
   };
   let pagamentoPixAtualIdInterno = null;
