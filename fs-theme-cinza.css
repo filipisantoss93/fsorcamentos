@@ -1,24 +1,25 @@
 /* =========================================================
    FS ORÇAMENTOS — TEMA AZUL GLOBAL
-   Substitui o antigo padrão cinza pela identidade azul/branca
-   das telas de referência, com acento verde/água.
+   Paleta: azul forte, azul escuro, branco e acento verde/água.
+   Mantém nomes antigos de variáveis apenas por compatibilidade.
    ========================================================= */
 
 :root {
   --fs-azul-950: #040f2f;
-  --fs-azul-900: #071a4a;
+  --fs-azul-900: #061846;
   --fs-azul-800: #082463;
   --fs-azul-700: #0b3fae;
   --fs-azul-600: #0f49d9;
   --fs-azul-500: #145cff;
   --fs-azul-400: #2f7bff;
-  --fs-azul-300: #77aaff;
+  --fs-azul-300: #6aa7ff;
   --fs-azul-200: #cfe1ff;
   --fs-azul-100: #eaf3ff;
   --fs-azul-50: #f5f9ff;
 
+  --fs-verde-600: #08a985;
   --fs-verde-500: #19c7a4;
-  --fs-verde-600: #0ea987;
+  --fs-verde-400: #21d6b1;
   --fs-verde-100: #dcfff7;
 
   --fs-cinza-950: var(--fs-azul-950);
@@ -26,15 +27,15 @@
   --fs-cinza-800: var(--fs-azul-900);
   --fs-cinza-700: var(--fs-azul-800);
   --fs-cinza-600: var(--fs-azul-700);
-  --fs-cinza-500: #5d6d84;
-  --fs-cinza-400: #8aa0bf;
-  --fs-cinza-300: #c9d9f4;
-  --fs-cinza-200: #dceaff;
+  --fs-cinza-500: var(--fs-azul-600);
+  --fs-cinza-400: var(--fs-azul-400);
+  --fs-cinza-300: var(--fs-azul-300);
+  --fs-cinza-200: var(--fs-azul-200);
   --fs-cinza-100: var(--fs-azul-100);
   --fs-cinza-50: var(--fs-azul-50);
 
   --fs-grafite: var(--fs-azul-600);
-  --fs-grafite-2: var(--fs-azul-300);
+  --fs-grafite-2: var(--fs-azul-400);
   --fs-grafite-3: var(--fs-azul-700);
   --fs-destaque: var(--fs-azul-100);
   --fs-destaque-2: var(--fs-azul-200);
@@ -61,13 +62,13 @@
 
   --fs-card: #ffffff;
   --fs-card-soft: var(--fs-azul-50);
-  --fs-borda: #dbe9ff;
-  --fs-borda-2: #c9d9f4;
+  --fs-borda: #d6e7ff;
+  --fs-borda-2: #cfe1ff;
   --fs-texto: var(--fs-azul-950);
-  --fs-texto-suave: #667894;
-  --fs-muted: #667894;
-  --fs-suave: #667894;
-  --fs-cinza: #667894;
+  --fs-texto-suave: #245eac;
+  --fs-muted: #245eac;
+  --fs-suave: #245eac;
+  --fs-cinza: var(--fs-azul-600);
   --fs-cinza-claro: var(--fs-azul-100);
 
   --bg-dark: var(--fs-azul-100);
@@ -76,18 +77,21 @@
   --text-dark: var(--fs-azul-950);
 
   --fs-sucesso: var(--fs-verde-500);
-  --fs-alerta: #f97316;
+  --fs-alerta: var(--fs-azul-500);
   --fs-erro: #dc2626;
   --fs-perigo: #dc2626;
   --fs-verde: var(--fs-verde-500);
   --fs-vermelho: #dc2626;
   --fs-azul: var(--fs-azul-500);
-  --fs-shadow-cinza: 0 16px 38px rgba(8, 36, 99, .10);
+  --fs-shadow-cinza: 0 18px 42px rgba(20, 92, 255, .14);
 }
 
 html,
 body {
-  background: radial-gradient(circle at top right, rgba(20, 92, 255, .14), transparent 36%), linear-gradient(180deg, #ffffff 0%, #f5f9ff 50%, #eaf3ff 100%) !important;
+  background:
+    radial-gradient(circle at 88% 0%, rgba(20, 92, 255, .24), transparent 34%),
+    radial-gradient(circle at 12% 12%, rgba(25, 199, 164, .12), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f5f9ff 52%, #eaf3ff 100%) !important;
   color: var(--fs-texto) !important;
 }
 
@@ -123,10 +127,10 @@ body:not(.gerando-pdf) .modal-pix-card,
 body:not(.gerando-pdf) .card-resumo,
 body:not(.gerando-pdf) .metrica-card,
 body:not(.gerando-pdf) .card-relatorio {
-  background: rgba(255, 255, 255, .94) !important;
+  background: rgba(255, 255, 255, .96) !important;
   color: var(--fs-texto) !important;
   border-color: var(--fs-borda) !important;
-  box-shadow: var(--fs-shadow-cinza) !important;
+  box-shadow: 0 18px 42px rgba(20, 92, 255, .12), 0 1px 0 rgba(255, 255, 255, .8) inset !important;
 }
 
 body:not(.gerando-pdf) .main-header,
@@ -140,45 +144,8 @@ body:not(.gerando-pdf) .header-dropdown-menu {
   background: rgba(255, 255, 255, .96) !important;
   color: var(--fs-texto) !important;
   border-color: var(--fs-borda) !important;
-  box-shadow: 0 10px 30px rgba(8, 36, 99, .12) !important;
-  backdrop-filter: blur(16px) !important;
-}
-
-body:not(.gerando-pdf) .logo-nav,
-body:not(.gerando-pdf) .logo-nav:visited,
-body:not(.gerando-pdf) .logo-nav span,
-body:not(.gerando-pdf) .logo-nav .logo-orcamentos,
-body:not(.gerando-pdf) .header-menu-linha a,
-body:not(.gerando-pdf) .nav-menu a,
-body:not(.gerando-pdf) .nav-menu summary,
-body:not(.gerando-pdf) .header-usuario,
-body:not(.gerando-pdf) #usuario-saudacao,
-body:not(.gerando-pdf) .header-dropdown-toggle,
-body:not(.gerando-pdf) .header-dropdown-menu a {
-  color: var(--fs-azul-950) !important;
-  text-shadow: none !important;
-}
-
-body:not(.gerando-pdf) .logo-nav .logo-fs,
-body:not(.gerando-pdf) .logo-nav > span:first-child,
-body:not(.gerando-pdf) .logo-fs,
-body:not(.gerando-pdf) .fs-box,
-body:not(.gerando-pdf) .sobre-fs-box {
-  background: linear-gradient(135deg, var(--fs-azul-500), var(--fs-azul-700)) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(20, 92, 255, .35) !important;
-  box-shadow: 0 10px 22px rgba(20, 92, 255, .25) !important;
-}
-
-body:not(.gerando-pdf) .nav-menu a:hover,
-body:not(.gerando-pdf) .nav-menu summary:hover,
-body:not(.gerando-pdf) .nav-menu a.ativo,
-body:not(.gerando-pdf) .nav-menu .ativo,
-body:not(.gerando-pdf) .header-menu-linha a:hover,
-body:not(.gerando-pdf) .header-menu-linha a.ativo {
-  background: linear-gradient(135deg, var(--fs-azul-500), var(--fs-azul-700)) !important;
-  color: #ffffff !important;
-  border-color: var(--fs-azul-500) !important;
+  box-shadow: 0 12px 34px rgba(20, 92, 255, .16) !important;
+  backdrop-filter: blur(18px) !important;
 }
 
 body:not(.gerando-pdf) .home-hero-venda,
@@ -204,11 +171,14 @@ body:not(.gerando-pdf) .container-termos,
 body:not(.gerando-pdf) .container-privacidade,
 body:not(.gerando-pdf) .home-premium-showcase,
 body:not(.gerando-pdf) .hero {
-  background: radial-gradient(circle at top right, rgba(20, 92, 255, .13), transparent 38%), linear-gradient(135deg, #ffffff 0%, var(--fs-azul-50) 100%) !important;
+  background:
+    radial-gradient(circle at 90% 8%, rgba(20, 92, 255, .22), transparent 32%),
+    radial-gradient(circle at 12% 20%, rgba(25, 199, 164, .10), transparent 26%),
+    linear-gradient(135deg, #ffffff 0%, #f5f9ff 62%, #eaf3ff 100%) !important;
   color: var(--fs-texto) !important;
   border-color: var(--fs-borda) !important;
   border-top-color: var(--fs-azul-500) !important;
-  box-shadow: var(--fs-shadow-cinza) !important;
+  box-shadow: 0 22px 48px rgba(20, 92, 255, .14) !important;
 }
 
 body:not(.gerando-pdf) h1,
@@ -248,6 +218,18 @@ body:not(.gerando-pdf) .valor-linha span {
   color: var(--fs-texto-suave) !important;
 }
 
+body:not(.gerando-pdf) .text-primary,
+body:not(.gerando-pdf) .destaque,
+body:not(.gerando-pdf) .home-destaque,
+body:not(.gerando-pdf) .preco,
+body:not(.gerando-pdf) .mock-total,
+body:not(.gerando-pdf) .total,
+body:not(.gerando-pdf) .total strong,
+body:not(.gerando-pdf) .metric strong,
+body:not(.gerando-pdf) .met strong {
+  color: var(--fs-azul-500) !important;
+}
+
 body:not(.gerando-pdf) .card-header,
 body:not(.gerando-pdf) .modal-pix-topo,
 body:not(.gerando-pdf) .mock-card-head,
@@ -267,10 +249,10 @@ body:not(.gerando-pdf) thead,
 body:not(.gerando-pdf) .table th,
 body:not(.gerando-pdf) .tabela th,
 body:not(.gerando-pdf) .fs-table th {
-  background: linear-gradient(135deg, var(--fs-azul-900), var(--fs-azul-700)) !important;
+  background: linear-gradient(135deg, var(--fs-azul-900), var(--fs-azul-700), var(--fs-azul-500)) !important;
   color: #ffffff !important;
-  border-color: var(--fs-azul-700) !important;
-  box-shadow: none !important;
+  border-color: var(--fs-azul-600) !important;
+  box-shadow: 0 10px 22px rgba(20, 92, 255, .20) !important;
 }
 
 body:not(.gerando-pdf) .card-header *,
@@ -317,10 +299,10 @@ body:not(.gerando-pdf) .btn-menu-mobile-sair,
 body:not(.gerando-pdf) .plano-pix-card button,
 body:not(.gerando-pdf) .gestao-tab.ativo,
 body:not(.gerando-pdf) a.btn.primary {
-  background: linear-gradient(135deg, var(--fs-azul-500), var(--fs-azul-700)) !important;
+  background: linear-gradient(135deg, #2f7bff 0%, #145cff 45%, #0b3fae 100%) !important;
   color: #ffffff !important;
-  border-color: var(--fs-azul-500) !important;
-  box-shadow: 0 10px 22px rgba(20, 92, 255, .24) !important;
+  border-color: #2f7bff !important;
+  box-shadow: 0 14px 30px rgba(20, 92, 255, .30), 0 0 0 1px rgba(255, 255, 255, .18) inset !important;
   text-shadow: none !important;
 }
 
@@ -340,9 +322,9 @@ body:not(.gerando-pdf) .btn-acao-pdf:hover,
 body:not(.gerando-pdf) .btn-toggle-form-mobile:hover,
 body:not(.gerando-pdf) .btn-toggle-lista-mobile:hover,
 body:not(.gerando-pdf) .gestao-tab.ativo:hover {
-  background: linear-gradient(135deg, var(--fs-azul-400), var(--fs-azul-600)) !important;
+  background: linear-gradient(135deg, #6aa7ff 0%, #145cff 55%, #0f49d9 100%) !important;
   color: #ffffff !important;
-  border-color: var(--fs-azul-400) !important;
+  border-color: #6aa7ff !important;
 }
 
 body:not(.gerando-pdf) .btn-secondary,
@@ -358,10 +340,10 @@ body:not(.gerando-pdf) .home-btn-secondary,
 body:not(.gerando-pdf) .btn-home-atalho,
 body:not(.gerando-pdf) .gestao-tab,
 body:not(.gerando-pdf) a.btn:not(.primary) {
-  background: #ffffff !important;
-  color: var(--fs-azul-700) !important;
+  background: rgba(255, 255, 255, .96) !important;
+  color: var(--fs-azul-600) !important;
   border-color: var(--fs-azul-200) !important;
-  box-shadow: 0 8px 20px rgba(8, 36, 99, .08) !important;
+  box-shadow: 0 12px 28px rgba(20, 92, 255, .10) !important;
 }
 
 body:not(.gerando-pdf) .btn-secondary:hover,
@@ -381,6 +363,17 @@ body:not(.gerando-pdf) .gestao-tab:hover {
   border-color: var(--fs-azul-300) !important;
 }
 
+body:not(.gerando-pdf) .btn-whatsapp,
+body:not(.gerando-pdf) .btn-verde,
+body:not(.gerando-pdf) .btn.ok,
+body:not(.gerando-pdf) .ok,
+body:not(.gerando-pdf) .mock-body .btn.primary:last-child {
+  background: linear-gradient(135deg, #21d6b1 0%, #19c7a4 52%, #08a985 100%) !important;
+  color: #ffffff !important;
+  border-color: #19c7a4 !important;
+  box-shadow: 0 14px 30px rgba(25, 199, 164, .30), 0 0 0 1px rgba(255, 255, 255, .20) inset !important;
+}
+
 body:not(.gerando-pdf) .btn-danger,
 body:not(.gerando-pdf) .fs-btn-danger,
 body:not(.gerando-pdf) .btn-perigo,
@@ -389,17 +382,6 @@ body:not(.gerando-pdf) .btn-excluir-conta {
   background: #fff5f5 !important;
   color: #b91c1c !important;
   border-color: #fecaca !important;
-}
-
-body:not(.gerando-pdf) .btn-whatsapp,
-body:not(.gerando-pdf) .btn-verde,
-body:not(.gerando-pdf) .btn.ok,
-body:not(.gerando-pdf) .ok,
-body:not(.gerando-pdf) .mock-body .btn.primary:last-child {
-  background: linear-gradient(135deg, #21d6b1, #09a985) !important;
-  color: #ffffff !important;
-  border-color: #10b894 !important;
-  box-shadow: 0 10px 22px rgba(25, 199, 164, .22) !important;
 }
 
 body:not(.gerando-pdf) input,
@@ -420,7 +402,7 @@ body:not(.gerando-pdf) .auth-container-index .btn-google {
 
 body:not(.gerando-pdf) input::placeholder,
 body:not(.gerando-pdf) textarea::placeholder {
-  color: #8aa0bf !important;
+  color: var(--fs-azul-400) !important;
   opacity: 1 !important;
 }
 
@@ -428,7 +410,7 @@ body:not(.gerando-pdf) input:focus,
 body:not(.gerando-pdf) select:focus,
 body:not(.gerando-pdf) textarea:focus {
   border-color: var(--fs-azul-500) !important;
-  box-shadow: 0 0 0 3px rgba(20, 92, 255, .16) !important;
+  box-shadow: 0 0 0 3px rgba(20, 92, 255, .18) !important;
   outline: none !important;
 }
 
@@ -471,9 +453,10 @@ body:not(.gerando-pdf) .agenda-chip,
 body:not(.gerando-pdf) .tag-premium,
 body:not(.gerando-pdf) .placa-badge,
 body:not(.gerando-pdf) .status-pill {
-  background: #eaf3ff !important;
+  background: linear-gradient(135deg, #ffffff, var(--fs-azul-100)) !important;
   color: var(--fs-azul-700) !important;
   border-color: var(--fs-azul-200) !important;
+  box-shadow: 0 8px 18px rgba(20, 92, 255, .08) !important;
 }
 
 body:not(.gerando-pdf) .tag.ativo,
@@ -487,7 +470,7 @@ body:not(.gerando-pdf) .pago,
 body:not(.gerando-pdf) .recebido,
 body:not(.gerando-pdf) .notificacao-aprovado,
 body:not(.gerando-pdf) .status-pill.em_execucao {
-  color: #08775f !important;
+  color: #05765f !important;
   background: var(--fs-verde-100) !important;
   border-color: #a7f3e5 !important;
 }
@@ -515,6 +498,17 @@ body:not(.gerando-pdf) .notificacao-recusado {
   border-color: #fecaca !important;
 }
 
+body:not(.gerando-pdf) .logo-fs,
+body:not(.gerando-pdf) .logo-nav .logo-fs,
+body:not(.gerando-pdf) .logo-nav > span:first-child,
+body:not(.gerando-pdf) .fs-box,
+body:not(.gerando-pdf) .sobre-fs-box {
+  background: linear-gradient(135deg, #2f7bff 0%, #145cff 45%, #0b3fae 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(20, 92, 255, .42) !important;
+  box-shadow: 0 14px 28px rgba(20, 92, 255, .32) !important;
+}
+
 html.fs-embed body,
 body.modo-embed-gestao,
 body.fs-gestao-tema-cinza {
@@ -526,7 +520,7 @@ body.fs-gestao-tema-cinza {
 body:not(.gerando-pdf) .gestao-tabs-wrap {
   background: #ffffff !important;
   border-bottom-color: var(--fs-borda) !important;
-  box-shadow: 0 2px 8px rgba(8, 36, 99, .08) !important;
+  box-shadow: 0 2px 8px rgba(20, 92, 255, .10) !important;
 }
 
 body:not(.gerando-pdf) footer,
@@ -547,7 +541,7 @@ body:not(.gerando-pdf) .forum-footer a,
 body:not(.gerando-pdf) .fs-footer-legal a,
 body:not(.gerando-pdf) .fs-footer-legal-links a,
 body:not(.gerando-pdf) .fs-footer-index a {
-  color: var(--fs-azul-700) !important;
+  color: var(--fs-azul-600) !important;
 }
 
 body.gerando-pdf,
@@ -561,7 +555,7 @@ body.gerando-pdf * {
   body:not(.gerando-pdf) .header-menu-linha {
     background: rgba(255, 255, 255, .98) !important;
     border-color: var(--fs-borda) !important;
-    box-shadow: 0 16px 40px rgba(8, 36, 99, .16) !important;
+    box-shadow: 0 20px 46px rgba(20, 92, 255, .18) !important;
   }
 
   body:not(.gerando-pdf) .nav-menu a,
