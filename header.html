@@ -1,176 +1,32 @@
-<link rel="stylesheet" href="/header-clean.css?v=20260621-1">
-<link rel="stylesheet" href="/fs-theme-cinza.css?v=20260621-gestao-cinza-1">
+<link rel="stylesheet" href="/header-clean.css?v=20260701-orcamentos-premium">
+<link rel="stylesheet" href="/fs-theme-cinza.css?v=20260701-orcamentos-premium">
 <style>
-  .perfil-identidade {
-    transform: translateY(8px) !important;
-  }
-
-  #btn-notificacoes,
-  .btn-notificacoes-header {
-    width: auto !important;
-    min-width: 0 !important;
-    height: auto !important;
-    min-height: 0 !important;
-    padding: 0 4px !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    outline: none !important;
-    color: var(--fs-amarelo, #ffc400) !important;
-    font-size: 20px !important;
-    line-height: 1 !important;
-  }
-
-  #btn-notificacoes:hover,
-  #btn-notificacoes:focus,
-  #btn-notificacoes:active,
-  .btn-notificacoes-header:hover,
-  .btn-notificacoes-header:focus,
-  .btn-notificacoes-header:active {
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    outline: none !important;
-    color: var(--fs-amarelo, #ffc400) !important;
-    transform: none !important;
-  }
-
-  #btn-notificacoes .contador-notificacoes,
-  .btn-notificacoes-header .contador-notificacoes {
-    top: -10px !important;
-    right: -8px !important;
-  }
-
-  @media (max-width: 900px) {
-    .header-menu-linha {
-      background: #ffffff !important;
-      border: 1px solid #cbd5e1 !important;
-      border-top: 4px solid #334155 !important;
-      box-shadow: 0 18px 34px rgba(15, 23, 42, .24) !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu,
-    .header-menu-linha.menu-aberto .nav-menu-compacto {
-      background: #ffffff !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu a,
-    .header-menu-linha.menu-aberto .nav-menu summary {
-      background: #ffffff !important;
-      color: #0f172a !important;
-      border: 1px solid #e2e8f0 !important;
-      font-weight: 950 !important;
-      box-shadow: none !important;
-      opacity: 1 !important;
-      text-shadow: none !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu a:hover,
-    .header-menu-linha.menu-aberto .nav-menu summary:hover,
-    .header-menu-linha.menu-aberto .nav-menu a.ativo {
-      background: #eef2f7 !important;
-      color: #0f172a !important;
-      border-color: #94a3b8 !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu .link-destaque-gerador {
-      background: #334155 !important;
-      color: #ffffff !important;
-      border-color: #334155 !important;
-      box-shadow: none !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu .link-destaque-gerador:hover,
-    .header-menu-linha.menu-aberto .nav-menu .link-destaque-gerador.ativo {
-      background: #1e293b !important;
-      color: #ffffff !important;
-      border-color: #1e293b !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu .link-destaque-gestao {
-      background: #dcfce7 !important;
-      color: #166534 !important;
-      border-color: #22c55e !important;
-      box-shadow: none !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu .link-destaque-gestao:hover,
-    .header-menu-linha.menu-aberto .nav-menu .link-destaque-gestao.ativo {
-      background: #bbf7d0 !important;
-      color: #14532d !important;
-      border-color: #16a34a !important;
-    }
-
-    .header-menu-linha.menu-aberto .nav-menu .link-destaque-gestao::after {
-      background: #16a34a !important;
-      color: #ffffff !important;
-    }
-
-    .header-menu-linha.menu-aberto .btn-menu-mobile-entrar,
-    .header-menu-linha.menu-aberto .btn-menu-mobile-sair {
-      width: 100% !important;
-      min-height: 42px !important;
-      background: #334155 !important;
-      color: #ffffff !important;
-      border: 1px solid #334155 !important;
-      border-radius: 8px !important;
-      font-weight: 950 !important;
-      opacity: 1 !important;
-      text-shadow: none !important;
-    }
-  }
-
-  @media (max-width: 720px) {
-    .perfil-identidade {
-      transform: translateY(10px) !important;
-    }
-
-    #btn-notificacoes,
-    .btn-notificacoes-header {
-      width: auto !important;
-      height: auto !important;
-      min-height: 0 !important;
-      padding: 0 3px !important;
-      font-size: 19px !important;
-    }
-  }
+  .main-header{background:#0f172a;color:#fff;position:sticky;top:0;z-index:10000;border-bottom:1px solid rgba(255,255,255,.08)}
+  .header-shell{width:min(1180px,calc(100% - 24px));margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:64px}
+  .logo-nav{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:950;white-space:nowrap}.logo-fs{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#e5e7eb;color:#0f172a;font-weight:950}.logo-orcamentos{font-size:18px}.nav-menu{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0}.nav-menu a{display:inline-flex;align-items:center;min-height:36px;padding:8px 10px;border-radius:8px;color:#e5e7eb;text-decoration:none;font-size:13px;font-weight:850}.nav-menu a:hover,.nav-menu a.ativo{background:#334155;color:#fff}.link-destaque-gerador{background:#f8fafc!important;color:#0f172a!important}.header-usuario{display:flex;align-items:center;gap:8px}.header-usuario span{font-size:13px;font-weight:800;color:#e5e7eb}.btn-header-entrar,.btn-header-sair,.btn-menu-mobile-entrar,.btn-menu-mobile-sair{border:1px solid #64748b;background:#f8fafc;color:#0f172a;border-radius:8px;min-height:34px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}.menu-mobile-btn{display:none;border:1px solid #64748b;background:#1e293b;color:#fff;border-radius:8px;width:38px;height:38px;font-size:20px}.btn-notificacoes-header{border:0;background:transparent;color:#e5e7eb;font-size:19px;cursor:pointer;position:relative}.contador-notificacoes{position:absolute;top:-7px;right:-7px;background:#ef4444;color:#fff;border-radius:999px;font-size:10px;min-width:16px;height:16px;line-height:16px;text-align:center}
+  @media(max-width:940px){.menu-mobile-btn{display:inline-flex;align-items:center;justify-content:center}.header-menu-linha{position:absolute;left:12px;right:12px;top:68px;background:#fff;border:1px solid #cbd5e1;border-radius:12px;box-shadow:0 18px 40px rgba(15,23,42,.22);padding:10px;display:none}.header-menu-linha.menu-aberto{display:block}.nav-menu{display:grid;gap:6px}.nav-menu a{color:#0f172a;background:#f8fafc;border:1px solid #e2e8f0}.header-usuario span{display:none}.menu-mobile-auth{display:grid!important;grid-template-columns:1fr;gap:6px}.btn-menu-mobile-entrar,.btn-menu-mobile-sair{width:100%}}
 </style>
-
 <header class="main-header">
   <div class="header-shell">
-    <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos">
-      <span class="logo-fs">FS</span><span class="logo-orcamentos">Orçamentos</span>
-    </a>
-
+    <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos"><span class="logo-fs">FS</span><span class="logo-orcamentos">Orçamentos</span></a>
     <nav class="header-menu-linha" aria-label="Menu principal">
       <ul class="nav-menu nav-menu-compacto">
         <li><a href="/index.html">Início</a></li>
-        <li><a href="/dashboard.html" data-plano-min="premium">Dashboard</a></li>
         <li><a href="/gerador.html" class="link-destaque-gerador">Gerar</a></li>
-        <li><a href="/orcamentos.html" data-plano-min="basico">Orçamentos</a></li>
-        <li><a href="/gestao.html" class="link-destaque-gestao" data-plano-min="premium">Gestão</a></li>
-        <li><a href="/social.html">Comunidade</a></li>
-        <li><a href="/painel.html" data-plano-min="basico">Painel</a></li>
+        <li><a href="/orcamentos.html" data-plano-min="premium">Orçamentos</a></li>
+        <li><a href="/fluxo-caixa.html" data-plano-min="premium">Fluxo de caixa</a></li>
+        <li><a href="/dashboard.html" data-plano-min="premium">Relatórios</a></li>
+        <li><a href="/forum.html">Fórum</a></li>
+        <li><a href="/painel.html">Painel</a></li>
         <li><a href="/planos.html">Planos</a></li>
         <li><a href="/sobre.html">Sobre</a></li>
         <li><a href="/contato.html">Contato</a></li>
-
-        <li class="menu-mobile-auth">
-          <button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;">Entrar</button>
-          <button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;">Sair</button>
-        </li>
+        <li class="menu-mobile-auth"><button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;">Entrar</button><button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;">Sair</button></li>
       </ul>
     </nav>
-
     <div class="header-usuario">
       <span id="usuario-saudacao">Olá, Convidado</span>
-
-      <button type="button" id="btn-notificacoes" class="btn-notificacoes-header" onclick="abrirModalNotificacoes()" style="display:none;" title="Notificações" aria-label="Notificações">
-        🔔
-        <span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span>
-      </button>
-
+      <button type="button" id="btn-notificacoes" class="btn-notificacoes-header" onclick="abrirModalNotificacoes && abrirModalNotificacoes()" style="display:none;" title="Notificações" aria-label="Notificações">🔔<span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span></button>
       <button type="button" id="btn-header-entrar" class="btn-header-entrar" onclick="irParaLogin()" style="display:none;">Entrar</button>
       <button type="button" id="btn-header-sair" class="btn-header-sair" onclick="deslogar()" style="display:none;">Sair</button>
       <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile()" aria-label="Abrir menu">☰</button>
