@@ -2,192 +2,2958 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#145cff">
+<meta name="theme-color" content="#3e2723">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Gerador de Orçamento - FS Orçamentos</title>
-  <meta name="description" content="Gere orçamento em PDF grátis ou salve no Premium com envio por WhatsApp, aprovação online e itens recorrentes.">
+
+  <meta name="description" content="Gere orçamentos profissionais em PDF com dados da empresa, logo, itens, total, observações e envio por WhatsApp.">
   <meta name="robots" content="index, follow">
   <meta name="google-adsense-account" content="ca-pub-5628949951885077">
+
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="auth-clean.css?v=20260701-login-premium">
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5628949951885077" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <style>
-    :root{--azul950:#040f2f;--azul900:#061846;--azul700:#0b3fae;--azul500:#145cff;--azul400:#2f7bff;--azul100:#eaf3ff;--azul50:#f5f9ff;--verde:#19c7a4;--dourado:#d4a73f;--vermelho:#dc2626;--borda:#d6e7ff;--muted:#245eac;--soft:#6e84ab}
-    body{background:radial-gradient(circle at 86% 0%,rgba(20,92,255,.20),transparent 32%),radial-gradient(circle at 12% 12%,rgba(25,199,164,.10),transparent 28%),linear-gradient(180deg,#fff 0%,#f5f9ff 56%,#eaf3ff 100%)!important;color:var(--azul950)!important;overflow-x:hidden}
-    .page{width:min(1120px,calc(100% - 22px));margin:0 auto;padding:18px 0 52px;display:none;gap:16px}.card{background:rgba(255,255,255,.96);border:1px solid var(--borda);border-radius:22px;box-shadow:0 16px 36px rgba(20,92,255,.10);overflow:hidden;color:var(--azul950)}
-    .hero{position:relative;padding:20px 24px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;background:linear-gradient(135deg,#fff 0%,#f8fbff 62%,#eaf3ff 100%)}.hero:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,var(--azul400),var(--azul500),var(--azul700))}.tag{display:inline-flex;align-items:center;gap:7px;width:max-content;max-width:100%;padding:7px 12px;border-radius:999px;background:#fff;color:var(--azul500);border:1px solid var(--borda);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}.tag:before{content:"🧾"}.hero h1{margin:0 0 5px;color:var(--azul950);font-size:clamp(25px,3.8vw,36px);line-height:1.08;letter-spacing:-.05em;font-weight:950}.hero p{margin:0;max-width:720px;color:var(--muted);font-size:15px;font-weight:760;line-height:1.36}.plano-selo-gerador{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:7px 12px;border-radius:999px;border:1px solid var(--borda);background:#fff;color:var(--azul500);font-size:12px;font-weight:950;text-decoration:none;box-shadow:0 10px 22px rgba(20,92,255,.08)}
-    .layout{display:grid;grid-template-columns:minmax(0,1fr) 315px;gap:16px;align-items:start}.main-card{padding:20px}.sec-title{display:flex;align-items:center;gap:9px;margin:18px 0 12px;padding:11px 13px;border-radius:15px;border:1px solid var(--borda);background:linear-gradient(135deg,#fff,var(--azul100));color:var(--azul950);font-weight:950;text-transform:uppercase;letter-spacing:.045em;font-size:12px}.sec-title:before{content:"";width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--azul400),var(--azul500),var(--azul700));box-shadow:0 10px 18px rgba(20,92,255,.20)}.sec-title:first-of-type{margin-top:0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px;margin-bottom:11px}.field label,.linha small{color:var(--azul700);font-size:11px;font-weight:950;text-transform:uppercase;letter-spacing:.04em}.field input,.field textarea,.field select,.linha input,.link-box input{width:100%;box-sizing:border-box;border:1px solid var(--borda);border-radius:12px;padding:10px 12px;background:#fff;color:var(--azul950);font-size:14px;font-weight:720;outline:none;box-shadow:0 7px 16px rgba(20,92,255,.04)}.field textarea{min-height:82px;resize:vertical}.field input:focus,.field textarea:focus,.linha input:focus,.link-box input:focus{border-color:var(--azul500);box-shadow:0 0 0 3px rgba(20,92,255,.13)}
-    .linha{display:grid;grid-template-columns:minmax(160px,2fr) .55fr .8fr .85fr auto auto;gap:8px;align-items:end;margin-bottom:9px;padding:11px;border:1px solid var(--borda);border-left:4px solid var(--azul500);border-radius:15px;background:linear-gradient(135deg,#fff,var(--azul50));box-shadow:0 8px 20px rgba(20,92,255,.06)}.linha[data-tipo="produto"]{border-left-color:var(--verde)}.linha .subtotal{display:block;min-height:38px;padding:10px 0;color:var(--azul950);font-size:14px;font-weight:950;text-align:right}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:9px 13px;border-radius:12px;border:1px solid var(--borda);background:#fff;color:var(--azul500);font-weight:950;cursor:pointer;text-decoration:none;box-shadow:0 8px 18px rgba(20,92,255,.07);font-family:inherit}.btn.primary{min-height:52px;padding:13px 22px;background:linear-gradient(135deg,var(--azul400),var(--azul500),var(--azul700));color:#fff;border-color:var(--azul500);box-shadow:0 14px 28px rgba(20,92,255,.24),0 0 0 1px rgba(255,255,255,.18) inset;font-size:17px}.btn.ok{background:linear-gradient(135deg,#21d6b1,var(--verde),#08a985);color:#fff;border-color:var(--verde)}.btn.gold{background:#fffaf0;color:#8a5a00;border-color:#f6d977}.btn.red{background:#fff5f5;color:#b91c1c;border-color:#fecaca;box-shadow:none}.btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.25)}.acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.sec-actions{margin-top:-2px;margin-bottom:12px}.sec-actions .btn{min-height:36px;padding:8px 11px;font-size:13px}.sec-actions .btn.gold{font-size:12.5px}
-    .resumo-orcamento{margin-top:16px;padding:18px;border-radius:20px;border:1px solid var(--borda);background:linear-gradient(135deg,#fff,var(--azul50));box-shadow:0 12px 28px rgba(20,92,255,.08)}.resumo-orcamento h3{margin:0 0 14px;color:var(--azul950);font-size:20px;line-height:1.1;font-weight:950;letter-spacing:-.035em}.totais{display:grid;gap:8px}.total-linha{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:13px;background:#fff;border:1px solid var(--borda)}.total-linha span{color:var(--muted);font-size:13px;font-weight:850}.total-linha strong{color:var(--azul950);font-size:16px;font-weight:950}.total-linha.geral{padding:15px 14px;background:linear-gradient(135deg,var(--azul900),var(--azul700),var(--azul500));border-color:var(--azul500);box-shadow:0 16px 30px rgba(20,92,255,.18)}.total-linha.geral span,.total-linha.geral strong{color:#fff}.total-linha.geral strong{font-size:24px;letter-spacing:-.035em}
-    .acoes-principais{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:16px}.acoes-principais .btn.primary{justify-self:stretch}.acoes-principais .btn.red{min-height:52px}.area-previa{display:none;margin-top:18px;padding:0;background:var(--azul50);border:1px solid var(--borda);border-radius:20px;overflow:hidden}.previa-topo{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid var(--borda);background:linear-gradient(135deg,#fff,var(--azul100))}.previa-topo strong{display:block;margin-bottom:3px;color:var(--azul950);font-size:18px;font-weight:950;letter-spacing:-.025em}.previa-topo span{display:block;color:var(--muted);font-size:13px;font-weight:760}.conteudo-pdf{width:794px;max-width:100%;margin:18px auto;background:#fff;color:#000;box-shadow:0 0 22px rgba(20,92,255,.16)}.acoes-preview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:14px 18px 18px;background:#fff;border-top:1px solid var(--borda)}.acoes-preview .btn{width:100%;min-height:44px}.premium-label{display:inline-flex;align-items:center;margin-left:auto;padding:3px 7px;border-radius:999px;background:#fff7d7;color:#7f4f00;border:1px solid #f6d977;font-size:10px;font-weight:950;text-transform:uppercase}
-    .sidebar{display:grid;gap:13px;align-self:start;position:sticky;top:94px}.side{padding:17px}.side h3{display:flex;align-items:center;gap:9px;margin:0 0 9px;color:var(--azul950);font-size:20px;font-weight:950;letter-spacing:-.035em}.side h3:before{content:"";width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--azul400),var(--azul500),var(--azul700));box-shadow:0 10px 18px rgba(20,92,255,.20)}.side h4{margin:14px 0 7px;color:var(--azul700);font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:950}.side p,.side small{margin:0;color:var(--muted);line-height:1.42;font-weight:730}.lista-rec{display:grid;gap:8px}.rec-item{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--borda);border-radius:13px;padding:9px;background:var(--azul50)}.rec-item span{font-size:12px;font-weight:850;color:var(--azul950)}
-    .link-box{display:none;margin-top:14px;padding:14px;border:1px solid var(--borda);border-radius:16px;background:linear-gradient(135deg,#fff,var(--azul50));color:var(--azul950)}.link-box strong{display:block;margin-bottom:6px;color:var(--azul950)}.fs-adsense-zone{display:none;margin:0;padding:14px;border:1px dashed #9ec4ff;border-radius:18px;background:rgba(255,255,255,.86);text-align:center;color:var(--muted);font-weight:850}#status-sessao-card{display:none;margin-bottom:14px!important;padding:14px 16px!important;border-radius:16px!important;border:1px solid var(--borda)!important;border-left:5px solid var(--azul500)!important;background:var(--azul50)!important;color:var(--muted)!important;font-weight:850!important;line-height:1.45!important}footer{text-align:center;padding:24px 12px;color:var(--muted);font-weight:800}
-    body.gerando-pdf #header-container,body.gerando-pdf .hero,body.gerando-pdf .sidebar,body.gerando-pdf .acoes,body.gerando-pdf .acoes-principais,body.gerando-pdf .previa-topo,body.gerando-pdf .acoes-preview,body.gerando-pdf footer,body.gerando-pdf .fs-adsense-zone,body.gerando-pdf .link-box{display:none!important}body.gerando-pdf .page,body.gerando-pdf .layout,body.gerando-pdf .main-card,body.gerando-pdf .area-previa{display:block!important;margin:0!important;padding:0!important;background:#fff!important;border:0!important;box-shadow:none!important}
-    @media(max-width:980px){.layout{grid-template-columns:1fr}.sidebar{position:static}.hero{grid-template-columns:1fr}.plano-selo-gerador{width:max-content}.acoes-preview{grid-template-columns:1fr 1fr}}
-    @media(max-width:760px){.page{width:min(100% - 16px,1120px);padding-top:14px}.hero{padding:20px 18px;border-radius:22px}.hero h1{font-size:27px}.hero p{font-size:14.5px}.main-card{padding:16px}.grid{grid-template-columns:1fr}.linha{grid-template-columns:1fr}.linha .subtotal{text-align:left;padding:3px 0 0}.acoes-principais{grid-template-columns:1fr}.acoes-principais>.btn{width:100%}.acoes-preview{grid-template-columns:1fr}.total-linha.geral strong{font-size:22px}}
-  </style>
-</head>
-<body>
-  <div id="header-container"></div>
 
-  <div id="modal-login" class="modal-login-overlay">
-    <div class="modal-login-box">
-      <button type="button" class="btn-fechar-login" onclick="fecharModalLoginGerador()">×</button>
-      <div class="auth-logo-box" style="text-align:center;margin-bottom:14px">
-        <div class="auth-logo-text" style="font-size:24px;font-weight:950"><strong>FS</strong> Orçamentos</div>
-        <p>Acesse sua conta para gerar orçamento</p>
+  <style>
+    :root {
+      --fs-marrom: #3e2723;
+      --fs-marrom-2: #2c1b17;
+      --fs-creme: #f4ece1;
+      --fs-creme-2: #fffaf0;
+      --fs-amarelo: #ffc400;
+      --fs-verde: #25d366;
+      --fs-azul: #2563eb;
+      --fs-vermelho: #dc2626;
+      --fs-borda: #e0d6c8;
+      --fs-texto: #3e2723;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(255,196,0,0.16), transparent 30%),
+        linear-gradient(180deg, #2c2c2c 0%, #1f1f1f 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #btn-flutuante-gerador-global {
+      display: none !important;
+    }
+
+    body.gerando-pdf {
+      background: #ffffff !important;
+    }
+
+    body.gerando-pdf #header-container,
+    body.gerando-pdf .gerador-hero,
+    body.gerando-pdf .gerador-sidebar,
+    body.gerando-pdf .floating-actions,
+    body.gerando-pdf footer,
+    body.gerando-pdf .fs-adsense-zone,
+    body.gerando-pdf .btn-help-link,
+    body.gerando-pdf .acoes-profissionais-orcamento,
+    body.gerando-pdf .previa-label,
+    body.gerando-pdf #modal-login {
+      display: none !important;
+    }
+
+    body.gerando-pdf .pagina-gerador,
+    body.gerando-pdf .gerador-layout,
+    body.gerando-pdf .gerador-card-principal,
+    body.gerando-pdf #formulario-orcamento,
+    body.gerando-pdf #area-previa {
+      display: block !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: #ffffff !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      max-width: none !important;
+      width: auto !important;
+    }
+
+    body.gerando-pdf #conteudo-pdf,
+    body.gerando-pdf #conteudo-pdf > div {
+      display: block !important;
+      width: 794px !important;
+      max-width: none !important;
+      min-height: 1123px !important;
+      overflow: visible !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+      transform: none !important;
+      background: #ffffff !important;
+    }
+
+    .modal-login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      z-index: 20000;
+      padding: 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
+    }
+
+    .modal-login-box {
+      width: min(100%, 430px);
+      max-height: none;
+      min-height: auto;
+      margin: 24px auto;
+      overflow: visible;
+      background: #f4ece1;
+      color: var(--fs-marrom);
+      border-radius: 18px;
+      border-top: 6px solid var(--fs-amarelo);
+      padding: 22px;
+      padding-bottom: 28px;
+      box-shadow: 0 22px 60px rgba(0,0,0,0.55);
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    body.login-modal-aberto {
+      overflow-x: hidden;
+    }
+
+    .btn-fechar-login {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 9px;
+      background: var(--fs-vermelho);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    #modal-login #auth-area,
+    #modal-login #auth-container,
+    #modal-login #form-autenticacao {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #modal-login #auth-container {
+      background: #ffffff !important;
+    }
+
+    #modal-login input {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    #modal-login #btn-principal {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .pagina-gerador {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px 14px 45px;
+      color: var(--fs-texto);
+    }
+
+    .gerador-hero {
+      background: linear-gradient(135deg, #fff7df, var(--fs-creme));
+      border-radius: 26px;
+      padding: 28px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 18px 46px rgba(0,0,0,0.24);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gerador-hero::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,196,0,0.18);
+      top: -90px;
+      right: -80px;
+    }
+
+    .gerador-hero-conteudo {
+      position: relative;
+      display: block;
+      max-width: 880px;
+    }
+
+    .gerador-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .gerador-hero h1 {
+      margin: 0 0 10px;
+      color: var(--fs-marrom);
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .gerador-hero p {
+      margin: 0;
+      color: #5d4037;
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 760px;
+    }
+
+    .gerador-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .gerador-card-principal {
+      background: var(--fs-creme);
+      border-radius: 24px;
+      padding: 22px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+      min-width: 0;
+    }
+
+    .gerador-sidebar {
+      position: sticky;
+      top: 92px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .sidebar-card {
+      background: var(--fs-creme-2);
+      border-radius: 18px;
+      padding: 17px;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+      color: var(--fs-marrom);
+    }
+
+    .sidebar-card h3 {
+      margin: 0 0 9px;
+      color: var(--fs-marrom);
+      font-size: 18px;
+    }
+
+    .sidebar-card p {
+      margin: 0;
+      color: #6d4c41;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .sidebar-lista {
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar-lista li {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 9px;
+      color: #5d4037;
+      font-size: 13px;
+      font-weight: 700;
+      border-left: 4px solid var(--fs-amarelo);
+    }
+
+    .auth-aviso-gerador {
+      text-align: center;
+      margin-bottom: 16px;
+      color: var(--fs-marrom);
+      padding-top: 18px;
+    }
+
+    .auth-aviso-gerador h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .auth-aviso-gerador p {
+      margin: 0;
+      color: #6d4c41;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .status-sessao-card,
+    .aviso-perfil-incompleto {
+      display: none;
+      background: #fff8e1;
+      border-left: 6px solid var(--fs-amarelo);
+      color: #5d4037;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .aviso-perfil-incompleto a {
+      color: var(--fs-marrom);
+      font-weight: 900;
+    }
+
+    .emissor-readonly-card {
+      background: #ffffff;
+      border-radius: 18px;
+      border: 1px solid var(--fs-borda);
+      border-left: 7px solid var(--fs-amarelo);
+      padding: 16px;
+      margin: 0 0 14px 0;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      color: var(--fs-marrom);
+    }
+
+    .emissor-readonly-topo {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .emissor-logo-mini {
+      width: 110px;
+      height: 88px;
+      border: 1px dashed #d7ccc8;
+      border-radius: 14px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #8d6e63;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .emissor-logo-mini img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    .emissor-info-principal span,
+    .emissor-readonly-grid span {
+      display: block;
+      font-size: 11px;
+      font-weight: 900;
+      color: #6d4c41;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 4px;
+    }
+
+    .emissor-info-principal strong {
+      display: block;
+      font-size: 22px;
+      color: var(--fs-marrom);
+      word-break: break-word;
+      line-height: 1.15;
+    }
+
+    .emissor-info-principal small {
+      display: block;
+      margin-top: 6px;
+      color: #8d6e63;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .emissor-readonly-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .emissor-readonly-grid div {
+      background: #f7f2ea;
+      border-radius: 12px;
+      padding: 11px;
+      border-left: 4px solid var(--fs-amarelo);
+      min-width: 0;
+    }
+
+    .emissor-readonly-grid strong {
+      display: block;
+      font-size: 14px;
+      color: var(--fs-marrom);
+      word-break: break-word;
+    }
+
+    .emissor-readonly-acoes {
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-editar-dados-empresa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: 2px solid var(--fs-amarelo);
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.14);
+      transition: .2s ease;
+    }
+
+    .btn-editar-dados-empresa:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      transform: translateY(-1px);
+    }
+
+    .dadositens {
+      background: linear-gradient(135deg, #fff8e1, #f3eeee);
+      color: #5d4037;
+      font-weight: 900;
+      font-size: 18px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 15px 14px;
+      margin: 22px 0 14px;
+      border-radius: 16px;
+      border-left: 8px solid var(--fs-amarelo);
+      border-bottom: 2px solid #e0d6d6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .intro-form-gerador {
+      max-width: 100%;
+      margin: 0 auto 12px;
+      padding: 16px;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid var(--fs-borda);
+    }
+
+    .intro-form-gerador p {
+      color: #3f4957;
+      line-height: 1.35;
+      font-size: 17px;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .grid-duplo-gerador {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 0;
+    }
+
+    .campo-form label {
+      display: block;
+      font-size: 13px;
+      color: #5d4037;
+      font-weight: 900;
+      margin-bottom: 5px;
+    }
+
+    .campo-form input,
+    .campo-form textarea,
+    .campo-form select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #d7ccc8;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--fs-marrom);
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+
+    .campo-form textarea {
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    #itens-lista {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid var(--fs-borda);
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 2.2fr 0.65fr 1fr 1fr auto;
+      gap: 8px;
+      margin-bottom: 10px;
+      align-items: end;
+    }
+
+    .header-labels {
+      color: #6d4c41;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .item-row input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d7ccc8;
+      border-radius: 9px;
+      background: #ffffff;
+      box-sizing: border-box;
+      color: var(--fs-marrom);
+    }
+
+    .btn-add,
+    .btn-extra {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: #4e342e;
+      color: var(--fs-amarelo);
+      border: 1px solid var(--fs-amarelo);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: .2s ease;
+    }
+
+    .btn-add:hover,
+    .btn-extra:hover {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      transform: translateY(-1px);
+    }
+
+    .btn-remove {
+      background: #fff1f1;
+      color: var(--fs-vermelho);
+      border: 1px solid #fecaca;
+      padding: 10px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-weight: 900;
+      transition: .2s;
+    }
+
+    .btn-remove:hover {
+      background: var(--fs-vermelho);
+      color: #ffffff;
+    }
+
+    .extra-field {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .extra-field input:first-child {
+      width: 34%;
+    }
+
+    .extra-field input:nth-child(2) {
+      width: 56%;
+    }
+
+    .extra-field button {
+      width: 10%;
+      min-width: 44px;
+    }
+
+    .total-container {
+      text-align: right;
+      font-size: 24px;
+      font-weight: 900;
+      margin-top: 16px;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--fs-marrom), var(--fs-marrom-2));
+      border-radius: 14px;
+      color: var(--fs-amarelo);
+      border: 1px solid rgba(255,196,0,0.45);
+    }
+
+    .calc-expansivel {
+      margin: 16px 0 0;
+      border: 1px solid var(--fs-borda);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .calc-header {
+      background: #fff8e1;
+      padding: 13px 15px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 900;
+      color: #5d4037;
+      border-bottom: 1px solid var(--fs-borda);
+    }
+
+    .calc-content {
+      display: none;
+      padding: 15px;
+    }
+
+    .calc-secao-titulo {
+      margin: 15px 0 10px;
+      font-size: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+      color: #475569;
+      font-weight: 900;
+    }
+
+    .checklist-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-frase {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #475569;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .btn-frase:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .color-selector {
+      margin: 20px 0;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--fs-borda);
+    }
+
+    .color-selector label {
+      display: block;
+      font-size: 13px;
+      color: #5d4037;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .theme-options {
+      display: flex;
+      gap: 13px;
+      flex-wrap: wrap;
+    }
+
+    .theme-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid #ffffff;
+      transition: .2s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    }
+
+    .theme-dot:hover {
+      transform: scale(1.12);
+    }
+
+    .original { background: #3e2723; }
+    .bw { background: #000000; }
+    .blue { background: #0056b3; }
+    .green { background: #2e7d32; }
+    .yellow { background: #f9a825; }
+    .red { background: #ff0000; }
+
+    .acoes-gerador-principal {
+      margin: 28px auto 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .btn-previa-profissional,
+    .btn-novo-profissional {
+      width: 100%;
+      border-radius: 18px;
+      padding: 18px;
+      font-size: 19px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: .2s ease;
+      box-shadow: 0 9px 22px rgba(0,0,0,0.18);
+    }
+
+    .btn-previa-profissional {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 3px solid var(--fs-amarelo);
+    }
+
+    .btn-novo-profissional {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border: 3px solid #d7ccc8;
+    }
+
+    .btn-previa-profissional:hover,
+    .btn-novo-profissional:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.24);
+    }
+
+    .btn-novo-profissional:hover {
+      border-color: var(--fs-amarelo);
+      background: #fff8d6;
+    }
+
+    #area-previa {
+      display: none;
+      margin-top: 28px;
+      padding: 16px;
+      background: #f1f5f9;
+      border: 2px dashed var(--fs-azul);
+      border-radius: 18px;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
+
+    .previa-label {
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 900;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    #conteudo-pdf {
+      width: 794px;
+      max-width: 100%;
+      margin: 0 auto;
+      background: #ffffff;
+      color: #000000;
+      box-shadow: 0 0 18px rgba(0,0,0,0.18);
+      overflow: visible;
+    }
+
+    #conteudo-pdf > div {
+      max-width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    .acoes-profissionais-orcamento {
+      margin: 22px auto 0;
+      background: linear-gradient(135deg, var(--fs-marrom), #251714);
+      border: 2px solid var(--fs-amarelo);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+      color: #ffffff;
+      display: none;
+    }
+
+    .acoes-profissionais-orcamento-topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .acoes-profissionais-orcamento-topo strong {
+      color: var(--fs-amarelo);
+      display: block;
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    .acoes-profissionais-orcamento-topo span {
+      color: var(--fs-creme);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .acoes-profissionais-botoes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .btn-acao-orcamento {
+      border: none;
+      border-radius: 14px;
+      padding: 15px 16px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 54px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      transition: .2s ease;
+    }
+
+    .btn-acao-orcamento:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    .btn-acao-pdf {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid #f5b800;
+    }
+
+    .btn-acao-whatsapp {
+      background: var(--fs-verde);
+      color: #073b1d;
+      border: 2px solid #1fb957;
+    }
+
+    .floating-actions {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 15050;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .floating-actions.show {
+      display: flex;
+    }
+
+    .btn-float {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 2px solid var(--fs-marrom);
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s ease;
+    }
+
+    .btn-float:hover {
+      transform: translateY(-2px) scale(1.04);
+    }
+
+    .btn-float-download {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border-color: var(--fs-amarelo);
+    }
+
+    .btn-float-whatsapp {
+      background: var(--fs-verde);
+      color: #073b1d;
+      border-color: #0b6b31;
+    }
+
+    .btn-float-novo {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border-color: var(--fs-amarelo);
+    }
+
+    .btn-help-link {
+      text-decoration: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 9998;
+    }
+
+    .btn-help-trigger {
+      background-color: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-help-trigger:hover {
+      background-color: #ffffff;
+      transform: scale(1.08);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 17000;
+      padding: 16px;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      width: min(100%, 430px);
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-top: 5px solid var(--fs-amarelo);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--fs-amarelo);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+    }
+
+    .close-modal {
+      background: var(--fs-vermelho);
+      color: #ffffff;
+      border: none;
+      border-radius: 9px;
+      width: 34px;
+      height: 34px;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .help-item {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      border-left: 4px solid var(--fs-amarelo);
+      line-height: 1.4;
+    }
+
+    .btn-entendi {
+      width: 100%;
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .fs-adsense-zone {
+      display: none;
+      max-width: 100%;
+      min-height: 100px;
+      margin: 18px auto;
+      padding: 13px;
+      background: #fffaf0;
+      border: 1px dashed rgba(62, 39, 35, 0.28);
+      border-radius: 14px;
+      text-align: center;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .fs-adsense-zone .adsense-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #8d6e63;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .fs-adsense-zone .adsbygoogle {
+      min-height: 90px;
+    }
+
+    footer {
+      text-align: center;
+      color: #bdbdbd;
+      padding: 25px 10px;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: #ffc400;
+      text-decoration: none;
+    }
+
+    .cliente-vinculado-card {
+      grid-column: 1 / -1;
+      display: none;
+      background: #fff8e1;
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--fs-marrom);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .cliente-vinculado-card.ativo {
+      display: block;
+    }
+
+    .cliente-vinculado-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .cliente-vinculado-card span {
+      display: block;
+      color: #6d4c41;
+      word-break: break-word;
+    }
+
+    .cliente-id-acoes {
+      display: flex;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .cliente-id-acoes .campo-form {
+      flex: 1;
+    }
+
+    .btn-buscar-cliente-id,
+    .btn-limpar-cliente-id {
+      min-height: 42px;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: .2s ease;
+    }
+
+    .btn-buscar-cliente-id {
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+    }
+
+    .btn-limpar-cliente-id {
+      background: #ffffff;
+      color: var(--fs-marrom);
+      border: 2px solid #d7ccc8;
+    }
+
+    .btn-buscar-cliente-id:hover,
+    .btn-limpar-cliente-id:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    /* =========================================================
+       MODAL DE BUSCA DE CLIENTE - ORÇAMENTO
+       ========================================================= */
+    .modal-busca-cliente-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 18000;
+      padding: 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
+    }
+
+    .modal-busca-cliente-overlay.ativo {
+      display: flex;
+    }
+
+    .modal-busca-cliente-box {
+      width: min(100%, 720px);
+      margin: 24px auto;
+      background: var(--fs-creme);
+      color: var(--fs-marrom);
+      border-radius: 20px;
+      border-top: 6px solid var(--fs-amarelo);
+      box-shadow: 0 22px 60px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+
+    .modal-busca-cliente-header {
+      background: var(--fs-marrom);
+      color: var(--fs-amarelo);
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid var(--fs-amarelo);
+    }
+
+    .modal-busca-cliente-header h3 {
+      margin: 0;
+      font-size: 19px;
+      color: var(--fs-amarelo);
+    }
+
+    .modal-busca-cliente-header p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--fs-creme);
+      line-height: 1.4;
+    }
+
+    .btn-fechar-busca-cliente {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 10px;
+      background: var(--fs-vermelho);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .modal-busca-cliente-body {
+      padding: 18px;
+      background: var(--fs-creme);
+    }
+
+    .busca-cliente-linha {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .busca-cliente-linha input {
+      width: 100%;
+      border: 1px solid #d7ccc8;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 15px;
+      color: var(--fs-marrom);
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .busca-cliente-linha input:focus {
+      outline: none;
+      border-color: var(--fs-amarelo);
+      box-shadow: 0 0 0 4px rgba(255,196,0,0.22);
+    }
+
+    .btn-executar-busca-cliente {
+      min-height: 44px;
+      border-radius: 12px;
+      padding: 11px 16px;
+      background: var(--fs-amarelo);
+      color: var(--fs-marrom);
+      border: 2px solid var(--fs-marrom);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .busca-cliente-ajuda {
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.45;
+      margin: 0 0 14px;
+      font-weight: 700;
+    }
+
+    .resultado-busca-clientes {
+      display: grid;
+      gap: 10px;
+      max-height: 430px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .cliente-busca-item {
+      background: #ffffff;
+      border: 1px solid #d7ccc8;
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 13px;
+      cursor: pointer;
+      transition: .2s ease;
+      color: var(--fs-marrom);
+      text-align: left;
+    }
+
+    .cliente-busca-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(62,39,35,0.18);
+      border-color: var(--fs-amarelo);
+    }
+
+    .cliente-busca-item strong {
+      display: block;
+      font-size: 15px;
+      color: var(--fs-marrom);
+      margin-bottom: 4px;
+    }
+
+    .cliente-busca-item span {
+      display: block;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .estado-busca-cliente {
+      background: #fffaf0;
+      border: 1px dashed var(--fs-amarelo);
+      color: #6d4c41;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    body.modal-busca-cliente-aberto {
+      overflow: hidden;
+    }
+
+
+    /* =========================================================
+       VEÍCULO VINCULADO AO ORÇAMENTO
+       ========================================================= */
+    .veiculo-orcamento-card {
+      grid-column: 1 / -1;
+      background: #ffffff;
+      border: 1px solid var(--fs-borda);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--fs-marrom);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .veiculo-orcamento-card small {
+      display: block;
+      margin-top: 6px;
+      color: #6d4c41;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .veiculo-vinculado-card {
+      grid-column: 1 / -1;
+      display: none;
+      background: #fff8e1;
+      border: 1px solid var(--fs-amarelo);
+      border-left: 6px solid var(--fs-amarelo);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--fs-marrom);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .veiculo-vinculado-card.ativo {
+      display: block;
+    }
+
+    .veiculo-vinculado-card strong {
+      display: block;
+      color: var(--fs-marrom);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .veiculo-vinculado-card span {
+      display: block;
+      color: #6d4c41;
+      word-break: break-word;
+    }
+
+    @media (max-width: 640px) {
+      .modal-busca-cliente-overlay {
+        padding: 10px;
+      }
+
+      .modal-busca-cliente-box {
+        margin: 10px auto 28px;
+        border-radius: 16px;
+      }
+
+      .busca-cliente-linha {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-executar-busca-cliente {
+        width: 100%;
+      }
+    }
+
+
+    @media (max-width: 520px) {
+      .modal-login-overlay {
+        padding: 10px;
+        align-items: flex-start;
+      }
+
+      .modal-login-box {
+        width: 100%;
+        margin: 12px auto 28px auto;
+        padding: 18px 14px 24px;
+        border-radius: 16px;
+      }
+
+      .auth-aviso-gerador {
+        padding-top: 26px;
+      }
+
+      #auth-container {
+        padding: 16px !important;
+      }
+
+      #box-confirmacao-email {
+        margin-bottom: 12px;
+      }
+    }
+
+    @media (max-width: 1020px) {
+      .gerador-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .gerador-sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .pagina-gerador {
+        padding: 18px 10px 35px;
+      }
+
+      .gerador-hero {
+        padding: 22px 16px;
+        border-radius: 20px;
+      }
+
+      .gerador-hero h1 {
+        font-size: 26px;
+      }
+
+      .gerador-card-principal {
+        padding: 14px;
+        border-radius: 18px;
+      }
+
+      .emissor-readonly-topo,
+      .emissor-readonly-grid,
+      .grid-duplo-gerador,
+      .acoes-gerador-principal,
+      .acoes-profissionais-botoes {
+        grid-template-columns: 1fr;
+      }
+
+      .emissor-readonly-acoes {
+        justify-content: stretch;
+      }
+
+      .btn-editar-dados-empresa {
+        width: 100%;
+      }
+
+      .emissor-logo-mini {
+        width: 100%;
+        height: 95px;
+      }
+
+      .item-row {
+        grid-template-columns: 1fr 1fr;
+        background: #fafafa;
+        border: 1px solid #eee;
+        padding: 10px;
+        border-radius: 12px;
+      }
+
+      .item-row .desc-cell,
+      .item-row .desc {
+        grid-column: span 2;
+      }
+
+      .header-labels {
+        display: none;
+      }
+
+      .cliente-id-acoes {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cliente-id-acoes .btn-buscar-cliente-id,
+      .cliente-id-acoes .btn-limpar-cliente-id {
+        width: 100%;
+      }
+
+      .extra-field {
+        flex-direction: column;
+      }
+
+      .extra-field input:first-child,
+      .extra-field input:nth-child(2),
+      .extra-field button {
+        width: 100%;
+      }
+
+      .btn-previa-profissional,
+      .btn-novo-profissional {
+        font-size: 17px;
+        padding: 16px 12px;
+        border-radius: 14px;
+      }
+
+      .floating-actions {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .btn-float {
+        width: 54px;
+        height: 54px;
+        font-size: 20px;
+      }
+
+      #area-previa {
+        padding: 10px;
+      }
+    }
+  
+
+/* Teste grátis Premium */
+.teste-premium-inline-card {
+  margin: 18px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff8dc, #ffffff);
+  border: 1px solid rgba(255, 196, 0, 0.65);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.16);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.teste-premium-inline-card h3 {
+  margin: 0 0 6px;
+  color: var(--fs-marrom, #4b2e1f);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.teste-premium-inline-card p {
+  margin: 0 0 8px;
+  color: #5d4037;
+  line-height: 1.45;
+}
+
+.teste-premium-inline-card small {
+  display: block;
+  color: #6d4c41;
+  font-weight: 700;
+}
+
+.teste-premium-inline-card .btn-teste-premium {
+  min-width: 210px;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #4b2e1f, #2b1710);
+  color: #ffc400;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.22);
+}
+
+.teste-premium-inline-card .btn-teste-premium:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.teste-premium-inline-card .btn-teste-premium:disabled {
+  opacity: .68;
+  cursor: not-allowed;
+  filter: grayscale(.2);
+}
+
+
+.teste-premium-inline-card.teste-premium-topo {
+  max-width: 1180px;
+  margin: 18px auto 22px;
+}
+
+@media (max-width: 760px) {
+  .teste-premium-inline-card {
+    grid-template-columns: 1fr;
+  }
+
+  .teste-premium-inline-card .btn-teste-premium {
+    width: 100%;
+  }
+}
+
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17435932696">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-17435932696');
+</script>
+
+
+<!-- FS FORMAL THEME OVERRIDES - visual mais claro e profissional -->
+<style id="fs-formal-theme-overrides">
+  :root {
+    --fs-marrom: #3e2723;
+    --fs-marrom-2: #5d4037;
+    --fs-fundo-escuro: #f7f2ea;
+    --fs-fundo: #f7f2ea;
+    --fs-page-bg: #f7f2ea;
+    --fs-page-bg-2: #efe3d2;
+    --fs-card: #ffffff;
+    --fs-creme: #f4ece1;
+    --fs-creme-2: #fffaf0;
+    --fs-bege: #f4ece1;
+    --fs-bege-2: #fffaf0;
+    --fs-amarelo: #ffc400;
+    --fs-borda: #e8dccb;
+    --fs-texto: #2f241f;
+    --fs-texto-suave: #6d5b52;
+    --bg-dark: #f7f2ea;
+    --body-brown: #ffffff;
+    --text-dark: #2f241f;
+    --accent-yellow: #ffc400;
+  }
+
+  body:not(.gerando-pdf) {
+    background:
+      radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+      linear-gradient(180deg, #f7f2ea 0%, #efe3d2 100%) !important;
+    color: #2f241f !important;
+  }
+
+  #header-container,
+  .main-header,
+  .header-topo,
+  .header-menu-linha {
+    background: #3e2723 !important;
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav,
+  .logo-nav span,
+  #usuario-saudacao,
+  .header-menu-linha a,
+  .nav-menu a {
+    color: #fffaf0 !important;
+  }
+
+  .logo-nav strong,
+  .fs-box,
+  .sobre-fs-box {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+  }
+
+  .link-destaque-gerador,
+  .btn-header-entrar,
+  .btn-menu-mobile-entrar,
+  .btn-home-grande,
+  .btn-home-medio,
+  .btn-home-atalho.btn-principal,
+  .btn-gerar-orcamento-home,
+  .btn-previa-profissional,
+  .btn-hero-principal,
+  .btn-ir-planos-home,
+  .btn-home-planos-forte,
+  .btn-add,
+  .btn-extra,
+  .btn-primario,
+  .btn-primary,
+  .btn-salvar,
+  .btn-acao-pdf,
+  .plano-pix-card button,
+  .btn-editar-dados-empresa {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .link-destaque-gerador:hover,
+  .btn-header-entrar:hover,
+  .btn-menu-mobile-entrar:hover,
+  .btn-home-grande:hover,
+  .btn-home-medio:hover,
+  .btn-gerar-orcamento-home:hover,
+  .btn-previa-profissional:hover,
+  .btn-hero-principal:hover,
+  .btn-ir-planos-home:hover,
+  .btn-home-planos-forte:hover,
+  .btn-add:hover,
+  .btn-extra:hover,
+  .btn-primario:hover,
+  .btn-primary:hover,
+  .btn-salvar:hover,
+  .btn-acao-pdf:hover,
+  .plano-pix-card button:hover,
+  .btn-editar-dados-empresa:hover {
+    background: #ffc400 !important;
+    color: #3e2723 !important;
+    border-color: #3e2723 !important;
+  }
+
+  .hero-publico,
+  .home-plano-hero,
+  .gerador-hero,
+  .planos-hero,
+  .clientes-hero,
+  .veiculos-hero,
+  .ordens-hero,
+  .ordem-hero,
+  .estoque-hero,
+  .sobre-hero,
+  .manual-hero,
+  .termos-hero,
+  .privacidade-hero,
+  .orcamentos-hero,
+  .painel-hero,
+  .secao-como-funciona,
+  .whatsapp-preview-home,
+  .cliente-aprovacao-home,
+  .comparativo-home,
+  .status-orcamentos-home,
+  .home-story-section,
+  .home-whatsapp-section,
+  .home-aprovacao-section,
+  .home-status-section,
+  .home-comparativo-section,
+  .planos-pix-section,
+  .comparativo-section,
+  .faq-section,
+  .container-sobre,
+  .container-termos,
+  .container-privacidade,
+  .home-premium-showcase {
+    background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+    color: #2f241f !important;
+    border-top-color: #ffc400 !important;
+    box-shadow: 0 12px 30px rgba(62,39,35,0.13) !important;
+  }
+
+  .hero-publico h1,
+  .home-plano-hero h1,
+  .gerador-hero h1,
+  .planos-hero h1,
+  .clientes-hero h1,
+  .veiculos-hero h1,
+  .ordens-hero h1,
+  .ordem-hero h1,
+  .estoque-hero h1,
+  .sobre-hero h1,
+  .manual-hero h1,
+  .home-premium-showcase h2,
+  .container-sobre h1,
+  .container-sobre h2,
+  .container-termos h1,
+  .container-termos h2,
+  .section-topo h2,
+  .dadositens,
+  .card-header h2,
+  .clientes-card-header h2,
+  .veiculos-card-header h2,
+  .ordens-card-header h2,
+  .estoque-card-header h2 {
+    color: #3e2723 !important;
+  }
+
+  .hero-publico p,
+  .home-plano-hero p,
+  .gerador-hero p,
+  .planos-hero p,
+  .clientes-hero p,
+  .veiculos-hero p,
+  .ordens-hero p,
+  .ordem-hero p,
+  .estoque-hero p,
+  .sobre-hero p,
+  .manual-hero p,
+  .home-premium-showcase p,
+  .container-sobre p,
+  .container-termos p,
+  .section-topo p {
+    color: #6d5b52 !important;
+  }
+
+  .container,
+  .card,
+  .clientes-card,
+  .veiculos-card,
+  .ordens-card,
+  .estoque-card,
+  .gerador-card-principal,
+  .sidebar-card,
+  .plano-pix-card,
+  .faq-card,
+  .home-promo-card,
+  .home-metrica-card,
+  .home-relatorio-card,
+  .home-painel-card,
+  .card-sobre,
+  .plano-card,
+  .manual-card,
+  .manual-section,
+  .manual-step,
+  .manual-demo-card,
+  .cliente-item,
+  .veiculo-item,
+  .ordem-item,
+  .estoque-categoria-grupo,
+  .emissor-readonly-card,
+  .cliente-tela-preview,
+  .home-cliente-preview {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #e8dccb !important;
+    box-shadow: 0 8px 22px rgba(62,39,35,0.10) !important;
+  }
+
+  .card-header,
+  .clientes-card-header,
+  .veiculos-card-header,
+  .ordens-card-header,
+  .estoque-card-header,
+  .modal-busca-cliente-header,
+  .modal-busca-produto-header,
+  .modal-pix-topo,
+  .home-cliente-topo,
+  .mock-card-head,
+  .orcamento-whatsapp-header,
+  .home-orcamento-whatsapp-header,
+  .total-container,
+  .cliente-total-demo,
+  .home-cliente-total,
+  .manual-flow div,
+  .mini-dashboard {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+    border-color: #ffc400 !important;
+  }
+
+  .card-body,
+  .clientes-card-body,
+  .veiculos-card-body,
+  .ordens-card-body,
+  .estoque-card-body {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  input,
+  select,
+  textarea {
+    background: #ffffff !important;
+    color: #2f241f !important;
+    border-color: #d8c9b8 !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #ffc400 !important;
+    box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+    outline: none !important;
+  }
+
+  table,
+  .tabela-comparativo,
+  .home-tabela-comparativo,
+  .manual-table,
+  .comparativo {
+    background: #ffffff !important;
+    color: #2f241f !important;
+  }
+
+  th,
+  .tabela-comparativo th,
+  .home-tabela-comparativo th,
+  .manual-table th,
+  .comparativo th {
+    background: #3e2723 !important;
+    color: #ffc400 !important;
+  }
+
+  tr:nth-child(even),
+  tbody tr:nth-child(even) {
+    background: #fffaf0 !important;
+  }
+
+  footer,
+  .sobre-footer {
+    color: #6d5b52 !important;
+  }
+
+  footer a,
+  .sobre-footer a {
+    color: #3e2723 !important;
+    font-weight: 800 !important;
+  }
+</style>
+
+
+<style id="fs-contrast-fix-final">
+
+/* =========================================================
+   FS CONTRAST FIX - textos legíveis no tema claro profissional
+   Mantém marrom no header/títulos principais e corrige textos
+   que estavam ficando da mesma cor do fundo.
+   ========================================================= */
+:root {
+  --fs-marrom: #3e2723;
+  --fs-marrom-2: #5d4037;
+  --fs-fundo: #f7f2ea;
+  --fs-fundo-2: #efe3d2;
+  --fs-card: #ffffff;
+  --fs-creme: #fffaf0;
+  --fs-amarelo: #ffc400;
+  --fs-borda: #e8dccb;
+  --fs-texto: #2f241f;
+  --fs-texto-suave: #6d5b52;
+}
+
+html,
+body {
+  color: var(--fs-texto) !important;
+}
+
+body:not(.gerando-pdf) {
+  background:
+    radial-gradient(circle at top left, rgba(255,196,0,0.14), transparent 32%),
+    linear-gradient(180deg, var(--fs-fundo) 0%, var(--fs-fundo-2) 100%) !important;
+}
+
+main,
+section,
+.container,
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box,
+.modal-login-box,
+.modal-responsavel-card,
+.modal-busca-produto-box,
+.modal-busca-cliente-box,
+.modal-pix-card {
+  color: var(--fs-texto) !important;
+}
+
+.card,
+.card-body,
+.info-item,
+.texto-bloco,
+.container,
+.home-promo-card,
+.home-metrica-card,
+.home-relatorio-card,
+.home-painel-card,
+.cliente-item,
+.veiculo-item,
+.ordem-item,
+.estoque-item,
+.estoque-categoria-grupo,
+.plano-card,
+.plano-pix-card,
+.faq-card,
+.manual-card,
+.manual-section,
+.manual-step,
+.manual-demo-card,
+.responsaveis-box {
+  background: #ffffff !important;
+  border-color: var(--fs-borda) !important;
+}
+
+/* Cabeçalhos escuros: texto amarelo/branco, nunca marrom sobre marrom */
+.card-header,
+.clientes-card-header,
+.veiculos-card-header,
+.ordens-card-header,
+.estoque-card-header,
+.modal-busca-cliente-header,
+.modal-busca-produto-header,
+.modal-pix-topo,
+.home-cliente-topo,
+.mock-card-head,
+.orcamento-whatsapp-header,
+.home-orcamento-whatsapp-header,
+.total-container,
+.valor-total,
+.cliente-total-demo,
+.home-cliente-total,
+.manual-flow div,
+.mini-dashboard,
+.auth-logo-box,
+.banner-topo {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header strong,
+.clientes-card-header h1,
+.clientes-card-header h2,
+.clientes-card-header h3,
+.clientes-card-header strong,
+.veiculos-card-header h1,
+.veiculos-card-header h2,
+.veiculos-card-header h3,
+.veiculos-card-header strong,
+.ordens-card-header h1,
+.ordens-card-header h2,
+.ordens-card-header h3,
+.ordens-card-header strong,
+.estoque-card-header h1,
+.estoque-card-header h2,
+.estoque-card-header h3,
+.estoque-card-header strong,
+.modal-busca-cliente-header h1,
+.modal-busca-cliente-header h2,
+.modal-busca-cliente-header h3,
+.modal-busca-cliente-header strong,
+.modal-busca-produto-header h1,
+.modal-busca-produto-header h2,
+.modal-busca-produto-header h3,
+.modal-busca-produto-header strong,
+.modal-pix-topo h1,
+.modal-pix-topo h2,
+.modal-pix-topo h3,
+.modal-pix-topo strong,
+.total-container strong,
+.valor-total strong,
+.valor-total span,
+.cliente-total-demo,
+.home-cliente-total,
+.auth-logo-box .auth-logo-text span,
+.auth-logo-box strong,
+.banner-topo h1,
+.banner-topo h2,
+.banner-topo h3,
+.banner-topo strong {
+  color: var(--fs-amarelo) !important;
+}
+
+.card-header p,
+.card-header span,
+.card-header small,
+.clientes-card-header p,
+.clientes-card-header span,
+.clientes-card-header small,
+.veiculos-card-header p,
+.veiculos-card-header span,
+.veiculos-card-header small,
+.ordens-card-header p,
+.ordens-card-header span,
+.ordens-card-header small,
+.estoque-card-header p,
+.estoque-card-header span,
+.estoque-card-header small,
+.modal-busca-cliente-header p,
+.modal-busca-cliente-header span,
+.modal-busca-cliente-header small,
+.modal-busca-produto-header p,
+.modal-busca-produto-header span,
+.modal-busca-produto-header small,
+.modal-pix-topo p,
+.modal-pix-topo span,
+.modal-pix-topo small,
+.auth-logo-box p {
+  color: #fffaf0 !important;
+}
+
+/* Heróis/seções claras */
+.hero-publico,
+.home-plano-hero,
+.gerador-hero,
+.planos-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.ordem-hero,
+.estoque-hero,
+.sobre-hero,
+.manual-hero,
+.termos-hero,
+.privacidade-hero,
+.orcamentos-hero,
+.painel-hero,
+.secao-como-funciona,
+.whatsapp-preview-home,
+.cliente-aprovacao-home,
+.comparativo-home,
+.status-orcamentos-home,
+.home-story-section,
+.home-whatsapp-section,
+.home-aprovacao-section,
+.home-status-section,
+.home-comparativo-section,
+.planos-pix-section,
+.comparativo-section,
+.faq-section,
+.container-sobre,
+.container-termos,
+.container-privacidade {
+  background: linear-gradient(135deg, #ffffff 0%, #fffaf0 100%) !important;
+  color: var(--fs-texto) !important;
+}
+
+.hero-publico h1,
+.home-plano-hero h1,
+.gerador-hero h1,
+.planos-hero h1,
+.clientes-hero h1,
+.veiculos-hero h1,
+.ordens-hero h1,
+.ordem-hero h1,
+.estoque-hero h1,
+.sobre-hero h1,
+.manual-hero h1,
+.termos-hero h1,
+.privacidade-hero h1,
+.orcamentos-hero h1,
+.painel-hero h1,
+.section-topo h2,
+.container-sobre h1,
+.container-sobre h2,
+.container-termos h1,
+.container-termos h2,
+.container-privacidade h1,
+.container-privacidade h2,
+.dadositens,
+.campo label,
+label {
+  color: var(--fs-marrom) !important;
+}
+
+.hero-publico p,
+.home-plano-hero p,
+.gerador-hero p,
+.planos-hero p,
+.clientes-hero p,
+.veiculos-hero p,
+.ordens-hero p,
+.ordem-hero p,
+.estoque-hero p,
+.sobre-hero p,
+.manual-hero p,
+.termos-hero p,
+.privacidade-hero p,
+.orcamentos-hero p,
+.painel-hero p,
+.section-topo p,
+.info-item span,
+.texto-bloco,
+.campo small,
+small,
+.help-item,
+.valor-linha span,
+.home-metrica-card span,
+.home-relatorio-card span,
+.home-promo-card p,
+.home-painel-card p {
+  color: var(--fs-texto-suave) !important;
+}
+
+.info-item strong,
+.valor-linha strong,
+.home-metrica-card strong,
+.home-relatorio-card strong,
+.card strong,
+.card h1,
+.card h2,
+.card h3,
+.cliente-item strong,
+.veiculo-item strong,
+.ordem-item strong,
+.estoque-item strong {
+  color: var(--fs-marrom) !important;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+  border-color: #d8c9b8 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a7a70 !important;
+  opacity: 1 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--fs-amarelo) !important;
+  box-shadow: 0 0 0 4px rgba(255,196,0,0.20) !important;
+  outline: none !important;
+}
+
+/* Header e menus */
+#header-container,
+.main-header,
+.header-topo,
+.header-menu-linha,
+.header-dropdown-menu {
+  background: var(--fs-marrom) !important;
+  color: #fffaf0 !important;
+}
+
+.logo-nav,
+.logo-nav span,
+#usuario-saudacao,
+.header-menu-linha a,
+.nav-menu a,
+.header-dropdown-toggle,
+.header-dropdown-menu a {
+  color: #fffaf0 !important;
+}
+
+.header-menu-linha a:hover,
+.nav-menu a:hover,
+.header-dropdown-toggle:hover,
+.header-dropdown-menu a:hover,
+.header-menu-linha a.ativo,
+.nav-menu a.ativo {
+  color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador,
+.btn-header-entrar,
+.btn-menu-mobile-entrar,
+.btn-primario,
+.btn-primary,
+.btn-salvar,
+.btn-add,
+.btn-extra,
+.btn-download,
+.btn-acao-pdf,
+.btn-gerar-orcamento-home,
+.btn-home-grande,
+.btn-home-medio,
+.btn-ir-planos-home,
+.btn-home-planos-forte,
+.plano-pix-card button {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+  border-color: var(--fs-amarelo) !important;
+}
+
+.link-destaque-gerador:hover,
+.btn-header-entrar:hover,
+.btn-menu-mobile-entrar:hover,
+.btn-primario:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-add:hover,
+.btn-extra:hover,
+.btn-download:hover,
+.btn-acao-pdf:hover,
+.btn-gerar-orcamento-home:hover,
+.btn-home-grande:hover,
+.btn-home-medio:hover,
+.btn-ir-planos-home:hover,
+.btn-home-planos-forte:hover,
+.plano-pix-card button:hover {
+  background: var(--fs-amarelo) !important;
+  color: var(--fs-marrom) !important;
+  border-color: var(--fs-marrom) !important;
+}
+
+/* Tabelas */
+table,
+.tabela-comparativo,
+.home-tabela-comparativo,
+.manual-table,
+.comparativo {
+  background: #ffffff !important;
+  color: var(--fs-texto) !important;
+}
+
+th,
+.tabela-comparativo th,
+.home-tabela-comparativo th,
+.manual-table th,
+.comparativo th {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+td,
+.tabela-comparativo td,
+.home-tabela-comparativo td,
+.manual-table td,
+.comparativo td {
+  color: var(--fs-texto) !important;
+}
+
+tr:nth-child(even),
+tbody tr:nth-child(even) {
+  background: #fffaf0 !important;
+}
+
+/* Estados e tags mantêm contraste */
+.tag,
+.cliente-status,
+.home-cliente-status,
+.home-preco-destaque,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home,
+.tag-plano-pix {
+  color: var(--fs-marrom) !important;
+}
+
+.tag-plano-pix,
+.home-section-tag,
+.home-plano-tag,
+.tag-demo,
+.tag-aprovacao,
+.tag-status-home {
+  background: var(--fs-marrom) !important;
+  color: var(--fs-amarelo) !important;
+}
+
+/* Áreas verdes/WhatsApp não ficam texto verde sobre verde */
+.btn-whatsapp,
+.btn-verde {
+  background: #25D366 !important;
+  color: #083b2f !important;
+  border-color: #128c4a !important;
+}
+
+.btn-whatsapp:hover,
+.btn-verde:hover {
+  background: #20ba5a !important;
+  color: #ffffff !important;
+}
+
+/* PDF deve continuar preto e branco quando gerando */
+body.gerando-pdf,
+body.gerando-pdf * {
+  color: inherit;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="header-container"></div>
+
+<div id="modal-login" class="modal-login-overlay">
+  <div class="modal-login-box">
+    <button type="button" class="btn-fechar-login" onclick="fecharModalLogin()">×</button>
+
+    <div class="auth-aviso-gerador">
+      <h2>Entre para gerar seu orçamento</h2>
+      <p>
+        O gerador usa os dados cadastrados no seu Painel de Controle para montar o PDF com sua empresa e logo.
+      </p>
+    </div>
+
+    <div id="auth-area" style="display:block;">
+      <div class="auth-logo-box">
+        <div class="auth-logo-text">
+          <strong>FS</strong><span>Orçamentos</span>
+        </div>
+        <p>Acesse sua conta para continuar</p>
       </div>
-      <div id="auth-area">
-        <div id="auth-container">
-          <form id="form-autenticacao" onsubmit="return false;">
-            <h3 id="auth-titulo">Acesse sua Conta</h3>
-            <div id="grupo-nome" class="auth-campo-index oculto"><label for="auth-nome">Nome</label><input type="text" id="auth-nome" placeholder="Seu nome"></div>
-            <div class="auth-campo-index"><label for="auth-email">E-mail</label><input type="email" id="auth-email" placeholder="seu@email.com"></div>
-            <div id="grupo-nome-empresa" class="auth-campo-index oculto"><label for="reg-nome-empresa">Nome da Empresa</label><input type="text" id="reg-nome-empresa" placeholder="Nome da sua empresa"></div>
-            <div id="grupo-whatsapp-empresa" class="auth-campo-index oculto"><label for="reg-telefone-empresa">WhatsApp da Empresa</label><input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da empresa"></div>
-            <div class="auth-campo-index"><label for="auth-senha">Senha</label><input type="password" id="auth-senha" placeholder="******"></div>
-            <div id="grupo-confirmar-senha" class="auth-campo-index oculto"><label for="auth-confirmar-senha">Confirmar Senha</label><input type="password" id="auth-confirmar-senha" placeholder="******"></div>
-            <button type="button" id="btn-principal" class="btn-principal-index" onclick="enviarFormulario()">Entrar</button>
-          </form>
-          <div class="auth-alternar-index"><a href="#" id="link-alternar" onclick="alternarModo(event)">Não tem cadastro? <strong>Clique aqui.</strong></a></div>
+
+      <div id="auth-container" style="display:block; padding: 22px; border: 1px solid #e0d6c8; border-radius: 14px; background: #fff; box-shadow: 0 8px 22px rgba(0,0,0,0.12);">
+        <form id="form-autenticacao" onsubmit="return false;">
+          <h3 id="auth-titulo" style="margin-top: 0; text-align: center; color: #ffc400;">
+            Acesse sua Conta
+          </h3>
+
+          <div id="grupo-nome" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome</label>
+            <input type="text" id="auth-nome" placeholder="Seu nome" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">E-mail</label>
+            <input type="email" id="auth-email" placeholder="seu@email.com" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-nome-empresa" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Nome da Empresa</label>
+            <input type="text" id="reg-nome-empresa" placeholder="Nome da sua Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-whatsapp-empresa" style="margin-bottom: 15px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">WhatsApp da Empresa</label>
+            <input type="tel" id="reg-telefone-empresa" placeholder="WhatsApp da Empresa" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Senha</label>
+            <input type="password" id="auth-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div id="grupo-confirmar-senha" style="margin-bottom: 20px; display: none;">
+            <label style="display: block; font-size: 14px; margin-bottom: 5px; color: #666;">Confirmar Senha</label>
+            <input type="password" id="auth-confirmar-senha" placeholder="******" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <button type="button" id="btn-principal" onclick="enviarFormulario()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;">
+            Entrar
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 15px;">
+          <a href="#" id="link-alternar" onclick="alternarModo(event)" style="font-size: 13px; color: #007bff; text-decoration: none;">
+            Não tem cadastro? Clique aqui.
+          </a>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <main id="conteudo-gerador" class="page">
-    <section class="card hero">
+<main id="conteudo-gerador" class="pagina-gerador" style="display:none;">
+
+
+  <section class="teste-premium-inline-card teste-premium-topo" id="box-teste-premium-gerador">
+    <div>
+      <h3>Teste Premium grátis por 7 dias</h3>
+      <p>Disponível para Plano Grátis e Básico. Libere gestão completa com clientes, veículos, ordens de serviço e estoque.</p>
+      <small id="texto-status-teste-premium">Verificando disponibilidade do teste grátis...</small>
+    </div>
+    <button type="button" id="btn-teste-premium" class="btn-teste-premium" onclick="ativarTesteGratisPremium()" disabled>
+      Verificando...
+    </button>
+  </section>
+
+  <section class="gerador-hero">
+    <div class="gerador-hero-conteudo">
       <div>
-        <span class="tag">Gerador de orçamento</span>
-        <h1>Crie orçamento profissional com mão de obra e produtos separados.</h1>
-        <p>Preencha os dados, adicione serviços e produtos, visualize a prévia e depois escolha se quer baixar PDF ou enviar pelo WhatsApp.</p>
+        <span class="gerador-tag">🧾 Gerador profissional</span>
+        <h1>Crie um orçamento bonito, organizado e pronto para enviar.</h1>
+        <p>
+          Preencha os dados do cliente, adicione serviços ou produtos, escolha a cor do PDF
+          e gere uma proposta com a identidade da sua empresa.
+        </p>
       </div>
-      <a href="/planos.html" class="plano-selo-gerador" id="btn-plano-gerador">Plano atual</a>
-    </section>
+    </div>
+  </section>
+<div id="adsense-gerador-topo" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+    <span class="adsense-label">Publicidade</span>
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5628949951885077"
+      data-ad-slot="3921369643"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
 
-    <div id="adsense-gerador-topo" class="fs-adsense-zone fs-anuncio-gratis">
-      <span>Publicidade</span>
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5628949951885077" data-ad-slot="3921369643" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <section class="gerador-layout">
+    <div class="gerador-card-principal">
+      <div id="status-sessao-card" class="status-sessao-card">
+        Carregando seus dados...
+      </div>
+
+      <div id="formulario-orcamento">
+        <div class="intro-form-gerador">
+          <p>
+            📝 Preencha os campos abaixo para gerar seu orçamento em PDF.
+          </p>
+        </div>
+
+        <div class="dadositens">🏢 Dados da empresa</div>
+
+        <div class="emissor-readonly-card">
+          <div class="emissor-readonly-topo">
+            <div class="emissor-logo-mini">
+              <span id="emissor-logo-placeholder">Logo</span>
+              <img id="emissor-logo-visual" src="" alt="Logo da empresa">
+            </div>
+
+            <div class="emissor-info-principal">
+              <span>Empresa emissora</span>
+              <strong id="emissor-empresa-visual">-</strong>
+              <small>Responsável: <b id="emissor-consultor-visual">-</b></small>
+            </div>
+          </div>
+
+          <div class="emissor-readonly-grid">
+            <div>
+              <span>WhatsApp / Telefone</span>
+              <strong id="emissor-whatsapp-visual">-</strong>
+            </div>
+
+            <div>
+              <span>CNPJ / CPF</span>
+              <strong id="emissor-cnpj-visual">-</strong>
+            </div>
+
+            <div>
+              <span>Endereço</span>
+              <strong id="emissor-endereco-visual">-</strong>
+            </div>
+
+            <div>
+              <span>Plano atual</span>
+              <strong id="emissor-plano-visual">-</strong>
+            </div>
+          </div>
+
+          <div class="emissor-readonly-acoes">
+            <a href="/painel.html" class="btn-editar-dados-empresa">
+              ✏️ Editar dados no painel
+            </a>
+          </div>
+        </div>
+
+        <div id="aviso-perfil-incompleto" class="aviso-perfil-incompleto">
+          ⚠️ Para gerar um orçamento profissional, complete pelo menos o <b>nome da empresa</b> e o <b>WhatsApp da empresa</b> no
+          <a href="/painel.html">Painel de Controle</a>.
+        </div>
+
+        <div class="dadositens">🧾 Orçamento</div>
+
+        <div class="campo-form">
+          <label for="titulo">Título do Orçamento</label>
+          <input type="text" id="titulo" maxlength="50" placeholder="Ex: Manutenção de Suspensão / Pintura Residencial" oninput="salvarEstadoCompleto()">
+        </div>
+
+        <div class="dadositens">👤 Cliente</div>
+
+        <input type="hidden" id="cliente-id-cadastrado" value="">
+
+        <div class="grid-duplo-gerador">
+          <div class="cliente-id-acoes" style="grid-column: 1 / -1;">
+            <div class="campo-form">
+              <label for="orcamento-cliente-id">ID do cliente cadastrado</label>
+              <input
+                type="text"
+                id="orcamento-cliente-id"
+                placeholder="Cole o ID do cliente para preencher automaticamente"
+                oninput="salvarEstadoCompleto()"
+              >
+            </div>
+
+            <button type="button" class="btn-buscar-cliente-id" onclick="abrirModalBuscaClienteOrcamento()">
+              Buscar cliente
+            </button>
+
+            <button type="button" class="btn-limpar-cliente-id" onclick="limparClienteVinculadoNoOrcamento()">
+              Limpar
+            </button>
+          </div>
+
+          <div id="cliente-vinculado-card" class="cliente-vinculado-card">
+            <strong>Cliente vinculado</strong>
+            <span id="cliente-vinculado-texto">Nenhum cliente vinculado.</span>
+          </div>
+
+          <div class="veiculo-orcamento-card">
+            <div class="campo-form">
+              <label for="orcamento-veiculo-id">Veículo do cliente</label>
+              <select id="orcamento-veiculo-id" disabled>
+                <option value="">Selecione primeiro um cliente cadastrado</option>
+              </select>
+              <small id="aviso-veiculo-orcamento">
+                Se o cliente tiver veículo cadastrado, ele aparecerá aqui e será vinculado ao orçamento.
+              </small>
+            </div>
+          </div>
+
+          <div id="veiculo-vinculado-card" class="veiculo-vinculado-card">
+            <strong>Veículo vinculado</strong>
+            <span id="veiculo-vinculado-texto">Nenhum veículo selecionado.</span>
+          </div>
+
+          <div class="campo-form">
+            <label for="cliente">Nome do cliente</label>
+            <input type="text" id="cliente" maxlength="40" placeholder="Nome do cliente" oninput="salvarEstadoCompleto()">
+          </div>
+
+          <div class="campo-form">
+            <label for="tel-cliente">Telefone / WhatsApp do cliente</label>
+            <input type="text" id="tel-cliente" maxlength="20" placeholder="(00) 00000-0000" oninput="salvarEstadoCompleto()" onkeyup="mascaraTelefone(event)">
+          </div>
+
+          <div id="extra-cliente-container" style="grid-column: 1 / -1;"></div>
+
+          <button type="button" class="btn-extra" onclick="adicionarCampoExtra('extra-cliente-container')" style="justify-self:end; grid-column: 1 / -1;">
+            + Informações do cliente
+          </button>
+        </div>
+
+        <div class="dadositens">🛠️ Itens / Serviços</div>
+
+        <div id="itens-lista">
+          <div class="item-row header-labels">
+            <span>Descrição</span>
+            <span>Qtd</span>
+            <span>V. Unit</span>
+            <span>Subtotal</span>
+            <span></span>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; margin-top:12px;">
+          <button type="button" class="btn-add" onclick="adicionarLinha()">
+            + Item
+          </button>
+        </div>
+
+        <div class="total-container">
+          TOTAL: R$ <span id="total-geral">0,00</span>
+        </div>
+
+        <div class="dadositens">📌 Condições do orçamento</div>
+
+        <div class="grid-duplo-gerador">
+          <div class="campo-form">
+            <label for="validade-orcamento">Validade do orçamento</label>
+            <input
+              type="text"
+              id="validade-orcamento"
+              placeholder="Ex: Orçamento válido por 7 dias"
+              oninput="salvarEstadoCompleto(); autoUpdatePreview()"
+            >
+          </div>
+
+          <div class="campo-form">
+            <label for="forma-pagamento">Forma de pagamento</label>
+            <input
+              type="text"
+              id="forma-pagamento"
+              placeholder="Ex: 50% de entrada e 50% na entrega"
+              oninput="salvarEstadoCompleto(); autoUpdatePreview()"
+            >
+          </div>
+        </div>
+
+        <div class="dadositens">📝 Observações</div>
+
+        <div class="campo-form">
+          <label for="observacoes">Observações, prazos e condições</label>
+          <textarea id="observacoes" rows="4" placeholder="Ex: Prazo de entrega, condições de pagamento, validade da proposta..." oninput="salvarEstadoCompleto(); autoUpdatePreview()"></textarea>
+        </div>
+
+        <div class="calc-expansivel">
+          <div class="calc-header" onclick="toggleFrases()">
+            <span>📝 Termos e Condições Rápidas</span>
+            <span id="seta-frases">▼</span>
+          </div>
+
+          <div id="frases-corpo" class="calc-content">
+            <div style="font-size: 12px; color: #64748b; margin-bottom: 15px;">
+              Clique nas frases para adicioná-las automaticamente às observações.
+            </div>
+
+            <div class="calc-secao-titulo">Validade e Prazos</div>
+            <div class="checklist-container">
+              <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 7 dias.')">Validade 7 dias</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Orçamento válido por 15 dias.')">Validade 15 dias</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Prazo de entrega: ___ dias úteis após aprovação.')">Prazo de entrega</button>
+            </div>
+
+            <div class="calc-secao-titulo">Pagamento</div>
+            <div class="checklist-container">
+              <button type="button" class="btn-frase" onclick="addFrase('• Forma de pagamento: 50% de entrada e 50% na entrega.')">50% entrada / 50% entrega</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Pagamento à vista com 5% de desconto.')">Desconto à vista</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Parcelamos em até 3x sem juros no cartão.')">3x sem juros</button>
+            </div>
+
+            <div class="calc-secao-titulo">Materiais e Serviços</div>
+            <div class="checklist-container">
+              <button type="button" class="btn-frase" onclick="addFrase('• Não incluso material de acabamento.')">Sem acabamento</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Frete incluso para a região.')">Frete incluso</button>
+              <button type="button" class="btn-frase" onclick="addFrase('• Responsabilidade por entulhos e limpeza por conta do contratante.')">Limpeza/entulho</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="adsense-gerador-meio" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+          <span class="adsense-label">Publicidade</span>
+          <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-5628949951885077"
+            data-ad-slot="9255107287"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        </div>
+
+        <div class="dadositens">🎨 Visual do PDF</div>
+
+        <div class="color-selector">
+          <label>Escolha a cor do PDF:</label>
+
+          <div class="theme-options">
+            <div class="theme-dot original" onclick="setTheme('original')" title="Marrom padrão"></div>
+            <div class="theme-dot bw" onclick="setTheme('bw')" title="Preto e branco"></div>
+            <div class="theme-dot blue" onclick="setTheme('blue')" title="Azul"></div>
+            <div class="theme-dot green" onclick="setTheme('green')" title="Verde"></div>
+            <div class="theme-dot yellow" onclick="setTheme('yellow')" title="Amarelo"></div>
+            <div class="theme-dot red" onclick="setTheme('red')" title="Vermelho"></div>
+          </div>
+
+          <input type="hidden" id="selected-theme" value="original">
+        </div>
+
+        <div class="acoes-gerador-principal">
+          <button type="button" class="btn-previa-profissional" id="btn-previa" onclick="gerarPrevia()">
+            👁️ Pré-visualização
+          </button>
+
+          <button type="button" class="btn-novo-profissional" onclick="limparFormulario()">
+            ➕ Novo orçamento
+          </button>
+        </div>
+
+        <div id="area-previa">
+          <p class="previa-label">Prévia do documento</p>
+
+          <div id="conteudo-pdf" class="pdf-folha"></div>
+
+          <div id="botoes-acao" class="acoes-profissionais-orcamento">
+            <div class="acoes-profissionais-orcamento-topo">
+              <div>
+                <strong>Orçamento pronto</strong>
+                <span>Baixe o PDF ou envie o link para o cliente pelo WhatsApp.</span>
+              </div>
+            </div>
+
+            <div class="acoes-profissionais-botoes">
+              <button type="button" class="btn-acao-orcamento btn-acao-pdf" id="btn-baixar" onclick="baixarPDF()">
+                💾 Baixar PDF
+              </button>
+
+              <button type="button" class="btn-acao-orcamento btn-acao-whatsapp" onclick="enviarPorWhatsApp()">
+                🟢 Enviar por WhatsApp
+              </button>
+            </div>
+          </div>
+
+          <div id="msg-aviso" style="display:none; color:#d32f2f; font-size:0.9em; margin-top:10px; text-align:center;">
+            * Preencha os dados da empresa no <a href="/painel.html">Painel</a> para liberar o envio.
+          </div>
+        </div>
+
+        <a href="manual.html" class="btn-help-link" title="Manual de Instruções">
+          <button type="button" class="btn-help-trigger">?</button>
+        </a>
+
+        <div id="modal-busca-cliente-orcamento" class="modal-busca-cliente-overlay" aria-hidden="true">
+          <div class="modal-busca-cliente-box" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca-cliente">
+            <div class="modal-busca-cliente-header">
+              <div>
+                <h3 id="titulo-modal-busca-cliente">Buscar cliente cadastrado</h3>
+                <p>Pesquise por nome, telefone, rua, cidade ou CEP. Os clientes só aparecem depois de clicar em Buscar.</p>
+              </div>
+              <button type="button" class="btn-fechar-busca-cliente" onclick="fecharModalBuscaClienteOrcamento()">×</button>
+            </div>
+
+            <div class="modal-busca-cliente-body">
+              <div class="busca-cliente-linha">
+                <div class="campo-form">
+                  <label for="campo-busca-cliente-orcamento">Nome, telefone ou endereço do cliente</label>
+                  <input
+                    type="search"
+                    id="campo-busca-cliente-orcamento"
+                    placeholder="Ex: João, 18999999999, Rua Brasil, Assis ou 19800-000"
+                    autocomplete="off"
+                  >
+                </div>
+
+                <button type="button" class="btn-executar-busca-cliente" onclick="buscarClientesNoModalOrcamento()">
+                  Buscar
+                </button>
+              </div>
+
+              <p class="busca-cliente-ajuda">
+                Dica: digite pelo menos 2 caracteres. A busca consulta somente os seus clientes cadastrados.
+              </p>
+
+              <div id="resultado-busca-clientes-orcamento" class="resultado-busca-clientes">
+                <div class="estado-busca-cliente">
+                  Digite uma informação do cliente e clique em Buscar.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="modal-ajuda" class="modal-overlay">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Dicas rápidas 💡</h3>
+              <button type="button" onclick="toggleAjuda()" class="close-modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+              <div class="help-item">
+                <strong>📸 Sua marca:</strong> cadastre sua logo e dados da empresa no Painel de Controle.
+              </div>
+
+              <div class="help-item">
+                <strong>➕ Campos extras:</strong> use o botão "+ Informações" para adicionar CPF, CNPJ, placa ou endereço.
+              </div>
+
+              <div class="help-item">
+                <strong>📝 Termos rápidos:</strong> clique nas frases prontas para adicionar prazos e condições.
+              </div>
+
+              <div class="help-item">
+                <strong>📥 Baixar:</strong> clique em "Pré-visualização" e depois em "Baixar PDF".
+              </div>
+            </div>
+
+            <button type="button" class="btn-entendi" onclick="toggleAjuda()">Entendi!</button>
+          </div>
+        </div>
+
+        <div class="floating-actions">
+          <button type="button" class="btn-float btn-float-previa" onclick="gerarPrevia()" title="Gerar prévia">
+            👁️
+          </button>
+
+          <button type="button" class="btn-float btn-float-download" id="btn-float-baixar" onclick="baixarPDF()" style="display:none;" title="Baixar PDF">
+            💾
+          </button>
+
+          <button type="button" class="btn-float btn-float-whatsapp" id="btn-float-whatsapp" onclick="enviarPorWhatsApp()" style="display:none;" title="Enviar por WhatsApp">
+            🟢
+          </button>
+
+          <button type="button" class="btn-float btn-float-novo" onclick="limparFormulario()" title="Novo orçamento">
+            ➕
+          </button>
+        </div>
+      </div>
     </div>
 
-    <section class="layout">
-      <div class="card main-card">
-        <div id="status-sessao-card"></div>
+    <aside class="gerador-sidebar">
+      <div class="sidebar-card">
+        <h3>Antes de gerar</h3>
+        <p>
+          Confira se os dados da empresa estão completos. Eles aparecem no topo do PDF e dão mais confiança ao cliente.
+        </p>
 
-        <div class="sec-title">Dados do orçamento</div>
-        <div class="grid">
-          <div class="field"><label for="numero-orcamento">Número</label><input id="numero-orcamento" maxlength="30" placeholder="Ex: ORC-001"></div>
-          <div class="field"><label for="titulo">Título</label><input id="titulo" maxlength="80" placeholder="Ex: Manutenção de suspensão"></div>
-          <div class="field"><label for="validade">Validade</label><input id="validade" type="date"></div>
-          <div class="field"><label for="cliente">Cliente</label><input id="cliente" placeholder="Nome do cliente"></div>
-          <div class="field"><label for="tel-cliente">WhatsApp do cliente</label><input id="tel-cliente" placeholder="DDD + número"></div>
-          <div class="field"><label for="forma-pagamento">Pagamento</label><input id="forma-pagamento" placeholder="Ex: Pix, dinheiro, cartão"></div>
-          <div class="field"><label for="prazo-execucao">Prazo</label><input id="prazo-execucao" placeholder="Ex: 2 dias úteis"></div>
-          <div class="field"><label for="garantia">Garantia</label><input id="garantia" placeholder="Ex: 90 dias"></div>
-        </div>
-        <div class="field"><label for="observacoes">Observações</label><textarea id="observacoes" placeholder="Condições, detalhes e observações gerais..."></textarea></div>
-
-        <div class="sec-title">Mão de obra</div>
-        <div class="acoes sec-actions">
-          <button class="btn" type="button" onclick="adicionarLinhaOrcamento('mao_obra')">+ Adicionar mão de obra</button>
-          <button class="btn gold" type="button" onclick="salvarRecorrentes('mao_obra')">⭐ Salvar recorrente</button>
-        </div>
-        <div id="lista-mao-obra"></div>
-
-        <div class="sec-title">Produtos / itens</div>
-        <div class="acoes sec-actions">
-          <button class="btn" type="button" onclick="adicionarLinhaOrcamento('produto')">+ Adicionar produto/item</button>
-          <button class="btn gold" type="button" onclick="salvarRecorrentes('produto')">⭐ Salvar item recorrente</button>
-        </div>
-        <div id="lista-produtos"></div>
-
-        <section class="resumo-orcamento">
-          <h3>Resumo do orçamento</h3>
-          <div class="totais">
-            <div class="total-linha"><span>Mão de obra</span><strong id="total-mao-obra">R$ 0,00</strong></div>
-            <div class="total-linha"><span>Produtos</span><strong id="total-produtos">R$ 0,00</strong></div>
-            <div class="total-linha geral"><span>Total geral</span><strong id="total-orcamento">R$ 0,00</strong></div>
-          </div>
-        </section>
-
-        <div class="acoes-principais">
-          <button class="btn primary" id="btn-previa" type="button" onclick="gerarPreviaOrcamento()">👁️ Visualizar prévia</button>
-          <button class="btn red" type="button" onclick="limparOrcamento()">Limpar</button>
-        </div>
-
-        <div id="link-orcamento-box" class="link-box">
-          <strong>Link de aprovação</strong>
-          <input id="link-orcamento-input" readonly>
-        </div>
-
-        <div id="area-previa" class="area-previa">
-          <div class="previa-topo">
-            <div><strong>Prévia do orçamento</strong><span>Confira antes de baixar, salvar ou enviar pelo WhatsApp.</span></div>
-          </div>
-          <div id="conteudo-pdf" class="conteudo-pdf"></div>
-          <div id="botoes-acao" class="acoes-preview">
-            <button class="btn primary" id="btn-baixar" type="button" onclick="baixarPDF()">🧾 Baixar PDF</button>
-            <button class="btn ok" id="btn-whatsapp-premium" type="button" onclick="enviarWhatsappPremium()">Enviar WhatsApp</button>
-            <button class="btn gold" id="btn-salvar-premium" type="button" onclick="salvarOrcamentoPremium()">Salvar orçamento <span class="premium-label">Premium</span></button>
-            <button class="btn" id="btn-copiar-link" type="button" onclick="copiarLinkOrcamento()" disabled>Copiar link</button>
-            <button class="btn" id="btn-abrir-online" type="button" onclick="abrirOrcamentoOnline()" disabled>Abrir online</button>
-            <button class="btn gold" id="btn-registrar-caixa" type="button" onclick="registrarCaixaAtual()" disabled>Registrar no caixa <span class="premium-label">Premium</span></button>
-          </div>
-        </div>
+        <ul class="sidebar-lista">
+          <li>Logo cadastrada no painel</li>
+          <li>Nome da empresa</li>
+          <li>WhatsApp da empresa</li>
+          <li>CNPJ/CPF e endereço, se houver</li>
+        </ul>
       </div>
 
-      <aside class="sidebar">
-        <article class="card side">
-          <h3>Recorrentes</h3>
-          <p>Premium: salve serviços e produtos usados com frequência para reaproveitar nos próximos orçamentos.</p>
-          <h4>Mão de obra</h4>
-          <div id="rec-mao-obra" class="lista-rec"></div>
-          <h4>Itens/produtos</h4>
-          <div id="rec-produtos" class="lista-rec"></div>
-        </article>
+      <div class="sidebar-card">
+        <h3>Plano Básico</h3>
+        <p>
+          No Plano Básico, você salva orçamentos na nuvem, envia link pelo WhatsApp e acompanha status.
+        </p>
 
-        <article class="card side">
-          <h3>Premium</h3>
-          <p id="texto-premium-gerador">No Grátis você gera PDF. Assine o Premium para salvar, enviar link e acompanhar aprovação online.</p>
-          <div class="acoes">
-            <a class="btn primary" href="/planos.html#assinar-plano-premium">Ver Premium</a>
-            <a class="btn" href="/orcamentos.html">Meus orçamentos</a>
-          </div>
-        </article>
-      </aside>
-    </section>
-  </main>
+        <ul class="sidebar-lista">
+          <li>Histórico de orçamentos</li>
+          <li>Aprovação ou recusa pelo cliente</li>
+          <li>Resumo financeiro</li>
+          <li>Sem anúncios na plataforma</li>
+        </ul>
+      </div>
 
-  <footer>&copy; 2026 FS Orçamentos</footer>
+      <div id="adsense-gerador-lateral" class="fs-adsense-zone fs-anuncio-gratis" aria-label="Publicidade">
+        <span class="adsense-label">Publicidade</span>
+        <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-5628949951885077"
+          data-ad-slot="1351046624"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+    </aside>
+  </section>
+</main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="auth.js"></script>
-  <script src="ui.js"></script>
-  <script src="planos.js"></script>
-  <script src="carregar-menu.js"></script>
-  <script src="gerador.js"></script>
-  <script src="notificacoes.js"></script>
-  <script>
-    function limparOrcamento() {
-      if (!confirm('Limpar os dados deste orçamento?')) return;
-      ['numero-orcamento','titulo','validade','cliente','tel-cliente','forma-pagamento','prazo-execucao','garantia','observacoes'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-      const mao = document.getElementById('lista-mao-obra');
-      const prod = document.getElementById('lista-produtos');
-      if (mao) mao.innerHTML = '';
-      if (prod) prod.innerHTML = '';
-      if (typeof adicionarLinhaOrcamento === 'function') {
-        adicionarLinhaOrcamento('mao_obra', {}, { salvar: false });
-        adicionarLinhaOrcamento('produto', {}, { salvar: false });
-      }
-      if (typeof calcularTotal === 'function') calcularTotal();
-      if (typeof limparPreviaOrcamento === 'function') limparPreviaOrcamento();
-      localStorage.removeItem('fs_rascunho_orcamento');
-    }
-  </script>
+<footer>
+  &copy; 2026 FS Orçamentos |
+  <a href="/privacidade.html">Privacidade</a> |
+  <a href="/termos.html">Termos</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+<script src="planos.js"></script>
+<script src="carregar-menu.js"></script>
+<script src="notificacoes.js"></script>
+
+<script src="gerador.js"></script>
+
+
 </body>
 </html>
