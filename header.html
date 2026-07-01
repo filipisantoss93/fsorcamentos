@@ -1,35 +1,46 @@
-<link rel="stylesheet" href="/header-clean.css?v=20260701-orcamentos-premium">
+<link rel="stylesheet" href="/header-clean.css?v=20260701-header-azul-icones">
 <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260701-orcamentos-premium">
-<style>
-  .main-header{background:#0f172a;color:#fff;position:sticky;top:0;z-index:10000;border-bottom:1px solid rgba(255,255,255,.08)}
-  .header-shell{width:min(1180px,calc(100% - 24px));margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:64px}
-  .logo-nav{display:inline-flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:950;white-space:nowrap}.logo-fs{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;background:#e5e7eb;color:#0f172a;font-weight:950}.logo-orcamentos{font-size:18px}.nav-menu{display:flex;align-items:center;gap:6px;list-style:none;margin:0;padding:0}.nav-menu a{display:inline-flex;align-items:center;min-height:36px;padding:8px 10px;border-radius:8px;color:#e5e7eb;text-decoration:none;font-size:13px;font-weight:850}.nav-menu a:hover,.nav-menu a.ativo{background:#334155;color:#fff}.link-destaque-gerador{background:#f8fafc!important;color:#0f172a!important}.header-usuario{display:flex;align-items:center;gap:8px}.header-usuario span{font-size:13px;font-weight:800;color:#e5e7eb}.btn-header-entrar,.btn-header-sair,.btn-menu-mobile-entrar,.btn-menu-mobile-sair{border:1px solid #64748b;background:#f8fafc;color:#0f172a;border-radius:8px;min-height:34px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}.menu-mobile-btn{display:none;border:1px solid #64748b;background:#1e293b;color:#fff;border-radius:8px;width:38px;height:38px;font-size:20px}.btn-notificacoes-header{border:0;background:transparent;color:#e5e7eb;font-size:19px;cursor:pointer;position:relative}.contador-notificacoes{position:absolute;top:-7px;right:-7px;background:#ef4444;color:#fff;border-radius:999px;font-size:10px;min-width:16px;height:16px;line-height:16px;text-align:center}
-  @media(max-width:940px){.menu-mobile-btn{display:inline-flex;align-items:center;justify-content:center}.header-menu-linha{position:absolute;left:12px;right:12px;top:68px;background:#fff;border:1px solid #cbd5e1;border-radius:12px;box-shadow:0 18px 40px rgba(15,23,42,.22);padding:10px;display:none}.header-menu-linha.menu-aberto{display:block}.nav-menu{display:grid;gap:6px}.nav-menu a{color:#0f172a;background:#f8fafc;border:1px solid #e2e8f0}.header-usuario span{display:none}.menu-mobile-auth{display:grid!important;grid-template-columns:1fr;gap:6px}.btn-menu-mobile-entrar,.btn-menu-mobile-sair{width:100%}}
-</style>
 <header class="main-header">
   <div class="header-shell">
-    <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos"><span class="logo-fs">FS</span><span class="logo-orcamentos">Orçamentos</span></a>
+    <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos">
+      <span class="logo-fs">FS</span>
+      <span class="logo-orcamentos">FS Orçamentos</span>
+    </a>
+
     <nav class="header-menu-linha" aria-label="Menu principal">
+      <div class="header-user-card">
+        <span class="header-user-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+        </span>
+        <span class="header-user-text">
+          <strong id="usuario-saudacao">Olá, Convidado</strong>
+          <small>Bem-vindo de volta!</small>
+        </span>
+      </div>
+
       <ul class="nav-menu nav-menu-compacto">
-        <li><a href="/index.html">Início</a></li>
-        <li><a href="/gerador.html" class="link-destaque-gerador">Gerar</a></li>
-        <li><a href="/orcamentos.html" data-plano-min="premium">Orçamentos</a></li>
-        <li><a href="/fluxo-caixa.html" data-plano-min="premium">Caixa</a></li>
-        <li><a href="/dashboard.html" data-plano-min="premium">Relatórios</a></li>
-        <li><a href="/forum.html">Fórum</a></li>
-        <li><a href="/painel.html">Painel</a></li>
-        <li><a href="/planos.html">Planos</a></li>
-        <li><a href="/sobre.html">Sobre</a></li>
-        <li><a href="/contato.html">Contato</a></li>
-        <li class="menu-mobile-auth"><button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;">Entrar</button><button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;">Sair</button></li>
+        <li><a href="/index.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5 10.5V21h14V10.5"></path><path d="M9 21v-6h6v6"></path></svg></span><span>Início</span></a></li>
+        <li><a href="/gerador.html" class="link-destaque-gerador"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M12 12v6"></path><path d="M9 15h6"></path></svg></span><span>Gerar</span></a></li>
+        <li><a href="/orcamentos.html" data-plano-min="premium"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span><span>Orçamentos</span></a></li>
+        <li><a href="/fluxo-caixa.html" data-plano-min="premium"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="2"></rect><path d="M8 8V5h8v3"></path><path d="M8 12h8"></path><path d="M8 15h3"></path><path d="M14 15h2"></path></svg></span><span>Caixa</span></a></li>
+        <li><a href="/dashboard.html" data-plano-min="premium"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 16v-5"></path><path d="M12 16V8"></path><path d="M16 16v-3"></path></svg></span><span>Relatórios</span></a></li>
+        <li><a href="/forum.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg></span><span>Fórum</span></a></li>
+        <li><a href="/painel.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M4 14a8 8 0 1 1 16 0"></path><path d="M12 14l4-4"></path><path d="M6 14h.01M18 14h.01M8 9h.01M16 9h.01"></path></svg></span><span>Painel</span></a></li>
+        <li><a href="/planos.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="m5 17 2-11 5 5 5-5 2 11Z"></path><path d="M5 17h14v3H5Z"></path></svg></span><span>Planos</span></a></li>
+        <li><a href="/sobre.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 10v6"></path><path d="M12 7h.01"></path></svg></span><span>Sobre</span></a></li>
+        <li><a href="/contato.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg></span><span>Contato</span></a></li>
+        <li class="menu-mobile-auth">
+          <button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path></svg></span><span>Entrar</span></button>
+          <button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg></span><span>Sair</span></button>
+        </li>
       </ul>
     </nav>
+
     <div class="header-usuario">
-      <span id="usuario-saudacao">Olá, Convidado</span>
       <button type="button" id="btn-notificacoes" class="btn-notificacoes-header" onclick="abrirModalNotificacoes && abrirModalNotificacoes()" style="display:none;" title="Notificações" aria-label="Notificações">🔔<span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span></button>
       <button type="button" id="btn-header-entrar" class="btn-header-entrar" onclick="irParaLogin()" style="display:none;">Entrar</button>
       <button type="button" id="btn-header-sair" class="btn-header-sair" onclick="deslogar()" style="display:none;">Sair</button>
-      <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile()" aria-label="Abrir menu">☰</button>
+      <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile()" aria-label="Abrir menu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
