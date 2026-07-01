@@ -5,6 +5,8 @@ let linkOrcamentoAtual = '';
 let eventosGeradorConfigurados = false;
 let restaurandoRascunho = false;
 let orcamentoAlterado = false;
+let recorrentesSupabaseDisponivel = false;
+let recorrentesCache = { mao_obra: [], produto: [] };
 
 const FS_REC_MAO = 'fs_mao_obra_recorrente_v1';
 const FS_REC_PROD = 'fs_itens_recorrentes_v1';
@@ -17,6 +19,7 @@ function numero(v) { return Number(String(v || '').replace(/\./g, '').replace(',
 function planoNorm(v) { const p = String(v || 'gratis').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim(); return ['premium', 'basico', 'gestao'].includes(p) ? 'premium' : 'gratis'; }
 function ehPremium() { return planoNorm(localStorage.getItem('usuario_plano') || perfilGeradorAtual?.plano) === 'premium'; }
 function dataBR(v) { if (!v) return ''; const d = new Date(String(v) + 'T00:00:00'); return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('pt-BR'); }
+function chaveRecorrente(tipo) { return tipo === 'mao_obra' ? FS_REC_MAO : FS_REC_PROD; }
 
 function abrirModalLoginGerador() {
   if (typeof window.fsAplicarModoAuth === 'function') window.fsAplicarModoAuth('login');
@@ -69,8 +72,9 @@ async function iniciarGerador() {
     restaurarRascunho();
     garantirLinhaPadrao('mao_obra');
     garantirLinhaPadrao('produto');
-    renderRecorrentes();
     aplicarPlanoGerador();
+    await carregarRecorrentesGerador();
+    renderRecorrentes();
     calcularTotal();
 
     if (coletarItens().length) gerarPreviaOrcamento({ silencioso: true });
@@ -203,17 +207,7 @@ function coletarItens(tipo = null) {
     const qtd = numero(row.querySelector('.qtd')?.value || 1);
     const valor = numero(row.querySelector('.valor')?.value || 0);
     const descricao = row.querySelector('.desc')?.value?.trim() || '';
-    return {
-      tipo: row.dataset.tipo,
-      descricao,
-      nome: descricao,
-      qtd,
-      quantidade: qtd,
-      valor,
-      valor_unitario: valor,
-      subtotal: qtd * valor,
-      total: qtd * valor
-    };
+    return { tipo: row.dataset.tipo, descricao, nome: descricao, qtd, quantidade: qtd, valor, valor_unitario: valor, subtotal: qtd * valor, total: qtd * valor };
   }).filter(i => i.descricao && i.qtd > 0 && (!tipo || i.tipo === tipo));
 }
 
@@ -297,20 +291,10 @@ function gerarPreviaOrcamento(opcoes = {}) {
 function baixarPDF() {
   if (!gerarPreviaOrcamento()) return;
   if (typeof html2pdf !== 'function') return alert('Biblioteca de PDF não carregou. Atualize a página.');
-
   document.body.classList.add('gerando-pdf');
   const nome = ($('titulo')?.value || 'orcamento').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'orcamento';
-  const worker = html2pdf().set({
-    margin: 0,
-    filename: `${nome}.pdf`,
-    image: { type: 'jpeg', quality: .98 },
-    html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-    jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' }
-  }).from($('conteudo-pdf')).save();
-
-  Promise.resolve(worker)
-    .catch(error => { console.error('Erro ao gerar PDF:', error); alert('Não foi possível gerar o PDF.'); })
-    .then(() => document.body.classList.remove('gerando-pdf'));
+  const worker = html2pdf().set({ margin: 0, filename: `${nome}.pdf`, image: { type: 'jpeg', quality: .98 }, html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 }, jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' } }).from($('conteudo-pdf')).save();
+  Promise.resolve(worker).catch(error => { console.error('Erro ao gerar PDF:', error); alert('Não foi possível gerar o PDF.'); }).then(() => document.body.classList.remove('gerando-pdf'));
 }
 
 async function salvarPayloadOrcamento(payloadCompleto, payloadCompat) {
@@ -330,39 +314,17 @@ async function salvarOrcamentoPremium(opcoes = {}) {
     return null;
   }
   if (!gerarPreviaOrcamento({ silencioso: opcoes.silencioso })) return null;
-
   const d = dadosOrcamento();
   const itens = [...d.maoObra, ...d.produtos];
-
   try {
-    const payloadCompat = {
-      usuario_id: usuarioGeradorId,
-      cliente_nome: d.cliente,
-      total: d.total,
-      status: 'pendente',
-      itens
-    };
-
-    const payloadCompleto = {
-      ...payloadCompat,
-      cliente_whatsapp: d.telefone,
-      titulo: d.titulo,
-      observacoes: d.observacoes,
-      atualizado_em: new Date().toISOString()
-    };
-
+    const payloadCompat = { usuario_id: usuarioGeradorId, cliente_nome: d.cliente, total: d.total, status: 'pendente', itens };
+    const payloadCompleto = { ...payloadCompat, cliente_whatsapp: d.telefone, titulo: d.titulo, observacoes: d.observacoes, atualizado_em: new Date().toISOString() };
     if (!orcamentoSalvoAtualId) payloadCompleto.criado_em = new Date().toISOString();
-
     const resp = await salvarPayloadOrcamento(payloadCompleto, payloadCompat);
     if (resp.error) throw resp.error;
-
     orcamentoSalvoAtualId = resp.data?.id || orcamentoSalvoAtualId;
     linkOrcamentoAtual = `${location.origin}/aprovacao.html?id=${encodeURIComponent(orcamentoSalvoAtualId)}`;
-
-    try {
-      await _supabase.from('orcamentos').update({ link_publico: linkOrcamentoAtual }).eq('id', orcamentoSalvoAtualId).eq('usuario_id', usuarioGeradorId);
-    } catch (_) {}
-
+    try { await _supabase.from('orcamentos').update({ link_publico: linkOrcamentoAtual }).eq('id', orcamentoSalvoAtualId).eq('usuario_id', usuarioGeradorId); } catch (_) {}
     orcamentoAlterado = false;
     mostrarStatus('Orçamento salvo. Link: ' + linkOrcamentoAtual);
     return orcamentoSalvoAtualId;
@@ -375,63 +337,136 @@ async function salvarOrcamentoPremium(opcoes = {}) {
 
 async function enviarWhatsappPremium() {
   if (!ehPremium()) return window.location.href = '/planos.html#assinar-plano-premium';
-
   const d = dadosOrcamento();
   const tel = d.telefone.replace(/\D/g, '');
   if (!tel) return alert('Informe o WhatsApp do cliente.');
-
   const id = await salvarOrcamentoPremium({ silencioso: true });
   if (!id) return alert('Não foi possível salvar o orçamento antes do envio.');
-
   const numero = tel.startsWith('55') ? tel : '55' + tel;
   const msg = `Olá ${d.cliente}, segue seu orçamento: ${linkOrcamentoAtual}\n\nVocê pode aprovar ou recusar pelo link.`;
   window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-function carregarLista(chave) { try { return JSON.parse(localStorage.getItem(chave) || '[]'); } catch (_) { return []; } }
-function salvarLista(chave, lista) { localStorage.setItem(chave, JSON.stringify(lista.slice(0, 80))); }
+function carregarListaLocal(chave) { try { return JSON.parse(localStorage.getItem(chave) || '[]'); } catch (_) { return []; } }
+function salvarListaLocal(chave, lista) { localStorage.setItem(chave, JSON.stringify(lista.slice(0, 80))); }
+function recorrenteExiste(lista, item) { return lista.some(x => String(x.descricao || '').trim().toLowerCase() === String(item.descricao || '').trim().toLowerCase() && Number(x.valor || 0) === Number(item.valor || 0)); }
 
-function salvarRecorrentes(tipo) {
+function carregarRecorrentesLocais() {
+  recorrentesCache = {
+    mao_obra: carregarListaLocal(FS_REC_MAO).map(i => ({ ...i, tipo: 'mao_obra' })),
+    produto: carregarListaLocal(FS_REC_PROD).map(i => ({ ...i, tipo: 'produto' }))
+  };
+}
+
+async function migrarRecorrentesLocaisParaSupabase() {
+  if (!recorrentesSupabaseDisponivel || !usuarioGeradorId || !ehPremium()) return;
+  const locais = [
+    ...carregarListaLocal(FS_REC_MAO).map(i => ({ ...i, tipo: 'mao_obra' })),
+    ...carregarListaLocal(FS_REC_PROD).map(i => ({ ...i, tipo: 'produto' }))
+  ].filter(i => i.descricao);
+  if (!locais.length) return;
+  const payload = locais.map(i => ({ usuario_id: usuarioGeradorId, tipo: i.tipo, descricao: i.descricao, qtd: Number(i.qtd || i.quantidade || 1), valor: Number(i.valor || i.valor_unitario || 0) }));
+  try {
+    await _supabase.from('recorrentes_orcamento').upsert(payload, { onConflict: 'usuario_id,tipo,descricao,valor', ignoreDuplicates: true });
+    localStorage.removeItem(FS_REC_MAO);
+    localStorage.removeItem(FS_REC_PROD);
+  } catch (e) {
+    console.warn('Não foi possível migrar recorrentes locais:', e);
+  }
+}
+
+async function carregarRecorrentesGerador() {
+  recorrentesSupabaseDisponivel = false;
+  carregarRecorrentesLocais();
+  if (!usuarioGeradorId || !ehPremium()) return;
+  try {
+    const { data, error } = await _supabase.from('recorrentes_orcamento').select('id,tipo,descricao,qtd,valor,created_at').eq('usuario_id', usuarioGeradorId).order('created_at', { ascending: false }).limit(200);
+    if (error) throw error;
+    recorrentesSupabaseDisponivel = true;
+    await migrarRecorrentesLocaisParaSupabase();
+    const { data: atualizados, error: erroReload } = await _supabase.from('recorrentes_orcamento').select('id,tipo,descricao,qtd,valor,created_at').eq('usuario_id', usuarioGeradorId).order('created_at', { ascending: false }).limit(200);
+    const lista = erroReload ? (data || []) : (atualizados || []);
+    recorrentesCache = { mao_obra: lista.filter(i => i.tipo === 'mao_obra'), produto: lista.filter(i => i.tipo === 'produto') };
+  } catch (e) {
+    recorrentesSupabaseDisponivel = false;
+    carregarRecorrentesLocais();
+    console.warn('Tabela recorrentes_orcamento indisponível. Usando fallback local:', e);
+  }
+}
+
+async function salvarRecorrentes(tipo) {
   if (!ehPremium()) return window.location.href = '/planos.html#assinar-plano-premium';
   const itens = coletarItens(tipo);
   if (!itens.length) return alert('Preencha pelo menos um item para salvar como recorrente.');
 
-  const chave = tipo === 'mao_obra' ? FS_REC_MAO : FS_REC_PROD;
-  const lista = carregarLista(chave);
-  itens.forEach(i => {
-    const existe = lista.some(x => x.descricao === i.descricao && Number(x.valor) === Number(i.valor));
-    if (!existe) lista.unshift({ descricao: i.descricao, qtd: i.qtd, valor: i.valor });
-  });
-  salvarLista(chave, lista);
+  const novos = itens.filter(i => !recorrenteExiste(recorrentesCache[tipo] || [], i));
+  if (!novos.length) return alert('Esses recorrentes já estão salvos.');
+
+  if (recorrentesSupabaseDisponivel && usuarioGeradorId) {
+    try {
+      const payload = novos.map(i => ({ usuario_id: usuarioGeradorId, tipo, descricao: i.descricao, qtd: Number(i.qtd || 1), valor: Number(i.valor || 0) }));
+      const { error } = await _supabase.from('recorrentes_orcamento').upsert(payload, { onConflict: 'usuario_id,tipo,descricao,valor', ignoreDuplicates: true });
+      if (error) throw error;
+      await carregarRecorrentesGerador();
+      renderRecorrentes();
+      alert('Recorrente salvo na sua conta.');
+      return;
+    } catch (e) {
+      recorrentesSupabaseDisponivel = false;
+      console.warn('Erro ao salvar recorrente no Supabase. Usando fallback local:', e);
+    }
+  }
+
+  const chave = chaveRecorrente(tipo);
+  const lista = carregarListaLocal(chave);
+  novos.forEach(i => lista.unshift({ descricao: i.descricao, qtd: i.qtd, valor: i.valor, tipo }));
+  salvarListaLocal(chave, lista);
+  await carregarRecorrentesGerador();
   renderRecorrentes();
-  alert('Recorrente salvo.');
+  alert('Recorrente salvo neste dispositivo. Execute o SQL da tabela para salvar na conta.');
 }
 
 function usarRecorrente(tipo, index) {
-  const chave = tipo === 'mao_obra' ? FS_REC_MAO : FS_REC_PROD;
-  const item = carregarLista(chave)[index];
+  const item = (recorrentesCache[tipo] || [])[index];
   if (item) adicionarLinhaOrcamento(tipo, item);
 }
 
-function excluirRecorrente(tipo, index) {
-  const chave = tipo === 'mao_obra' ? FS_REC_MAO : FS_REC_PROD;
-  const lista = carregarLista(chave);
-  lista.splice(index, 1);
-  salvarLista(chave, lista);
+async function excluirRecorrente(tipo, index) {
+  const item = (recorrentesCache[tipo] || [])[index];
+  if (!item) return;
+
+  if (item.id && recorrentesSupabaseDisponivel && usuarioGeradorId) {
+    try {
+      const { error } = await _supabase.from('recorrentes_orcamento').delete().eq('id', item.id).eq('usuario_id', usuarioGeradorId);
+      if (error) throw error;
+      await carregarRecorrentesGerador();
+      renderRecorrentes();
+      return;
+    } catch (e) {
+      console.warn('Erro ao excluir recorrente no Supabase:', e);
+    }
+  }
+
+  const chave = chaveRecorrente(tipo);
+  const lista = carregarListaLocal(chave);
+  const idx = lista.findIndex(x => String(x.descricao) === String(item.descricao) && Number(x.valor || 0) === Number(item.valor || 0));
+  if (idx >= 0) lista.splice(idx, 1);
+  salvarListaLocal(chave, lista);
+  await carregarRecorrentesGerador();
   renderRecorrentes();
 }
 
 function renderRecorrentes() {
-  const render = (id, tipo, chave) => {
+  const render = (id, tipo) => {
     const box = $(id);
     if (!box) return;
-    const lista = carregarLista(chave);
+    const lista = recorrentesCache[tipo] || [];
     box.innerHTML = lista.length
       ? lista.map((i, idx) => `<div class="rec-item"><span>${html(i.descricao)} • ${moeda(i.valor)}</span><div><button class="btn" type="button" onclick="usarRecorrente('${tipo}',${idx})">Usar</button><button class="btn red" type="button" onclick="excluirRecorrente('${tipo}',${idx})">×</button></div></div>`).join('')
       : '<small>Nenhum recorrente salvo.</small>';
   };
-  render('rec-mao-obra', 'mao_obra', FS_REC_MAO);
-  render('rec-produtos', 'produto', FS_REC_PROD);
+  render('rec-mao-obra', 'mao_obra');
+  render('rec-produtos', 'produto');
 }
 
 function salvarRascunho() {
@@ -443,7 +478,6 @@ function restaurarRascunho() {
   try {
     const r = JSON.parse(localStorage.getItem(FS_RASCUNHO) || 'null');
     if (!r) return false;
-
     restaurandoRascunho = true;
     $('titulo').value = r.titulo || '';
     $('cliente').value = r.cliente || '';
