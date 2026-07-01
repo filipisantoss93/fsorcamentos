@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprovação de Orçamento - FS Orçamentos</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root{--c:#0f172a;--m:#64748b;--b:#dbe3ee;--ok:#16a34a;--red:#dc2626}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#fff,#f8fafc);color:var(--c)}.page{width:min(920px,calc(100% - 20px));margin:0 auto;padding:24px 0 48px}.card{background:#fff;border:1px solid var(--b);border-radius:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}.hero{padding:24px;background:linear-gradient(135deg,#fff,#f1f5f9)}.tag{display:inline-flex;padding:5px 9px;border-radius:999px;background:#e2e8f0;color:#334155;font-size:11px;font-weight:950;text-transform:uppercase;margin-bottom:8px}.hero h1{margin:0 0 6px;font-size:clamp(26px,5vw,42px)}.hero p{margin:0;color:var(--m);line-height:1.5}.body{padding:18px}.info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.box{background:#f8fafc;border:1px solid var(--b);border-radius:12px;padding:12px}.box small{display:block;color:var(--m);font-weight:900;text-transform:uppercase;font-size:11px}.box strong{display:block;margin-top:4px}.tabela{width:100%;border-collapse:collapse;margin:10px 0 16px}.tabela th{background:#0f172a;color:#fff;text-align:left;padding:9px;font-size:12px}.tabela td{border-bottom:1px solid #e5e7eb;padding:9px;font-size:13px}.total{text-align:right;font-size:28px;font-weight:950;margin:14px 0}.obs{white-space:pre-wrap;background:#f8fafc;border:1px solid var(--b);border-radius:12px;padding:12px}.acoes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.btn{min-height:48px;border:0;border-radius:12px;font-weight:950;font-size:16px;cursor:pointer}.ok{background:var(--ok);color:#fff}.red{background:var(--red);color:#fff}.msg{margin-top:14px;padding:12px;border-radius:12px;background:#f1f5f9;font-weight:850}.erro{background:#fee2e2;color:#991b1b}.sucesso{background:#dcfce7;color:#166534}@media(max-width:680px){.info,.acoes{grid-template-columns:1fr}.tabela{font-size:12px}.body{padding:12px}}
+  </style>
+</head>
+<body>
+  <main class="page"><section class="card"><div class="hero"><span class="tag">FS Orçamentos</span><h1 id="titulo">Carregando orçamento...</h1><p>Confira mão de obra e produtos separadamente. Depois escolha aprovar ou recusar.</p></div><div class="body" id="conteudo"><div class="msg">Carregando...</div></div></section></main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="aprovacao.js"></script>
+</body>
+</html>
