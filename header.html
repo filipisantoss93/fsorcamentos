@@ -1,5 +1,85 @@
 <link rel="stylesheet" href="/header-clean.css?v=20260701-header-azul-icones">
 <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260701-orcamentos-premium">
+<style>
+  /* Ajustes finais do header: somente estética e correção de visibilidade visual */
+  .header-menu-linha .link-destaque-gerador,
+  .header-menu-linha .link-destaque-gerador:hover,
+  .header-menu-linha .link-destaque-gerador.ativo {
+    background: linear-gradient(135deg,#2f7bff 0%,#145cff 48%,#0b3fae 100%) !important;
+    color: #ffffff !important;
+    border-color: #145cff !important;
+    opacity: 1 !important;
+  }
+
+  .header-menu-linha .link-destaque-gerador *,
+  .header-menu-linha .link-destaque-gerador span,
+  .header-menu-linha .link-destaque-gerador .fs-menu-ico {
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  .header-menu-linha .link-destaque-gerador svg,
+  .header-menu-linha .link-destaque-gerador svg path,
+  .header-menu-linha .link-destaque-gerador svg rect,
+  .header-menu-linha .link-destaque-gerador svg circle {
+    stroke: #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  #btn-header-entrar[style*="display: none"],
+  #btn-header-sair[style*="display: none"],
+  #btn-menu-mobile-entrar[style*="display: none"],
+  #btn-menu-mobile-sair[style*="display: none"] {
+    display: none !important;
+  }
+
+  #btn-header-entrar:not([style*="display: none"]),
+  #btn-menu-mobile-entrar:not([style*="display: none"]) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    background: linear-gradient(135deg,#2f7bff 0%,#145cff 48%,#0b3fae 100%) !important;
+    color: #ffffff !important;
+    border-color: #145cff !important;
+  }
+
+  #btn-header-sair:not([style*="display: none"]),
+  #btn-menu-mobile-sair:not([style*="display: none"]) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    background: linear-gradient(135deg,#ff5a5f 0%,#dc2626 52%,#991b1b 100%) !important;
+    color: #ffffff !important;
+    border-color: #dc2626 !important;
+    box-shadow: 0 15px 28px rgba(220,38,38,.22) !important;
+  }
+
+  #btn-header-sair:not([style*="display: none"]) *,
+  #btn-menu-mobile-sair:not([style*="display: none"]) *,
+  #btn-header-sair:not([style*="display: none"]) svg,
+  #btn-menu-mobile-sair:not([style*="display: none"]) svg {
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+  }
+
+  @media (max-width: 940px) {
+    .menu-mobile-auth {
+      display: grid !important;
+      gap: 8px !important;
+    }
+
+    #btn-menu-mobile-entrar:not([style*="display: none"]),
+    #btn-menu-mobile-sair:not([style*="display: none"]) {
+      width: 100% !important;
+      min-height: 58px !important;
+      padding: 13px 18px !important;
+      border-radius: 14px !important;
+      gap: 18px !important;
+      font-size: 18px !important;
+      font-weight: 950 !important;
+    }
+  }
+</style>
 <header class="main-header">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos">
