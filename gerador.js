@@ -23,6 +23,7 @@ function dataBR(v) { if (!v) return ''; const d = new Date(String(v) + 'T00:00:0
 function chaveRecorrente(tipo) { return tipo === 'mao_obra' ? FS_REC_MAO : FS_REC_PROD; }
 function gerarTokenPublico() { const b = new Uint8Array(24); crypto.getRandomValues(b); return Array.from(b).map(x => x.toString(16).padStart(2, '0')).join(''); }
 function montarLinkPublico(token = tokenPublicoAtual, id = orcamentoSalvoAtualId) { return token ? `${location.origin}/aprovacao.html?t=${encodeURIComponent(token)}` : (id ? `${location.origin}/aprovacao.html?id=${encodeURIComponent(id)}` : ''); }
+function parametro(nome) { return new URLSearchParams(location.search || '').get(nome) || ''; }
 
 function abrirModalLoginGerador() {
   if (typeof window.fsAplicarModoAuth === 'function') window.fsAplicarModoAuth('login');
@@ -64,7 +65,8 @@ async function iniciarGerador() {
     if (conteudo) conteudo.style.display = 'grid';
     prepararDatas();
     configurarEventosCamposGerador();
-    restaurarRascunho();
+    const carregadoUrl = await carregarOrcamentoPorUrl();
+    if (!carregadoUrl) restaurarRascunho();
     garantirLinhaPadrao('mao_obra');
     garantirLinhaPadrao('produto');
     aplicarPlanoGerador();
@@ -86,6 +88,68 @@ async function carregarPerfilGerador(userId) {
     perfilGeradorAtual = data || {};
     if (data?.plano) localStorage.setItem('usuario_plano', planoNorm(data.plano));
   } catch (e) { perfilGeradorAtual = {}; }
+}
+
+async function carregarOrcamentoPorUrl() {
+  const editarId = parametro('orcamento_id');
+  const duplicarId = parametro('duplicar_orcamento_id');
+  const id = editarId || duplicarId;
+  if (!id) return false;
+  if (!ehPremium()) {
+    window.location.href = '/planos.html#assinar-plano-premium';
+    return true;
+  }
+  try {
+    const { data, error } = await _supabase.from('orcamentos').select('*').eq('id', id).eq('usuario_id', usuarioGeradorId).maybeSingle();
+    if (error) throw error;
+    if (!data) {
+      mostrarStatus('Orçamento não encontrado ou sem permissão de acesso.');
+      return false;
+    }
+    preencherFormularioComOrcamento(data, !!duplicarId);
+    return true;
+  } catch (e) {
+    console.error(e);
+    mostrarStatus('Não foi possível carregar o orçamento informado.');
+    return false;
+  }
+}
+
+function preencherFormularioComOrcamento(o, duplicar = false) {
+  restaurandoRascunho = true;
+  try {
+    localStorage.removeItem(FS_RASCUNHO);
+    if ($('numero-orcamento')) $('numero-orcamento').value = duplicar ? '' : (o.numero_orcamento || '');
+    if ($('titulo')) $('titulo').value = o.titulo || 'Orçamento';
+    if ($('cliente')) $('cliente').value = o.cliente_nome || '';
+    if ($('tel-cliente')) $('tel-cliente').value = o.cliente_whatsapp || '';
+    if ($('forma-pagamento')) $('forma-pagamento').value = o.forma_pagamento || '';
+    if ($('prazo-execucao')) $('prazo-execucao').value = o.prazo_execucao || '';
+    if ($('garantia')) $('garantia').value = o.garantia || '';
+    if ($('observacoes')) $('observacoes').value = o.observacoes || '';
+    if ($('lista-mao-obra')) $('lista-mao-obra').innerHTML = '';
+    if ($('lista-produtos')) $('lista-produtos').innerHTML = '';
+    const itens = Array.isArray(o.itens) ? o.itens : [];
+    itens.filter(i => i.tipo === 'mao_obra').forEach(i => adicionarLinhaOrcamento('mao_obra', i, { salvar: false }));
+    itens.filter(i => i.tipo !== 'mao_obra').forEach(i => adicionarLinhaOrcamento('produto', i, { salvar: false }));
+    if (duplicar) {
+      orcamentoSalvoAtualId = null;
+      tokenPublicoAtual = '';
+      linkOrcamentoAtual = '';
+      orcamentoAlterado = true;
+      mostrarStatus('Orçamento duplicado. Revise os dados e salve para criar um novo orçamento.');
+    } else {
+      orcamentoSalvoAtualId = o.id || null;
+      tokenPublicoAtual = o.public_token || '';
+      linkOrcamentoAtual = o.link_publico || montarLinkPublico(tokenPublicoAtual, orcamentoSalvoAtualId);
+      orcamentoAlterado = false;
+      mostrarStatus('Modo edição: as alterações serão salvas neste orçamento.');
+    }
+    calcularTotal();
+  } finally {
+    restaurandoRascunho = false;
+    atualizarAcoesLink();
+  }
 }
 
 function prepararDatas() {
@@ -142,7 +206,7 @@ function criarLinha(tipo, item = {}) {
   wrap.dataset.tipo = tipo;
   wrap.id = id;
   wrap.innerHTML = `
-    <div><small>Descrição</small><input class="desc" value="${html(item.descricao || '')}" placeholder="${tipo === 'mao_obra' ? 'Ex: Troca de pastilhas' : 'Ex: Jogo de pastilhas'}"></div>
+    <div><small>Descrição</small><input class="desc" value="${html(item.descricao || item.nome || '')}" placeholder="${tipo === 'mao_obra' ? 'Ex: Troca de pastilhas' : 'Ex: Jogo de pastilhas'}"></div>
     <div><small>Qtd</small><input class="qtd" type="number" min="0" step="0.01" value="${html(item.qtd ?? item.quantidade ?? 1)}"></div>
     <div><small>Unitário</small><input class="valor" type="number" min="0" step="0.01" value="${html(item.valor ?? item.valor_unitario ?? 0)}"></div>
     <div><small>Subtotal</small><strong class="subtotal">R$ 0,00</strong></div>
