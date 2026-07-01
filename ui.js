@@ -110,11 +110,26 @@ function inserirSecoesComerciaisHome() {
 
     const estilo = document.createElement('style');
     estilo.textContent = `
+        .home .planos{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:24px!important;padding:10px!important;border:1px solid rgba(214,231,255,.88)!important;border-radius:30px!important;background:linear-gradient(180deg,rgba(234,243,255,.78),rgba(234,243,255,.42))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important}
+        .home .plano{background:#fff!important;border:1px solid #d6e7ff!important;border-radius:28px!important;padding:38px 40px 42px!important;box-shadow:0 18px 42px rgba(20,92,255,.10)!important;border-top:1px solid #d6e7ff!important;color:#040f2f!important}
+        .home .plano h2{font-size:28px!important;font-weight:950!important;letter-spacing:-.03em!important;margin:0 0 24px!important;color:#040f2f!important;line-height:1.15!important}
+        .home .plano .preco{display:block!important;font-size:clamp(62px,6vw,84px)!important;line-height:.98!important;font-weight:950!important;letter-spacing:-.06em!important;color:#145cff!important;margin:0 0 28px!important}
+        .home .plano ul{margin:0 0 32px!important;padding-left:32px!important;color:#3560a3!important;font-weight:860!important;line-height:1.62!important}
+        .home .plano li{font-size:20px!important;font-weight:860!important;line-height:1.62!important;margin-bottom:2px!important;color:#3560a3!important}
+        .home .plano .home-btn{display:flex!important;align-items:flex-start!important;justify-content:center!important;flex-direction:column!important;width:100%!important;min-height:108px!important;border-radius:20px!important;padding:22px 28px!important;text-decoration:none!important;border:1px solid #d6e7ff!important;box-shadow:0 14px 30px rgba(20,92,255,.08)!important;gap:0!important}
+        .home .plano .home-btn strong{display:block!important;font-size:28px!important;line-height:1.02!important;font-weight:950!important;color:inherit!important}
+        .home .plano .home-btn span{display:block!important;margin-top:10px!important;font-size:17px!important;font-weight:820!important}
+        .home .plano.gratis .home-btn{background:#fff!important;color:#040f2f!important;border-color:#d6e7ff!important}
+        .home .plano.gratis .home-btn span{color:#6e84ab!important}
+        .home .plano.premium .home-btn{background:linear-gradient(135deg,#4d86ff 0%,#145cff 48%,#1239b4 100%)!important;color:#fff!important;border-color:#4d86ff!important;box-shadow:0 18px 38px rgba(20,92,255,.24)!important}
+        .home .plano.premium .home-btn span{color:#dfeaff!important}
+        @media(max-width:880px){.home .planos{grid-template-columns:1fr!important;gap:16px!important;padding:8px!important}.home .plano{padding:28px 24px 28px!important;border-radius:24px!important}.home .plano h2{font-size:22px!important;margin-bottom:18px!important}.home .plano .preco{font-size:clamp(50px,13vw,66px)!important;margin-bottom:18px!important}.home .plano ul{padding-left:28px!important;margin-bottom:22px!important}.home .plano li{font-size:17px!important;line-height:1.54!important}.home .plano .home-btn{min-height:84px!important;padding:16px 18px!important;border-radius:16px!important}.home .plano .home-btn strong{font-size:22px!important}.home .plano .home-btn span{font-size:14px!important;margin-top:7px!important}}
+        @media(max-width:430px){.home .plano{padding:22px 18px 22px!important}.home .plano h2{font-size:22px!important}.home .plano .preco{font-size:58px!important}.home .plano ul{padding-left:24px!important}.home .plano li{font-size:16px!important}.home .plano .home-btn{min-height:78px!important;padding:16px 18px!important}.home .plano .home-btn strong{font-size:20px!important}.home .plano .home-btn span{font-size:12px!important}}
         .home-comparacao-grid,.home-faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
-        .home-bloco-extra{padding:22px}.home-bloco-extra h2{margin:0 0 8px}.home-bloco-extra p{margin:0;color:#64748b;line-height:1.5;font-weight:650}
-        .home-ab-card{border:1px solid #dbe3ee;border-radius:16px;padding:18px;background:#f8fafc}.home-ab-card h3{margin:0 0 10px;font-size:22px}.home-ab-card ul{margin:0;padding-left:18px;line-height:1.75;font-weight:800;color:#334155}
-        .home-ab-card.antes{border-color:#fecaca;background:#fff7f7}.home-ab-card.antes h3{color:#991b1b}.home-ab-card.depois{border-color:#bbf7d0;background:#f0fdf4}.home-ab-card.depois h3{color:#166534}
-        .home-faq-item{border:1px solid #dbe3ee;border-radius:14px;padding:16px;background:#f8fafc}.home-faq-item strong{display:block;margin-bottom:6px;color:#0f172a}.home-faq-item p{margin:0;color:#64748b;font-weight:650;line-height:1.5}
+        .home-bloco-extra{padding:22px}.home-bloco-extra h2{margin:0 0 8px}.home-bloco-extra p{margin:0;color:#245eac;line-height:1.5;font-weight:650}
+        .home-ab-card{border:1px solid #d6e7ff;border-radius:16px;padding:18px;background:#f5f9ff}.home-ab-card h3{margin:0 0 10px;font-size:22px}.home-ab-card ul{margin:0;padding-left:18px;line-height:1.75;font-weight:800;color:#245eac}
+        .home-ab-card.antes{border-color:#fecaca;background:#fff7f7}.home-ab-card.antes h3{color:#991b1b}.home-ab-card.depois{border-color:#a7f3e5;background:#dcfff7}.home-ab-card.depois h3{color:#05765f}
+        .home-faq-item{border:1px solid #d6e7ff;border-radius:14px;padding:16px;background:#f5f9ff}.home-faq-item strong{display:block;margin-bottom:6px;color:#040f2f}.home-faq-item p{margin:0;color:#245eac;font-weight:650;line-height:1.5}
         @media(max-width:860px){.home-comparacao-grid,.home-faq-grid{grid-template-columns:1fr}}
     `;
     document.head.appendChild(estilo);
@@ -185,6 +200,7 @@ async function abrirModalGerador() {
     if (modalAntigo) {
         modalAntigo.style.display = 'flex';
         modalAntigo.classList.add('ativo');
+        modalAntigo.classList.remove('active');
         modalAntigo.setAttribute('aria-hidden', 'false');
     }
 
@@ -258,11 +274,3 @@ function abrirGeradorAutomaticamenteSeSolicitado() {
 }
 
 // ==================== MENU E SCROLL ====================
-
-function toggleMenuMobile() {
-    const menu = document.querySelector('.nav-menu');
-    const menuLinha = document.querySelector('.header-menu-linha');
-
-    if (menu) menu.classList.toggle('active');
-    if (menuLinha) menuLinha.classList.toggle('menu-aberto');
-}
