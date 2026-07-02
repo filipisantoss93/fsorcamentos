@@ -2,15 +2,18 @@
 
 let currentSlide = 0;
 let dadosEmpresaLogada = null;
+
 let orcamentoAtualSalvoId = window.orcamentoAtualSalvoId || null;
 let numeroOrcamentoAtual = window.numeroOrcamentoAtual || null;
 let linkOrcamentoAtual = null;
+
 let gerandoPdfAgora = false;
 
 // ==================== HELPERS DE CONTROLE DO ORÇAMENTO SALVO ====================
 
 function definirOrcamentoAtualSalvo(id, numero = null) {
     if (!id) return;
+
     orcamentoAtualSalvoId = id;
     window.orcamentoAtualSalvoId = id;
     window.orcamentoSalvoAtualId = id;
@@ -28,6 +31,7 @@ function limparReferenciaOrcamentoAtual() {
     orcamentoAtualSalvoId = null;
     numeroOrcamentoAtual = null;
     linkOrcamentoAtual = null;
+
     window.orcamentoAtualSalvoId = null;
     window.orcamentoSalvoAtualId = null;
     window.numeroOrcamentoAtual = null;
@@ -35,9 +39,17 @@ function limparReferenciaOrcamentoAtual() {
 }
 
 function sincronizarReferenciaOrcamentoSalvo() {
-    if (!orcamentoAtualSalvoId && window.orcamentoAtualSalvoId) orcamentoAtualSalvoId = window.orcamentoAtualSalvoId;
-    if (!orcamentoAtualSalvoId && window.orcamentoSalvoAtualId) orcamentoAtualSalvoId = window.orcamentoSalvoAtualId;
-    if (!numeroOrcamentoAtual && window.numeroOrcamentoAtual) numeroOrcamentoAtual = window.numeroOrcamentoAtual;
+    if (!orcamentoAtualSalvoId && window.orcamentoAtualSalvoId) {
+        orcamentoAtualSalvoId = window.orcamentoAtualSalvoId;
+    }
+
+    if (!orcamentoAtualSalvoId && window.orcamentoSalvoAtualId) {
+        orcamentoAtualSalvoId = window.orcamentoSalvoAtualId;
+    }
+
+    if (!numeroOrcamentoAtual && window.numeroOrcamentoAtual) {
+        numeroOrcamentoAtual = window.numeroOrcamentoAtual;
+    }
 
     if (orcamentoAtualSalvoId) {
         linkOrcamentoAtual = montarLinkOrcamento(orcamentoAtualSalvoId);
@@ -47,6 +59,7 @@ function sincronizarReferenciaOrcamentoSalvo() {
 
 function formatarNumeroOrcamento(numero) {
     if (!numero) return 'PRÉVIA';
+
     return String(numero).padStart(6, '0');
 }
 
@@ -61,7 +74,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     setInterval(() => {
         const carousel = document.getElementById('carousel');
         if (!carousel) return;
+
         const totalSlides = document.querySelectorAll('.carousel-slide a').length;
+
         if (totalSlides > 0) {
             currentSlide = (currentSlide + 1) % totalSlides;
             carousel.style.transform = `translateX(${-currentSlide * 100}%)`;
@@ -72,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         link.addEventListener('click', () => {
             const menu = document.querySelector('.nav-menu');
             const menuLinha = document.querySelector('.header-menu-linha');
+
             if (menu) menu.classList.remove('active');
             if (menuLinha) menuLinha.classList.remove('menu-aberto');
         });
@@ -82,221 +98,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         carregarEstadoSalvo();
     }
 
-    inserirSecoesComerciaisHome();
     abrirGeradorAutomaticamenteSeSolicitado();
 });
-
-// ==================== HOME / CONVERSÃO ====================
-
-function obterSvgPlano(tipo) {
-    if (tipo === 'premium') {
-        return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9Z"></path><path d="M2 9h20"></path><path d="M12 21 8 9l4-6 4 6-4 12Z"></path></svg>`;
-    }
-
-    return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M12 12v6"></path><path d="M9 15h6"></path></svg>`;
-}
-
-function obterSvgAntesDepois(tipo) {
-    if (tipo === 'depois') {
-        return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="m8.5 14.2 2.2 2.2 4.8-5"></path></svg>`;
-    }
-
-    return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8"></path><path d="M14 2v6h6"></path><path d="M8 13h5"></path><path d="m16 15 4 4"></path><path d="m20 15-4 4"></path></svg>`;
-}
-
-function obterSvgHome(tipo) {
-    const svgs = {
-        rocket: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4c3.4.5 5.5 2.6 6 6-2.6.5-5 1.8-6.7 3.7L10.3 17 7 13.7l3.3-3C12.2 9 13.5 6.6 14 4Z"></path><path d="M7 17c-1.8.5-2.8 1.5-3 3 1.5-.2 2.5-1.2 3-3Z"></path><path d="M15 8h.01"></path></svg>`,
-        users: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a4 4 0 1 0-8 0"></path><path d="M5 20a7 7 0 0 1 14 0"></path><path d="M19 9a3 3 0 0 1 2 5"></path><path d="M3 14a3 3 0 0 1 2-5"></path></svg>`,
-        adddoc: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M12 12v6"></path><path d="M9 15h6"></path></svg>`,
-        pdf: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><rect x="7" y="13" width="10" height="5" rx="1"></rect><path d="M8.5 16v-2h1a1 1 0 0 1 0 2h-1Zm3.5 0v-2h.8a1.2 1.2 0 0 1 0 2H12Zm3.5 0v-2h1.7"></path></svg>`,
-        whatsapp: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8.5 8.5 0 0 1-12.5 7.5L4 20l1-3.4A8.5 8.5 0 1 1 20 11.5Z"></path><path d="M9 8.8c.4 2.7 2 4.7 4.4 6 .5.3 1.2.2 1.6-.2l.7-.7"></path></svg>`,
-        cash: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="2"></rect><path d="M8 8V5h8v3"></path><path d="M8 12h8"></path><path d="M8 15h3"></path><path d="M14 15h2"></path></svg>`,
-        wrench: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6 6L3 18l3 3 5.7-5.7a5 5 0 0 0 6-6l-3.1 3.1-3-3 3.1-3.1Z"></path></svg>`,
-        speed: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a8 8 0 0 1 16 0"></path><path d="M12 14l4-4"></path><path d="M6 14h.01M18 14h.01M8 9h.01M16 9h.01"></path></svg>`,
-        folder: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"></path></svg>`,
-        shield: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6Z"></path><path d="m9 12 2 2 4-4"></path></svg>`
-    };
-
-    return svgs[tipo] || '';
-}
-
-function decorarCardsPlanosHome(home) {
-    const planos = [
-        { seletor: '.planos .plano.gratis', tipo: 'gratis', rotulo: 'Grátis' },
-        { seletor: '.planos .plano.premium', tipo: 'premium', rotulo: 'Premium' }
-    ];
-
-    planos.forEach(({ seletor, tipo, rotulo }) => {
-        const card = home.querySelector(seletor);
-        if (!card) return;
-        card.classList.add('plano-home-decorado');
-
-        const titulo = card.querySelector('h2');
-        if (titulo && !card.querySelector('.plano-topo')) {
-            const topo = document.createElement('div');
-            topo.className = `plano-topo ${tipo}`;
-
-            const icone = document.createElement('span');
-            icone.className = `plano-icone ${tipo}`;
-            icone.innerHTML = obterSvgPlano(tipo);
-
-            const areaTexto = document.createElement('div');
-            areaTexto.className = 'plano-topo-texto';
-
-            const selo = document.createElement('span');
-            selo.className = `plano-selo ${tipo}`;
-            selo.textContent = rotulo;
-
-            titulo.parentNode.insertBefore(topo, titulo);
-            areaTexto.appendChild(selo);
-            areaTexto.appendChild(titulo);
-            topo.appendChild(icone);
-            topo.appendChild(areaTexto);
-        }
-
-        const botao = card.querySelector('.home-btn');
-        if (botao && !botao.querySelector('.plan-action-icon')) {
-            const iconeBotao = document.createElement('span');
-            iconeBotao.className = `plan-action-icon ${tipo}`;
-            iconeBotao.innerHTML = obterSvgPlano(tipo);
-            botao.prepend(iconeBotao);
-
-            const textoExistente = botao.querySelector('div');
-            if (textoExistente) textoExistente.classList.add('plan-action-texto');
-        }
-    });
-}
-
-function ajustarSecoesFluxoHome(home) {
-    const comoFunciona = Array.from(home.querySelectorAll('.fluxo')).find(secao => secao.textContent.includes('Como funciona') || secao.textContent.includes('Em 4 passos'));
-    const paraQuem = Array.from(home.querySelectorAll('.fluxo')).find(secao => secao.textContent.includes('Para quem é') || secao.textContent.includes('Prestadores que precisam vender'));
-
-    if (comoFunciona && !comoFunciona.classList.contains('home-como-funciona')) {
-        comoFunciona.classList.add('home-como-funciona');
-        comoFunciona.innerHTML = `
-            <span class="home-section-pill"><span class="pill-icon">${obterSvgHome('rocket')}</span><span>Como funciona</span></span>
-            <h2>Em 4 passos</h2>
-            <div class="home-steps-list">
-                <a href="/gerador.html" class="home-step-card"><span class="step-number">1</span><span class="step-divider"></span><span class="step-icon">${obterSvgHome('adddoc')}</span><strong>1. Crie o orçamento</strong><span class="step-arrow">›</span></a>
-                <a href="/gerador.html" class="home-step-card"><span class="step-number">2</span><span class="step-divider"></span><span class="step-icon">${obterSvgHome('pdf')}</span><strong>2. Gere PDF ou salve</strong><span class="step-arrow">›</span></a>
-                <a href="/planos.html" class="home-step-card"><span class="step-number">3</span><span class="step-divider"></span><span class="step-icon">${obterSvgHome('whatsapp')}</span><strong>3. Envie pelo WhatsApp</strong><span class="step-arrow">›</span></a>
-                <a href="/fluxo-caixa.html" class="home-step-card"><span class="step-number">4</span><span class="step-divider"></span><span class="step-icon">${obterSvgHome('cash')}</span><strong>4. Registre no Caixa</strong><span class="step-arrow">›</span></a>
-            </div>`;
-    }
-
-    if (paraQuem && !paraQuem.classList.contains('home-para-quem')) {
-        paraQuem.classList.add('home-para-quem');
-        paraQuem.innerHTML = `
-            <span class="home-section-pill"><span class="pill-icon simple">${obterSvgHome('users')}</span><span>Para quem é</span></span>
-            <h2>Prestadores que precisam vender rápido e parecer profissionais</h2>
-            <p>Mecânicos, técnicos, instaladores, eletricistas e pequenos negócios que querem orçamento organizado, histórico e controle simples.</p>
-            <div class="audience-grid">
-                <div class="audience-card"><span>${obterSvgHome('wrench')}</span><strong>Profissionais<br>de serviço</strong></div>
-                <div class="audience-card"><span>${obterSvgHome('speed')}</span><strong>Mais agilidade<br>nas vendas</strong></div>
-                <div class="audience-card"><span>${obterSvgHome('folder')}</span><strong>Organização e<br>histórico</strong></div>
-                <div class="audience-card"><span>${obterSvgHome('shield')}</span><strong>Imagem<br>profissional</strong></div>
-            </div>`;
-    }
-}
-
-function inserirSecoesComerciaisHome() {
-    const home = document.querySelector('main.home');
-    if (!home) return;
-
-    const resumo = home.querySelector('.resumo');
-    if (resumo) resumo.remove();
-
-    if (!document.getElementById('home-visual-overrides')) {
-        const estilo = document.createElement('style');
-        estilo.id = 'home-visual-overrides';
-        estilo.textContent = `
-            .home .resumo{display:none!important}
-            .home .planos{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:24px!important;padding:10px!important;border:1px solid rgba(214,231,255,.88)!important;border-radius:30px!important;background:linear-gradient(180deg,rgba(234,243,255,.78),rgba(234,243,255,.42))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important}
-            .home .plano{position:relative!important;overflow:hidden!important;background:#fff!important;border:1px solid #d6e7ff!important;border-radius:28px!important;padding:32px 34px 36px!important;box-shadow:0 18px 42px rgba(20,92,255,.10)!important;border-top:1px solid #d6e7ff!important;color:#040f2f!important}
-            .home .plano::before{content:"";position:absolute;right:-42px;top:-42px;width:142px;height:142px;border-radius:50%;background:radial-gradient(circle,rgba(47,123,255,.12) 0%,rgba(47,123,255,0) 72%);pointer-events:none}
-            .home .plano.premium::before{background:radial-gradient(circle,rgba(255,208,92,.30) 0%,rgba(255,208,92,0) 72%)}
-            .home .plano.premium::after{content:"✦";position:absolute;top:18px;right:22px;font-size:18px;color:#d4a73f;text-shadow:0 0 12px rgba(212,167,63,.35);pointer-events:none}
-            .home .plano-topo{display:flex!important;align-items:center!important;gap:14px!important;margin:0 0 18px!important}
-            .home .plano-icone{flex:0 0 auto;display:grid;place-items:center;width:54px;height:54px;border-radius:17px;box-shadow:0 15px 28px rgba(20,92,255,.14)}
-            .home .plano-icone svg{width:28px;height:28px;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-            .home .plano-icone.gratis{background:linear-gradient(135deg,#eef5ff,#dce9ff);color:#145cff;border:1px solid #cfe1ff}.home .plano-icone.gratis svg{stroke:currentColor}
-            .home .plano-icone.premium{background:linear-gradient(135deg,#fff7d7,#f6d977 55%,#d4a73f 100%);color:#7f4f00;border:1px solid rgba(212,167,63,.48);box-shadow:0 18px 34px rgba(212,167,63,.22)}.home .plano-icone.premium svg{stroke:currentColor}
-            .home .plano-topo-texto{min-width:0}.home .plano-selo{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:10px;font-weight:950;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}.home .plano-selo.gratis{background:#eaf3ff;color:#145cff;border:1px solid #cfe1ff}.home .plano-selo.premium{background:linear-gradient(135deg,#fff7d7,#f6d977);color:#7f4f00;border:1px solid rgba(212,167,63,.45);box-shadow:0 8px 18px rgba(212,167,63,.16)}
-            .home .plano h2{font-size:25px!important;font-weight:950!important;letter-spacing:-.03em!important;margin:0!important;color:#040f2f!important;line-height:1.12!important}.home .plano .preco{display:block!important;font-size:clamp(48px,5.4vw,68px)!important;line-height:.98!important;font-weight:950!important;letter-spacing:-.06em!important;color:#145cff!important;margin:0 0 22px!important}.home .plano ul{list-style:none!important;margin:0 0 26px!important;padding:0!important;color:#3560a3!important;font-weight:820!important;line-height:1.52!important}.home .plano li{position:relative!important;padding-left:28px!important;font-size:18px!important;font-weight:820!important;line-height:1.52!important;margin-bottom:3px!important;color:#3560a3!important}.home .plano li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;border-radius:50%;background:#145cff;box-shadow:0 0 0 5px rgba(20,92,255,.10)}.home .plano.premium li::before{background:#d4a73f;box-shadow:0 0 0 5px rgba(212,167,63,.16)}
-            .home .plano .home-btn{display:grid!important;grid-template-columns:auto 1fr!important;align-items:center!important;width:100%!important;min-height:92px!important;border-radius:18px!important;padding:18px 22px!important;text-decoration:none!important;border:1px solid #d6e7ff!important;box-shadow:0 14px 30px rgba(20,92,255,.08)!important;gap:14px!important}.home .plano .home-btn .plan-action-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;flex:0 0 auto}.home .plano .home-btn .plan-action-icon svg{width:24px;height:24px;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.home .plano .home-btn .plan-action-icon.gratis{background:#eaf3ff;color:#145cff}.home .plano .home-btn .plan-action-icon.gratis svg{stroke:currentColor}.home .plano .home-btn .plan-action-icon.premium{background:rgba(255,255,255,.18);color:#ffffff;box-shadow:0 0 0 1px rgba(255,255,255,.14) inset}.home .plano .home-btn .plan-action-icon.premium svg{stroke:currentColor}.home .plano .home-btn strong{display:block!important;font-size:23px!important;line-height:1.05!important;font-weight:950!important;color:inherit!important}.home .plano .home-btn span{display:block!important;margin-top:7px!important;font-size:15px!important;font-weight:820!important}.home .plano.gratis .home-btn{background:#fff!important;color:#040f2f!important;border-color:#d6e7ff!important}.home .plano.gratis .home-btn span{color:#6e84ab!important}.home .plano.premium .home-btn{background:linear-gradient(135deg,#4d86ff 0%,#145cff 48%,#1239b4 100%)!important;color:#fff!important;border-color:#4d86ff!important;box-shadow:0 18px 38px rgba(20,92,255,.24)!important}.home .plano.premium .home-btn span{color:#dfeaff!important}
-            .home-bloco-extra,.home .home-como-funciona,.home .home-para-quem{padding:34px 38px!important;border-radius:28px!important;background:rgba(255,255,255,.96)!important;border:1px solid #d6e7ff!important;box-shadow:0 18px 42px rgba(20,92,255,.10)!important}
-            .home-bloco-extra>.tag{display:inline-flex!important;align-items:center!important;width:max-content!important;border-radius:999px!important;padding:8px 14px!important;background:#f5f9ff!important;border:1px solid #d6e7ff!important;color:#145cff!important;font-size:15px!important;font-weight:850!important;margin-bottom:18px!important;text-transform:none!important;letter-spacing:0!important}
-            .home-bloco-extra h2{margin:0 0 18px!important;max-width:650px!important;color:#040f2f!important;font-size:clamp(30px,4.4vw,46px)!important;line-height:1.18!important;letter-spacing:-.045em!important;font-weight:950!important}.home-bloco-extra>p{max-width:780px!important;margin:0 0 28px!important;color:#65718a!important;line-height:1.45!important;font-size:20px!important;font-weight:520!important}.home-comparacao-grid{display:grid!important;grid-template-columns:1fr!important;gap:22px!important;margin-top:0!important}.home-ab-card{display:grid!important;grid-template-columns:220px 1fr!important;gap:24px!important;align-items:center!important;border-radius:24px!important;padding:24px!important;background:#fff!important;box-shadow:none!important}.home-ab-card.antes{border:1px solid #f0cfd1!important;background:linear-gradient(135deg,#fff,#fff8f8)!important}.home-ab-card.depois{position:relative!important;border:1px solid #9ec4ff!important;background:linear-gradient(135deg,#fff,#f7fbff)!important;box-shadow:0 12px 26px rgba(20,92,255,.12)!important}.ab-side{display:flex!important;flex-direction:column!important;gap:14px!important;padding-right:24px!important;border-right:1px solid #e4eaf6!important;min-height:134px!important;justify-content:center!important}.ab-side-top{display:flex!important;align-items:center!important;gap:12px!important}.ab-icon-box{width:76px!important;height:76px!important;border-radius:22px!important;display:grid!important;place-items:center!important;box-shadow:0 15px 30px rgba(4,15,47,.08)!important}.ab-icon-box svg{width:38px!important;height:38px!important;fill:none!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important}.ab-icon-box.antes{background:#fff!important;color:#5b3a3a!important;border:1px solid #f5dddd!important;box-shadow:0 16px 28px rgba(219,92,92,.10)!important}.ab-icon-box.antes svg,.ab-icon-box.depois svg{stroke:currentColor!important}.ab-icon-box.depois{background:linear-gradient(135deg,#2f7bff,#145cff)!important;color:#fff!important;border:1px solid #2f7bff!important;box-shadow:0 16px 30px rgba(20,92,255,.28)!important}.ab-stars{position:relative;min-width:58px;height:58px;color:#9ec4ff;font-weight:950}.ab-stars span{position:absolute;display:inline-block;color:#9ec4ff;text-shadow:0 0 12px rgba(20,92,255,.20)}.ab-stars span:first-child{font-size:26px;left:0;top:2px}.ab-stars span:last-child{font-size:34px;right:2px;bottom:0}.ab-heading h3{margin:0!important;font-size:28px!important;line-height:1.05!important;font-weight:950!important;letter-spacing:-.035em!important;color:#040f2f!important}.ab-heading span{display:block;margin-top:6px;color:#6a7182!important;font-weight:650!important;font-size:16px!important}.home-ab-card.depois .ab-heading span{color:#145cff!important;font-weight:800!important}.ab-list{display:grid!important;gap:14px!important}.ab-item{display:grid!important;grid-template-columns:auto 1fr!important;align-items:start!important;gap:14px!important}.ab-item p{margin:0!important;color:#040f2f!important;font-size:20px!important;line-height:1.3!important;font-weight:740!important}.ab-bullet{width:26px!important;height:26px!important;border-radius:50%!important;display:grid!important;place-items:center!important;font-size:16px!important;line-height:1!important;font-weight:950!important;flex:0 0 auto!important}.ab-bullet.x{background:#ffe9e9!important;color:#df8b8b!important}.ab-bullet.check{background:#145cff!important;color:#fff!important;box-shadow:0 8px 16px rgba(20,92,255,.22)!important}
-            .home .home-como-funciona{display:block!important}.home-section-pill{display:inline-flex!important;align-items:center!important;gap:12px!important;width:max-content!important;max-width:100%!important;border-radius:999px!important;padding:8px 18px 8px 10px!important;background:#fff!important;border:1px solid #d6e7ff!important;color:#145cff!important;font-size:15px!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.04em!important;margin-bottom:24px!important;box-shadow:0 10px 24px rgba(20,92,255,.09)!important}.pill-icon{display:grid!important;place-items:center!important;width:42px!important;height:42px!important;border-radius:50%!important;background:linear-gradient(135deg,#2f7bff,#145cff)!important;color:#fff!important;box-shadow:0 10px 20px rgba(20,92,255,.22)!important}.pill-icon.simple{background:#fff!important;color:#145cff!important;box-shadow:none!important}.pill-icon svg{width:22px!important;height:22px!important;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}.home-como-funciona h2,.home-para-quem h2{margin:0!important;color:#040f2f!important;font-size:clamp(30px,4vw,42px)!important;line-height:1.15!important;letter-spacing:-.045em!important;font-weight:950!important}.home-steps-list{display:grid!important;grid-template-columns:1fr!important;gap:16px!important;margin-top:26px!important}.home-step-card{display:grid!important;grid-template-columns:58px 1px 54px 1fr auto!important;align-items:center!important;gap:18px!important;min-height:86px!important;padding:14px 22px!important;border:1px solid #d6e7ff!important;border-radius:20px!important;background:linear-gradient(135deg,#fff,#f8fbff)!important;box-shadow:0 12px 28px rgba(20,92,255,.08)!important;text-decoration:none!important;color:#040f2f!important}.step-number{display:grid!important;place-items:center!important;width:48px!important;height:48px!important;border-radius:50%!important;background:linear-gradient(135deg,#2f7bff,#145cff)!important;color:#fff!important;font-size:22px!important;font-weight:950!important;box-shadow:0 10px 18px rgba(20,92,255,.22)!important}.step-divider{display:block!important;width:1px!important;height:52px!important;background:#dce8ff!important}.step-icon{display:grid!important;place-items:center!important;color:#145cff!important}.step-icon svg{width:40px!important;height:40px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important}.home-step-card strong{font-size:22px!important;line-height:1.15!important;font-weight:950!important;color:#040f2f!important;white-space:normal!important}.step-arrow{color:#145cff!important;font-size:42px!important;line-height:1!important;font-weight:400!important;margin-left:6px!important}
-            .home-para-quem{position:relative!important;overflow:hidden!important}.home-para-quem::before{content:"";position:absolute;right:60px;top:32px;width:150px;height:110px;opacity:.38;background-image:radial-gradient(#b8d4ff 1.5px,transparent 1.5px);background-size:14px 14px;pointer-events:none}.home-para-quem::after{content:"";position:absolute;right:-56px;bottom:-50px;width:210px;height:210px;border-radius:50%;border:34px solid rgba(234,243,255,.9);pointer-events:none}.home-para-quem>*{position:relative;z-index:1}.home-para-quem h2{max-width:720px!important;margin-top:2px!important}.home-para-quem p{max-width:760px!important;margin:16px 0 22px!important;color:#245eac!important;font-size:20px!important;line-height:1.35!important;font-weight:780!important}.audience-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;margin-top:18px!important}.audience-card{min-height:122px!important;border:1px solid #d6e7ff!important;border-radius:18px!important;background:rgba(255,255,255,.86)!important;box-shadow:0 10px 24px rgba(20,92,255,.08)!important;padding:18px 10px 14px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;text-align:center!important}.audience-card span{display:grid!important;place-items:center!important;color:#145cff!important;margin-bottom:12px!important}.audience-card svg{width:38px!important;height:38px!important;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important}.audience-card strong{font-size:14px!important;line-height:1.2!important;color:#245eac!important;font-weight:850!important}
-            .home-faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.home-faq-item{border:1px solid #d6e7ff;border-radius:14px;padding:16px;background:#f5f9ff}.home-faq-item strong{display:block;margin-bottom:6px;color:#040f2f}.home-faq-item p{margin:0;color:#245eac;font-weight:650;line-height:1.5}
-            @media(max-width:880px){.home .planos{grid-template-columns:1fr!important;gap:16px!important;padding:8px!important}.home .plano{padding:26px 22px 26px!important;border-radius:24px!important}.home .plano h2{font-size:21px!important}.home .plano .preco{font-size:clamp(44px,11vw,58px)!important;margin-bottom:17px!important}.home .plano li{font-size:16px!important;line-height:1.46!important}.home .plano .home-btn{min-height:78px!important;padding:15px 17px!important}.home .plano .home-btn strong{font-size:19px!important}.home .plano .home-btn span{font-size:13px!important}.home-faq-grid{grid-template-columns:1fr!important}}
-            @media(max-width:760px){.home-bloco-extra,.home .home-como-funciona,.home .home-para-quem{padding:28px 22px!important}.home-bloco-extra h2{font-size:31px!important;line-height:1.18!important}.home-bloco-extra>p{font-size:18px!important}.home-ab-card{grid-template-columns:1fr!important;gap:18px!important;padding:20px 18px!important}.ab-side{border-right:0!important;border-bottom:1px solid #e4eaf6!important;padding-right:0!important;padding-bottom:16px!important;min-height:0!important}.ab-item p{font-size:17px!important}.ab-heading h3{font-size:26px!important}.home-section-pill{font-size:13px!important;padding:7px 15px 7px 8px!important;margin-bottom:20px!important}.pill-icon{width:38px!important;height:38px!important}.home-como-funciona h2,.home-para-quem h2{font-size:30px!important}.home-step-card{grid-template-columns:48px 1px 45px 1fr auto!important;gap:13px!important;min-height:78px!important;padding:12px 16px!important;border-radius:18px!important}.step-number{width:42px!important;height:42px!important;font-size:20px!important}.step-divider{height:48px!important}.step-icon svg{width:34px!important;height:34px!important}.home-step-card strong{font-size:18px!important}.step-arrow{font-size:36px!important}.home-para-quem p{font-size:17px!important;line-height:1.38!important}.audience-grid{gap:10px!important}.audience-card{min-height:106px!important;padding:14px 7px 12px!important}.audience-card svg{width:31px!important;height:31px!important}.audience-card strong{font-size:11.5px!important;line-height:1.18!important}}
-            @media(max-width:430px){.home .plano .preco{font-size:46px!important}.home-bloco-extra h2{font-size:28px!important}.home-bloco-extra>p{font-size:16px!important}.ab-item p{font-size:16px!important}.ab-bullet{width:24px!important;height:24px!important;font-size:14px!important}.ab-icon-box{width:68px!important;height:68px!important}.ab-icon-box svg{width:34px!important;height:34px!important}.home-como-funciona h2,.home-para-quem h2{font-size:28px!important}.home-step-card{grid-template-columns:42px 1px 38px 1fr auto!important;gap:10px!important;min-height:72px!important;padding:10px 12px!important}.step-number{width:38px!important;height:38px!important;font-size:18px!important}.step-divider{height:42px!important}.step-icon svg{width:30px!important;height:30px!important}.home-step-card strong{font-size:15.5px!important;line-height:1.18!important}.step-arrow{font-size:32px!important}.home-para-quem p{font-size:15.5px!important}.audience-grid{gap:8px!important}.audience-card{min-height:96px!important;padding:12px 5px 10px!important;border-radius:14px!important}.audience-card span{margin-bottom:9px!important}.audience-card svg{width:27px!important;height:27px!important}.audience-card strong{font-size:10px!important;line-height:1.15!important}}
-        `;
-        document.head.appendChild(estilo);
-    }
-
-    decorarCardsPlanosHome(home);
-    ajustarSecoesFluxoHome(home);
-
-    if (!document.getElementById('home-comparacao-conversao')) {
-        const comparacao = document.createElement('section');
-        comparacao.id = 'home-comparacao-conversao';
-        comparacao.className = 'card home-bloco-extra';
-        comparacao.innerHTML = `
-            <span class="tag">Antes e depois</span>
-            <h2>De proposta informal para orçamento organizado.</h2>
-            <p>Mostre preço, mão de obra, produtos e total em um formato claro para o cliente decidir.</p>
-            <div class="home-comparacao-grid">
-                <article class="home-ab-card antes">
-                    <div class="ab-side"><div class="ab-side-top"><span class="ab-icon-box antes">${obterSvgAntesDepois('antes')}</span></div><div class="ab-heading"><h3>Antes</h3><span>Como é hoje</span></div></div>
-                    <div class="ab-list">
-                        <div class="ab-item"><span class="ab-bullet x">×</span><p>Valores espalhados na conversa</p></div>
-                        <div class="ab-item"><span class="ab-bullet x">×</span><p>Sem padrão visual</p></div>
-                        <div class="ab-item"><span class="ab-bullet x">×</span><p>Sem histórico claro</p></div>
-                        <div class="ab-item"><span class="ab-bullet x">×</span><p>Sem controle do que virou venda</p></div>
-                    </div>
-                </article>
-                <article class="home-ab-card depois">
-                    <div class="ab-side"><div class="ab-side-top"><span class="ab-icon-box depois">${obterSvgAntesDepois('depois')}</span><span class="ab-stars"><span>✦</span><span>✦</span></span></div><div class="ab-heading"><h3>Depois</h3><span>Com o FS Orçamento</span></div></div>
-                    <div class="ab-list">
-                        <div class="ab-item"><span class="ab-bullet check">✓</span><p>Orçamento separado por mão de obra e produtos</p></div>
-                        <div class="ab-item"><span class="ab-bullet check">✓</span><p>Cliente aprova ou recusa pelo link</p></div>
-                        <div class="ab-item"><span class="ab-bullet check">✓</span><p>Histórico salvo no Premium</p></div>
-                        <div class="ab-item"><span class="ab-bullet check">✓</span><p>Venda pode ir para o Caixa</p></div>
-                    </div>
-                </article>
-            </div>`;
-
-        const comoFunciona = home.querySelector('.home-como-funciona') || Array.from(home.querySelectorAll('.fluxo')).find(secao => secao.textContent.includes('Como funciona') || secao.textContent.includes('Em 4 passos'));
-        if (comoFunciona) home.insertBefore(comparacao, comoFunciona);
-        else home.appendChild(comparacao);
-    }
-
-    if (!document.getElementById('home-faq-comercial')) {
-        const faq = document.createElement('section');
-        faq.id = 'home-faq-comercial';
-        faq.className = 'card home-bloco-extra';
-        faq.innerHTML = `
-            <span class="tag">Dúvidas rápidas</span>
-            <h2>FAQ comercial</h2>
-            <div class="home-faq-grid">
-                <div class="home-faq-item"><strong>Preciso pagar para usar?</strong><p>Não. Você pode criar orçamento e baixar PDF no plano grátis.</p></div>
-                <div class="home-faq-item"><strong>O cliente precisa criar conta?</strong><p>Não. No Premium, ele abre o link e aprova ou recusa online.</p></div>
-                <div class="home-faq-item"><strong>Funciona pelo WhatsApp?</strong><p>Sim. O Premium gera o link e a mensagem para envio ao cliente.</p></div>
-                <div class="home-faq-item"><strong>Qual é o foco?</strong><p>Orçamento profissional, aprovação online, Caixa simples e relatórios essenciais.</p></div>
-            </div>`;
-        home.appendChild(faq);
-    }
-}
 
 // ==================== GERADOR INLINE / COMPATIBILIDADE ====================
 
 async function usuarioTemSessaoAtiva() {
     if (!window._supabase) return false;
+
     const { data: { session } } = await _supabase.auth.getSession();
+
     return !!session?.user?.id;
 }
 
@@ -304,8 +115,12 @@ async function abrirModalGerador() {
     const temSessao = await usuarioTemSessaoAtiva();
 
     if (!temSessao) {
-        if (typeof abrirModalLogin === 'function') abrirModalLogin();
-        else window.location.href = '/index.html?login=1';
+        if (typeof abrirModalLogin === 'function') {
+            abrirModalLogin();
+        } else {
+            window.location.href = '/index.html?login=1';
+        }
+
         return;
     }
 
@@ -321,11 +136,12 @@ async function abrirModalGerador() {
     if (modalAntigo) {
         modalAntigo.style.display = 'flex';
         modalAntigo.classList.add('ativo');
-        modalAntigo.classList.remove('active');
         modalAntigo.setAttribute('aria-hidden', 'false');
     }
 
-    if (formulario) formulario.style.display = 'block';
+    if (formulario) {
+        formulario.style.display = 'block';
+    }
 
     document.body.classList.add('gerador-aberto');
     document.body.classList.remove('modal-aberto');
@@ -334,11 +150,20 @@ async function abrirModalGerador() {
     document.documentElement.style.overflow = '';
 
     await carregarDadosEmpresaLogada();
-    if (typeof carregarDadosEmissorNoModal === 'function') await carregarDadosEmissorNoModal();
+
+    if (typeof carregarDadosEmissorNoModal === 'function') {
+        await carregarDadosEmissorNoModal();
+    }
 
     setTimeout(() => {
         const alvo = secao || modalAntigo || formulario;
-        if (alvo) alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        if (alvo) {
+            alvo.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     }, 100);
 }
 
@@ -359,7 +184,9 @@ function fecharModalGerador() {
         modalAntigo.setAttribute('aria-hidden', 'true');
     }
 
-    if (formulario && secao) formulario.style.display = 'none';
+    if (formulario && secao) {
+        formulario.style.display = 'none';
+    }
 
     document.body.classList.remove('gerador-aberto');
     document.body.classList.remove('modal-aberto');
@@ -370,13 +197,1438 @@ function fecharModalGerador() {
 
 function abrirGeradorAutomaticamenteSeSolicitado() {
     const params = new URLSearchParams(window.location.search);
+
     if (params.get('abrirGerador') !== '1') return;
 
     setTimeout(async () => {
         await abrirModalGerador();
+
         const novaUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, novaUrl);
     }, 700);
 }
 
 // ==================== MENU E SCROLL ====================
+
+function toggleMenuMobile() {
+    const menu = document.querySelector('.nav-menu');
+    const menuLinha = document.querySelector('.header-menu-linha');
+
+    if (menu) menu.classList.toggle('active');
+    if (menuLinha) menuLinha.classList.toggle('menu-aberto');
+}
+
+window.addEventListener('scroll', () => {
+    const btnContainer = document.querySelector('.floating-actions');
+    const areaPrevia = document.getElementById('area-previa');
+
+    if (!btnContainer || !areaPrevia) return;
+
+    if (window.scrollY > 300 || areaPrevia.style.display === 'block') {
+        btnContainer.classList.add('show');
+    } else {
+        btnContainer.classList.remove('show');
+    }
+});
+
+// ==================== EMPRESA / PERFIL DO USUÁRIO ====================
+
+async function carregarDadosEmpresaLogada() {
+    if (!window._supabase) {
+        console.error('Supabase não iniciado.');
+        return null;
+    }
+
+    const { data: { session }, error: sessionError } =
+        await _supabase.auth.getSession();
+
+    if (sessionError) {
+        console.error('Erro ao buscar sessão:', sessionError);
+        return null;
+    }
+
+    if (!session) {
+        return null;
+    }
+
+    const { data: perfil, error } = await _supabase
+        .from('perfis')
+        .select('nome, nome_empresa, telefone_empresa, endereco_empresa, cnpj_empresa, foto_url, plano')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+    if (error) {
+        console.error('Erro ao carregar dados da empresa:', error);
+        alert('Erro ao carregar os dados da empresa.');
+        return null;
+    }
+
+    if (!perfil) {
+        alert('Complete seus dados no Painel de Controle antes de gerar orçamentos.');
+        window.location.href = '/painel.html';
+        return null;
+    }
+
+    dadosEmpresaLogada = {
+        nome: perfil.nome || '',
+        nome_empresa: perfil.nome_empresa || '',
+        telefone_empresa: perfil.telefone_empresa || '',
+        endereco_empresa: perfil.endereco_empresa || '',
+        cnpj_empresa: perfil.cnpj_empresa || '',
+        foto_url: perfil.foto_url || '',
+        plano: perfil.plano || 'gratis'
+    };
+
+    localStorage.setItem('usuario_plano', dadosEmpresaLogada.plano);
+    localStorage.setItem(
+        'usuario_nome',
+        dadosEmpresaLogada.nome ||
+        dadosEmpresaLogada.nome_empresa ||
+        session.user.email.split('@')[0]
+    );
+
+    localStorage.setItem('nome_empresa', dadosEmpresaLogada.nome_empresa || '');
+    localStorage.setItem('telefone_empresa', dadosEmpresaLogada.telefone_empresa || '');
+    localStorage.setItem('endereco_empresa', dadosEmpresaLogada.endereco_empresa || '');
+    localStorage.setItem('cnpj_empresa', dadosEmpresaLogada.cnpj_empresa || '');
+    localStorage.setItem('foto_url', dadosEmpresaLogada.foto_url || '');
+
+    if (typeof fsPreencherTopoEmpresa === 'function') {
+        fsPreencherTopoEmpresa(dadosEmpresaLogada);
+    }
+
+    return dadosEmpresaLogada;
+}
+
+function empresaEstaCompleta(empresa) {
+    return (
+        empresa &&
+        empresa.nome_empresa &&
+        empresa.telefone_empresa
+    );
+}
+
+function usuarioPodeSalvarOrcamentoLocal() {
+    if (typeof usuarioPodeSalvarOrcamento === 'function') {
+        return usuarioPodeSalvarOrcamento();
+    }
+
+    const plano = String(localStorage.getItem('usuario_plano') || 'gratis')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
+    return plano === 'basico' || plano === 'premium';
+}
+
+// ==================== HELPERS DE TEXTO / NÚMEROS ====================
+
+function escaparHtml(valor) {
+    return String(valor || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function textoComQuebra(valor) {
+    return escaparHtml(valor).replace(/\n/g, '<br>');
+}
+
+function valorMonetarioParaNumero(valor) {
+    const textoOriginal = String(valor ?? '').trim();
+
+    if (!textoOriginal) return 0;
+
+    let texto = textoOriginal
+        .replace(/R\$/gi, '')
+        .replace(/\s/g, '')
+        .trim();
+
+    if (!texto) return 0;
+
+    if (texto.includes(',')) {
+        texto = texto
+            .replace(/\./g, '')
+            .replace(',', '.')
+            .replace(/[^\d.-]/g, '');
+
+        return Number.parseFloat(texto) || 0;
+    }
+
+    texto = texto.replace(/[^\d.-]/g, '');
+
+    return Number.parseFloat(texto) || 0;
+}
+
+function formatarMoeda(valor) {
+    return Number(valor || 0).toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+function formatarMoedaComSimbolo(valor) {
+    return Number(valor || 0).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+}
+
+function obterValorCampoMoeda(campo) {
+    if (!campo) return 0;
+
+    if (
+        campo.dataset &&
+        campo.dataset.valorNumerico !== undefined &&
+        campo.dataset.valorNumerico !== ''
+    ) {
+        return Number(campo.dataset.valorNumerico) || 0;
+    }
+
+    return valorMonetarioParaNumero(campo.value);
+}
+
+function aplicarValorMoedaNoCampo(campo, valor) {
+    if (!campo) return;
+
+    const numero = valorMonetarioParaNumero(valor);
+
+    campo.dataset.valorNumerico = String(numero);
+    campo.value = formatarMoedaComSimbolo(numero);
+}
+
+function formatarCampoMoedaEmTempoReal(campo) {
+    if (!campo) return;
+
+    const somenteDigitos = String(campo.value || '').replace(/\D/g, '');
+    const numero = somenteDigitos ? Number(somenteDigitos) / 100 : 0;
+
+    campo.dataset.valorNumerico = String(numero);
+    campo.value = formatarMoedaComSimbolo(numero);
+
+    calcular();
+}
+
+function prepararCampoMoedaAoFocar(campo) {
+    if (!campo) return;
+
+    if (!campo.value || valorMonetarioParaNumero(campo.value) === 0) {
+        campo.value = '';
+        campo.dataset.valorNumerico = '0';
+    }
+}
+
+function finalizarCampoMoeda(campo) {
+    if (!campo) return;
+
+    const numero = obterValorCampoMoeda(campo);
+
+    campo.dataset.valorNumerico = String(numero);
+    campo.value = formatarMoedaComSimbolo(numero);
+
+    calcular();
+}
+
+function limparTelefone(telefone) {
+    return String(telefone || '').replace(/\D/g, '');
+}
+
+function montarLinkOrcamento(id) {
+    return `${window.location.origin}/ver.html?id=${id}`;
+}
+
+function obterConsultorSelecionado(empresa) {
+    return (
+        localStorage.getItem('responsavel_selecionado_nome') ||
+        localStorage.getItem('consultor_selecionado_nome') ||
+        localStorage.getItem('usuario_nome') ||
+        empresa?.nome ||
+        empresa?.nome_empresa ||
+        'Consultor'
+    );
+}
+
+function obterTemaAtual() {
+    return document.getElementById('selected-theme')?.value || 'original';
+}
+
+function obterValorCampoTexto(id) {
+    return document.getElementById(id)?.value?.trim() || '';
+}
+
+// ==================== CAMPOS EXTRAS E ITENS ====================
+
+function adicionarCampoExtra(containerId, label = '', valor = '') {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const div = document.createElement('div');
+    div.className = 'extra-field';
+
+    div.innerHTML = `
+        <input type="text" placeholder="Ex: CPF/Placa" value="${escaparHtml(label)}" oninput="salvarEstadoCompleto(); autoUpdatePreview()">
+        <input type="text" placeholder="Dados" value="${escaparHtml(valor)}" oninput="salvarEstadoCompleto(); autoUpdatePreview()">
+        <button type="button" class="btn-remove" onclick="this.parentElement.remove(); salvarEstadoCompleto(); autoUpdatePreview()">X</button>
+    `;
+
+    container.appendChild(div);
+}
+
+function adicionarLinha(desc = '', qtd = 1, valor = 0) {
+    const lista = document.getElementById('itens-lista');
+    if (!lista) return;
+
+    const div = document.createElement('div');
+    div.className = 'item-row';
+
+    const valorNumerico = valorMonetarioParaNumero(valor);
+    const valorFormatado = formatarMoedaComSimbolo(valorNumerico);
+
+    div.innerHTML = `
+        <input type="text" class="desc desc-cell" placeholder="Serviço/Produto" value="${escaparHtml(desc)}" oninput="calcular()">
+        <input type="number" class="qtd" value="${escaparHtml(qtd)}" min="0" step="1" oninput="calcular()">
+        <input type="text" class="valor campo-moeda" inputmode="numeric" placeholder="R$ 0,00" value="${escaparHtml(valorFormatado)}" data-valor-numerico="${escaparHtml(valorNumerico)}" onfocus="prepararCampoMoedaAoFocar(this)" oninput="formatarCampoMoedaEmTempoReal(this)" onblur="finalizarCampoMoeda(this)">
+        <input type="text" class="subtotal campo-moeda" value="R$ 0,00" readonly>
+        <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcular()">X</button>
+    `;
+
+    lista.appendChild(div);
+    calcular();
+}
+
+function calcular() {
+    let totalGeral = 0;
+
+    document.querySelectorAll('.item-row:not(.header-labels)').forEach(row => {
+        const qtd = Number(row.querySelector('.qtd')?.value) || 0;
+        const valorEl = row.querySelector('.valor');
+        const valor = obterValorCampoMoeda(valorEl);
+        const subtotal = qtd * valor;
+
+        if (valorEl && valorEl.value && !valorEl.value.includes('R$')) {
+            aplicarValorMoedaNoCampo(valorEl, valor);
+        }
+
+        const subtotalEl = row.querySelector('.subtotal');
+
+        if (subtotalEl) {
+            subtotalEl.value = formatarMoedaComSimbolo(subtotal);
+        }
+
+        totalGeral += subtotal;
+    });
+
+    const totalEl = document.getElementById('total-geral');
+
+    if (totalEl) {
+        totalEl.innerText = formatarMoeda(totalGeral);
+    }
+
+    salvarEstadoCompleto();
+}
+
+function coletarItensDoOrcamento() {
+    const linhas = document.querySelectorAll('.item-row:not(.header-labels)');
+    const itens = [];
+
+    linhas.forEach(row => {
+        const descricao =
+            row.querySelector('.desc-cell')?.value ||
+            row.querySelector('.desc')?.value ||
+            '';
+
+        const qtd = Number(row.querySelector('.qtd')?.value) || 0;
+        const valor = obterValorCampoMoeda(row.querySelector('.valor'));
+        const subtotal = qtd * valor;
+
+        if (descricao.trim()) {
+            itens.push({
+                descricao,
+                qtd,
+                valor,
+                subtotal
+            });
+        }
+    });
+
+    return itens;
+}
+
+// ==================== TEMA E CORES ====================
+
+function setTheme(tema) {
+    const selectedThemeEl = document.getElementById('selected-theme');
+    if (!selectedThemeEl) return;
+
+    selectedThemeEl.value = tema;
+
+    document.querySelectorAll('.theme-dot').forEach(dot => {
+        dot.style.border = '2px solid #fff';
+    });
+
+    const dotAtivo = document.querySelector('.' + tema);
+
+    if (dotAtivo) {
+        dotAtivo.style.border = '2px solid #ffc400';
+    }
+
+    salvarEstadoCompleto();
+    autoUpdatePreview();
+}
+
+function obterCoresTema(temaAtivo) {
+    const coresTema = {
+        original: {
+            primaria: '#3e2723',
+            destaque: '#ffc400',
+            fundo: '#efebe9',
+            textoHeader: '#ffffff'
+        },
+        yellow: {
+            primaria: '#f9a825',
+            destaque: '#ffc400',
+            fundo: '#fff8e1',
+            textoHeader: '#ffffff'
+        },
+        red: {
+            primaria: '#4a0000',
+            destaque: '#ff0000',
+            fundo: '#ffebee',
+            textoHeader: '#ffffff'
+        },
+        bw: {
+            primaria: '#ffffff',
+            destaque: '#000000',
+            fundo: '#f9f9f9',
+            textoHeader: '#000000'
+        },
+        blue: {
+            primaria: '#0056b3',
+            destaque: '#00aaff',
+            fundo: '#e3f2fd',
+            textoHeader: '#ffffff'
+        },
+        green: {
+            primaria: '#2e7d32',
+            destaque: '#81c784',
+            fundo: '#e8f5e9',
+            textoHeader: '#ffffff'
+        }
+    };
+
+    return coresTema[temaAtivo] || coresTema.original;
+}
+
+// ==================== EXTRAS DO CLIENTE ====================
+
+function montarExtrasClienteHtml() {
+    const extraClienteContainer = document.getElementById('extra-cliente-container');
+
+    if (!extraClienteContainer) return '';
+
+    const extras = Array.from(extraClienteContainer.querySelectorAll('.extra-field')).map(f => {
+        const inputs = f.querySelectorAll('input');
+
+        return {
+            label: inputs[0]?.value || '',
+            valor: inputs[1]?.value || ''
+        };
+    }).filter(extra => extra.label || extra.valor);
+
+    if (!extras.length) return '';
+
+    return extras.map(extra => {
+        return `<br>${escaparHtml(extra.label)}: ${escaparHtml(extra.valor)}`;
+    }).join('');
+}
+
+// ==================== GERAÇÃO DA PRÉVIA ====================
+
+async function gerarPrevia() {
+    const btn = document.getElementById('btn-previa');
+
+    if (btn) {
+        btn.innerText = 'PROCESSANDO...';
+        btn.disabled = true;
+    }
+
+    try {
+        const empresa =
+            dadosEmpresaLogada || await carregarDadosEmpresaLogada();
+
+        if (!empresaEstaCompleta(empresa)) {
+            alert('Preencha os dados da empresa no Painel de Controle antes de gerar o orçamento.');
+            window.location.href = '/painel.html';
+            return;
+        }
+
+        const titulo =
+            document.getElementById('titulo')?.value || 'ORÇAMENTO';
+
+        const cliente =
+            document.getElementById('cliente')?.value || '';
+
+        const telCliente =
+            document.getElementById('tel-cliente')?.value || '';
+
+        const observacoes =
+            document.getElementById('observacoes')?.value || '';
+
+        const validade =
+            obterValorCampoTexto('validade-orcamento') ||
+            obterValorCampoTexto('validade') ||
+            '';
+
+        const formaPagamento =
+            obterValorCampoTexto('forma-pagamento') ||
+            obterValorCampoTexto('pagamento') ||
+            '';
+
+        if (!cliente.trim()) {
+            alert('Informe o nome do cliente.');
+            return;
+        }
+
+        const itens = coletarItensDoOrcamento();
+
+        if (!itens.length) {
+            alert('Adicione pelo menos um item ao orçamento.');
+            return;
+        }
+
+        const temaAtivo = obterTemaAtual();
+        const cor = obterCoresTema(temaAtivo);
+
+        let linhasHtml = '';
+
+        itens.forEach((item, i) => {
+            linhasHtml += `
+                <tr style="background:${i % 2 === 0 ? '#fff' : '#fafafa'}; border-bottom:1px solid #eee;">
+                    <td style="padding:10px; font-size:12px;">${escaparHtml(item.descricao)}</td>
+                    <td style="padding:10px; text-align:center; font-size:12px;">${escaparHtml(item.qtd)}</td>
+                    <td style="padding:10px; font-size:12px;">R$ ${formatarMoeda(item.valor)}</td>
+                    <td style="padding:10px; text-align:right; font-weight:bold; font-size:12px;">R$ ${formatarMoeda(item.subtotal)}</td>
+                </tr>
+            `;
+        });
+
+        const consultorSelecionado = obterConsultorSelecionado(empresa);
+        const numeroFormatado = formatarNumeroOrcamento(numeroOrcamentoAtual || window.numeroOrcamentoAtual);
+
+        const logoHtml = empresa.foto_url
+            ? `<img src="${escaparHtml(empresa.foto_url)}" crossorigin="anonymous" style="max-height:58px; max-width:135px; object-fit:contain;">`
+            : `<b style="font-size:20px;">FS</b>`;
+
+        const dadosEmpresaHtml = `
+            <div style="font-size:12px; line-height:1.5;">
+                <b>${escaparHtml(empresa.nome_empresa || empresa.nome || 'Empresa')}</b><br>
+                ${consultorSelecionado ? `Responsável: ${escaparHtml(consultorSelecionado)}<br>` : ''}
+                ${empresa.telefone_empresa ? `WhatsApp: ${escaparHtml(empresa.telefone_empresa)}<br>` : ''}
+                ${empresa.endereco_empresa ? `Endereço: ${escaparHtml(empresa.endereco_empresa)}<br>` : ''}
+                ${empresa.cnpj_empresa ? `CNPJ/CPF: ${escaparHtml(empresa.cnpj_empresa)}` : ''}
+            </div>
+        `;
+
+        const extrasClienteHtml = montarExtrasClienteHtml();
+        const totalTexto = document.getElementById('total-geral')?.innerText || '0,00';
+
+        const validadeHtml = validade
+            ? `<div style="background:#fff; border-left:4px solid ${cor.destaque}; padding:10px; border-radius:6px; font-size:11px;">
+                    <b>VALIDADE:</b><br>${escaparHtml(validade)}
+               </div>`
+            : '';
+
+        const pagamentoHtml = formaPagamento
+            ? `<div style="background:#fff; border-left:4px solid ${cor.destaque}; padding:10px; border-radius:6px; font-size:11px;">
+                    <b>FORMA DE PAGAMENTO:</b><br>${escaparHtml(formaPagamento)}
+               </div>`
+            : '';
+
+        const template = `
+            <div class="pdf-documento-a4" style="width:794px; min-height:1123px; box-sizing:border-box; padding:30px; background:#ffffff; font-family:Arial, sans-serif; color:#333; display:flex; flex-direction:column;">
+                
+                <div style="border-bottom:3px solid ${cor.destaque}; background:${cor.primaria}; padding:20px; margin:-30px -30px 20px -30px; color:${cor.textoHeader}; display:flex; justify-content:space-between; align-items:center; border:${temaAtivo === 'bw' ? '1px solid #ddd' : 'none'}">
+                    <div>
+                        <h1 style="margin:0; font-size:22px;">${escaparHtml(titulo)}</h1>
+                        <span style="font-size:11px; opacity:0.85;">Gerado em: ${new Date().toLocaleDateString('pt-BR')}</span><br>
+                        <span style="font-size:11px; opacity:0.95;">Orçamento Nº ${escaparHtml(numeroFormatado)}</span>
+                    </div>
+                    ${logoHtml}
+                </div>
+
+                <div style="flex-grow:1;">
+                    <div style="display:flex; justify-content:space-between; gap:25px; margin-bottom:20px;">
+                        <div style="width:50%;">
+                            <b style="font-size:13px;">EMISSOR:</b><br>
+                            ${dadosEmpresaHtml}
+                        </div>
+
+                        <div style="width:50%; text-align:right; font-size:12px; line-height:1.5;">
+                            <b style="font-size:13px;">CLIENTE:</b><br>
+                            ${escaparHtml(cliente)}<br>
+                            ${escaparHtml(telCliente)}
+                            ${extrasClienteHtml}
+                        </div>
+                    </div>
+
+                    <table style="width:100%; border-collapse:collapse;">
+                        <thead>
+                            <tr style="background:${temaAtivo === 'bw' ? '#eee' : cor.primaria}; color:${temaAtivo === 'bw' ? '#000' : '#fff'};">
+                                <th style="padding:10px; text-align:left; font-size:12px;">Item</th>
+                                <th style="padding:10px; font-size:12px;">Qtd</th>
+                                <th style="padding:10px; text-align:left; font-size:12px;">Unit.</th>
+                                <th style="padding:10px; text-align:right; font-size:12px;">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${linhasHtml}
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top:20px; text-align:right;">
+                        <div style="display:inline-block; background:${cor.fundo}; padding:15px; border:1px solid #ddd; border-radius:6px;">
+                            <span style="font-size:10px; color:#666;">VALOR TOTAL</span><br>
+                            <strong style="font-size:20px; color:${cor.destaque === '#000000' ? '#000' : cor.primaria}">
+                                R$ ${escaparHtml(totalTexto)}
+                            </strong>
+                        </div>
+                    </div>
+
+                    ${
+                        validadeHtml || pagamentoHtml
+                            ? `<div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px;">
+                                ${validadeHtml}
+                                ${pagamentoHtml}
+                               </div>`
+                            : ''
+                    }
+
+                    ${
+                        observacoes
+                            ? `<div style="margin-top:20px; font-size:11px; border-top:1px solid #eee; padding-top:10px;">
+                                <b>OBSERVAÇÕES:</b><br>${textoComQuebra(observacoes)}
+                               </div>`
+                            : ''
+                    }
+                </div>
+
+                <div style="margin-top:45px; padding-top:14px; border-top:1px dashed #ccc; display:flex; justify-content:space-between; align-items:flex-end; gap:20px;">
+                    <div style="font-size:10px; color:#777; line-height:1.4;">
+                        <b>${escaparHtml(empresa.nome_empresa || 'Empresa')}</b><br>
+                        ${empresa.telefone_empresa ? `Contato: ${escaparHtml(empresa.telefone_empresa)}<br>` : ''}
+                        Orçamento Nº ${escaparHtml(numeroFormatado)}
+                    </div>
+
+                    <div style="width:240px; text-align:center; font-size:10px; color:#777;">
+                        <div style="border-top:1px solid #999; padding-top:6px;">
+                            Assinatura / Aprovação
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; font-size:10px; color:#999; margin-top:18px;">
+                    Orçamento gerado por <strong>fsorcamentos.com.br</strong>
+                </div>
+            </div>
+        `;
+
+        const conteudoPdf = document.getElementById('conteudo-pdf');
+        const areaPrevia = document.getElementById('area-previa');
+        const botoesAcao = document.getElementById('botoes-acao');
+
+        if (conteudoPdf) {
+            conteudoPdf.innerHTML = template;
+            conteudoPdf.style.display = 'block';
+            conteudoPdf.style.background = '#ffffff';
+            conteudoPdf.style.overflow = 'visible';
+        }
+
+        if (areaPrevia) {
+            areaPrevia.style.display = 'block';
+        }
+
+        if (botoesAcao) {
+            botoesAcao.style.display = 'block';
+        }
+
+        const btnFloatBaixar = document.getElementById('btn-float-baixar');
+        const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
+        const floatingActions = document.querySelector('.floating-actions');
+
+        if (btnFloatBaixar) btnFloatBaixar.style.display = 'flex';
+        if (btnFloatWhatsapp) btnFloatWhatsapp.style.display = 'flex';
+        if (floatingActions) floatingActions.classList.add('show');
+
+        if (areaPrevia) {
+            window.scrollTo({
+                top: areaPrevia.offsetTop - 20,
+                behavior: 'smooth'
+            });
+        }
+
+    } finally {
+        if (btn) {
+            btn.innerText = '👁️ PRÉ-VISUALIZAÇÃO';
+            btn.disabled = false;
+        }
+    }
+}
+
+function autoUpdatePreview() {
+    if (gerandoPdfAgora) return;
+
+    const area = document.getElementById('area-previa');
+
+    if (area && area.style.display === 'block') {
+        gerarPrevia();
+    }
+}
+
+// ==================== BAIXAR PDF CORRIGIDO ====================
+
+function aguardarRenderizacaoPDF(container) {
+    return new Promise(resolve => {
+        const imagens = Array.from(container.querySelectorAll('img'));
+
+        if (!imagens.length) {
+            requestAnimationFrame(() => {
+                setTimeout(resolve, 500);
+            });
+            return;
+        }
+
+        let finalizadas = 0;
+
+        function finalizar() {
+            finalizadas++;
+
+            if (finalizadas >= imagens.length) {
+                requestAnimationFrame(() => {
+                    setTimeout(resolve, 500);
+                });
+            }
+        }
+
+        imagens.forEach(img => {
+            if (img.complete) {
+                finalizar();
+            } else {
+                img.onload = finalizar;
+                img.onerror = finalizar;
+            }
+        });
+    });
+}
+
+function criarCloneParaPdf(elementoOriginal) {
+    const wrapperExistente = document.getElementById('fs-pdf-render-area');
+
+    if (wrapperExistente) {
+        wrapperExistente.remove();
+    }
+
+    const wrapper = document.createElement('div');
+
+    wrapper.id = 'fs-pdf-render-area';
+    wrapper.style.position = 'fixed';
+    wrapper.style.left = '0';
+    wrapper.style.top = '0';
+    wrapper.style.width = '794px';
+    wrapper.style.minHeight = '1123px';
+    wrapper.style.background = '#ffffff';
+    wrapper.style.zIndex = '-1';
+    wrapper.style.pointerEvents = 'none';
+    wrapper.style.overflow = 'visible';
+    wrapper.style.opacity = '0';
+
+    const clone = elementoOriginal.cloneNode(true);
+
+    clone.style.width = '794px';
+    clone.style.maxWidth = '794px';
+    clone.style.minHeight = '1123px';
+    clone.style.margin = '0';
+    clone.style.boxShadow = 'none';
+    clone.style.transform = 'none';
+    clone.style.background = '#ffffff';
+    clone.style.overflow = 'visible';
+
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
+    return {
+        wrapper,
+        clone
+    };
+}
+
+async function baixarPDF() {
+    if (gerandoPdfAgora) return;
+
+    const conteudoPdf = document.getElementById('conteudo-pdf');
+    const areaPrevia = document.getElementById('area-previa');
+
+    if (!conteudoPdf) {
+        alert('Área do PDF não encontrada.');
+        return;
+    }
+
+    gerandoPdfAgora = true;
+
+    try {
+        if (usuarioPodeSalvarOrcamentoLocal()) {
+            const salvo = await salvarOrcamentoNoBanco('download_pdf');
+
+            if (salvo?.numero_orcamento) {
+                numeroOrcamentoAtual = salvo.numero_orcamento;
+                window.numeroOrcamentoAtual = salvo.numero_orcamento;
+            }
+        }
+
+        await gerarPrevia();
+
+        if (!conteudoPdf.innerHTML.trim()) {
+            alert('Gere a pré-visualização antes de baixar o PDF.');
+            return;
+        }
+
+        const elementoOriginal = conteudoPdf.firstElementChild || conteudoPdf;
+
+        if (!elementoOriginal) {
+            alert('Conteúdo do PDF não encontrado.');
+            return;
+        }
+
+        const titulo = document.getElementById('titulo')?.value || 'orcamento';
+
+        const nomeArquivo = titulo
+            .trim()
+            .replace(/[^\wÀ-ÿ\s-]/g, '')
+            .replace(/\s+/g, '_')
+            .toLowerCase() || 'orcamento';
+
+        if (areaPrevia) {
+            areaPrevia.style.display = 'block';
+        }
+
+        conteudoPdf.style.display = 'block';
+
+        document.body.classList.add('gerando-pdf');
+
+        let areaTemporaria = null;
+
+        try {
+            areaTemporaria = criarCloneParaPdf(elementoOriginal);
+
+            await aguardarRenderizacaoPDF(areaTemporaria.clone);
+
+            const alturaConteudo = Math.max(
+                1123,
+                areaTemporaria.clone.scrollHeight,
+                areaTemporaria.clone.offsetHeight
+            );
+
+            const opt = {
+                margin: 0,
+                filename: `${nomeArquivo}.pdf`,
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    scrollX: 0,
+                    scrollY: 0,
+                    width: 794,
+                    height: alturaConteudo,
+                    windowWidth: 794,
+                    windowHeight: alturaConteudo
+                },
+                jsPDF: {
+                    unit: 'px',
+                    format: [794, 1123],
+                    orientation: 'portrait'
+                },
+                pagebreak: {
+                    mode: ['avoid-all', 'css', 'legacy']
+                }
+            };
+
+            await html2pdf()
+                .set(opt)
+                .from(areaTemporaria.clone)
+                .save();
+
+        } catch (error) {
+            console.error('Erro ao gerar PDF:', error);
+            alert('Não foi possível gerar o PDF.');
+        } finally {
+            if (areaTemporaria?.wrapper) {
+                areaTemporaria.wrapper.remove();
+            }
+
+            document.body.classList.remove('gerando-pdf');
+        }
+
+    } finally {
+        gerandoPdfAgora = false;
+    }
+}
+
+// ==================== SALVAMENTO E ENVIO (WPP / BANCO) ====================
+
+async function salvarOrcamentoNoBanco(origem = 'manual') {
+    sincronizarReferenciaOrcamentoSalvo();
+
+    if (!usuarioPodeSalvarOrcamentoLocal()) {
+        console.log('Plano grátis: orçamento não será salvo no Supabase.');
+        return null;
+    }
+
+    if (!window._supabase) {
+        alert('Supabase não carregou. Atualize a página.');
+        return null;
+    }
+
+    const { data: { session }, error: sessionError } =
+        await _supabase.auth.getSession();
+
+    if (sessionError || !session) {
+        console.error('Erro de sessão:', sessionError);
+        alert('Sessão expirada.');
+        window.location.href = '/index.html';
+        return null;
+    }
+
+    const empresa =
+        dadosEmpresaLogada || await carregarDadosEmpresaLogada();
+
+    if (!empresaEstaCompleta(empresa)) {
+        alert('Preencha os dados da empresa no Painel de Controle.');
+        window.location.href = '/painel.html';
+        return null;
+    }
+
+    const assunto =
+        document.getElementById('titulo')?.value?.trim() || 'Orçamento sem título';
+
+    const clienteNome =
+        document.getElementById('cliente')?.value?.trim() || '';
+
+    const clienteWhatsapp =
+        document.getElementById('tel-cliente')?.value?.trim() || '';
+
+    const observacoes =
+        document.getElementById('observacoes')?.value?.trim() || '';
+
+    const itens = coletarItensDoOrcamento();
+
+    const total = itens.reduce((soma, item) => {
+        return soma + Number(item.subtotal || 0);
+    }, 0);
+
+    if (!clienteNome) {
+        alert('Informe o nome do cliente.');
+        return null;
+    }
+
+    if (!itens.length) {
+        alert('Adicione pelo menos um item ao orçamento.');
+        return null;
+    }
+
+    const consultorSelecionado = obterConsultorSelecionado(empresa);
+    const temaPdf = obterTemaAtual();
+
+    const payloadBase = {
+        usuario_id: session.user.id,
+        assunto,
+        cliente_nome: clienteNome,
+        cliente_whatsapp: clienteWhatsapp,
+        total,
+        itens,
+        status: 'pendente',
+        consultor: consultorSelecionado
+    };
+
+    const payloadCompleto = {
+        ...payloadBase,
+        observacoes,
+        tema_pdf: temaPdf,
+        origem_salvamento: origem
+    };
+
+    let resposta;
+
+    if (orcamentoAtualSalvoId) {
+        resposta = await _supabase
+            .from('orcamentos')
+            .update(payloadCompleto)
+            .eq('id', orcamentoAtualSalvoId)
+            .eq('usuario_id', session.user.id)
+            .select('*')
+            .single();
+    } else {
+        resposta = await _supabase
+            .from('orcamentos')
+            .insert([payloadCompleto])
+            .select('*')
+            .single();
+    }
+
+    if (resposta.error) {
+        const mensagemErro = String(resposta.error.message || '');
+
+        if (
+            mensagemErro.includes('origem_salvamento') ||
+            mensagemErro.includes('tema_pdf') ||
+            mensagemErro.includes('observacoes') ||
+            mensagemErro.includes('consultor')
+        ) {
+            const payloadMinimo = {
+                usuario_id: session.user.id,
+                assunto,
+                cliente_nome: clienteNome,
+                cliente_whatsapp: clienteWhatsapp,
+                total,
+                itens,
+                status: 'pendente'
+            };
+
+            if (orcamentoAtualSalvoId) {
+                resposta = await _supabase
+                    .from('orcamentos')
+                    .update(payloadMinimo)
+                    .eq('id', orcamentoAtualSalvoId)
+                    .eq('usuario_id', session.user.id)
+                    .select('*')
+                    .single();
+            } else {
+                resposta = await _supabase
+                    .from('orcamentos')
+                    .insert([payloadMinimo])
+                    .select('*')
+                    .single();
+            }
+        }
+    }
+
+    if (resposta.error) {
+        console.error('Erro ao salvar orçamento:', {
+            code: resposta.error.code,
+            message: resposta.error.message,
+            details: resposta.error.details,
+            hint: resposta.error.hint
+        });
+
+        alert('Erro ao salvar orçamento no Supabase.');
+        return null;
+    }
+
+    definirOrcamentoAtualSalvo(
+        resposta.data.id,
+        resposta.data.numero_orcamento || null
+    );
+
+    if (resposta.data.numero_orcamento) {
+        numeroOrcamentoAtual = resposta.data.numero_orcamento;
+        window.numeroOrcamentoAtual = resposta.data.numero_orcamento;
+    }
+
+    console.log(`Orçamento salvo/atualizado no Supabase via ${origem}:`, resposta.data);
+
+    return resposta.data;
+}
+
+async function enviarPorWhatsApp() {
+    if (!usuarioPodeSalvarOrcamentoLocal()) {
+        alert('Esta função está disponível apenas para o Plano Básico.');
+        return;
+    }
+
+    const nomeCliente =
+        document.getElementById('cliente')?.value?.trim() || '';
+
+    const whatsCliente =
+        limparTelefone(document.getElementById('tel-cliente')?.value || '');
+
+    if (!nomeCliente) {
+        alert('Informe o nome do cliente.');
+        return;
+    }
+
+    if (!whatsCliente) {
+        alert('Por favor, informe o WhatsApp do cliente.');
+        return;
+    }
+
+    const itens = coletarItensDoOrcamento();
+
+    if (!itens.length) {
+        alert('Adicione pelo menos um item ao orçamento.');
+        return;
+    }
+
+    const botoesWhatsapp = document.querySelectorAll('.btn-whatsapp, .btn-acao-whatsapp, .btn-float-whatsapp');
+
+    botoesWhatsapp.forEach(btn => {
+        btn.disabled = true;
+        if (btn.innerText) btn.dataset.textoOriginal = btn.innerText;
+        if (btn.innerText) btn.innerText = 'AGUARDE...';
+    });
+
+    try {
+        const salvo = await salvarOrcamentoNoBanco('whatsapp_manual');
+
+        if (!salvo?.id) {
+            alert('Não foi possível gerar o link do orçamento.');
+            return;
+        }
+
+        definirOrcamentoAtualSalvo(
+            salvo.id,
+            salvo.numero_orcamento || null
+        );
+
+        if (salvo.numero_orcamento) {
+            numeroOrcamentoAtual = salvo.numero_orcamento;
+            window.numeroOrcamentoAtual = salvo.numero_orcamento;
+        }
+
+        await gerarPrevia();
+
+        const numeroComPais =
+            whatsCliente.startsWith('55') ? whatsCliente : '55' + whatsCliente;
+
+        const numeroFormatado = formatarNumeroOrcamento(salvo.numero_orcamento || numeroOrcamentoAtual);
+
+        const mensagem =
+`Olá${nomeCliente ? `, ${nomeCliente}` : ''}! Tudo bem?
+
+Seu orçamento Nº ${numeroFormatado} está pronto para visualização.
+
+Acesse o link abaixo para conferir os detalhes e aprovar ou recusar a proposta:
+
+${linkOrcamentoAtual}
+
+Qualquer dúvida, estou à disposição.`;
+
+        const urlWhatsapp =
+            `https://wa.me/${numeroComPais}?text=${encodeURIComponent(mensagem)}`;
+
+        const janela = window.open(urlWhatsapp, 'fsorcamentos_whatsapp');
+
+        if (!janela) {
+            alert('O navegador bloqueou a abertura do WhatsApp. Permita pop-ups para este site.');
+            return;
+        }
+
+        janela.focus();
+
+    } catch (error) {
+        console.error('Erro ao enviar por WhatsApp:', error);
+        alert('Não foi possível abrir o WhatsApp.');
+    } finally {
+        botoesWhatsapp.forEach(btn => {
+            btn.disabled = false;
+
+            if (btn.dataset.textoOriginal) {
+                btn.innerText = btn.dataset.textoOriginal;
+                delete btn.dataset.textoOriginal;
+            }
+        });
+    }
+}
+
+// ==================== PERSISTÊNCIA LOCAL (AUTO-SAVE) ====================
+
+function salvarEstadoCompleto() {
+    const extraClienteContainer = document.getElementById('extra-cliente-container');
+
+    const extraCliente = extraClienteContainer
+        ? Array.from(extraClienteContainer.querySelectorAll('.extra-field')).map(f => ({
+            label: f.querySelectorAll('input')[0]?.value || '',
+            valor: f.querySelectorAll('input')[1]?.value || ''
+        }))
+        : [];
+
+    const dados = {
+        titulo: document.getElementById('titulo')?.value || '',
+        cliente: document.getElementById('cliente')?.value || '',
+        telCliente: document.getElementById('tel-cliente')?.value || '',
+        extraCliente,
+        observacoes: document.getElementById('observacoes')?.value || '',
+        validade: document.getElementById('validade-orcamento')?.value || '',
+        formaPagamento: document.getElementById('forma-pagamento')?.value || '',
+        theme: document.getElementById('selected-theme')?.value || 'original',
+        itens: Array.from(document.querySelectorAll('.item-row:not(.header-labels)')).map(row => ({
+            desc: row.querySelector('.desc-cell')?.value || '',
+            qtd: row.querySelector('.qtd')?.value || '1',
+            valor: obterValorCampoMoeda(row.querySelector('.valor')) || 0
+        }))
+    };
+
+    localStorage.setItem('fs_backup', JSON.stringify(dados));
+}
+
+function carregarEstadoSalvo() {
+    const salvo = localStorage.getItem('fs_backup');
+
+    if (!salvo) {
+        adicionarLinha();
+        return;
+    }
+
+    let d = {};
+
+    try {
+        d = JSON.parse(salvo);
+    } catch (err) {
+        console.warn('Backup local inválido. Limpando backup.', err);
+        localStorage.removeItem('fs_backup');
+        adicionarLinha();
+        return;
+    }
+
+    if (document.getElementById('titulo')) {
+        document.getElementById('titulo').value = d.titulo || '';
+    }
+
+    if (document.getElementById('cliente')) {
+        document.getElementById('cliente').value = d.cliente || '';
+    }
+
+    if (document.getElementById('tel-cliente')) {
+        document.getElementById('tel-cliente').value = d.telCliente || '';
+    }
+
+    if (document.getElementById('observacoes')) {
+        document.getElementById('observacoes').value = d.observacoes || '';
+    }
+
+    if (document.getElementById('validade-orcamento')) {
+        document.getElementById('validade-orcamento').value = d.validade || '';
+    }
+
+    if (document.getElementById('forma-pagamento')) {
+        document.getElementById('forma-pagamento').value = d.formaPagamento || '';
+    }
+
+    const extraClienteContainer = document.getElementById('extra-cliente-container');
+
+    if (extraClienteContainer) {
+        extraClienteContainer.innerHTML = '';
+
+        if (d.extraCliente) {
+            d.extraCliente.forEach(ex => {
+                adicionarCampoExtra('extra-cliente-container', ex.label, ex.valor);
+            });
+        }
+    }
+
+    const contItens = document.getElementById('itens-lista');
+
+    if (contItens) {
+        while (contItens.children.length > 1) {
+            contItens.removeChild(contItens.lastChild);
+        }
+
+        if (d.itens && d.itens.length > 0) {
+            d.itens.forEach(item => {
+                adicionarLinha(item.desc, item.qtd, item.valor);
+            });
+        } else {
+            adicionarLinha();
+        }
+    }
+
+    if (d.theme) {
+        setTheme(d.theme);
+    }
+}
+
+// ==================== HELPERS E MÁSCARAS ====================
+
+function addFrase(frase) {
+    const obs = document.getElementById('observacoes');
+
+    if (obs) {
+        obs.value += (obs.value ? '\n' : '') + frase;
+        salvarEstadoCompleto();
+        autoUpdatePreview();
+    }
+}
+
+function toggleFrases() {
+    const corpo = document.getElementById('frases-corpo');
+    const seta = document.getElementById('seta-frases');
+
+    if (!corpo) return;
+
+    if (corpo.style.display === 'none' || corpo.style.display === '') {
+        corpo.style.display = 'block';
+        if (seta) seta.innerText = '▲';
+    } else {
+        corpo.style.display = 'none';
+        if (seta) seta.innerText = '▼';
+    }
+}
+
+function mascaraTelefone(event) {
+    let v = event.target.value.replace(/\D/g, '');
+
+    if (v.length > 11) v = v.slice(0, 11);
+
+    if (v.length > 10) {
+        v = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+    } else if (v.length > 6) {
+        v = `(${v.slice(0, 2)}) ${v.slice(2, 6)}-${v.slice(6)}`;
+    } else if (v.length > 2) {
+        v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+    }
+
+    event.target.value = v;
+}
+
+function toggleAjuda() {
+    const modal = document.getElementById('modal-ajuda');
+
+    if (modal) {
+        modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+    }
+}
+
+function limparFormulario() {
+    if (!confirm('Isso apagará os dados do cliente e itens. Continuar?')) return;
+
+    ['titulo', 'cliente', 'tel-cliente', 'observacoes', 'validade-orcamento', 'forma-pagamento'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+
+    const extraCliente = document.getElementById('extra-cliente-container');
+
+    if (extraCliente) {
+        extraCliente.innerHTML = '';
+    }
+
+    const contItens = document.getElementById('itens-lista');
+
+    if (contItens) {
+        while (contItens.children.length > 1) {
+            contItens.removeChild(contItens.lastChild);
+        }
+
+        adicionarLinha();
+    }
+
+    const areaPrevia = document.getElementById('area-previa');
+
+    if (areaPrevia) {
+        areaPrevia.style.display = 'none';
+    }
+
+    const conteudoPdf = document.getElementById('conteudo-pdf');
+
+    if (conteudoPdf) {
+        conteudoPdf.innerHTML = '';
+    }
+
+    const botoesAcao = document.getElementById('botoes-acao');
+
+    if (botoesAcao) {
+        botoesAcao.style.display = 'none';
+    }
+
+    const btnFloatBaixar = document.getElementById('btn-float-baixar');
+    const btnFloatWhatsapp = document.getElementById('btn-float-whatsapp');
+
+    if (btnFloatBaixar) {
+        btnFloatBaixar.style.display = 'none';
+    }
+
+    if (btnFloatWhatsapp) {
+        btnFloatWhatsapp.style.display = 'none';
+    }
+
+    limparReferenciaOrcamentoAtual();
+    salvarEstadoCompleto();
+}
+
+// ==================== FUNÇÕES LEGADAS DE LOGO ====================
+
+function processarLogo() {
+    console.warn('processarLogo() não é mais usada. A logo agora vem do Painel de Controle.');
+}
+
+function removerLogo() {
+    console.warn('removerLogo() não é mais usada. A logo agora vem do Painel de Controle.');
+}
+
+// ==================== EXPORTS GLOBAIS ====================
+
+window.definirOrcamentoAtualSalvo = definirOrcamentoAtualSalvo;
+window.limparReferenciaOrcamentoAtual = limparReferenciaOrcamentoAtual;
+window.sincronizarReferenciaOrcamentoSalvo = sincronizarReferenciaOrcamentoSalvo;
+
+window.abrirModalGerador = abrirModalGerador;
+window.fecharModalGerador = fecharModalGerador;
+
+window.carregarDadosEmpresaLogada = carregarDadosEmpresaLogada;
+window.empresaEstaCompleta = empresaEstaCompleta;
+window.usuarioPodeSalvarOrcamentoLocal = usuarioPodeSalvarOrcamentoLocal;
+
+window.adicionarCampoExtra = adicionarCampoExtra;
+window.adicionarLinha = adicionarLinha;
+window.calcular = calcular;
+
+window.setTheme = setTheme;
+window.gerarPrevia = gerarPrevia;
+window.baixarPDF = baixarPDF;
+window.salvarOrcamentoNoBanco = salvarOrcamentoNoBanco;
+window.enviarPorWhatsApp = enviarPorWhatsApp;
+
+window.salvarEstadoCompleto = salvarEstadoCompleto;
+window.carregarEstadoSalvo = carregarEstadoSalvo;
+
+window.addFrase = addFrase;
+window.toggleFrases = toggleFrases;
+window.mascaraTelefone = mascaraTelefone;
+window.toggleAjuda = toggleAjuda;
+window.limparFormulario = limparFormulario;
+// ==================== BUSCA COM ENTER (GLOBAL) ====================
+// Permite usar Enter em campos de busca/filtro como atalho para o botão físico de busca da página.
+document.addEventListener('keydown', function fsBuscaEnterGlobal(event) {
+  const campo = event.target;
+  if (!campo || event.key !== 'Enter') return;
+
+  const tag = (campo.tagName || '').toLowerCase();
+  const tipo = (campo.getAttribute('type') || '').toLowerCase();
+  const idClasse = `${campo.id || ''} ${campo.className || ''}`.toLowerCase();
+
+  const pareceBusca =
+    tipo === 'search' ||
+    idClasse.includes('busca') ||
+    idClasse.includes('filtro') ||
+    (campo.placeholder || '').toLowerCase().includes('buscar');
+
+  if (tag !== 'input' || !pareceBusca) return;
+
+  const form = campo.closest('form');
+  if (form) event.preventDefault();
+
+  const escopo = campo.closest('.ordens-card-body, .clientes-card-body, .veiculos-card-body, .estoque-card-body, .modal-busca-cliente-body, .modal-busca-produto-body, main, body') || document;
+  const botoes = Array.from(escopo.querySelectorAll('button, a'));
+  const botaoBusca = botoes.find((botao) => {
+    const texto = (botao.textContent || '').trim().toLowerCase();
+    return texto.includes('buscar') || texto.includes('filtrar') || texto.includes('atualizar');
+  });
+
+  if (botaoBusca && typeof botaoBusca.click === 'function') {
+    botaoBusca.click();
+  }
+});
