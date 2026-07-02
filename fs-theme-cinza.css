@@ -1,548 +1,331 @@
 /* =========================================================
-   FS ORÇAMENTOS — TEMA AZUL GLOBAL
-   Paleta: azul forte, azul escuro, branco e acento verde/água.
-   Mantém nomes antigos de variáveis apenas por compatibilidade.
+   FS ORÇAMENTOS — TEMA PREMIUM GLOBAL
+   Azul-marinho, azul vivo, branco e dourado.
+   Mantém nomes antigos de variáveis para compatibilidade.
    ========================================================= */
 
 :root {
-  --fs-azul-950: #040f2f;
-  --fs-azul-900: #061846;
-  --fs-azul-800: #082463;
-  --fs-azul-700: #0b3fae;
-  --fs-azul-600: #0f49d9;
-  --fs-azul-500: #145cff;
-  --fs-azul-400: #2f7bff;
-  --fs-azul-300: #6aa7ff;
-  --fs-azul-200: #cfe1ff;
-  --fs-azul-100: #eaf3ff;
-  --fs-azul-50: #f5f9ff;
-  --fs-verde-600: #08a985;
-  --fs-verde-500: #19c7a4;
-  --fs-verde-400: #21d6b1;
-  --fs-verde-100: #dcfff7;
-  --fs-cinza-950: var(--fs-azul-950);
-  --fs-cinza-900: var(--fs-azul-950);
-  --fs-cinza-800: var(--fs-azul-900);
-  --fs-cinza-700: var(--fs-azul-800);
-  --fs-cinza-600: var(--fs-azul-700);
-  --fs-cinza-500: var(--fs-azul-600);
-  --fs-cinza-400: var(--fs-azul-400);
-  --fs-cinza-300: var(--fs-azul-300);
-  --fs-cinza-200: var(--fs-azul-200);
-  --fs-cinza-100: var(--fs-azul-100);
-  --fs-cinza-50: var(--fs-azul-50);
-  --fs-grafite: var(--fs-azul-600);
-  --fs-grafite-2: var(--fs-azul-400);
-  --fs-grafite-3: var(--fs-azul-700);
-  --fs-destaque: var(--fs-azul-100);
-  --fs-destaque-2: var(--fs-azul-200);
-  --fs-marrom: var(--fs-azul-600);
-  --fs-marrom-2: var(--fs-azul-900);
-  --fs-marrom-3: var(--fs-azul-800);
-  --fs-marrom-claro: var(--fs-azul-500);
-  --fs-amarelo: var(--fs-azul-500);
-  --fs-amarelo-2: var(--fs-azul-700);
-  --accent-yellow: var(--fs-azul-500);
-  --accent-gray: var(--fs-azul-100);
-  --fs-creme: var(--fs-azul-50);
-  --fs-creme-2: var(--fs-azul-100);
-  --fs-bege: var(--fs-azul-50);
-  --fs-bege-2: var(--fs-azul-100);
-  --fs-fundo: var(--fs-azul-50);
-  --fs-fundo-2: var(--fs-azul-100);
-  --fs-fundo-escuro: var(--fs-azul-100);
-  --fs-page-bg: var(--fs-azul-50);
-  --fs-page-bg-2: var(--fs-azul-100);
+  --fs-navy: #07142f;
+  --fs-navy-2: #0b1f46;
+  --fs-blue: #1463ff;
+  --fs-blue-2: #0b49c9;
+  --fs-gold: #f5b625;
+  --fs-gold-2: #d99a00;
+  --fs-bg: #f4f8ff;
   --fs-card: #ffffff;
-  --fs-card-soft: var(--fs-azul-50);
-  --fs-borda: #d6e7ff;
-  --fs-borda-2: #cfe1ff;
-  --fs-texto: var(--fs-azul-950);
-  --fs-texto-suave: #245eac;
-  --fs-muted: #245eac;
-  --fs-suave: #245eac;
-  --fs-cinza: var(--fs-azul-600);
-  --fs-cinza-claro: var(--fs-azul-100);
-  --bg-dark: var(--fs-azul-100);
+  --fs-border: #d8e6ff;
+  --fs-text: #06122f;
+  --fs-muted: #64748b;
+  --fs-success: #16a34a;
+  --fs-whatsapp: #22c55e;
+  --fs-danger: #dc2626;
+  --fs-danger-soft: #fff1f1;
+  --fs-shadow: 0 18px 40px rgba(7, 20, 47, 0.12);
+  --fs-shadow-strong: 0 28px 70px rgba(7, 20, 47, 0.22);
+  --fs-radius: 18px;
+  --fs-radius-lg: 26px;
+
+  --fs-azul-950: var(--fs-navy);
+  --fs-azul-900: var(--fs-navy-2);
+  --fs-azul-800: #0d2a5f;
+  --fs-azul-700: var(--fs-blue-2);
+  --fs-azul-600: var(--fs-blue);
+  --fs-azul-500: var(--fs-blue);
+  --fs-azul-400: #2f7bff;
+  --fs-azul-200: var(--fs-border);
+  --fs-azul-100: #eaf3ff;
+  --fs-azul-50: var(--fs-bg);
+
+  --fs-cinza-950: var(--fs-text);
+  --fs-cinza-900: var(--fs-navy);
+  --fs-cinza-800: var(--fs-navy-2);
+  --fs-cinza-700: #273b63;
+  --fs-cinza-600: var(--fs-muted);
+  --fs-cinza-500: #7b8da8;
+  --fs-cinza-400: #9db0cc;
+  --fs-cinza-300: #c8d7ee;
+  --fs-cinza-200: var(--fs-border);
+  --fs-cinza-100: #eaf3ff;
+  --fs-cinza-50: var(--fs-bg);
+
+  --fs-marrom: var(--fs-navy-2);
+  --fs-marrom-2: var(--fs-navy);
+  --fs-marrom-3: #273b63;
+  --fs-amarelo: var(--fs-gold);
+  --fs-amarelo-2: var(--fs-gold-2);
+  --accent-yellow: var(--fs-gold);
+  --fs-creme: var(--fs-bg);
+  --fs-creme-2: #eaf3ff;
+  --fs-borda: var(--fs-border);
+  --fs-borda-2: #c8d7ee;
+  --fs-texto: var(--fs-text);
+  --fs-muted: var(--fs-muted);
+  --fs-cinza: var(--fs-muted);
+  --fs-cinza-claro: #eaf3ff;
+  --bg-dark: var(--fs-bg);
   --body-brown: #ffffff;
   --body-gray: #ffffff;
-  --text-dark: var(--fs-azul-950);
-  --fs-sucesso: var(--fs-verde-500);
-  --fs-alerta: var(--fs-azul-500);
-  --fs-erro: #dc2626;
-  --fs-perigo: #dc2626;
-  --fs-verde: var(--fs-verde-500);
-  --fs-vermelho: #dc2626;
-  --fs-azul: var(--fs-azul-500);
-  --fs-shadow-cinza: 0 18px 42px rgba(20, 92, 255, .14);
+  --text-dark: var(--fs-text);
+  --primary: var(--fs-blue);
+  --danger: var(--fs-danger);
+  --success: var(--fs-whatsapp);
 }
 
 html, body {
-  background: radial-gradient(circle at 88% 0%, rgba(20, 92, 255, .24), transparent 34%), radial-gradient(circle at 12% 12%, rgba(25, 199, 164, .12), transparent 28%), linear-gradient(180deg, #ffffff 0%, #f5f9ff 52%, #eaf3ff 100%) !important;
-  color: var(--fs-texto) !important;
+  background: radial-gradient(circle at 14% 0%, rgba(245, 182, 37, .16), transparent 28%), radial-gradient(circle at 88% 8%, rgba(20, 99, 255, .18), transparent 30%), linear-gradient(180deg, #ffffff 0%, var(--fs-bg) 48%, #eaf3ff 100%) !important;
+  color: var(--fs-text) !important;
 }
 
 body::before, body::after { background: transparent !important; }
 
+/* HEADER PREMIUM */
+#header-container .main-header,
+.main-header {
+  background: rgba(255,255,255,.94) !important;
+  color: var(--fs-text) !important;
+  border-bottom: 1px solid var(--fs-border) !important;
+  box-shadow: 0 12px 35px rgba(7,20,47,.12) !important;
+  backdrop-filter: blur(18px) !important;
+}
+.header-shell, .header-topo {
+  width: min(1180px, calc(100% - 24px)) !important;
+  min-height: 78px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+.logo-nav {
+  min-width: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  color: var(--fs-text) !important;
+  text-decoration: none !important;
+}
+.logo-fs {
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  border-radius: 16px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  background: linear-gradient(135deg, var(--fs-blue), var(--fs-blue-2)) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  border: 1px solid rgba(255,255,255,.55) !important;
+  box-shadow: 0 16px 32px rgba(20,99,255,.26) !important;
+  font-size: 28px !important;
+  font-weight: 950 !important;
+  letter-spacing: -.06em !important;
+}
+.logo-orcamentos {
+  display: inline-block !important;
+  min-width: 0 !important;
+  color: var(--fs-text) !important;
+  -webkit-text-fill-color: var(--fs-text) !important;
+  font-size: clamp(22px, 4vw, 31px) !important;
+  font-weight: 950 !important;
+  letter-spacing: -.045em !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+.header-usuario { display: inline-flex !important; align-items: center !important; gap: 10px !important; }
+.btn-notificacoes-header,
+.menu-mobile-btn,
+.btn-header-entrar,
+.btn-header-sair {
+  min-width: 54px !important;
+  height: 54px !important;
+  border-radius: 15px !important;
+  background: linear-gradient(135deg, var(--fs-blue), var(--fs-blue-2)) !important;
+  color: #fff !important;
+  border: 1px solid rgba(20,99,255,.35) !important;
+  box-shadow: 0 14px 28px rgba(20,99,255,.22) !important;
+}
+.menu-mobile-btn span { background:#fff !important; }
+.header-usuario #btn-header-entrar,
+.header-usuario #btn-header-sair { display:none !important; }
+.header-menu-linha {
+  position: absolute !important;
+  right: max(12px, calc((100vw - 1180px) / 2)) !important;
+  top: 86px !important;
+  width: min(460px, calc(100vw - 28px)) !important;
+  background: rgba(255,255,255,.98) !important;
+  color: var(--fs-text) !important;
+  border: 1px solid var(--fs-border) !important;
+  border-radius: 26px !important;
+  box-shadow: var(--fs-shadow-strong) !important;
+  padding: 18px !important;
+  z-index: 20000 !important;
+}
+.header-menu-linha:not(.menu-aberto) { display:none !important; }
+.header-menu-linha.menu-aberto { display:block !important; }
+.header-user-card {
+  display: grid !important;
+  grid-template-columns: 54px minmax(0,1fr) !important;
+  gap: 13px !important;
+  align-items: center !important;
+  padding: 14px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg,#f8fbff,#eaf3ff) !important;
+  border: 1px solid var(--fs-border) !important;
+  margin-bottom: 12px !important;
+}
+.header-user-icon {
+  width: 54px !important; height: 54px !important; border-radius: 50% !important;
+  display:grid !important; place-items:center !important; background:#fff !important; color:var(--fs-blue) !important;
+}
+.header-user-icon svg { width:28px !important; height:28px !important; stroke:currentColor !important; fill:none !important; stroke-width:2.2 !important; }
+.header-user-text strong { display:block !important; color:var(--fs-text) !important; font-size:20px !important; line-height:1.15 !important; font-weight:950 !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
+.header-user-text small { display:block !important; color:#245eac !important; font-weight:800 !important; margin-top:3px !important; }
+.nav-menu, .nav-menu-compacto {
+  width:100% !important; margin:0 !important; padding:0 !important; list-style:none !important;
+  display:grid !important; grid-template-columns:1fr !important; gap:0 !important;
+}
+.nav-menu li { width:100% !important; border-bottom:1px solid #e8eef9 !important; }
+.nav-menu li:last-child { border-bottom:0 !important; }
+.nav-menu a, .nav-menu summary,
+.btn-menu-mobile-entrar, .btn-menu-mobile-sair {
+  width:100% !important; min-height:58px !important; display:flex !important; align-items:center !important; justify-content:flex-start !important;
+  gap:16px !important; padding:13px 14px !important; border-radius:15px !important; color:var(--fs-text) !important; -webkit-text-fill-color:var(--fs-text) !important;
+  background:#fff !important; text-decoration:none !important; font-size:18px !important; font-weight:950 !important; border:0 !important; box-shadow:none !important;
+}
+.nav-menu a:hover, .nav-menu a.ativo, .nav-menu .link-destaque-gerador,
+.nav-menu .link-destaque-gerador:hover, .nav-menu .link-destaque-gerador.ativo {
+  background: linear-gradient(135deg, var(--fs-blue), var(--fs-blue-2)) !important;
+  color:#fff !important; -webkit-text-fill-color:#fff !important;
+  box-shadow: 0 12px 24px rgba(20,99,255,.20) !important;
+}
+.fs-menu-ico { width:34px !important; min-width:34px !important; display:inline-grid !important; place-items:center !important; color:inherit !important; }
+.fs-menu-ico svg { width:28px !important; height:28px !important; stroke:currentColor !important; fill:none !important; stroke-width:2.2 !important; }
+.menu-mobile-auth { display:grid !important; gap:10px !important; padding-top:12px !important; }
+#btn-menu-mobile-entrar { background:linear-gradient(135deg,var(--fs-blue),var(--fs-blue-2)) !important; color:#fff !important; -webkit-text-fill-color:#fff !important; }
+#btn-menu-mobile-sair { background:linear-gradient(135deg,#ef4444,var(--fs-danger),#991b1b) !important; color:#fff !important; -webkit-text-fill-color:#fff !important; }
+#btn-menu-mobile-entrar *, #btn-menu-mobile-sair * { color:#fff !important; -webkit-text-fill-color:#fff !important; stroke:#fff !important; }
+
+/* CARDS, SEÇÕES E FORMULÁRIOS */
 body:not(.gerando-pdf) main,
-body:not(.gerando-pdf) section,
-body:not(.gerando-pdf) article,
-body:not(.gerando-pdf) aside,
 body:not(.gerando-pdf) .container,
-body:not(.gerando-pdf) .box,
-body:not(.gerando-pdf) .caixa,
+body:not(.gerando-pdf) .painel-container,
 body:not(.gerando-pdf) .card,
 body:not(.gerando-pdf) .fs-card,
-body:not(.gerando-pdf) .card-padrao,
-body:not(.gerando-pdf) .card-form,
-body:not(.gerando-pdf) .card-lista,
 body:not(.gerando-pdf) .dashboard-card,
-body:not(.gerando-pdf) .kpi-card,
-body:not(.gerando-pdf) .metric-card,
 body:not(.gerando-pdf) .forum-card,
 body:not(.gerando-pdf) .painel-card,
-body:not(.gerando-pdf) .relatorio-card,
-body:not(.gerando-pdf) .card-recorrente,
-body:not(.gerando-pdf) .manual-card,
 body:not(.gerando-pdf) .sobre-card,
 body:not(.gerando-pdf) .contato-card,
+body:not(.gerando-pdf) .manual-card,
+body:not(.gerando-pdf) .sidebar-card,
 body:not(.gerando-pdf) .modal-card,
 body:not(.gerando-pdf) .modal-content,
 body:not(.gerando-pdf) .modal-box,
-body:not(.gerando-pdf) .modal-pix-card,
-body:not(.gerando-pdf) .card-resumo,
-body:not(.gerando-pdf) .metrica-card,
-body:not(.gerando-pdf) .card-relatorio {
-  background: rgba(255, 255, 255, .96) !important;
-  color: var(--fs-texto) !important;
-  border-color: var(--fs-borda) !important;
-  box-shadow: 0 18px 42px rgba(20, 92, 255, .12), 0 1px 0 rgba(255, 255, 255, .8) inset !important;
+body:not(.gerando-pdf) .modal-pix-card {
+  background: rgba(255,255,255,.97) !important;
+  color: var(--fs-text) !important;
+  border-color: var(--fs-border) !important;
+  border-radius: var(--fs-radius-lg) !important;
+  box-shadow: var(--fs-shadow) !important;
 }
-
-body:not(.gerando-pdf) .main-header,
-body:not(.gerando-pdf) #header-container .main-header,
-body:not(.gerando-pdf) header.main-header,
-body:not(.gerando-pdf) #header-container,
-body:not(.gerando-pdf) .header-topo,
-body:not(.gerando-pdf) .header-shell,
-body:not(.gerando-pdf) .header-menu-linha,
-body:not(.gerando-pdf) .header-dropdown-menu {
-  background: rgba(255, 255, 255, .96) !important;
-  color: var(--fs-texto) !important;
-  border-color: var(--fs-borda) !important;
-  box-shadow: 0 12px 34px rgba(20, 92, 255, .16) !important;
-  backdrop-filter: blur(18px) !important;
-}
-
-body:not(.gerando-pdf) .home-hero-venda,
-body:not(.gerando-pdf) .home-hero,
-body:not(.gerando-pdf) .home-dashboard,
-body:not(.gerando-pdf) .home-resumo,
+body:not(.gerando-pdf) .fs-page-header,
+body:not(.gerando-pdf) .page-header,
 body:not(.gerando-pdf) .dashboard-hero,
 body:not(.gerando-pdf) .forum-hero,
 body:not(.gerando-pdf) .painel-header,
-body:not(.gerando-pdf) .fs-page-header,
-body:not(.gerando-pdf) .page-header,
 body:not(.gerando-pdf) .gerador-hero,
-body:not(.gerando-pdf) .relatorios-hero,
-body:not(.gerando-pdf) .planos-hero,
-body:not(.gerando-pdf) .sobre-hero,
-body:not(.gerando-pdf) .manual-hero,
-body:not(.gerando-pdf) .termos-hero,
-body:not(.gerando-pdf) .privacidade-hero,
-body:not(.gerando-pdf) .orcamentos-hero,
-body:not(.gerando-pdf) .painel-hero,
-body:not(.gerando-pdf) .container-sobre,
-body:not(.gerando-pdf) .container-termos,
-body:not(.gerando-pdf) .container-privacidade,
-body:not(.gerando-pdf) .home-premium-showcase,
-body:not(.gerando-pdf) .hero {
-  background: radial-gradient(circle at 90% 8%, rgba(20, 92, 255, .22), transparent 32%), radial-gradient(circle at 12% 20%, rgba(25, 199, 164, .10), transparent 26%), linear-gradient(135deg, #ffffff 0%, #f5f9ff 62%, #eaf3ff 100%) !important;
-  color: var(--fs-texto) !important;
-  border-color: var(--fs-borda) !important;
-  border-top-color: var(--fs-azul-500) !important;
-  box-shadow: 0 22px 48px rgba(20, 92, 255, .14) !important;
+body:not(.gerando-pdf) .hero,
+body:not(.gerando-pdf) .home-hero,
+body:not(.gerando-pdf) .home-hero-venda {
+  background: radial-gradient(circle at 92% 10%, rgba(245,182,37,.18), transparent 30%), linear-gradient(135deg,#fff 0%, #f8fbff 58%, #eaf3ff 100%) !important;
+  border: 1px solid var(--fs-border) !important;
+  border-top: 5px solid var(--fs-blue) !important;
+  border-radius: var(--fs-radius-lg) !important;
+  box-shadow: var(--fs-shadow) !important;
 }
-
 body:not(.gerando-pdf) h1,
 body:not(.gerando-pdf) h2,
 body:not(.gerando-pdf) h3,
 body:not(.gerando-pdf) h4,
-body:not(.gerando-pdf) .titulo,
-body:not(.gerando-pdf) .subtitulo,
-body:not(.gerando-pdf) .card-title,
-body:not(.gerando-pdf) .fs-page-header h1,
-body:not(.gerando-pdf) .page-header h1,
-body:not(.gerando-pdf) .dashboard-hero h1,
-body:not(.gerando-pdf) .forum-hero h1,
-body:not(.gerando-pdf) .painel-header h1,
-body:not(.gerando-pdf) .gerador-hero h1,
-body:not(.gerando-pdf) .relatorios-hero h1,
-body:not(.gerando-pdf) .section-topo h2,
 body:not(.gerando-pdf) label,
-body:not(.gerando-pdf) .campo label,
-body:not(.gerando-pdf) .card strong,
-body:not(.gerando-pdf) .card-resumo strong,
-body:not(.gerando-pdf) .metrica-card strong {
-  color: var(--fs-azul-950) !important;
-}
-
+body:not(.gerando-pdf) strong { color: var(--fs-text) !important; }
 body:not(.gerando-pdf) p,
 body:not(.gerando-pdf) small,
 body:not(.gerando-pdf) .muted,
-body:not(.gerando-pdf) .text-muted,
-body:not(.gerando-pdf) .descricao,
-body:not(.gerando-pdf) .card-desc,
-body:not(.gerando-pdf) .home-lead,
-body:not(.gerando-pdf) .campo small,
-body:not(.gerando-pdf) .info-item span,
-body:not(.gerando-pdf) .texto-bloco,
-body:not(.gerando-pdf) .valor-linha span {
-  color: var(--fs-texto-suave) !important;
-}
-
-body:not(.gerando-pdf) .text-primary,
-body:not(.gerando-pdf) .destaque,
-body:not(.gerando-pdf) .home-destaque,
-body:not(.gerando-pdf) .preco,
-body:not(.gerando-pdf) .mock-total,
-body:not(.gerando-pdf) .total,
-body:not(.gerando-pdf) .total strong,
-body:not(.gerando-pdf) .metric strong,
-body:not(.gerando-pdf) .met strong {
-  color: var(--fs-azul-500) !important;
-}
-
-body:not(.gerando-pdf) .card-header,
-body:not(.gerando-pdf) .modal-pix-topo,
-body:not(.gerando-pdf) .mock-card-head,
-body:not(.gerando-pdf) .orcamento-whatsapp-header,
-body:not(.gerando-pdf) .home-orcamento-whatsapp-header,
-body:not(.gerando-pdf) .total-container,
-body:not(.gerando-pdf) .valor-total,
-body:not(.gerando-pdf) .home-cliente-total,
-body:not(.gerando-pdf) .manual-flow div,
-body:not(.gerando-pdf) .mini-dashboard,
-body:not(.gerando-pdf) .auth-logo-box,
-body:not(.gerando-pdf) .banner-topo,
-body:not(.gerando-pdf) .mock-head,
-body:not(.gerando-pdf) .head,
-body:not(.gerando-pdf) th,
-body:not(.gerando-pdf) thead,
-body:not(.gerando-pdf) .table th,
-body:not(.gerando-pdf) .tabela th,
-body:not(.gerando-pdf) .fs-table th {
-  background: linear-gradient(135deg, var(--fs-azul-900), var(--fs-azul-700), var(--fs-azul-500)) !important;
-  color: #ffffff !important;
-  border-color: var(--fs-azul-600) !important;
-  box-shadow: 0 10px 22px rgba(20, 92, 255, .20) !important;
-}
-
-body:not(.gerando-pdf) .card-header *,
-body:not(.gerando-pdf) .modal-pix-topo *,
-body:not(.gerando-pdf) .total-container *,
-body:not(.gerando-pdf) .valor-total *,
-body:not(.gerando-pdf) .auth-logo-box *,
-body:not(.gerando-pdf) .banner-topo *,
-body:not(.gerando-pdf) .head *,
-body:not(.gerando-pdf) th * {
-  color: #ffffff !important;
-  opacity: 1 !important;
-  text-shadow: none !important;
-}
-
-body:not(.gerando-pdf) button,
-body:not(.gerando-pdf) .btn,
-body:not(.gerando-pdf) .fs-btn,
-body:not(.gerando-pdf) .btn-primary,
-body:not(.gerando-pdf) .fs-btn-primary,
-body:not(.gerando-pdf) .dashboard-btn,
-body:not(.gerando-pdf) .forum-btn,
-body:not(.gerando-pdf) .btn-add,
-body:not(.gerando-pdf) .btn-extra,
-body:not(.gerando-pdf) .btn-primario,
-body:not(.gerando-pdf) .btn-salvar,
-body:not(.gerando-pdf) .btn-download,
-body:not(.gerando-pdf) .btn-acao-pdf,
-body:not(.gerando-pdf) .btn-previa-profissional,
-body:not(.gerando-pdf) .btn-hero-principal,
-body:not(.gerando-pdf) .btn-ir-planos-home,
-body:not(.gerando-pdf) .btn-home-planos-forte,
-body:not(.gerando-pdf) .btn-home-grande,
-body:not(.gerando-pdf) .btn-home-medio,
-body:not(.gerando-pdf) .btn-gerar-orcamento-home,
-body:not(.gerando-pdf) .btn-editar-dados-empresa,
-body:not(.gerando-pdf) .btn-toggle-form-mobile,
-body:not(.gerando-pdf) .btn-toggle-lista-mobile,
-body:not(.gerando-pdf) .btn-header-entrar,
-body:not(.gerando-pdf) .btn-header-sair,
-body:not(.gerando-pdf) .menu-mobile-btn,
-body:not(.gerando-pdf) .btn-menu-mobile-entrar,
-body:not(.gerando-pdf) .btn-menu-mobile-sair,
-body:not(.gerando-pdf) .plano-pix-card button,
-body:not(.gerando-pdf) .gestao-tab.ativo,
-body:not(.gerando-pdf) a.btn.primary {
-  background: linear-gradient(135deg, #2f7bff 0%, #145cff 45%, #0b3fae 100%) !important;
-  color: #ffffff !important;
-  border-color: #2f7bff !important;
-  box-shadow: 0 14px 30px rgba(20, 92, 255, .30), 0 0 0 1px rgba(255, 255, 255, .18) inset !important;
-  text-shadow: none !important;
-}
-
-body:not(.gerando-pdf) button:hover,
-body:not(.gerando-pdf) .btn:hover,
-body:not(.gerando-pdf) .fs-btn:hover,
-body:not(.gerando-pdf) .btn-primary:hover,
-body:not(.gerando-pdf) .fs-btn-primary:hover,
-body:not(.gerando-pdf) .dashboard-btn:hover,
-body:not(.gerando-pdf) .forum-btn:hover,
-body:not(.gerando-pdf) .btn-add:hover,
-body:not(.gerando-pdf) .btn-extra:hover,
-body:not(.gerando-pdf) .btn-primario:hover,
-body:not(.gerando-pdf) .btn-salvar:hover,
-body:not(.gerando-pdf) .btn-download:hover,
-body:not(.gerando-pdf) .btn-acao-pdf:hover,
-body:not(.gerando-pdf) .btn-toggle-form-mobile:hover,
-body:not(.gerando-pdf) .btn-toggle-lista-mobile:hover,
-body:not(.gerando-pdf) .gestao-tab.ativo:hover {
-  background: linear-gradient(135deg, #6aa7ff 0%, #145cff 55%, #0f49d9 100%) !important;
-  color: #ffffff !important;
-  border-color: #6aa7ff !important;
-}
-
-body:not(.gerando-pdf) .btn-secondary,
-body:not(.gerando-pdf) .fs-btn-secondary,
-body:not(.gerando-pdf) .btn-secundario,
-body:not(.gerando-pdf) .dashboard-btn-secundario,
-body:not(.gerando-pdf) .forum-btn-secundario,
-body:not(.gerando-pdf) .btn-limpar,
-body:not(.gerando-pdf) .btn-senha,
-body:not(.gerando-pdf) .btn-outline,
-body:not(.gerando-pdf) .btn-light,
-body:not(.gerando-pdf) .home-btn-secondary,
-body:not(.gerando-pdf) .btn-home-atalho,
-body:not(.gerando-pdf) .gestao-tab,
-body:not(.gerando-pdf) a.btn:not(.primary) {
-  background: rgba(255, 255, 255, .96) !important;
-  color: var(--fs-azul-600) !important;
-  border-color: var(--fs-azul-200) !important;
-  box-shadow: 0 12px 28px rgba(20, 92, 255, .10) !important;
-}
-
-body:not(.gerando-pdf) .btn-secondary:hover,
-body:not(.gerando-pdf) .fs-btn-secondary:hover,
-body:not(.gerando-pdf) .btn-secundario:hover,
-body:not(.gerando-pdf) .dashboard-btn-secundario:hover,
-body:not(.gerando-pdf) .forum-btn-secundario:hover,
-body:not(.gerando-pdf) .btn-limpar:hover,
-body:not(.gerando-pdf) .btn-senha:hover,
-body:not(.gerando-pdf) .btn-outline:hover,
-body:not(.gerando-pdf) .btn-light:hover,
-body:not(.gerando-pdf) .home-btn-secondary:hover,
-body:not(.gerando-pdf) .btn-home-atalho:hover,
-body:not(.gerando-pdf) .gestao-tab:hover {
-  background: var(--fs-azul-100) !important;
-  color: var(--fs-azul-800) !important;
-  border-color: var(--fs-azul-300) !important;
-}
-
-body:not(.gerando-pdf) .btn-whatsapp,
-body:not(.gerando-pdf) .btn-verde,
-body:not(.gerando-pdf) .btn.ok,
-body:not(.gerando-pdf) .ok,
-body:not(.gerando-pdf) .mock-body .btn.primary:last-child {
-  background: linear-gradient(135deg, #21d6b1 0%, #19c7a4 52%, #08a985 100%) !important;
-  color: #ffffff !important;
-  border-color: #19c7a4 !important;
-  box-shadow: 0 14px 30px rgba(25, 199, 164, .30), 0 0 0 1px rgba(255, 255, 255, .20) inset !important;
-}
-
-body:not(.gerando-pdf) .btn-danger,
-body:not(.gerando-pdf) .fs-btn-danger,
-body:not(.gerando-pdf) .btn-perigo,
-body:not(.gerando-pdf) .btn-remove,
-body:not(.gerando-pdf) .btn-excluir-conta {
-  background: #fff5f5 !important;
-  color: #b91c1c !important;
-  border-color: #fecaca !important;
-}
-
+body:not(.gerando-pdf) .text-muted { color: var(--fs-muted) !important; }
+body:not(.gerando-pdf) label { text-transform: uppercase !important; letter-spacing:.045em !important; font-size:12px !important; font-weight:950 !important; }
 body:not(.gerando-pdf) input,
 body:not(.gerando-pdf) select,
-body:not(.gerando-pdf) textarea,
-body:not(.gerando-pdf) .campo,
-body:not(.gerando-pdf) .form-control,
-body:not(.gerando-pdf) #auth-container input,
-body:not(.gerando-pdf) .auth-container-index input,
-body:not(.gerando-pdf) #auth-container .btn-social-login,
-body:not(.gerando-pdf) #auth-container .btn-google,
-body:not(.gerando-pdf) .auth-container-index .btn-social-login,
-body:not(.gerando-pdf) .auth-container-index .btn-google {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
-  border-color: var(--fs-azul-200) !important;
+body:not(.gerando-pdf) textarea {
+  background:#fff !important; color:var(--fs-text) !important; border:1px solid var(--fs-border) !important;
+  border-radius:14px !important; box-shadow:none !important;
 }
-
 body:not(.gerando-pdf) input::placeholder,
-body:not(.gerando-pdf) textarea::placeholder {
-  color: var(--fs-azul-400) !important;
-  opacity: 1 !important;
-}
-
+body:not(.gerando-pdf) textarea::placeholder { color:#93a7c3 !important; opacity:1 !important; }
 body:not(.gerando-pdf) input:focus,
 body:not(.gerando-pdf) select:focus,
-body:not(.gerando-pdf) textarea:focus {
-  border-color: var(--fs-azul-500) !important;
-  box-shadow: 0 0 0 3px rgba(20, 92, 255, .18) !important;
-  outline: none !important;
+body:not(.gerando-pdf) textarea:focus { border-color:var(--fs-blue) !important; box-shadow:0 0 0 3px rgba(20,99,255,.14) !important; }
+
+/* BOTÕES GLOBAIS */
+.btn-primary,.fs-btn-primary,.btn.primary,.dashboard-btn,.forum-btn,.btn-add,.btn-extra,.btn-gerar-orcamento-painel,
+button.btn-primary,a.btn-primary {
+  background: linear-gradient(135deg,var(--fs-blue),var(--fs-blue-2)) !important;
+  color:#fff !important; -webkit-text-fill-color:#fff !important; border-color:rgba(20,99,255,.40) !important;
+  box-shadow:0 14px 28px rgba(20,99,255,.20) !important;
 }
-
-body:not(.gerando-pdf) table,
-body:not(.gerando-pdf) .tabela,
-body:not(.gerando-pdf) .fs-table,
-body:not(.gerando-pdf) .comparativo,
-body:not(.gerando-pdf) .manual-table,
-body:not(.gerando-pdf) .tabela-comparativo,
-body:not(.gerando-pdf) .home-tabela-comparativo {
-  background: #ffffff !important;
-  color: var(--fs-texto) !important;
+.btn-secondary,.fs-btn-secondary,.btn.secondary,.dashboard-btn-secundario,.forum-btn-secundario,
+button.btn-secondary,a.btn-secondary {
+  background:#fff !important; color:var(--fs-blue-2) !important; -webkit-text-fill-color:var(--fs-blue-2) !important;
+  border:1px solid var(--fs-border) !important;
 }
-
-body:not(.gerando-pdf) td,
-body:not(.gerando-pdf) .tabela td,
-body:not(.gerando-pdf) .fs-table td,
-body:not(.gerando-pdf) .comparativo td,
-body:not(.gerando-pdf) .manual-table td {
-  color: var(--fs-texto) !important;
-  border-color: var(--fs-borda) !important;
+.btn-premium,.btn.gold,.fs-btn-premium {
+  background: linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important;
+  color:#fff !important; -webkit-text-fill-color:#fff !important; border:1px solid rgba(245,182,37,.65) !important;
+  box-shadow:0 16px 32px rgba(7,20,47,.22) !important;
 }
+.btn-premium::before,.btn.gold::before { content:'✦'; color:var(--fs-gold); margin-right:4px; }
+.btn-success,.fs-btn-success,.btn-aprovar { background:linear-gradient(135deg,#22c55e,var(--fs-success)) !important; color:#fff !important; border-color:#16a34a !important; }
+.btn-whatsapp,.dashboard-btn-whatsapp,.btn-whatsapp-empresa { background:linear-gradient(135deg,#25d366,var(--fs-whatsapp)) !important; color:#052e16 !important; border-color:#16a34a !important; }
+.btn-danger,.fs-btn-danger,.forum-btn-perigo,.btn-remove,.btn-excluir-conta,.btn-recusar { background:var(--fs-danger-soft) !important; color:var(--fs-danger) !important; border:1px solid #fecaca !important; }
 
-body:not(.gerando-pdf) tr:hover,
-body:not(.gerando-pdf) .tabela tr:hover,
-body:not(.gerando-pdf) .fs-table tr:hover,
-body:not(.gerando-pdf) tbody tr:nth-child(even),
-body:not(.gerando-pdf) tr:nth-child(even) {
-  background: var(--fs-azul-50) !important;
+/* TABELAS, STATUS E RODAPÉS */
+th,.fs-table th,.tabela th,thead { background:linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important; color:#fff !important; }
+th *, .tabela th * { color:#fff !important; }
+.fs-badge,.badge,.status-badge,.plano-badge { border-radius:999px !important; }
+.status-pendente { background:#fff7d7 !important; color:#8a6400 !important; border:1px solid rgba(245,182,37,.55) !important; }
+.status-aprovado { background:#ecfdf3 !important; color:#166534 !important; border:1px solid #bbf7d0 !important; }
+.status-recusado { background:#fff1f1 !important; color:#b91c1c !important; border:1px solid #fecaca !important; }
+footer,.site-footer,.footer,.forum-footer { background:transparent !important; color:var(--fs-muted) !important; }
+footer a,.site-footer a,.footer a,.forum-footer a { color:var(--fs-blue-2) !important; }
+
+/* MODAL LOGIN PREMIUM */
+.modal-login-overlay { background:rgba(7,20,47,.76) !important; backdrop-filter:blur(7px) !important; }
+.modal-login-box { border-radius:26px !important; border:1px solid var(--fs-border) !important; overflow:hidden !important; box-shadow:var(--fs-shadow-strong) !important; }
+.modal-login-box .auth-logo-box { margin:-20px -20px 20px !important; padding:24px 20px !important; background:linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important; color:#fff !important; border-bottom:3px solid var(--fs-gold) !important; }
+.modal-login-box .auth-logo-box * { color:#fff !important; }
+.btn-fechar-login { background:linear-gradient(135deg,var(--fs-blue),var(--fs-blue-2)) !important; color:#fff !important; border:1px solid rgba(255,255,255,.35) !important; }
+.btn-principal-index { background:linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important; color:#fff !important; border:1px solid var(--fs-gold) !important; box-shadow:0 14px 30px rgba(7,20,47,.22) !important; }
+
+@media (min-width: 901px) {
+  .header-menu-linha { display:none !important; }
+  .header-menu-linha.menu-aberto { display:block !important; }
+  .menu-mobile-btn { display:inline-flex !important; align-items:center !important; justify-content:center !important; }
 }
-
-body:not(.gerando-pdf) .fs-badge,
-body:not(.gerando-pdf) .badge,
-body:not(.gerando-pdf) .status-badge,
-body:not(.gerando-pdf) .forum-badge,
-body:not(.gerando-pdf) .plano-badge,
-body:not(.gerando-pdf) .tag,
-body:not(.gerando-pdf) .agenda-tag,
-body:not(.gerando-pdf) .agenda-chip,
-body:not(.gerando-pdf) .tag-premium,
-body:not(.gerando-pdf) .placa-badge,
-body:not(.gerando-pdf) .status-pill {
-  background: linear-gradient(135deg, #ffffff, var(--fs-azul-100)) !important;
-  color: var(--fs-azul-700) !important;
-  border-color: var(--fs-azul-200) !important;
-  box-shadow: 0 8px 18px rgba(20, 92, 255, .08) !important;
+@media (max-width: 900px) {
+  .header-shell,.header-topo { width:min(100% - 18px,1180px) !important; grid-template-columns:minmax(0,1fr) auto !important; min-height:78px !important; }
+  .logo-fs { width:54px !important; height:54px !important; min-width:54px !important; }
+  .logo-orcamentos { font-size:clamp(22px,7vw,30px) !important; }
+  .header-usuario { justify-content:flex-end !important; }
+  .btn-notificacoes-header { display:none !important; }
+  .menu-mobile-btn { width:54px !important; min-width:54px !important; }
+  .header-menu-linha { top:84px !important; left:14px !important; right:14px !important; width:auto !important; }
 }
-
-body:not(.gerando-pdf) .tag.ativo,
-body:not(.gerando-pdf) .status.verde,
-body:not(.gerando-pdf) .status.aprovado,
-body:not(.gerando-pdf) .badge.aprovado,
-body:not(.gerando-pdf) .badge-verde,
-body:not(.gerando-pdf) .sucesso,
-body:not(.gerando-pdf) .aprovado,
-body:not(.gerando-pdf) .pago,
-body:not(.gerando-pdf) .recebido,
-body:not(.gerando-pdf) .notificacao-aprovado,
-body:not(.gerando-pdf) .status-pill.em_execucao {
-  color: #05765f !important;
-  background: var(--fs-verde-100) !important;
-  border-color: #a7f3e5 !important;
-}
-
-body:not(.gerando-pdf) .status.alerta,
-body:not(.gerando-pdf) .badge-alerta,
-body:not(.gerando-pdf) .pendente,
-body:not(.gerando-pdf) .aguardando,
-body:not(.gerando-pdf) .index-aviso-login {
-  color: var(--fs-azul-700) !important;
-  background: var(--fs-azul-100) !important;
-  border-color: var(--fs-azul-200) !important;
-}
-
-body:not(.gerando-pdf) .status.erro,
-body:not(.gerando-pdf) .status.vermelho,
-body:not(.gerando-pdf) .recusado,
-body:not(.gerando-pdf) .cancelado,
-body:not(.gerando-pdf) .tag.inativo,
-body:not(.gerando-pdf) .status-pill.cancelado,
-body:not(.gerando-pdf) .status-pill.atrasado,
-body:not(.gerando-pdf) .notificacao-recusado {
-  color: #991b1b !important;
-  background: #fee2e2 !important;
-  border-color: #fecaca !important;
-}
-
-body:not(.gerando-pdf) .logo-fs,
-body:not(.gerando-pdf) .logo-nav .logo-fs,
-body:not(.gerando-pdf) .logo-nav > span:first-child,
-body:not(.gerando-pdf) .fs-box,
-body:not(.gerando-pdf) .sobre-fs-box {
-  background: linear-gradient(135deg, #2f7bff 0%, #145cff 45%, #0b3fae 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(20, 92, 255, .42) !important;
-  box-shadow: 0 14px 28px rgba(20, 92, 255, .32) !important;
-}
-
-html.fs-embed body,
-body.modo-embed-gestao,
-body.fs-gestao-tema-cinza {
-  padding-top: 0 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%) !important;
-  color: var(--fs-texto) !important;
-}
-
-body:not(.gerando-pdf) .gestao-tabs-wrap {
-  background: #ffffff !important;
-  border-bottom-color: var(--fs-borda) !important;
-  box-shadow: 0 2px 8px rgba(20, 92, 255, .10) !important;
-}
-
-body:not(.gerando-pdf) footer,
-body:not(.gerando-pdf) .footer,
-body:not(.gerando-pdf) .site-footer,
-body:not(.gerando-pdf) .forum-footer,
-body:not(.gerando-pdf) .fs-footer-legal,
-body:not(.gerando-pdf) .fs-footer-index {
-  background: var(--fs-azul-50) !important;
-  color: var(--fs-texto-suave) !important;
-  border-color: var(--fs-borda) !important;
-}
-
-body:not(.gerando-pdf) footer a,
-body:not(.gerando-pdf) .site-footer a,
-body:not(.gerando-pdf) .footer a,
-body:not(.gerando-pdf) .forum-footer a,
-body:not(.gerando-pdf) .fs-footer-legal a,
-body:not(.gerando-pdf) .fs-footer-legal-links a,
-body:not(.gerando-pdf) .fs-footer-index a {
-  color: var(--fs-azul-600) !important;
-}
-
-body.gerando-pdf,
-body.gerando-pdf * { color: inherit; }
-
-@media (max-width: 860px) {
-  body:not(.gerando-pdf) .nav-menu,
-  body:not(.gerando-pdf) .nav-menu-compacto,
-  body:not(.gerando-pdf) .header-menu-linha {
-    background: rgba(255, 255, 255, .98) !important;
-    border-color: var(--fs-borda) !important;
-    box-shadow: 0 20px 46px rgba(20, 92, 255, .18) !important;
-  }
-
-  body:not(.gerando-pdf) .nav-menu a,
-  body:not(.gerando-pdf) .nav-menu summary,
-  body:not(.gerando-pdf) .nav-menu-compacto a,
-  body:not(.gerando-pdf) .nav-menu-compacto summary {
-    color: var(--fs-azul-950) !important;
-  }
+@media (max-width: 380px) {
+  .logo-nav { gap:10px !important; }
+  .logo-fs { width:48px !important; height:48px !important; min-width:48px !important; font-size:24px !important; }
+  .logo-orcamentos { font-size:22px !important; }
+  .menu-mobile-btn { width:50px !important; min-width:50px !important; height:50px !important; }
+  .header-menu-linha { padding:12px !important; border-radius:22px !important; }
+  .nav-menu a,.nav-menu summary,.btn-menu-mobile-entrar,.btn-menu-mobile-sair { font-size:16px !important; min-height:54px !important; }
 }
