@@ -7,249 +7,31 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
-    :root {
-      --ver-cor-primaria: #111827;
-      --ver-cor-secundaria: #1f2937;
-      --ver-cor-destaque: #ffc400;
-      --ver-cor-fundo: #f3f4f6;
-      --ver-cor-borda: #e5e7eb;
-      --ver-cor-texto: #111827;
-      --ver-cor-texto-suave: #4b5563;
-      --ver-cor-topo: #ffffff;
-      --ver-cor-pagina: #f1f3f6;
-    }
-
-    * { box-sizing: border-box; }
-    body { margin: 0; padding: 18px; background: var(--ver-cor-pagina); font-family: Arial, Helvetica, sans-serif; color: var(--ver-cor-texto); }
-    .pagina-ver { max-width: 860px; margin: 25px auto; background: #ffffff; border-radius: 18px; padding: 26px; box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12); }
-    .ver-emissor-topo { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: center; background: linear-gradient(135deg, var(--ver-cor-primaria), var(--ver-cor-secundaria)); color: var(--ver-cor-topo); border-bottom: 5px solid var(--ver-cor-destaque); border-radius: 18px; padding: 20px; margin-bottom: 22px; box-shadow: 0 12px 28px rgba(15, 23, 42, 0.22); }
-    .ver-logo-box { width: 120px; height: 96px; background: #ffffff; border-radius: 15px; border: 2px solid var(--ver-cor-destaque); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .ver-logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
-    #ver-logo-placeholder { font-size: 32px; font-weight: 900; color: var(--ver-cor-primaria); background: var(--ver-cor-destaque); padding: 8px 12px; border-radius: 10px; }
-    .ver-emissor-info .ver-label { display: block; color: var(--ver-cor-destaque); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
-    .ver-emissor-info h1 { margin: 0; color: var(--ver-cor-destaque); font-size: 30px; line-height: 1.12; word-break: break-word; text-align: left; }
-    .ver-emissor-info p { margin: 8px 0 12px; color: var(--ver-cor-topo); font-size: 15px; font-weight: 700; }
-    .ver-emissor-dados { display: flex; flex-wrap: wrap; gap: 8px; }
-    .ver-emissor-dados span { display: none; background: rgba(255,255,255,0.10); border: 1px solid var(--ver-cor-destaque); color: var(--ver-cor-topo); border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 700; }
-    .numero-orcamento { text-align: center; display: none; margin: 0 auto 8px; color: var(--ver-cor-primaria); font-size: 14px; font-weight: 900; background: var(--ver-cor-fundo); border: 1px solid var(--ver-cor-borda); border-left: 5px solid var(--ver-cor-destaque); border-radius: 999px; padding: 8px 14px; width: fit-content; }
-    h1#titulo-orcamento { text-align: center; font-size: 30px; margin: 18px 0 18px; color: var(--ver-cor-primaria); }
-    .linha-divisoria { height: 3px; background: var(--ver-cor-destaque); margin: 0 0 24px; border-radius: 20px; opacity: .85; }
-    .box-info, .observacoes-box, .msg-resposta, .veiculo-orcamento-box { background: var(--ver-cor-fundo); border: 1px solid var(--ver-cor-borda); border-left: 6px solid var(--ver-cor-destaque); border-radius: 12px; padding: 18px; margin-bottom: 22px; font-size: 17px; line-height: 1.7; color: var(--ver-cor-texto); }
-    .box-info strong, .observacoes-box strong, .veiculo-orcamento-box strong { color: var(--ver-cor-primaria); }
-    .veiculo-orcamento-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; margin-top: 8px; font-size: 14px; }
-    .status { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; text-transform: uppercase; }
-    .status-pendente { background: #fff3cd; color: #856404; }
-    .status-aprovado { background: #d4edda; color: #155724; }
-    .status-recusado { background: #f8d7da; color: #721c24; }
-    .status-em_servico { background: #dbeafe; color: #1e40af; }
-    .status-finalizado { background: #ede9fe; color: #5b21b6; }
-    .tabela-wrapper { width: 100%; overflow-x: auto; margin-top: 16px; border-radius: 12px; border: 1px solid var(--ver-cor-borda); }
-    table { width: 100%; border-collapse: collapse; min-width: 520px; background: #fff; }
-    th { background: var(--ver-cor-primaria); color: var(--ver-cor-destaque); text-align: left; padding: 14px; font-size: 15px; }
-    th:last-child, td:last-child { text-align: right; }
-    td { padding: 13px 14px; border-bottom: 1px solid var(--ver-cor-borda); font-size: 16px; color: var(--ver-cor-texto); }
-    tbody tr:nth-child(even) { background: #f9fafb; }
-    .total-box { text-align: right; font-size: 28px; font-weight: 900; margin-top: 26px; padding: 20px; border-top: 4px solid var(--ver-cor-destaque); background: var(--ver-cor-fundo); color: var(--ver-cor-primaria); border-radius: 12px; }
-    .botoes-status, .botoes-cliente { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
-    .btn-status, .btn-download-pdf { border: none; border-radius: 14px; padding: 16px 12px; font-size: 16px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: .5px; box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16); transition: .2s ease; text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-    .btn-recusar { background: #d32f2f; color: #fff; }
-    .btn-aprovar { background: #2e7d32; color: #fff; }
-    .btn-download-pdf { background: var(--ver-cor-primaria); color: var(--ver-cor-destaque); border: 2px solid var(--ver-cor-destaque); }
-    .msg { padding: 18px; border-radius: 12px; text-align: center; font-weight: bold; margin-top: 20px; line-height: 1.5; }
-    .msg-carregando { background: #fff3cd; color: #856404; }
-    .msg-erro { background: #f8d7da; color: #721c24; }
-    .msg-sucesso { background: #d4edda; color: #155724; }
-    .msg-resposta { text-align: left; }
-    .whatsapp-empresa-box { margin-top: 22px; text-align: center; display: none; }
-    .btn-whatsapp-empresa { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #25d366; color: #073b1d; border: 2px solid #1fb957; border-radius: 999px; padding: 13px 18px; font-size: 15px; font-weight: 900; text-decoration: none; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16); }
-    .rodape { margin-top: 28px; text-align: center; color: #777; font-size: 12px; border-top: 1px dashed #ccc; padding-top: 16px; }
-    .modal-pagamento-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.72); display: none; align-items: center; justify-content: center; z-index: 20000; padding: 18px; }
-    .modal-pagamento-card { width: min(100%, 430px); background: #ffffff; color: var(--ver-cor-primaria); border-radius: 18px; border-top: 6px solid var(--ver-cor-destaque); padding: 22px; box-shadow: 0 20px 55px rgba(15, 23, 42, 0.45); text-align: center; }
-    .modal-pagamento-card h3 { margin: 0 0 8px; font-size: 24px; color: var(--ver-cor-primaria); }
-    .modal-pagamento-card p { margin: 0 0 18px; color: var(--ver-cor-texto-suave); }
-    .formas-pagamento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .formas-pagamento-grid button, .btn-cancelar-pagamento { border: 1px solid var(--ver-cor-borda); background: var(--ver-cor-fundo); color: var(--ver-cor-primaria); border-radius: 12px; padding: 13px 10px; font-weight: 900; cursor: pointer; }
-    .btn-cancelar-pagamento { margin-top: 14px; width: 100%; background: #fff5f5; color: #b91c1c; border-color: #fecaca; }
-    .gerar-os-box, .btn-gerar-os { display: none !important; }
-    @media (max-width: 720px) { body { padding: 8px; } .pagina-ver { padding: 18px; margin: 10px auto; } .ver-emissor-topo { grid-template-columns: 1fr; text-align: center; } .ver-logo-box { margin: 0 auto; } .ver-emissor-info h1 { text-align: center; font-size: 24px; } .ver-emissor-dados { justify-content: center; } .botoes-status, .botoes-cliente, .formas-pagamento-grid, .veiculo-orcamento-grid { grid-template-columns: 1fr; } h1#titulo-orcamento { font-size: 24px; } .total-box { font-size: 22px; } }
-    @media print { body { background: #fff; padding: 0; } .pagina-ver { box-shadow: none; margin: 0; max-width: none; border-radius: 0; } .botoes-status, .botoes-cliente, .whatsapp-empresa-box, .rodape { display: none !important; } }
+    :root{--ver-cor-primaria:#07142f;--ver-cor-secundaria:#0b1f46;--ver-cor-destaque:#f5b625;--ver-azul:#1463ff;--ver-fundo:#f4f8ff;--ver-borda:#d8e6ff;--ver-texto:#06122f;--ver-muted:#64748b;--ver-success:#16a34a;--ver-whatsapp:#22c55e;--ver-danger:#dc2626;--ver-danger-soft:#fff1f1;--ver-shadow:0 18px 40px rgba(7,20,47,.12)}
+    *{box-sizing:border-box}body{margin:0;padding:14px;background:radial-gradient(circle at 12% 0%,rgba(245,182,37,.16),transparent 30%),radial-gradient(circle at 88% 4%,rgba(20,99,255,.18),transparent 28%),linear-gradient(180deg,#fff 0%,var(--ver-fundo) 52%,#eaf3ff 100%);font-family:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;color:var(--ver-texto)}
+    .pagina-ver{max-width:900px;margin:18px auto;background:#fff;border:1px solid var(--ver-borda);border-radius:28px;padding:18px;box-shadow:var(--ver-shadow);overflow:hidden}.ver-emissor-topo{position:relative;display:grid;gap:18px;align-items:center;background:radial-gradient(circle at 88% 18%,rgba(245,182,37,.16),transparent 35%),linear-gradient(135deg,var(--ver-cor-primaria),var(--ver-cor-secundaria));color:#fff;border:1px solid rgba(245,182,37,.35);border-bottom:5px solid var(--ver-cor-destaque);border-radius:26px;padding:24px 20px 18px;margin-bottom:20px;box-shadow:0 18px 38px rgba(7,20,47,.28);text-align:center}.ver-emissor-topo::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:18px;background:linear-gradient(90deg,transparent,var(--ver-cor-destaque),transparent);opacity:.55;filter:blur(6px)}
+    .ver-logo-box{width:118px;height:118px;margin:0 auto;background:#fff;border-radius:50%;border:3px solid var(--ver-cor-destaque);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 0 8px rgba(245,182,37,.08),0 18px 32px rgba(0,0,0,.22)}.ver-logo-box img{max-width:92%;max-height:92%;object-fit:contain;display:none}#ver-logo-placeholder{font-size:34px;font-weight:950;color:#fff;background:linear-gradient(135deg,var(--ver-azul),#0b49c9);padding:16px 14px;border-radius:20px}.ver-label{display:block;color:var(--ver-cor-destaque);font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.ver-emissor-info h1{margin:0;color:#fff;font-size:clamp(28px,6vw,42px);line-height:1.08;letter-spacing:-.04em}.ver-emissor-info p{margin:10px 0 14px;color:#cfe1ff;font-size:16px;font-weight:850}.ver-emissor-dados{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.ver-emissor-dados span{display:none;align-items:center;justify-content:center;min-height:52px;background:rgba(255,255,255,.06);border:1px solid rgba(245,182,37,.75);color:#fff;border-radius:16px;padding:8px 10px;font-size:12px;font-weight:850;line-height:1.25;word-break:break-word}.numero-orcamento{text-align:center;display:none;margin:0 auto 18px;color:var(--ver-texto);font-size:15px;font-weight:950;background:#fff;border:1px solid var(--ver-borda);border-left:5px solid var(--ver-cor-destaque);border-radius:999px;padding:10px 18px;width:fit-content;box-shadow:0 10px 24px rgba(7,20,47,.08)}h1#titulo-orcamento{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;font-size:clamp(27px,5.2vw,38px);margin:20px 0 16px;color:var(--ver-texto);letter-spacing:-.04em}h1#titulo-orcamento::before{content:"📄"}.linha-divisoria{height:3px;background:linear-gradient(90deg,transparent,var(--ver-cor-destaque),transparent);margin:0 0 22px;border-radius:20px}.box-info,.observacoes-box,.msg-resposta,.veiculo-orcamento-box{background:#fff;border:1px solid var(--ver-borda);border-left:6px solid var(--ver-cor-destaque);border-radius:18px;padding:18px;margin-bottom:20px;font-size:17px;line-height:1.72;color:var(--ver-texto);box-shadow:0 12px 28px rgba(7,20,47,.08)}.box-info strong,.observacoes-box strong,.veiculo-orcamento-box strong{color:var(--ver-texto)}.status{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase}.status-pendente{background:#fff7d7;color:#8a6400;border:1px solid rgba(245,182,37,.55)}.status-aprovado{background:#ecfdf3;color:#166534;border:1px solid #bbf7d0}.status-recusado{background:#fff1f1;color:#b91c1c;border:1px solid #fecaca}.status-em_servico{background:#dbeafe;color:#1e40af}.status-finalizado{background:#ede9fe;color:#5b21b6}.itens-titulo{display:flex;align-items:center;gap:10px;margin:24px 0 10px;font-size:24px;font-weight:950;color:var(--ver-texto)}.itens-titulo::before{content:"📋"}.tabela-wrapper{width:100%;overflow-x:auto;margin-top:10px;border-radius:18px;border:1px solid var(--ver-borda);box-shadow:0 12px 26px rgba(7,20,47,.08)}table{width:100%;border-collapse:collapse;min-width:540px;background:#fff}th{background:linear-gradient(135deg,var(--ver-cor-primaria),var(--ver-cor-secundaria));color:#fff;text-align:left;padding:14px;font-size:13px;text-transform:uppercase;letter-spacing:.04em}th:last-child,td:last-child{text-align:right}td{padding:14px;border-bottom:1px solid var(--ver-borda);font-size:16px;color:var(--ver-texto)}tbody tr:nth-child(even){background:#f8fbff}.total-box{position:relative;display:grid;grid-template-columns:auto 1fr;gap:15px;align-items:center;margin-top:24px;padding:20px;border:1px solid var(--ver-borda);border-left:7px solid var(--ver-cor-destaque);background:#fff;color:var(--ver-texto);border-radius:18px;box-shadow:0 12px 28px rgba(7,20,47,.08)}.total-box::before{content:"$";width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--ver-cor-primaria),var(--ver-cor-secundaria));color:var(--ver-cor-destaque);font-size:32px;font-weight:950;box-shadow:0 10px 22px rgba(7,20,47,.20)}.total-label{display:block;font-size:13px;font-weight:950;text-transform:uppercase;color:var(--ver-muted)}.total-valor{display:block;font-size:clamp(36px,7vw,52px);font-weight:950;line-height:1;color:var(--ver-texto);letter-spacing:-.05em}.observacoes-box strong{display:flex;align-items:center;gap:9px;margin-bottom:10px;font-size:24px}.observacoes-box strong::before{content:"🟨"}.observacoes-box .obs-linha{display:grid;grid-template-columns:18px 1fr;gap:8px;margin:7px 0}.observacoes-box .obs-linha::before{content:"✓";color:var(--ver-cor-destaque);font-weight:950}.botoes-status,.botoes-cliente{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}.btn-status,.btn-download-pdf,.btn-whatsapp-empresa{border-radius:17px;padding:16px 15px;font-size:16px;font-weight:950;cursor:pointer;text-transform:uppercase;letter-spacing:.02em;box-shadow:0 10px 24px rgba(7,20,47,.10);transition:.18s ease;text-align:left;text-decoration:none;display:flex;align-items:center;justify-content:space-between;gap:12px}.btn-status:hover,.btn-download-pdf:hover,.btn-whatsapp-empresa:hover{transform:translateY(-1px)}.btn-download-pdf{background:#fff;color:#0b49c9;border:2px solid #1463ff}.btn-download-pdf::before{content:"📄";display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#1463ff,#0b49c9);color:#fff}.btn-recusar{background:var(--ver-danger-soft);color:var(--ver-danger);border:2px solid #fecaca}.btn-recusar::before{content:"🚫"}.btn-aprovar{background:#ecfdf3;color:#166534;border:2px solid #86efac}.btn-aprovar::before{content:"✅"}.msg{padding:18px;border-radius:16px;text-align:center;font-weight:bold;margin-top:20px;line-height:1.5}.msg-carregando{background:#fff7d7;color:#8a6400}.msg-erro{background:#fff1f1;color:#b91c1c}.msg-sucesso{background:#ecfdf3;color:#166534}.whatsapp-empresa-box{margin-top:12px;display:none}.btn-whatsapp-empresa{background:#ecfdf3!important;color:#166534!important;border:2px solid #86efac!important}.btn-whatsapp-empresa::before{content:"🟢"}.rodape{margin-top:28px;border-radius:22px;background:radial-gradient(circle at 80% 20%,rgba(245,182,37,.18),transparent 34%),linear-gradient(135deg,var(--ver-cor-primaria),var(--ver-cor-secundaria));color:#fff;padding:22px;border-bottom:4px solid var(--ver-cor-destaque);text-align:left}.rodape-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:18px}.rodape-item{background:rgba(255,255,255,.06);border:1px solid rgba(245,182,37,.28);border-radius:15px;padding:12px;font-size:12px;line-height:1.35}.rodape-item strong{display:block;color:#fff;font-size:13px}.rodape p{margin:0;color:#eaf3ff;font-size:14px}.modal-pagamento-overlay{position:fixed;inset:0;background:rgba(7,20,47,.76);display:none;align-items:center;justify-content:center;z-index:20000;padding:18px;backdrop-filter:blur(6px)}.modal-pagamento-card{width:min(100%,430px);background:#fff;color:var(--ver-texto);border-radius:22px;border:1px solid var(--ver-borda);border-top:6px solid var(--ver-cor-destaque);padding:22px;box-shadow:0 24px 70px rgba(7,20,47,.35);text-align:center}.formas-pagamento-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.formas-pagamento-grid button,.btn-cancelar-pagamento{border:1px solid var(--ver-borda);background:#f8fbff;color:var(--ver-texto);border-radius:14px;padding:13px 10px;font-weight:950;cursor:pointer}.btn-cancelar-pagamento{margin-top:14px;width:100%;background:var(--ver-danger-soft);color:#b91c1c;border-color:#fecaca}.gerar-os-box,.btn-gerar-os{display:none!important}@media(max-width:720px){body{padding:8px}.pagina-ver{padding:12px;margin:8px auto;border-radius:24px}.ver-emissor-topo{padding:22px 14px}.ver-emissor-dados{grid-template-columns:1fr}.total-box{grid-template-columns:1fr;text-align:left}.botoes-status,.botoes-cliente{grid-template-columns:1fr}.formas-pagamento-grid,.rodape-grid{grid-template-columns:1fr 1fr}.rodape{padding:18px}.btn-status,.btn-download-pdf,.btn-whatsapp-empresa{text-align:left}h1#titulo-orcamento{font-size:27px}}@media(max-width:420px){.rodape-grid{grid-template-columns:1fr}.ver-logo-box{width:104px;height:104px}td,th{font-size:14px;padding:12px}.total-valor{font-size:34px}}@media print{body{background:#fff;padding:0}.pagina-ver{box-shadow:none;margin:0;max-width:none;border-radius:0;border:0}.botoes-status,.botoes-cliente,.whatsapp-empresa-box{display:none!important}}
   </style>
 </head>
 <body>
   <div class="pagina-ver" id="area-pdf-orcamento">
-    <div class="ver-emissor-topo">
-      <div class="ver-logo-box"><img id="ver-logo-empresa" src="" alt="Logo da empresa"><div id="ver-logo-placeholder">FS</div></div>
-      <div class="ver-emissor-info">
-        <span class="ver-label">Orçamento emitido por</span>
-        <h1 id="ver-nome-empresa">Carregando empresa...</h1>
-        <p id="ver-consultor">Consultor: -</p>
-        <div class="ver-emissor-dados"><span id="ver-whatsapp-empresa"></span><span id="ver-cnpj-empresa"></span><span id="ver-endereco-empresa"></span></div>
-      </div>
-    </div>
-    <div id="numero-orcamento" class="numero-orcamento"></div>
-    <h1 id="titulo-orcamento">Carregando...</h1>
-    <div class="linha-divisoria"></div>
-    <div id="conteudo-orcamento"><div class="msg msg-carregando">Carregando orçamento...</div></div>
-    <div id="whatsapp-empresa-box" class="whatsapp-empresa-box"><a id="btn-whatsapp-empresa" class="btn-whatsapp-empresa" href="#" target="_blank" rel="noopener">🟢 Falar com a empresa no WhatsApp</a></div>
-    <div class="rodape">Orçamento gerado por <strong id="rodape-nome-empresa">FS Orçamentos</strong></div>
+    <div class="ver-emissor-topo"><div class="ver-logo-box"><img id="ver-logo-empresa" src="" alt="Logo da empresa"><div id="ver-logo-placeholder">FS</div></div><div class="ver-emissor-info"><span class="ver-label">Orçamento emitido por</span><h1 id="ver-nome-empresa">Carregando empresa...</h1><p id="ver-consultor">Consultor: -</p><div class="ver-emissor-dados"><span id="ver-whatsapp-empresa"></span><span id="ver-cnpj-empresa"></span><span id="ver-endereco-empresa"></span></div></div></div>
+    <div id="numero-orcamento" class="numero-orcamento"></div><h1 id="titulo-orcamento">Carregando...</h1><div class="linha-divisoria"></div><div id="conteudo-orcamento"><div class="msg msg-carregando">Carregando orçamento...</div></div><div id="whatsapp-empresa-box" class="whatsapp-empresa-box"><a id="btn-whatsapp-empresa" class="btn-whatsapp-empresa" href="#" target="_blank" rel="noopener">Falar com a empresa no WhatsApp ›</a></div>
+    <div class="rodape"><div class="rodape-grid"><div class="rodape-item"><strong>Orçamento seguro</strong>Dados protegidos</div><div class="rodape-item"><strong>Atendimento rápido</strong>Fale com a empresa</div><div class="rodape-item"><strong>Serviço com garantia</strong>Conforme orçamento</div><div class="rodape-item"><strong>Pagamento facilitado</strong>Condições informadas</div></div><p>Orçamento gerado por <strong id="rodape-nome-empresa">FS Orçamentos</strong></p></div>
   </div>
-
-  <div id="modal-forma-pagamento" class="modal-pagamento-overlay">
-    <div class="modal-pagamento-card">
-      <h3>Como deseja pagar?</h3>
-      <p>Escolha a forma de pagamento para confirmar a aprovação do orçamento.</p>
-      <div class="formas-pagamento-grid">
-        <button type="button" onclick="selecionarFormaPagamento('credito')">Crédito</button>
-        <button type="button" onclick="selecionarFormaPagamento('debito')">Débito</button>
-        <button type="button" onclick="selecionarFormaPagamento('pix')">Pix</button>
-        <button type="button" onclick="selecionarFormaPagamento('dinheiro')">Dinheiro</button>
-      </div>
-      <button type="button" class="btn-cancelar-pagamento" onclick="fecharModalFormaPagamento()">Cancelar</button>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
+  <div id="modal-forma-pagamento" class="modal-pagamento-overlay"><div class="modal-pagamento-card"><h3>Como deseja pagar?</h3><p>Escolha a forma de pagamento para confirmar a aprovação do orçamento.</p><div class="formas-pagamento-grid"><button type="button" onclick="selecionarFormaPagamento('credito')">Crédito</button><button type="button" onclick="selecionarFormaPagamento('debito')">Débito</button><button type="button" onclick="selecionarFormaPagamento('pix')">Pix</button><button type="button" onclick="selecionarFormaPagamento('dinheiro')">Dinheiro</button></div><button type="button" class="btn-cancelar-pagamento" onclick="fecharModalFormaPagamento()">Cancelar</button></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
   <script>
-    if (!window._supabase) window._supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const STATUS_CONFIG = { pendente: 'Pendente', aprovado: 'Aprovado', recusado: 'Recusado', em_servico: 'Em serviço', finalizado: 'Finalizado' };
-    const FORMAS_PAGAMENTO = { credito: 'Crédito', debito: 'Débito', pix: 'Pix', dinheiro: 'Dinheiro' };
-    let orcamentoAtual = null;
-    let perfilEmissorAtual = null;
-    let veiculoOrcamentoAtual = null;
-
-    document.addEventListener('DOMContentLoaded', carregarOrcamento);
-
-    function valorOuVazio(valor) { return valor && String(valor).trim() ? String(valor).trim() : ''; }
-    function escaparHtml(valor) { return String(valor || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); }
-    function textoComQuebra(valor) { return escaparHtml(valor).replace(/\n/g, '<br>'); }
-    function formatarMoeda(valor) { return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
-    function formatarData(valor) { const data = new Date(valor || ''); return isNaN(data.getTime()) ? '-' : data.toLocaleDateString('pt-BR'); }
-    function formatarDataHora(valor) { const data = new Date(valor || ''); return isNaN(data.getTime()) ? '-' : data.toLocaleString('pt-BR'); }
-    function statusLabel(status) { return STATUS_CONFIG[status] || status || 'Pendente'; }
-    function classeStatus(status) { return String(status || 'pendente').replace(/[^a-zA-Z0-9_\-]/g, ''); }
-    function textoFormaPagamento(forma) { return FORMAS_PAGAMENTO[forma] || '-'; }
-    function formatarNumeroOrcamento(numero) { if (!numero && numero !== 0) return ''; const n = Number(numero); return Number.isFinite(n) ? String(n).padStart(6, '0') : String(numero); }
-
-    function normalizarItem(item) {
-      const qtd = Number(item.qtd ?? item.quantidade ?? item.qtde ?? 1);
-      const valor = Number(item.valor ?? item.valor_unitario ?? item.preco ?? 0);
-      return { descricao: item.descricao || item.desc || item.item || item.nome || '', qtd, valor, subtotal: Number(item.subtotal ?? item.total ?? qtd * valor) };
-    }
-
-    function obterIdOrcamentoDoLink() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('token') || params.get('public_token') || params.get('id') || null;
-    }
-
-    async function carregarOrcamentoPublico(id) {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get('token') || params.get('public_token');
-      if (token) {
-        const resposta = await _supabase.rpc('buscar_orcamento_publico', { p_token: token });
-        if (!resposta.error && resposta.data) return Array.isArray(resposta.data) ? resposta.data[0] : resposta.data;
-        return null;
-      }
-      const resposta = await _supabase.from('orcamentos').select('*').eq('id', id).maybeSingle();
-      return resposta.error ? null : resposta.data;
-    }
-
-    function preencherChipEmissor(elemento, texto) { if (!elemento) return; elemento.innerText = texto || ''; elemento.style.display = texto ? 'inline-flex' : 'none'; }
-
-    function configurarWhatsappEmpresa(telefone, nomeEmpresa) {
-      const box = document.getElementById('whatsapp-empresa-box');
-      const link = document.getElementById('btn-whatsapp-empresa');
-      if (!box || !link) return;
-      const limpo = String(telefone || '').replace(/\D/g, '');
-      if (!limpo) { box.style.display = 'none'; link.href = '#'; return; }
-      const numero = limpo.startsWith('55') ? limpo : '55' + limpo;
-      link.href = 'https://wa.me/' + numero + '?text=' + encodeURIComponent('Olá! Estou falando sobre o orçamento recebido de ' + (nomeEmpresa || 'sua empresa') + '.');
-      box.style.display = 'block';
-    }
-
-    function preencherTopoEmpresaVer(orcamento, perfil) {
-      const nomeEmpresa = valorOuVazio(perfil?.nome_empresa) || valorOuVazio(orcamento?.nome_empresa) || 'Empresa';
-      const consultor = valorOuVazio(orcamento?.consultor) || valorOuVazio(perfil?.nome) || 'Consultor';
-      const telefone = valorOuVazio(perfil?.telefone_empresa) || valorOuVazio(orcamento?.telefone_empresa);
-      const cnpj = valorOuVazio(perfil?.cnpj_empresa) || valorOuVazio(orcamento?.cnpj_empresa);
-      const endereco = valorOuVazio(perfil?.endereco_empresa) || valorOuVazio(orcamento?.endereco_empresa);
-      const fotoUrl = valorOuVazio(perfil?.foto_url) || valorOuVazio(orcamento?.foto_url);
-      document.getElementById('ver-nome-empresa').innerText = nomeEmpresa;
-      document.getElementById('ver-consultor').innerText = 'Consultor: ' + consultor;
-      document.getElementById('rodape-nome-empresa').innerText = nomeEmpresa;
-      preencherChipEmissor(document.getElementById('ver-whatsapp-empresa'), telefone ? 'WhatsApp: ' + telefone : '');
-      preencherChipEmissor(document.getElementById('ver-cnpj-empresa'), cnpj ? 'CNPJ/CPF: ' + cnpj : '');
-      preencherChipEmissor(document.getElementById('ver-endereco-empresa'), endereco ? 'Endereço: ' + endereco : '');
-      configurarWhatsappEmpresa(telefone, nomeEmpresa);
-      const logo = document.getElementById('ver-logo-empresa');
-      const ph = document.getElementById('ver-logo-placeholder');
-      if (fotoUrl) { logo.src = fotoUrl; logo.style.display = 'block'; ph.style.display = 'none'; }
-      else { logo.src = ''; logo.style.display = 'none'; ph.style.display = 'block'; ph.innerText = nomeEmpresa.substring(0, 2).toUpperCase(); }
-      document.title = nomeEmpresa + ' - ' + (orcamento?.assunto || 'Orçamento');
-    }
-
-    function preencherNumeroOrcamento(orcamento) {
-      const el = document.getElementById('numero-orcamento');
-      const numero = orcamento?.numero_orcamento || orcamento?.numero || '';
-      if (!numero && numero !== 0) { el.style.display = 'none'; el.innerText = ''; return; }
-      el.innerText = 'Orçamento Nº ' + formatarNumeroOrcamento(numero);
-      el.style.display = 'block';
-    }
-
-    async function carregarOrcamento() {
-      const container = document.getElementById('conteudo-orcamento');
-      const titulo = document.getElementById('titulo-orcamento');
-      const id = obterIdOrcamentoDoLink();
-      if (!id) { titulo.innerText = 'Aviso'; container.innerHTML = '<div class="msg msg-erro">Orçamento não informado no link.</div>'; return; }
-      const data = await carregarOrcamentoPublico(id);
-      if (!data) { titulo.innerText = 'Aviso'; container.innerHTML = '<div class="msg msg-erro">Orçamento não encontrado.</div>'; return; }
-      orcamentoAtual = data; window.orcamentoAtual = data;
-      perfilEmissorAtual = { nome: data.consultor, nome_empresa: data.nome_empresa, telefone_empresa: data.telefone_empresa, endereco_empresa: data.endereco_empresa, cnpj_empresa: data.cnpj_empresa, foto_url: data.foto_url };
-      window.perfilEmissorAtual = perfilEmissorAtual;
-      preencherTopoEmpresaVer(data, perfilEmissorAtual);
-      preencherNumeroOrcamento(data);
-      renderizarOrcamento(data);
-    }
-
-    function renderizarOrcamento(orcamento) {
-      const container = document.getElementById('conteudo-orcamento');
-      document.getElementById('titulo-orcamento').innerText = orcamento.assunto || 'Sem título';
-      const status = orcamento.status || 'pendente';
-      const itens = Array.isArray(orcamento.itens) ? orcamento.itens.map(normalizarItem) : [];
-      const linhas = itens.length ? itens.map(item => '<tr><td>' + escaparHtml(item.descricao) + '</td><td>' + escaparHtml(item.qtd) + '</td><td>' + formatarMoeda(item.valor) + '</td><td>' + formatarMoeda(item.subtotal) + '</td></tr>').join('') : '<tr><td colspan="4">Nenhum item encontrado.</td></tr>';
-      const podeResponder = status === 'pendente';
-      const resposta = status === 'aprovado'
-        ? '<div class="msg msg-resposta"><strong>✅ Orçamento aprovado.</strong><br>' + (orcamento.forma_pagamento_cliente ? '<strong>Forma de pagamento escolhida:</strong> ' + escaparHtml(textoFormaPagamento(orcamento.forma_pagamento_cliente)) + '<br>' : '') + (orcamento.resposta_cliente_em ? '<strong>Resposta enviada em:</strong> ' + escaparHtml(formatarDataHora(orcamento.resposta_cliente_em)) : '') + '</div>'
-        : status === 'recusado' ? '<div class="msg msg-resposta"><strong>❌ Orçamento recusado.</strong></div>' : '';
-      container.innerHTML = '<div class="box-info"><div><strong>Cliente:</strong> ' + escaparHtml(orcamento.cliente_nome || 'Não informado') + '</div><div><strong>Contato:</strong> ' + escaparHtml(orcamento.cliente_whatsapp || 'Não informado') + '</div><div><strong>Data:</strong> ' + formatarData(orcamento.criado_em || orcamento.created_at) + '</div><div><strong>Status:</strong> <span class="status status-' + classeStatus(status) + '">' + escaparHtml(statusLabel(status)) + '</span></div></div><div class="tabela-wrapper"><table><thead><tr><th>Descrição</th><th>Qtd</th><th>Valor unit.</th><th>Subtotal</th></tr></thead><tbody>' + linhas + '</tbody></table></div><div class="total-box">Total: ' + formatarMoeda(orcamento.total || 0) + '</div>' + (orcamento.observacoes ? '<div class="observacoes-box"><strong>Observações:</strong>' + textoComQuebra(orcamento.observacoes) + '</div>' : '') + '<div class="botoes-cliente"><button type="button" class="btn-download-pdf" onclick="baixarPdfOrcamentoCliente()">⬇️ Baixar PDF</button></div>' + (podeResponder ? '<div class="botoes-status"><button type="button" class="btn-status btn-recusar" onclick="recusarOrcamento()">Recusar orçamento</button><button type="button" class="btn-status btn-aprovar" onclick="aprovarOrcamento()">Aprovar orçamento</button></div>' : resposta);
-    }
-
-    function baixarPdfOrcamentoCliente() { window.print(); }
-    function abrirModalFormaPagamento() { document.getElementById('modal-forma-pagamento').style.display = 'flex'; }
-    function fecharModalFormaPagamento() { document.getElementById('modal-forma-pagamento').style.display = 'none'; }
-    function orcamentoJaRespondido() { return (orcamentoAtual?.status || 'pendente') !== 'pendente'; }
-    function setBotoesRespostaDesabilitados(desabilitado) { document.querySelectorAll('.btn-status, .formas-pagamento-grid button, .btn-cancelar-pagamento').forEach(btn => btn.disabled = desabilitado); }
-    function aprovarOrcamento() { if (!orcamentoAtual?.id) return alert('Orçamento não carregado.'); if (orcamentoJaRespondido()) return alert('Este orçamento já foi respondido.'); abrirModalFormaPagamento(); }
-    async function selecionarFormaPagamento(formaPagamento) { await responderOrcamentoPublico('aprovado', formaPagamento); }
-    async function recusarOrcamento() { if (!confirm('Deseja realmente recusar este orçamento?')) return; await responderOrcamentoPublico('recusado', null); }
-    async function responderOrcamentoPublico(resposta, formaPagamento) {
-      if (!orcamentoAtual?.id) return alert('Orçamento não carregado.');
-      if (orcamentoJaRespondido()) return alert('Este orçamento já foi respondido.');
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get('token') || params.get('public_token');
-      setBotoesRespostaDesabilitados(true);
-      const retorno = token
-        ? await _supabase.rpc('responder_orcamento_publico_v2', { p_token: token, p_resposta: resposta, p_forma_pagamento: formaPagamento })
-        : await _supabase.from('orcamentos').update({ status: resposta, forma_pagamento_cliente: formaPagamento, resposta_cliente_em: new Date().toISOString() }).eq('id', orcamentoAtual.id).eq('status', 'pendente').select().maybeSingle();
-      if (retorno.error) { console.error(retorno.error); alert('Não foi possível registrar a resposta.'); setBotoesRespostaDesabilitados(false); return; }
-      fecharModalFormaPagamento();
-      await carregarOrcamento();
-      alert('Resposta enviada com sucesso.');
-    }
-    document.addEventListener('keydown', event => { if (event.key === 'Escape') fecharModalFormaPagamento(); });
-    document.addEventListener('click', event => { const modal = document.getElementById('modal-forma-pagamento'); if (event.target === modal) fecharModalFormaPagamento(); });
-    window.carregarOrcamento = carregarOrcamento;
+    if(!window._supabase)window._supabase=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);const STATUS_CONFIG={pendente:'Pendente',aprovado:'Aprovado',recusado:'Recusado',em_servico:'Em serviço',finalizado:'Finalizado'};const FORMAS_PAGAMENTO={credito:'Crédito',debito:'Débito',pix:'Pix',dinheiro:'Dinheiro'};let orcamentoAtual=null,perfilEmissorAtual=null;document.addEventListener('DOMContentLoaded',carregarOrcamento);
+    function valorOuVazio(v){return v&&String(v).trim()?String(v).trim():''}function escaparHtml(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}function textoComQuebra(v){return escaparHtml(v).replace(/\n/g,'<br>')}function formatarMoeda(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}function formatarData(v){const d=new Date(v||'');return isNaN(d.getTime())?'-':d.toLocaleDateString('pt-BR')}function formatarDataHora(v){const d=new Date(v||'');return isNaN(d.getTime())?'-':d.toLocaleString('pt-BR')}function statusLabel(s){return STATUS_CONFIG[s]||s||'Pendente'}function classeStatus(s){return String(s||'pendente').replace(/[^a-zA-Z0-9_\-]/g,'')}function textoFormaPagamento(f){return FORMAS_PAGAMENTO[f]||'-'}function formatarNumeroOrcamento(n){if(!n&&n!==0)return'';const x=Number(n);return Number.isFinite(x)?String(x).padStart(6,'0'):String(n)}function normalizarItem(item){const qtd=Number(item.qtd??item.quantidade??item.qtde??1);const valor=Number(item.valor??item.valor_unitario??item.preco??0);return{descricao:item.descricao||item.desc||item.item||item.nome||'',qtd,valor,subtotal:Number(item.subtotal??item.total??qtd*valor)}}
+    function obterIdOrcamentoDoLink(){const p=new URLSearchParams(location.search);return p.get('token')||p.get('public_token')||p.get('id')||null}async function carregarOrcamentoPublico(id){const p=new URLSearchParams(location.search);const token=p.get('token')||p.get('public_token');if(token){const r=await _supabase.rpc('buscar_orcamento_publico',{p_token:token});if(!r.error&&r.data)return Array.isArray(r.data)?r.data[0]:r.data;return null}const r=await _supabase.from('orcamentos').select('*').eq('id',id).maybeSingle();return r.error?null:r.data}
+    function aplicarCorPersonalizadaVer(o){const cor=valorOuVazio(o?.cor_destaque||o?.cor_principal||o?.cor_tema||o?.cor||o?.theme_color);if(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cor))document.documentElement.style.setProperty('--ver-cor-destaque',cor)}function preencherChipEmissor(e,t){if(!e)return;e.innerText=t||'';e.style.display=t?'inline-flex':'none'}function configurarWhatsappEmpresa(t,n){const box=document.getElementById('whatsapp-empresa-box'),link=document.getElementById('btn-whatsapp-empresa');if(!box||!link)return;const limpo=String(t||'').replace(/\D/g,'');if(!limpo){box.style.display='none';link.href='#';return}const numero=limpo.startsWith('55')?limpo:'55'+limpo;link.href='https://wa.me/'+numero+'?text='+encodeURIComponent('Olá! Estou falando sobre o orçamento recebido de '+(n||'sua empresa')+'.');box.style.display='block'}
+    function preencherTopoEmpresaVer(o,p){const nome=valorOuVazio(p?.nome_empresa)||valorOuVazio(o?.nome_empresa)||'Empresa';const consultor=valorOuVazio(o?.consultor)||valorOuVazio(p?.nome)||'Consultor';const telefone=valorOuVazio(p?.telefone_empresa)||valorOuVazio(o?.telefone_empresa);const cnpj=valorOuVazio(p?.cnpj_empresa)||valorOuVazio(o?.cnpj_empresa);const endereco=valorOuVazio(p?.endereco_empresa)||valorOuVazio(o?.endereco_empresa);const foto=valorOuVazio(p?.foto_url)||valorOuVazio(o?.foto_url);document.getElementById('ver-nome-empresa').innerText=nome;document.getElementById('ver-consultor').innerText='👤 Consultor: '+consultor;document.getElementById('rodape-nome-empresa').innerText=nome;preencherChipEmissor(document.getElementById('ver-whatsapp-empresa'),telefone?'🟢 WhatsApp\n'+telefone:'');preencherChipEmissor(document.getElementById('ver-cnpj-empresa'),cnpj?'📄 CNPJ/CPF\n'+cnpj:'');preencherChipEmissor(document.getElementById('ver-endereco-empresa'),endereco?'📍 Endereço\n'+endereco:'');configurarWhatsappEmpresa(telefone,nome);const logo=document.getElementById('ver-logo-empresa'),ph=document.getElementById('ver-logo-placeholder');if(foto){logo.src=foto;logo.style.display='block';ph.style.display='none'}else{logo.src='';logo.style.display='none';ph.style.display='block';ph.innerText=nome.substring(0,2).toUpperCase()}document.title=nome+' - '+(o?.assunto||'Orçamento')}
+    function preencherNumeroOrcamento(o){const el=document.getElementById('numero-orcamento');const n=o?.numero_orcamento||o?.numero||'';if(!n&&n!==0){el.style.display='none';el.innerText='';return}el.innerText='✦ Orçamento Nº '+formatarNumeroOrcamento(n)+' ✦';el.style.display='block'}async function carregarOrcamento(){const c=document.getElementById('conteudo-orcamento'),t=document.getElementById('titulo-orcamento'),id=obterIdOrcamentoDoLink();if(!id){t.innerText='Aviso';c.innerHTML='<div class="msg msg-erro">Orçamento não informado no link.</div>';return}const data=await carregarOrcamentoPublico(id);if(!data){t.innerText='Aviso';c.innerHTML='<div class="msg msg-erro">Orçamento não encontrado.</div>';return}orcamentoAtual=data;window.orcamentoAtual=data;perfilEmissorAtual={nome:data.consultor,nome_empresa:data.nome_empresa,telefone_empresa:data.telefone_empresa,endereco_empresa:data.endereco_empresa,cnpj_empresa:data.cnpj_empresa,foto_url:data.foto_url};window.perfilEmissorAtual=perfilEmissorAtual;aplicarCorPersonalizadaVer(data);preencherTopoEmpresaVer(data,perfilEmissorAtual);preencherNumeroOrcamento(data);renderizarOrcamento(data)}
+    function observacoesHtml(texto){if(!texto)return'';const linhas=String(texto).split(/\n+/).filter(l=>l.trim());if(!linhas.length)return'';return '<div class="observacoes-box"><strong>Observações</strong>'+linhas.map(l=>'<div class="obs-linha"><span>'+escaparHtml(l)+'</span></div>').join('')+'</div>'}
+    function renderizarOrcamento(o){const c=document.getElementById('conteudo-orcamento');document.getElementById('titulo-orcamento').innerText=o.assunto||'Sem título';const status=o.status||'pendente';const itens=Array.isArray(o.itens)?o.itens.map(normalizarItem):[];const linhas=itens.length?itens.map(item=>'<tr><td>'+escaparHtml(item.descricao)+'</td><td>'+escaparHtml(item.qtd)+'</td><td>'+formatarMoeda(item.valor)+'</td><td>'+formatarMoeda(item.subtotal)+'</td></tr>').join(''):'<tr><td colspan="4">Nenhum item encontrado.</td></tr>';const pode=status==='pendente';const resposta=status==='aprovado'?'<div class="msg msg-resposta"><strong>✅ Orçamento aprovado.</strong><br>'+(o.forma_pagamento_cliente?'<strong>Forma de pagamento escolhida:</strong> '+escaparHtml(textoFormaPagamento(o.forma_pagamento_cliente))+'<br>':'')+(o.resposta_cliente_em?'<strong>Resposta enviada em:</strong> '+escaparHtml(formatarDataHora(o.resposta_cliente_em)):'')+'</div>':status==='recusado'?'<div class="msg msg-resposta"><strong>❌ Orçamento recusado.</strong></div>':'';c.innerHTML='<div class="box-info"><div><strong>Cliente:</strong> '+escaparHtml(o.cliente_nome||'Não informado')+'</div><div><strong>Contato:</strong> '+escaparHtml(o.cliente_whatsapp||'Não informado')+'</div><div><strong>Data:</strong> '+formatarData(o.criado_em||o.created_at)+'</div><div><strong>Status:</strong> <span class="status status-'+classeStatus(status)+'">'+escaparHtml(statusLabel(status))+'</span></div></div><div class="itens-titulo">Itens do orçamento</div><div class="tabela-wrapper"><table><thead><tr><th>Descrição</th><th>Qtd</th><th>Valor unit.</th><th>Total</th></tr></thead><tbody>'+linhas+'</tbody></table></div><div class="total-box"><div><span class="total-label">Total do orçamento</span><span class="total-valor">'+formatarMoeda(o.total||0)+'</span></div></div>'+observacoesHtml(o.observacoes)+'<div class="botoes-cliente"><button type="button" class="btn-download-pdf" onclick="baixarPdfOrcamentoCliente()"><span>Baixar PDF<br><small>Baixar orçamento em PDF</small></span><span>›</span></button></div>'+(pode?'<div class="botoes-status"><button type="button" class="btn-status btn-recusar" onclick="recusarOrcamento()"><span>Recusar orçamento<br><small>Informar que não tem interesse</small></span><span>›</span></button><button type="button" class="btn-status btn-aprovar" onclick="aprovarOrcamento()"><span>Aprovar orçamento<br><small>Aprovar e iniciar o atendimento</small></span><span>›</span></button></div>':resposta)}
+    function obterPdfUrlOrcamento(){const o=orcamentoAtual||{};const direto=o.pdf_url||o.pdfUrl||o.url_pdf||o.link_pdf||o.arquivo_pdf_url||o.arquivo_pdf;if(direto&&/^https?:\/\//i.test(direto))return direto;const path=o.pdf_path||o.arquivo_pdf_path||o.storage_pdf_path;if(path&&window._supabase){try{return _supabase.storage.from(o.pdf_bucket||'orcamentos').getPublicUrl(path).data.publicUrl}catch(_){return''}}return''}function baixarPdfOrcamentoCliente(){const url=obterPdfUrlOrcamento();if(url){const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.download='orcamento.pdf';document.body.appendChild(a);a.click();a.remove();return}window.print()}
+    function abrirModalFormaPagamento(){document.getElementById('modal-forma-pagamento').style.display='flex'}function fecharModalFormaPagamento(){document.getElementById('modal-forma-pagamento').style.display='none'}function orcamentoJaRespondido(){return(orcamentoAtual?.status||'pendente')!=='pendente'}function setBotoesRespostaDesabilitados(d){document.querySelectorAll('.btn-status,.formas-pagamento-grid button,.btn-cancelar-pagamento').forEach(btn=>btn.disabled=d)}function aprovarOrcamento(){if(!orcamentoAtual?.id)return alert('Orçamento não carregado.');if(orcamentoJaRespondido())return alert('Este orçamento já foi respondido.');abrirModalFormaPagamento()}async function selecionarFormaPagamento(f){await responderOrcamentoPublico('aprovado',f)}async function recusarOrcamento(){if(!confirm('Deseja realmente recusar este orçamento?'))return;await responderOrcamentoPublico('recusado',null)}async function responderOrcamentoPublico(resposta,formaPagamento){if(!orcamentoAtual?.id)return alert('Orçamento não carregado.');if(orcamentoJaRespondido())return alert('Este orçamento já foi respondido.');const p=new URLSearchParams(location.search);const token=p.get('token')||p.get('public_token');setBotoesRespostaDesabilitados(true);const retorno=token?await _supabase.rpc('responder_orcamento_publico_v2',{p_token:token,p_resposta:resposta,p_forma_pagamento:formaPagamento}):await _supabase.from('orcamentos').update({status:resposta,forma_pagamento_cliente:formaPagamento,resposta_cliente_em:new Date().toISOString()}).eq('id',orcamentoAtual.id).eq('status','pendente').select().maybeSingle();if(retorno.error){console.error(retorno.error);alert('Não foi possível registrar a resposta.');setBotoesRespostaDesabilitados(false);return}fecharModalFormaPagamento();await carregarOrcamento();alert('Resposta enviada com sucesso.')}document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModalFormaPagamento()});document.addEventListener('click',e=>{const m=document.getElementById('modal-forma-pagamento');if(e.target===m)fecharModalFormaPagamento()});window.carregarOrcamento=carregarOrcamento;
   </script>
   <script src="ver-cliente-fix.js"></script>
 </body>
