@@ -1,27 +1,6 @@
 <link rel="stylesheet" href="/header-clean.css?v=20260701-header-premium">
 <link rel="stylesheet" href="/fs-theme-cinza.css?v=20260701-premium-navy-gold">
-<link rel="stylesheet" href="/brand-contrast-fix.css?v=20260702-premium-final">
-<style>
-  .header-menu-linha .nav-menu a.link-destaque-gerador,
-  .header-menu-linha .nav-menu a.link-destaque-gerador:hover,
-  .header-menu-linha .nav-menu a.link-destaque-gerador.ativo,
-  .header-menu-linha .nav-menu a.link-destaque-gerador:focus {
-    background: linear-gradient(135deg,#1463ff 0%,#0b49c9 100%) !important;
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
-    border-color: #1463ff !important;
-    opacity: 1 !important;
-  }
-  .header-menu-linha .nav-menu a.link-destaque-gerador *,
-  .header-menu-linha .nav-menu a.link-destaque-gerador .fs-menu-ico { color:#fff !important; -webkit-text-fill-color:#fff !important; opacity:1 !important; }
-  .header-menu-linha .nav-menu a.link-destaque-gerador svg,
-  .header-menu-linha .nav-menu a.link-destaque-gerador svg * { stroke:#fff !important; color:#fff !important; opacity:1 !important; }
-  .header-usuario #btn-header-entrar,.header-usuario #btn-header-sair{display:none!important;visibility:hidden!important;pointer-events:none!important}
-  #btn-menu-mobile-entrar[style*="display:none"],#btn-menu-mobile-entrar[style*="display: none"],#btn-menu-mobile-sair[style*="display:none"],#btn-menu-mobile-sair[style*="display: none"]{display:none!important;visibility:hidden!important;pointer-events:none!important}
-  #btn-menu-mobile-entrar[style*="inline"],#btn-menu-mobile-entrar[style*="flex"]{display:inline-flex!important;visibility:visible!important;pointer-events:auto!important;background:linear-gradient(135deg,#1463ff,#0b49c9)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#1463ff!important}
-  #btn-menu-mobile-sair[style*="inline"],#btn-menu-mobile-sair[style*="flex"]{display:inline-flex!important;visibility:visible!important;pointer-events:auto!important;background:linear-gradient(135deg,#ef4444,#dc2626,#991b1b)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:#dc2626!important;box-shadow:0 15px 28px rgba(220,38,38,.22)!important}
-  #btn-menu-mobile-entrar[style*="inline"] *,#btn-menu-mobile-entrar[style*="flex"] *,#btn-menu-mobile-sair[style*="inline"] *,#btn-menu-mobile-sair[style*="flex"] *,#btn-menu-mobile-entrar[style*="inline"] svg,#btn-menu-mobile-entrar[style*="flex"] svg,#btn-menu-mobile-sair[style*="inline"] svg,#btn-menu-mobile-sair[style*="flex"] svg{color:#fff!important;-webkit-text-fill-color:#fff!important;stroke:#fff!important}
-</style>
+<link rel="stylesheet" href="/brand-contrast-fix.css?v=20260702-premium-navy-gold-final">
 <header class="main-header">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos">
@@ -31,22 +10,22 @@
 
     <nav class="header-menu-linha" aria-label="Menu principal">
       <div class="header-user-card">
-        <span class="header-user-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>
+        <span class="header-user-icon" aria-hidden="true">👤</span>
         <span class="header-user-text"><strong id="usuario-saudacao">Olá, Convidado</strong><small>Bem-vindo de volta!</small></span>
       </div>
 
       <ul class="nav-menu nav-menu-compacto">
-        <li><a href="/index.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"></path><path d="M5 10.5V21h14V10.5"></path><path d="M9 21v-6h6v6"></path></svg></span><span>Início</span></a></li>
-        <li><a href="/gerador.html" class="link-destaque-gerador"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path><path d="M12 12v6"></path><path d="M9 15h6"></path></svg></span><span>Gerar</span></a></li>
-        <li><a href="/orcamentos.html" data-plano-min="premium"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M8 6h13"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M3 6h.01"></path><path d="M3 12h.01"></path><path d="M3 18h.01"></path></svg></span><span>Orçamentos</span></a></li>
-        <li><a href="/fluxo-caixa.html" data-plano-min="premium"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="2"></rect><path d="M8 8V5h8v3"></path><path d="M8 12h8"></path><path d="M8 15h3"></path><path d="M14 15h2"></path></svg></span><span>Caixa</span></a></li>
-        <li><a href="/dashboard.html" data-plano-min="premium"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 16v-5"></path><path d="M12 16V8"></path><path d="M16 16v-3"></path></svg></span><span>Relatórios</span></a></li>
-        <li><a href="/forum.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"></path></svg></span><span>Fórum</span></a></li>
-        <li><a href="/painel.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M4 14a8 8 0 1 1 16 0"></path><path d="M12 14l4-4"></path><path d="M6 14h.01M18 14h.01M8 9h.01M16 9h.01"></path></svg></span><span>Painel</span></a></li>
-        <li><a href="/planos.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="m5 17 2-11 5 5 5-5 2 11Z"></path><path d="M5 17h14v3H5Z"></path></svg></span><span>Planos</span></a></li>
-        <li><a href="/sobre.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 10v6"></path><path d="M12 7h.01"></path></svg></span><span>Sobre</span></a></li>
-        <li><a href="/contato.html"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg></span><span>Contato</span></a></li>
-        <li class="menu-mobile-auth"><button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path></svg></span><span>Entrar</span></button><button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg></span><span>Sair</span></button></li>
+        <li><a href="/index.html"><span class="fs-menu-ico">⌂</span><span>Início</span></a></li>
+        <li><a href="/gerador.html" class="link-destaque-gerador"><span class="fs-menu-ico">▣</span><span>Gerar</span></a></li>
+        <li><a href="/orcamentos.html" data-plano-min="premium"><span class="fs-menu-ico">☷</span><span>Orçamentos</span></a></li>
+        <li><a href="/fluxo-caixa.html" data-plano-min="premium"><span class="fs-menu-ico">▤</span><span>Caixa</span></a></li>
+        <li><a href="/dashboard.html" data-plano-min="premium"><span class="fs-menu-ico">▥</span><span>Relatórios</span></a></li>
+        <li><a href="/forum.html"><span class="fs-menu-ico">☏</span><span>Fórum</span></a></li>
+        <li><a href="/painel.html"><span class="fs-menu-ico">◴</span><span>Painel</span></a></li>
+        <li><a href="/planos.html"><span class="fs-menu-ico">◆</span><span>Planos</span></a></li>
+        <li><a href="/sobre.html"><span class="fs-menu-ico">ⓘ</span><span>Sobre</span></a></li>
+        <li><a href="/contato.html"><span class="fs-menu-ico">✉</span><span>Contato</span></a></li>
+        <li class="menu-mobile-auth"><button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico">↪</span><span>Entrar</span></button><button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico">↩</span><span>Sair</span></button></li>
       </ul>
     </nav>
 
