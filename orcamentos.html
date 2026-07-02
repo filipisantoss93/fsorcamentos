@@ -1,2 +1,195 @@
 <!DOCTYPE html>
-<html lang="pt-br"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Orçamentos - FS Orçamentos</title><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="style.css"><link rel="icon" type="image/png" href="favicon.png"><style>:root{--c:#0f172a;--m:#64748b;--b:#dbe3ee;--ok:#16a34a;--red:#dc2626}body{background:linear-gradient(180deg,#fff,#f8fafc)!important;color:var(--c)!important}.page{width:min(1180px,calc(100% - 24px));margin:0 auto;padding:22px 0 56px;display:grid;gap:14px}.card{background:#fff;border:1px solid var(--b);border-radius:16px;box-shadow:0 8px 24px rgba(15,23,42,.08);overflow:hidden}.hero{padding:24px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;background:linear-gradient(135deg,#fff,#f1f5f9)}.tag{display:inline-flex;padding:5px 9px;border-radius:999px;background:#e2e8f0;color:#334155;font-size:11px;font-weight:950;text-transform:uppercase;margin-bottom:8px}.hero h1{margin:0 0 6px;font-size:clamp(26px,4vw,40px)}.hero p{margin:0;color:var(--m);line-height:1.5;font-weight:650}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 13px;border-radius:10px;border:1px solid #cbd5e1;background:#fff;color:#0f172a;font-weight:950;text-decoration:none;cursor:pointer}.btn.primary{background:#0f172a;color:#fff;border-color:#0f172a}.btn.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.btn.red{background:#fff1f1;color:#991b1b;border-color:#fecaca}.filters{padding:16px;display:grid;grid-template-columns:.7fr .7fr 1fr auto;gap:10px;align-items:end}.field{display:grid;gap:5px}.field label{font-size:12px;font-weight:950;text-transform:uppercase;color:#334155}.field input,.field select{border:1px solid #cbd5e1;border-radius:10px;padding:10px;background:#fff;color:#0f172a}.summary{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.metric{padding:16px;border-left:4px solid #64748b}.metric.ok{border-left-color:var(--ok)}.metric.red{border-left-color:var(--red)}.metric span{display:block;color:var(--m);font-size:12px;font-weight:950;text-transform:uppercase}.metric strong{font-size:24px}.table-wrap{overflow:auto;border:1px solid var(--b);border-radius:12px}.table{width:100%;border-collapse:collapse;min-width:1120px}.table th{background:#e2e8f0;text-align:left;padding:10px;font-size:12px;text-transform:uppercase}.table td{padding:10px;border-bottom:1px solid #e5e7eb;font-size:13px}.status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#f1f5f9;font-size:11px;font-weight:950}.empty{padding:22px;text-align:center;color:var(--m);font-weight:850}.modal{position:fixed;inset:0;z-index:30000;background:rgba(15,23,42,.72);display:none;align-items:flex-start;justify-content:center;padding:18px;overflow:auto}.modal.ativo{display:flex}.modal-box{width:min(900px,100%);background:#fff;border-radius:16px;margin:26px auto;overflow:hidden}.modal-head{background:#0f172a;color:#fff;padding:14px 16px;display:flex;justify-content:space-between}.modal-close{border:0;background:#fff;color:#0f172a;border-radius:8px;width:34px;height:34px;font-size:22px;font-weight:950}.modal-body{padding:16px}.mini-table{width:100%;border-collapse:collapse;margin:10px 0}.mini-table th{background:#0f172a;color:#fff;padding:8px;text-align:left}.mini-table td{padding:8px;border-bottom:1px solid #e5e7eb}@media(max-width:850px){.hero,.filters{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}}@media(max-width:520px){.summary{grid-template-columns:1fr}.btn{width:100%}}</style></head><body><div id="header-container"></div><main class="page"><section class="card hero"><div><span class="tag">Premium</span><h1>Orçamentos salvos</h1><p>Histórico comercial: status, valor, link de aprovação, WhatsApp e registro no caixa.</p></div><a href="/gerador.html" class="btn primary">+ Novo orçamento</a></section><section class="summary"><div class="card metric"><span>Total</span><strong id="s-total">0</strong></div><div class="card metric"><span>Pendentes</span><strong id="s-pendentes">0</strong></div><div class="card metric ok"><span>Aprovados</span><strong id="s-aprovados">0</strong></div><div class="card metric red"><span>Recusados</span><strong id="s-recusados">0</strong></div><div class="card metric"><span>Valor aprovado</span><strong id="s-valor">R$ 0,00</strong></div></section><section class="card"><div class="filters"><div class="field"><label for="filtro-status">Status</label><select id="filtro-status"><option value="">Todos</option><option value="pendente">Pendente</option><option value="aprovado">Aprovado</option><option value="recusado">Recusado</option></select></div><div class="field"><label for="filtro-periodo">Período</label><select id="filtro-periodo"><option value="7">7 dias</option><option value="30" selected>30 dias</option><option value="60">60 dias</option><option value="90">90 dias</option><option value="total">Total</option></select></div><div class="field"><label for="filtro-busca">Busca</label><input id="filtro-busca" placeholder="Cliente, título ou número"></div><button class="btn primary" onclick="carregarOrcamentosPremium()">Buscar</button></div></section><section class="card"><div style="padding:16px;background:#0f172a;color:#fff"><strong>Histórico</strong></div><div style="padding:16px"><div id="lista-orcamentos" class="table-wrap"><div class="empty">Carregando...</div></div></div></section></main><section id="modal-orcamento" class="modal"><div class="modal-box"><div class="modal-head"><div><strong id="modal-orcamento-titulo">Orçamento</strong><p id="modal-orcamento-subtitulo" style="margin:4px 0 0;color:#cbd5e1"></p></div><button class="modal-close" onclick="fecharModalOrcamento()">×</button></div><div id="modal-orcamento-body" class="modal-body"></div></div></section><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="auth.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script>let orcamentosCache=[];let userIdOrc=null;const h=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');const m=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});const n=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();const dbr=v=>{if(!v)return'-';const d=new Date(String(v).includes('T')?v:String(v)+'T00:00:00');return Number.isNaN(d.getTime())?'-':d.toLocaleDateString('pt-BR')};function linkOrcamento(o){return o.link_publico||o.public_token?`${location.origin}/aprovacao.html?t=${encodeURIComponent(o.public_token)}`:`${location.origin}/aprovacao.html?id=${encodeURIComponent(o.id)}`}async function init(){const{data:{session}}=await _supabase.auth.getSession();if(!session?.user?.id){location.href='/index.html?login=1&dest='+encodeURIComponent('/orcamentos.html');return}userIdOrc=session.user.id;if((window.obterPlanoLocal?obterPlanoLocal():n(localStorage.getItem('usuario_plano')))!=='premium'){location.href='/planos.html#assinar-plano-premium';return}document.getElementById('filtro-status').addEventListener('change',renderizarTabelaOrcamentos);document.getElementById('filtro-periodo').addEventListener('change',carregarOrcamentosPremium);document.getElementById('filtro-busca').addEventListener('input',renderizarTabelaOrcamentos);await carregarOrcamentosPremium()}async function carregarOrcamentosPremium(){let q=_supabase.from('orcamentos').select('*').eq('usuario_id',userIdOrc).order('criado_em',{ascending:false}).limit(500);const p=document.getElementById('filtro-periodo').value;if(p!=='total'){const ini=new Date();ini.setDate(ini.getDate()-Number(p||30));q=q.gte('criado_em',ini.toISOString())}const{data,error}=await q;if(error){console.error(error);document.getElementById('lista-orcamentos').innerHTML='<div class="empty">Erro ao carregar orçamentos.</div>';return}orcamentosCache=data||[];renderizarTabelaOrcamentos()}function filtrados(){const st=document.getElementById('filtro-status').value,termo=n(document.getElementById('filtro-busca').value);return orcamentosCache.filter(o=>(!st||n(o.status)===st)&&(!termo||n([o.cliente_nome,o.titulo,o.numero_orcamento].join(' ')).includes(termo)))}function renderResumo(lista){const aprov=lista.filter(o=>n(o.status)==='aprovado'),rec=lista.filter(o=>n(o.status)==='recusado'),pend=lista.filter(o=>!['aprovado','recusado'].includes(n(o.status)));document.getElementById('s-total').textContent=lista.length;document.getElementById('s-pendentes').textContent=pend.length;document.getElementById('s-aprovados').textContent=aprov.length;document.getElementById('s-recusados').textContent=rec.length;document.getElementById('s-valor').textContent=m(aprov.reduce((s,o)=>s+Number(o.total||0),0))}function editarOrcamento(id){location.href='/gerador.html?orcamento_id='+encodeURIComponent(id)}function duplicarOrcamento(id){location.href='/gerador.html?duplicar_orcamento_id='+encodeURIComponent(id)}function renderizarTabelaOrcamentos(){const lista=filtrados();renderResumo(lista);const box=document.getElementById('lista-orcamentos');if(!lista.length){box.innerHTML='<div class="empty">Nenhum orçamento encontrado.</div>';return}box.innerHTML=`<table class="table"><thead><tr><th>Data</th><th>Cliente</th><th>Título</th><th>Status</th><th>Total</th><th>Ações</th></tr></thead><tbody>${lista.map(o=>{const link=linkOrcamento(o);return`<tr><td>${dbr(o.criado_em||o.created_at)}</td><td>${h(o.cliente_nome||'-')}</td><td>${h(o.titulo||'-')}</td><td><span class="status">${h(o.status||'pendente')}</span></td><td><strong>${m(o.total)}</strong></td><td><button class="btn" onclick="abrirModalVisualizar('${h(o.id)}')">Ver</button> <button class="btn" onclick="editarOrcamento('${h(o.id)}')">Editar</button> <button class="btn" onclick="duplicarOrcamento('${h(o.id)}')">Duplicar</button> <button class="btn ok" onclick="enviarWhatsapp('${h(o.id)}')">WhatsApp</button> <button class="btn" onclick="copiar('${h(link)}')">Copiar link</button> <button class="btn" onclick="registrarCaixa('${h(o.id)}')">Caixa</button></td></tr>`}).join('')}</tbody></table>`}function copiar(txt){navigator.clipboard.writeText(txt).then(()=>alert('Link copiado'))}function splitItens(o){const a=Array.isArray(o.itens)?o.itens:[];return{mao:a.filter(i=>i.tipo==='mao_obra'),prod:a.filter(i=>i.tipo!=='mao_obra')}}function tabela(t,itens){return`<h3>${t}</h3><table class="mini-table"><thead><tr><th>Descrição</th><th>Qtd</th><th>Unit.</th><th>Subtotal</th></tr></thead><tbody>${itens.length?itens.map(i=>`<tr><td>${h(i.descricao||i.nome||'-')}</td><td>${h(i.qtd??i.quantidade??1)}</td><td>${m(i.valor??i.valor_unitario??0)}</td><td>${m(i.subtotal??i.total??0)}</td></tr>`).join(''):'<tr><td colspan="4">Nenhum item.</td></tr>'}</tbody></table>`}function abrirModalVisualizar(id){const o=orcamentosCache.find(x=>String(x.id)===String(id));if(!o)return;document.getElementById('modal-orcamento').classList.add('ativo');document.getElementById('modal-orcamento-titulo').textContent=o.titulo||'Orçamento';document.getElementById('modal-orcamento-subtitulo').textContent=(o.cliente_nome||'Cliente')+' • '+m(o.total);const it=splitItens(o),link=linkOrcamento(o);document.getElementById('modal-orcamento-body').innerHTML=`<p><strong>Status:</strong> ${h(o.status||'pendente')}</p>${tabela('Mão de obra',it.mao)}${tabela('Itens / produtos',it.prod)}<h2 style="text-align:right">Total: ${m(o.total)}</h2><p><strong>Link:</strong> <a href="${h(link)}" target="_blank">abrir aprovação online</a></p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="editarOrcamento('${h(o.id)}')">Editar</button><button class="btn" onclick="duplicarOrcamento('${h(o.id)}')">Duplicar</button><button class="btn ok" onclick="enviarWhatsapp('${h(o.id)}')">Enviar WhatsApp</button><button class="btn" onclick="copiar('${h(link)}')">Copiar link</button><button class="btn" onclick="registrarCaixa('${h(o.id)}')">Registrar no caixa</button></div>`}function fecharModalOrcamento(){document.getElementById('modal-orcamento').classList.remove('ativo')}function enviarWhatsapp(id){const o=orcamentosCache.find(x=>String(x.id)===String(id));if(!o)return;const tel=String(o.cliente_whatsapp||'').replace(/\D/g,'');if(!tel)return alert('Este orçamento não tem WhatsApp do cliente.');const numero=tel.startsWith('55')?tel:'55'+tel;const link=linkOrcamento(o);window.open(`https://wa.me/${numero}?text=${encodeURIComponent(`Olá ${o.cliente_nome||''}, segue seu orçamento: ${link}\n\nVocê pode aprovar ou recusar pelo link.`)}`,'_blank')}function registrarCaixa(id){location.href='/fluxo-caixa.html?orcamento_id='+encodeURIComponent(id)}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();window.carregarOrcamentosPremium=carregarOrcamentosPremium;window.renderizarTabelaOrcamentos=renderizarTabelaOrcamentos;window.abrirModalVisualizar=abrirModalVisualizar;window.fecharModalOrcamento=fecharModalOrcamento;window.enviarWhatsapp=enviarWhatsapp;window.registrarCaixa=registrarCaixa;window.editarOrcamento=editarOrcamento;window.duplicarOrcamento=duplicarOrcamento;</script></body></html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orçamentos - FS Orçamentos</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    :root{
+      --orc-navy:#07142f;
+      --orc-navy-2:#0b1f46;
+      --orc-gold:#f5b625;
+      --orc-bg:#f4f8ff;
+      --orc-card:#ffffff;
+      --orc-border:#d8e6ff;
+      --orc-text:#06122f;
+      --orc-muted:#64748b;
+      --orc-ok:#16a34a;
+      --orc-red:#dc2626;
+      --orc-shadow:0 18px 40px rgba(7,20,47,.12);
+    }
+    body{background:radial-gradient(circle at 12% 0%,rgba(245,182,37,.14),transparent 30%),linear-gradient(180deg,#fff,var(--orc-bg))!important;color:var(--orc-text)!important}
+    .page{width:min(1180px,calc(100% - 24px));margin:0 auto;padding:22px 0 56px;display:grid;gap:14px}
+    .card{background:var(--orc-card);border:1px solid var(--orc-border);border-radius:22px;box-shadow:var(--orc-shadow);overflow:hidden;color:var(--orc-text)}
+    .hero{padding:24px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;background:radial-gradient(circle at 94% 8%,rgba(245,182,37,.18),transparent 30%),linear-gradient(135deg,#fff,#f8fbff);border-top:5px solid var(--orc-gold)}
+    .tag{display:inline-flex;padding:6px 10px;border-radius:999px;background:#fff7d7;color:#8a6400;border:1px solid rgba(245,182,37,.55);font-size:11px;font-weight:950;text-transform:uppercase;margin-bottom:8px}
+    .hero h1{margin:0 0 6px;font-size:clamp(26px,4vw,40px);letter-spacing:-.04em;color:var(--orc-text)}
+    .hero p{margin:0;color:var(--orc-muted);line-height:1.5;font-weight:650}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 13px;border-radius:12px;border:1px solid var(--orc-border);background:#fff;color:var(--orc-navy-2);font-weight:950;text-decoration:none;cursor:pointer;gap:6px;white-space:nowrap}
+    .btn.primary{background:linear-gradient(135deg,var(--orc-navy-2),var(--orc-navy));color:#fff;border-color:rgba(245,182,37,.65);box-shadow:0 14px 28px rgba(7,20,47,.20)}
+    .btn.ok{background:#ecfdf3;color:#166534;border-color:#86efac}
+    .btn.red{background:#fff1f1;color:#991b1b;border-color:#fecaca}
+    .btn.gold{background:#fff7d7;color:#8a6400;border-color:rgba(245,182,37,.65)}
+    .filters{padding:16px;display:grid;grid-template-columns:.7fr .7fr 1fr auto;gap:10px;align-items:end}
+    .field{display:grid;gap:5px}.field label{font-size:12px;font-weight:950;text-transform:uppercase;color:var(--orc-text);letter-spacing:.04em}.field input,.field select{border:1px solid var(--orc-border);border-radius:12px;padding:10px;background:#fff;color:var(--orc-text)}
+    .summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .metric{position:relative;padding:18px;border-left:6px solid var(--orc-gold);min-height:104px;display:grid;align-content:center;gap:3px;background:#fff}
+    .metric::after{content:"";position:absolute;right:16px;top:16px;width:38px;height:38px;border-radius:14px;background:linear-gradient(135deg,var(--orc-navy-2),var(--orc-navy));opacity:.08}
+    .metric.ok{border-left-color:var(--orc-ok)}.metric.red{border-left-color:var(--orc-red)}.metric.gold{border-left-color:var(--orc-gold);background:linear-gradient(135deg,#fff,#fffaf0)}
+    .metric span{display:block;color:var(--orc-muted);font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.04em}.metric strong{font-size:clamp(24px,4vw,32px);line-height:1.05;color:var(--orc-text)}.metric small{font-weight:850;color:var(--orc-muted)}
+    .section-head{padding:16px;background:linear-gradient(135deg,var(--orc-navy),var(--orc-navy-2));color:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:3px solid var(--orc-gold)}
+    .section-head strong{color:#fff}.section-head p{margin:4px 0 0;color:#dbeafe;font-size:13px}.section-body{padding:16px}
+    .table-wrap{overflow:auto;border:1px solid var(--orc-border);border-radius:16px;background:#fff}.table{width:100%;border-collapse:collapse;min-width:1180px}.table th{background:linear-gradient(135deg,var(--orc-navy),var(--orc-navy-2));color:#fff;text-align:left;padding:11px;font-size:12px;text-transform:uppercase}.table td{padding:11px;border-bottom:1px solid #e8eef9;font-size:13px;color:var(--orc-text);vertical-align:middle}.table td:last-child{min-width:430px}.status,.payment-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#f1f5f9;font-size:11px;font-weight:950;text-transform:uppercase;border:1px solid #e2e8f0}.status.aprovado,.payment-badge.pago{background:#ecfdf3;color:#166534;border-color:#86efac}.status.recusado{background:#fff1f1;color:#991b1b;border-color:#fecaca}.status.pendente,.payment-badge.pendente{background:#fff7d7;color:#8a6400;border-color:rgba(245,182,37,.65)}.empty{padding:22px;text-align:center;color:var(--orc-muted);font-weight:850}.acoes{display:flex;gap:6px;flex-wrap:wrap}.modal{position:fixed;inset:0;z-index:30000;background:rgba(7,20,47,.72);display:none;align-items:flex-start;justify-content:center;padding:18px;overflow:auto;backdrop-filter:blur(6px)}.modal.ativo{display:flex}.modal-box{width:min(900px,100%);background:#fff;border-radius:20px;margin:26px auto;overflow:hidden;border:1px solid var(--orc-border);box-shadow:0 28px 70px rgba(7,20,47,.22)}.modal-head{background:linear-gradient(135deg,var(--orc-navy),var(--orc-navy-2));color:#fff;padding:14px 16px;display:flex;justify-content:space-between;border-bottom:3px solid var(--orc-gold)}.modal-head strong{color:#fff}.modal-close{border:0;background:#fff;color:var(--orc-navy);border-radius:10px;width:34px;height:34px;font-size:22px;font-weight:950}.modal-body{padding:16px}.mini-table{width:100%;border-collapse:collapse;margin:10px 0}.mini-table th{background:var(--orc-navy);color:#fff;padding:8px;text-align:left}.mini-table td{padding:8px;border-bottom:1px solid #e5e7eb}.hint{padding:12px;border-radius:14px;background:#fff7d7;color:#8a6400;border:1px solid rgba(245,182,37,.55);font-weight:850;margin-bottom:12px}
+    @media(max-width:850px){.hero,.filters{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}.table{min-width:1080px}}
+    @media(max-width:560px){.summary{grid-template-columns:1fr 1fr;gap:10px}.metric{padding:14px;min-height:98px}.metric strong{font-size:22px}.metric span{font-size:10px}.btn{width:auto;font-size:12px;padding:9px 10px}.hero .btn{width:100%}.section-head{display:grid}.filters .btn{width:100%}}
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="page">
+    <section class="card hero">
+      <div><span class="tag">Premium</span><h1>Orçamentos salvos</h1><p>Histórico comercial: status, aprovação, pagamento, link de aprovação, WhatsApp e registro no caixa.</p></div>
+      <a href="/gerador.html" class="btn primary">+ Novo orçamento</a>
+    </section>
+
+    <section class="summary">
+      <div class="card metric"><span>Total</span><strong id="s-total">0</strong></div>
+      <div class="card metric"><span>Pendentes</span><strong id="s-pendentes">0</strong></div>
+      <div class="card metric ok"><span>Aprovados</span><strong id="s-aprovados">0</strong></div>
+      <div class="card metric gold"><span>Pagamento pendente</span><strong id="s-pagamento-pendente">0</strong><small id="s-pagamento-pendente-valor">R$ 0,00</small></div>
+      <div class="card metric red"><span>Recusados</span><strong id="s-recusados">0</strong></div>
+      <div class="card metric ok"><span>Valor no caixa</span><strong id="s-valor-caixa">R$ 0,00</strong></div>
+    </section>
+
+    <section class="card">
+      <div class="filters">
+        <div class="field"><label for="filtro-status">Status</label><select id="filtro-status"><option value="">Todos</option><option value="pendente">Pendente</option><option value="aprovado">Aprovado</option><option value="recusado">Recusado</option></select></div>
+        <div class="field"><label for="filtro-periodo">Período</label><select id="filtro-periodo"><option value="7">7 dias</option><option value="30" selected>30 dias</option><option value="60">60 dias</option><option value="90">90 dias</option><option value="total">Total</option></select></div>
+        <div class="field"><label for="filtro-busca">Busca</label><input id="filtro-busca" placeholder="Cliente, título ou número"></div>
+        <button class="btn primary" onclick="carregarOrcamentosPremium()">Buscar</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><div><strong>Histórico</strong><p>O valor só entra no caixa depois de marcar o orçamento aprovado como pago.</p></div></div>
+      <div class="section-body"><div id="lista-orcamentos" class="table-wrap"><div class="empty">Carregando...</div></div></div>
+    </section>
+  </main>
+
+  <section id="modal-orcamento" class="modal">
+    <div class="modal-box">
+      <div class="modal-head"><div><strong id="modal-orcamento-titulo">Orçamento</strong><p id="modal-orcamento-subtitulo" style="margin:4px 0 0;color:#cbd5e1"></p></div><button class="modal-close" onclick="fecharModalOrcamento()">×</button></div>
+      <div id="modal-orcamento-body" class="modal-body"></div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script>
+    let orcamentosCache=[];
+    let pagamentosCaixaPorOrcamento={};
+    let userIdOrc=null;
+    const h=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    const m=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    const n=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+    const dbr=v=>{if(!v)return'-';const d=new Date(String(v).includes('T')?v:String(v)+'T00:00:00');return Number.isNaN(d.getTime())?'-':d.toLocaleDateString('pt-BR')};
+    function linkOrcamento(o){return o.link_publico||o.public_token?`${location.origin}/aprovacao.html?t=${encodeURIComponent(o.public_token)}`:`${location.origin}/aprovacao.html?id=${encodeURIComponent(o.id)}`}
+    function statusOrc(o){return n(o.status||'pendente')}
+    function orcamentoPago(o){return !!pagamentosCaixaPorOrcamento[String(o.id)]}
+    function valorPagoOrc(o){return Number(pagamentosCaixaPorOrcamento[String(o.id)]||0)}
+
+    async function init(){
+      const{data:{session}}=await _supabase.auth.getSession();
+      if(!session?.user?.id){location.href='/index.html?login=1&dest='+encodeURIComponent('/orcamentos.html');return}
+      userIdOrc=session.user.id;
+      if((window.obterPlanoLocal?obterPlanoLocal():n(localStorage.getItem('usuario_plano')))!=='premium'){location.href='/planos.html#assinar-plano-premium';return}
+      document.getElementById('filtro-status').addEventListener('change',renderizarTabelaOrcamentos);
+      document.getElementById('filtro-periodo').addEventListener('change',carregarOrcamentosPremium);
+      document.getElementById('filtro-busca').addEventListener('input',renderizarTabelaOrcamentos);
+      await carregarOrcamentosPremium();
+    }
+
+    async function carregarPagamentosCaixa(){
+      pagamentosCaixaPorOrcamento={};
+      const ids=orcamentosCache.map(o=>String(o.id)).filter(Boolean);
+      if(!ids.length)return;
+      try{
+        const{data,error}=await _supabase.from('fluxo_caixa').select('origem_id,valor,tipo').eq('user_id',userIdOrc).eq('origem_tipo','orcamento').eq('tipo','entrada').in('origem_id',ids);
+        if(error)throw error;
+        (data||[]).forEach(x=>{if(x.origem_id)pagamentosCaixaPorOrcamento[String(x.origem_id)]=(pagamentosCaixaPorOrcamento[String(x.origem_id)]||0)+Number(x.valor||0)});
+      }catch(e){
+        console.warn('Não foi possível cruzar pagamentos no caixa por origem_id.',e);
+        pagamentosCaixaPorOrcamento={};
+      }
+    }
+
+    async function carregarOrcamentosPremium(){
+      let q=_supabase.from('orcamentos').select('*').eq('usuario_id',userIdOrc).order('criado_em',{ascending:false}).limit(500);
+      const p=document.getElementById('filtro-periodo').value;
+      if(p!=='total'){const ini=new Date();ini.setDate(ini.getDate()-Number(p||30));q=q.gte('criado_em',ini.toISOString())}
+      const{data,error}=await q;
+      if(error){console.error(error);document.getElementById('lista-orcamentos').innerHTML='<div class="empty">Erro ao carregar orçamentos.</div>';return}
+      orcamentosCache=data||[];
+      await carregarPagamentosCaixa();
+      renderizarTabelaOrcamentos();
+    }
+
+    function filtrados(){const st=document.getElementById('filtro-status').value,termo=n(document.getElementById('filtro-busca').value);return orcamentosCache.filter(o=>(!st||statusOrc(o)===st)&&(!termo||n([o.cliente_nome,o.titulo,o.assunto,o.numero_orcamento].join(' ')).includes(termo)))}
+    function renderResumo(lista){
+      const aprov=lista.filter(o=>statusOrc(o)==='aprovado');
+      const rec=lista.filter(o=>statusOrc(o)==='recusado');
+      const pend=lista.filter(o=>!['aprovado','recusado'].includes(statusOrc(o)));
+      const pagPend=aprov.filter(o=>!orcamentoPago(o));
+      const valorPendente=pagPend.reduce((s,o)=>s+Number(o.total||0),0);
+      const valorCaixa=aprov.reduce((s,o)=>s+valorPagoOrc(o),0);
+      document.getElementById('s-total').textContent=lista.length;
+      document.getElementById('s-pendentes').textContent=pend.length;
+      document.getElementById('s-aprovados').textContent=aprov.length;
+      document.getElementById('s-recusados').textContent=rec.length;
+      document.getElementById('s-pagamento-pendente').textContent=pagPend.length;
+      document.getElementById('s-pagamento-pendente-valor').textContent=m(valorPendente);
+      document.getElementById('s-valor-caixa').textContent=m(valorCaixa);
+    }
+
+    function editarOrcamento(id){location.href='/gerador.html?orcamento_id='+encodeURIComponent(id)}
+    function duplicarOrcamento(id){location.href='/gerador.html?duplicar_orcamento_id='+encodeURIComponent(id)}
+    function renderizarTabelaOrcamentos(){
+      const lista=filtrados();renderResumo(lista);const box=document.getElementById('lista-orcamentos');
+      if(!lista.length){box.innerHTML='<div class="empty">Nenhum orçamento encontrado.</div>';return}
+      box.innerHTML=`<table class="table"><thead><tr><th>Data</th><th>Cliente</th><th>Título</th><th>Status</th><th>Pagamento</th><th>Total</th><th>Ações</th></tr></thead><tbody>${lista.map(o=>{const link=linkOrcamento(o),st=statusOrc(o),pago=orcamentoPago(o),aprovado=st==='aprovado';return`<tr><td>${dbr(o.criado_em||o.created_at)}</td><td>${h(o.cliente_nome||'-')}</td><td>${h(o.titulo||o.assunto||'-')}</td><td><span class="status ${h(st)}">${h(o.status||'pendente')}</span></td><td>${aprovado?(pago?'<span class="payment-badge pago">Pago</span>':'<span class="payment-badge pendente">Pagamento pendente</span>'):'-'}</td><td><strong>${m(o.total)}</strong></td><td><div class="acoes"><button class="btn" onclick="abrirModalVisualizar('${h(o.id)}')">Ver</button><button class="btn" onclick="editarOrcamento('${h(o.id)}')">Editar</button><button class="btn" onclick="duplicarOrcamento('${h(o.id)}')">Duplicar</button><button class="btn ok" onclick="enviarWhatsapp('${h(o.id)}')">WhatsApp</button><button class="btn" onclick="copiar('${h(link)}')">Copiar link</button>${aprovado&&!pago?`<button class="btn gold" onclick="marcarComoPago('${h(o.id)}')">Marcar pago</button>`:aprovado&&pago?'<button class="btn ok" disabled>Já no caixa</button>':''}</div></td></tr>`}).join('')}</tbody></table>`;
+    }
+
+    function copiar(txt){navigator.clipboard.writeText(txt).then(()=>alert('Link copiado'))}
+    function splitItens(o){const a=Array.isArray(o.itens)?o.itens:[];return{mao:a.filter(i=>i.tipo==='mao_obra'),prod:a.filter(i=>i.tipo!=='mao_obra')}}
+    function tabela(t,itens){return`<h3>${t}</h3><table class="mini-table"><thead><tr><th>Descrição</th><th>Qtd</th><th>Unit.</th><th>Subtotal</th></tr></thead><tbody>${itens.length?itens.map(i=>`<tr><td>${h(i.descricao||i.nome||'-')}</td><td>${h(i.qtd??i.quantidade??1)}</td><td>${m(i.valor??i.valor_unitario??0)}</td><td>${m(i.subtotal??i.total??0)}</td></tr>`).join(''):'<tr><td colspan="4">Nenhum item.</td></tr>'}</tbody></table>`}
+    function abrirModalVisualizar(id){const o=orcamentosCache.find(x=>String(x.id)===String(id));if(!o)return;document.getElementById('modal-orcamento').classList.add('ativo');document.getElementById('modal-orcamento-titulo').textContent=o.titulo||o.assunto||'Orçamento';document.getElementById('modal-orcamento-subtitulo').textContent=(o.cliente_nome||'Cliente')+' • '+m(o.total);const it=splitItens(o),link=linkOrcamento(o),st=statusOrc(o),pago=orcamentoPago(o);document.getElementById('modal-orcamento-body').innerHTML=`${st==='aprovado'&&!pago?'<div class="hint">Pagamento pendente: este valor ainda não entrou no caixa.</div>':''}<p><strong>Status:</strong> ${h(o.status||'pendente')}</p><p><strong>Pagamento:</strong> ${st==='aprovado'?(pago?'Pago e registrado no caixa':'Pendente'):'-'}</p>${tabela('Mão de obra',it.mao)}${tabela('Itens / produtos',it.prod)}<h2 style="text-align:right">Total: ${m(o.total)}</h2><p><strong>Link:</strong> <a href="${h(link)}" target="_blank">abrir aprovação online</a></p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="editarOrcamento('${h(o.id)}')">Editar</button><button class="btn" onclick="duplicarOrcamento('${h(o.id)}')">Duplicar</button><button class="btn ok" onclick="enviarWhatsapp('${h(o.id)}')">Enviar WhatsApp</button><button class="btn" onclick="copiar('${h(link)}')">Copiar link</button>${st==='aprovado'&&!pago?`<button class="btn gold" onclick="marcarComoPago('${h(o.id)}')">Marcar como pago</button>`:''}</div>`}
+    function fecharModalOrcamento(){document.getElementById('modal-orcamento').classList.remove('ativo')}
+    function enviarWhatsapp(id){const o=orcamentosCache.find(x=>String(x.id)===String(id));if(!o)return;const tel=String(o.cliente_whatsapp||'').replace(/\D/g,'');if(!tel)return alert('Este orçamento não tem WhatsApp do cliente.');const numero=tel.startsWith('55')?tel:'55'+tel;const link=linkOrcamento(o);window.open(`https://wa.me/${numero}?text=${encodeURIComponent(`Olá ${o.cliente_nome||''}, segue seu orçamento: ${link}\n\nVocê pode aprovar ou recusar pelo link.`)}`,'_blank')}
+
+    async function marcarComoPago(id){
+      const o=orcamentosCache.find(x=>String(x.id)===String(id));
+      if(!o)return;
+      if(statusOrc(o)!=='aprovado')return alert('Só é possível marcar como pago um orçamento aprovado.');
+      if(orcamentoPago(o))return alert('Este orçamento já está registrado no caixa.');
+      if(!confirm(`Marcar este orçamento como pago e lançar ${m(o.total)} no caixa?`))return;
+      const payload={user_id:userIdOrc,tipo:'entrada',categoria:'Venda',descricao:`Orçamento pago - ${o.cliente_nome||o.titulo||o.assunto||id}`,valor:Number(o.total||0),data_movimento:new Date().toISOString().slice(0,10),forma_pagamento:o.forma_pagamento_cliente||o.forma_pagamento||'outro',origem_tipo:'orcamento',origem_id:o.id,observacoes:`Pagamento do orçamento ${o.numero_orcamento||o.id}`};
+      let{error}=await _supabase.from('fluxo_caixa').insert(payload);
+      if(error){const compat={...payload};delete compat.origem_id;const r=await _supabase.from('fluxo_caixa').insert(compat);error=r.error}
+      if(error){console.error(error);return alert('Não foi possível registrar o pagamento no caixa.')}
+      await carregarOrcamentosPremium();
+      alert('Pagamento registrado no caixa.');
+      fecharModalOrcamento();
+    }
+
+    function registrarCaixa(id){marcarComoPago(id)}
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+    window.carregarOrcamentosPremium=carregarOrcamentosPremium;window.renderizarTabelaOrcamentos=renderizarTabelaOrcamentos;window.abrirModalVisualizar=abrirModalVisualizar;window.fecharModalOrcamento=fecharModalOrcamento;window.enviarWhatsapp=enviarWhatsapp;window.registrarCaixa=registrarCaixa;window.marcarComoPago=marcarComoPago;window.editarOrcamento=editarOrcamento;window.duplicarOrcamento=duplicarOrcamento;
+  </script>
+</body>
+</html>
