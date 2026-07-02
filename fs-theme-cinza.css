@@ -1,16 +1,18 @@
 /* =========================================================
-   FS ORÇAMENTOS — TEMA PREMIUM GLOBAL
-   Azul-marinho, azul vivo, branco e dourado.
-   Mantém nomes antigos de variáveis para compatibilidade.
+   FS ORÇAMENTOS — COMPATIBILIDADE DO TEMA
+   Este arquivo permanece para não quebrar imports antigos.
+   A paleta oficial agora é azul-marinho + dourado.
    ========================================================= */
 
 :root {
   --fs-navy: #07142f;
   --fs-navy-2: #0b1f46;
-  --fs-blue: #1463ff;
-  --fs-blue-2: #0b49c9;
+  --fs-navy-3: #102a5c;
+  --fs-blue: #0b1f46;
+  --fs-blue-2: #07142f;
   --fs-gold: #f5b625;
   --fs-gold-2: #d99a00;
+  --fs-gold-soft: #fff7d7;
   --fs-bg: #f4f8ff;
   --fs-card: #ffffff;
   --fs-border: #d8e6ff;
@@ -20,22 +22,23 @@
   --fs-whatsapp: #22c55e;
   --fs-danger: #dc2626;
   --fs-danger-soft: #fff1f1;
-  --fs-shadow: 0 18px 40px rgba(7, 20, 47, 0.12);
-  --fs-shadow-strong: 0 28px 70px rgba(7, 20, 47, 0.22);
+  --fs-shadow: 0 18px 40px rgba(7,20,47,.12);
+  --fs-shadow-soft: 0 10px 24px rgba(7,20,47,.08);
+  --fs-shadow-strong: 0 28px 70px rgba(7,20,47,.22);
+  --fs-radius-sm: 12px;
   --fs-radius: 18px;
   --fs-radius-lg: 26px;
 
   --fs-azul-950: var(--fs-navy);
   --fs-azul-900: var(--fs-navy-2);
-  --fs-azul-800: #0d2a5f;
-  --fs-azul-700: var(--fs-blue-2);
-  --fs-azul-600: var(--fs-blue);
-  --fs-azul-500: var(--fs-blue);
-  --fs-azul-400: #2f7bff;
+  --fs-azul-800: var(--fs-navy-3);
+  --fs-azul-700: var(--fs-navy-2);
+  --fs-azul-600: var(--fs-navy-2);
+  --fs-azul-500: var(--fs-navy-2);
+  --fs-azul-400: var(--fs-navy-3);
   --fs-azul-200: var(--fs-border);
   --fs-azul-100: #eaf3ff;
   --fs-azul-50: var(--fs-bg);
-
   --fs-cinza-950: var(--fs-text);
   --fs-cinza-900: var(--fs-navy);
   --fs-cinza-800: var(--fs-navy-2);
@@ -47,7 +50,6 @@
   --fs-cinza-200: var(--fs-border);
   --fs-cinza-100: #eaf3ff;
   --fs-cinza-50: var(--fs-bg);
-
   --fs-marrom: var(--fs-navy-2);
   --fs-marrom-2: var(--fs-navy);
   --fs-marrom-3: #273b63;
@@ -58,274 +60,71 @@
   --fs-creme-2: #eaf3ff;
   --fs-borda: var(--fs-border);
   --fs-borda-2: #c8d7ee;
+  --fs-card-soft: #f8fbff;
   --fs-texto: var(--fs-text);
-  --fs-muted: var(--fs-muted);
+  --fs-texto-suave: var(--fs-muted);
   --fs-cinza: var(--fs-muted);
   --fs-cinza-claro: #eaf3ff;
   --bg-dark: var(--fs-bg);
   --body-brown: #ffffff;
   --body-gray: #ffffff;
   --text-dark: var(--fs-text);
-  --primary: var(--fs-blue);
+  --primary: var(--fs-navy-2);
   --danger: var(--fs-danger);
   --success: var(--fs-whatsapp);
 }
 
-html, body {
-  background: radial-gradient(circle at 14% 0%, rgba(245, 182, 37, .16), transparent 28%), radial-gradient(circle at 88% 8%, rgba(20, 99, 255, .18), transparent 30%), linear-gradient(180deg, #ffffff 0%, var(--fs-bg) 48%, #eaf3ff 100%) !important;
+html,
+body:not(.gerando-pdf) {
+  background: radial-gradient(circle at 14% 0%, rgba(245,182,37,.15), transparent 28%), radial-gradient(circle at 88% 8%, rgba(7,20,47,.10), transparent 30%), linear-gradient(180deg,#fff 0%,var(--fs-bg) 48%,#eaf3ff 100%) !important;
   color: var(--fs-text) !important;
 }
 
-body::before, body::after { background: transparent !important; }
-
-/* HEADER PREMIUM */
-#header-container .main-header,
-.main-header {
-  background: rgba(255,255,255,.94) !important;
-  color: var(--fs-text) !important;
-  border-bottom: 1px solid var(--fs-border) !important;
-  box-shadow: 0 12px 35px rgba(7,20,47,.12) !important;
-  backdrop-filter: blur(18px) !important;
-}
-.header-shell, .header-topo {
-  width: min(1180px, calc(100% - 24px)) !important;
-  min-height: 78px !important;
-  margin: 0 auto !important;
-  display: grid !important;
-  grid-template-columns: minmax(0,1fr) auto !important;
-  align-items: center !important;
-  gap: 14px !important;
-}
-.logo-nav {
-  min-width: 0 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 14px !important;
-  color: var(--fs-text) !important;
-  text-decoration: none !important;
-}
-.logo-fs {
-  width: 58px !important;
-  height: 58px !important;
-  min-width: 58px !important;
-  border-radius: 16px !important;
-  display: inline-grid !important;
-  place-items: center !important;
-  background: linear-gradient(135deg, var(--fs-blue), var(--fs-blue-2)) !important;
-  color: #fff !important;
-  -webkit-text-fill-color: #fff !important;
-  border: 1px solid rgba(255,255,255,.55) !important;
-  box-shadow: 0 16px 32px rgba(20,99,255,.26) !important;
-  font-size: 28px !important;
-  font-weight: 950 !important;
-  letter-spacing: -.06em !important;
-}
-.logo-orcamentos {
-  display: inline-block !important;
-  min-width: 0 !important;
-  color: var(--fs-text) !important;
-  -webkit-text-fill-color: var(--fs-text) !important;
-  font-size: clamp(22px, 4vw, 31px) !important;
-  font-weight: 950 !important;
-  letter-spacing: -.045em !important;
-  white-space: nowrap !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-}
-.header-usuario { display: inline-flex !important; align-items: center !important; gap: 10px !important; }
-.btn-notificacoes-header,
-.menu-mobile-btn,
-.btn-header-entrar,
-.btn-header-sair {
-  min-width: 54px !important;
-  height: 54px !important;
-  border-radius: 15px !important;
-  background: linear-gradient(135deg, var(--fs-blue), var(--fs-blue-2)) !important;
-  color: #fff !important;
-  border: 1px solid rgba(20,99,255,.35) !important;
-  box-shadow: 0 14px 28px rgba(20,99,255,.22) !important;
-}
-.menu-mobile-btn span { background:#fff !important; }
-.header-usuario #btn-header-entrar,
-.header-usuario #btn-header-sair { display:none !important; }
-.header-menu-linha {
-  position: absolute !important;
-  right: max(12px, calc((100vw - 1180px) / 2)) !important;
-  top: 86px !important;
-  width: min(460px, calc(100vw - 28px)) !important;
-  background: rgba(255,255,255,.98) !important;
-  color: var(--fs-text) !important;
-  border: 1px solid var(--fs-border) !important;
-  border-radius: 26px !important;
-  box-shadow: var(--fs-shadow-strong) !important;
-  padding: 18px !important;
-  z-index: 20000 !important;
-}
-.header-menu-linha:not(.menu-aberto) { display:none !important; }
-.header-menu-linha.menu-aberto { display:block !important; }
-.header-user-card {
-  display: grid !important;
-  grid-template-columns: 54px minmax(0,1fr) !important;
-  gap: 13px !important;
-  align-items: center !important;
-  padding: 14px !important;
-  border-radius: 18px !important;
-  background: linear-gradient(135deg,#f8fbff,#eaf3ff) !important;
-  border: 1px solid var(--fs-border) !important;
-  margin-bottom: 12px !important;
-}
-.header-user-icon {
-  width: 54px !important; height: 54px !important; border-radius: 50% !important;
-  display:grid !important; place-items:center !important; background:#fff !important; color:var(--fs-blue) !important;
-}
-.header-user-icon svg { width:28px !important; height:28px !important; stroke:currentColor !important; fill:none !important; stroke-width:2.2 !important; }
-.header-user-text strong { display:block !important; color:var(--fs-text) !important; font-size:20px !important; line-height:1.15 !important; font-weight:950 !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
-.header-user-text small { display:block !important; color:#245eac !important; font-weight:800 !important; margin-top:3px !important; }
-.nav-menu, .nav-menu-compacto {
-  width:100% !important; margin:0 !important; padding:0 !important; list-style:none !important;
-  display:grid !important; grid-template-columns:1fr !important; gap:0 !important;
-}
-.nav-menu li { width:100% !important; border-bottom:1px solid #e8eef9 !important; }
-.nav-menu li:last-child { border-bottom:0 !important; }
-.nav-menu a, .nav-menu summary,
-.btn-menu-mobile-entrar, .btn-menu-mobile-sair {
-  width:100% !important; min-height:58px !important; display:flex !important; align-items:center !important; justify-content:flex-start !important;
-  gap:16px !important; padding:13px 14px !important; border-radius:15px !important; color:var(--fs-text) !important; -webkit-text-fill-color:var(--fs-text) !important;
-  background:#fff !important; text-decoration:none !important; font-size:18px !important; font-weight:950 !important; border:0 !important; box-shadow:none !important;
-}
-.nav-menu a:hover, .nav-menu a.ativo, .nav-menu .link-destaque-gerador,
-.nav-menu .link-destaque-gerador:hover, .nav-menu .link-destaque-gerador.ativo {
-  background: linear-gradient(135deg, var(--fs-blue), var(--fs-blue-2)) !important;
-  color:#fff !important; -webkit-text-fill-color:#fff !important;
-  box-shadow: 0 12px 24px rgba(20,99,255,.20) !important;
-}
-.fs-menu-ico { width:34px !important; min-width:34px !important; display:inline-grid !important; place-items:center !important; color:inherit !important; }
-.fs-menu-ico svg { width:28px !important; height:28px !important; stroke:currentColor !important; fill:none !important; stroke-width:2.2 !important; }
-.menu-mobile-auth { display:grid !important; gap:10px !important; padding-top:12px !important; }
-#btn-menu-mobile-entrar { background:linear-gradient(135deg,var(--fs-blue),var(--fs-blue-2)) !important; color:#fff !important; -webkit-text-fill-color:#fff !important; }
-#btn-menu-mobile-sair { background:linear-gradient(135deg,#ef4444,var(--fs-danger),#991b1b) !important; color:#fff !important; -webkit-text-fill-color:#fff !important; }
-#btn-menu-mobile-entrar *, #btn-menu-mobile-sair * { color:#fff !important; -webkit-text-fill-color:#fff !important; stroke:#fff !important; }
-
-/* CARDS, SEÇÕES E FORMULÁRIOS */
-body:not(.gerando-pdf) main,
-body:not(.gerando-pdf) .container,
-body:not(.gerando-pdf) .painel-container,
-body:not(.gerando-pdf) .card,
-body:not(.gerando-pdf) .fs-card,
-body:not(.gerando-pdf) .dashboard-card,
-body:not(.gerando-pdf) .forum-card,
-body:not(.gerando-pdf) .painel-card,
-body:not(.gerando-pdf) .sobre-card,
-body:not(.gerando-pdf) .contato-card,
-body:not(.gerando-pdf) .manual-card,
-body:not(.gerando-pdf) .sidebar-card,
-body:not(.gerando-pdf) .modal-card,
-body:not(.gerando-pdf) .modal-content,
-body:not(.gerando-pdf) .modal-box,
-body:not(.gerando-pdf) .modal-pix-card {
-  background: rgba(255,255,255,.97) !important;
-  color: var(--fs-text) !important;
-  border-color: var(--fs-border) !important;
-  border-radius: var(--fs-radius-lg) !important;
-  box-shadow: var(--fs-shadow) !important;
-}
-body:not(.gerando-pdf) .fs-page-header,
-body:not(.gerando-pdf) .page-header,
-body:not(.gerando-pdf) .dashboard-hero,
-body:not(.gerando-pdf) .forum-hero,
-body:not(.gerando-pdf) .painel-header,
-body:not(.gerando-pdf) .gerador-hero,
-body:not(.gerando-pdf) .hero,
-body:not(.gerando-pdf) .home-hero,
-body:not(.gerando-pdf) .home-hero-venda {
-  background: radial-gradient(circle at 92% 10%, rgba(245,182,37,.18), transparent 30%), linear-gradient(135deg,#fff 0%, #f8fbff 58%, #eaf3ff 100%) !important;
-  border: 1px solid var(--fs-border) !important;
-  border-top: 5px solid var(--fs-blue) !important;
-  border-radius: var(--fs-radius-lg) !important;
-  box-shadow: var(--fs-shadow) !important;
-}
-body:not(.gerando-pdf) h1,
-body:not(.gerando-pdf) h2,
-body:not(.gerando-pdf) h3,
-body:not(.gerando-pdf) h4,
-body:not(.gerando-pdf) label,
-body:not(.gerando-pdf) strong { color: var(--fs-text) !important; }
-body:not(.gerando-pdf) p,
-body:not(.gerando-pdf) small,
-body:not(.gerando-pdf) .muted,
-body:not(.gerando-pdf) .text-muted { color: var(--fs-muted) !important; }
-body:not(.gerando-pdf) label { text-transform: uppercase !important; letter-spacing:.045em !important; font-size:12px !important; font-weight:950 !important; }
-body:not(.gerando-pdf) input,
-body:not(.gerando-pdf) select,
-body:not(.gerando-pdf) textarea {
-  background:#fff !important; color:var(--fs-text) !important; border:1px solid var(--fs-border) !important;
-  border-radius:14px !important; box-shadow:none !important;
-}
-body:not(.gerando-pdf) input::placeholder,
-body:not(.gerando-pdf) textarea::placeholder { color:#93a7c3 !important; opacity:1 !important; }
-body:not(.gerando-pdf) input:focus,
-body:not(.gerando-pdf) select:focus,
-body:not(.gerando-pdf) textarea:focus { border-color:var(--fs-blue) !important; box-shadow:0 0 0 3px rgba(20,99,255,.14) !important; }
-
-/* BOTÕES GLOBAIS */
-.btn-primary,.fs-btn-primary,.btn.primary,.dashboard-btn,.forum-btn,.btn-add,.btn-extra,.btn-gerar-orcamento-painel,
-button.btn-primary,a.btn-primary {
-  background: linear-gradient(135deg,var(--fs-blue),var(--fs-blue-2)) !important;
-  color:#fff !important; -webkit-text-fill-color:#fff !important; border-color:rgba(20,99,255,.40) !important;
-  box-shadow:0 14px 28px rgba(20,99,255,.20) !important;
-}
-.btn-secondary,.fs-btn-secondary,.btn.secondary,.dashboard-btn-secundario,.forum-btn-secundario,
-button.btn-secondary,a.btn-secondary {
-  background:#fff !important; color:var(--fs-blue-2) !important; -webkit-text-fill-color:var(--fs-blue-2) !important;
-  border:1px solid var(--fs-border) !important;
-}
-.btn-premium,.btn.gold,.fs-btn-premium {
+body:not(.gerando-pdf) .main-header,
+body:not(.gerando-pdf) .card-header,
+body:not(.gerando-pdf) .preview-head,
+body:not(.gerando-pdf) th {
   background: linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important;
-  color:#fff !important; -webkit-text-fill-color:#fff !important; border:1px solid rgba(245,182,37,.65) !important;
-  box-shadow:0 16px 32px rgba(7,20,47,.22) !important;
+  color: #fff !important;
 }
-.btn-premium::before,.btn.gold::before { content:'✦'; color:var(--fs-gold); margin-right:4px; }
-.btn-success,.fs-btn-success,.btn-aprovar { background:linear-gradient(135deg,#22c55e,var(--fs-success)) !important; color:#fff !important; border-color:#16a34a !important; }
-.btn-whatsapp,.dashboard-btn-whatsapp,.btn-whatsapp-empresa { background:linear-gradient(135deg,#25d366,var(--fs-whatsapp)) !important; color:#052e16 !important; border-color:#16a34a !important; }
-.btn-danger,.fs-btn-danger,.forum-btn-perigo,.btn-remove,.btn-excluir-conta,.btn-recusar { background:var(--fs-danger-soft) !important; color:var(--fs-danger) !important; border:1px solid #fecaca !important; }
 
-/* TABELAS, STATUS E RODAPÉS */
-th,.fs-table th,.tabela th,thead { background:linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important; color:#fff !important; }
-th *, .tabela th * { color:#fff !important; }
-.fs-badge,.badge,.status-badge,.plano-badge { border-radius:999px !important; }
-.status-pendente { background:#fff7d7 !important; color:#8a6400 !important; border:1px solid rgba(245,182,37,.55) !important; }
-.status-aprovado { background:#ecfdf3 !important; color:#166534 !important; border:1px solid #bbf7d0 !important; }
-.status-recusado { background:#fff1f1 !important; color:#b91c1c !important; border:1px solid #fecaca !important; }
-footer,.site-footer,.footer,.forum-footer { background:transparent !important; color:var(--fs-muted) !important; }
-footer a,.site-footer a,.footer a,.forum-footer a { color:var(--fs-blue-2) !important; }
-
-/* MODAL LOGIN PREMIUM */
-.modal-login-overlay { background:rgba(7,20,47,.76) !important; backdrop-filter:blur(7px) !important; }
-.modal-login-box { border-radius:26px !important; border:1px solid var(--fs-border) !important; overflow:hidden !important; box-shadow:var(--fs-shadow-strong) !important; }
-.modal-login-box .auth-logo-box { margin:-20px -20px 20px !important; padding:24px 20px !important; background:linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important; color:#fff !important; border-bottom:3px solid var(--fs-gold) !important; }
-.modal-login-box .auth-logo-box * { color:#fff !important; }
-.btn-fechar-login { background:linear-gradient(135deg,var(--fs-blue),var(--fs-blue-2)) !important; color:#fff !important; border:1px solid rgba(255,255,255,.35) !important; }
-.btn-principal-index { background:linear-gradient(135deg,var(--fs-navy),var(--fs-navy-2)) !important; color:#fff !important; border:1px solid var(--fs-gold) !important; box-shadow:0 14px 30px rgba(7,20,47,.22) !important; }
-
-@media (min-width: 901px) {
-  .header-menu-linha { display:none !important; }
-  .header-menu-linha.menu-aberto { display:block !important; }
-  .menu-mobile-btn { display:inline-flex !important; align-items:center !important; justify-content:center !important; }
+body:not(.gerando-pdf) .btn-primary,
+body:not(.gerando-pdf) .fs-btn-primary,
+body:not(.gerando-pdf) .btn-add,
+body:not(.gerando-pdf) .btn-extra,
+body:not(.gerando-pdf) .btn-generate,
+body:not(.gerando-pdf) .home-btn.primary,
+body:not(.gerando-pdf) .generate-btn {
+  background: linear-gradient(135deg,var(--fs-navy-2),var(--fs-navy)) !important;
+  color: #fff !important;
+  border-color: rgba(245,182,37,.55) !important;
 }
-@media (max-width: 900px) {
-  .header-shell,.header-topo { width:min(100% - 18px,1180px) !important; grid-template-columns:minmax(0,1fr) auto !important; min-height:78px !important; }
-  .logo-fs { width:54px !important; height:54px !important; min-width:54px !important; }
-  .logo-orcamentos { font-size:clamp(22px,7vw,30px) !important; }
-  .header-usuario { justify-content:flex-end !important; }
-  .btn-notificacoes-header { display:none !important; }
-  .menu-mobile-btn { width:54px !important; min-width:54px !important; }
-  .header-menu-linha { top:84px !important; left:14px !important; right:14px !important; width:auto !important; }
+
+body:not(.gerando-pdf) .btn-secondary,
+body:not(.gerando-pdf) .fs-btn-secondary,
+body:not(.gerando-pdf) .home-btn.secondary {
+  background: #fff !important;
+  color: var(--fs-navy-2) !important;
+  border-color: var(--fs-border) !important;
 }
-@media (max-width: 380px) {
-  .logo-nav { gap:10px !important; }
-  .logo-fs { width:48px !important; height:48px !important; min-width:48px !important; font-size:24px !important; }
-  .logo-orcamentos { font-size:22px !important; }
-  .menu-mobile-btn { width:50px !important; min-width:50px !important; height:50px !important; }
-  .header-menu-linha { padding:12px !important; border-radius:22px !important; }
-  .nav-menu a,.nav-menu summary,.btn-menu-mobile-entrar,.btn-menu-mobile-sair { font-size:16px !important; min-height:54px !important; }
+
+body:not(.gerando-pdf) .btn-danger,
+body:not(.gerando-pdf) .fs-btn-danger,
+body:not(.gerando-pdf) .btn-remove,
+body:not(.gerando-pdf) .btn-recusar {
+  background: var(--fs-danger-soft) !important;
+  color: var(--fs-danger) !important;
+  border-color: #fecaca !important;
+}
+
+body:not(.gerando-pdf) .btn-success,
+body:not(.gerando-pdf) .btn-aprovar {
+  background: linear-gradient(135deg,#22c55e,var(--fs-success)) !important;
+  color: #fff !important;
+}
+
+body:not(.gerando-pdf) .btn-whatsapp,
+body:not(.gerando-pdf) .btn-whatsapp-empresa {
+  background: linear-gradient(135deg,#25d366,var(--fs-whatsapp)) !important;
+  color: #052e16 !important;
 }
