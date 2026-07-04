@@ -170,6 +170,113 @@
   font-weight: 900 !important;
 }
 
+/* =========================================================
+   CORREÇÃO DE IMAGENS DO FÓRUM
+   Evita imagem de perfil/anexo estourando o feed no mobile.
+   ========================================================= */
+.forum-autor-linha {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.forum-avatar,
+.forum-avatar-placeholder {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  max-width: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  aspect-ratio: 1 / 1 !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, var(--fs-navy, #07142f), var(--fs-navy-2, #0b1f46)) !important;
+  color: #ffffff !important;
+  border: 2px solid var(--fs-gold, #f5b625) !important;
+  box-shadow: 0 8px 18px rgba(7, 20, 47, .16) !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  flex: 0 0 42px !important;
+}
+
+.forum-avatar img,
+.forum-avatar > img {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  border-radius: 50% !important;
+}
+
+.forum-autor-texto {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+.forum-autor-texto strong,
+.forum-autor-texto small {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.forum-fotos-grid,
+#forum-detalhe-fotos.forum-fotos-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 12px 0 !important;
+  overflow: hidden !important;
+}
+
+.forum-fotos-grid a {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--fs-border, #d8e6ff) !important;
+  background: #f8fbff !important;
+}
+
+.forum-foto,
+.forum-fotos-grid img,
+.forum-preview-fotos img,
+#forum-detalhe-fotos img {
+  width: 100% !important;
+  height: 220px !important;
+  max-width: 100% !important;
+  max-height: 220px !important;
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  border-radius: 16px !important;
+}
+
+.forum-topico > img,
+.forum-topico img.forum-foto {
+  width: 100% !important;
+  height: 220px !important;
+  max-height: 220px !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
 @media (max-width: 520px) {
   #forum-detalhe .forum-topico-acoes,
   #forum-detalhe .forum-acoes-compactas,
@@ -197,5 +304,34 @@
   #forum-detalhe .forum-acoes-menu,
   .fs-item-modal-corpo .forum-acoes-menu {
     width: min(235px, calc(100vw - 32px)) !important;
+  }
+
+  .forum-avatar,
+  .forum-avatar-placeholder {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    max-width: 38px !important;
+    min-height: 38px !important;
+    max-height: 38px !important;
+    flex-basis: 38px !important;
+    font-size: 12px !important;
+  }
+
+  .forum-fotos-grid,
+  #forum-detalhe-fotos.forum-fotos-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .forum-foto,
+  .forum-fotos-grid img,
+  .forum-preview-fotos img,
+  #forum-detalhe-fotos img,
+  .forum-topico > img,
+  .forum-topico img.forum-foto {
+    height: 190px !important;
+    max-height: 190px !important;
+    border-radius: 14px !important;
   }
 }
