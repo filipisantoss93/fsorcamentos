@@ -1,0 +1,69 @@
+/* =========================================================
+   FS ORÇAMENTOS — ajustes globais leves
+   Usado pelo config.js como camada de compatibilidade.
+   ========================================================= */
+
+/* Home Premium: ícones menores e mais proporcionais */
+.home-premium .shortcut-icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  border-radius: 10px !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  margin-bottom: 18px !important;
+  box-shadow: none !important;
+}
+
+.home-premium .shortcut-card::after,
+.home-premium .dash-card::after {
+  width: 30px !important;
+  height: 30px !important;
+  right: 18px !important;
+  top: 18px !important;
+  border-radius: 10px !important;
+  opacity: .055 !important;
+}
+
+.home-premium .shortcut-card.destaque::after {
+  width: 30px !important;
+  height: 30px !important;
+  opacity: .12 !important;
+}
+
+.home-premium .shortcut-card {
+  min-height: 112px !important;
+}
+
+.home-premium .dash-card {
+  min-height: 112px !important;
+}
+
+@media (max-width: 680px) {
+  .home-premium .shortcut-card,
+  .home-premium .dash-card {
+    min-height: 104px !important;
+    padding: 14px !important;
+    border-radius: 16px !important;
+  }
+
+  .home-premium .shortcut-icon {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    border-radius: 9px !important;
+    font-size: 14px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .home-premium .shortcut-card::after,
+  .home-premium .dash-card::after {
+    width: 26px !important;
+    height: 26px !important;
+    right: 18px !important;
+    top: 18px !important;
+    border-radius: 9px !important;
+  }
+}
