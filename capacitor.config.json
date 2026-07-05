@@ -4,7 +4,17 @@
   "webDir": "www",
   "server": {
     "url": "https://fsorcamentos.com.br",
-    "cleartext": false
+    "cleartext": false,
+    "allowNavigation": [
+      "fsorcamentos.com.br",
+      "*.fsorcamentos.com.br",
+      "kvjvhoziqcevkzyszdke.supabase.co",
+      "*.supabase.co",
+      "accounts.google.com",
+      "*.google.com",
+      "*.googleusercontent.com",
+      "*.gstatic.com"
+    ]
   },
   "android": {
     "allowMixedContent": false,
