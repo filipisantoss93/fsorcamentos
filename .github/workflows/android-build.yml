@@ -1,0 +1,128 @@
+name: Build Android App
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: Tipo de build
+        required: true
+        default: debug_apk
+        type: choice
+        options:
+          - debug_apk
+          - release_aab
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    env:
+      BUILD_TYPE: ${{ github.event.inputs.build_type }}
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Verificar arquivos principais
+        run: |
+          test -f package.json
+          test -f capacitor.config.json
+          test -f www/index.html
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Criar projeto Android se nao existir
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      - name: Sincronizar Capacitor
+        run: npx cap sync android
+
+      - name: Preparar assinatura quando houver secrets
+        run: |
+          if [ "$BUILD_TYPE" = "release_aab" ]; then
+            if [ -z "$ANDROID_KEYSTORE_BASE64" ] || [ -z "$ANDROID_KEYSTORE_PASSWORD" ] || [ -z "$ANDROID_KEY_ALIAS" ] || [ -z "$ANDROID_KEY_PASSWORD" ]; then
+              echo "Secrets de assinatura ausentes. Configure ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS e ANDROID_KEY_PASSWORD."
+              exit 1
+            fi
+
+            echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/fsorcamentos-upload.jks
+
+            cat > android/keystore.properties <<EOF
+          storeFile=fsorcamentos-upload.jks
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyAlias=$ANDROID_KEY_ALIAS
+          keyPassword=$ANDROID_KEY_PASSWORD
+          EOF
+
+            cat > android/app/signing.gradle <<'EOF'
+          def props = new Properties()
+          def propsFile = rootProject.file('keystore.properties')
+          if (propsFile.exists()) {
+              props.load(new FileInputStream(propsFile))
+          }
+          android {
+              signingConfigs {
+                  release {
+                      storeFile file(props['storeFile'])
+                      storePassword props['storePassword']
+                      keyAlias props['keyAlias']
+                      keyPassword props['keyPassword']
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
+
+            if ! grep -q "signing.gradle" android/app/build.gradle; then
+              echo "apply from: 'signing.gradle'" >> android/app/build.gradle
+            fi
+          fi
+
+      - name: Dar permissao ao Gradle
+        run: chmod +x android/gradlew
+
+      - name: Gerar build Android
+        run: |
+          cd android
+          if [ "$BUILD_TYPE" = "release_aab" ]; then
+            ./gradlew bundleRelease --stacktrace
+          else
+            ./gradlew assembleDebug --stacktrace
+          fi
+
+      - name: Enviar AAB de publicacao
+        if: ${{ github.event.inputs.build_type == 'release_aab' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: FS-Orcamentos-AAB-PlayStore
+          path: android/app/build/outputs/bundle/release/*.aab
+
+      - name: Enviar APK de teste
+        if: ${{ github.event.inputs.build_type == 'debug_apk' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: FS-Orcamentos-APK-Teste
+          path: android/app/build/outputs/apk/debug/*.apk
