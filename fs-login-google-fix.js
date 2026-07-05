@@ -1,4 +1,4 @@
-/* FS Orçamentos — login Google Android com deep link */
+/* FS Orçamentos — login Google Android com navegador seguro e deep link */
 (function () {
   'use strict';
 
@@ -11,6 +11,14 @@
       if (window.Capacitor && window.Capacitor.platform && window.Capacitor.platform !== 'web') return true;
     } catch (_) {}
     return false;
+  }
+
+  function getPlugin(nome) {
+    try {
+      return window.Capacitor && window.Capacitor.Plugins ? window.Capacitor.Plugins[nome] : null;
+    } catch (_) {
+      return null;
+    }
   }
 
   function destinoSeguro(destino) {
@@ -27,12 +35,11 @@
     document.head.appendChild(style);
   }
 
-  function getAppPlugin() {
+  async function fecharBrowserSeguro() {
     try {
-      return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App ? window.Capacitor.Plugins.App : null;
-    } catch (_) {
-      return null;
-    }
+      var Browser = getPlugin('Browser');
+      if (Browser && Browser.close) await Browser.close();
+    } catch (_) {}
   }
 
   async function tratarRetornoOAuth(url) {
@@ -40,6 +47,8 @@
       if (!url || !window._supabase) return;
       var texto = String(url);
       if (texto.indexOf(APP_DEEP_LINK) !== 0) return;
+
+      await fecharBrowserSeguro();
 
       var urlParse = new URL(texto);
       var code = urlParse.searchParams.get('code');
@@ -50,13 +59,16 @@
         return;
       }
 
-      if (code && window._supabase.auth.exchangeCodeForSession) {
-        var resultado = await window._supabase.auth.exchangeCodeForSession(code);
-        if (resultado && resultado.error) {
-          console.error('Erro ao finalizar login Google no app:', resultado.error);
-          alert('Não foi possível finalizar o login no app. Tente entrar novamente.');
-          return;
-        }
+      if (!code) {
+        alert('O Google retornou sem código de acesso. Tente novamente.');
+        return;
+      }
+
+      var resultado = await window._supabase.auth.exchangeCodeForSession(code);
+      if (resultado && resultado.error) {
+        console.error('Erro ao finalizar login Google no app:', resultado.error);
+        alert('Não foi possível finalizar o login no app. Tente entrar novamente.');
+        return;
       }
 
       var destino = '/index.html';
@@ -71,7 +83,7 @@
 
   function instalarDeepLinkListener() {
     if (window.__fsDeepLinkOAuthOk) return;
-    var App = getAppPlugin();
+    var App = getPlugin('App');
     if (!App || !App.addListener) return;
     window.__fsDeepLinkOAuthOk = true;
     App.addListener('appUrlOpen', function (event) {
@@ -82,6 +94,15 @@
         tratarRetornoOAuth(event && event.url);
       }).catch(function () {});
     }
+  }
+
+  async function abrirOAuthAndroid(url) {
+    var Browser = getPlugin('Browser');
+    if (Browser && Browser.open) {
+      await Browser.open({ url: url, presentationStyle: 'fullscreen' });
+      return;
+    }
+    window.location.href = url;
   }
 
   async function loginGoogleCorrigido(event) {
@@ -108,6 +129,7 @@
         provider: 'google',
         options: {
           redirectTo: redirectTo,
+          skipBrowserRedirect: isAppAndroid(),
           queryParams: {
             access_type: 'offline',
             prompt: 'select_account'
@@ -118,10 +140,20 @@
       if (resultado && resultado.error) {
         console.error('Erro ao entrar com Google:', resultado.error);
         alert('Não foi possível iniciar o login com Google. Tente novamente.');
+        return;
+      }
+
+      if (isAppAndroid()) {
+        var authUrl = resultado && resultado.data && resultado.data.url;
+        if (!authUrl) {
+          alert('Não foi possível obter a URL segura do Google.');
+          return;
+        }
+        await abrirOAuthAndroid(authUrl);
       }
     } catch (erro) {
       console.error('Erro inesperado no login Google:', erro);
-      alert('Erro inesperado ao iniciar login com Google.');
+      alert('Erro inesperado ao iniciar login Google.');
     }
   }
 
