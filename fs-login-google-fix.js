@@ -42,6 +42,46 @@
     } catch (_) {}
   }
 
+  function paramsDoHash(urlParse) {
+    var hash = String(urlParse.hash || '');
+    if (hash.charAt(0) === '#') hash = hash.slice(1);
+    return new URLSearchParams(hash);
+  }
+
+  async function finalizarSessaoComRetorno(texto) {
+    var urlParse = new URL(texto);
+    var hashParams = paramsDoHash(urlParse);
+
+    var erro = urlParse.searchParams.get('error') || hashParams.get('error') || urlParse.searchParams.get('error_description') || hashParams.get('error_description');
+    if (erro) {
+      alert('Login Google cancelado ou recusado.');
+      return false;
+    }
+
+    var code = urlParse.searchParams.get('code') || hashParams.get('code');
+    var accessToken = urlParse.searchParams.get('access_token') || hashParams.get('access_token');
+    var refreshToken = urlParse.searchParams.get('refresh_token') || hashParams.get('refresh_token');
+
+    if (code && window._supabase.auth.exchangeCodeForSession) {
+      var porCodigo = await window._supabase.auth.exchangeCodeForSession(code);
+      if (porCodigo && porCodigo.error) throw porCodigo.error;
+      return true;
+    }
+
+    if (accessToken && refreshToken && window._supabase.auth.setSession) {
+      var porToken = await window._supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      });
+      if (porToken && porToken.error) throw porToken.error;
+      return true;
+    }
+
+    console.warn('Retorno OAuth sem code/access_token:', texto);
+    alert('O Google voltou para o app, mas sem token de acesso. Verifique se o redirect está liberado no Supabase.');
+    return false;
+  }
+
   async function tratarRetornoOAuth(url) {
     try {
       if (!url || !window._supabase) return;
@@ -50,26 +90,8 @@
 
       await fecharBrowserSeguro();
 
-      var urlParse = new URL(texto);
-      var code = urlParse.searchParams.get('code');
-      var erro = urlParse.searchParams.get('error') || urlParse.searchParams.get('error_description');
-
-      if (erro) {
-        alert('Login Google cancelado ou recusado.');
-        return;
-      }
-
-      if (!code) {
-        alert('O Google retornou sem código de acesso. Tente novamente.');
-        return;
-      }
-
-      var resultado = await window._supabase.auth.exchangeCodeForSession(code);
-      if (resultado && resultado.error) {
-        console.error('Erro ao finalizar login Google no app:', resultado.error);
-        alert('Não foi possível finalizar o login no app. Tente entrar novamente.');
-        return;
-      }
+      var ok = await finalizarSessaoComRetorno(texto);
+      if (!ok) return;
 
       var destino = '/index.html';
       try { destino = destinoSeguro(localStorage.getItem('fs_destino_apos_login') || '/index.html'); } catch (_) {}
