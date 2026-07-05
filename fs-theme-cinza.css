@@ -1,7 +1,21 @@
 /* =========================================================
    FS ORÇAMENTOS — ajustes globais leves
-   Usado pelo config.js como camada de compatibilidade.
+   Camada externa para home premium e gerador limpo.
    ========================================================= */
+
+:root {
+  --fs-navy: #07142f;
+  --fs-navy-2: #0b1f46;
+  --fs-gold: #f5b625;
+  --fs-gold-2: #ffc400;
+  --fs-bg: #f4f8ff;
+  --fs-card: #ffffff;
+  --fs-border: #d8e6ff;
+  --fs-text: #06122f;
+  --fs-muted: #64748b;
+  --fs-danger: #dc2626;
+  --fs-success: #16a34a;
+}
 
 /* Home Premium: ícones dos Atalhos principais menores, centralizados e discretos */
 .home-premium .premium-grid .shortcut-card {
@@ -28,7 +42,8 @@
   overflow: hidden !important;
 }
 
-.home-premium .premium-grid .shortcut-card::after {
+.home-premium .premium-grid .shortcut-card::after,
+.home-premium #premium-dashboard .dash-card::after {
   width: 24px !important;
   height: 24px !important;
   right: 18px !important;
@@ -38,8 +53,6 @@
 }
 
 .home-premium .premium-grid .shortcut-card.destaque::after {
-  width: 24px !important;
-  height: 24px !important;
   opacity: .10 !important;
 }
 
@@ -54,219 +67,855 @@
   margin-top: 5px !important;
 }
 
-/* Dashboard rápido: mantém o card limpo, mas reduz o quadrado decorativo */
 .home-premium #premium-dashboard .dash-card {
   min-height: 108px !important;
   padding: 15px 16px 14px !important;
 }
 
-.home-premium #premium-dashboard .dash-card::after {
-  width: 24px !important;
-  height: 24px !important;
-  right: 18px !important;
-  top: 18px !important;
-  border-radius: 8px !important;
-  opacity: .045 !important;
-}
-
 /* =========================================================
-   Gerador: neutralização do marrom antigo
-   Mantém dourado como detalhe, troca base marrom por azul-marinho/cinza.
+   Gerador limpo
    ========================================================= */
-body:not(.gerando-pdf) .pagina-gerador,
-body:not(.gerando-pdf) .pagina-gerador * {
-  --fs-marrom: #07142f !important;
-  --fs-marrom-2: #0b1f46 !important;
-  --fs-creme: #f4f8ff !important;
-  --fs-creme-2: #ffffff !important;
-  --fs-bege: #f4f8ff !important;
-  --fs-bege-2: #ffffff !important;
-  --fs-borda: #d8e6ff !important;
-  --fs-texto: #06122f !important;
-  --fs-texto-suave: #64748b !important;
-}
-
 body:not(.gerando-pdf):has(.pagina-gerador) {
   background:
     radial-gradient(circle at 14% 0%, rgba(245, 182, 37, .13), transparent 30%),
     radial-gradient(circle at 88% 8%, rgba(7, 20, 47, .10), transparent 30%),
-    linear-gradient(180deg, #ffffff 0%, #f4f8ff 52%, #eaf3ff 100%) !important;
-  color: #06122f !important;
+    linear-gradient(180deg, #ffffff 0%, var(--fs-bg) 52%, #eaf3ff 100%) !important;
+  color: var(--fs-text) !important;
 }
 
-body:not(.gerando-pdf) .pagina-gerador,
-body:not(.gerando-pdf) .pagina-gerador h1,
-body:not(.gerando-pdf) .pagina-gerador h2,
-body:not(.gerando-pdf) .pagina-gerador h3,
-body:not(.gerando-pdf) .pagina-gerador strong,
-body:not(.gerando-pdf) .pagina-gerador label,
-body:not(.gerando-pdf) .pagina-gerador .dadositens,
-body:not(.gerando-pdf) .pagina-gerador .campo-form label,
-body:not(.gerando-pdf) .pagina-gerador .emissor-info-principal strong,
-body:not(.gerando-pdf) .pagina-gerador .emissor-readonly-grid strong,
-body:not(.gerando-pdf) .pagina-gerador .sidebar-card h3,
-body:not(.gerando-pdf) .pagina-gerador .cliente-vinculado-card strong,
-body:not(.gerando-pdf) .pagina-gerador .veiculo-vinculado-card strong {
-  color: #06122f !important;
+#btn-flutuante-gerador-global {
+  display: none !important;
 }
 
-body:not(.gerando-pdf) .pagina-gerador p,
-body:not(.gerando-pdf) .pagina-gerador small,
-body:not(.gerando-pdf) .pagina-gerador span,
-body:not(.gerando-pdf) .pagina-gerador .gerador-hero p,
-body:not(.gerando-pdf) .pagina-gerador .sidebar-card p,
-body:not(.gerando-pdf) .pagina-gerador .sidebar-lista li,
-body:not(.gerando-pdf) .pagina-gerador .header-labels,
-body:not(.gerando-pdf) .pagina-gerador .auth-aviso-gerador p,
-body:not(.gerando-pdf) .pagina-gerador .cliente-vinculado-card span,
-body:not(.gerando-pdf) .pagina-gerador .veiculo-vinculado-card span,
-body:not(.gerando-pdf) .pagina-gerador .busca-cliente-ajuda,
-body:not(.gerando-pdf) .pagina-gerador .estado-busca-cliente,
-body:not(.gerando-pdf) .pagina-gerador .fs-adsense-zone .adsense-label {
-  color: #64748b !important;
+.pagina-gerador,
+.pagina-gerador * {
+  box-sizing: border-box;
+  --fs-marrom: var(--fs-navy) !important;
+  --fs-marrom-2: var(--fs-navy-2) !important;
+  --fs-creme: var(--fs-bg) !important;
+  --fs-creme-2: #ffffff !important;
+  --fs-amarelo: var(--fs-gold) !important;
+  --fs-borda: var(--fs-border) !important;
+  --fs-texto: var(--fs-text) !important;
 }
 
-body:not(.gerando-pdf) .gerador-hero,
-body:not(.gerando-pdf) .gerador-card-principal,
-body:not(.gerando-pdf) .sidebar-card,
-body:not(.gerando-pdf) .emissor-readonly-card,
-body:not(.gerando-pdf) .intro-form-gerador,
-body:not(.gerando-pdf) #itens-lista,
-body:not(.gerando-pdf) .calc-expansivel,
-body:not(.gerando-pdf) .color-selector,
-body:not(.gerando-pdf) .cliente-vinculado-card,
-body:not(.gerando-pdf) .veiculo-vinculado-card,
-body:not(.gerando-pdf) .veiculo-orcamento-card,
-body:not(.gerando-pdf) .modal-content,
-body:not(.gerando-pdf) .modal-login-box,
-body:not(.gerando-pdf) .modal-busca-cliente-box,
-body:not(.gerando-pdf) .teste-premium-inline-card {
-  background: #ffffff !important;
-  color: #06122f !important;
-  border-color: #d8e6ff !important;
+.pagina-gerador {
+  width: min(1180px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 26px 0 45px;
+  color: var(--fs-text);
+}
+
+.gerador-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+  margin-bottom: 22px;
+  border: 1px solid var(--fs-border);
+  border-top: 6px solid var(--fs-gold);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(245, 182, 37, .18), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #f8fbff 56%, #edf5ff 100%);
+  box-shadow: 0 14px 36px rgba(7, 20, 47, .10);
+}
+
+.gerador-hero::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(245, 182, 37, .14);
+  top: -80px;
+  right: -70px;
+}
+
+.gerador-hero-conteudo {
+  position: relative;
+  max-width: 840px;
+}
+
+.gerador-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy));
+  color: var(--fs-gold);
+  border: 1px solid rgba(245, 182, 37, .72);
+  border-radius: 999px;
+  padding: 8px 14px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.gerador-hero h1 {
+  margin: 0 0 10px;
+  color: var(--fs-text);
+  font-size: clamp(28px, 5vw, 38px);
+  line-height: 1.12;
+}
+
+.gerador-hero p {
+  margin: 0;
+  max-width: 760px;
+  color: var(--fs-muted);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.gerador-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 22px;
+  align-items: start;
+}
+
+.gerador-card-principal,
+.sidebar-card,
+.emissor-readonly-card,
+.intro-form-gerador,
+#itens-lista,
+.calc-expansivel,
+.color-selector,
+.modal-content,
+.modal-login-box,
+.teste-premium-inline-card,
+.fs-adsense-zone {
+  background: var(--fs-card) !important;
+  color: var(--fs-text) !important;
+  border: 1px solid var(--fs-border) !important;
   box-shadow: 0 12px 30px rgba(7, 20, 47, .10) !important;
 }
 
-body:not(.gerando-pdf) .gerador-hero {
-  background:
-    radial-gradient(circle at 92% 12%, rgba(245, 182, 37, .18), transparent 34%),
-    linear-gradient(135deg, #ffffff 0%, #f8fbff 56%, #edf5ff 100%) !important;
-  border-top-color: #f5b625 !important;
+.gerador-card-principal {
+  min-width: 0;
+  padding: 22px;
+  border-top: 6px solid var(--fs-gold) !important;
+  border-radius: 16px;
 }
 
-body:not(.gerando-pdf) .gerador-tag,
-body:not(.gerando-pdf) .total-container,
-body:not(.gerando-pdf) .acoes-profissionais-orcamento,
-body:not(.gerando-pdf) .modal-busca-cliente-header,
-body:not(.gerando-pdf) .auth-logo-box,
-body:not(.gerando-pdf) .btn-entendi {
-  background: linear-gradient(135deg, #0b1f46, #07142f) !important;
-  color: #f5b625 !important;
-  border-color: rgba(245, 182, 37, .70) !important;
+.gerador-sidebar {
+  position: sticky;
+  top: 92px;
+  display: grid;
+  gap: 14px;
+  min-width: 0;
 }
 
-body:not(.gerando-pdf) .gerador-tag *,
-body:not(.gerando-pdf) .total-container *,
-body:not(.gerando-pdf) .acoes-profissionais-orcamento *,
-body:not(.gerando-pdf) .modal-busca-cliente-header *,
-body:not(.gerando-pdf) .auth-logo-box *,
-body:not(.gerando-pdf) .btn-entendi * {
-  color: inherit !important;
+.sidebar-card,
+.emissor-readonly-card,
+.intro-form-gerador,
+.teste-premium-inline-card,
+.calc-expansivel,
+.color-selector,
+.fs-adsense-zone {
+  border-radius: 14px;
+  padding: 16px;
 }
 
-body:not(.gerando-pdf) .btn-add,
-body:not(.gerando-pdf) .btn-extra,
-body:not(.gerando-pdf) .btn-editar-dados-empresa,
-body:not(.gerando-pdf) .btn-acao-pdf,
-body:not(.gerando-pdf) .btn-float-download,
-body:not(.gerando-pdf) .btn-teste-premium,
-body:not(.gerando-pdf) .btn-buscar-cliente-id,
-body:not(.gerando-pdf) .btn-executar-busca-cliente,
-body:not(.gerando-pdf) #btn-principal {
-  background: linear-gradient(135deg, #0b1f46, #07142f) !important;
+.sidebar-card {
+  border-left: 5px solid var(--fs-gold) !important;
+}
+
+.sidebar-card h3,
+.dadositens,
+.campo-form label,
+.emissor-info-principal strong,
+.emissor-readonly-grid strong,
+.pagina-gerador h2,
+.pagina-gerador h3,
+.pagina-gerador strong {
+  color: var(--fs-text) !important;
+}
+
+.sidebar-card p,
+.sidebar-lista li,
+.pagina-gerador p,
+.pagina-gerador small,
+.pagina-gerador .muted,
+.auth-aviso-gerador p,
+.emissor-info-principal small,
+.emissor-info-principal span,
+.emissor-readonly-grid span {
+  color: var(--fs-muted) !important;
+}
+
+.sidebar-lista {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 10px 0 0;
+  list-style: none;
+}
+
+.sidebar-lista li,
+.help-item,
+.emissor-readonly-grid div,
+.item-row {
+  background: #ffffff !important;
+  border: 1px solid var(--fs-border) !important;
+  color: var(--fs-text) !important;
+}
+
+.sidebar-lista li {
+  border-left: 4px solid var(--fs-gold) !important;
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.status-sessao-card,
+.aviso-perfil-incompleto {
+  display: none;
+  margin-bottom: 16px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fbff;
+  border: 1px solid var(--fs-border);
+  border-left: 5px solid var(--fs-gold);
+  color: var(--fs-text);
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.emissor-readonly-card {
+  margin-bottom: 14px;
+  border-left: 6px solid var(--fs-gold) !important;
+}
+
+.emissor-readonly-topo {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.emissor-logo-mini {
+  width: 110px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px dashed #c8d7ee;
+  border-radius: 10px;
+  background: #f8fbff;
+  color: var(--fs-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.emissor-logo-mini img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: none;
+}
+
+.emissor-readonly-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.emissor-readonly-grid div {
+  min-width: 0;
+  border-left: 4px solid var(--fs-gold) !important;
+  border-radius: 10px;
+  padding: 11px;
+}
+
+.emissor-info-principal span,
+.emissor-readonly-grid span {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+.emissor-info-principal strong {
+  display: block;
+  font-size: 22px;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+.emissor-readonly-grid strong {
+  display: block;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.btn-editar-dados-empresa,
+.btn-add,
+.btn-extra,
+.btn-acao-pdf,
+.btn-float-download,
+.btn-teste-premium,
+.btn-previa-profissional,
+.btn-entendi,
+#btn-principal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(245, 182, 37, .70) !important;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy)) !important;
   color: #ffffff !important;
-  border-color: rgba(245, 182, 37, .70) !important;
   box-shadow: 0 12px 26px rgba(7, 20, 47, .18) !important;
+  font-weight: 900;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-body:not(.gerando-pdf) .btn-add:hover,
-body:not(.gerando-pdf) .btn-extra:hover,
-body:not(.gerando-pdf) .btn-editar-dados-empresa:hover,
-body:not(.gerando-pdf) .btn-acao-pdf:hover,
-body:not(.gerando-pdf) .btn-teste-premium:hover:not(:disabled),
-body:not(.gerando-pdf) .btn-buscar-cliente-id:hover,
-body:not(.gerando-pdf) .btn-executar-busca-cliente:hover {
-  background: #f5b625 !important;
-  color: #07142f !important;
-  border-color: #07142f !important;
+.btn-editar-dados-empresa,
+.btn-extra,
+.btn-add,
+.btn-previa-profissional,
+.btn-novo-profissional,
+.btn-acao-orcamento {
+  min-height: 44px;
+  padding: 10px 15px;
 }
 
-body:not(.gerando-pdf) .btn-previa-profissional {
-  background: linear-gradient(135deg, #0b1f46, #07142f) !important;
-  color: #ffffff !important;
-  border-color: rgba(245, 182, 37, .70) !important;
-}
-
-body:not(.gerando-pdf) .btn-novo-profissional,
-body:not(.gerando-pdf) .btn-limpar-cliente-id,
-body:not(.gerando-pdf) .btn-float-novo {
+.btn-novo-profissional,
+.btn-float-novo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 1px solid var(--fs-border) !important;
+  border-radius: 10px;
   background: #ffffff !important;
-  color: #07142f !important;
-  border-color: #d8e6ff !important;
+  color: var(--fs-navy) !important;
+  font-weight: 900;
+  cursor: pointer;
 }
 
-body:not(.gerando-pdf) .campo-form input,
-body:not(.gerando-pdf) .campo-form textarea,
-body:not(.gerando-pdf) .campo-form select,
-body:not(.gerando-pdf) .item-row input,
-body:not(.gerando-pdf) .busca-cliente-linha input,
-body:not(.gerando-pdf) .pagina-gerador input,
-body:not(.gerando-pdf) .pagina-gerador select,
-body:not(.gerando-pdf) .pagina-gerador textarea {
+.btn-add:hover,
+.btn-extra:hover,
+.btn-previa-profissional:hover,
+.btn-acao-pdf:hover,
+.btn-teste-premium:hover:not(:disabled),
+.btn-editar-dados-empresa:hover {
+  background: var(--fs-gold) !important;
+  color: var(--fs-navy) !important;
+  border-color: var(--fs-navy) !important;
+}
+
+.dadositens {
+  margin: 20px 0 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f8fbff;
+  border: 1px solid var(--fs-border);
+  border-left: 5px solid var(--fs-gold);
+  font-size: 17px;
+  font-weight: 950;
+}
+
+.grid-duplo-gerador {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.campo-form {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.campo-form label {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.campo-form input,
+.campo-form textarea,
+.campo-form select,
+.item-row input,
+.pagina-gerador input,
+.pagina-gerador textarea,
+.pagina-gerador select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--fs-border) !important;
+  border-radius: 9px;
   background: #ffffff !important;
-  color: #06122f !important;
-  border-color: #d8e6ff !important;
+  color: var(--fs-text) !important;
+  padding: 10px 11px;
+  font-size: 14px;
+  outline: none;
 }
 
-body:not(.gerando-pdf) .pagina-gerador input:focus,
-body:not(.gerando-pdf) .pagina-gerador select:focus,
-body:not(.gerando-pdf) .pagina-gerador textarea:focus {
-  border-color: #0b1f46 !important;
+.campo-form textarea,
+.pagina-gerador textarea {
+  min-height: 104px;
+  resize: vertical;
+}
+
+.pagina-gerador input:focus,
+.pagina-gerador textarea:focus,
+.pagina-gerador select:focus {
+  border-color: var(--fs-navy-2) !important;
   box-shadow: 0 0 0 3px rgba(7, 20, 47, .14) !important;
 }
 
-body:not(.gerando-pdf) .dadositens,
-body:not(.gerando-pdf) .calc-header,
-body:not(.gerando-pdf) .status-sessao-card,
-body:not(.gerando-pdf) .aviso-perfil-incompleto,
-body:not(.gerando-pdf) .cliente-vinculado-card,
-body:not(.gerando-pdf) .veiculo-vinculado-card,
-body:not(.gerando-pdf) .fs-adsense-zone,
-body:not(.gerando-pdf) .estado-busca-cliente,
-body:not(.gerando-pdf) .teste-premium-inline-card {
-  background: #f8fbff !important;
-  border-color: #d8e6ff !important;
-  color: #06122f !important;
+.extra-cliente-linha {
+  display: grid;
+  grid-template-columns: 160px 1fr 38px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-body:not(.gerando-pdf) .emissor-readonly-grid div,
-body:not(.gerando-pdf) .item-row,
-body:not(.gerando-pdf) .cliente-busca-item,
-body:not(.gerando-pdf) .help-item,
-body:not(.gerando-pdf) .sidebar-lista li {
+.extra-cliente-linha button,
+.btn-remove,
+.remove-btn {
+  min-height: 38px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff5f5;
+  color: #b91c1c;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+#itens-lista {
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.item-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) 80px 120px 120px 42px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.item-row.header-labels {
+  background: var(--fs-navy) !important;
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.item-row.header-labels span {
+  color: #ffffff !important;
+}
+
+.total-container,
+.acoes-profissionais-orcamento,
+.calc-header {
+  background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy)) !important;
+  color: var(--fs-gold) !important;
+  border-color: rgba(245, 182, 37, .70) !important;
+}
+
+.total-container {
+  margin: 16px 0 4px;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: right;
+  font-size: 22px;
+  font-weight: 950;
+}
+
+.calc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.calc-content {
+  display: none;
+  padding: 14px 0 0;
+}
+
+.calc-expansivel.aberto .calc-content {
+  display: block;
+}
+
+.calc-secao-titulo {
+  margin: 12px 0 8px;
+  color: var(--fs-text);
+  font-weight: 950;
+}
+
+.checklist-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-frase {
+  min-height: 36px;
+  padding: 8px 10px;
+  border: 1px solid var(--fs-border);
+  border-radius: 9px;
+  background: #ffffff;
+  color: var(--fs-text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.color-selector label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+.theme-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.theme-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  outline: 1px solid var(--fs-border);
+  cursor: pointer;
+}
+
+.theme-dot.ativo,
+.theme-dot.selected {
+  outline: 3px solid var(--fs-gold);
+}
+
+.theme-dot.original { background: var(--fs-navy) !important; }
+.theme-dot.bw { background: linear-gradient(135deg, #111827 50%, #ffffff 50%); }
+.theme-dot.blue { background: #2563eb; }
+.theme-dot.green { background: #16a34a; }
+.theme-dot.yellow { background: #f59e0b; }
+.theme-dot.red { background: #dc2626; }
+
+.acoes-gerador-principal,
+.acoes-profissionais-botoes,
+.emissor-readonly-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#area-previa {
+  margin-top: 18px;
+}
+
+.previa-label {
+  margin: 0 0 8px;
+  color: var(--fs-muted);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.pdf-folha {
+  overflow: auto;
+  min-height: 220px;
+  padding: 10px;
+  border: 1px dashed var(--fs-border);
+  border-radius: 12px;
+  background: #f8fbff;
+}
+
+.pdf-documento {
+  width: 794px;
+  min-height: 1123px;
+  margin: 0 auto;
+  padding: 42px;
+  background: #ffffff;
+  color: #111827;
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 0 10px 30px rgba(15,23,42,.12);
+}
+
+.pdf-topo {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 4px solid var(--pdf-cor, #07142f);
+}
+
+.pdf-logo {
+  width: 100px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.pdf-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.pdf-titulo {
+  margin: 0;
+  color: var(--pdf-cor, #07142f);
+  font-size: 28px;
+}
+
+.pdf-subtitulo {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.pdf-bloco {
+  margin: 14px 0;
+}
+
+.pdf-bloco h3 {
+  margin: 0 0 8px;
+  color: var(--pdf-cor, #07142f);
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.pdf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pdf-info {
+  padding: 9px;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid var(--pdf-cor, #07142f);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.pdf-info strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #111827;
+}
+
+.pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.pdf-table th {
+  padding: 9px;
+  background: var(--pdf-cor, #07142f);
+  color: #ffffff;
+  text-align: left;
+}
+
+.pdf-table td {
+  padding: 9px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pdf-total {
+  margin-top: 14px;
+  padding: 14px;
+  background: var(--pdf-cor, #07142f);
+  color: #ffffff;
+  text-align: right;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.acoes-profissionais-orcamento {
+  display: none;
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.acoes-profissionais-orcamento strong,
+.acoes-profissionais-orcamento span {
+  color: inherit !important;
+}
+
+.acoes-profissionais-orcamento-topo {
+  margin-bottom: 12px;
+}
+
+.floating-actions {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  display: none;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.floating-actions.show {
+  display: flex;
+}
+
+.btn-float {
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid var(--fs-border);
+  background: #ffffff;
+  color: var(--fs-navy);
+  font-size: 18px;
+  font-weight: 900;
+  box-shadow: 0 12px 24px rgba(7,20,47,.18);
+  cursor: pointer;
+}
+
+.btn-float-download,
+.btn-float-whatsapp {
+  display: none;
+}
+
+.btn-float-whatsapp,
+.btn-acao-whatsapp {
+  background: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #15803d !important;
+}
+
+.fs-adsense-zone {
+  margin: 18px 0;
+  min-height: 92px;
+  text-align: center;
+}
+
+.adsense-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--fs-muted) !important;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.modal-login-overlay,
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 20000;
+  padding: 18px;
+  background: rgba(15, 23, 42, .76);
+  overflow-y: auto;
+}
+
+.modal-login-box,
+.modal-content {
+  width: min(100%, 460px);
+  margin: 24px auto;
+  padding: 22px;
+  border-radius: 14px;
+  border-top: 6px solid var(--fs-gold) !important;
+}
+
+.btn-fechar-login,
+.close-modal {
+  float: right;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: var(--fs-danger);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+#auth-area,
+#auth-container,
+#form-autenticacao {
+  display: block;
+}
+
+body.gerando-pdf {
   background: #ffffff !important;
-  border-color: #d8e6ff !important;
-  color: #06122f !important;
 }
 
-body:not(.gerando-pdf) .emissor-logo-mini {
-  background: #f8fbff !important;
-  border-color: #c8d7ee !important;
-  color: #64748b !important;
+body.gerando-pdf #header-container,
+body.gerando-pdf .gerador-hero,
+body.gerando-pdf .gerador-sidebar,
+body.gerando-pdf .floating-actions,
+body.gerando-pdf footer,
+body.gerando-pdf .fs-adsense-zone,
+body.gerando-pdf .acoes-profissionais-orcamento,
+body.gerando-pdf .previa-label,
+body.gerando-pdf #modal-login {
+  display: none !important;
 }
 
-body:not(.gerando-pdf) .original {
-  background: #07142f !important;
+body.gerando-pdf .pagina-gerador,
+body.gerando-pdf .gerador-layout,
+body.gerando-pdf .gerador-card-principal,
+body.gerando-pdf #formulario-orcamento,
+body.gerando-pdf #area-previa {
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #ffffff !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  max-width: none !important;
+  width: auto !important;
+}
+
+body.gerando-pdf #conteudo-pdf,
+body.gerando-pdf #conteudo-pdf > div {
+  display: block !important;
+  width: 794px !important;
+  max-width: none !important;
+  min-height: 1123px !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  transform: none !important;
+  background: #ffffff !important;
+}
+
+@media (max-width: 980px) {
+  .gerador-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gerador-sidebar {
+    position: static;
+  }
 }
 
 @media (max-width: 680px) {
@@ -305,5 +954,55 @@ body:not(.gerando-pdf) .original {
 
   .home-premium .premium-grid .shortcut-card span:not(.shortcut-icon) {
     font-size: 12px !important;
+  }
+
+  .pagina-gerador {
+    width: min(100% - 18px, 1180px);
+    padding-top: 16px;
+  }
+
+  .gerador-hero,
+  .gerador-card-principal {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .grid-duplo-gerador,
+  .emissor-readonly-topo,
+  .emissor-readonly-grid,
+  .pdf-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .extra-cliente-linha {
+    grid-template-columns: 1fr;
+  }
+
+  .item-row {
+    grid-template-columns: 1fr;
+  }
+
+  .item-row.header-labels {
+    display: none;
+  }
+
+  .acoes-gerador-principal,
+  .acoes-profissionais-botoes {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .acoes-gerador-principal button,
+  .acoes-profissionais-botoes button {
+    width: 100%;
+  }
+
+  .pdf-folha {
+    padding: 0;
+    overflow-x: auto;
+  }
+
+  .pdf-documento {
+    transform-origin: top left;
   }
 }
