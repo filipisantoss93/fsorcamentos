@@ -12,7 +12,7 @@
   <meta name="description" content="Fórum FS Orçamentos: comunidade para prestadores de serviço trocarem dúvidas, experiências, orçamentos, cobrança, garantia e rotina profissional.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
-  <link id="forum-publicacao-modal-css-link" rel="stylesheet" href="forum-actions-menu.css?v=20260705-clean">
+  <link id="forum-publicacao-modal-css-link" rel="stylesheet" href="forum-actions-menu.css?v=20260705-post">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -82,39 +82,6 @@
     </section>
   </main>
 
-  <div id="forum-detalhe" class="forum-detalhe" aria-hidden="true">
-    <div class="forum-detalhe-card">
-      <div class="forum-detalhe-topo">
-        <div style="min-width:0;flex:1;">
-          <h2 id="forum-detalhe-titulo">Publicação</h2>
-          <div id="forum-detalhe-info" class="forum-detalhe-info"></div>
-        </div>
-        <button type="button" class="forum-fechar" onclick="forumFecharTopico()">×</button>
-      </div>
-      <div class="forum-detalhe-corpo">
-        <div id="forum-detalhe-descricao" class="forum-descricao"></div>
-        <div id="forum-detalhe-fotos" class="forum-fotos-grid"></div>
-        <div id="forum-topico-acoes" class="forum-topico-acoes"></div>
-
-        <article class="forum-card branco">
-          <h3>Comentários</h3>
-          <div id="forum-lista-respostas" class="forum-lista" style="margin-top:12px;"></div>
-        </article>
-
-        <article class="forum-card branco">
-          <h3>Comentar</h3>
-          <form class="forum-form" onsubmit="forumCriarResposta(event)">
-            <label>
-              Sua resposta
-              <textarea id="forum-resposta-texto" maxlength="4000" placeholder="Compartilhe sua orientação, experiência ou solução." required></textarea>
-            </label>
-            <button id="forum-btn-responder" type="submit" class="forum-btn">Enviar comentário</button>
-          </form>
-        </article>
-      </div>
-    </div>
-  </div>
-
   <footer class="forum-footer">
     <span>© 2026 FS Orçamentos</span>
     <span> | </span><a href="/privacidade.html">Privacidade</a>
@@ -128,8 +95,22 @@
   <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
-  <script src="forum.js?v=20260705-clean"></script>
+  <script src="forum.js?v=20260705-post"></script>
   <script>
+    (function abrirPostAoClicarNoFeed() {
+      document.addEventListener('click', function (event) {
+        const card = event.target.closest('.forum-topico[data-topico-id]');
+        if (!card) return;
+        if (event.target.closest('button,a,input,select,textarea,label')) return;
+        const id = card.dataset.topicoId || card.getAttribute('data-topico-id') || '';
+        if (!id) return;
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        window.location.href = `/post.html?id=${encodeURIComponent(id)}`;
+      }, true);
+    })();
+
     (function instalarPullRefreshForum() {
       let inicioY = 0;
       let puxando = false;
