@@ -3,67 +3,107 @@
    Usado pelo config.js como camada de compatibilidade.
    ========================================================= */
 
-/* Home Premium: ícones menores e mais proporcionais */
-.home-premium .shortcut-icon {
-  width: 34px !important;
-  height: 34px !important;
-  min-width: 34px !important;
-  min-height: 34px !important;
-  border-radius: 10px !important;
-  font-size: 16px !important;
-  line-height: 1 !important;
-  margin-bottom: 18px !important;
-  box-shadow: none !important;
+/* Home Premium: ícones dos Atalhos principais menores, centralizados e discretos */
+.home-premium .premium-grid .shortcut-card {
+  min-height: 108px !important;
+  padding: 15px 16px 14px !important;
 }
 
-.home-premium .shortcut-card::after,
-.home-premium .dash-card::after {
-  width: 30px !important;
-  height: 30px !important;
+.home-premium .premium-grid .shortcut-icon {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 0 18px !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.home-premium .premium-grid .shortcut-card::after {
+  width: 24px !important;
+  height: 24px !important;
   right: 18px !important;
   top: 18px !important;
-  border-radius: 10px !important;
-  opacity: .055 !important;
+  border-radius: 8px !important;
+  opacity: .045 !important;
 }
 
-.home-premium .shortcut-card.destaque::after {
-  width: 30px !important;
-  height: 30px !important;
-  opacity: .12 !important;
+.home-premium .premium-grid .shortcut-card.destaque::after {
+  width: 24px !important;
+  height: 24px !important;
+  opacity: .10 !important;
 }
 
-.home-premium .shortcut-card {
-  min-height: 112px !important;
+.home-premium .premium-grid .shortcut-card strong {
+  font-size: 18px !important;
+  line-height: 1.15 !important;
 }
 
-.home-premium .dash-card {
-  min-height: 112px !important;
+.home-premium .premium-grid .shortcut-card span:not(.shortcut-icon) {
+  font-size: 12.5px !important;
+  line-height: 1.25 !important;
+  margin-top: 5px !important;
+}
+
+/* Dashboard rápido: mantém o card limpo, mas reduz o quadrado decorativo */
+.home-premium #premium-dashboard .dash-card {
+  min-height: 108px !important;
+  padding: 15px 16px 14px !important;
+}
+
+.home-premium #premium-dashboard .dash-card::after {
+  width: 24px !important;
+  height: 24px !important;
+  right: 18px !important;
+  top: 18px !important;
+  border-radius: 8px !important;
+  opacity: .045 !important;
 }
 
 @media (max-width: 680px) {
-  .home-premium .shortcut-card,
-  .home-premium .dash-card {
-    min-height: 104px !important;
-    padding: 14px !important;
-    border-radius: 16px !important;
+  .home-premium .premium-grid .shortcut-card,
+  .home-premium #premium-dashboard .dash-card {
+    min-height: 98px !important;
+    padding: 13px 13px 12px !important;
+    border-radius: 14px !important;
   }
 
-  .home-premium .shortcut-icon {
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-    border-radius: 9px !important;
-    font-size: 14px !important;
-    margin-bottom: 16px !important;
+  .home-premium .premium-grid .shortcut-icon {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    max-width: 24px !important;
+    max-height: 24px !important;
+    border-radius: 7px !important;
+    font-size: 11.5px !important;
+    margin-bottom: 17px !important;
   }
 
-  .home-premium .shortcut-card::after,
-  .home-premium .dash-card::after {
-    width: 26px !important;
-    height: 26px !important;
+  .home-premium .premium-grid .shortcut-card::after,
+  .home-premium #premium-dashboard .dash-card::after {
+    width: 22px !important;
+    height: 22px !important;
     right: 18px !important;
     top: 18px !important;
-    border-radius: 9px !important;
+    border-radius: 7px !important;
+    opacity: .04 !important;
+  }
+
+  .home-premium .premium-grid .shortcut-card strong {
+    font-size: 17px !important;
+  }
+
+  .home-premium .premium-grid .shortcut-card span:not(.shortcut-icon) {
+    font-size: 12px !important;
   }
 }
