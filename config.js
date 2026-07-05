@@ -38,14 +38,18 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
     document.head.appendChild(link);
   }
 
-  function carregarCorrecaoLoginGoogle() {
-    if (document.getElementById('fs-login-google-fix-js')) return;
-
+  function carregarScriptUnico(id, src) {
+    if (document.getElementById(id)) return;
     const script = document.createElement('script');
-    script.id = 'fs-login-google-fix-js';
-    script.src = '/fs-login-google-fix.js?v=20260705-android-google-fix';
+    script.id = id;
+    script.src = src;
     script.defer = true;
     document.head.appendChild(script);
+  }
+
+  function carregarCorrecaoLoginGoogle() {
+    carregarScriptUnico('fs-login-google-fix-js', '/fs-login-google-fix.js?v=20260705-android-google-fix');
+    carregarScriptUnico('fs-login-google-webview-js', '/fs-login-google-webview.js?v=20260705-webview-google');
   }
 
   function limparDestinoAntigoNoIndex() {
