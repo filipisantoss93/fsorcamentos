@@ -54,7 +54,7 @@ jobs:
           if [ -f "assets/icon-source.jpg.b64" ]; then
             sudo apt-get update
             sudo apt-get install -y imagemagick
-            base64 -d assets/icon-source.jpg.b64 > /tmp/fs-icon.jpg
+            python3 -c "import base64,pathlib; pathlib.Path('/tmp/fs-icon.jpg').write_bytes(base64.b64decode(pathlib.Path('assets/icon-source.jpg.b64').read_text().strip()))"
             rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
             rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
             for item in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
