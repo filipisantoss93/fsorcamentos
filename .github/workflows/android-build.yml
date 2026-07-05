@@ -49,6 +49,24 @@ jobs:
       - name: Sincronizar Capacitor
         run: npx cap sync android
 
+      - name: Aplicar icone do app
+        run: |
+          if [ -f "assets/icon-source.jpg.b64" ]; then
+            sudo apt-get update
+            sudo apt-get install -y imagemagick
+            base64 -d assets/icon-source.jpg.b64 > /tmp/fs-icon.jpg
+            rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+            rm -f android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+            for item in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
+              dpi=${item%%:*}
+              size=${item##*:}
+              dir="android/app/src/main/res/mipmap-${dpi}"
+              mkdir -p "$dir"
+              convert /tmp/fs-icon.jpg -resize ${size}x${size} -strip "$dir/ic_launcher.png"
+              cp "$dir/ic_launcher.png" "$dir/ic_launcher_round.png"
+            done
+          fi
+
       - name: Dar permissao ao Gradle
         run: chmod +x android/gradlew
 
