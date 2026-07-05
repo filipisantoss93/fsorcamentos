@@ -69,6 +69,206 @@
   opacity: .045 !important;
 }
 
+/* =========================================================
+   Gerador: neutralização do marrom antigo
+   Mantém dourado como detalhe, troca base marrom por azul-marinho/cinza.
+   ========================================================= */
+body:not(.gerando-pdf) .pagina-gerador,
+body:not(.gerando-pdf) .pagina-gerador * {
+  --fs-marrom: #07142f !important;
+  --fs-marrom-2: #0b1f46 !important;
+  --fs-creme: #f4f8ff !important;
+  --fs-creme-2: #ffffff !important;
+  --fs-bege: #f4f8ff !important;
+  --fs-bege-2: #ffffff !important;
+  --fs-borda: #d8e6ff !important;
+  --fs-texto: #06122f !important;
+  --fs-texto-suave: #64748b !important;
+}
+
+body:not(.gerando-pdf):has(.pagina-gerador) {
+  background:
+    radial-gradient(circle at 14% 0%, rgba(245, 182, 37, .13), transparent 30%),
+    radial-gradient(circle at 88% 8%, rgba(7, 20, 47, .10), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #f4f8ff 52%, #eaf3ff 100%) !important;
+  color: #06122f !important;
+}
+
+body:not(.gerando-pdf) .pagina-gerador,
+body:not(.gerando-pdf) .pagina-gerador h1,
+body:not(.gerando-pdf) .pagina-gerador h2,
+body:not(.gerando-pdf) .pagina-gerador h3,
+body:not(.gerando-pdf) .pagina-gerador strong,
+body:not(.gerando-pdf) .pagina-gerador label,
+body:not(.gerando-pdf) .pagina-gerador .dadositens,
+body:not(.gerando-pdf) .pagina-gerador .campo-form label,
+body:not(.gerando-pdf) .pagina-gerador .emissor-info-principal strong,
+body:not(.gerando-pdf) .pagina-gerador .emissor-readonly-grid strong,
+body:not(.gerando-pdf) .pagina-gerador .sidebar-card h3,
+body:not(.gerando-pdf) .pagina-gerador .cliente-vinculado-card strong,
+body:not(.gerando-pdf) .pagina-gerador .veiculo-vinculado-card strong {
+  color: #06122f !important;
+}
+
+body:not(.gerando-pdf) .pagina-gerador p,
+body:not(.gerando-pdf) .pagina-gerador small,
+body:not(.gerando-pdf) .pagina-gerador span,
+body:not(.gerando-pdf) .pagina-gerador .gerador-hero p,
+body:not(.gerando-pdf) .pagina-gerador .sidebar-card p,
+body:not(.gerando-pdf) .pagina-gerador .sidebar-lista li,
+body:not(.gerando-pdf) .pagina-gerador .header-labels,
+body:not(.gerando-pdf) .pagina-gerador .auth-aviso-gerador p,
+body:not(.gerando-pdf) .pagina-gerador .cliente-vinculado-card span,
+body:not(.gerando-pdf) .pagina-gerador .veiculo-vinculado-card span,
+body:not(.gerando-pdf) .pagina-gerador .busca-cliente-ajuda,
+body:not(.gerando-pdf) .pagina-gerador .estado-busca-cliente,
+body:not(.gerando-pdf) .pagina-gerador .fs-adsense-zone .adsense-label {
+  color: #64748b !important;
+}
+
+body:not(.gerando-pdf) .gerador-hero,
+body:not(.gerando-pdf) .gerador-card-principal,
+body:not(.gerando-pdf) .sidebar-card,
+body:not(.gerando-pdf) .emissor-readonly-card,
+body:not(.gerando-pdf) .intro-form-gerador,
+body:not(.gerando-pdf) #itens-lista,
+body:not(.gerando-pdf) .calc-expansivel,
+body:not(.gerando-pdf) .color-selector,
+body:not(.gerando-pdf) .cliente-vinculado-card,
+body:not(.gerando-pdf) .veiculo-vinculado-card,
+body:not(.gerando-pdf) .veiculo-orcamento-card,
+body:not(.gerando-pdf) .modal-content,
+body:not(.gerando-pdf) .modal-login-box,
+body:not(.gerando-pdf) .modal-busca-cliente-box,
+body:not(.gerando-pdf) .teste-premium-inline-card {
+  background: #ffffff !important;
+  color: #06122f !important;
+  border-color: #d8e6ff !important;
+  box-shadow: 0 12px 30px rgba(7, 20, 47, .10) !important;
+}
+
+body:not(.gerando-pdf) .gerador-hero {
+  background:
+    radial-gradient(circle at 92% 12%, rgba(245, 182, 37, .18), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #f8fbff 56%, #edf5ff 100%) !important;
+  border-top-color: #f5b625 !important;
+}
+
+body:not(.gerando-pdf) .gerador-tag,
+body:not(.gerando-pdf) .total-container,
+body:not(.gerando-pdf) .acoes-profissionais-orcamento,
+body:not(.gerando-pdf) .modal-busca-cliente-header,
+body:not(.gerando-pdf) .auth-logo-box,
+body:not(.gerando-pdf) .btn-entendi {
+  background: linear-gradient(135deg, #0b1f46, #07142f) !important;
+  color: #f5b625 !important;
+  border-color: rgba(245, 182, 37, .70) !important;
+}
+
+body:not(.gerando-pdf) .gerador-tag *,
+body:not(.gerando-pdf) .total-container *,
+body:not(.gerando-pdf) .acoes-profissionais-orcamento *,
+body:not(.gerando-pdf) .modal-busca-cliente-header *,
+body:not(.gerando-pdf) .auth-logo-box *,
+body:not(.gerando-pdf) .btn-entendi * {
+  color: inherit !important;
+}
+
+body:not(.gerando-pdf) .btn-add,
+body:not(.gerando-pdf) .btn-extra,
+body:not(.gerando-pdf) .btn-editar-dados-empresa,
+body:not(.gerando-pdf) .btn-acao-pdf,
+body:not(.gerando-pdf) .btn-float-download,
+body:not(.gerando-pdf) .btn-teste-premium,
+body:not(.gerando-pdf) .btn-buscar-cliente-id,
+body:not(.gerando-pdf) .btn-executar-busca-cliente,
+body:not(.gerando-pdf) #btn-principal {
+  background: linear-gradient(135deg, #0b1f46, #07142f) !important;
+  color: #ffffff !important;
+  border-color: rgba(245, 182, 37, .70) !important;
+  box-shadow: 0 12px 26px rgba(7, 20, 47, .18) !important;
+}
+
+body:not(.gerando-pdf) .btn-add:hover,
+body:not(.gerando-pdf) .btn-extra:hover,
+body:not(.gerando-pdf) .btn-editar-dados-empresa:hover,
+body:not(.gerando-pdf) .btn-acao-pdf:hover,
+body:not(.gerando-pdf) .btn-teste-premium:hover:not(:disabled),
+body:not(.gerando-pdf) .btn-buscar-cliente-id:hover,
+body:not(.gerando-pdf) .btn-executar-busca-cliente:hover {
+  background: #f5b625 !important;
+  color: #07142f !important;
+  border-color: #07142f !important;
+}
+
+body:not(.gerando-pdf) .btn-previa-profissional {
+  background: linear-gradient(135deg, #0b1f46, #07142f) !important;
+  color: #ffffff !important;
+  border-color: rgba(245, 182, 37, .70) !important;
+}
+
+body:not(.gerando-pdf) .btn-novo-profissional,
+body:not(.gerando-pdf) .btn-limpar-cliente-id,
+body:not(.gerando-pdf) .btn-float-novo {
+  background: #ffffff !important;
+  color: #07142f !important;
+  border-color: #d8e6ff !important;
+}
+
+body:not(.gerando-pdf) .campo-form input,
+body:not(.gerando-pdf) .campo-form textarea,
+body:not(.gerando-pdf) .campo-form select,
+body:not(.gerando-pdf) .item-row input,
+body:not(.gerando-pdf) .busca-cliente-linha input,
+body:not(.gerando-pdf) .pagina-gerador input,
+body:not(.gerando-pdf) .pagina-gerador select,
+body:not(.gerando-pdf) .pagina-gerador textarea {
+  background: #ffffff !important;
+  color: #06122f !important;
+  border-color: #d8e6ff !important;
+}
+
+body:not(.gerando-pdf) .pagina-gerador input:focus,
+body:not(.gerando-pdf) .pagina-gerador select:focus,
+body:not(.gerando-pdf) .pagina-gerador textarea:focus {
+  border-color: #0b1f46 !important;
+  box-shadow: 0 0 0 3px rgba(7, 20, 47, .14) !important;
+}
+
+body:not(.gerando-pdf) .dadositens,
+body:not(.gerando-pdf) .calc-header,
+body:not(.gerando-pdf) .status-sessao-card,
+body:not(.gerando-pdf) .aviso-perfil-incompleto,
+body:not(.gerando-pdf) .cliente-vinculado-card,
+body:not(.gerando-pdf) .veiculo-vinculado-card,
+body:not(.gerando-pdf) .fs-adsense-zone,
+body:not(.gerando-pdf) .estado-busca-cliente,
+body:not(.gerando-pdf) .teste-premium-inline-card {
+  background: #f8fbff !important;
+  border-color: #d8e6ff !important;
+  color: #06122f !important;
+}
+
+body:not(.gerando-pdf) .emissor-readonly-grid div,
+body:not(.gerando-pdf) .item-row,
+body:not(.gerando-pdf) .cliente-busca-item,
+body:not(.gerando-pdf) .help-item,
+body:not(.gerando-pdf) .sidebar-lista li {
+  background: #ffffff !important;
+  border-color: #d8e6ff !important;
+  color: #06122f !important;
+}
+
+body:not(.gerando-pdf) .emissor-logo-mini {
+  background: #f8fbff !important;
+  border-color: #c8d7ee !important;
+  color: #64748b !important;
+}
+
+body:not(.gerando-pdf) .original {
+  background: #07142f !important;
+}
+
 @media (max-width: 680px) {
   .home-premium .premium-grid .shortcut-card,
   .home-premium #premium-dashboard .dash-card {
