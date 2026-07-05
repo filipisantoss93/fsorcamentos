@@ -65,17 +65,24 @@
     if (conteudo) conteudo.style.display = 'block';
   }
 
-  function mostrarAlerta(texto, tipo = 'info') {
-    const alerta = document.getElementById('forum-alerta');
-    if (!alerta) return;
+  function pintarAlerta(el, texto, tipo) {
+    if (!el) return;
     if (!texto) {
-      alerta.style.display = 'none';
-      alerta.textContent = '';
+      el.style.display = 'none';
+      el.textContent = '';
       return;
     }
-    alerta.style.display = 'block';
-    alerta.textContent = texto;
-    alerta.style.borderLeftColor = tipo === 'erro' ? '#dc2626' : tipo === 'ok' ? '#16a34a' : '#ffc400';
+    el.style.display = 'block';
+    el.textContent = texto;
+    el.style.borderLeftColor = tipo === 'erro' ? '#dc2626' : tipo === 'ok' ? '#16a34a' : '#ffc400';
+  }
+
+  function mostrarAlerta(texto, tipo = 'info') {
+    pintarAlerta(document.getElementById('forum-alerta'), texto, tipo);
+  }
+
+  function mostrarAlertaPublicacao(texto, tipo = 'info') {
+    pintarAlerta(document.getElementById('forum-form-alerta'), texto, tipo);
   }
 
   function setBotao(id, texto, disabled) {
@@ -193,10 +200,11 @@
           return `<img src="${url}" alt="Prévia da foto">`;
         }).join('');
       }
+      mostrarAlertaPublicacao('', 'info');
     } catch (error) {
       limparPreviewFotos();
       if (input) input.value = '';
-      alert(error.message || 'Fotos inválidas.');
+      mostrarAlertaPublicacao(error.message || 'Fotos inválidas.', 'erro');
     }
   }
 
@@ -285,15 +293,24 @@
 
   function formularioTopicoHtml() {
     return `
-      <form id="forum-form-topico" class="forum-form" onsubmit="forumCriarTopico(event)">
+      <form id="forum-form-topico" class="forum-form" novalidate>
         <label>Título da publicação<input id="forum-topico-titulo" type="text" maxlength="120" placeholder="Ex: Como cobrar diagnóstico antes do orçamento?" required></label>
         <label>Categoria<select id="forum-topico-categoria" required></select></label>
         <label>Conteúdo<textarea id="forum-topico-descricao" maxlength="4000" placeholder="Conte o contexto, o que aconteceu, o que você já tentou ou qual opinião precisa da comunidade." required></textarea></label>
-        <label>Fotos da publicação<input id="forum-topico-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="forumValidarFotosSelecionadas()"><small>Opcional. Até 2 fotos, máximo 2 MB por foto. Formatos: JPG, PNG ou WEBP.</small></label>
+        <label>Fotos da publicação<input id="forum-topico-fotos" type="file" accept="image/jpeg,image/png,image/webp" multiple><small>Opcional. Até 2 fotos, máximo 2 MB por foto. Formatos: JPG, PNG ou WEBP.</small></label>
         <div id="forum-preview-fotos" class="forum-preview-fotos"></div>
+        <div id="forum-form-alerta" class="forum-alerta" style="display:none;"></div>
         <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar no fórum</button>
       </form>
     `;
+  }
+
+  function vincularFormularioPublicacao(form) {
+    if (!form || form.dataset.fsForumSubmitOk === '1') return;
+    form.dataset.fsForumSubmitOk = '1';
+    form.addEventListener('submit', criarTopico);
+    const inputFoto = form.querySelector('#forum-topico-fotos');
+    if (inputFoto) inputFoto.addEventListener('change', validarFotosSelecionadas);
   }
 
   function garantirFormularioTopico(card) {
@@ -306,6 +323,7 @@
       form = document.getElementById('forum-form-topico');
     }
     preencherCategorias();
+    vincularFormularioPublicacao(form);
     return form;
   }
 
@@ -340,6 +358,7 @@
       return;
     }
     garantirFormularioTopico(card);
+    mostrarAlertaPublicacao('', 'info');
     card.classList.add('ativo');
     card.style.setProperty('display', 'flex', 'important');
     card.setAttribute('aria-hidden', 'false');
@@ -414,43 +433,72 @@
   }
 
   async function criarTopico(event) {
-    event.preventDefault();
-    if (!sessaoAtual?.user?.id) return mostrarAlerta('Faça login para publicar no Fórum.', 'erro');
+    if (event) event.preventDefault();
+    if (!sessaoAtual?.user?.id) {
+      mostrarAlertaPublicacao('Faça login para publicar no Fórum.', 'erro');
+      return;
+    }
+
     const titulo = document.getElementById('forum-topico-titulo')?.value?.trim();
     const categoria = document.getElementById('forum-topico-categoria')?.value?.trim();
     const descricao = document.getElementById('forum-topico-descricao')?.value?.trim();
-    if (!titulo || titulo.length < 8) return mostrarAlerta('Informe um título mais claro para sua dúvida.', 'erro');
-    if (!descricao || descricao.length < 20) return mostrarAlerta('Descreva melhor sua dúvida antes de publicar.', 'erro');
+
+    if (!titulo || titulo.length < 8) return mostrarAlertaPublicacao('Informe um título com pelo menos 8 caracteres.', 'erro');
+    if (!descricao || descricao.length < 20) return mostrarAlertaPublicacao('Descreva melhor sua publicação antes de enviar.', 'erro');
+
     setBotao('forum-btn-criar', 'Publicando...', true);
+    mostrarAlertaPublicacao('Salvando publicação...', 'info');
+
     try {
-      const fotos = await uploadFotosTopico();
       const email = sessaoAtual?.user?.email || '';
       const autor = {
         autor_nome: String(perfilAtual?.nome || localStorage.getItem('usuario_nome') || (email ? email.split('@')[0] : 'Membro da comunidade')).trim(),
         autor_empresa: String(perfilAtual?.nome_empresa || localStorage.getItem('nome_empresa') || '').trim(),
         autor_foto_url: String(perfilAtual?.foto_url || localStorage.getItem('usuario_foto_url') || '').trim()
       };
+
       const { data, error } = await _supabase.from('forum_topicos').insert({
         usuario_id: sessaoAtual.user.id,
         autor_nome: autor.autor_nome,
         autor_empresa: autor.autor_empresa,
         autor_foto_url: autor.autor_foto_url,
-        foto_1_url: fotos[0] || null,
-        foto_2_url: fotos[1] || null,
         titulo,
         categoria: categoria || 'Orçamentos',
         descricao,
         status: 'aberto',
         resolvido: false
       }).select('id').single();
+
       if (error) throw error;
-      await executarRPCNotificacao('fs_forum_notificar_topico', { p_topico_id: data?.id });
+
+      const novoTopicoId = data?.id || '';
+      let avisoFoto = '';
+
+      try {
+        const fotos = await uploadFotosTopico();
+        if (novoTopicoId && fotos.length) {
+          const { error: erroFoto } = await _supabase
+            .from('forum_topicos')
+            .update({ foto_1_url: fotos[0] || null, foto_2_url: fotos[1] || null })
+            .eq('id', novoTopicoId)
+            .eq('usuario_id', sessaoAtual.user.id);
+          if (erroFoto) throw erroFoto;
+        }
+      } catch (erroUpload) {
+        console.warn('Publicação criada, mas a foto não foi anexada:', erroUpload);
+        avisoFoto = ' Publicação criada, mas a foto não foi anexada.';
+      }
+
+      await executarRPCNotificacao('fs_forum_notificar_topico', { p_topico_id: novoTopicoId });
       document.getElementById('forum-form-topico')?.reset();
       limparPreviewFotos();
-      ocultarFormularioNovoTopico();
-      window.location.href = `/post.html?id=${encodeURIComponent(data?.id || '')}`;
+      mostrarAlertaPublicacao('Publicação criada com sucesso.' + avisoFoto, 'ok');
+      setTimeout(() => {
+        window.location.href = `/post.html?id=${encodeURIComponent(novoTopicoId)}`;
+      }, 250);
     } catch (error) {
       console.error('Erro ao criar publicação:', error);
+      mostrarAlertaPublicacao(error.message || 'Não foi possível publicar sua dúvida.', 'erro');
       mostrarAlerta(error.message || 'Não foi possível publicar sua dúvida.', 'erro');
     } finally {
       setBotao('forum-btn-criar', 'Publicar no fórum', false);
