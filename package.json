@@ -1,0 +1,27 @@
+{
+  "name": "fsorcamentos",
+  "version": "1.0.0",
+  "description": "FS Orçamentos - app Android apontando para a plataforma web.",
+  "type": "module",
+  "scripts": {
+    "cap:add:android": "npx cap add android",
+    "cap:sync": "npx cap sync android",
+    "android:debug": "cd android && ./gradlew assembleDebug",
+    "android:release": "cd android && ./gradlew bundleRelease"
+  },
+  "keywords": [
+    "orcamentos",
+    "pdf",
+    "supabase",
+    "capacitor",
+    "android"
+  ],
+  "author": "Filipi Aparecido dos Santos",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/core": "^7.0.0"
+  },
+  "devDependencies": {}
+}
