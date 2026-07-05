@@ -9,9 +9,11 @@
 
 const SUPABASE_URL = 'https://kvjvhoziqcevkzyszdke.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_-tw2F85KsudYX92fevBIQQ_VaWLx6Pl';
+const FS_URL_OFICIAL = 'https://fsorcamentos.com.br';
 
 window.SUPABASE_URL = SUPABASE_URL;
 window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
+window.FS_URL_OFICIAL = FS_URL_OFICIAL;
 
 (function fsConfigBase() {
   'use strict';
@@ -34,6 +36,16 @@ window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
     link.rel = 'stylesheet';
     link.href = href;
     document.head.appendChild(link);
+  }
+
+  function carregarCorrecaoLoginGoogle() {
+    if (document.getElementById('fs-login-google-fix-js')) return;
+
+    const script = document.createElement('script');
+    script.id = 'fs-login-google-fix-js';
+    script.src = '/fs-login-google-fix.js?v=20260705-android-google-fix';
+    script.defer = true;
+    document.head.appendChild(script);
   }
 
   function limparDestinoAntigoNoIndex() {
@@ -130,6 +142,7 @@ window.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
 
   function inicializar() {
     instalarCssGlobal();
+    carregarCorrecaoLoginGoogle();
     limparDestinoAntigoNoIndex();
     bloquearZoomMobile();
   }
