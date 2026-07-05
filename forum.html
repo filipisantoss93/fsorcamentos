@@ -133,22 +133,6 @@
   <script src="notificacoes.js"></script>
   <script src="forum.js?v=20260705-clean"></script>
   <script>
-    async function forumAbrirMeuPerfil() {
-      try {
-        let userId = localStorage.getItem('id') || '';
-        if (!userId && window._supabase) {
-          const { data } = await _supabase.auth.getSession();
-          userId = data?.session?.user?.id || '';
-        }
-        if (userId) {
-          window.location.href = `/perfil.html?id=${encodeURIComponent(userId)}`;
-          return;
-        }
-      } catch (_) {}
-      try { localStorage.setItem('fs_destino_apos_login', '/forum.html'); } catch (_) {}
-      window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/forum.html');
-    }
-
     (function instalarPullRefreshForum() {
       let inicioY = 0;
       let puxando = false;
