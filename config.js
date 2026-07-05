@@ -48,8 +48,7 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
   }
 
   function carregarCorrecaoLoginGoogle() {
-    carregarScriptUnico('fs-login-google-fix-js', '/fs-login-google-fix.js?v=20260705-android-google-fix');
-    carregarScriptUnico('fs-login-google-webview-js', '/fs-login-google-webview.js?v=20260705-webview-google');
+    carregarScriptUnico('fs-login-google-fix-js', '/fs-login-google-fix.js?v=20260705-android-deeplink');
   }
 
   function limparDestinoAntigoNoIndex() {
