@@ -1,5 +1,5 @@
 /* FS Orçamentos — compatibilidade global leve.
-   Remove overrides inline antigos do gerador e oculta blocos fora do escopo atual. */
+   Remove overrides inline antigos do gerador e desativa blocos fora do escopo atual. */
 (function () {
   'use strict';
 
@@ -30,6 +30,11 @@
     el.style.setProperty('display', 'none', 'important');
   }
 
+  function removerElemento(el) {
+    if (!el) return;
+    if (el.parentNode) el.parentNode.removeChild(el);
+  }
+
   function limparValor(id) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -45,6 +50,33 @@
     limparValor(id);
   }
 
+  function desativarFuncoesAntigasGerador() {
+    if (!ehGerador()) return;
+
+    const noOp = function () { return null; };
+    const limparVinculos = function () {
+      limparValor('cliente-id-cadastrado');
+      limparValor('orcamento-cliente-id');
+      limparValor('orcamento-veiculo-id');
+      try {
+        window.veiculoSelecionadoOrcamento = null;
+        window.veiculosClienteOrcamentoCache = [];
+      } catch (_) {}
+      return null;
+    };
+
+    window.abrirModalBuscaClienteOrcamento = noOp;
+    window.fecharModalBuscaClienteOrcamento = noOp;
+    window.buscarClientesParaOrcamento = noOp;
+    window.renderizarResultadosBuscaClienteOrcamento = noOp;
+    window.selecionarClienteOrcamento = noOp;
+    window.carregarVeiculosDoClienteParaOrcamento = noOp;
+    window.preencherSelectVeiculosOrcamento = noOp;
+    window.selecionarVeiculoOrcamento = noOp;
+    window.atualizarVeiculoVinculadoOrcamento = noOp;
+    window.limparClienteVinculadoNoOrcamento = limparVinculos;
+  }
+
   function removerCamposAntigosDoGerador() {
     if (!ehGerador()) return;
 
@@ -53,8 +85,10 @@
     ocultarElemento(document.getElementById('cliente-vinculado-card'));
     ocultarElemento(document.getElementById('veiculo-vinculado-card'));
     ocultarElemento(document.querySelector('.veiculo-orcamento-card'));
-    ocultarElemento(document.getElementById('modal-busca-cliente-orcamento'));
-    ocultarElemento(document.querySelector('.modal-busca-cliente-overlay'));
+
+    removerElemento(document.getElementById('modal-busca-cliente-orcamento'));
+    removerElemento(document.getElementById('modal-busca-cliente'));
+    document.querySelectorAll('.modal-busca-cliente-overlay, .modal-busca-cliente-box').forEach(removerElemento);
 
     limparValor('cliente-id-cadastrado');
     limparValor('orcamento-cliente-id');
@@ -73,6 +107,7 @@
 
   function executarLimpezaGerador() {
     removerCssInlineAntigoGerador();
+    desativarFuncoesAntigasGerador();
     removerCamposAntigosDoGerador();
   }
 
@@ -83,4 +118,6 @@
   }
 
   window.addEventListener('load', executarLimpezaGerador);
+  setTimeout(executarLimpezaGerador, 400);
+  setTimeout(executarLimpezaGerador, 1200);
 })();
