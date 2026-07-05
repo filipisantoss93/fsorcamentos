@@ -1,0 +1,19 @@
+[functions.criar-pix-basico]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/criar-pix-basico/index.ts"
+
+[functions.verificar-pix-basico]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/verificar-pix-basico/index.ts"
+
+[functions.webhook-efi-pix]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/webhook-efi-pix/index.ts"
+
+[functions.configurar-webhook-efi]
+enabled = true
+verify_jwt = false
+entrypoint = "./functions/configurar-webhook-efi/index.ts"
