@@ -131,10 +131,7 @@
   <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
-  <script src="forum-plano-snapshot.js?v=20260621-1"></script>
-  <script src="forum.js?v=20260621-3"></script>
-  <script src="forum-actions-menu.js?v=20260620-2"></script>
-  <script src="forum-perfil-social.js?v=20260620-2"></script>
+  <script src="forum.js?v=20260705-clean"></script>
   <script>
     async function forumAbrirMeuPerfil() {
       try {
@@ -143,13 +140,11 @@
           const { data } = await _supabase.auth.getSession();
           userId = data?.session?.user?.id || '';
         }
-
         if (userId) {
           window.location.href = `/perfil.html?id=${encodeURIComponent(userId)}`;
           return;
         }
       } catch (_) {}
-
       try { localStorage.setItem('fs_destino_apos_login', '/forum.html'); } catch (_) {}
       window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/forum.html');
     }
@@ -160,30 +155,20 @@
       let pronto = false;
       let bloqueado = false;
       const indicador = document.getElementById('forum-pull-refresh-indicator');
-
-      function topoDaPagina() {
-        return (window.scrollY || document.documentElement.scrollTop || 0) <= 4;
-      }
-
+      function topoDaPagina() { return (window.scrollY || document.documentElement.scrollTop || 0) <= 4; }
       function mostrar(texto, classePronto) {
         if (!indicador) return;
         indicador.textContent = texto;
         indicador.classList.add('ativo');
         indicador.classList.toggle('pronto', !!classePronto);
       }
-
-      function ocultar() {
-        if (!indicador) return;
-        indicador.classList.remove('ativo', 'pronto');
-      }
-
+      function ocultar() { if (indicador) indicador.classList.remove('ativo', 'pronto'); }
       window.addEventListener('touchstart', event => {
         if (bloqueado || !topoDaPagina() || event.touches.length !== 1) return;
         inicioY = event.touches[0].clientY;
         puxando = true;
         pronto = false;
       }, { passive: true });
-
       window.addEventListener('touchmove', event => {
         if (!puxando || bloqueado || event.touches.length !== 1) return;
         const delta = event.touches[0].clientY - inicioY;
@@ -191,21 +176,17 @@
         pronto = delta > 92;
         mostrar(pronto ? 'Solte para atualizar' : 'Puxe para atualizar', pronto);
       }, { passive: true });
-
       window.addEventListener('touchend', async () => {
         if (!puxando) return;
         puxando = false;
-
         if (!pronto || typeof window.forumCarregarTopicos !== 'function') {
           ocultar();
           return;
         }
-
         bloqueado = true;
         mostrar('Atualizando feed...', true);
-        try {
-          await window.forumCarregarTopicos();
-        } finally {
+        try { await window.forumCarregarTopicos(); }
+        finally {
           setTimeout(() => {
             ocultar();
             bloqueado = false;
