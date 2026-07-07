@@ -1,7 +1,8 @@
 /* =========================================================
    FS ORÇAMENTOS — Biblioteca Técnica
-   Conteúdos estáticos iniciais, separados por categorias.
-   Acesso: 3 exemplos grátis + premium para assinantes.
+   Conteúdos separados por categorias.
+   Acesso: 3 exemplos grátis + Premium para assinantes.
+   Imagens: usar arquivos em /imagens.
    ========================================================= */
 
 (function bibliotecaFS() {
@@ -42,7 +43,7 @@
       blocos: [
         { titulo: 'Objetivo', texto: ['Evitar que o carro entre na oficina sem registro claro. Esse checklist ajuda a documentar o estado inicial do veículo e reduz ruído na comunicação com o cliente.'] },
         { titulo: 'Campos recomendados', lista: ['Nome e telefone do cliente', 'Placa, modelo, ano e quilometragem', 'Queixa principal nas palavras do cliente', 'Itens visuais: riscos, avarias, acessórios e luzes acesas', 'Autorização para iniciar diagnóstico'] },
-        { titulo: 'Como usar', texto: ['Preencha antes de iniciar qualquer teste. Depois, use essas informações para montar o orçamento no FS Orçamentos com mais clareza.'] }
+        { titulo: 'Como usar', texto: ['Preencha antes de iniciar qualquer teste. Depois use essas informações para montar o orçamento no FS Orçamentos com mais clareza.'] }
       ]
     },
     {
@@ -57,7 +58,7 @@
       blocos: [
         { titulo: 'Erro 1: começar pela peça mais provável', texto: ['Mesmo quando o defeito parece óbvio, o ideal é confirmar alimentação, aterramento e sinal antes de condenar componente.'] },
         { titulo: 'Erro 2: ignorar queda de tensão', texto: ['Um circuito pode ter 12 V parado e falhar em carga. Por isso a queda de tensão é uma etapa essencial em muitos diagnósticos elétricos.'] },
-        { titulo: 'Erro 3: não registrar os testes', texto: ['Sem registro, fica mais difícil explicar o serviço e defender o valor do diagnóstico. Anote medições, sintomas e conclusão.'] }
+        { titulo: 'Erro 3: não registrar os testes', texto: ['Sem registro fica mais difícil explicar o serviço e defender o valor do diagnóstico. Anote medições, sintomas e conclusão.'] }
       ]
     },
     {
@@ -150,6 +151,8 @@
       categoria: 'Ar-condicionado Automotivo',
       tipo: 'Checklist',
       premium: true,
+      imagem: '/imagens/funcionamento-ar-condicionado-automotivo.png',
+      imagemAlt: 'Funcionamento e diagnóstico inicial do ar-condicionado automotivo',
       descricao: 'Sequência para verificar acionamento do compressor, ventilador, pressão, filtro, vazamento e comandos elétricos.',
       tempo: '15 min',
       nivel: 'Intermediário',
@@ -157,6 +160,57 @@
       blocos: [
         { titulo: 'Sequência inicial', lista: ['Confirmar a reclamação: não gela, gela pouco, ruído ou intermitência', 'Verificar filtro de cabine e fluxo de ar', 'Conferir acionamento do compressor ou embreagem eletromagnética quando aplicável', 'Verificar funcionamento do eletroventilador', 'Analisar pressão do sistema com equipamento adequado', 'Inspecionar vazamentos, mangueiras, condensador e conexões', 'Registrar testes e conclusão no orçamento'] },
         { titulo: 'Atenção', texto: ['Evite apenas completar gás sem diagnóstico. Perda de eficiência pode envolver vazamento, restrição, ventilação, compressor, sensor de pressão ou comando elétrico.'] }
+      ]
+    },
+    {
+      titulo: 'Oxi-sanitização no ar-condicionado automotivo',
+      categoria: 'Ar-condicionado Automotivo',
+      tipo: 'Higienização',
+      premium: true,
+      imagem: '/imagens/oxi-sanitizacao-ar-condicionado.png',
+      imagemAlt: 'Procedimento de oxi-sanitização no sistema de ar-condicionado automotivo',
+      descricao: 'Importância da higienização do ar-condicionado para reduzir odores, impurezas e melhorar a qualidade do ar interno.',
+      tempo: '9 min',
+      nivel: 'Básico',
+      itens: ['Higienização', 'Odor', 'Qualidade do ar', 'Evaporador e dutos'],
+      blocos: [
+        { titulo: 'Por que higienizar', texto: ['A oxi-sanitização ajuda a reduzir odores desagradáveis, fungos, bactérias e impurezas acumuladas no sistema de ventilação.', 'Esse procedimento melhora a qualidade do ar para os ocupantes e valoriza o serviço prestado pela oficina.'] },
+        { titulo: 'Quando recomendar', lista: ['Mau cheiro ao ligar a ventilação', 'Veículo com uso intenso urbano', 'Troca de filtro de cabine com sujeira excessiva', 'Cliente com sensibilidade respiratória', 'Veículos que ficaram muito tempo parados'] },
+        { titulo: 'Orientação comercial', texto: ['Explique ao cliente que higienização não é só perfume: é manutenção preventiva para o ar interno do veículo.'] }
+      ]
+    },
+    {
+      titulo: 'Funcionamento e primeiro diagnóstico do ar-condicionado',
+      categoria: 'Ar-condicionado Automotivo',
+      tipo: 'Guia',
+      premium: true,
+      imagem: '/imagens/funcionamento-ar-condicionado-automotivo.png',
+      imagemAlt: 'Esquema prático de funcionamento do ar-condicionado automotivo',
+      descricao: 'Visão geral do funcionamento do sistema e sequência inicial de diagnóstico antes de condenar componentes.',
+      tempo: '14 min',
+      nivel: 'Intermediário',
+      itens: ['Compressor', 'Condensador', 'Evaporador', 'Ventilação interna'],
+      blocos: [
+        { titulo: 'Funcionamento básico', texto: ['O compressor pressuriza o fluido refrigerante, o condensador dissipa calor, o evaporador resfria o ar e o ventilador interno distribui esse ar para a cabine.'] },
+        { titulo: 'Primeiro diagnóstico', lista: ['Confirmar a reclamação do cliente', 'Verificar se o compressor aciona', 'Verificar funcionamento do eletroventilador', 'Conferir temperatura do ar nas saídas', 'Inspecionar filtro de cabine', 'Observar ruídos, vazamentos e sinais visuais', 'Registrar os testes antes do orçamento'] },
+        { titulo: 'Erro comum', texto: ['Trocar compressor ou apenas completar gás sem avaliar o funcionamento do sistema inteiro pode gerar retorno e retrabalho.'] }
+      ]
+    },
+    {
+      titulo: 'Como analisar pressões do ar-condicionado',
+      categoria: 'Ar-condicionado Automotivo',
+      tipo: 'Diagnóstico',
+      premium: true,
+      imagem: '/imagens/analise-de-pressoes-ar-condicionado.png',
+      imagemAlt: 'Mecânico analisando pressões do ar-condicionado com manifold',
+      descricao: 'Introdução prática para leitura de baixa e alta pressão com manifold e interpretação inicial do comportamento do sistema.',
+      tempo: '15 min',
+      nivel: 'Intermediário',
+      itens: ['Baixa pressão', 'Alta pressão', 'Manifold', 'Interpretação inicial'],
+      blocos: [
+        { titulo: 'O que observar', texto: ['A leitura das pressões ajuda a entender se o sistema está trabalhando de forma coerente ou se há indícios de carga incorreta, restrição, falha de ventilação ou problema no compressor.'] },
+        { titulo: 'Análise inicial', lista: ['Conectar manifold corretamente', 'Observar pressão de baixa', 'Observar pressão de alta', 'Verificar se o compressor está acionando', 'Conferir ventilação e troca térmica no condensador', 'Comparar comportamento das linhas e temperatura do ar interno'] },
+        { titulo: 'Atenção', texto: ['A interpretação de pressão deve sempre ser feita com critério técnico e procedimento adequado. A leitura isolada não deve ser usada para condenar peça sem outras confirmações.'] }
       ]
     },
     {
@@ -462,16 +516,23 @@
       .replace(/'/g, '&#039;');
   }
 
-  function garantirEstiloSelectCategorias() {
-    if (document.getElementById('biblioteca-select-categorias-css')) return;
+  function garantirEstilosBiblioteca() {
+    if (document.getElementById('biblioteca-estilos-js')) return;
     const style = document.createElement('style');
-    style.id = 'biblioteca-select-categorias-css';
+    style.id = 'biblioteca-estilos-js';
     style.textContent = `
       .biblioteca-categorias-select{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;overflow:visible!important;padding:0!important}
       .biblioteca-categoria-select-card{display:grid;gap:8px;padding:14px;border-radius:22px;background:rgba(255,255,255,.96);border:1px solid var(--fs-border);box-shadow:var(--fs-shadow-soft)}
       .biblioteca-categoria-select-card label{margin:0!important;color:var(--fs-text)!important;font-size:12px!important;font-weight:950!important;text-transform:uppercase;letter-spacing:.045em}
       #biblioteca-categoria-select{min-height:52px!important;border-radius:16px!important;font-weight:850!important;background:#fff!important;color:var(--fs-text)!important;border:1px solid var(--fs-border)!important;padding:0 14px!important;appearance:auto!important;-webkit-appearance:menulist!important}
       .biblioteca-categoria-select-ajuda{font-size:12px;color:var(--fs-muted);font-weight:800}
+      .biblioteca-card-imagem-wrap{position:relative;z-index:1;width:100%;border-radius:18px;overflow:hidden;border:1px solid var(--fs-border);background:#eef4fb;box-shadow:0 8px 18px rgba(7,20,47,.08)}
+      .biblioteca-card-imagem{display:block;width:100%;height:190px;object-fit:cover;object-position:center}
+      .biblioteca-card[data-categoria="Ar-condicionado Automotivo"] .biblioteca-card-imagem{height:210px;object-position:center}
+      .biblioteca-modal-imagem-wrap{overflow:hidden;border-radius:18px;border:1px solid var(--fs-border);background:#eef4fb;box-shadow:var(--fs-shadow-soft)}
+      .biblioteca-modal-imagem{display:block;width:100%;height:auto;max-height:360px;object-fit:cover;object-position:center}
+      .biblioteca-modal-imagem-wrap[data-categoria="Ar-condicionado Automotivo"] .biblioteca-modal-imagem{max-height:420px}
+      @media(max-width:680px){.biblioteca-card-imagem{height:170px}.biblioteca-card[data-categoria="Ar-condicionado Automotivo"] .biblioteca-card-imagem{height:180px}.biblioteca-modal-imagem{max-height:240px}.biblioteca-modal-imagem-wrap[data-categoria="Ar-condicionado Automotivo"] .biblioteca-modal-imagem{max-height:280px}}
     `;
     document.head.appendChild(style);
   }
@@ -576,7 +637,7 @@
     const nav = document.getElementById('biblioteca-categorias');
     if (!nav) return;
 
-    garantirEstiloSelectCategorias();
+    garantirEstilosBiblioteca();
     nav.classList.add('biblioteca-categorias-select');
 
     const todas = ['Todos', ...CATEGORIAS];
@@ -624,9 +685,13 @@
         : '<span class="biblioteca-badge free">✓ Grátis</span>';
       const textoBotao = bloqueado ? 'Ver prévia premium' : 'Ver conteúdo';
       const info = (item.itens || []).slice(0, 4).map(i => `<li>${escaparHtml(i)}</li>`).join('');
+      const imagemCard = item.imagem ? `
+        <div class="biblioteca-card-imagem-wrap">
+          <img class="biblioteca-card-imagem" src="${escaparHtml(item.imagem)}" alt="${escaparHtml(item.imagemAlt || item.titulo)}" loading="lazy">
+        </div>` : '';
 
       return `
-        <article class="biblioteca-card" data-slug="${escaparHtml(slug)}" data-bloqueado="${bloqueado ? 'true' : 'false'}">
+        <article class="biblioteca-card" data-slug="${escaparHtml(slug)}" data-bloqueado="${bloqueado ? 'true' : 'false'}" data-categoria="${escaparHtml(item.categoria)}">
           <div class="biblioteca-card-topo">
             <div class="biblioteca-icone" aria-hidden="true">${escaparHtml(icones[item.categoria] || '◆')}</div>
             <div class="biblioteca-badges">
@@ -634,6 +699,7 @@
               ${badgeAcesso}
             </div>
           </div>
+          ${imagemCard}
           <h2>${escaparHtml(item.titulo)}</h2>
           <p>${escaparHtml(item.descricao)}</p>
           <ul class="biblioteca-card-info">${info}</ul>
@@ -663,6 +729,14 @@
     }).join('');
   }
 
+  function renderizarImagemModal(item) {
+    if (!item?.imagem) return '';
+    return `
+      <section class="biblioteca-modal-imagem-wrap" data-categoria="${escaparHtml(item.categoria)}">
+        <img class="biblioteca-modal-imagem" src="${escaparHtml(item.imagem)}" alt="${escaparHtml(item.imagemAlt || item.titulo)}">
+      </section>`;
+  }
+
   function abrirPaywall(item) {
     const head = document.getElementById('biblioteca-modal-head');
     const corpo = document.getElementById('biblioteca-modal-corpo');
@@ -677,6 +751,7 @@
     const loginHref = `/index.html?login=1&dest=${encodeURIComponent(destino)}`;
 
     corpo.innerHTML = `
+      ${renderizarImagemModal(item)}
       <section class="biblioteca-paywall">
         <strong>Este material faz parte da Biblioteca Técnica Premium.</strong>
         <span>Assinantes têm acesso aos checklists, modelos, mensagens prontas, guias técnicos e estudos de caso. Entre na sua conta ou assine o Premium para desbloquear.</span>
@@ -713,6 +788,7 @@
       <p>${escaparHtml(item.descricao)}</p>`;
 
     corpo.innerHTML = `
+      ${renderizarImagemModal(item)}
       <section class="biblioteca-conteudo-bloco">
         <h3>Resumo rápido</h3>
         <p><strong>Tipo:</strong> ${escaparHtml(item.tipo)} • <strong>Nível:</strong> ${escaparHtml(item.nivel)} • <strong>Tempo:</strong> ${escaparHtml(item.tempo)}</p>
@@ -768,6 +844,7 @@
   }
 
   async function inicializar() {
+    garantirEstilosBiblioteca();
     configurarEventos();
     renderizarCategorias();
     renderizarCards();
