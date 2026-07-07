@@ -1,133 +1,4 @@
-<link rel="stylesheet" href="/style.css?v=20260705-clean-final">
-<style>
-  @media (max-width: 900px) {
-    .main-header .header-menu-linha.menu-aberto {
-      position: fixed !important;
-      top: 96px !important;
-      right: 12px !important;
-      left: auto !important;
-      width: min(318px, calc(100vw - 28px)) !important;
-      max-width: 318px !important;
-      max-height: calc(100dvh - 124px) !important;
-      overflow-y: auto !important;
-      padding: 12px !important;
-      border-radius: 22px !important;
-      border: 1px solid rgba(216, 226, 242, .95) !important;
-      border-top: 3px solid var(--fs-gold) !important;
-      background: rgba(255, 255, 255, .98) !important;
-      box-shadow: 0 22px 55px rgba(7, 20, 47, .18) !important;
-      transform: none !important;
-    }
-
-    .main-header.menu-aberto::before,
-    .main-header .header-menu-linha.menu-aberto::before,
-    .main-header .header-menu-linha.menu-aberto::after {
-      display: none !important;
-      content: none !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .header-user-card {
-      padding: 12px !important;
-      border-radius: 18px !important;
-      background: #f5f8fc !important;
-      border: 1px solid var(--fs-border) !important;
-      box-shadow: none !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .nav-menu,
-    .main-header .header-menu-linha.menu-aberto .nav-menu-compacto {
-      display: grid !important;
-      gap: 2px !important;
-      padding: 8px 0 0 !important;
-      margin: 0 !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .nav-menu li {
-      margin: 0 !important;
-      border-bottom: 1px solid rgba(216, 226, 242, .85) !important;
-      background: transparent !important;
-      box-shadow: none !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .nav-menu li:last-child {
-      border-bottom: 0 !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .nav-menu a,
-    .main-header .header-menu-linha.menu-aberto .nav-menu button {
-      min-height: 44px !important;
-      padding: 10px 10px !important;
-      border-radius: 12px !important;
-      background: transparent !important;
-      background-image: none !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      color: var(--fs-text) !important;
-      width: 100% !important;
-      text-shadow: none !important;
-      opacity: 1 !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .nav-menu a.ativo,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a.link-destaque-gerador,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a:hover,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a:focus,
-    .main-header .header-menu-linha.menu-aberto .nav-menu button:hover,
-    .main-header .header-menu-linha.menu-aberto .nav-menu button:focus {
-      background: transparent !important;
-      background-image: none !important;
-      color: var(--fs-text) !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      transform: none !important;
-      text-shadow: none !important;
-      opacity: 1 !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .nav-menu a *,
-    .main-header .header-menu-linha.menu-aberto .nav-menu button *,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a.ativo *,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a.link-destaque-gerador *,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a:hover *,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a:focus * {
-      color: var(--fs-text) !important;
-      -webkit-text-fill-color: var(--fs-text) !important;
-      text-shadow: none !important;
-      opacity: 1 !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .nav-menu a::before,
-    .main-header .header-menu-linha.menu-aberto .nav-menu a::after,
-    .main-header .header-menu-linha.menu-aberto .nav-menu button::before,
-    .main-header .header-menu-linha.menu-aberto .nav-menu button::after {
-      display: none !important;
-      content: none !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .fs-menu-ico {
-      color: var(--fs-text) !important;
-      -webkit-text-fill-color: var(--fs-text) !important;
-      opacity: .86 !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto #btn-menu-mobile-sair,
-    .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair {
-      margin-top: 8px !important;
-      background: linear-gradient(135deg, #ff4b4b, #b71919) !important;
-      color: #fff !important;
-      -webkit-text-fill-color: #fff !important;
-      border-radius: 14px !important;
-      box-shadow: 0 10px 22px rgba(190, 24, 24, .20) !important;
-    }
-
-    .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair .fs-menu-ico,
-    .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair span,
-    .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair * {
-      color: #fff !important;
-      -webkit-text-fill-color: #fff !important;
-    }
-  }
-</style>
+<link rel="stylesheet" href="/style.css?v=20260707-formal-final">
 <header class="main-header">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos">
@@ -153,7 +24,10 @@
         <li><a href="/planos.html"><span class="fs-menu-ico">◆</span><span>Planos</span></a></li>
         <li><a href="/sobre.html"><span class="fs-menu-ico">ⓘ</span><span>Sobre</span></a></li>
         <li><a href="/contato.html"><span class="fs-menu-ico">✉</span><span>Contato</span></a></li>
-        <li class="menu-mobile-auth"><button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico">↪</span><span>Entrar</span></button><button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico">↩</span><span>Sair</span></button></li>
+        <li class="menu-mobile-auth">
+          <button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico">↪</span><span>Entrar</span></button>
+          <button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico">↩</span><span>Sair</span></button>
+        </li>
       </ul>
     </nav>
 
