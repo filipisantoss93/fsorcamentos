@@ -9,10 +9,15 @@
 
   const CATEGORIAS = [
     'Diagnóstico Elétrico',
+    'Motor e Performance',
+    'Sincronismo do Motor',
+    'Ignição e Falha de Motor',
     'Ar-condicionado Automotivo',
     'Suspensão e Direção',
     'Freios a Disco e Tambor',
-    'Ignição e Falha de Motor',
+    'Pneus e Geometria',
+    'Proteção dos Ocupantes (Airbag)',
+    'Sistemas ADAS',
     'Multímetro na Prática',
     'Sensores e Atuadores',
     'Rede CAN e Comunicação',
@@ -99,6 +104,48 @@
       ]
     },
     {
+      titulo: 'Diagnóstico de motor sem trocar peça por tentativa',
+      categoria: 'Motor e Performance',
+      tipo: 'Checklist',
+      premium: true,
+      descricao: 'Sequência geral para motor falhando, sem força, consumo alto, marcha lenta irregular ou dificuldade de partida.',
+      tempo: '18 min',
+      nivel: 'Intermediário',
+      itens: ['Compressão', 'Combustível', 'Entrada de ar', 'Sensores e atuadores'],
+      blocos: [
+        { titulo: 'Sequência inicial', lista: ['Confirmar o sintoma informado pelo cliente', 'Ler códigos de falha e parâmetros no scanner', 'Verificar admissão de ar e possíveis entradas falsas', 'Avaliar pressão e alimentação de combustível conforme o sistema', 'Inspecionar velas, bobinas e bicos', 'Conferir compressão quando a falha persistir', 'Verificar sincronismo quando houver indício mecânico', 'Registrar conclusão técnica no orçamento'] },
+        { titulo: 'Ponto importante', texto: ['Defeito de motor pode ser mecânico, elétrico, eletrônico ou de alimentação. A sequência evita condenar sensor, bobina ou bico sem confirmação.'] }
+      ]
+    },
+    {
+      titulo: 'Sincronismo do motor: sintomas e conferência',
+      categoria: 'Sincronismo do Motor',
+      tipo: 'Guia',
+      premium: true,
+      descricao: 'Roteiro para suspeita de motor fora de ponto, correia/corrente, variador de fase e códigos de correlação.',
+      tempo: '16 min',
+      nivel: 'Intermediário',
+      itens: ['Correia/corrente', 'Ponto mecânico', 'Variador de fase', 'Sensor fase/rotação'],
+      blocos: [
+        { titulo: 'Sintomas comuns', lista: ['Dificuldade de partida', 'Motor sem força', 'Marcha lenta irregular', 'Consumo elevado', 'Códigos de correlação entre fase e rotação', 'Ruído em corrente ou tensionador', 'Falha após troca de correia'] },
+        { titulo: 'Como diagnosticar', lista: ['Confirmar histórico do serviço', 'Ler códigos e parâmetros de fase quando disponíveis', 'Conferir marcas ou ferramentas de sincronismo conforme fabricante', 'Inspecionar tensionador, polias, corrente/correia e variadores', 'Registrar evidências antes de desmontar'] }
+      ]
+    },
+    {
+      titulo: 'Diagnóstico de falha de ignição e misfire',
+      categoria: 'Ignição e Falha de Motor',
+      tipo: 'Passo a passo',
+      premium: true,
+      descricao: 'Sequência para falha de cilindro, bobina, vela, cabo, bico, compressão, entrada falsa de ar e chicote.',
+      tempo: '18 min',
+      nivel: 'Intermediário',
+      itens: ['Vela', 'Bobina', 'Bico injetor', 'Compressão'],
+      blocos: [
+        { titulo: 'Sequência de diagnóstico', lista: ['Ler códigos de falha e dados de congelamento', 'Identificar cilindro com falha quando possível', 'Inspecionar vela e condição da queima', 'Testar bobina ou trocar de posição para confirmar', 'Verificar cabo de vela quando aplicável', 'Conferir pulso e alimentação do bico injetor', 'Avaliar entrada falsa de ar', 'Testar compressão quando a falha persiste', 'Inspecionar chicote e conectores'] },
+        { titulo: 'Conclusão técnica', texto: ['A falha de ignição nem sempre é bobina. Pode ser vela, bico, compressão, mistura, entrada de ar, combustível ou comando elétrico.'] }
+      ]
+    },
+    {
       titulo: 'Diagnóstico de ar-condicionado sem trocar peça por tentativa',
       categoria: 'Ar-condicionado Automotivo',
       tipo: 'Checklist',
@@ -155,17 +202,45 @@
       ]
     },
     {
-      titulo: 'Diagnóstico de falha de ignição e misfire',
-      categoria: 'Ignição e Falha de Motor',
-      tipo: 'Passo a passo',
+      titulo: 'Pneus: desgaste irregular, alinhamento e balanceamento',
+      categoria: 'Pneus e Geometria',
+      tipo: 'Checklist',
       premium: true,
-      descricao: 'Sequência para falha de cilindro, bobina, vela, cabo, bico, compressão, entrada falsa de ar e chicote.',
-      tempo: '18 min',
-      nivel: 'Intermediário',
-      itens: ['Vela', 'Bobina', 'Bico injetor', 'Compressão'],
+      descricao: 'Como avaliar desgaste dos pneus, calibragem, geometria, balanceamento, rodízio e sintomas de direção puxando.',
+      tempo: '12 min',
+      nivel: 'Básico',
+      itens: ['Calibragem', 'Desgaste irregular', 'Alinhamento', 'Balanceamento'],
       blocos: [
-        { titulo: 'Sequência de diagnóstico', lista: ['Ler códigos de falha e dados de congelamento', 'Identificar cilindro com falha quando possível', 'Inspecionar vela e condição da queima', 'Testar bobina ou trocar de posição para confirmar', 'Verificar cabo de vela quando aplicável', 'Conferir pulso e alimentação do bico injetor', 'Avaliar entrada falsa de ar', 'Testar compressão quando a falha persiste', 'Inspecionar chicote e conectores'] },
-        { titulo: 'Conclusão técnica', texto: ['A falha de ignição nem sempre é bobina. Pode ser vela, bico, compressão, mistura, entrada de ar, combustível ou comando elétrico.'] }
+        { titulo: 'Itens de inspeção', lista: ['Conferir medida e aplicação correta do pneu', 'Verificar calibragem', 'Inspecionar desgaste nas bordas, centro e escamas', 'Avaliar bolhas, cortes e deformações', 'Relacionar desgaste com folgas de suspensão', 'Indicar alinhamento, balanceamento ou rodízio quando necessário'] },
+        { titulo: 'Explicação ao cliente', texto: ['Pneu desgastado irregularmente geralmente é consequência de calibragem incorreta, geometria fora, folgas ou falta de rodízio. Mostre o padrão de desgaste para justificar o orçamento.'] }
+      ]
+    },
+    {
+      titulo: 'Proteção dos ocupantes: airbag e pré-tensionadores',
+      categoria: 'Proteção dos Ocupantes (Airbag)',
+      tipo: 'Guia de segurança',
+      premium: true,
+      descricao: 'Roteiro seguro para luz de airbag, conectores, cinta do airbag, pré-tensionadores e sensores de impacto.',
+      tempo: '15 min',
+      nivel: 'Intermediário',
+      itens: ['Luz de airbag', 'Pré-tensionador', 'Cinta do airbag', 'Sensores de impacto'],
+      blocos: [
+        { titulo: 'Cuidados antes de mexer', lista: ['Consultar procedimento do fabricante', 'Desligar alimentação conforme orientação técnica', 'Evitar medir resistência diretamente em componentes pirotécnicos', 'Não improvisar chicote de airbag', 'Verificar conectores sob bancos e coluna de direção com segurança', 'Registrar código de falha e componente indicado'] },
+        { titulo: 'Mensagem profissional', texto: ['Airbag e pré-tensionadores são sistemas de segurança. O diagnóstico deve seguir procedimento correto, sem gambiarra, emenda inadequada ou apagamento de falha sem reparo.'] }
+      ]
+    },
+    {
+      titulo: 'Sistemas ADAS: câmera, radar e calibração',
+      categoria: 'Sistemas ADAS',
+      tipo: 'Guia',
+      premium: true,
+      descricao: 'Introdução para diagnóstico e orientação sobre câmera frontal, radar, sensores, calibração e pós-reparo.',
+      tempo: '17 min',
+      nivel: 'Introdução/Intermediário',
+      itens: ['Câmera frontal', 'Radar', 'Calibração', 'Pós-colisão'],
+      blocos: [
+        { titulo: 'Quando suspeitar de calibração', lista: ['Troca de para-brisa', 'Reparo de colisão dianteira', 'Troca ou remoção de para-choque', 'Alinhamento ou alteração de suspensão', 'Substituição de câmera, radar ou módulo', 'Mensagens de assistente indisponível no painel'] },
+        { titulo: 'Boas práticas', texto: ['ADAS exige procedimento, equipamento e ambiente adequado. Não prometa calibração sem confirmar requisitos do fabricante e estrutura necessária.'] }
       ]
     },
     {
@@ -346,10 +421,15 @@
 
   const icones = {
     'Diagnóstico Elétrico': '⚡',
+    'Motor e Performance': '⚙',
+    'Sincronismo do Motor': '⏱',
+    'Ignição e Falha de Motor': '✹',
     'Ar-condicionado Automotivo': '❄',
     'Suspensão e Direção': '◌',
     'Freios a Disco e Tambor': '◉',
-    'Ignição e Falha de Motor': '✹',
+    'Pneus e Geometria': '◎',
+    'Proteção dos Ocupantes (Airbag)': '◈',
+    'Sistemas ADAS': '◬',
     'Multímetro na Prática': '⌁',
     'Sensores e Atuadores': '◍',
     'Rede CAN e Comunicação': '⟷',
@@ -380,6 +460,20 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
+
+  function garantirEstiloSelectCategorias() {
+    if (document.getElementById('biblioteca-select-categorias-css')) return;
+    const style = document.createElement('style');
+    style.id = 'biblioteca-select-categorias-css';
+    style.textContent = `
+      .biblioteca-categorias-select{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;overflow:visible!important;padding:0!important}
+      .biblioteca-categoria-select-card{display:grid;gap:8px;padding:14px;border-radius:22px;background:rgba(255,255,255,.96);border:1px solid var(--fs-border);box-shadow:var(--fs-shadow-soft)}
+      .biblioteca-categoria-select-card label{margin:0!important;color:var(--fs-text)!important;font-size:12px!important;font-weight:950!important;text-transform:uppercase;letter-spacing:.045em}
+      #biblioteca-categoria-select{min-height:52px!important;border-radius:16px!important;font-weight:850!important;background:#fff!important;color:var(--fs-text)!important;border:1px solid var(--fs-border)!important;padding:0 14px!important;appearance:auto!important;-webkit-appearance:menulist!important}
+      .biblioteca-categoria-select-ajuda{font-size:12px;color:var(--fs-muted);font-weight:800}
+    `;
+    document.head.appendChild(style);
   }
 
   function diasAteExpirar(valor) {
@@ -482,20 +576,33 @@
     const nav = document.getElementById('biblioteca-categorias');
     if (!nav) return;
 
+    garantirEstiloSelectCategorias();
+    nav.classList.add('biblioteca-categorias-select');
+
     const todas = ['Todos', ...CATEGORIAS];
-    nav.innerHTML = todas.map(cat => {
+    const opcoes = todas.map(cat => {
       const qtd = cat === 'Todos' ? CONTEUDOS.length : CONTEUDOS.filter(c => c.categoria === cat).length;
-      const ativo = estado.categoria === cat ? ' ativo' : '';
-      return `<button type="button" class="biblioteca-cat-btn${ativo}" data-categoria="${escaparHtml(cat)}">${escaparHtml(cat)} <span>${qtd}</span></button>`;
+      const selected = estado.categoria === cat ? ' selected' : '';
+      return `<option value="${escaparHtml(cat)}"${selected}>${escaparHtml(cat)} (${qtd})</option>`;
     }).join('');
 
-    nav.querySelectorAll('[data-categoria]').forEach(botao => {
-      botao.addEventListener('click', () => {
-        estado.categoria = botao.dataset.categoria || 'Todos';
+    nav.innerHTML = `
+      <div class="biblioteca-categoria-select-card">
+        <label for="biblioteca-categoria-select">Selecionar categoria</label>
+        <select id="biblioteca-categoria-select" aria-label="Selecionar categoria da biblioteca">
+          ${opcoes}
+        </select>
+        <span class="biblioteca-categoria-select-ajuda">Escolha uma categoria para filtrar os conteúdos técnicos.</span>
+      </div>`;
+
+    const select = document.getElementById('biblioteca-categoria-select');
+    if (select) {
+      select.addEventListener('change', () => {
+        estado.categoria = select.value || 'Todos';
         renderizarCategorias();
         renderizarCards();
       });
-    });
+    }
   }
 
   function renderizarCards() {
