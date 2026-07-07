@@ -45,6 +45,8 @@
     .main-header .header-menu-linha.menu-aberto .nav-menu li {
       margin: 0 !important;
       border-bottom: 1px solid rgba(216, 226, 242, .85) !important;
+      background: transparent !important;
+      box-shadow: none !important;
     }
 
     .main-header .header-menu-linha.menu-aberto .nav-menu li:last-child {
@@ -62,6 +64,8 @@
       box-shadow: none !important;
       color: var(--fs-text) !important;
       width: 100% !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
     }
 
     .main-header .header-menu-linha.menu-aberto .nav-menu a.ativo,
@@ -76,6 +80,20 @@
       border: 0 !important;
       box-shadow: none !important;
       transform: none !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
+    }
+
+    .main-header .header-menu-linha.menu-aberto .nav-menu a *,
+    .main-header .header-menu-linha.menu-aberto .nav-menu button *,
+    .main-header .header-menu-linha.menu-aberto .nav-menu a.ativo *,
+    .main-header .header-menu-linha.menu-aberto .nav-menu a.link-destaque-gerador *,
+    .main-header .header-menu-linha.menu-aberto .nav-menu a:hover *,
+    .main-header .header-menu-linha.menu-aberto .nav-menu a:focus * {
+      color: var(--fs-text) !important;
+      -webkit-text-fill-color: var(--fs-text) !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
     }
 
     .main-header .header-menu-linha.menu-aberto .nav-menu a::before,
@@ -88,6 +106,7 @@
 
     .main-header .header-menu-linha.menu-aberto .fs-menu-ico {
       color: var(--fs-text) !important;
+      -webkit-text-fill-color: var(--fs-text) !important;
       opacity: .86 !important;
     }
 
@@ -96,13 +115,16 @@
       margin-top: 8px !important;
       background: linear-gradient(135deg, #ff4b4b, #b71919) !important;
       color: #fff !important;
+      -webkit-text-fill-color: #fff !important;
       border-radius: 14px !important;
       box-shadow: 0 10px 22px rgba(190, 24, 24, .20) !important;
     }
 
     .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair .fs-menu-ico,
-    .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair span {
+    .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair span,
+    .main-header .header-menu-linha.menu-aberto .btn-menu-mobile-sair * {
       color: #fff !important;
+      -webkit-text-fill-color: #fff !important;
     }
   }
 </style>
