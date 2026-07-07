@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#07142f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Técnica | FS Orçamentos</title>
+  <meta name="description" content="Biblioteca Técnica do FS Orçamentos com conteúdos, checklists, modelos e materiais práticos para oficinas e prestadores de serviço.">
+  <meta name="robots" content="index, follow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    .biblioteca-page {
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 24px 0 52px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .biblioteca-hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 24px;
+      align-items: stretch;
+      padding: 32px;
+      border: 1px solid var(--fs-border);
+      border-top: 5px solid var(--fs-gold);
+      border-radius: var(--fs-radius-lg);
+      background: radial-gradient(circle at 88% 8%, rgba(245,182,37,.20), transparent 32%), linear-gradient(135deg, #fff 0%, #f8fbff 58%, #eaf3ff 100%);
+      box-shadow: var(--fs-shadow);
+    }
+
+    .biblioteca-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+      pointer-events: none;
+    }
+
+    .biblioteca-hero > * { position: relative; z-index: 1; }
+
+    .biblioteca-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--fs-gold-soft);
+      color: #8a6400;
+      border: 1px solid rgba(245,182,37,.62);
+      font-size: 12px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .045em;
+      margin-bottom: 14px;
+    }
+
+    .biblioteca-hero h1 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(34px, 5.2vw, 58px);
+      line-height: 1.03;
+      letter-spacing: -.055em;
+      color: var(--fs-text);
+      font-weight: 950;
+    }
+
+    .biblioteca-hero h1 span { color: var(--fs-gold-2); }
+
+    .biblioteca-hero p {
+      max-width: 780px;
+      margin: 16px 0 0;
+      color: var(--fs-muted);
+      font-size: clamp(16px, 2.2vw, 22px);
+      line-height: 1.42;
+      font-weight: 760;
+    }
+
+    .biblioteca-hero-acoes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .biblioteca-status-card {
+      display: grid;
+      align-content: space-between;
+      gap: 18px;
+      min-height: 100%;
+      padding: 20px;
+      border-radius: 22px;
+      border: 1px solid rgba(245,182,37,.54);
+      background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy));
+      color: #fff;
+      box-shadow: 0 18px 38px rgba(7,20,47,.20);
+    }
+
+    .biblioteca-status-card * { color: inherit; }
+    .biblioteca-status-card strong { display: block; font-size: 20px; line-height: 1.15; }
+    .biblioteca-status-card span { display: block; margin-top: 8px; color: #f7e4aa; font-weight: 760; line-height: 1.35; }
+
+    .biblioteca-status-mini {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .biblioteca-status-mini div {
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(245,182,37,.26);
+    }
+
+    .biblioteca-status-mini b { display: block; font-size: 23px; line-height: 1; color: #fff; }
+    .biblioteca-status-mini small { display: block; margin-top: 5px; color: #f7e4aa !important; font-weight: 850; }
+
+    .biblioteca-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid var(--fs-border);
+      box-shadow: var(--fs-shadow-soft);
+    }
+
+    .biblioteca-busca-wrap { position: relative; }
+    .biblioteca-busca-wrap span {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--fs-muted);
+      font-weight: 950;
+      pointer-events: none;
+    }
+
+    #biblioteca-busca {
+      min-height: 52px;
+      padding-left: 46px;
+      border-radius: 16px !important;
+      font-weight: 760;
+    }
+
+    .biblioteca-acesso-atual {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: var(--fs-gold-soft);
+      border: 1px solid rgba(245,182,37,.55);
+      color: #8a6400;
+      font-size: 13px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .biblioteca-categorias {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 3px 2px 7px;
+      scrollbar-width: thin;
+    }
+
+    .biblioteca-cat-btn {
+      flex: 0 0 auto;
+      min-height: 44px;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: #fff !important;
+      color: var(--fs-navy-2) !important;
+      border: 1px solid var(--fs-border) !important;
+      font-weight: 950;
+      box-shadow: var(--fs-shadow-soft);
+      cursor: pointer;
+    }
+
+    .biblioteca-cat-btn.ativo {
+      background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy)) !important;
+      color: #fff !important;
+      border-color: rgba(245,182,37,.72) !important;
+    }
+
+    .biblioteca-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .biblioteca-card {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      gap: 12px;
+      min-height: 278px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.98);
+      border: 1px solid var(--fs-border);
+      box-shadow: var(--fs-shadow-soft);
+    }
+
+    .biblioteca-card::after {
+      content: "◆";
+      position: absolute;
+      right: 14px;
+      top: 9px;
+      color: rgba(245,182,37,.22);
+      font-size: 48px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .biblioteca-card-topo {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .biblioteca-icone {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy));
+      color: var(--fs-gold);
+      border: 1px solid rgba(245,182,37,.55);
+      box-shadow: 0 14px 28px rgba(7,20,47,.18);
+      font-size: 23px;
+      font-weight: 950;
+    }
+
+    .biblioteca-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .biblioteca-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 28px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .035em;
+    }
+
+    .biblioteca-badge.tipo { background: #eaf3ff; color: var(--fs-navy-2); border: 1px solid var(--fs-border); }
+    .biblioteca-badge.free { background: #ecfdf3; color: #166534; border: 1px solid #bbf7d0; }
+    .biblioteca-badge.premium { background: var(--fs-gold-soft); color: #8a6400; border: 1px solid rgba(245,182,37,.58); }
+
+    .biblioteca-card h2 {
+      position: relative;
+      z-index: 1;
+      margin: 2px 0 0;
+      color: var(--fs-text);
+      font-size: 20px;
+      line-height: 1.14;
+      letter-spacing: -.025em;
+      font-weight: 950;
+    }
+
+    .biblioteca-card p {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: var(--fs-muted);
+      font-weight: 740;
+      line-height: 1.42;
+    }
+
+    .biblioteca-card-info {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--fs-muted);
+      font-size: 13px;
+      font-weight: 820;
+    }
+
+    .biblioteca-card-info li::before { content: "✦"; color: var(--fs-gold-2); margin-right: 7px; }
+
+    .biblioteca-card-acao {
+      position: relative;
+      z-index: 1;
+      align-self: end;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .biblioteca-card[data-bloqueado="true"] { background: linear-gradient(135deg, #fff, #fff8df); }
+    .biblioteca-card[data-bloqueado="true"] .biblioteca-icone { opacity: .82; }
+
+    .biblioteca-vazio {
+      grid-column: 1 / -1;
+      padding: 28px;
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid var(--fs-border);
+      box-shadow: var(--fs-shadow-soft);
+      text-align: center;
+      color: var(--fs-muted);
+      font-weight: 850;
+    }
+
+    .biblioteca-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(7,20,47,.76);
+      backdrop-filter: blur(7px);
+      overflow: auto;
+    }
+
+    .biblioteca-modal.ativo { display: flex; }
+
+    .biblioteca-modal-card {
+      width: min(860px, 100%);
+      margin: 28px auto;
+      overflow: hidden;
+      border-radius: 26px;
+      background: #fff;
+      border: 1px solid var(--fs-border);
+      border-top: 5px solid var(--fs-gold);
+      box-shadow: var(--fs-shadow-strong);
+    }
+
+    .biblioteca-modal-topo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--fs-navy), var(--fs-navy-2));
+      border-bottom: 3px solid var(--fs-gold);
+      color: #fff;
+    }
+
+    .biblioteca-modal-topo * { color: inherit !important; }
+    .biblioteca-modal-topo h2 { margin: 6px 0 0; font-size: clamp(24px, 4vw, 34px); line-height: 1.1; letter-spacing: -.035em; }
+    .biblioteca-modal-topo p { margin: 8px 0 0; color: #f7e4aa !important; font-weight: 760; }
+
+    .biblioteca-fechar {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      padding: 0;
+      border-radius: 14px;
+      border: 1px solid rgba(245,182,37,.55) !important;
+      background: rgba(255,255,255,.10) !important;
+      color: #fff !important;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .biblioteca-modal-corpo { padding: 20px; display: grid; gap: 16px; }
+    .biblioteca-conteudo-bloco { padding: 16px; border: 1px solid var(--fs-border); border-radius: 18px; background: #f8fbff; }
+    .biblioteca-conteudo-bloco h3 { margin: 0 0 8px; color: var(--fs-text); }
+    .biblioteca-conteudo-bloco p { margin: 0 0 10px; color: var(--fs-muted); font-weight: 730; line-height: 1.55; }
+    .biblioteca-conteudo-bloco p:last-child { margin-bottom: 0; }
+    .biblioteca-lista { margin: 0; padding-left: 20px; color: var(--fs-muted); font-weight: 760; line-height: 1.65; }
+    .biblioteca-lista li::marker { color: var(--fs-gold-2); }
+
+    .biblioteca-paywall {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fff, var(--fs-gold-soft));
+      border: 1px solid rgba(245,182,37,.55);
+    }
+
+    .biblioteca-paywall strong { color: var(--fs-text); font-size: 22px; line-height: 1.15; }
+    .biblioteca-paywall span { color: var(--fs-muted); font-weight: 760; line-height: 1.48; }
+    .biblioteca-paywall-acoes { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    @media (max-width: 980px) {
+      .biblioteca-hero { grid-template-columns: 1fr; padding: 24px; }
+      .biblioteca-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .biblioteca-toolbar { grid-template-columns: 1fr; }
+      .biblioteca-acesso-atual { justify-content: flex-start; white-space: normal; }
+    }
+
+    @media (max-width: 680px) {
+      .biblioteca-page { width: min(100% - 18px, 1180px); padding: 18px 0 38px; }
+      .biblioteca-hero { padding: 20px; border-radius: 22px; }
+      .biblioteca-grid { grid-template-columns: 1fr; }
+      .biblioteca-status-mini { grid-template-columns: 1fr; }
+      .biblioteca-hero-acoes, .biblioteca-paywall-acoes { display: grid; grid-template-columns: 1fr; }
+      .biblioteca-hero-acoes .btn, .biblioteca-paywall-acoes .btn { width: 100%; }
+      .biblioteca-modal-card { margin: 12px auto; }
+      .biblioteca-modal-topo { padding: 16px; }
+      .biblioteca-modal-corpo { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+
+  <main class="biblioteca-page" id="biblioteca-page">
+    <section class="biblioteca-hero" aria-labelledby="biblioteca-titulo">
+      <div>
+        <span class="biblioteca-tag">◆ Biblioteca Técnica</span>
+        <h1 id="biblioteca-titulo">Conteúdos práticos para <span>oficina, diagnóstico e orçamento</span></h1>
+        <p>Materiais organizados por categoria para auxiliar assinantes no dia a dia: checklists, modelos, aulas rápidas, mensagens prontas e estudos de caso. Existem 3 conteúdos básicos liberados gratuitamente para demonstração.</p>
+        <div class="biblioteca-hero-acoes">
+          <a class="btn btn-primary" href="#biblioteca-conteudos">Ver conteúdos</a>
+          <a class="btn btn-secondary" href="/planos.html#assinar-plano-premium">Assinar Premium</a>
+        </div>
+      </div>
+
+      <aside class="biblioteca-status-card" aria-label="Status da biblioteca">
+        <div>
+          <strong id="biblioteca-status-titulo">Verificando acesso...</strong>
+          <span id="biblioteca-status-texto">Aguarde enquanto consultamos seu plano.</span>
+        </div>
+        <div class="biblioteca-status-mini">
+          <div><b id="biblioteca-total-conteudos">0</b><small>conteúdos</small></div>
+          <div><b id="biblioteca-total-gratis">3</b><small>grátis</small></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="biblioteca-toolbar" aria-label="Ferramentas de busca">
+      <div class="biblioteca-busca-wrap">
+        <span aria-hidden="true">⌕</span>
+        <input id="biblioteca-busca" type="search" placeholder="Buscar por diagnóstico, CAN, multímetro, orçamento..." autocomplete="off">
+      </div>
+      <div id="biblioteca-acesso-atual" class="biblioteca-acesso-atual">Carregando acesso...</div>
+    </section>
+
+    <nav id="biblioteca-categorias" class="biblioteca-categorias" aria-label="Categorias da biblioteca"></nav>
+
+    <section id="biblioteca-conteudos" class="biblioteca-grid" aria-live="polite"></section>
+  </main>
+
+  <div id="biblioteca-modal" class="biblioteca-modal" role="dialog" aria-modal="true" aria-labelledby="biblioteca-modal-titulo">
+    <article class="biblioteca-modal-card">
+      <header class="biblioteca-modal-topo">
+        <div id="biblioteca-modal-head"></div>
+        <button type="button" class="biblioteca-fechar" id="biblioteca-fechar" aria-label="Fechar conteúdo">×</button>
+      </header>
+      <div id="biblioteca-modal-corpo" class="biblioteca-modal-corpo"></div>
+    </article>
+  </div>
+
+  <footer class="site-footer">
+    <span>© 2026 FS Orçamentos</span>
+    <span> | </span><a href="/privacidade.html">Privacidade</a>
+    <span> | </span><a href="/termos.html">Termos</a>
+    <span> | </span><a href="/contato.html">Contato</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="js/biblioteca.js?v=20260707-1"></script>
+</body>
+</html>
