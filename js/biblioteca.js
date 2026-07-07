@@ -9,6 +9,10 @@
 
   const CATEGORIAS = [
     'Diagnóstico Elétrico',
+    'Ar-condicionado Automotivo',
+    'Suspensão e Direção',
+    'Freios a Disco e Tambor',
+    'Ignição e Falha de Motor',
     'Multímetro na Prática',
     'Sensores e Atuadores',
     'Rede CAN e Comunicação',
@@ -92,6 +96,76 @@
       blocos: [
         { titulo: 'Pontos de verificação', lista: ['Medir bateria antes da partida', 'Observar queda de tensão durante acionamento do motor de partida', 'Medir tensão com motor funcionando', 'Ligar consumidores elétricos e observar estabilidade', 'Verificar terminais, cabo positivo e aterramento do motor'] },
         { titulo: 'Como explicar ao cliente', texto: ['Antes de trocar bateria ou alternador, informe que o sistema de carga foi testado para confirmar a causa real da falha.'] }
+      ]
+    },
+    {
+      titulo: 'Diagnóstico de ar-condicionado sem trocar peça por tentativa',
+      categoria: 'Ar-condicionado Automotivo',
+      tipo: 'Checklist',
+      premium: true,
+      descricao: 'Sequência para verificar acionamento do compressor, ventilador, pressão, filtro, vazamento e comandos elétricos.',
+      tempo: '15 min',
+      nivel: 'Intermediário',
+      itens: ['Compressor', 'Ventilador', 'Pressão do sistema', 'Vazamentos'],
+      blocos: [
+        { titulo: 'Sequência inicial', lista: ['Confirmar a reclamação: não gela, gela pouco, ruído ou intermitência', 'Verificar filtro de cabine e fluxo de ar', 'Conferir acionamento do compressor ou embreagem eletromagnética quando aplicável', 'Verificar funcionamento do eletroventilador', 'Analisar pressão do sistema com equipamento adequado', 'Inspecionar vazamentos, mangueiras, condensador e conexões', 'Registrar testes e conclusão no orçamento'] },
+        { titulo: 'Atenção', texto: ['Evite apenas completar gás sem diagnóstico. Perda de eficiência pode envolver vazamento, restrição, ventilação, compressor, sensor de pressão ou comando elétrico.'] }
+      ]
+    },
+    {
+      titulo: 'Checklist de suspensão e direção',
+      categoria: 'Suspensão e Direção',
+      tipo: 'Checklist',
+      premium: true,
+      descricao: 'Roteiro para ruídos, folgas, desgaste irregular de pneus, amortecedores, buchas, pivôs, bieletas e terminais.',
+      tempo: '13 min',
+      nivel: 'Básico/Intermediário',
+      itens: ['Ruídos', 'Folgas', 'Amortecedores', 'Pneus e alinhamento'],
+      blocos: [
+        { titulo: 'Itens de inspeção', lista: ['Confirmar ruído com teste de rodagem quando necessário', 'Verificar pneus e desgaste irregular', 'Inspecionar amortecedores e batentes', 'Verificar buchas de bandeja', 'Conferir pivôs, terminais e axiais', 'Inspecionar bieletas e barras estabilizadoras', 'Avaliar coxins e rolamentos de roda', 'Orientar alinhamento e balanceamento após reparo'] },
+        { titulo: 'Orçamento', texto: ['Separe peças de segurança, mão de obra e serviços complementares. Explique ao cliente quando alinhamento, cambagem ou balanceamento forem necessários.'] }
+      ]
+    },
+    {
+      titulo: 'Freios a disco: inspeção e orçamento seguro',
+      categoria: 'Freios a Disco e Tambor',
+      tipo: 'Guia',
+      premium: true,
+      descricao: 'Como avaliar pastilhas, discos, pinças, fluido, flexíveis e sintomas como vibração, ruído e pedal baixo.',
+      tempo: '14 min',
+      nivel: 'Essencial',
+      itens: ['Pastilhas', 'Discos', 'Pinças', 'Fluido de freio'],
+      blocos: [
+        { titulo: 'Inspeção recomendada', lista: ['Conferir espessura das pastilhas', 'Inspecionar discos quanto a desgaste, empeno aparente, sulcos e trincas', 'Verificar deslizamento dos pinos da pinça', 'Avaliar vazamento em flexíveis e conexões', 'Verificar nível e condição do fluido', 'Testar pedal e eficiência após reparo'] },
+        { titulo: 'Comunicação com cliente', texto: ['Freio é item de segurança. Mostre evidências do desgaste e explique riscos de trocar somente uma parte quando o conjunto está comprometido.'] }
+      ]
+    },
+    {
+      titulo: 'Freio a tambor: lona, cilindro e regulagem',
+      categoria: 'Freios a Disco e Tambor',
+      tipo: 'Checklist',
+      premium: true,
+      descricao: 'Roteiro para revisar lonas, tambores, cilindros de roda, cabo de freio de estacionamento e regulagem.',
+      tempo: '12 min',
+      nivel: 'Essencial',
+      itens: ['Lonas', 'Cilindro de roda', 'Tambor', 'Freio de estacionamento'],
+      blocos: [
+        { titulo: 'Itens de inspeção', lista: ['Verificar espessura e contaminação das lonas', 'Inspecionar cilindro de roda quanto a vazamento', 'Conferir superfície interna do tambor', 'Verificar molas e travas', 'Checar regulagem automática ou manual', 'Testar cabo e alavanca do freio de estacionamento', 'Realizar teste final de frenagem'] },
+        { titulo: 'Erro comum', texto: ['Trocar lona sem verificar cilindro, tambor e regulagem pode gerar retorno por pedal baixo, roda presa ou freio ineficiente.'] }
+      ]
+    },
+    {
+      titulo: 'Diagnóstico de falha de ignição e misfire',
+      categoria: 'Ignição e Falha de Motor',
+      tipo: 'Passo a passo',
+      premium: true,
+      descricao: 'Sequência para falha de cilindro, bobina, vela, cabo, bico, compressão, entrada falsa de ar e chicote.',
+      tempo: '18 min',
+      nivel: 'Intermediário',
+      itens: ['Vela', 'Bobina', 'Bico injetor', 'Compressão'],
+      blocos: [
+        { titulo: 'Sequência de diagnóstico', lista: ['Ler códigos de falha e dados de congelamento', 'Identificar cilindro com falha quando possível', 'Inspecionar vela e condição da queima', 'Testar bobina ou trocar de posição para confirmar', 'Verificar cabo de vela quando aplicável', 'Conferir pulso e alimentação do bico injetor', 'Avaliar entrada falsa de ar', 'Testar compressão quando a falha persiste', 'Inspecionar chicote e conectores'] },
+        { titulo: 'Conclusão técnica', texto: ['A falha de ignição nem sempre é bobina. Pode ser vela, bico, compressão, mistura, entrada de ar, combustível ou comando elétrico.'] }
       ]
     },
     {
@@ -207,6 +281,20 @@
       ]
     },
     {
+      titulo: 'Eletromobilidade: segurança antes de qualquer intervenção',
+      categoria: 'Eletromobilidade',
+      tipo: 'Guia',
+      premium: true,
+      descricao: 'Conteúdo introdutório sobre EPIs, identificação de alta tensão, isolamento, procedimento e limites de atuação.',
+      tempo: '16 min',
+      nivel: 'Introdução',
+      itens: ['Alta tensão', 'EPIs', 'Isolamento', 'Procedimento seguro'],
+      blocos: [
+        { titulo: 'Pontos essenciais', lista: ['Identificar cabos e componentes de alta tensão', 'Não intervir sem treinamento e procedimento adequado', 'Usar EPIs e ferramentas apropriadas quando o procedimento exigir', 'Respeitar etapas de desenergização do fabricante', 'Isolar área e registrar intervenção'] },
+        { titulo: 'Mensagem comercial', texto: ['A eletromobilidade aumenta a exigência técnica da oficina. Segurança e procedimento valem mais do que improviso.'] }
+      ]
+    },
+    {
       titulo: 'Carregamento AC e DC em veículos elétricos',
       categoria: 'Eletromobilidade',
       tipo: 'Guia',
@@ -233,6 +321,20 @@
         { titulo: 'Sequência sugerida', lista: ['Confirmar histórico do cliente', 'Testar bateria', 'Testar alternador', 'Verificar terminais e aterramentos', 'Checar consumidores que ficam ativos', 'Investigar fuga de corrente conforme procedimento adequado', 'Registrar conclusão e orçamento'] },
         { titulo: 'Orçamento', texto: ['O orçamento deve separar diagnóstico, peça necessária, mão de obra e observação sobre condições encontradas durante os testes.'] }
       ]
+    },
+    {
+      titulo: 'Estudo de caso: falha intermitente de ignição',
+      categoria: 'Estudos de Caso',
+      tipo: 'Caso prático',
+      premium: true,
+      descricao: 'Exemplo de raciocínio para falha que aparece quente, em carga ou de forma intermitente.',
+      tempo: '17 min',
+      nivel: 'Intermediário',
+      itens: ['Intermitência', 'Scanner', 'Bobina', 'Chicote'],
+      blocos: [
+        { titulo: 'Raciocínio', lista: ['Confirmar condição em que a falha ocorre', 'Analisar códigos e parâmetros', 'Inspecionar velas e bobinas', 'Testar chicote e conectores', 'Avaliar alimentação e aterramento', 'Registrar teste que confirmou o defeito'] },
+        { titulo: 'Como vender o diagnóstico', texto: ['Falha intermitente exige tempo de teste. Informe isso ao cliente antes e documente o que foi feito.'] }
+      ]
     }
   ];
 
@@ -244,8 +346,12 @@
 
   const icones = {
     'Diagnóstico Elétrico': '⚡',
+    'Ar-condicionado Automotivo': '❄',
+    'Suspensão e Direção': '◌',
+    'Freios a Disco e Tambor': '◉',
+    'Ignição e Falha de Motor': '✹',
     'Multímetro na Prática': '⌁',
-    'Sensores e Atuadores': '◉',
+    'Sensores e Atuadores': '◍',
     'Rede CAN e Comunicação': '⟷',
     'Orçamento Profissional': '▣',
     'Atendimento ao Cliente': '☎',
