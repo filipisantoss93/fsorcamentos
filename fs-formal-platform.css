@@ -1,0 +1,446 @@
+/* =========================================================
+   FS ORÇAMENTOS — Ajuste formal de plataforma
+   Aparência mais próxima de sistema Windows/profissional:
+   menos arredondamento, menos peso em textos, menor espaçamento.
+   ========================================================= */
+
+:root {
+  --fs-radius-sm: 5px !important;
+  --fs-radius: 8px !important;
+  --fs-radius-lg: 10px !important;
+  --fs-border: #cfd8e6 !important;
+  --fs-bg: #f3f5f8 !important;
+  --fs-card-soft: #f7f9fc !important;
+  --fs-shadow: 0 8px 18px rgba(7, 20, 47, .08) !important;
+  --fs-shadow-soft: 0 4px 12px rgba(7, 20, 47, .06) !important;
+  --fs-shadow-strong: 0 14px 30px rgba(7, 20, 47, .14) !important;
+}
+
+body {
+  background: #f3f5f8 !important;
+  line-height: 1.42 !important;
+  font-weight: 400 !important;
+}
+
+p, li, td, small, input, select, textarea, .muted, .text-muted, .hero-sub, .benefit p, .plano ul, footer {
+  font-weight: 400 !important;
+}
+
+h1, h2, h3, h4, .hero-title, .page-title, .section-title, .card-title, .modal-title {
+  font-weight: 700 !important;
+  letter-spacing: -.018em !important;
+}
+
+strong, b, .item-name, .total-label, .total-value, .price, .preco {
+  font-weight: 650 !important;
+}
+
+label {
+  font-weight: 600 !important;
+  letter-spacing: .025em !important;
+  margin-bottom: 4px !important;
+}
+
+/* Estrutura geral mais compacta */
+.fs-page,
+.page,
+.dashboard-page,
+.forum-page,
+.painel-page,
+.pagina-gerador,
+.pagina-painel,
+.pagina-planos,
+.home,
+.container,
+.painel-container,
+.biblioteca-page {
+  padding-top: 14px !important;
+  padding-bottom: 28px !important;
+}
+
+.container,
+.painel-container {
+  margin-top: 14px !important;
+  margin-bottom: 14px !important;
+  padding: 14px !important;
+}
+
+.card,
+.fs-card,
+.dashboard-card,
+.resumo-card,
+.plano-card,
+.forum-card,
+.painel-card,
+.info-card,
+.cliente-card,
+.veiculo-card,
+.ordem-card,
+.estoque-card,
+.agenda-card,
+.relatorio-card,
+.recorrente-card,
+.perfil-logo-card,
+.dashboard-metrica-card,
+.dashboard-mini-card,
+.dashboard-lista-item,
+.forum-topico,
+.forum-resposta,
+.forum-mini-item,
+.painel-premium-atalho,
+.painel-os-card,
+.manual-card,
+.sobre-card,
+.contato-card,
+.gerador-card-principal,
+.sidebar-card,
+.section-card,
+.preview-card,
+.benefits,
+.plano,
+.pix-card,
+.faq-card,
+.modal-card,
+.modal-content,
+.modal-box,
+.modal-pix-card,
+.biblioteca-card,
+.biblioteca-toolbar,
+.biblioteca-status-card,
+.biblioteca-conteudo-bloco,
+.biblioteca-categoria-select-card {
+  border-radius: var(--fs-radius-lg) !important;
+  box-shadow: var(--fs-shadow-soft) !important;
+}
+
+.card:hover,
+.fs-card:hover,
+.forum-card:hover,
+.painel-card:hover,
+.plano:hover,
+.pix-card:hover,
+.biblioteca-card:hover {
+  transform: none !important;
+  box-shadow: var(--fs-shadow) !important;
+}
+
+.fs-page-header,
+.page-header,
+.dashboard-hero,
+.forum-hero,
+.painel-header,
+.painel-hero,
+.gerador-hero,
+.clientes-hero,
+.veiculos-hero,
+.ordens-hero,
+.estoque-hero,
+.agenda-hero,
+.relatorios-hero,
+.recorrentes-hero,
+.hero,
+.home-hero,
+.home-hero-venda,
+.biblioteca-hero {
+  border-radius: var(--fs-radius-lg) !important;
+  border-top-width: 3px !important;
+  box-shadow: var(--fs-shadow-soft) !important;
+  padding: 18px !important;
+}
+
+.fs-grid-2,
+.fs-grid-3,
+.dashboard-grid-metricas,
+.dashboard-mini-grid,
+.dashboard-acoes-grid,
+.biblioteca-grid {
+  gap: 10px !important;
+}
+
+/* Inputs e botões com aparência mais formal */
+input,
+select,
+textarea {
+  border-radius: 6px !important;
+  padding: 9px 10px !important;
+  font-weight: 400 !important;
+}
+
+button,
+.btn,
+.btn-primary,
+.btn-secondary,
+.fs-btn,
+.fs-btn-primary,
+.fs-btn-secondary,
+.fs-btn-danger,
+.dashboard-btn,
+.dashboard-btn-secundario,
+.dashboard-btn-whatsapp,
+.forum-btn,
+.forum-btn-secundario,
+.forum-btn-perigo,
+.forum-link-btn,
+.forum-like-btn,
+.btn-add,
+.btn-extra,
+.btn-limpar,
+.btn-remove,
+.btn-editar-perfil,
+.btn-senha,
+.btn-excluir-conta,
+.btn-gerar-orcamento-painel,
+.btn-plano-painel,
+.btn-ver-ordens-painel,
+.cliente-btn,
+.veiculo-btn,
+.ordem-btn,
+.estoque-btn,
+.agenda-btn,
+.relatorio-btn,
+.recorrente-btn {
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+}
+
+.fs-btn,
+.fs-btn-primary,
+.fs-btn-secondary,
+.fs-btn-danger,
+.btn,
+.btn-primary,
+.btn-secondary,
+.dashboard-btn,
+.dashboard-btn-secundario,
+.dashboard-btn-whatsapp,
+.forum-btn,
+.forum-btn-secundario,
+.forum-link-btn,
+.forum-like-btn,
+.btn-add,
+.btn-extra,
+.btn-limpar,
+.btn-remove,
+.btn-editar-perfil,
+.btn-senha,
+.btn-excluir-conta,
+.btn-gerar-orcamento-painel,
+.btn-plano-painel,
+.btn-ver-ordens-painel,
+.cliente-btn,
+.veiculo-btn,
+.ordem-btn,
+.estoque-btn,
+.agenda-btn,
+.relatorio-btn,
+.recorrente-btn {
+  min-height: 36px !important;
+  padding: 8px 12px !important;
+}
+
+/* Header e menu */
+.main-header {
+  box-shadow: 0 4px 14px rgba(7, 20, 47, .08) !important;
+}
+
+.logo-nav .logo-fs,
+.logo-fs,
+.logo-nav > span:first-child,
+.btn-notificacoes-header,
+.menu-mobile-btn,
+.btn-header-entrar,
+.btn-header-sair {
+  border-radius: 8px !important;
+}
+
+.logo-nav .logo-orcamentos,
+.logo-orcamentos,
+.logo-nav > span:last-child {
+  font-weight: 700 !important;
+}
+
+.header-menu-linha,
+.main-header .header-menu-linha.menu-aberto {
+  border-radius: 10px !important;
+}
+
+.header-user-card,
+.header-user-icon,
+.nav-menu a,
+.nav-menu summary,
+.btn-menu-mobile-entrar,
+.btn-menu-mobile-sair {
+  border-radius: 6px !important;
+}
+
+.header-user-text strong,
+.nav-menu a,
+.nav-menu summary,
+.btn-menu-mobile-entrar,
+.btn-menu-mobile-sair {
+  font-weight: 600 !important;
+}
+
+.nav-menu a,
+.nav-menu summary,
+.btn-menu-mobile-entrar,
+.btn-menu-mobile-sair {
+  min-height: 42px !important;
+  padding: 8px 10px !important;
+}
+
+/* Tabelas e status */
+.fs-table-wrap,
+.table-wrap,
+.tabela-wrapper {
+  border-radius: 8px !important;
+}
+
+th,
+.fs-table th,
+.tabela th,
+thead {
+  font-weight: 650 !important;
+}
+
+td,
+.fs-table td {
+  padding: 9px 10px !important;
+}
+
+.fs-badge,
+.badge,
+.status-badge,
+.forum-badge,
+.plano-badge,
+.status,
+.biblioteca-badge {
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-weight: 600 !important;
+}
+
+/* Premium: usar diamante dourado no lugar do texto */
+.biblioteca-badge.premium,
+.plano-badge.premium,
+.badge-premium,
+.premium-badge,
+.fs-badge-premium,
+.status-premium,
+.selo-premium,
+.tag-premium,
+.badge[data-plano="premium"],
+.fs-badge[data-plano="premium"],
+.plano-badge[data-plano="premium"] {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  background: #fff7d7 !important;
+  color: var(--fs-gold-2) !important;
+  -webkit-text-fill-color: var(--fs-gold-2) !important;
+  border: 1px solid rgba(245, 182, 37, .65) !important;
+}
+
+.biblioteca-badge.premium::before,
+.plano-badge.premium::before,
+.badge-premium::before,
+.premium-badge::before,
+.fs-badge-premium::before,
+.status-premium::before,
+.selo-premium::before,
+.tag-premium::before,
+.badge[data-plano="premium"]::before,
+.fs-badge[data-plano="premium"]::before,
+.plano-badge[data-plano="premium"]::before {
+  content: '◆' !important;
+  font-size: 15px !important;
+  color: var(--fs-gold-2) !important;
+  -webkit-text-fill-color: var(--fs-gold-2) !important;
+}
+
+.biblioteca-badge.premium *,
+.plano-badge.premium *,
+.badge-premium *,
+.premium-badge *,
+.fs-badge-premium *,
+.status-premium *,
+.selo-premium *,
+.tag-premium * {
+  display: none !important;
+}
+
+/* Biblioteca */
+.biblioteca-hero h1 {
+  font-weight: 700 !important;
+}
+
+.biblioteca-hero p,
+.biblioteca-card p,
+.biblioteca-card-info,
+.biblioteca-conteudo-bloco p,
+.biblioteca-lista {
+  font-weight: 400 !important;
+}
+
+.biblioteca-card h2,
+.biblioteca-conteudo-bloco h3,
+.biblioteca-modal-topo h2 {
+  font-weight: 700 !important;
+}
+
+.biblioteca-card,
+.biblioteca-status-card {
+  min-height: auto !important;
+}
+
+.biblioteca-card {
+  padding: 14px !important;
+  gap: 9px !important;
+}
+
+.biblioteca-card-imagem-wrap,
+.biblioteca-modal-imagem-wrap {
+  border-radius: 8px !important;
+}
+
+/* Mobile: mais compacto */
+@media (max-width: 900px) {
+  .fs-page,
+  .page,
+  .dashboard-page,
+  .forum-page,
+  .painel-page,
+  .pagina-gerador,
+  .pagina-painel,
+  .pagina-planos,
+  .home,
+  .container,
+  .painel-container,
+  .biblioteca-page {
+    padding-top: 12px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .fs-page-header,
+  .page-header,
+  .dashboard-hero,
+  .forum-hero,
+  .painel-header,
+  .painel-hero,
+  .gerador-hero,
+  .hero,
+  .home-hero,
+  .home-hero-venda,
+  .biblioteca-hero {
+    padding: 14px !important;
+  }
+
+  .main-header .header-menu-linha.menu-aberto {
+    border-radius: 10px !important;
+  }
+}
