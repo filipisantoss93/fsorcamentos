@@ -180,7 +180,7 @@ function adicionarEfexNaHomePublica() {
   estilo.textContent = `
     #home-efex-destaque{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:center;margin:0 0 28px;padding:28px;border-radius:26px;background:linear-gradient(135deg,#07142f,#0b1f46);border:1px solid rgba(245,182,37,.55);box-shadow:0 22px 48px rgba(7,20,47,.24);overflow:hidden;color:#fff}
     #home-efex-destaque .home-efex-imagem{position:relative;min-width:0}
-    #home-efex-destaque img{display:block;width:100%;max-width:520px;margin:auto;border-radius:22px;box-shadow:0 22px 42px rgba(0,0,0,.28);animation:homeEfexEntrada .65s ease both}
+    #home-efex-destaque img{display:block;width:100%;height:auto;max-width:520px;margin:auto;border-radius:22px;box-shadow:0 22px 42px rgba(0,0,0,.28);animation:homeEfexEntrada .65s ease both}
     #home-efex-destaque .home-efex-conteudo{display:grid;gap:18px;align-content:center}
     #home-efex-destaque .home-efex-selo{display:inline-flex;width:fit-content;padding:8px 13px;border-radius:999px;background:rgba(245,182,37,.14);border:1px solid rgba(245,182,37,.55);color:#ffd76a;font-size:12px;font-weight:950;letter-spacing:.06em;text-transform:uppercase}
     #home-efex-destaque h2{margin:0;color:#fff;font-size:clamp(30px,4.7vw,54px);line-height:1.02;letter-spacing:-.045em}
@@ -203,7 +203,7 @@ function adicionarEfexNaHomePublica() {
   secao.setAttribute('aria-labelledby', 'home-efex-titulo');
   secao.innerHTML = `
     <div class="home-efex-imagem">
-      <img src="/assets/efex-home.webp" alt="EfeX, auxiliar de diagnóstico mecânico com inteligência artificial do FS Orçamentos" width="900" height="900" loading="eager" fetchpriority="high">
+      <img src="https://raw.githubusercontent.com/filipisantoss93/fsorcamentos/ddfb83e0309b70944c67e7085ebb28213748f52f/assets/efex-home.webp" alt="EfeX, auxiliar de diagnóstico mecânico com inteligência artificial do FS Orçamentos" width="900" height="900" loading="eager" fetchpriority="high">
     </div>
     <div class="home-efex-conteudo">
       <span class="home-efex-selo">Novo no FS Orçamentos</span>
