@@ -3,1007 +3,256 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visualizar Orçamento - FS Orçamentos</title>
+  <meta name="theme-color" content="#1565C0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Orçamento | FS Orçamentos</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
-    :root {
-      --ver-navy: #07142f;
-      --ver-navy-2: #0b1f46;
-      --ver-navy-3: #102a5c;
-      --ver-gold: #f5b625;
-      --ver-gold-2: #d99a00;
-      --ver-bg: #f4f8ff;
-      --ver-card: #ffffff;
-      --ver-border:#294875;
-      --ver-text: #06122f;
-      --ver-muted: #64748b;
-      --ver-blue-action: #0b49c9;
-      --ver-success: #16a34a;
-      --ver-whatsapp: #22c55e;
-      --ver-danger: #dc2626;
-      --ver-danger-soft: #fff1f1;
-      --ver-shadow: 0 18px 40px rgba(7, 20, 47, .12);
-      --ver-shadow-strong: 0 28px 70px rgba(7, 20, 47, .22);
-      --ver-cor-destaque: #f5b625;
-    }
-
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; overflow-x: hidden; }
-    body.ver-premium-page {
-      min-height: 100vh;
-      padding: 14px !important;
-      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      color:var(--ver-text) !important;
-      background:#123d2b;
-    }
-
-    body.ver-premium-page .pagina-ver {
-      width: min(100%, 900px) !important;
-      margin: 12px auto 22px !important;
-      padding: 18px !important;
-      background:#123d2b;
-      border:1px solid var(--ver-border) !important;
-      border-radius:6px !important;
-      box-shadow: var(--ver-shadow) !important;
-      overflow: hidden !important;
-      color:var(--ver-text) !important;
-    }
-
-    /* TOPO PREMIUM */
-    body.ver-premium-page .ver-emissor-topo {
-      position: relative !important;
-      display: grid !important;
-      gap: 16px !important;
-      align-items: center !important;
-      min-height: 420px !important;
-      padding: 18px 18px 20px !important;
-      margin: -2px -2px 26px !important;
-      overflow: hidden !important;
-      color:#ffffff !important;
-      text-align: center !important;
-      border-radius:6px !important;
-      border:1px solid rgba(245, 182, 37, .50) !important;
-      border-bottom:7px solid var(--ver-cor-destaque) !important;
-      box-shadow: 0 24px 48px rgba(7, 20, 47, .28) !important;
-      background:#123d2b;
-    }
-    body.ver-premium-page .ver-emissor-topo::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:radial-gradient(rgba(255, 255, 255, .13) 1px, transparent 1px);
-      background-size: 18px 18px;
-      opacity: .22;
-      pointer-events: none;
-    }
-    body.ver-premium-page .ver-emissor-topo::after {
-      content: "";
-      position: absolute;
-      left: -8%; right: -8%; top: -36px;
-      height: 94px;
-      border-bottom:5px solid var(--ver-cor-destaque);
-      border-radius:0 0 55% 55%;
-      background:#123d2b;
-      box-shadow: 0 12px 24px rgba(245, 182, 37, .15);
-      pointer-events: none;
-      z-index: 1;
-    }
-    body.ver-premium-page .ver-topo-marca {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color:#fff !important;
-      font-weight: 950;
-      letter-spacing: -.02em;
-      text-align: left;
-    }
-    body.ver-premium-page .ver-topo-logo-mini {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius:6px;
-      background:#123d2b;
-      color:#fff !important;
-      border:2px solid var(--ver-cor-destaque);
-      box-shadow: 0 12px 24px rgba(0,0,0,.28);
-      font-size: 22px;
-      font-weight: 950;
-    }
-    body.ver-premium-page .ver-topo-marca span:last-child { color:#fff !important; font-size: 20px; }
-    body.ver-premium-page .ver-emissor-info {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      justify-items: center;
-      margin-top: 46px;
-    }
-    body.ver-premium-page .ver-logo-box {
-      position: relative !important;
-      width: 132px !important;
-      height: 132px !important;
-      margin: 0 auto 16px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      overflow: hidden !important;
-      border-radius:50% !important;
-      background:#123d2b;
-      border:5px solid var(--ver-cor-destaque) !important;
-      box-shadow: 0 0 0 10px rgba(245, 182, 37, .10), 0 20px 38px rgba(0,0,0,.34) !important;
-    }
-    body.ver-premium-page .ver-logo-box img {
-      display: none;
-      max-width: 92% !important;
-      max-height: 92% !important;
-      object-fit: contain !important;
-    }
-    body.ver-premium-page #ver-logo-placeholder {
-      display: grid;
-      place-items: center;
-      width: 92px;
-      height: 72px;
-      border-radius:6px;
-      background:#123d2b;
-      border:1px solid rgba(245, 182, 37, .70);
-      color:#fff !important;
-      -webkit-text-fill-color:#fff !important;
-      font-size: 38px;
-      font-weight: 950;
-      letter-spacing: -.08em;
-      line-height: 1;
-    }
-    body.ver-premium-page .ver-label {
-      display: block !important;
-      margin: 0 0 7px !important;
-      color:var(--ver-cor-destaque) !important;
-      -webkit-text-fill-color:var(--ver-cor-destaque) !important;
-      font-size: 15px !important;
-      font-weight: 950 !important;
-      text-transform: uppercase !important;
-      letter-spacing: .09em !important;
-    }
-    body.ver-premium-page .ver-emissor-info h1 {
-      margin: 0 !important;
-      color:#ffffff !important;
-      -webkit-text-fill-color:#ffffff !important;
-      font-size: clamp(30px, 7vw, 48px) !important;
-      line-height: 1.05 !important;
-      letter-spacing: -.055em !important;
-      font-weight: 950 !important;
-      text-shadow: 0 6px 18px rgba(0,0,0,.25) !important;
-    }
-    body.ver-premium-page .ver-emissor-info p {
-      margin: 12px 0 18px !important;
-      color:#7db7ff !important;
-      -webkit-text-fill-color:#7db7ff !important;
-      font-size: 18px !important;
-      font-weight: 950 !important;
-    }
-    body.ver-premium-page .ver-emissor-dados {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      display: grid !important;
-      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-      gap: 10px !important;
-    }
-    body.ver-premium-page .ver-emissor-dados span {
-      display: none;
-    }
-    body.ver-premium-page .ver-chip-emissor {
-      min-height: 72px !important;
-      display: grid !important;
-      grid-template-columns: 34px minmax(0,1fr) !important;
-      align-items: center !important;
-      gap: 9px !important;
-      padding: 10px !important;
-      border-radius:6px !important;
-      background:#123d2b;
-      border:1.5px solid var(--ver-cor-destaque) !important;
-      color:#fff !important;
-      text-align: left !important;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04) !important;
-    }
-    body.ver-premium-page .ver-chip-ico {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius:50%;
-      color:var(--ver-cor-destaque) !important;
-      border:1px solid rgba(245, 182, 37, .60);
-      background:#123d2b;
-      font-size: 17px;
-    }
-    body.ver-premium-page .ver-chip-title {
-      display: block;
-      color:#ffffff !important;
-      -webkit-text-fill-color:#ffffff !important;
-      font-size: 12px;
-      font-weight: 950;
-      line-height: 1.1;
-    }
-    body.ver-premium-page .ver-chip-value {
-      display: block;
-      margin-top: 2px;
-      color:#ffffff !important;
-      -webkit-text-fill-color:#ffffff !important;
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.18;
-      word-break: break-word;
-    }
-
-    /* SELO E TÍTULO */
-    body.ver-premium-page .numero-orcamento {
-      display: none;
-      width: fit-content !important;
-      max-width: 100% !important;
-      margin: -6px auto 20px !important;
-      padding: 12px 22px !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      background:#123d2b;
-      border:1px solid var(--ver-border) !important;
-      border-left:7px solid var(--ver-cor-destaque) !important;
-      border-radius:6px !important;
-      box-shadow: 0 12px 24px rgba(7,20,47,.09) !important;
-      text-align: center !important;
-      font-size: 18px !important;
-      font-weight: 950 !important;
-      letter-spacing: -.02em !important;
-    }
-    body.ver-premium-page h1#titulo-orcamento {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 12px !important;
-      margin: 10px 0 16px !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      text-align: center !important;
-      font-size: clamp(32px, 7vw, 46px) !important;
-      font-weight: 950 !important;
-      line-height: 1.05 !important;
-      letter-spacing: -.055em !important;
-    }
-    body.ver-premium-page h1#titulo-orcamento::before {
-      content: "📄" !important;
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      color:#0b49c9;
-      font-size: 32px;
-    }
-    body.ver-premium-page .linha-divisoria {
-      height: 3px !important;
-      margin: 0 6px 22px !important;
-      border-radius:6px !important;
-      background:#123d2b;
-    }
-
-    /* CARDS */
-    body.ver-premium-page .box-info,
-    body.ver-premium-page .observacoes-box,
-    body.ver-premium-page .msg-resposta,
-    body.ver-premium-page .veiculo-orcamento-box {
-      background:#123d2b;
-      color:var(--ver-text) !important;
-      border:1px solid var(--ver-border) !important;
-      border-left:7px solid var(--ver-cor-destaque) !important;
-      border-radius:6px !important;
-      box-shadow: 0 12px 28px rgba(7,20,47,.08) !important;
-      padding: 18px !important;
-      margin: 0 0 22px !important;
-    }
-    body.ver-premium-page .cliente-linha {
-      display: grid;
-      grid-template-columns: 30px auto minmax(0,1fr);
-      align-items: center;
-      gap: 8px;
-      margin: 8px 0;
-      color:var(--ver-text) !important;
-      font-size: 18px;
-      line-height: 1.35;
-    }
-    body.ver-premium-page .cliente-linha .ico {
-      width: 26px;
-      display: grid;
-      place-items: center;
-      color:var(--ver-navy) !important;
-      font-size: 21px;
-    }
-    body.ver-premium-page .cliente-linha strong {
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-weight: 950;
-    }
-    body.ver-premium-page .cliente-linha span:last-child {
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-weight: 500;
-    }
-    body.ver-premium-page .status {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 6px !important;
-      width: fit-content !important;
-      min-height: 30px !important;
-      padding: 6px 13px !important;
-      border-radius:6px !important;
-      font-size: 12px !important;
-      font-weight: 950 !important;
-      text-transform: uppercase !important;
-      letter-spacing: .035em !important;
-    }
-    body.ver-premium-page .status-pendente { background:#123d2b; color:#8a6400 !important; border:1px solid rgba(245,182,37,.65) !important; }
-    body.ver-premium-page .status-aprovado { background:#123d2b; color:#166534 !important; border:1px solid #86efac !important; }
-    body.ver-premium-page .status-recusado { background:#123d2b; color:#b91c1c !important; border:1px solid #fecaca !important; }
-    body.ver-premium-page .status-em_servico,
-    body.ver-premium-page .status-finalizado { background:#123d2b; color:#0b1f46 !important; border:1px solid var(--ver-border) !important; }
-
-    /* TABELA */
-    body.ver-premium-page .itens-titulo {
-      display: flex !important;
-      align-items: center !important;
-      gap: 10px !important;
-      margin: 24px 0 10px !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-size: 24px !important;
-      font-weight: 950 !important;
-      letter-spacing: -.03em !important;
-    }
-    body.ver-premium-page .itens-titulo::before {
-      content: "📋" !important;
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius:6px;
-      background:#123d2b;
-      color:#fff;
-      font-size: 18px;
-      box-shadow: 0 10px 20px rgba(7,20,47,.16);
-    }
-    body.ver-premium-page .tabela-wrapper {
-      width: 100% !important;
-      margin-top: 10px !important;
-      overflow-x: auto !important;
-      border-radius:6px !important;
-      border:1px solid var(--ver-border) !important;
-      box-shadow: 0 12px 26px rgba(7,20,47,.08) !important;
-      background:#123d2b;
-    }
-    body.ver-premium-page table {
-      width: 100% !important;
-      min-width: 540px !important;
-      border-collapse:collapse !important;
-      background:#123d2b;
-    }
-    body.ver-premium-page th {
-      padding: 14px !important;
-      background:#123d2b;
-      color:#ffffff !important;
-      -webkit-text-fill-color:#ffffff !important;
-      text-align: left !important;
-      font-size: 13px !important;
-      font-weight: 950 !important;
-      text-transform: uppercase !important;
-      letter-spacing: .04em !important;
-    }
-    body.ver-premium-page th:last-child,
-    body.ver-premium-page td:last-child { text-align: right !important; }
-    body.ver-premium-page td {
-      padding: 14px !important;
-      border-bottom:1px solid var(--ver-border) !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-size: 16px !important;
-      font-weight: 500 !important;
-    }
-    body.ver-premium-page tbody tr:nth-child(even) { background:#123d2b; }
-    body.ver-premium-page .item-descricao-cell {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 650;
-    }
-    body.ver-premium-page .item-ico {
-      width: 28px;
-      height: 28px;
-      min-width: 28px;
-      display: grid;
-      place-items: center;
-      border-radius:6px;
-      background:#123d2b;
-      color:var(--ver-navy) !important;
-      font-size: 17px;
-    }
-
-    /* TOTAL */
-    body.ver-premium-page .total-box {
-      position: relative !important;
-      display: grid !important;
-      grid-template-columns: 66px minmax(0,1fr) !important;
-      align-items: center !important;
-      gap: 15px !important;
-      margin: 24px 0 22px !important;
-      padding: 18px 20px !important;
-      background:#123d2b;
-      color:var(--ver-text) !important;
-      border:1px solid var(--ver-border) !important;
-      border-left:8px solid var(--ver-cor-destaque) !important;
-      border-radius:6px !important;
-      box-shadow: 0 12px 28px rgba(7,20,47,.08) !important;
-    }
-    body.ver-premium-page .total-box::before {
-      content: "$" !important;
-      width: 58px !important;
-      height: 58px !important;
-      display: grid !important;
-      place-items: center !important;
-      border-radius:50% !important;
-      background:#123d2b;
-      color:var(--ver-cor-destaque) !important;
-      font-size: 32px !important;
-      font-weight: 950 !important;
-      box-shadow: 0 10px 22px rgba(7,20,47,.20) !important;
-      border:1px solid rgba(245,182,37,.45) !important;
-    }
-    body.ver-premium-page .total-label {
-      display: block !important;
-      margin-bottom: 2px !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-size: 13px !important;
-      font-weight: 950 !important;
-      text-transform: uppercase !important;
-      letter-spacing: .04em !important;
-    }
-    body.ver-premium-page .total-valor {
-      display: block !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-size: clamp(38px, 8vw, 54px) !important;
-      font-weight: 950 !important;
-      line-height: .98 !important;
-      letter-spacing: -.055em !important;
-    }
-
-    /* OBSERVAÇÕES */
-    body.ver-premium-page .observacoes-box strong {
-      display: flex !important;
-      align-items: center !important;
-      gap: 10px !important;
-      margin: 0 0 12px !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-size: 24px !important;
-      font-weight: 950 !important;
-      letter-spacing: -.03em !important;
-    }
-    body.ver-premium-page .observacoes-box strong::before {
-      content: "▤" !important;
-      width: 32px;
-      height: 32px;
-      display: grid;
-      place-items: center;
-      border-radius:6px;
-      background:#123d2b;
-      color:#ffffff;
-      font-size: 18px;
-    }
-    body.ver-premium-page .observacoes-box .obs-linha {
-      display: grid !important;
-      grid-template-columns: 20px 1fr !important;
-      gap: 9px !important;
-      margin: 8px 0 !important;
-      color:var(--ver-text) !important;
-      font-size: 15px !important;
-      line-height: 1.35 !important;
-    }
-    body.ver-premium-page .observacoes-box .obs-linha::before {
-      content: "✓" !important;
-      width: 17px;
-      height: 17px;
-      display: grid;
-      place-items: center;
-      border-radius:50%;
-      color:#ffffff !important;
-      background:#123d2b;
-      font-size: 12px;
-      font-weight: 950;
-      margin-top: 2px;
-    }
-
-    /* BOTÕES */
-    body.ver-premium-page .botoes-cliente,
-    body.ver-premium-page .botoes-status {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-      gap: 12px !important;
-      margin-top: 14px !important;
-    }
-    body.ver-premium-page .btn-status,
-    body.ver-premium-page .btn-download-pdf,
-    body.ver-premium-page .btn-whatsapp-empresa {
-      position: relative !important;
-      min-height: 78px !important;
-      display: grid !important;
-      grid-template-columns: 58px minmax(0,1fr) 24px !important;
-      align-items: center !important;
-      gap: 12px !important;
-      padding: 12px 14px !important;
-      border-radius:6px !important;
-      background:#123d2b;
-      box-shadow: 0 10px 24px rgba(7,20,47,.09) !important;
-      text-align: left !important;
-      text-decoration: none !important;
-      text-transform: uppercase !important;
-      letter-spacing: .02em !important;
-      cursor: pointer !important;
-      transition: transform .18s ease, box-shadow .18s ease !important;
-    }
-    body.ver-premium-page .btn-status:hover,
-    body.ver-premium-page .btn-download-pdf:hover,
-    body.ver-premium-page .btn-whatsapp-empresa:hover { transform: translateY(-1px) !important; box-shadow: 0 15px 28px rgba(7,20,47,.12) !important; }
-    body.ver-premium-page .btn-status::before,
-    body.ver-premium-page .btn-download-pdf::before,
-    body.ver-premium-page .btn-whatsapp-empresa::before {
-      width: 52px !important;
-      height: 52px !important;
-      display: grid !important;
-      place-items: center !important;
-      border-radius:6px !important;
-      color:#fff !important;
-      font-size: 28px !important;
-      box-shadow: 0 9px 18px rgba(7,20,47,.12) !important;
-    }
-    body.ver-premium-page .btn-download-pdf {
-      color:var(--ver-blue-action) !important;
-      border:2px solid #0b49c9 !important;
-      background:#123d2b;
-    }
-    body.ver-premium-page .btn-download-pdf::before {
-      content: "📄" !important;
-      background:#123d2b;
-    }
-    body.ver-premium-page .btn-recusar {
-      color:var(--ver-danger) !important;
-      background:#123d2b;
-      border:2px solid #fecaca !important;
-    }
-    body.ver-premium-page .btn-recusar::before {
-      content: "🚫" !important;
-      background:#123d2b;
-    }
-    body.ver-premium-page .btn-aprovar {
-      color:#166534 !important;
-      background:#123d2b;
-      border:2px solid #86efac !important;
-    }
-    body.ver-premium-page .btn-aprovar::before {
-      content: "✓" !important;
-      background:#123d2b;
-      font-size: 34px !important;
-      font-weight: 950 !important;
-    }
-    body.ver-premium-page .whatsapp-empresa-box {
-      display: none;
-      margin-top: 12px !important;
-    }
-    body.ver-premium-page .btn-whatsapp-empresa {
-      color:#166534 !important;
-      background:#123d2b;
-      border:2px solid #86efac !important;
-    }
-    body.ver-premium-page .btn-whatsapp-empresa::before {
-      content: "🟢" !important;
-      background:#123d2b;
-    }
-    body.ver-premium-page .acao-texto strong,
-    body.ver-premium-page .btn-status > span:first-of-type,
-    body.ver-premium-page .btn-download-pdf > span:first-of-type,
-    body.ver-premium-page .btn-whatsapp-empresa > span:first-of-type {
-      display: block !important;
-      color:inherit !important;
-      -webkit-text-fill-color:currentColor !important;
-      font-size: 18px !important;
-      font-weight: 950 !important;
-      line-height: 1.15 !important;
-    }
-    body.ver-premium-page .acao-texto small,
-    body.ver-premium-page .btn-status small,
-    body.ver-premium-page .btn-download-pdf small,
-    body.ver-premium-page .btn-whatsapp-empresa small {
-      display: block !important;
-      margin-top: 4px !important;
-      color:#c8d5e8 !important;
-      -webkit-text-fill-color:#c8d5e8 !important;
-      font-size: 13px !important;
-      font-weight: 750 !important;
-      line-height: 1.2 !important;
-      text-transform: none !important;
-      letter-spacing: 0 !important;
-    }
-    body.ver-premium-page .btn-seta {
-      color:inherit !important;
-      justify-self: end;
-      font-size: 30px;
-      font-weight: 950;
-    }
-
-    /* RODAPÉ PREMIUM */
-    body.ver-premium-page .rodape {
-      position: relative !important;
-      margin-top: 28px !important;
-      padding: 0 !important;
-      background:#123d2b;
-      color:var(--ver-text) !important;
-      border:0 !important;
-      box-shadow: none !important;
-    }
-    body.ver-premium-page .rodape-premium {
-      position: relative;
-      min-height: 230px;
-      overflow: hidden;
-      border-radius:6px;
-      padding: 24px 24px 26px;
-      color:#fff !important;
-      background:#123d2b;
-      border-bottom:7px solid var(--ver-cor-destaque);
-      box-shadow: 0 18px 38px rgba(7,20,47,.18);
-    }
-    body.ver-premium-page .rodape-premium::before {
-      content: "";
-      position: absolute;
-      left: -10%; right: -10%; bottom: 42px;
-      height: 82px;
-      border-top:4px solid var(--ver-cor-destaque);
-      border-radius:50% 50% 0 0;
-      opacity: .75;
-      pointer-events: none;
-    }
-    body.ver-premium-page .rodape-premium-conteudo { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 160px; gap: 16px; align-items: center; }
-    body.ver-premium-page .rodape-premium h3 {
-      margin: 0 0 8px !important;
-      color:#fff !important;
-      -webkit-text-fill-color:#fff !important;
-      font-size: 18px !important;
-      line-height: 1.25 !important;
-      font-weight: 950 !important;
-    }
-    body.ver-premium-page .rodape-premium p {
-      margin: 0 !important;
-      color:#eaf3ff !important;
-      -webkit-text-fill-color:#eaf3ff !important;
-      font-size: 14px !important;
-      line-height: 1.45 !important;
-      font-weight: 650 !important;
-    }
-    body.ver-premium-page .rodape-premium .escudo {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 12px;
-      display: grid;
-      place-items: center;
-      color:var(--ver-cor-destaque) !important;
-      border:2px solid rgba(245,182,37,.55);
-      border-radius:6px;
-      font-size: 28px;
-    }
-    body.ver-premium-page .selo-premium {
-      justify-self: end;
-      width: 142px;
-      height: 142px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      border-radius:50%;
-      color:#ffffff !important;
-      background:#123d2b;
-      border:5px solid #ffd76b;
-      box-shadow: 0 18px 30px rgba(0,0,0,.24);
-      font-weight: 950;
-      line-height: 1.05;
-    }
-    body.ver-premium-page .selo-premium span { display: block; color:#ffffff !important; font-size: 36px; }
-    body.ver-premium-page .selo-premium small { color:#ffffff !important; font-size: 10px; font-weight: 950; text-transform: uppercase; }
-    body.ver-premium-page .rodape-gerado {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-top: 18px;
-      color:#ffffff !important;
-      font-weight: 950;
-    }
-    body.ver-premium-page .rodape-fs-mini {
-      width: 44px;
-      height: 44px;
-      display: grid;
-      place-items: center;
-      border-radius:6px;
-      border:2px solid var(--ver-cor-destaque);
-      color:#fff;
-      font-weight: 950;
-    }
-    body.ver-premium-page .rodape-gerado span,
-    body.ver-premium-page .rodape-gerado strong { color:#fff !important; -webkit-text-fill-color:#fff !important; }
-
-    body.ver-premium-page .cores-card {
-      margin-top: 20px;
-      padding: 22px;
-      border-radius:6px;
-      background:#123d2b;
-      border:1px solid var(--ver-border);
-      box-shadow: 0 12px 28px rgba(7,20,47,.08);
-      color:var(--ver-text) !important;
-    }
-    body.ver-premium-page .cores-topo {
-      display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 12px;
-      align-items: start;
-    }
-    body.ver-premium-page .cores-ico,
-    body.ver-premium-page .conf-ico {
-      display: grid;
-      place-items: center;
-      color:#fff !important;
-      background:#123d2b;
-      border-radius:6px;
-      box-shadow: 0 10px 20px rgba(7,20,47,.12);
-    }
-    body.ver-premium-page .cores-ico { width: 42px; height: 42px; font-size: 22px; }
-    body.ver-premium-page .cores-card h3 {
-      margin: 0 0 5px !important;
-      color:var(--ver-text) !important;
-      -webkit-text-fill-color:var(--ver-text) !important;
-      font-size: 18px !important;
-      font-weight: 950 !important;
-      text-transform: uppercase;
-      line-height: 1.1;
-    }
-    body.ver-premium-page .cores-card p { margin: 0 !important; color:var(--ver-muted) !important; font-weight: 650 !important; line-height: 1.4 !important; }
-    body.ver-premium-page .bolinhas-cores { display: flex; gap: 13px; margin: 18px 0 8px 54px; }
-    body.ver-premium-page .cor-bolinha { width: 42px; height: 42px; border-radius:50%; border:1px solid rgba(7,20,47,.10); box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
-    body.ver-premium-page .cor-bolinha.gold { background:#123d2b; }
-    body.ver-premium-page .cor-bolinha.navy { background:#123d2b; }
-    body.ver-premium-page .cor-bolinha.white { background:#123d2b; }
-    body.ver-premium-page .cor-bolinha.gray { background:#123d2b; }
-    body.ver-premium-page .confianca-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-      border-top:1px solid var(--ver-border);
-      padding-top: 18px;
-    }
-    body.ver-premium-page .conf-item { display: grid; grid-template-columns: 36px 1fr; gap: 8px; align-items: start; }
-    body.ver-premium-page .conf-ico { width: 36px; height: 36px; font-size: 19px; }
-    body.ver-premium-page .conf-item strong { display: block; color:var(--ver-text) !important; font-size: 12px; text-transform: uppercase; font-weight: 950; }
-    body.ver-premium-page .conf-item small { display: block; color:var(--ver-muted) !important; font-size: 11px; line-height: 1.25; font-weight: 700; }
-
-    /* MENSAGENS E MODAL */
-    body.ver-premium-page .msg { padding: 18px; border-radius:6px; text-align: center; font-weight: 800; margin-top: 20px; line-height: 1.5; }
-    body.ver-premium-page .msg-carregando { background:#123d2b; color:#8a6400; }
-    body.ver-premium-page .msg-erro { background:#123d2b; color:#b91c1c; }
-    body.ver-premium-page .msg-sucesso { background:#123d2b; color:#166534; }
-    body.ver-premium-page .modal-pagamento-overlay { position: fixed; inset: 0; background:#123d2b; display: none; align-items: center; justify-content: center; z-index: 20000; padding: 18px; backdrop-filter: blur(6px); }
-    body.ver-premium-page .modal-pagamento-card { width: min(100%, 430px); background:#123d2b; color:var(--ver-text); border-radius:6px; border:1px solid var(--ver-border); border-top:6px solid var(--ver-cor-destaque); padding: 22px; box-shadow: 0 24px 70px rgba(7,20,47,.35); text-align: center; }
-    body.ver-premium-page .modal-pagamento-card h3 { color:var(--ver-text) !important; margin-top: 0 !important; }
-    body.ver-premium-page .modal-pagamento-card p { color:var(--ver-muted) !important; }
-    body.ver-premium-page .formas-pagamento-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    body.ver-premium-page .formas-pagamento-grid button,
-    body.ver-premium-page .btn-cancelar-pagamento { border:1px solid var(--ver-border); background:#123d2b; color:var(--ver-text); border-radius:6px; padding: 13px 10px; font-weight: 950; cursor: pointer; }
-    body.ver-premium-page .btn-cancelar-pagamento { margin-top: 14px; width: 100%; background:#123d2b; color:#b91c1c; border-color:#fecaca; }
-    body.ver-premium-page .gerar-os-box,
-    body.ver-premium-page .btn-gerar-os { display: none !important; }
-
-    @media (max-width: 720px) {
-      body.ver-premium-page { padding: 8px !important; }
-      body.ver-premium-page .pagina-ver { margin: 8px auto 18px !important; padding: 12px !important; border-radius:6px !important; }
-      body.ver-premium-page .ver-emissor-topo { min-height: auto !important; padding: 84px 14px 18px !important; }
-      body.ver-premium-page .ver-topo-marca { top: 14px; left: 14px; }
-      body.ver-premium-page .ver-topo-logo-mini { width: 48px; height: 48px; }
-      body.ver-premium-page .ver-topo-marca span:last-child { font-size: 19px; }
-      body.ver-premium-page .ver-emissor-info { margin-top: 0; }
-      body.ver-premium-page .ver-logo-box { width: 118px !important; height: 118px !important; }
-      body.ver-premium-page .ver-emissor-dados { grid-template-columns: 1fr !important; }
-      body.ver-premium-page .ver-chip-emissor { min-height: 62px !important; }
-      body.ver-premium-page .cliente-linha { grid-template-columns: 28px auto minmax(0,1fr); font-size: 17px; }
-      body.ver-premium-page .total-box { grid-template-columns: 62px minmax(0,1fr) !important; }
-      body.ver-premium-page .botoes-status,
-      body.ver-premium-page .botoes-cliente { grid-template-columns: 1fr !important; }
-      body.ver-premium-page .formas-pagamento-grid { grid-template-columns: 1fr 1fr; }
-      body.ver-premium-page .btn-status,
-      body.ver-premium-page .btn-download-pdf,
-      body.ver-premium-page .btn-whatsapp-empresa { min-height: 72px !important; grid-template-columns: 54px minmax(0,1fr) 20px !important; }
-      body.ver-premium-page .acao-texto strong,
-      body.ver-premium-page .btn-status > span:first-of-type,
-      body.ver-premium-page .btn-download-pdf > span:first-of-type,
-      body.ver-premium-page .btn-whatsapp-empresa > span:first-of-type { font-size: 16px !important; }
-      body.ver-premium-page .rodape-premium-conteudo { grid-template-columns: 1fr 118px; }
-      body.ver-premium-page .selo-premium { width: 112px; height: 112px; }
-      body.ver-premium-page .selo-premium span { font-size: 28px; }
-      body.ver-premium-page .confianca-grid { grid-template-columns: 1fr; }
-      body.ver-premium-page .bolinhas-cores { margin-left: 0; }
-      body.ver-premium-page h1#titulo-orcamento { font-size: 34px !important; }
-    }
-    @media (max-width: 420px) {
-      body.ver-premium-page table { min-width: 500px !important; }
-      body.ver-premium-page td,
-      body.ver-premium-page th { font-size: 13px !important; padding: 12px !important; }
-      body.ver-premium-page .total-valor { font-size: 36px !important; }
-      body.ver-premium-page .cliente-linha { grid-template-columns: 28px 72px minmax(0,1fr); font-size: 16px; }
-      body.ver-premium-page .btn-seta { font-size: 24px; }
-      body.ver-premium-page .rodape-premium { padding: 18px; }
-      body.ver-premium-page .rodape-premium-conteudo { grid-template-columns: 1fr; }
-      body.ver-premium-page .selo-premium { justify-self: center; }
-      body.ver-premium-page .cores-card { padding: 18px; }
-    }
-    @media print {
-      body.ver-premium-page { background: #fff !important; padding: 0 !important; }
-      body.ver-premium-page .pagina-ver { box-shadow: none !important; margin: 0 !important; max-width: none !important; border-radius: 0 !important; border: 0 !important; }
-      body.ver-premium-page .botoes-status,
-      body.ver-premium-page .botoes-cliente,
-      body.ver-premium-page .whatsapp-empresa-box { display: none !important; }
-    }
+    :root{
+      --fs-azul:#1565C0;
+      --fs-azul-escuro:#07111F;
+      --fs-amarelo:#F6B500;
+      --fs-verde:#22C55E;
+      --fs-vermelho:#DC2626;
+      --fs-fundo:#F3F7FB;
+      --fs-card:#FFFFFF;
+      --fs-texto:#142235;
+      --fs-muted:#607086;
+      --fs-borda:#DCE6F1;
+      --fs-destaque:#1565C0;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--fs-fundo);color:var(--fs-texto)}
+    body{padding:18px;background:linear-gradient(180deg,var(--fs-azul-escuro) 0 260px,var(--fs-fundo) 260px)}
+    button,a{font:inherit}
+    .pagina{width:min(920px,100%);margin:0 auto}
+    .topo{position:relative;overflow:hidden;padding:26px;border-radius:24px;background:linear-gradient(135deg,#fff 0,#EEF6FF 72%,#FFF7D6 100%);box-shadow:0 24px 60px rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.5)}
+    .topo::after{content:"EFEX";position:absolute;right:20px;top:12px;font-size:74px;font-weight:950;letter-spacing:-.08em;color:rgba(21,101,192,.07)}
+    .marca{position:relative;z-index:1;display:flex;align-items:center;gap:12px;margin-bottom:22px}
+    .marca-logo{width:48px;height:48px;display:grid;place-items:center;border-radius:13px;background:var(--fs-azul-escuro);color:#fff;font-weight:950;border:3px solid var(--fs-amarelo)}
+    .marca-texto strong{display:block;color:var(--fs-azul-escuro);font-size:18px}.marca-texto small{color:var(--fs-muted);font-weight:700}
+    .empresa{position:relative;z-index:1;display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:center}
+    .empresa-logo{width:110px;height:110px;display:grid;place-items:center;border-radius:22px;background:#fff;border:1px solid var(--fs-borda);overflow:hidden;color:var(--fs-azul);font-weight:950;font-size:32px}
+    .empresa-logo img{display:none;max-width:92%;max-height:92%;object-fit:contain}
+    .empresa h1{margin:0 0 7px;color:var(--fs-azul-escuro);font-size:clamp(28px,5vw,44px);letter-spacing:-.045em;line-height:1.05}
+    .empresa p{margin:0;color:#45617E;font-weight:750}
+    .chips{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:20px}
+    .chip{padding:12px;border:1px solid var(--fs-borda);border-radius:14px;background:rgba(255,255,255,.82);min-width:0}
+    .chip small{display:block;margin-bottom:4px;color:var(--fs-muted);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.chip strong{display:block;overflow-wrap:anywhere;color:var(--fs-azul-escuro)}
+    .card{margin-top:18px;padding:22px;border:1px solid var(--fs-borda);border-radius:22px;background:var(--fs-card);box-shadow:0 16px 40px rgba(7,17,31,.08)}
+    .cabecalho-orcamento{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:16px;border-bottom:1px solid var(--fs-borda)}
+    .cabecalho-orcamento h2{margin:0 0 5px;color:var(--fs-azul-escuro);font-size:clamp(25px,4vw,36px);letter-spacing:-.04em}.numero{color:var(--fs-muted);font-weight:800}.status{display:inline-flex;padding:8px 11px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase}.status-pendente{background:#FFF4C7;color:#765400}.status-aprovado{background:#DCFCE7;color:#166534}.status-recusado{background:#FEE2E2;color:#991B1B}.status-em_servico,.status-finalizado{background:#DBEAFE;color:#1E40AF}
+    .cliente-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}.info{padding:13px;border:1px solid var(--fs-borda);border-radius:14px;background:#F8FBFE}.info small{display:block;color:var(--fs-muted);font-size:11px;font-weight:900;text-transform:uppercase}.info strong{display:block;margin-top:4px;overflow-wrap:anywhere}
+    .tabela-wrap{overflow-x:auto;border:1px solid var(--fs-borda);border-radius:16px}table{width:100%;min-width:620px;border-collapse:collapse}th,td{padding:13px;text-align:left;border-bottom:1px solid var(--fs-borda)}th{background:#EEF5FC;color:#365470;font-size:12px;text-transform:uppercase}td:nth-child(n+2),th:nth-child(n+2){text-align:right}tbody tr:last-child td{border-bottom:0}
+    .total{display:flex;justify-content:flex-end;margin-top:16px}.total-box{min-width:280px;padding:18px;border-radius:18px;background:var(--fs-azul-escuro);color:#fff}.total-box small{display:block;color:#B9C8DA;font-weight:800;text-transform:uppercase}.total-box strong{display:block;margin-top:4px;font-size:34px;color:#fff}
+    .observacoes{margin-top:16px;padding:15px;border-left:5px solid var(--fs-amarelo);border-radius:14px;background:#FFF9E7;white-space:pre-wrap;line-height:1.5}
+    .resposta{margin-top:16px;padding:15px;border-radius:14px;font-weight:800}.resposta.aprovado{background:#ECFDF3;color:#166534}.resposta.recusado{background:#FFF1F2;color:#991B1B}
+    .acoes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}.btn{min-height:50px;padding:12px 16px;border:1px solid transparent;border-radius:13px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.btn:disabled{opacity:.55;cursor:not-allowed}.btn-aprovar{background:var(--fs-verde);color:#fff}.btn-recusar{background:#FFF1F2;color:#B91C1C;border-color:#FECACA}.btn-secundario{background:#fff;color:var(--fs-azul);border-color:#AFC9E5}.btn-whatsapp{background:#16A34A;color:#fff}.btn-imprimir{background:var(--fs-azul);color:#fff}
+    .mensagem{padding:28px;text-align:center;border-radius:20px;background:#fff;border:1px solid var(--fs-borda);box-shadow:0 16px 40px rgba(7,17,31,.09)}.mensagem h1{margin:0 0 10px;color:var(--fs-azul-escuro)}.mensagem p{margin:0;color:var(--fs-muted);line-height:1.5}.mensagem .icone{display:block;margin-bottom:10px;font-size:42px}
+    .modal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(7,17,31,.78);backdrop-filter:blur(7px)}.modal.ativo{display:flex}.modal-card{width:min(430px,100%);padding:22px;border-radius:20px;background:#fff;box-shadow:0 28px 70px rgba(0,0,0,.35)}.modal-card h3{margin:0 0 7px;color:var(--fs-azul-escuro)}.modal-card p{margin:0 0 16px;color:var(--fs-muted)}.formas{display:grid;grid-template-columns:1fr 1fr;gap:9px}.modal-card .btn{width:100%;margin-top:9px}
+    .rodape{padding:22px 12px;text-align:center;color:#77869A;font-size:13px;font-weight:700}
+    @media(max-width:720px){body{padding:10px;background:linear-gradient(180deg,var(--fs-azul-escuro) 0 210px,var(--fs-fundo) 210px)}.topo,.card{padding:18px}.empresa{grid-template-columns:1fr;text-align:center}.empresa-logo{margin:auto}.chips,.cliente-grid,.acoes{grid-template-columns:1fr}.cabecalho-orcamento{display:grid}.total-box{width:100%;min-width:0}.formas{grid-template-columns:1fr 1fr}.topo::after{font-size:46px}}
+    @media print{body{padding:0;background:#fff}.pagina{width:100%}.topo,.card{box-shadow:none;border-color:#ddd}.acoes,.rodape,.modal{display:none!important}}
   </style>
 </head>
-<body class="ver-premium-page">
-  <div class="pagina-ver" id="area-pdf-orcamento">
-    <section class="ver-emissor-topo">
-      <div class="ver-topo-marca">
-        <span class="ver-topo-logo-mini">FS</span>
-        <span>FS Orçamentos</span>
-      </div>
-      <div class="ver-emissor-info">
-        <div class="ver-logo-box">
-          <img id="ver-logo-empresa" src="" alt="Logo da empresa">
-          <div id="ver-logo-placeholder">FS</div>
-        </div>
-        <span class="ver-label">Orçamento emitido por</span>
-        <h1 id="ver-nome-empresa">Carregando empresa...</h1>
-        <p id="ver-consultor">👤 Consultor: -</p>
-        <div class="ver-emissor-dados">
-          <span id="ver-whatsapp-empresa"></span>
-          <span id="ver-cnpj-empresa"></span>
-          <span id="ver-endereco-empresa"></span>
-        </div>
-      </div>
+<body>
+  <main class="pagina">
+    <section id="estado-pagina" class="mensagem">
+      <span class="icone">⏳</span>
+      <h1>Carregando orçamento</h1>
+      <p>Estamos validando o link e preparando os dados.</p>
     </section>
 
-    <div id="numero-orcamento" class="numero-orcamento"></div>
-    <h1 id="titulo-orcamento">Carregando...</h1>
-    <div class="linha-divisoria"></div>
+    <div id="conteudo-pagina" hidden>
+      <section class="topo">
+        <div class="marca"><span class="marca-logo">FS</span><span class="marca-texto"><strong>FS Orçamentos</strong><small>Diagnóstico inteligente. Orçamentos profissionais.</small></span></div>
+        <div class="empresa">
+          <div class="empresa-logo"><img id="logo-empresa" alt="Logo da empresa"><span id="logo-placeholder">FS</span></div>
+          <div><h1 id="nome-empresa">Empresa</h1><p id="consultor-empresa">Responsável: -</p></div>
+        </div>
+        <div class="chips">
+          <div class="chip"><small>WhatsApp</small><strong id="telefone-empresa">Não informado</strong></div>
+          <div class="chip"><small>CNPJ / CPF</small><strong id="documento-empresa">Não informado</strong></div>
+          <div class="chip"><small>Endereço</small><strong id="endereco-empresa">Não informado</strong></div>
+        </div>
+      </section>
 
-    <div id="conteudo-orcamento">
-      <div class="msg msg-carregando">Carregando orçamento...</div>
+      <section class="card">
+        <div class="cabecalho-orcamento">
+          <div><h2 id="assunto-orcamento">Orçamento</h2><div id="numero-orcamento" class="numero"></div></div>
+          <span id="status-orcamento" class="status status-pendente">Pendente</span>
+        </div>
+        <div class="cliente-grid">
+          <div class="info"><small>Cliente</small><strong id="cliente-nome">-</strong></div>
+          <div class="info"><small>Contato</small><strong id="cliente-contato">-</strong></div>
+          <div class="info"><small>Data</small><strong id="data-orcamento">-</strong></div>
+        </div>
+        <div class="tabela-wrap"><table><thead><tr><th>Descrição</th><th>Qtd.</th><th>Valor unit.</th><th>Total</th></tr></thead><tbody id="itens-orcamento"></tbody></table></div>
+        <div class="total"><div class="total-box"><small>Total do orçamento</small><strong id="total-orcamento">R$ 0,00</strong></div></div>
+        <div id="observacoes-orcamento" class="observacoes" hidden></div>
+        <div id="resposta-orcamento" class="resposta" hidden></div>
+        <div class="acoes">
+          <button type="button" class="btn btn-imprimir" onclick="window.print()">Imprimir / Salvar PDF</button>
+          <a id="btn-whatsapp" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener">Falar com a empresa</a>
+          <button id="btn-recusar" type="button" class="btn btn-recusar">Recusar orçamento</button>
+          <button id="btn-aprovar" type="button" class="btn btn-aprovar">Aprovar orçamento</button>
+        </div>
+      </section>
+      <footer class="rodape">Orçamento protegido por link exclusivo • FS Orçamentos</footer>
     </div>
+  </main>
 
-    <div id="whatsapp-empresa-box" class="whatsapp-empresa-box">
-      <a id="btn-whatsapp-empresa" class="btn-whatsapp-empresa" href="#" target="_blank" rel="noopener">
-        <span class="acao-texto"><strong>Falar com a empresa no WhatsApp</strong><small>Tirar dúvidas ou negociar</small></span>
-        <span class="btn-seta">›</span>
-      </a>
-    </div>
-
-    <footer class="rodape">
-      <div class="rodape-premium">
-        <div class="rodape-premium-conteudo">
-          <div>
-            <div class="escudo">♢</div>
-            <h3>Orçamento seguro<br>e confiável</h3>
-            <p>Seus dados e aprovações protegidos.</p>
-          </div>
-          <div class="selo-premium"><div><span>🔒</span><small>FS Orçamentos</small></div></div>
-        </div>
-        <div class="rodape-gerado">
-          <span class="rodape-fs-mini">FS</span>
-          <span>Orçamento gerado por<br><strong id="rodape-nome-empresa">FS Orçamentos</strong></span>
-        </div>
+  <div id="modal-pagamento" class="modal" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-pagamento">
+    <div class="modal-card">
+      <h3 id="titulo-modal-pagamento">Como deseja pagar?</h3>
+      <p>Escolha a forma de pagamento para confirmar a aprovação.</p>
+      <div class="formas">
+        <button class="btn btn-secundario" data-forma="credito">Crédito</button>
+        <button class="btn btn-secundario" data-forma="debito">Débito</button>
+        <button class="btn btn-secundario" data-forma="pix">Pix</button>
+        <button class="btn btn-secundario" data-forma="dinheiro">Dinheiro</button>
       </div>
-
-      <div class="cores-card">
-        <div class="cores-topo">
-          <span class="cores-ico">🎨</span>
-          <div>
-            <h3>Cores personalizadas do orçamento</h3>
-            <p>Esta página utiliza as cores escolhidas pela empresa no orçamento.</p>
-          </div>
-        </div>
-        <div class="bolinhas-cores" aria-hidden="true">
-          <span class="cor-bolinha gold"></span>
-          <span class="cor-bolinha navy"></span>
-          <span class="cor-bolinha white"></span>
-          <span class="cor-bolinha gray"></span>
-        </div>
-        <div class="confianca-grid">
-          <div class="conf-item"><span class="conf-ico">🛡</span><span><strong>Segurança</strong><small>Seus dados protegidos</small></span></div>
-          <div class="conf-item"><span class="conf-ico">✓</span><span><strong>Confiança</strong><small>Processo simples e rápido</small></span></div>
-          <div class="conf-item"><span class="conf-ico">🎧</span><span><strong>Suporte</strong><small>Fale com a empresa</small></span></div>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <div id="modal-forma-pagamento" class="modal-pagamento-overlay">
-    <div class="modal-pagamento-card">
-      <h3>Como deseja pagar?</h3>
-      <p>Escolha a forma de pagamento para confirmar a aprovação do orçamento.</p>
-      <div class="formas-pagamento-grid">
-        <button type="button" onclick="selecionarFormaPagamento('credito')">Crédito</button>
-        <button type="button" onclick="selecionarFormaPagamento('debito')">Débito</button>
-        <button type="button" onclick="selecionarFormaPagamento('pix')">Pix</button>
-        <button type="button" onclick="selecionarFormaPagamento('dinheiro')">Dinheiro</button>
-      </div>
-      <button type="button" class="btn-cancelar-pagamento" onclick="fecharModalFormaPagamento()">Cancelar</button>
+      <button id="fechar-modal" class="btn btn-recusar" type="button">Cancelar</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script>
-    if(!window._supabase)window._supabase=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-    const STATUS_CONFIG={pendente:'Pendente',aprovado:'Aprovado',recusado:'Recusado',em_servico:'Em serviço',finalizado:'Finalizado'};
-    const FORMAS_PAGAMENTO={credito:'Crédito',debito:'Débito',pix:'Pix',dinheiro:'Dinheiro'};
-    let orcamentoAtual=null,perfilEmissorAtual=null;
-    document.addEventListener('DOMContentLoaded',carregarOrcamento);
+    (() => {
+      'use strict';
+      const TOKEN_RE = /^[a-f0-9]{48}$/i;
+      const STATUS = { pendente:'Pendente', aprovado:'Aprovado', recusado:'Recusado', em_servico:'Em serviço', finalizado:'Finalizado' };
+      const FORMAS = { credito:'Crédito', debito:'Débito', pix:'Pix', dinheiro:'Dinheiro' };
+      const client = window._supabase || supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      window._supabase = client;
+      let tokenAtual = '';
+      let orcamentoAtual = null;
+      let enviandoResposta = false;
 
-    function valorOuVazio(v){return v&&String(v).trim()?String(v).trim():''}
-    function escaparHtml(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
-    function formatarMoeda(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
-    function formatarData(v){const d=new Date(v||'');return isNaN(d.getTime())?'-':d.toLocaleDateString('pt-BR')}
-    function formatarDataHora(v){const d=new Date(v||'');return isNaN(d.getTime())?'-':d.toLocaleString('pt-BR')}
-    function statusLabel(s){return STATUS_CONFIG[s]||s||'Pendente'}
-    function classeStatus(s){return String(s||'pendente').replace(/[^a-zA-Z0-9_\-]/g,'')}
-    function textoFormaPagamento(f){return FORMAS_PAGAMENTO[f]||'-'}
-    function formatarNumeroOrcamento(n){if(!n&&n!==0)return'';const x=Number(n);return Number.isFinite(x)?String(x).padStart(6,'0'):String(n)}
-    function normalizarItem(item){const qtd=Number(item.qtd??item.quantidade??item.qtde??1);const valor=Number(item.valor??item.valor_unitario??item.preco??0);return{descricao:item.descricao||item.desc||item.item||item.nome||'',qtd,valor,subtotal:Number(item.subtotal??item.total??qtd*valor)}}
-    function itemIcone(desc){const t=String(desc||'').toLowerCase();if(t.includes('mão')||t.includes('mao')||t.includes('serv')||t.includes('obra'))return'🛠';if(t.includes('fio')||t.includes('cabo'))return'🔌';if(t.includes('peça')||t.includes('peca')||t.includes('prod')||t.includes('item'))return'📦';return'🔧'}
+      const $ = id => document.getElementById(id);
+      const texto = valor => valor === null || valor === undefined || String(valor).trim() === '' ? '-' : String(valor).trim();
+      const moeda = valor => Number(valor || 0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+      const dataBR = valor => { const d = new Date(valor || ''); return Number.isNaN(d.getTime()) ? '-' : d.toLocaleDateString('pt-BR'); };
+      const dataHoraBR = valor => { const d = new Date(valor || ''); return Number.isNaN(d.getTime()) ? '-' : d.toLocaleString('pt-BR'); };
+      const normalizarItem = item => { const qtd=Number(item?.qtd ?? item?.quantidade ?? item?.qtde ?? 1); const valor=Number(item?.valor ?? item?.valor_unitario ?? item?.preco ?? 0); return { descricao:texto(item?.descricao ?? item?.desc ?? item?.item ?? item?.nome), qtd, valor, total:Number(item?.subtotal ?? item?.total ?? qtd*valor) }; };
 
-    function obterIdOrcamentoDoLink(){const p=new URLSearchParams(location.search);return p.get('token')||p.get('public_token')||p.get('id')||null}
-    async function carregarOrcamentoPublico(id){const p=new URLSearchParams(location.search);const token=p.get('token')||p.get('public_token');if(token){const r=await _supabase.rpc('buscar_orcamento_publico',{p_token:token});if(!r.error&&r.data)return Array.isArray(r.data)?r.data[0]:r.data;return null}const r=await _supabase.from('orcamentos').select('*').eq('id',id).maybeSingle();return r.error?null:r.data}
+      function mostrarErro(titulo, mensagem, icone='🔒'){
+        $('conteudo-pagina').hidden = true;
+        const estado = $('estado-pagina');
+        estado.hidden = false;
+        estado.innerHTML = `<span class="icone">${icone}</span><h1>${titulo}</h1><p>${mensagem}</p>`;
+      }
 
-    function aplicarCorPersonalizadaVer(o){const cor=valorOuVazio(o?.cor_destaque||o?.cor_principal||o?.cor_tema||o?.cor||o?.theme_color);if(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(cor))document.documentElement.style.setProperty('--ver-cor-destaque',cor)}
-    function chipEmissorHtml(icone,titulo,valor){return '<span class="ver-chip-emissor"><span class="ver-chip-ico">'+icone+'</span><span><span class="ver-chip-title">'+escaparHtml(titulo)+'</span><span class="ver-chip-value">'+escaparHtml(valor)+'</span></span></span>'}
-    function preencherChipEmissor(e,html){if(!e)return;e.innerHTML=html||'';e.style.display=html?'block':'none'}
-    function configurarWhatsappEmpresa(t,n){const box=document.getElementById('whatsapp-empresa-box'),link=document.getElementById('btn-whatsapp-empresa');if(!box||!link)return;const limpo=String(t||'').replace(/\D/g,'');if(!limpo){box.style.display='none';link.href='#';return}const numero=limpo.startsWith('55')?limpo:'55'+limpo;link.href='https://wa.me/'+numero+'?text='+encodeURIComponent('Olá! Estou falando sobre o orçamento recebido de '+(n||'sua empresa')+'.');box.style.display='block'}
-    function preencherTopoEmpresaVer(o,p){const nome=valorOuVazio(p?.nome_empresa)||valorOuVazio(o?.nome_empresa)||'Equipe FS Orçamentos';const consultor=valorOuVazio(o?.consultor)||valorOuVazio(p?.nome)||'Filipi Santos';const telefone=valorOuVazio(p?.telefone_empresa)||valorOuVazio(o?.telefone_empresa);const cnpj=valorOuVazio(p?.cnpj_empresa)||valorOuVazio(o?.cnpj_empresa);const endereco=valorOuVazio(p?.endereco_empresa)||valorOuVazio(o?.endereco_empresa);const foto=valorOuVazio(p?.foto_url)||valorOuVazio(o?.foto_url);document.getElementById('ver-nome-empresa').innerText=nome;document.getElementById('ver-consultor').innerText='👤 Consultor: '+consultor;document.getElementById('rodape-nome-empresa').innerText=nome;preencherChipEmissor(document.getElementById('ver-whatsapp-empresa'),telefone?chipEmissorHtml('🟢','WhatsApp',telefone):'');preencherChipEmissor(document.getElementById('ver-cnpj-empresa'),cnpj?chipEmissorHtml('📄','CNPJ/CPF',cnpj):'');preencherChipEmissor(document.getElementById('ver-endereco-empresa'),endereco?chipEmissorHtml('📍','Endereço',endereco):'');configurarWhatsappEmpresa(telefone,nome);const logo=document.getElementById('ver-logo-empresa'),ph=document.getElementById('ver-logo-placeholder');if(foto){logo.src=foto;logo.style.display='block';ph.style.display='none'}else{logo.src='';logo.style.display='none';ph.style.display='grid';ph.innerText='FS'}document.title=nome+' - '+(o?.assunto||'Orçamento')}
-    function preencherNumeroOrcamento(o){const el=document.getElementById('numero-orcamento');const n=o?.numero_orcamento||o?.numero||'';if(!n&&n!==0){el.style.display='none';el.innerText='';return}el.innerText='✦ Orçamento Nº '+formatarNumeroOrcamento(n)+' ✦';el.style.display='block'}
+      function obterToken(){
+        const params = new URLSearchParams(location.search);
+        const token = String(params.get('token') || params.get('public_token') || '').trim();
+        return TOKEN_RE.test(token) ? token.toLowerCase() : '';
+      }
 
-    async function carregarOrcamento(){const c=document.getElementById('conteudo-orcamento'),t=document.getElementById('titulo-orcamento'),id=obterIdOrcamentoDoLink();if(!id){t.innerText='Aviso';c.innerHTML='<div class="msg msg-erro">Orçamento não informado no link.</div>';return}const data=await carregarOrcamentoPublico(id);if(!data){t.innerText='Aviso';c.innerHTML='<div class="msg msg-erro">Orçamento não encontrado.</div>';return}orcamentoAtual=data;window.orcamentoAtual=data;perfilEmissorAtual={nome:data.consultor,nome_empresa:data.nome_empresa,telefone_empresa:data.telefone_empresa,endereco_empresa:data.endereco_empresa,cnpj_empresa:data.cnpj_empresa,foto_url:data.foto_url};window.perfilEmissorAtual=perfilEmissorAtual;aplicarCorPersonalizadaVer(data);preencherTopoEmpresaVer(data,perfilEmissorAtual);preencherNumeroOrcamento(data);renderizarOrcamento(data)}
+      async function carregar(){
+        tokenAtual = obterToken();
+        if(!tokenAtual){
+          mostrarErro('Link inválido','Este orçamento deve ser aberto pelo link seguro enviado pela empresa. Links antigos por código interno não são aceitos.');
+          return;
+        }
 
-    function observacoesHtml(texto){if(!texto)return'';const linhas=String(texto).split(/\n+/).filter(l=>l.trim());if(!linhas.length)return'';return '<div class="observacoes-box"><strong>Observações</strong>'+linhas.map(l=>'<div class="obs-linha"><span>'+escaparHtml(l)+'</span></div>').join('')+'</div>'}
-    function renderizarOrcamento(o){const c=document.getElementById('conteudo-orcamento');document.getElementById('titulo-orcamento').innerText=o.assunto||'Sem título';const status=o.status||'pendente';const itens=Array.isArray(o.itens)?o.itens.map(normalizarItem):[];const linhas=itens.length?itens.map(item=>'<tr><td><span class="item-descricao-cell"><span class="item-ico">'+itemIcone(item.descricao)+'</span>'+escaparHtml(item.descricao)+'</span></td><td>'+escaparHtml(item.qtd)+'</td><td>'+formatarMoeda(item.valor)+'</td><td>'+formatarMoeda(item.subtotal)+'</td></tr>').join(''):'<tr><td colspan="4">Nenhum item encontrado.</td></tr>';const pode=status==='pendente';const resposta=status==='aprovado'?'<div class="msg msg-resposta"><strong>✅ Orçamento aprovado.</strong><br>'+(o.forma_pagamento_cliente?'<strong>Forma de pagamento escolhida:</strong> '+escaparHtml(textoFormaPagamento(o.forma_pagamento_cliente))+'<br>':'')+(o.resposta_cliente_em?'<strong>Resposta enviada em:</strong> '+escaparHtml(formatarDataHora(o.resposta_cliente_em)):'')+'</div>':status==='recusado'?'<div class="msg msg-resposta"><strong>❌ Orçamento recusado.</strong></div>':'';c.innerHTML='<div class="box-info"><div class="cliente-linha"><span class="ico">👤</span><strong>Cliente:</strong><span>'+escaparHtml(o.cliente_nome||'Não informado')+'</span></div><div class="cliente-linha"><span class="ico">☎</span><strong>Contato:</strong><span>'+escaparHtml(o.cliente_whatsapp||'Não informado')+'</span></div><div class="cliente-linha"><span class="ico">▣</span><strong>Data:</strong><span>'+formatarData(o.criado_em||o.created_at)+'</span></div><div class="cliente-linha"><span class="ico">◷</span><strong>Status:</strong><span><span class="status status-'+classeStatus(status)+'">'+escaparHtml(statusLabel(status))+'</span></span></div></div><div class="itens-titulo">Itens do orçamento</div><div class="tabela-wrapper"><table><thead><tr><th>Descrição</th><th>Qtd</th><th>Valor unit.</th><th>Total</th></tr></thead><tbody>'+linhas+'</tbody></table></div><div class="total-box"><div><span class="total-label">Total do orçamento</span><span class="total-valor">'+formatarMoeda(o.total||0)+'</span></div></div>'+observacoesHtml(o.observacoes)+'<div class="botoes-cliente"><button type="button" class="btn-download-pdf" onclick="baixarPdfOrcamentoCliente()"><span class="acao-texto"><strong>Baixar PDF</strong><small>Baixar orçamento em PDF</small></span><span class="btn-seta">›</span></button></div>'+(pode?'<div class="botoes-status"><button type="button" class="btn-status btn-recusar" onclick="recusarOrcamento()"><span class="acao-texto"><strong>Recusar orçamento</strong><small>Informar que não tem interesse</small></span><span class="btn-seta">›</span></button><button type="button" class="btn-status btn-aprovar" onclick="aprovarOrcamento()"><span class="acao-texto"><strong>Aprovar orçamento</strong><small>Aprovar e iniciar o atendimento</small></span><span class="btn-seta">›</span></button></div>':resposta)}
+        const { data, error } = await client.rpc('buscar_orcamento_publico',{p_token:tokenAtual});
+        const registro = Array.isArray(data) ? data[0] : data;
+        if(error || !registro){
+          mostrarErro('Link indisponível','O link pode ter expirado, sido revogado ou estar incorreto. Solicite um novo link à empresa.','⏱️');
+          return;
+        }
 
-    function obterPdfUrlOrcamento(){const o=orcamentoAtual||{};const direto=o.pdf_url||o.pdfUrl||o.url_pdf||o.link_pdf||o.arquivo_pdf_url||o.arquivo_pdf;if(direto&&/^https?:\/\//i.test(direto))return direto;const path=o.pdf_path||o.arquivo_pdf_path||o.storage_pdf_path;if(path&&window._supabase){try{return _supabase.storage.from(o.pdf_bucket||'orcamentos').getPublicUrl(path).data.publicUrl}catch(_){return''}}return''}
-    function baixarPdfOrcamentoCliente(){const url=obterPdfUrlOrcamento();if(url){const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.download='orcamento.pdf';document.body.appendChild(a);a.click();a.remove();return}window.print()}
+        orcamentoAtual = registro;
+        renderizar(registro);
+      }
 
-    function abrirModalFormaPagamento(){document.getElementById('modal-forma-pagamento').style.display='flex'}
-    function fecharModalFormaPagamento(){document.getElementById('modal-forma-pagamento').style.display='none'}
-    function orcamentoJaRespondido(){return(orcamentoAtual?.status||'pendente')!=='pendente'}
-    function setBotoesRespostaDesabilitados(d){document.querySelectorAll('.btn-status,.formas-pagamento-grid button,.btn-cancelar-pagamento').forEach(btn=>btn.disabled=d)}
-    function aprovarOrcamento(){if(!orcamentoAtual?.id)return alert('Orçamento não carregado.');if(orcamentoJaRespondido())return alert('Este orçamento já foi respondido.');abrirModalFormaPagamento()}
-    async function selecionarFormaPagamento(f){await responderOrcamentoPublico('aprovado',f)}
-    async function recusarOrcamento(){if(!confirm('Deseja realmente recusar este orçamento?'))return;await responderOrcamentoPublico('recusado',null)}
-    async function responderOrcamentoPublico(resposta,formaPagamento){if(!orcamentoAtual?.id)return alert('Orçamento não carregado.');if(orcamentoJaRespondido())return alert('Este orçamento já foi respondido.');const p=new URLSearchParams(location.search);const token=p.get('token')||p.get('public_token');setBotoesRespostaDesabilitados(true);const retorno=token?await _supabase.rpc('responder_orcamento_publico_v2',{p_token:token,p_resposta:resposta,p_forma_pagamento:formaPagamento}):await _supabase.from('orcamentos').update({status:resposta,forma_pagamento_cliente:formaPagamento,resposta_cliente_em:new Date().toISOString()}).eq('id',orcamentoAtual.id).eq('status','pendente').select().maybeSingle();if(retorno.error){console.error(retorno.error);alert('Não foi possível registrar a resposta.');setBotoesRespostaDesabilitados(false);return}fecharModalFormaPagamento();await carregarOrcamento();alert('Resposta enviada com sucesso.')}
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharModalFormaPagamento()});
-    document.addEventListener('click',e=>{const m=document.getElementById('modal-forma-pagamento');if(e.target===m)fecharModalFormaPagamento()});
-    window.carregarOrcamento=carregarOrcamento;
+      function renderizar(o){
+        $('estado-pagina').hidden = true;
+        $('conteudo-pagina').hidden = false;
+        document.documentElement.style.setProperty('--fs-destaque', /^#[0-9a-f]{6}$/i.test(o.cor_destaque || '') ? o.cor_destaque : '#1565C0');
+
+        const nomeEmpresa = texto(o.nome_empresa) === '-' ? 'Empresa emissora' : texto(o.nome_empresa);
+        $('nome-empresa').textContent = nomeEmpresa;
+        $('consultor-empresa').textContent = `Responsável: ${texto(o.consultor)}`;
+        $('telefone-empresa').textContent = texto(o.telefone_empresa);
+        $('documento-empresa').textContent = texto(o.cnpj_empresa);
+        $('endereco-empresa').textContent = texto(o.endereco_empresa);
+        $('assunto-orcamento').textContent = texto(o.assunto) === '-' ? 'Orçamento' : texto(o.assunto);
+        $('numero-orcamento').textContent = o.numero_orcamento ? `Orçamento nº ${String(o.numero_orcamento).padStart(6,'0')}` : '';
+        $('cliente-nome').textContent = texto(o.cliente_nome);
+        $('cliente-contato').textContent = texto(o.cliente_whatsapp);
+        $('data-orcamento').textContent = dataBR(o.criado_em);
+        $('total-orcamento').textContent = moeda(o.total);
+        document.title = `${nomeEmpresa} - Orçamento`;
+
+        const status = String(o.status || 'pendente').toLowerCase();
+        const statusEl = $('status-orcamento');
+        statusEl.textContent = STATUS[status] || status;
+        statusEl.className = `status status-${status.replace(/[^a-z0-9_]/g,'')}`;
+
+        const logo = $('logo-empresa');
+        const placeholder = $('logo-placeholder');
+        if(o.foto_url){ logo.src=o.foto_url; logo.style.display='block'; placeholder.style.display='none'; }
+
+        const itens = Array.isArray(o.itens) ? o.itens.map(normalizarItem) : [];
+        $('itens-orcamento').innerHTML = itens.length ? itens.map(item => `<tr><td>${escapeHtml(item.descricao)}</td><td>${item.qtd}</td><td>${moeda(item.valor)}</td><td>${moeda(item.total)}</td></tr>`).join('') : '<tr><td colspan="4" style="text-align:center">Nenhum item informado.</td></tr>';
+
+        const obs = $('observacoes-orcamento');
+        if(o.observacoes){ obs.textContent=o.observacoes; obs.hidden=false; }
+
+        const resposta = $('resposta-orcamento');
+        if(status === 'aprovado'){
+          resposta.hidden=false; resposta.className='resposta aprovado';
+          resposta.textContent=`Orçamento aprovado${o.forma_pagamento_cliente ? ` • Pagamento: ${FORMAS[o.forma_pagamento_cliente] || o.forma_pagamento_cliente}` : ''}${o.resposta_cliente_em ? ` • ${dataHoraBR(o.resposta_cliente_em)}` : ''}`;
+        } else if(status === 'recusado'){
+          resposta.hidden=false; resposta.className='resposta recusado'; resposta.textContent='Orçamento recusado.';
+        }
+
+        const podeResponder = status === 'pendente';
+        $('btn-aprovar').hidden = !podeResponder;
+        $('btn-recusar').hidden = !podeResponder;
+
+        const numero = String(o.telefone_empresa || '').replace(/\D/g,'');
+        const btnWhatsapp = $('btn-whatsapp');
+        if(numero){ const destino = numero.startsWith('55') ? numero : `55${numero}`; btnWhatsapp.href=`https://wa.me/${destino}?text=${encodeURIComponent(`Olá! Estou falando sobre o orçamento ${o.numero_orcamento || ''} recebido.`)}`; }
+        else btnWhatsapp.hidden = true;
+      }
+
+      function escapeHtml(valor){
+        return String(valor ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+      }
+
+      function abrirModal(){ $('modal-pagamento').classList.add('ativo'); }
+      function fecharModal(){ $('modal-pagamento').classList.remove('ativo'); }
+
+      async function responder(resposta, forma=null){
+        if(enviandoResposta) return;
+        enviandoResposta=true;
+        $('btn-aprovar').disabled=true;
+        $('btn-recusar').disabled=true;
+        fecharModal();
+        try{
+          const { data, error } = await client.rpc('responder_orcamento_publico_v2',{p_token:tokenAtual,p_resposta:resposta,p_forma_pagamento:forma});
+          if(error || !data?.sucesso) throw new Error(data?.mensagem || error?.message || 'Não foi possível registrar a resposta.');
+          await carregar();
+        }catch(err){
+          alert(err.message || 'Não foi possível registrar a resposta.');
+          $('btn-aprovar').disabled=false;
+          $('btn-recusar').disabled=false;
+        }finally{ enviandoResposta=false; }
+      }
+
+      $('btn-aprovar').addEventListener('click',abrirModal);
+      $('btn-recusar').addEventListener('click',()=>{ if(confirm('Deseja recusar este orçamento?')) responder('recusado'); });
+      $('fechar-modal').addEventListener('click',fecharModal);
+      $('modal-pagamento').addEventListener('click',event=>{ if(event.target === $('modal-pagamento')) fecharModal(); });
+      document.querySelectorAll('[data-forma]').forEach(btn=>btn.addEventListener('click',()=>responder('aprovado',btn.dataset.forma)));
+      document.addEventListener('keydown',event=>{ if(event.key === 'Escape') fecharModal(); });
+      document.addEventListener('DOMContentLoaded',carregar);
+    })();
   </script>
-  <script src="ver-cliente-fix.js"></script>
 </body>
 </html>
