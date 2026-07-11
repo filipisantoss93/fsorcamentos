@@ -1,8 +1,5 @@
 name: Consolidar home publica e premium
-on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/consolidar-home.yml']
+on: push
 permissions:
   contents: write
 jobs:
@@ -10,78 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Consolidar arquivos existentes
+        with:
+          fetch-depth: 2
+      - name: Executar consolidação preparada
         run: |
-          python3 <<'PY'
+          python3 <<'RUNNER'
           from pathlib import Path
-          import re
-
-          ip=Path('index.html'); sp=Path('style.css'); hp=Path('header.html')
-          i=ip.read_text(encoding='utf-8'); s=sp.read_text(encoding='utf-8'); h=hp.read_text(encoding='utf-8')
-
-          # index.html: remove CSS duplicado e estilos inline.
-          i=re.sub(r'\s*<style>.*?</style>\s*','\n',i,count=1,flags=re.S|re.I)
-          i=i.replace(' style="margin:0"','').replace(' style="margin:0 0 12px"','')
-          i=i.replace(' style="min-height:46px;padding:10px 14px"','').replace(' style="font-size:14px"','')
-          i=i.replace('acompanhe aprovaçã.','acompanhe aprovações.')
-          i=i.replace('<script src="config.js"></script><script src="auth.js"></script><script src="ui.js"></script><script src="planos.js"></script>','<script src="config.js"></script><script src="auth.js"></script><script src="planos.js"></script>')
-
-          # Efex na home pública.
-          target='<section class="section-card fluxo"><span class="home-tag">Para quem é</span>'
-          efex='''<section class="home-efex section-card"><div><span class="premium-selo">Exclusivo Premium</span><h2>Efex, o copiloto inteligente da oficina</h2><p>Diagnóstico, análise de imagens, orientação de testes e rascunho de orçamento em um fluxo profissional.</p><a href="/efex.html" class="home-btn premium"><div><strong>Conhecer o Efex</strong><span>Abrir especialistas automotivos</span></div></a></div><img src="/assets/efex-home.svg?v=b74d5cc" alt="Efex, copiloto inteligente da oficina" class="home-efex-image"></section>'''
-          if target in i and 'class="home-efex section-card"' not in i:i=i.replace(target,efex+target)
-
-          old='<section class="premium-hero"><div class="premium-hello"><span class="premium-selo">✦ Premium ativo</span><h1 id="premium-saudacao">Olá!</h1><p>Seu painel inicial rápido para criar, acompanhar e transformar orçamentos aprovados em caixa.</p></div><div class="premium-hero-acao"><a href="/gerador.html" class="home-btn primary"><div><strong>Gerar orçamento</strong><span>Começar agora</span></div></a></div></section>'
-          new='<section class="premium-hero"><div class="premium-hello"><span class="premium-selo">Premium ativo</span><h1 id="premium-saudacao">Olá!</h1><p>Centralize orçamento, diagnóstico, aprovação e caixa em um único fluxo.</p></div><div class="premium-hero-acao"><a href="/gerador.html" class="home-btn primary"><div><strong>Novo orçamento</strong><span>Começar agora</span></div></a><a href="/efex.html" class="home-btn premium"><div><strong>Abrir Efex</strong><span>Diagnóstico com IA</span></div></a></div></section>'
-          i=i.replace(old,new)
-
-          grid=re.compile(r'<div class="premium-grid"><a class="shortcut-card destaque".*?</div></section>',re.S)
-          repl='''<div class="premium-grid premium-actions-grid"><a class="shortcut-card destaque" href="/gerador.html"><span class="shortcut-icon">＋</span><strong>Novo orçamento</strong><span>Criar PDF ou link</span></a><a class="shortcut-card premium-card" href="/efex.html"><span class="shortcut-icon">AI</span><strong>Abrir Efex</strong><span>Diagnóstico e rascunho</span></a><a class="shortcut-card" href="/orcamentos.html"><span class="shortcut-icon">OS</span><strong>Orçamentos</strong><span>Status e pagamentos</span></a><a class="shortcut-card" href="/fluxo-caixa.html"><span class="shortcut-icon">R$</span><strong>Caixa</strong><span>Entradas e saídas</span></a><a class="shortcut-card" href="/dashboard.html"><span class="shortcut-icon">↗</span><strong>Relatórios</strong><span>Indicadores</span></a><a class="shortcut-card" href="/painel.html"><span class="shortcut-icon">⚙</span><strong>Configurações</strong><span>Perfil e empresa</span></a></div></section>'''
-          i=grid.sub(repl,i,count=1)
-
-          # Validação real da assinatura e remoção do flash da home pública.
-          i=i.replace('<main id="home-publica" class="home home-publica">','<main id="home-publica" class="home home-publica home-pendente">')
-          i=i.replace('<main id="home-premium" class="home home-premium">','<main id="home-premium" class="home home-premium home-pendente">')
-          i=i.replace("if(!session?.user){return}","if(!session?.user){$('home-publica')?.classList.remove('home-pendente');return}")
-          i=i.replace("const plano=norm(perfil.plano||localStorage.getItem('usuario_plano')||session.user.user_metadata?.plano);\n        if(plano!=='premium')return;","let assinatura=null;try{const r=await _supabase.from('assinaturas').select('plano,status,expira_em').eq('usuario_id',session.user.id).maybeSingle();if(!r.error)assinatura=r.data}catch(e){}const status=norm(assinatura?.status);const expira=assinatura?.expira_em?new Date(assinatura.expira_em).getTime():Infinity;const premium=norm(assinatura?.plano)==='premium'&&['ativo','pago','teste_gratis'].includes(status)&&expira>=Date.now();if(!premium){$('home-publica')?.classList.remove('home-pendente');return}")
-          i=i.replace("$('home-publica')?.classList.add('oculta');\n        $('home-premium')?.classList.add('ativo');","$('home-publica')?.classList.add('oculta');$('home-publica')?.classList.remove('home-pendente');\n        $('home-premium')?.classList.add('ativo');$('home-premium')?.classList.remove('home-pendente');")
-
-          # header.html deve conter apenas o header, não estilos de páginas inteiras.
-          h=re.sub(r'<style id="fs-tema-compacto-ajustes-finais">.*?</style>\s*','',h,count=1,flags=re.S|re.I)
-
-          # Corrige regras globais na origem.
-          s=s.replace('--body-brown: #ffffff;','--body-brown: var(--fs-bg);').replace('--body-gray: #ffffff;','--body-gray: var(--fs-bg);')
-          s=s.replace('background:rgba(255,255,255,.97) !important','background:rgba(4,14,34,.97) !important')
-          s=s.replace('background:rgba(255,255,255,.98); color:var(--fs-text)','background:#081a3a; color:var(--fs-text)')
-          s=s.replace('background:#081a3a !important; }\n.contador-notificacoes','background:#ffffff !important; }\n.contador-notificacoes')
-          s=s.replace('{ background:#123d2b; color:var(--fs-text) !important;','{ background:var(--fs-card); color:var(--fs-text) !important;')
-
-          ini='/* === HOME CONSOLIDADA === */'; fim='/* === FIM HOME CONSOLIDADA === */'
-          s=re.sub(re.escape(ini)+r'.*?'+re.escape(fim),'',s,flags=re.S)
-          css=r'''
-/* === HOME CONSOLIDADA === */
-.home-pendente{visibility:hidden;min-height:60vh}.home{width:min(1160px,calc(100% - 24px));margin:auto;padding:22px 0 52px;display:grid;gap:20px;color:#fff}.home-premium{display:none}.home-premium.ativo{display:grid}.home-publica.oculta{display:none!important}
-.home-hero,.premium-hero,.section-card,.preview-card,.benefits,.plano,.shortcut-card,.dash-card,.caixa-item,.orcamento-mini{background:linear-gradient(145deg,#0b2148,#071934);border:1px solid var(--fs-border);border-radius:6px;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.18)}
-.home-hero{position:relative;overflow:hidden;padding:46px 52px 32px;border-top:3px solid var(--fs-gold);background:radial-gradient(circle at 88% 8%,rgba(246,196,67,.12),transparent 32%),linear-gradient(145deg,#0b2148,#06142f)}.home-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,20,47,.98),rgba(6,20,47,.74));pointer-events:none}.home-hero>*{position:relative;z-index:1}
-.home-tag,.premium-selo{display:inline-flex;width:max-content;padding:7px 10px;border:1px solid rgba(246,196,67,.55);border-radius:4px;background:rgba(246,196,67,.12);color:var(--fs-gold);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.premium-selo{background:#123d2b;border-color:#278b53;color:#8ff0b0}
-.hero-title{max-width:820px;margin:18px 0 0;color:#fff;font-size:clamp(36px,5.4vw,64px);line-height:1.02}.hero-title .blue,.hero-title .dot{color:var(--fs-gold)}.hero-sub{max-width:760px;margin:18px 0 0;color:var(--fs-muted);font-size:clamp(17px,2.2vw,24px);line-height:1.45}.hero-sub strong{color:#fff}
-.hero-actions,.premium-hero-acao{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.home-btn{display:inline-flex;align-items:center;gap:11px;min-height:50px;padding:11px 15px;border:1px solid var(--fs-border);border-radius:5px;background:#0b2148;color:#fff;text-decoration:none;font-weight:700;box-shadow:none}.home-btn strong{display:block;font-size:16px}.home-btn span{display:block;margin-top:2px;color:var(--fs-muted);font-size:12px}.home-btn.primary{background:var(--fs-gold);border-color:var(--fs-gold);color:#14243a}.home-btn.primary span{color:#4b3a08}.home-btn.premium{background:#166534;border-color:#22c55e}.home-btn.premium span{color:#bbf7d0}.home-btn.secondary{background:#0b2148;color:#fff}.home-btn svg{width:25px;height:25px}
-.preview-card{margin-top:30px;overflow:hidden}.preview-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#06142f;border-bottom:1px solid var(--fs-border)}.preview-title{display:flex;align-items:center;gap:9px;color:#fff;font-size:19px;font-weight:700}.preview-title .mini-icon{display:grid;place-items:center;width:32px;height:32px;background:rgba(246,196,67,.12);color:var(--fs-gold);border-radius:4px}.organized{padding:5px 8px;background:#123d2b;color:#8ff0b0;border-radius:4px}.preview-body{padding:19px}.item-row{display:grid;grid-template-columns:auto auto 1fr auto;gap:11px;align-items:center;padding:10px 0}.round-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:5px;background:#102d61;color:var(--fs-gold)}.round-icon.green{background:#123d2b;color:#8ff0b0}.dashes{border-bottom:1px dashed #355783}.item-name,.price,.total-label,.total-value{color:#fff}.total-box{display:grid;grid-template-columns:1fr auto;align-items:center;padding:15px;margin-top:11px;border:1px solid rgba(246,196,67,.4);border-radius:5px;background:#0c234b}.generate-btn{display:flex;justify-content:center;align-items:center;gap:9px;width:100%;min-height:54px;margin-top:12px;border-radius:5px;background:var(--fs-gold);color:#14243a;text-decoration:none;font-weight:800}.generate-btn span{display:block;color:#4b3a08;font-size:12px}
-.benefits{display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden}.benefit{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:center;padding:17px;border-right:1px solid var(--fs-border)}.benefit:last-child{border-right:0}.benefit-icon{width:41px;height:41px;display:grid;place-items:center;border-radius:5px;background:#102d61;color:var(--fs-gold)}.benefit-icon.green{background:#123d2b;color:#8ff0b0}.benefit strong{color:#fff}.benefit p,.section-card p,.premium-section-head p{margin:3px 0 0;color:var(--fs-muted)}
-.resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.section-card,.plano{padding:21px}.section-card h2,.section-card h3,.plano h2{margin:0 0 8px;color:#fff}.fluxo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:13px}.passo{padding:12px;border:1px solid var(--fs-border);border-radius:5px;background:#0c234b;color:#fff}
-.home-efex{display:grid;grid-template-columns:1fr 210px;gap:22px;align-items:center;border-color:#278b53;background:radial-gradient(circle at 88% 12%,rgba(34,197,94,.12),transparent 34%),linear-gradient(145deg,#0b2148,#071934)}.home-efex .home-btn{margin-top:17px}.home-efex-image{max-height:210px;object-fit:contain;filter:drop-shadow(0 14px 20px rgba(0,0,0,.28))}
-.planos{display:grid;grid-template-columns:1fr 1fr;gap:13px}.plano .preco{color:var(--fs-gold)}.plano ul{color:var(--fs-muted)}.plano.premium{border-color:#278b53;border-top:3px solid #22c55e}.plano.premium .preco{color:#8ff0b0}
-.premium-hero{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;padding:23px;border-top:3px solid #22c55e;background:radial-gradient(circle at 88% 10%,rgba(34,197,94,.10),transparent 28%),linear-gradient(145deg,#0b2148,#06142f)}.premium-hello h1{margin:9px 0 5px;color:#fff}.premium-hello p{margin:0;color:var(--fs-muted)}.premium-hero-acao{margin-top:0;justify-content:flex-end}.premium-section{display:grid;gap:11px}.premium-section-head{display:flex;justify-content:space-between;align-items:end}.premium-section-head h2{margin:0;color:#fff}
-.premium-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.shortcut-card,.dash-card{min-height:108px;padding:15px;text-decoration:none}.shortcut-card.destaque{background:#102d61;border-color:var(--fs-gold)}.shortcut-card.premium-card{background:#123d2b;border-color:#278b53}.shortcut-icon{display:grid;place-items:center;width:34px;height:34px;margin-bottom:11px;border-radius:4px;background:#102d61;color:var(--fs-gold);font-size:13px;font-weight:800}.premium-card .shortcut-icon{background:#166534;color:#dcfce7}.shortcut-card strong{display:block;color:#fff}.shortcut-card span:not(.shortcut-icon),.dash-card span,.dash-card small{display:block;margin-top:3px;color:var(--fs-muted);font-size:12px}.dash-card{display:grid;align-content:center;border-left:3px solid var(--fs-gold)}.dash-card.ok{border-left-color:#22c55e}.dash-card strong{color:#fff;font-size:24px}
-.premium-lista{display:grid;gap:8px}.orcamento-mini{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px;text-decoration:none}.orcamento-mini strong{display:block;color:#fff}.orcamento-mini span span{display:block;color:var(--fs-muted);font-size:12px}.mini-status{padding:4px 7px;border-radius:4px;background:#102d61;color:#fff}.mini-status.aprovado{background:#123d2b;color:#8ff0b0}.caixa-resumo{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.caixa-item{padding:13px}.caixa-item span{display:block;color:var(--fs-muted);font-size:12px}.caixa-item strong{display:block;color:#fff;font-size:20px}.premium-loading{padding:17px;border:1px dashed var(--fs-border);border-radius:5px;background:#071934;color:var(--fs-muted);text-align:center}.home-footer{text-align:center;padding:21px;color:var(--fs-muted)}.home-footer a{color:var(--fs-gold)}
-@media(max-width:850px){.benefits,.resumo,.planos,.premium-grid{grid-template-columns:1fr 1fr}.premium-hero{grid-template-columns:1fr}.premium-hero-acao{justify-content:flex-start}.home-efex{grid-template-columns:1fr 170px}}
-@media(max-width:560px){.home{width:min(100% - 14px,1160px);padding-top:10px;gap:13px}.home-hero{padding:25px 16px 18px}.hero-title{font-size:34px}.hero-sub{font-size:15px}.hero-actions,.premium-hero-acao{display:grid}.home-btn{width:100%}.preview-card{margin-top:20px}.item-row{grid-template-columns:auto 1fr auto}.dashes,.organized{display:none}.benefits,.resumo,.planos,.premium-grid,.caixa-resumo{grid-template-columns:1fr}.benefit{border-right:0;border-bottom:1px solid var(--fs-border)}.fluxo-grid{grid-template-columns:1fr 1fr}.home-efex{grid-template-columns:1fr}.home-efex-image{max-height:150px}.premium-actions-grid{grid-template-columns:1fr 1fr}.premium-section-head{align-items:start;flex-direction:column}.orcamento-mini{grid-template-columns:1fr}}
-/* === FIM HOME CONSOLIDADA === */
-'''
-          s=s.rstrip()+'\n\n'+css.strip()+'\n'
-          ip.write_text(i,encoding='utf-8');sp.write_text(s,encoding='utf-8');hp.write_text(h,encoding='utf-8')
-          Path('.github/workflows/consolidar-home.yml').unlink(missing_ok=True)
-          PY
+          import subprocess, textwrap
+          previous = subprocess.check_output(['git','show','HEAD^:.github/workflows/consolidar-home.yml'], text=True)
+          block = previous.split("python3 <<'PY'",1)[1].split("\n          PY",1)[0]
+          exec(compile(textwrap.dedent(block), 'consolidar-home.py', 'exec'))
+          RUNNER
       - name: Commitar
         run: |
           git config user.name "github-actions[bot]"
