@@ -4,9 +4,10 @@ const PRODUTOS={
  assinatura_essencial:{codigo:'assinatura_essencial',tipo:'assinatura',label:'Premium Essencial - 1 mês',valor:14.90,plano:'premium',nivel:'essencial',dias:30,creditos:15},
  assinatura_pro:{codigo:'assinatura_pro',tipo:'assinatura',label:'Premium Pro - 1 mês',valor:29.90,plano:'premium',nivel:'pro',dias:30,creditos:30},
  creditos_20:{codigo:'creditos_20',tipo:'creditos',label:'20 créditos Efex',valor:9.90,creditos:20,dias:0,plano:'gratis'},
- creditos_60:{codigo:'creditos_60',tipo:'creditos',label:'60 créditos Efex',valor:24.90,creditos:60,dias:0,plano:'gratis'},
- creditos_150:{codigo:'creditos_150',tipo:'creditos',label:'150 créditos Efex',valor:49.90,creditos:150,dias:0,plano:'gratis'},
- creditos_400:{codigo:'creditos_400',tipo:'creditos',label:'400 créditos Efex',valor:99.90,creditos:400,dias:0,plano:'gratis'}
+ creditos_50:{codigo:'creditos_50',tipo:'creditos',label:'50 créditos Efex',valor:24.90,creditos:50,dias:0,plano:'gratis'},
+ creditos_100:{codigo:'creditos_100',tipo:'creditos',label:'100 créditos Efex',valor:49.90,creditos:100,dias:0,plano:'gratis'},
+ creditos_200:{codigo:'creditos_200',tipo:'creditos',label:'200 créditos Efex',valor:99.90,creditos:200,dias:0,plano:'gratis'},
+ creditos_400:{codigo:'creditos_400',tipo:'creditos',label:'400 créditos Efex',valor:189.90,creditos:400,dias:0,plano:'gratis'}
 };
 let pagamentoId=null,produtoAtual=null;const $=id=>document.getElementById(id),moeda=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 async function sessao(){try{const{data}=await _supabase.auth.getSession();return data?.session||null}catch{return null}}
@@ -19,8 +20,8 @@ function mostrar(d){pagamentoId=d.pagamento_id||d.id;$('pix-loading').classList.
 async function gerar(codigo){const p=PRODUTOS[codigo];if(!p)return alert('Produto inválido.');const s=await sessao();if(!s)return login();loading(p);try{const r=await fetch(BASE+'/criar-pix-basico',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+s.access_token},body:JSON.stringify({produto_codigo:p.codigo})});const d=await r.json().catch(()=>({}));if(!r.ok)return erro(d.erro||d.error||'Falha ao gerar Pix.');mostrar(d)}catch(e){console.error(e);erro('Erro inesperado ao gerar Pix.')}}
 async function verificar(){if(!pagamentoId)return alert('Gere um Pix primeiro.');const s=await sessao();if(!s)return login();try{const r=await fetch(BASE+'/verificar-pix-basico',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+s.access_token},body:JSON.stringify({pagamento_id:pagamentoId})});const d=await r.json().catch(()=>({}));if(!r.ok)return alert(d.erro||'Pagamento ainda não confirmado.');if(d.status==='pago'||d.aplicado){alert(d.mensagem||'Pagamento confirmado.');location.reload();return}alert(d.mensagem||'Pagamento ainda não confirmado.')}catch(e){console.error(e);alert('Não foi possível verificar agora.')}}
 async function copiar(){const t=$('pix-copia-cola');if(!t?.value)return;await navigator.clipboard.writeText(t.value);alert('Pix copiado.')}
-function atualizarPacote(){const c=$('pacote-creditos')?.value||'creditos_60',p=PRODUTOS[c];if($('valor-pacote-creditos'))$('valor-pacote-creditos').textContent=moeda(p.valor)}
-function comprar(){gerar($('pacote-creditos')?.value||'creditos_60')}
+function atualizarPacote(){const c=$('pacote-creditos')?.value||'creditos_50',p=PRODUTOS[c];if($('valor-pacote-creditos'))$('valor-pacote-creditos').textContent=moeda(p.valor)}
+function comprar(){gerar($('pacote-creditos')?.value||'creditos_50')}
 window.gerarPixProduto=gerar;window.comprarPacoteSelecionado=comprar;window.atualizarPacoteCreditos=atualizarPacote;window.fecharModalPixBasico=fechar;window.verificarPagamentoPixAtual=verificar;window.copiarPixCopiaCola=copiar;window.FS_PRODUTOS_COMERCIAIS=PRODUTOS;
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',atualizarPacote);else atualizarPacote();
 })();
