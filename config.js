@@ -158,6 +158,215 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
     window.setTimeout(() => observer.disconnect(), 15000);
   }
 
+  function configurarPaginaEfex() {
+    const path = caminhoAtualLimpo();
+    const ehEfex = path === '/efex' || path === '/efex.html' || path.endsWith('/efex') || path.endsWith('/efex.html');
+    if (!ehEfex) return;
+
+    if (!document.getElementById('fs-efex-mobile-fix')) {
+      const style = document.createElement('style');
+      style.id = 'fs-efex-mobile-fix';
+      style.textContent = `
+        html, body {
+          max-width: 100%;
+          overflow-x: hidden !important;
+        }
+
+        body .efex-page,
+        body .efex-layout,
+        body .efex-column,
+        body .efex-card,
+        body .efex-result,
+        body .efex-result-block,
+        body .efex-hypothesis,
+        body .efex-chat-log,
+        body .efex-message {
+          min-width: 0 !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        body .efex-result-block,
+        body .efex-result-block p,
+        body .efex-result-block li,
+        body .efex-hypothesis,
+        body .efex-hypothesis p,
+        body .efex-message {
+          overflow-wrap: anywhere !important;
+          word-break: normal !important;
+          white-space: normal !important;
+        }
+
+        body .efex-table-wrap {
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+          overflow-x: auto !important;
+          overflow-y: hidden !important;
+          -webkit-overflow-scrolling: touch;
+          overscroll-behavior-x: contain;
+        }
+
+        body .efex-analisar-area {
+          display: grid !important;
+          grid-template-columns: 1fr !important;
+          gap: 10px !important;
+        }
+
+        body #efex-analisar {
+          width: 100% !important;
+          min-height: 58px !important;
+          padding: 14px 18px !important;
+          background: #1f2937 !important;
+          border: 2px solid #111827 !important;
+          color: #ffffff !important;
+          font-size: 18px !important;
+          font-weight: 800 !important;
+          letter-spacing: .01em;
+          box-shadow: 0 8px 18px rgba(15, 23, 42, .18) !important;
+        }
+
+        body #efex-analisar:not(:disabled):hover,
+        body #efex-analisar:not(:disabled):focus-visible {
+          background: #111827 !important;
+          transform: translateY(-1px);
+        }
+
+        body #efex-limpar {
+          justify-self: center;
+          min-height: 34px !important;
+          padding: 6px 10px !important;
+          border: 0 !important;
+          background: transparent !important;
+          color: #64748b !important;
+          font-size: 13px !important;
+          font-weight: 600 !important;
+          box-shadow: none !important;
+        }
+
+        body .efex-conclusao {
+          border-left: 4px solid #334155 !important;
+          background: #f8fafc !important;
+        }
+
+        body .efex-conclusao h3 {
+          font-size: 18px !important;
+          color: #1f2937 !important;
+        }
+
+        @media (max-width: 980px) {
+          body .efex-layout,
+          body #efex-app {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            width: 100% !important;
+          }
+
+          body .efex-layout > *,
+          body .efex-column > *,
+          body .efex-card > * {
+            min-width: 0 !important;
+            max-width: 100% !important;
+          }
+        }
+
+        @media (max-width: 620px) {
+          body .efex-page {
+            width: calc(100% - 12px) !important;
+            margin-inline: auto !important;
+          }
+
+          body .efex-grid,
+          body .efex-grid.three {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+
+          body .efex-table {
+            min-width: 620px !important;
+          }
+
+          body .efex-result-block {
+            padding: 10px !important;
+          }
+
+          body .efex-result-block h3 {
+            font-size: 16px !important;
+            line-height: 1.25 !important;
+          }
+
+          body .efex-result-block p,
+          body .efex-result-block li,
+          body .efex-hypothesis p {
+            font-size: 15px !important;
+            line-height: 1.5 !important;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    let tentativas = 0;
+    function aplicarEstrutura() {
+      const resultado = document.getElementById('efex-result');
+      const resumo = document.getElementById('efex-resumo');
+      const alertas = document.getElementById('efex-alertas-wrap');
+      const testes = document.getElementById('efex-testes-recomendados');
+      const hipoteses = document.getElementById('efex-hipoteses');
+      const analisar = document.getElementById('efex-analisar');
+      const limpar = document.getElementById('efex-limpar');
+
+      if (!resultado || !resumo || !alertas || !testes || !hipoteses || !analisar || !limpar) {
+        tentativas += 1;
+        if (tentativas < 80) window.setTimeout(aplicarEstrutura, 100);
+        return;
+      }
+
+      const blocoResumo = resumo.closest('.efex-result-block');
+      const blocoTestes = testes.closest('.efex-result-block');
+      const blocoHipoteses = hipoteses.closest('.efex-result-block');
+
+      if (blocoResumo) {
+        blocoResumo.classList.add('efex-conclusao');
+        const titulo = blocoResumo.querySelector('h3');
+        if (titulo) titulo.textContent = 'Conclusão técnica';
+      }
+
+      if (blocoTestes) {
+        const titulo = blocoTestes.querySelector('h3');
+        if (titulo) titulo.textContent = 'Recomendações de diagnóstico';
+      }
+
+      if (blocoHipoteses) {
+        const titulo = blocoHipoteses.querySelector('h3');
+        if (titulo) titulo.textContent = 'Hipóteses e causas prováveis';
+      }
+
+      const primeiroBloco = resultado.firstElementChild;
+      if (blocoResumo && primeiroBloco !== blocoResumo) resultado.insertBefore(blocoResumo, primeiroBloco);
+      if (alertas) resultado.insertBefore(alertas, blocoResumo?.nextSibling || resultado.firstChild);
+      if (blocoTestes) resultado.insertBefore(blocoTestes, alertas?.nextSibling || blocoResumo?.nextSibling || resultado.firstChild);
+      if (blocoHipoteses) resultado.insertBefore(blocoHipoteses, blocoTestes?.nextSibling || alertas?.nextSibling || blocoResumo?.nextSibling || resultado.firstChild);
+
+      const areaAcoes = analisar.closest('.efex-actions');
+      if (areaAcoes) areaAcoes.classList.add('efex-analisar-area');
+
+      let resultadoJaVisivel = resultado.classList.contains('ativo');
+      const observer = new MutationObserver(() => {
+        const visivel = resultado.classList.contains('ativo');
+        if (visivel && !resultadoJaVisivel) {
+          window.setTimeout(() => {
+            window.scrollTo({ left: 0, top: window.scrollY, behavior: 'instant' });
+            blocoResumo?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 120);
+        }
+        resultadoJaVisivel = visivel;
+      });
+      observer.observe(resultado, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    aplicarEstrutura();
+  }
+
   function limparDestinoAntigoNoIndex() {
     try {
       const path = caminhoAtualLimpo();
@@ -255,6 +464,7 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
     carregarCorrecaoLoginGoogle();
     carregarRascunhosGeradorSupabase();
     configurarMenuEfex();
+    configurarPaginaEfex();
     limparDestinoAntigoNoIndex();
     bloquearZoomMobile();
   }
