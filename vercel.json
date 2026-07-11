@@ -1,9 +1,0 @@
-{
-  "redirects": [
-    {
-      "source": "/pet-efex.PNG",
-      "destination": "/assets/efex-home.svg?v=b74d5cc",
-      "permanent": false
-    }
-  ]
-}
