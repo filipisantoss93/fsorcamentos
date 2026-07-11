@@ -4,9 +4,9 @@ const PRODUTOS={
  assinatura_essencial:{codigo:'assinatura_essencial',tipo:'assinatura',label:'Premium Essencial - 1 mês',valor:14.90,plano:'premium',nivel:'essencial',dias:30,creditos:15},
  assinatura_pro:{codigo:'assinatura_pro',tipo:'assinatura',label:'Premium Pro - 1 mês',valor:29.90,plano:'premium',nivel:'pro',dias:30,creditos:30},
  creditos_20:{codigo:'creditos_20',tipo:'creditos',label:'20 créditos Efex',valor:9.90,creditos:20,dias:0,plano:'gratis'},
- creditos_60:{codigo:'creditos_60',tipo:'creditos',label:'60 créditos Efex',valor:24.90,creditos:60,dias:0,plano:'gratis'},
- creditos_150:{codigo:'creditos_150',tipo:'creditos',label:'150 créditos Efex',valor:49.90,creditos:150,dias:0,plano:'gratis'},
- creditos_400:{codigo:'creditos_400',tipo:'creditos',label:'400 créditos Efex',valor:99.90,creditos:400,dias:0,plano:'gratis'}
+ creditos_60:{codigo:'creditos_60',tipo:'creditos',label:'60 créditos Efex',valor:29.70,creditos:60,dias:0,plano:'gratis'},
+ creditos_150:{codigo:'creditos_150',tipo:'creditos',label:'150 créditos Efex',valor:74.25,creditos:150,dias:0,plano:'gratis'},
+ creditos_400:{codigo:'creditos_400',tipo:'creditos',label:'400 créditos Efex',valor:189.90,creditos:400,dias:0,plano:'gratis'}
 };
 let pagamentoId=null,produtoAtual=null;const $=id=>document.getElementById(id),moeda=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 async function sessao(){try{const{data}=await _supabase.auth.getSession();return data?.session||null}catch{return null}}
