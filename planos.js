@@ -2,7 +2,7 @@
    Grátis: gera PDF.
    Premium lançamento: salva orçamentos, envia WhatsApp com aprovação/recusa, recorrentes, caixa e relatórios.
    Compatibilidade: plano antigo "basico" passa a ser tratado como Premium.
-*/
+ */
 
 const FS_PLANOS = {
   gratis: { label: 'Plano Grátis', ordem: 0 },
@@ -170,8 +170,69 @@ async function ativarTesteGratisPremium() {
   }
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', carregarStatusPlanoPagina);
-else carregarStatusPlanoPagina();
+function adicionarEfexNaHomePublica() {
+  const home = document.getElementById('home-publica');
+  const hero = home?.querySelector('.home-hero');
+  if (!home || !hero || document.getElementById('home-efex-destaque')) return;
+
+  const estilo = document.createElement('style');
+  estilo.id = 'home-efex-estilo';
+  estilo.textContent = `
+    #home-efex-destaque{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:center;margin:0 0 28px;padding:28px;border-radius:26px;background:linear-gradient(135deg,#07142f,#0b1f46);border:1px solid rgba(245,182,37,.55);box-shadow:0 22px 48px rgba(7,20,47,.24);overflow:hidden;color:#fff}
+    #home-efex-destaque .home-efex-imagem{position:relative;min-width:0}
+    #home-efex-destaque img{display:block;width:100%;max-width:520px;margin:auto;border-radius:22px;box-shadow:0 22px 42px rgba(0,0,0,.28);animation:homeEfexEntrada .65s ease both}
+    #home-efex-destaque .home-efex-conteudo{display:grid;gap:18px;align-content:center}
+    #home-efex-destaque .home-efex-selo{display:inline-flex;width:fit-content;padding:8px 13px;border-radius:999px;background:rgba(245,182,37,.14);border:1px solid rgba(245,182,37,.55);color:#ffd76a;font-size:12px;font-weight:950;letter-spacing:.06em;text-transform:uppercase}
+    #home-efex-destaque h2{margin:0;color:#fff;font-size:clamp(30px,4.7vw,54px);line-height:1.02;letter-spacing:-.045em}
+    #home-efex-destaque h2 span{color:#f5b625}
+    #home-efex-destaque p{margin:0;color:#dbe7ff;font-size:clamp(16px,2vw,21px);line-height:1.5;font-weight:700}
+    #home-efex-destaque .home-efex-lista{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    #home-efex-destaque .home-efex-item{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;font-weight:850}
+    #home-efex-destaque .home-efex-acoes{display:flex;gap:12px;flex-wrap:wrap}
+    #home-efex-destaque .home-efex-btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:13px 18px;border-radius:13px;text-decoration:none;font-weight:950}
+    #home-efex-destaque .home-efex-btn.primary{background:#f5b625;color:#07142f;border:1px solid #ffd76a}
+    #home-efex-destaque .home-efex-btn.secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)}
+    @keyframes homeEfexEntrada{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+    @media(max-width:880px){#home-efex-destaque{grid-template-columns:1fr;padding:18px;gap:20px}#home-efex-destaque .home-efex-imagem{order:-1}#home-efex-destaque img{max-width:620px}#home-efex-destaque .home-efex-conteudo{text-align:center}#home-efex-destaque .home-efex-selo{margin:auto}#home-efex-destaque .home-efex-acoes{justify-content:center}}
+    @media(max-width:520px){#home-efex-destaque{padding:12px;border-radius:20px}#home-efex-destaque img{border-radius:16px}#home-efex-destaque .home-efex-lista{grid-template-columns:1fr}#home-efex-destaque .home-efex-acoes{display:grid}#home-efex-destaque .home-efex-btn{width:100%}}
+  `;
+  document.head.appendChild(estilo);
+
+  const secao = document.createElement('section');
+  secao.id = 'home-efex-destaque';
+  secao.setAttribute('aria-labelledby', 'home-efex-titulo');
+  secao.innerHTML = `
+    <div class="home-efex-imagem">
+      <img src="/assets/efex-home.webp" alt="EfeX, auxiliar de diagnóstico mecânico com inteligência artificial do FS Orçamentos" width="900" height="900" loading="eager" fetchpriority="high">
+    </div>
+    <div class="home-efex-conteudo">
+      <span class="home-efex-selo">Novo no FS Orçamentos</span>
+      <h2 id="home-efex-titulo">Conheça o <span>EfeX</span></h2>
+      <p>Seu auxiliar de diagnóstico mecânico com inteligência artificial. Analisa sintomas, sugere testes, orienta o diagnóstico e ajuda a criar um rascunho de orçamento.</p>
+      <div class="home-efex-lista" aria-label="Recursos do EfeX">
+        <div class="home-efex-item">🔍 Analisa sintomas</div>
+        <div class="home-efex-item">🩺 Sugere testes</div>
+        <div class="home-efex-item">📋 Orienta o diagnóstico</div>
+        <div class="home-efex-item">🧾 Gera rascunho</div>
+      </div>
+      <div class="home-efex-acoes">
+        <a class="home-efex-btn primary" href="/efex.html">Experimentar o EfeX</a>
+        <a class="home-efex-btn secondary" href="/planos.html">Conhecer os planos</a>
+      </div>
+    </div>`;
+
+  home.insertBefore(secao, hero);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    carregarStatusPlanoPagina();
+    adicionarEfexNaHomePublica();
+  });
+} else {
+  carregarStatusPlanoPagina();
+  adicionarEfexNaHomePublica();
+}
 
 window.FS_PLANOS = FS_PLANOS;
 window.normalizarPlanoPlanos = normalizarPlanoPlanos;
