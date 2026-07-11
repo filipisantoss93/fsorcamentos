@@ -62,6 +62,102 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
     );
   }
 
+  function normalizarPlanoEfex(valor) {
+    return String(valor || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+  }
+
+  function assinaturaEfexAtiva(assinatura) {
+    const estadosAtivos = new Set(['ativo', 'pago', 'teste_gratis']);
+    if (!assinatura || normalizarPlanoEfex(assinatura.plano) !== 'premium') return false;
+    if (!estadosAtivos.has(normalizarPlanoEfex(assinatura.status))) return false;
+    if (!assinatura.expira_em) return true;
+    const expira = new Date(assinatura.expira_em).getTime();
+    return Number.isFinite(expira) && expira >= Date.now();
+  }
+
+  function garantirItemMenuEfex() {
+    const menu = document.querySelector('.nav-menu');
+    if (!menu) return null;
+
+    let item = document.getElementById('fs-menu-efex');
+    if (!item) {
+      item = document.createElement('li');
+      item.id = 'fs-menu-efex';
+      item.style.display = 'none';
+
+      const link = document.createElement('a');
+      link.href = '/efex.html';
+      link.setAttribute('data-plano-min', 'premium');
+      link.setAttribute('aria-label', 'Abrir Efex');
+
+      const icone = document.createElement('span');
+      icone.className = 'fs-menu-ico';
+      icone.textContent = '✦';
+
+      const texto = document.createElement('span');
+      texto.textContent = 'Efex';
+
+      link.append(icone, texto);
+      item.appendChild(link);
+
+      const itemGerador = menu.querySelector('a[href="/gerador.html"]')?.closest('li');
+      if (itemGerador?.nextSibling) menu.insertBefore(item, itemGerador.nextSibling);
+      else menu.appendChild(item);
+    }
+
+    return item;
+  }
+
+  function configurarMenuEfex() {
+    let tentativas = 0;
+    let finalizado = false;
+
+    async function atualizar() {
+      if (finalizado) return;
+      const item = garantirItemMenuEfex();
+      if (!item || !window._supabase) {
+        tentativas += 1;
+        if (tentativas < 100) window.setTimeout(atualizar, 120);
+        return;
+      }
+
+      item.style.display = 'none';
+
+      try {
+        const { data: { session } } = await window._supabase.auth.getSession();
+        if (!session?.user?.id) {
+          finalizado = true;
+          return;
+        }
+
+        const { data, error } = await window._supabase
+          .from('assinaturas')
+          .select('plano,status,expira_em')
+          .eq('usuario_id', session.user.id)
+          .maybeSingle();
+
+        if (!error && assinaturaEfexAtiva(data)) item.style.display = '';
+      } catch (erro) {
+        console.warn('Não foi possível configurar o acesso ao Efex no menu:', erro);
+      } finally {
+        finalizado = true;
+      }
+    }
+
+    atualizar();
+
+    const observer = new MutationObserver(() => {
+      if (finalizado || !document.querySelector('.nav-menu')) return;
+      atualizar();
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    window.setTimeout(() => observer.disconnect(), 15000);
+  }
+
   function limparDestinoAntigoNoIndex() {
     try {
       const path = caminhoAtualLimpo();
@@ -158,6 +254,7 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
     instalarCssGlobal();
     carregarCorrecaoLoginGoogle();
     carregarRascunhosGeradorSupabase();
+    configurarMenuEfex();
     limparDestinoAntigoNoIndex();
     bloquearZoomMobile();
   }
