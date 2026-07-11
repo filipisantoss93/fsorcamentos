@@ -1,0 +1,281 @@
+/* =========================================================
+   FS ORÇAMENTOS — TEMA AZUL EfeX
+   Azul-marinho predominante, destaques amarelos e verde funcional.
+   ========================================================= */
+
+@media screen {
+  :root {
+    --fs-navy: #06142f !important;
+    --fs-navy-2: #0a1f46 !important;
+    --fs-navy-3: #102d61 !important;
+    --fs-blue: #0a1f46 !important;
+    --fs-blue-2: #06142f !important;
+    --fs-bg: #030d22 !important;
+    --fs-card: #081a3a !important;
+    --fs-card-soft: #0c234b !important;
+    --fs-border: #294875 !important;
+    --fs-text: #ffffff !important;
+    --fs-muted: #bdc9db !important;
+    --fs-gold: #f6c443 !important;
+    --fs-gold-2: #ffb900 !important;
+    --fs-gold-soft: #2b2819 !important;
+    --fs-success: #22c55e !important;
+    --fs-whatsapp: #25d366 !important;
+    --fs-danger-soft: #351725 !important;
+    --fs-shadow: 0 14px 34px rgba(0,0,0,.30) !important;
+    --fs-shadow-soft: 0 9px 24px rgba(0,0,0,.22) !important;
+    --fs-shadow-strong: 0 20px 50px rgba(0,0,0,.42) !important;
+
+    --navy: var(--fs-navy) !important;
+    --navy2: var(--fs-navy-2) !important;
+    --bg: var(--fs-bg) !important;
+    --bg2: #071834 !important;
+    --card: var(--fs-card) !important;
+    --text: var(--fs-text) !important;
+    --muted: var(--fs-muted) !important;
+    --border: var(--fs-border) !important;
+    --line: var(--fs-border) !important;
+    --borda: var(--fs-border) !important;
+    --ink: var(--fs-text) !important;
+    --c: var(--fs-text) !important;
+    --m: var(--fs-muted) !important;
+    --gold: var(--fs-gold) !important;
+    --accent-yellow: var(--fs-gold) !important;
+    --primary: var(--fs-navy-3) !important;
+    --success: var(--fs-success) !important;
+  }
+
+  html,
+  html body {
+    background:
+      radial-gradient(circle at 90% 0%, rgba(246,196,67,.10), transparent 30%),
+      radial-gradient(circle at 10% 20%, rgba(16,45,97,.42), transparent 34%),
+      linear-gradient(180deg, #020918 0%, var(--fs-bg) 48%, #06142f 100%) !important;
+    color: var(--fs-text) !important;
+  }
+
+  html body .main-header {
+    background: rgba(4,14,34,.97) !important;
+    color: #fff !important;
+    border-bottom: 1px solid var(--fs-border) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.26) !important;
+  }
+  html body .logo-nav,
+  html body .logo-nav .logo-orcamentos,
+  html body .logo-orcamentos,
+  html body #usuario-saudacao { color:#fff !important; -webkit-text-fill-color:#fff !important; }
+  html body .logo-nav .logo-fs,
+  html body .logo-fs,
+  html body .menu-mobile-btn,
+  html body .btn-notificacoes-header {
+    background: linear-gradient(145deg,#16345f,#0a1f46) !important;
+    color:#fff !important;
+    border:1px solid rgba(246,196,67,.78) !important;
+  }
+
+  html body .header-menu-linha,
+  html body .header-user-card {
+    background:#081a3a !important;
+    color:#fff !important;
+    border-color:var(--fs-border) !important;
+  }
+  html body .nav-menu li { border-color:rgba(255,255,255,.10) !important; }
+  html body .nav-menu a,
+  html body .nav-menu summary,
+  html body .btn-menu-mobile-entrar,
+  html body .header-user-text strong,
+  html body .header-user-text small {
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+  }
+  html body .nav-menu a:hover,
+  html body .nav-menu a.ativo,
+  html body .nav-menu .link-destaque-gerador {
+    background:#102d61 !important;
+    color:var(--fs-gold) !important;
+    -webkit-text-fill-color:var(--fs-gold) !important;
+  }
+
+  html body :is(
+    .card,.fs-card,.dashboard-card,.resumo-card,.plano-card,.forum-card,.painel-card,
+    .info-card,.cliente-card,.veiculo-card,.ordem-card,.estoque-card,.agenda-card,
+    .relatorio-card,.recorrente-card,.perfil-logo-card,.dashboard-metrica-card,
+    .dashboard-mini-card,.dashboard-lista-item,.forum-topico,.forum-resposta,
+    .forum-mini-item,.painel-premium-atalho,.painel-os-card,.manual-card,.sobre-card,
+    .contato-card,.gerador-card-principal,.sidebar-card,.section-card,.preview-card,
+    .benefits,.plano,.pix-card,.faq-card,.modal-card,.modal-content,.modal-box,
+    .modal-pix-card,.biblioteca-card,.biblioteca-toolbar,.biblioteca-status-card,
+    .biblioteca-conteudo-bloco,.biblioteca-categoria-select-card,.painel-header-simples,
+    .painel-aviso,.painel-pix-plano,.painel-login-card,.rank-item,.resumo-texto,
+    .shortcut-card,.dash-card,.metric,.met,.emissor-readonly-card,.teste-premium-inline-card,
+    .calc-expansivel,.color-selector,.fs-adsense-zone,.status-sessao-card,
+    .aviso-perfil-incompleto,.extra-field.fs-extra-cliente-row
+  ) {
+    background: linear-gradient(145deg,#0b2148 0%,#071934 100%) !important;
+    color:#fff !important;
+    border-color:var(--fs-border) !important;
+    box-shadow:var(--fs-shadow-soft) !important;
+  }
+
+  html body :is(
+    .fs-page-header,.page-header,.dashboard-hero,.forum-hero,.painel-header,.painel-hero,
+    .painel-header-simples,.gerador-hero,.clientes-hero,.veiculos-hero,.ordens-hero,
+    .estoque-hero,.agenda-hero,.relatorios-hero,.recorrentes-hero,.hero,.home-hero,
+    .home-hero-venda,.premium-hero,.biblioteca-hero
+  ) {
+    background:
+      radial-gradient(circle at 88% 12%,rgba(246,196,67,.14),transparent 28%),
+      linear-gradient(145deg,#0b2148 0%,#06142f 100%) !important;
+    color:#fff !important;
+    border:1px solid var(--fs-border) !important;
+    border-top:3px solid var(--fs-gold) !important;
+    box-shadow:var(--fs-shadow) !important;
+  }
+
+  html body :is(h1,h2,h3,h4,strong,b,.hero-title,.page-title,.section-title,.card-title,
+    .modal-title,.item-name,.price,.total-label,.total-value,.preco,.benefit strong,
+    .painel-card h2,.shortcut-card strong,.dash-card strong) {
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+  }
+  html body :is(p,li,td,small,.muted,.text-muted,.hero-sub,.benefit p,.plano ul,
+    footer,.shortcut-card span,.dash-card span,.painel-subtitulo,.painel-pix-intro,
+    .painel-pix-regra,.biblioteca-card p,.biblioteca-card-info) {
+    color:var(--fs-muted) !important;
+    -webkit-text-fill-color:var(--fs-muted) !important;
+  }
+
+  html body :is(.hero-title .blue,.hero-title .dot,.home-tag,.premium-selo,
+    .biblioteca-tag,.tag-premium,.badge-premium,.plano-badge.premium,
+    .shortcut-card.destaque .shortcut-icon,.preview-title .mini-icon) {
+    color:var(--fs-gold) !important;
+    -webkit-text-fill-color:var(--fs-gold) !important;
+  }
+
+  html body label { color:#dce6f5 !important; }
+  html body :is(input,select,textarea,.field input,.field select,.field textarea,
+    .campo-painel input,.campo-painel select,.campo-painel textarea,
+    .extra-field.fs-extra-cliente-row input.fs-extra-valor,
+    .extra-field.fs-extra-cliente-row select.fs-extra-tipo) {
+    background:#05142e !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    border-color:#355783 !important;
+  }
+  html body input::placeholder,
+  html body textarea::placeholder { color:#8fa3bf !important; opacity:1 !important; }
+  html body :is(input,select,textarea):focus {
+    border-color:var(--fs-gold) !important;
+    box-shadow:0 0 0 3px rgba(246,196,67,.14) !important;
+  }
+
+  html body :is(.card-header,.preview-head,.head,.section-head,.modal-head,.modal-pix-topo,
+    .agenda-modal-topo,.modal-busca-cliente-header,.modal-busca-produto-header,
+    .auth-logo-box,.total-container,.dadositens,.calc-header,.acoes-profissionais-orcamento) {
+    background:linear-gradient(135deg,#102d61,#06142f) !important;
+    color:#fff !important;
+    border-color:var(--fs-gold) !important;
+  }
+  html body :is(.card-header,.preview-head,.head,.section-head,.modal-head,.modal-pix-topo,
+    .agenda-modal-topo,.auth-logo-box,.total-container,.dadositens,.calc-header) * {
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+  }
+
+  html body :is(.btn-primary,.fs-btn-primary,.btn.primary,.dashboard-btn,.forum-btn,.btn-add,
+    .btn-extra,.btn-gerar-orcamento-painel,.btn-editar-perfil,.btn-plano-painel,
+    .btn-ver-ordens-painel,.btn-generate,.home-btn.primary,.generate-btn,.btn-premium,
+    .btn.gold,.fs-btn-premium,.painel-pix-opcoes button,.pix-card button,.btn-teste-premium,
+    .btn-previa-profissional,.btn-acao-pdf,.btn-editar-dados-empresa,#btn-principal) {
+    background:linear-gradient(135deg,#153966,#0a1f46) !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    border:1px solid rgba(246,196,67,.72) !important;
+    box-shadow:0 10px 22px rgba(0,0,0,.22) !important;
+  }
+  html body :is(.btn-primary,.fs-btn-primary,.btn.primary,.dashboard-btn,.forum-btn,
+    .home-btn.primary,.generate-btn,.btn-premium,.btn.gold):hover {
+    background:linear-gradient(135deg,#1a467c,#0d2858) !important;
+    border-color:var(--fs-gold) !important;
+  }
+
+  html body :is(.btn-secondary,.fs-btn-secondary,.btn.secondary,.dashboard-btn-secundario,
+    .forum-btn-secundario,.btn-limpar,.btn-senha,.home-btn.secondary,.btn-novo-profissional,
+    .btn-float-novo,.btn-frase) {
+    background:#0b2148 !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    border-color:var(--fs-border) !important;
+  }
+
+  html body :is(.btn-success,.fs-btn-success,.btn-aprovar,.btn-whatsapp,
+    .dashboard-btn-whatsapp,.btn-whatsapp-empresa) {
+    background:linear-gradient(135deg,#22c55e,#15803d) !important;
+    color:#fff !important;
+    -webkit-text-fill-color:#fff !important;
+    border-color:#4ade80 !important;
+  }
+
+  html body :is(.status-aprovado,.fs-badge-success,.forum-badge.verde,.plano-premium) {
+    background:#123d2b !important;
+    color:#8ff0b0 !important;
+    -webkit-text-fill-color:#8ff0b0 !important;
+    border-color:#278b53 !important;
+  }
+  html body :is(.status-pendente,.fs-badge-info,.forum-badge.azul,.biblioteca-tag,
+    .home-tag,.premium-selo,.organized) {
+    background:rgba(246,196,67,.13) !important;
+    color:var(--fs-gold) !important;
+    -webkit-text-fill-color:var(--fs-gold) !important;
+    border-color:rgba(246,196,67,.60) !important;
+  }
+
+  html body :is(.fs-table-wrap,.table-wrap,.tabela-wrapper,table,.fs-table) {
+    background:#071934 !important;
+    border-color:var(--fs-border) !important;
+  }
+  html body :is(th,.fs-table th,.tabela th,thead) {
+    background:#102d61 !important;
+    color:#fff !important;
+  }
+  html body td { color:#e7eef8 !important; border-color:rgba(255,255,255,.10) !important; }
+
+  html body .total-box {
+    background:linear-gradient(135deg,#12294f,#182f52) !important;
+    border-color:rgba(246,196,67,.55) !important;
+  }
+  html body .round-icon,
+  html body .benefit-icon.blue,
+  html body .benefit-icon.purple,
+  html body .fs-extra-icone {
+    background:linear-gradient(135deg,#153966,#0a1f46) !important;
+    color:var(--fs-gold) !important;
+  }
+  html body .benefit-icon.green { background:linear-gradient(135deg,#22c55e,#15803d) !important; }
+
+  html body footer,
+  html body .site-footer,
+  html body .footer,
+  html body .forum-footer { color:var(--fs-muted) !important; }
+  html body footer a,
+  html body .site-footer a,
+  html body .footer a,
+  html body .forum-footer a { color:var(--fs-gold) !important; }
+
+  html body .modal-login-overlay,
+  html body .fs-modal,
+  html body .modal,
+  html body .forum-detalhe { background:rgba(0,5,17,.84) !important; }
+  html body .modal-login-box,
+  html body .fs-modal-card,
+  html body .forum-detalhe-card {
+    background:#081a3a !important;
+    color:#fff !important;
+    border-color:var(--fs-border) !important;
+    border-top-color:var(--fs-gold) !important;
+  }
+}
+
+@media print {
+  html body { background:#fff !important; color:#111 !important; }
+}
