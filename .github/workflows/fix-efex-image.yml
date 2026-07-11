@@ -1,0 +1,37 @@
+name: Corrigir imagem EfeX
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-efex-image.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Usar JPG diretamente na home
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('planos.js')
+          s = p.read_text(encoding='utf-8')
+          old = '/assets/efex-home.svg?v=5968b2e'
+          new = '/efex-img.JPG?v=64fa986'
+          if old not in s:
+              print('Referência antiga não encontrada; nenhuma alteração necessária.')
+              raise SystemExit(0)
+          p.write_text(s.replace(old, new), encoding='utf-8')
+          PY
+      - name: Commit da correção
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add planos.js
+          git commit -m "Usar efex-img.JPG diretamente na home"
+          git push
