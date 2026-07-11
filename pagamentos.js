@@ -1,278 +1,50 @@
-// FS Orçamentos — pagamento do Plano Premium via Pix
-(function () {
+// FS Orçamentos — pagamentos Pix de assinaturas e créditos Efex
+(function(){
   'use strict';
-
-  const FS_SUPABASE_FUNCTIONS_URL = window.FS_SUPABASE_FUNCTIONS_URL || 'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
-
-  const FS_PLANOS_PIX = {
-    premium: {
-      mensal: { label: 'Plano Premium - 1 mês', valor: 29.90, dias: 30 },
-      semestral: { label: 'Plano Premium - 6 meses', valor: 149.90, dias: 180 },
-      anual: { label: 'Plano Premium - 12 meses', valor: 299.90, dias: 365 }
-    }
+  const BASE=window.FS_SUPABASE_FUNCTIONS_URL||'https://kvjvhoziqcevkzyszdke.supabase.co/functions/v1';
+  const PRODUTOS={
+    essencial_mensal:{label:'Premium Essencial - 1 mês',valor:14.90,tipo:'assinatura'},
+    pro_mensal:{label:'Premium Pro - 1 mês',valor:29.90,tipo:'assinatura'},
+    creditos_20:{label:'20 créditos Efex',valor:9.90,tipo:'creditos'},
+    creditos_60:{label:'60 créditos Efex',valor:24.90,tipo:'creditos'},
+    creditos_150:{label:'150 créditos Efex',valor:49.90,tipo:'creditos'},
+    creditos_400:{label:'400 créditos Efex',valor:99.90,tipo:'creditos'}
   };
-
-  let pagamentoPixAtualIdInterno = null;
-
-  const el = id => document.getElementById(id);
-  const moeda = valor => Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  const periodoValido = periodo => Object.prototype.hasOwnProperty.call(FS_PLANOS_PIX.premium, periodo);
-  const planoPix = periodo => FS_PLANOS_PIX.premium[periodoValido(periodo) ? periodo : 'mensal'];
-
-  function abrirModalPixBasico() {
-    const modal = el('modal-pix-basico');
-    if (!modal) return false;
-    modal.style.setProperty('display', 'flex', 'important');
-    document.body.style.overflow = 'hidden';
-    return true;
+  let pagamentoAtual=null;
+  const $=id=>document.getElementById(id);
+  const moeda=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+  function abrir(){const m=$('modal-pix-basico');if(!m)return false;m.style.setProperty('display','flex','important');document.body.style.overflow='hidden';return true}
+  function fechar(){const m=$('modal-pix-basico');if(m)m.style.setProperty('display','none','important');document.body.style.overflow=''}
+  async function sessao(){try{const{data,error}=await _supabase.auth.getSession();return error?null:data?.session||null}catch{return null}}
+  function login(){try{localStorage.setItem('fs_destino_apos_login',`${location.pathname}${location.search}${location.hash}`)}catch{}if(typeof window.abrirModalLogin==='function')window.abrirModalLogin();else location.href='/index.html?login=1&dest='+encodeURIComponent('/planos.html')}
+  function qrSrc(v){const s=String(v||'').trim();if(!s)return'';return s.startsWith('data:image')||s.startsWith('http')?s:`data:image/png;base64,${s}`}
+  function carregando(p){if(!abrir())return;pagamentoAtual=null;$('pix-loading').style.display='block';$('pix-loading').textContent='Gerando Pix, aguarde...';$('pix-conteudo').style.display='none';$('pix-erro').style.display='none';$('pix-modal-subtitulo').textContent=`${p.label} - ${moeda(p.valor)}`;$('pix-plano-label').textContent=p.label;$('pix-valor').textContent=moeda(p.valor);$('pix-copia-cola').value='';$('pix-qrcode-img').style.display='none'}
+  function erro(msg){abrir();$('pix-loading').style.display='none';$('pix-conteudo').style.display='none';$('pix-erro').style.display='block';$('pix-erro').textContent=msg||'Não foi possível gerar o Pix.'}
+  function mostrar(d,p){pagamentoAtual=d?.pagamento_id||d?.id||null;$('pix-loading').style.display='none';$('pix-erro').style.display='none';$('pix-conteudo').style.display='block';$('pix-modal-subtitulo').textContent=`${d?.label||p.label} - ${moeda(d?.valor??p.valor)}`;$('pix-plano-label').textContent=d?.label||p.label;$('pix-valor').textContent=moeda(d?.valor??p.valor);const src=qrSrc(d?.qr_code||d?.qrcode||d?.imagem_qrcode);if(src){$('pix-qrcode-img').src=src;$('pix-qrcode-img').style.display='inline-block'}$('pix-copia-cola').value=d?.pix_copia_cola||d?.qrcode||''}
+  async function gerarPixProduto(codigo){
+    const p=PRODUTOS[codigo];if(!p)return alert('Produto inválido.');
+    if(!window._supabase)return alert('Atualize a página e tente novamente.');
+    const s=await sessao();if(!s)return login();
+    carregando(p);
+    try{
+      const r=await fetch(`${BASE}/criar-pix-basico`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${s.access_token}`},body:JSON.stringify({produto_codigo:codigo})});
+      const d=await r.json().catch(()=>({}));if(!r.ok)return erro(d?.erro||d?.message||'Erro ao gerar Pix.');mostrar(d,p)
+    }catch(e){console.error(e);erro('Erro inesperado ao gerar Pix.')}
   }
-
-  function fecharModalPixBasico() {
-    const modal = el('modal-pix-basico');
-    if (!modal) return;
-    modal.style.setProperty('display', 'none', 'important');
-    document.body.style.overflow = '';
+  async function verificar(){
+    if(!pagamentoAtual)return alert('Gere um Pix primeiro.');
+    const s=await sessao();if(!s)return login();
+    try{
+      const r=await fetch(`${BASE}/verificar-pix-basico`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${s.access_token}`},body:JSON.stringify({pagamento_id:pagamentoAtual})});
+      const d=await r.json().catch(()=>({}));if(!r.ok)return alert(d?.erro||'Não foi possível verificar o pagamento.');
+      if(d?.status==='pago'||d?.plano_liberado||d?.creditos_liberados){alert(d?.mensagem||'Pagamento confirmado.');location.reload();return}
+      alert(d?.mensagem||'Pagamento ainda não confirmado.')
+    }catch(e){console.error(e);alert('Não foi possível verificar o pagamento agora.')}
   }
-
-  function salvarDestinoPlanos() {
-    try {
-      localStorage.setItem('fs_destino_apos_login', `${location.pathname || '/planos.html'}${location.search || ''}${location.hash || ''}`);
-    } catch (_) {}
-  }
-
-  async function obterSessaoPix() {
-    try {
-      if (!window._supabase) return null;
-      const { data, error } = await _supabase.auth.getSession();
-      return error ? null : data?.session || null;
-    } catch (_) {
-      return null;
-    }
-  }
-
-  function obrigarLoginPix() {
-    salvarDestinoPlanos();
-    if (typeof window.abrirModalLogin === 'function') window.abrirModalLogin();
-    else location.href = '/index.html?login=1&dest=' + encodeURIComponent('/planos.html#assinar-plano-premium');
-  }
-
-  function definirPagamentoAtual(id) {
-    pagamentoPixAtualIdInterno = id || null;
-    window.pagamentoPixAtualId = pagamentoPixAtualIdInterno;
-  }
-
-  function obterPagamentoAtual() {
-    return pagamentoPixAtualIdInterno || window.pagamentoPixAtualId || null;
-  }
-
-  function qrCodeSrc(valor) {
-    const codigo = String(valor || '').trim();
-    if (!codigo) return '';
-    if (codigo.startsWith('data:image') || codigo.startsWith('http://') || codigo.startsWith('https://')) return codigo;
-    return `data:image/png;base64,${codigo}`;
-  }
-
-  function extrairQrCode(dados) {
-    return dados?.qr_code || dados?.qrcode || dados?.qrCode || dados?.imagem_qrcode || dados?.base64 || dados?.qrcode_base64 || '';
-  }
-
-  function extrairPixCopiaCola(dados) {
-    return dados?.pix_copia_cola || dados?.copia_cola || dados?.pixCopiaCola || dados?.brcode || dados?.copiaECola || dados?.pix || '';
-  }
-
-  function extrairPagamentoId(dados) {
-    return dados?.pagamento_id || dados?.pagamentoId || dados?.id_pagamento || dados?.id || null;
-  }
-
-  function estadoCarregando(periodo) {
-    if (!abrirModalPixBasico()) return;
-
-    const plano = planoPix(periodo);
-    definirPagamentoAtual(null);
-
-    if (el('pix-loading')) {
-      el('pix-loading').style.display = 'block';
-      el('pix-loading').innerText = 'Gerando Pix, aguarde...';
-    }
-    if (el('pix-conteudo')) el('pix-conteudo').style.display = 'none';
-    if (el('pix-erro')) {
-      el('pix-erro').style.display = 'none';
-      el('pix-erro').innerText = '';
-    }
-    if (el('pix-modal-subtitulo')) el('pix-modal-subtitulo').innerText = `${plano.label} - ${moeda(plano.valor)}`;
-    if (el('pix-plano-label')) el('pix-plano-label').innerText = plano.label;
-    if (el('pix-valor')) el('pix-valor').innerText = moeda(plano.valor);
-    if (el('pix-qrcode-img')) {
-      el('pix-qrcode-img').removeAttribute('src');
-      el('pix-qrcode-img').style.display = 'none';
-    }
-    if (el('pix-copia-cola')) el('pix-copia-cola').value = '';
-  }
-
-  function estadoErroPix(mensagem) {
-    if (!abrirModalPixBasico()) {
-      alert(mensagem || 'Não foi possível gerar o Pix.');
-      return;
-    }
-    if (el('pix-loading')) el('pix-loading').style.display = 'none';
-    if (el('pix-conteudo')) el('pix-conteudo').style.display = 'none';
-    if (el('pix-erro')) {
-      el('pix-erro').style.display = 'block';
-      el('pix-erro').innerText = mensagem || 'Não foi possível gerar o Pix.';
-    }
-  }
-
-  function estadoConteudoPix(dados) {
-    const loading = el('pix-loading');
-    const conteudo = el('pix-conteudo');
-    const erro = el('pix-erro');
-    const qr = el('pix-qrcode-img');
-
-    definirPagamentoAtual(extrairPagamentoId(dados));
-
-    if (loading) loading.style.display = 'none';
-    if (conteudo) conteudo.style.display = 'block';
-    if (erro) {
-      erro.style.display = 'none';
-      erro.innerText = '';
-    }
-    if (el('pix-modal-subtitulo')) el('pix-modal-subtitulo').innerText = `${dados?.label || 'Plano Premium'} - ${moeda(dados?.valor)}`;
-    if (el('pix-plano-label')) el('pix-plano-label').innerText = dados?.label || 'Plano Premium';
-    if (el('pix-valor')) el('pix-valor').innerText = moeda(dados?.valor);
-
-    if (qr) {
-      const src = qrCodeSrc(extrairQrCode(dados));
-      if (src) {
-        qr.src = src;
-        qr.style.display = 'inline-block';
-      } else {
-        qr.removeAttribute('src');
-        qr.style.display = 'none';
-      }
-    }
-
-    if (el('pix-copia-cola')) el('pix-copia-cola').value = extrairPixCopiaCola(dados) || '';
-  }
-
-  async function gerarPixPlano(planoSelecionado = 'premium', periodo = 'mensal') {
-    try {
-      const periodoFinal = periodoValido(periodo) ? periodo : 'mensal';
-      const plano = planoPix(periodoFinal);
-
-      if (!window._supabase) {
-        alert('Atualize a página e tente novamente.');
-        return;
-      }
-
-      if (!el('modal-pix-basico')) {
-        location.href = `/planos.html?plano=premium&periodo=${encodeURIComponent(periodoFinal)}#assinar-plano-premium`;
-        return;
-      }
-
-      const sessao = await obterSessaoPix();
-      if (!sessao) {
-        obrigarLoginPix();
-        return;
-      }
-
-      estadoCarregando(periodoFinal);
-
-      const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/criar-pix-basico`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessao.access_token}`
-        },
-        body: JSON.stringify({
-          plano: 'premium',
-          periodo: periodoFinal,
-          valor: plano.valor,
-          dias: plano.dias,
-          label: plano.label
-        })
-      });
-
-      const dados = await resposta.json().catch(() => ({}));
-
-      if (!resposta.ok) {
-        estadoErroPix(dados?.erro || dados?.message || 'Erro ao gerar Pix.');
-        return;
-      }
-
-      estadoConteudoPix({
-        ...dados,
-        plano: 'premium',
-        periodo: periodoFinal,
-        label: dados?.label || plano.label,
-        valor: dados?.valor ?? plano.valor,
-        dias: dados?.dias ?? plano.dias
-      });
-    } catch (error) {
-      console.error(error);
-      estadoErroPix('Erro inesperado ao gerar Pix.');
-    }
-  }
-
-  async function verificarPagamentoPixAtual() {
-    try {
-      const pagamentoId = obterPagamentoAtual();
-      if (!pagamentoId) return alert('Gere um Pix primeiro.');
-
-      const sessao = await obterSessaoPix();
-      if (!sessao) return obrigarLoginPix();
-
-      const resposta = await fetch(`${FS_SUPABASE_FUNCTIONS_URL}/verificar-pix-basico`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${sessao.access_token}`
-        },
-        body: JSON.stringify({ pagamento_id: pagamentoId })
-      });
-
-      const dados = await resposta.json().catch(() => ({}));
-
-      if (!resposta.ok) {
-        alert(dados?.erro || dados?.message || 'Pagamento ainda não confirmado.');
-        return;
-      }
-
-      if (dados?.status === 'approved' || dados?.status === 'pago' || dados?.plano_liberado) {
-        localStorage.setItem('usuario_plano', 'premium');
-        if (dados?.plano_expira_em) localStorage.setItem('usuario_plano_expira_em', dados.plano_expira_em);
-        alert('Premium liberado.');
-        location.reload();
-        return;
-      }
-
-      alert(dados?.mensagem || 'Pagamento ainda não confirmado.');
-    } catch (error) {
-      console.error(error);
-      alert('Não foi possível verificar o pagamento agora.');
-    }
-  }
-
-  async function copiarPixCopiaCola() {
-    const textarea = el('pix-copia-cola');
-    if (!textarea?.value) return;
-    await navigator.clipboard.writeText(textarea.value);
-    alert('Pix copiado.');
-  }
-
-  function iniciarPixPorUrl() {
-    const params = new URLSearchParams(location.search || '');
-    if ((params.get('plano') || '') === 'premium' && params.get('periodo')) {
-      setTimeout(() => gerarPixPlano('premium', params.get('periodo')), 600);
-    }
-  }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarPixPorUrl);
-  else iniciarPixPorUrl();
-
-  window.gerarPixPlano = gerarPixPlano;
-  window.gerarPixPlanoPremium = periodo => gerarPixPlano('premium', periodo);
-  window.gerarPixPlanoBasico = periodo => gerarPixPlano('premium', periodo);
-  window.fecharModalPixBasico = fecharModalPixBasico;
-  window.verificarPagamentoPixAtual = verificarPagamentoPixAtual;
-  window.copiarPixCopiaCola = copiarPixCopiaCola;
+  async function copiar(){const t=$('pix-copia-cola');if(!t?.value)return;await navigator.clipboard.writeText(t.value);alert('Pix copiado.')}
+  window.gerarPixProduto=gerarPixProduto;
+  window.gerarPixPlano=(_plano,periodo)=>gerarPixProduto(periodo==='mensal'?'pro_mensal':'pro_mensal');
+  window.fecharModalPixBasico=fechar;
+  window.verificarPagamentoPixAtual=verificar;
+  window.copiarPixCopiaCola=copiar;
 })();
