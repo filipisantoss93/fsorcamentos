@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="FS Orçamentos">
-  <rect width="512" height="512" rx="112" fill="#242424"/>
-  <rect x="64" y="64" width="384" height="384" rx="86" fill="#ffc400"/>
-  <text x="256" y="312" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="170" font-weight="900" fill="#242424">FS</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">FS Orçamentos</title>
+  <desc id="desc">Símbolo oficial FS em azul e amarelo sobre fundo azul-marinho.</desc>
+  <rect width="512" height="512" rx="112" fill="#07111f"/>
+  <rect x="36" y="36" width="440" height="440" rx="92" fill="none" stroke="#f6b500" stroke-width="10"/>
+  <path fill="#1565c0" d="M92 105h218v72H169v66h117v72H169v113H92z"/>
+  <path fill="#f6b500" d="M304 105h116v72H313c-31 0-31 55 0 55h40c116 0 116 196 0 196H225v-72h119c37 0 37-61 0-61h-38c-112 0-112-190-2-190z"/>
 </svg>
