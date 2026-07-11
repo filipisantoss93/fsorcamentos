@@ -1,4 +1,36 @@
 <link rel="stylesheet" href="/style.css?v=20260711-rebranding-efex">
+<style id="efex-flow-fix">
+  /* O diagnóstico e as perguntas complementares só aparecem após a primeira análise concluída. */
+  .efex-page .efex-layout > aside.efex-column > section.efex-card { display:none; }
+  .efex-page .efex-layout > aside.efex-column:has(#efex-result.ativo) > section.efex-card { display:block; }
+
+  /* A ação principal da tela deve ser sempre Analisar veículo. */
+  .efex-page #efex-analisar {
+    width:100%;
+    min-height:56px;
+    background:#f6b500 !important;
+    color:#17263a !important;
+    border-color:#f6b500 !important;
+    font-size:17px;
+    font-weight:900;
+    box-shadow:0 10px 24px rgba(246,181,0,.18);
+  }
+  .efex-page #efex-analisar:hover:not(:disabled) { transform:translateY(-1px); filter:brightness(1.04); }
+
+  /* Pergunta complementar é ação secundária, disponível somente após o diagnóstico. */
+  .efex-page #efex-enviar-pergunta {
+    width:100%;
+    background:#10233d !important;
+    color:#fff !important;
+    border-color:#32679e !important;
+    box-shadow:none !important;
+  }
+  .efex-page #efex-enviar-pergunta:hover:not(:disabled) { background:#153255 !important; border-color:#4c83bd !important; }
+
+  @media(max-width:650px){
+    .efex-page #efex-analisar,.efex-page #efex-enviar-pergunta{flex-basis:100%;}
+  }
+</style>
 <header class="main-header">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos — Diagnóstico inteligente. Orçamentos profissionais.">
