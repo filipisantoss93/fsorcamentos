@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1536" role="img" aria-labelledby="title desc">
   <title id="title">EfeX, mascote do FS Orçamentos</title>
   <desc id="desc">Auxiliar de diagnóstico mecânico com inteligência artificial.</desc>
-  <image href="/pet-efex.PNG" x="0" y="0" width="900" height="900" preserveAspectRatio="xMidYMid meet"/>
+  <image href="https://raw.githubusercontent.com/filipisantoss93/fsorcamentos/main/pet-efex.PNG" x="0" y="0" width="1536" height="1536" preserveAspectRatio="xMidYMid meet"/>
 </svg>
