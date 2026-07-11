@@ -244,3 +244,101 @@ footer a,.site-footer a,.footer a,.forum-footer a { color:var(--fs-navy-2) !impo
 }
 @media (max-width: 560px) { .item-row { grid-template-columns:1fr; } .fs-form-grid,.fs-grid-3 { grid-template-columns:1fr; } .logo-nav{gap:10px}.logo-fs,.logo-nav .logo-fs,.logo-nav > span:first-child{width:48px;height:48px;min-width:48px;font-size:24px}.logo-orcamentos,.logo-nav .logo-orcamentos,.logo-nav > span:last-child{font-size:22px}.menu-mobile-btn{width:48px;min-width:48px;height:48px}.header-menu-linha{border-radius:10px}.nav-menu a,.nav-menu summary,.btn-menu-mobile-entrar,.btn-menu-mobile-sair{font-size:13.5px;min-height:42px;gap:10px} }
 @media print { body { background:#fff !important; } #header-container,.botoes-status,.botoes-cliente,.whatsapp-empresa-box,#btn-flutuante-gerador-global { display:none !important; } }
+
+/* =========================================================
+   TEMA PROFISSIONAL COMPACTO — 2026-07-11
+   Consolida a paleta cinza-azulada, reduz peso visual e mantém
+   os blocos de indicadores em duas colunas inclusive no celular.
+   ========================================================= */
+@media screen {
+  :root {
+    --fs-navy: #334155 !important;
+    --fs-navy-2: #475569 !important;
+    --fs-navy-3: #5f7285 !important;
+    --fs-blue: #475569 !important;
+    --fs-blue-2: #334155 !important;
+    --fs-bg: #f4f6f8 !important;
+    --fs-card-soft: #f8fafc !important;
+    --fs-border: #d6dee6 !important;
+    --fs-text: #243447 !important;
+    --fs-muted: #5f6f7f !important;
+    --fs-radius-sm: 0px !important;
+    --fs-radius: 0px !important;
+    --fs-radius-lg: 0px !important;
+    --fs-shadow: none !important;
+    --fs-shadow-soft: none !important;
+    --fs-shadow-strong: 0 8px 20px rgba(36,52,71,.14) !important;
+    --navy: #334155 !important;
+    --navy2: #475569 !important;
+    --orc-navy: #334155 !important;
+    --orc-navy-2: #475569 !important;
+    --orc-bg: #f4f6f8 !important;
+    --orc-border: #d6dee6 !important;
+    --orc-text: #243447 !important;
+    --orc-muted: #5f6f7f !important;
+    --azul950: #243447 !important;
+    --azul900: #334155 !important;
+    --azul800: #3f5265 !important;
+    --azul700: #475569 !important;
+    --azul600: #52657a !important;
+    --azul500: #60758a !important;
+    --azul400: #71859a !important;
+    --azul100: #edf2f6 !important;
+    --azul50: #f8fafc !important;
+    --c: #243447 !important;
+    --m: #5f6f7f !important;
+    --b: #d6dee6 !important;
+    --bg: #f4f6f8 !important;
+    --bg2: #e9eef3 !important;
+    --blue: #52657a !important;
+    --blue2: #60758a !important;
+    --blue3: #3f5265 !important;
+    --ink: #243447 !important;
+    --muted: #5f6f7f !important;
+    --line: #d6dee6 !important;
+    --borda: #d6dee6 !important;
+  }
+
+  html body { background:#f4f6f8 !important; color:var(--fs-text) !important; }
+  html body [class],html body [class]::before,html body [class]::after,html body button,html body input,html body select,html body textarea,html body table,html body th,html body td { border-radius:0 !important; }
+
+  html body .card,html body .fs-card,html body .dashboard-card,html body .resumo-card,html body .plano-card,html body .forum-card,html body .painel-card,html body .info-card,html body .cliente-card,html body .veiculo-card,html body .ordem-card,html body .estoque-card,html body .agenda-card,html body .relatorio-card,html body .recorrente-card,html body .perfil-logo-card,html body .dashboard-metrica-card,html body .dashboard-mini-card,html body .dashboard-lista-item,html body .forum-topico,html body .forum-resposta,html body .forum-mini-item,html body .painel-premium-atalho,html body .painel-os-card,html body .manual-card,html body .sobre-card,html body .contato-card,html body .gerador-card-principal,html body .sidebar-card,html body .section-card,html body .preview-card,html body .benefits,html body .plano,html body .pix-card,html body .faq-card,html body .modal-card,html body .modal-content,html body .modal-box,html body .modal-pix-card,html body .biblioteca-card,html body .biblioteca-toolbar,html body .biblioteca-status-card,html body .biblioteca-conteudo-bloco,html body .biblioteca-categoria-select-card,html body .painel-header-simples,html body .painel-aviso,html body .painel-pix-plano,html body .painel-login-card,html body .rank-item,html body .resumo-texto { background:#fff !important; color:var(--fs-text) !important; border:1px solid var(--fs-border) !important; box-shadow:none !important; }
+
+  html body .fs-page-header,html body .page-header,html body .dashboard-hero,html body .forum-hero,html body .painel-header,html body .painel-hero,html body .painel-header-simples,html body .gerador-hero,html body .clientes-hero,html body .veiculos-hero,html body .ordens-hero,html body .estoque-hero,html body .agenda-hero,html body .relatorios-hero,html body .recorrentes-hero,html body .hero,html body .home-hero,html body .home-hero-venda,html body .premium-hero,html body .biblioteca-hero { background:#f8fafc !important; border:1px solid var(--fs-border) !important; border-top:2px solid var(--fs-gold-2) !important; padding:14px !important; box-shadow:none !important; }
+
+  html body .card-header,html body .preview-head,html body .head,html body .section-head,html body .modal-head,html body .modal-pix-topo,html body .agenda-modal-topo,html body .modal-busca-cliente-header,html body .modal-busca-produto-header,html body .auth-logo-box,html body .total-container,html body .dadositens { background:var(--fs-navy-2) !important; color:#fff !important; border-bottom:2px solid var(--fs-gold-2) !important; box-shadow:none !important; }
+  html body .card-header *,html body .preview-head *,html body .head *,html body .section-head *,html body .modal-head *,html body .modal-pix-topo *,html body .agenda-modal-topo *,html body .auth-logo-box *,html body .total-container *,html body .dadositens * { color:#fff !important; -webkit-text-fill-color:#fff !important; }
+
+  html body h1,html body .hero-title,html body .page-title { font-weight:700 !important; letter-spacing:-.02em !important; }
+  html body h2,html body h3,html body h4,html body .section-title,html body .card-title,html body .modal-title { font-weight:650 !important; letter-spacing:-.012em !important; }
+  html body strong,html body b,html body .item-name,html body .total-label,html body .total-value,html body .price,html body .preco { font-weight:600 !important; }
+  html body label,html body .tag,html body .home-tag,html body .metric span,html body .met span,html body .status,html body .badge,html body .payment-badge { font-weight:600 !important; letter-spacing:.015em !important; }
+  html body p,html body li,html body td,html body small,html body input,html body select,html body textarea { font-weight:400 !important; }
+
+  html body button,html body .btn,html body .fs-btn,html body .dashboard-btn,html body .forum-btn,html body .cliente-btn,html body .veiculo-btn,html body .ordem-btn,html body .estoque-btn,html body .agenda-btn,html body .relatorio-btn,html body .recorrente-btn { min-height:34px !important; padding:7px 10px !important; font-weight:600 !important; box-shadow:none !important; }
+  html body .btn-primary,html body .fs-btn-primary,html body .btn.primary,html body .dashboard-btn,html body .forum-btn,html body .btn-add,html body .btn-extra,html body .btn-gerar-orcamento-painel,html body .btn-editar-perfil,html body .btn-plano-painel,html body .btn-ver-ordens-painel,html body .btn-generate,html body .home-btn.primary,html body .generate-btn,html body .btn-premium,html body .btn.gold,html body .fs-btn-premium,html body .painel-pix-opcoes button,html body .pix-card button { background:var(--fs-navy-2) !important; color:#fff !important; -webkit-text-fill-color:#fff !important; border:1px solid var(--fs-navy) !important; box-shadow:none !important; }
+
+  html body input,html body select,html body textarea,html body .field input,html body .field select,html body .field textarea,html body .campo-painel input,html body .campo-painel select,html body .campo-painel textarea { min-height:36px !important; padding:8px 9px !important; background:#fff !important; color:var(--fs-text) !important; border:1px solid var(--fs-border) !important; box-shadow:none !important; }
+  html body input:focus,html body select:focus,html body textarea:focus { border-color:var(--fs-navy-2) !important; box-shadow:0 0 0 2px rgba(71,85,105,.14) !important; }
+
+  html body .body,html body .section-body,html body .card-body,html body .modal-body,html body .preview-body,html body .comparativo,html body .pix,html body .faq,html body .plano,html body .painel-card,html body .modal-painel,html body .modal-pix-card { padding:12px !important; }
+  html body .metric,html body .met,html body .dash-card,html body .shortcut-card,html body .dashboard-metrica-card,html body .dashboard-mini-card,html body .info-card,html body .rank-item,html body .resumo-texto,html body .faq-card,html body .pix-card,html body .biblioteca-card { min-height:auto !important; padding:11px !important; }
+  html body .metric::after,html body .met::after,html body .shortcut-card::after,html body .dash-card::after { display:none !important; content:none !important; }
+
+  html body .table-wrap,html body .fs-table-wrap,html body .tabela-wrapper { border:1px solid var(--fs-border) !important; box-shadow:none !important; }
+  html body th,html body .fs-table th,html body .tabela th,html body thead { background:var(--fs-navy-2) !important; color:#fff !important; font-weight:600 !important; }
+  html body td,html body .fs-table td,html body .table td { padding:8px 9px !important; }
+
+  html body .main-header { box-shadow:none !important; border-bottom:1px solid var(--fs-border) !important; }
+  html body .logo-nav .logo-fs,html body .logo-fs,html body .logo-nav > span:first-child,html body .btn-notificacoes-header,html body .menu-mobile-btn,html body .btn-header-entrar,html body .btn-header-sair { background:var(--fs-navy-2) !important; border-color:var(--fs-navy) !important; box-shadow:none !important; }
+
+  html body .metrics,html body .summary,html body .premium-grid,html body .dashboard-grid-metricas,html body .dashboard-mini-grid,html body .dashboard-acoes-grid,html body .grid-painel,html body .perfil-dados-grid,html body .plano-atual-grid { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:8px !important; }
+  html body .info-card.full,html body .info-card-assinatura.full,html body .campo-painel-full,html body .full { grid-column:1 / -1 !important; }
+}
+
+@media screen and (max-width:560px) {
+  html body .metrics,html body .summary,html body .premium-grid,html body .dashboard-grid-metricas,html body .dashboard-mini-grid,html body .dashboard-acoes-grid,html body .grid-painel,html body .perfil-dados-grid,html body .plano-atual-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:7px !important; }
+  html body .metric,html body .met,html body .dash-card,html body .shortcut-card,html body .dashboard-metrica-card,html body .dashboard-mini-card,html body .info-card { padding:9px !important; }
+  html body .metric strong,html body .met strong,html body .dashboard-metrica-card strong { font-size:clamp(16px,5vw,21px) !important; overflow-wrap:anywhere; }
+  html body .metric span,html body .met span,html body .dashboard-metrica-card span { font-size:10px !important; line-height:1.2 !important; }
+}
