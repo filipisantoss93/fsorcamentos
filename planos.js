@@ -109,10 +109,21 @@
     if ($('renovacao-plano')) $('renovacao-plano').textContent = data(window.FS_ESTADO_COMERCIAL?.expira);
   }
 
+  function iniciarSincronizacao() {
+    carregar();
+    setTimeout(carregar, 900);
+  }
+
   window.fsLabelNivelPlano = labelNivel;
   window.fsCreditosDoNivel = creditosDoNivel;
   window.carregarStatusPlanoPagina = carregar;
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', carregar);
-  else carregar();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarSincronizacao);
+  else iniciarSincronizacao();
+
+  if (window._supabase?.auth) {
+    _supabase.auth.onAuthStateChange((_evento, sessao) => {
+      if (sessao?.user?.id) setTimeout(carregar, 150);
+    });
+  }
 })();
