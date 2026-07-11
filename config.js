@@ -51,6 +51,17 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
     carregarScriptUnico('fs-login-google-fix-js', '/fs-login-google-fix.js?v=20260705-android-deeplink');
   }
 
+  function carregarRascunhosGeradorSupabase() {
+    const path = caminhoAtualLimpo();
+    const ehGerador = path === '/gerador' || path === '/gerador.html' || path.endsWith('/gerador') || path.endsWith('/gerador.html');
+    if (!ehGerador) return;
+
+    carregarScriptUnico(
+      'fs-gerador-rascunhos-supabase-js',
+      '/gerador-rascunhos-supabase.js?v=20260711-supabase-drafts'
+    );
+  }
+
   function limparDestinoAntigoNoIndex() {
     try {
       const path = caminhoAtualLimpo();
@@ -146,6 +157,7 @@ window.FS_URL_OFICIAL = FS_URL_OFICIAL;
   function inicializar() {
     instalarCssGlobal();
     carregarCorrecaoLoginGoogle();
+    carregarRascunhosGeradorSupabase();
     limparDestinoAntigoNoIndex();
     bloquearZoomMobile();
   }
