@@ -1,51 +1,86 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#145cff">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1565C0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel - Perfil e Assinatura | FS Orçamentos</title>
+  <link rel="manifest" href="/manifest.json">
+  <title>Minha Conta | FS Orçamentos</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="painel-inline.css">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <style>
-    :root{--azul950:#040f2f;--azul900:#061846;--azul800:#082463;--azul700:#0b3fae;--azul500:#145cff;--azul400:#2f7bff;--azul100:#eaf3ff;--azul50:#f5f9ff;--verde:#19c7a4;--borda:#d6e7ff;--muted:#245eac;--red:#dc2626;--gold:#d4a73f}
-    body{background:radial-gradient(circle at 88% 0%,rgba(20,92,255,.24),transparent 34%),radial-gradient(circle at 12% 12%,rgba(25,199,164,.12),transparent 28%),linear-gradient(180deg,#081a3a 0%,#06142f 54%,#0c234b 100%)!important;color:var(--azul950)!important}
-    .painel-container-simples{width:min(1120px,calc(100% - 22px))!important;max-width:1120px!important;margin:0 auto 34px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;display:grid!important;gap:18px!important}
-    .painel-header-simples{position:relative!important;overflow:hidden!important;display:grid!important;grid-template-columns:1fr auto!important;gap:18px!important;align-items:center!important;margin:0!important;padding:28px!important;border-radius:26px!important;border:1px solid var(--borda)!important;background:radial-gradient(circle at 90% 12%,rgba(20,92,255,.24),transparent 32%),linear-gradient(135deg,#081a3a 0%,#f8fbff 58%,#0c234b 100%)!important;box-shadow:0 22px 48px rgba(20,92,255,.14)!important}
-    .painel-header-simples::after{content:"✦";position:absolute;right:30px;top:22px;color:var(--gold);font-size:20px;text-shadow:0 0 16px rgba(212,167,63,.35)}
-    .painel-header-simples h1{margin:0 0 8px!important;font-size:clamp(30px,5vw,46px)!important;line-height:1.05!important;letter-spacing:-.055em!important;color:var(--azul950)!important;font-weight:950!important}
-    .painel-subtitulo{max-width:760px!important;margin:0!important;color:var(--muted)!important;font-size:17px!important;line-height:1.42!important;font-weight:780!important}
-    .painel-aviso{margin:0!important;padding:14px 16px!important;border-radius:16px!important;border:1px solid var(--borda)!important;border-left:5px solid var(--azul500)!important;background:rgba(255,255,255,.88)!important;color:var(--muted)!important;font-weight:800!important;line-height:1.45!important;box-shadow:0 12px 28px rgba(20,92,255,.08)!important}
-    .painel-card{margin:0!important;padding:22px!important;border:1px solid var(--borda)!important;border-radius:24px!important;background:rgba(255,255,255,.96)!important;color:var(--azul950)!important;box-shadow:0 18px 42px rgba(20,92,255,.11)!important;overflow:hidden!important}
-    .painel-card>h2{display:flex!important;align-items:center!important;gap:10px!important;margin:0 0 18px!important;padding:0 0 13px!important;border-bottom:1px solid var(--borda)!important;color:var(--azul950)!important;font-size:24px!important;line-height:1.1!important;font-weight:950!important;letter-spacing:-.035em!important}
-    .painel-card>h2::before{content:"";width:38px;height:38px;border-radius:6px;background:linear-gradient(135deg,var(--azul400),var(--azul500),var(--azul700));box-shadow:0 12px 22px rgba(20,92,255,.22)}
-    .perfil-layout{display:grid!important;grid-template-columns:250px minmax(0,1fr)!important;gap:18px!important;align-items:start!important}
-    .perfil-logo-card{padding:16px!important;border-radius:20px!important;border:1px solid var(--borda)!important;background:linear-gradient(135deg,#081a3a,var(--azul50))!important;box-shadow:none!important}
-    .perfil-logo-box{min-height:160px!important;border:1.5px dashed #3a6191!important;border-radius:18px!important;background:#081a3a!important;display:grid!important;place-items:center!important;overflow:hidden!important;color:var(--muted)!important;font-weight:850!important;text-align:center!important;padding:14px!important}
-    .perfil-logo-box img{max-width:100%!important;max-height:150px!important;object-fit:contain!important;display:none}
-    .perfil-logo-label{display:block!important;margin-top:10px!important;color:var(--azul500)!important;font-weight:950!important;text-align:center!important}
-    .perfil-dados-grid,.plano-atual-grid,.grid-painel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
-    .info-card{min-width:0!important;padding:15px!important;border:1px solid var(--borda)!important;border-left:5px solid var(--azul500)!important;border-radius:16px!important;background:#081a3a!important;box-shadow:0 10px 24px rgba(20,92,255,.07)!important}
-    .info-card.full,.info-card-assinatura.full,.campo-painel-full{grid-column:1/-1!important}
-    .info-card strong{display:block!important;margin:0 0 6px!important;color:var(--azul700)!important;font-size:11px!important;line-height:1.1!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.05em!important}
-    .info-card span{display:block!important;color:var(--azul950)!important;font-size:16px!important;line-height:1.25!important;font-weight:850!important;overflow-wrap:anywhere!important}
-    .plano-badge{display:inline-flex!important;width:max-content!important;max-width:100%!important;padding:7px 11px!important;border-radius:999px!important;border:1px solid var(--borda)!important;background:linear-gradient(135deg,#081a3a,var(--azul100))!important;color:var(--azul600)!important;font-size:12px!important;font-weight:950!important}
-    .plano-premium{background:#123d2b;color:#fff!important;border-color:#19c7a4!important}.plano-gratis{background:linear-gradient(135deg,#081a3a,var(--azul100))!important;color:var(--azul700)!important}
-    .acoes-painel,.botoes-modal-painel,.upload-row{display:flex!important;flex-wrap:wrap!important;gap:9px!important;margin-top:14px!important;justify-content:flex-end!important;align-items:center!important}
-    button,.btn-editar-perfil,.btn-senha,.btn-salvar,.btn-confirmar,.btn-upload-logo,.painel-pix-opcoes button{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;padding:10px 14px!important;border-radius:12px!important;border:1px solid var(--azul500)!important;background:linear-gradient(135deg,var(--azul400),var(--azul500),var(--azul700))!important;color:#fff!important;font-weight:950!important;text-decoration:none!important;cursor:pointer!important;box-shadow:0 12px 24px rgba(20,92,255,.18)!important}
-    .btn-senha,.btn-cancelar,.btn-remover-logo,.painel-pix-opcoes button.secundario{background:#081a3a!important;color:var(--azul600)!important;border-color:var(--borda)!important;box-shadow:0 10px 22px rgba(20,92,255,.08)!important}
-    .btn-excluir-conta,.btn-perigo{background:#081a3a5f5!important;color:#b91c1c!important;border-color:#fecaca!important;box-shadow:none!important}.btn-excluir-conta:hover,.btn-perigo:hover{background:linear-gradient(135deg,#ff5a5f,#dc2626,#991b1b)!important;color:#fff!important}
-    .painel-plano-aviso,.painel-pix-intro,.dica-seguranca{padding:14px 16px!important;border-radius:16px!important;border:1px solid var(--borda)!important;background:var(--azul50)!important;color:var(--muted)!important;font-weight:800!important;line-height:1.45!important;margin-bottom:16px!important}.plano-ok{background:#dcfff7!important;color:#05765f!important;border-color:#a7f3e5!important}.plano-erro,.dica-perigo{background:#081a3a5f5!important;color:#991b1b!important;border-color:#fecaca!important}.plano-alerta,.plano-gratis{background:var(--azul100)!important;color:var(--azul700)!important;border-color:var(--borda)!important}
-    .painel-pix-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}.painel-pix-plano{position:relative!important;overflow:hidden!important;padding:18px!important;border-radius:20px!important;border:1px solid var(--borda)!important;background:#081a3a!important;box-shadow:0 14px 32px rgba(20,92,255,.10)!important}.painel-pix-plano::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,var(--azul400),var(--azul500),var(--azul700))}.painel-pix-plano.destaque{border-color:#3a6191!important;box-shadow:0 18px 38px rgba(20,92,255,.16)!important}.painel-pix-plano h3{margin:10px 0 8px!important;color:var(--azul950)!important;font-size:22px!important;font-weight:950!important}.painel-pix-plano p{margin:0 0 14px!important;color:var(--muted)!important;font-weight:760!important;line-height:1.42!important}.painel-pix-opcoes{display:grid!important;gap:9px!important}.painel-pix-regra{font-size:13px!important;color:var(--muted)!important;font-weight:780!important;line-height:1.4!important}
-    .modal-overlay-painel,.modal-pix-overlay{position:fixed!important;inset:0!important;z-index:50000!important;display:none;align-items:center!important;justify-content:center!important;padding:18px!important;background:rgba(4,15,47,.70)!important;backdrop-filter:blur(8px)!important;overflow:auto!important}.modal-overlay-painel.ativo,.modal-pix-overlay.ativo{display:flex!important}.modal-painel,.modal-pix-card{width:min(760px,100%)!important;max-height:calc(100vh - 36px)!important;overflow:auto!important;margin:auto!important;padding:22px!important;border-radius:22px!important;border:1px solid var(--borda)!important;background:#081a3a!important;box-shadow:0 28px 70px rgba(4,15,47,.30)!important}.modal-painel.pequeno{width:min(460px,100%)!important}.modal-painel h2,.modal-painel h3{margin:0 0 14px!important;color:var(--azul950)!important;font-weight:950!important;letter-spacing:-.035em!important}.campo-painel{display:grid!important;gap:6px!important;margin-bottom:11px!important}.campo-painel label{color:var(--azul700)!important;font-size:12px!important;font-weight:950!important;text-transform:uppercase!important;letter-spacing:.04em!important}.campo-painel input,.campo-painel select,.campo-painel textarea{width:100%!important;box-sizing:border-box!important;min-height:44px!important;border:1px solid var(--borda)!important;border-radius:12px!important;padding:10px 12px!important;background:#081a3a!important;color:var(--azul950)!important;font-weight:750!important;outline:none!important}.campo-painel input:focus,.campo-painel select:focus{border-color:var(--azul500)!important;box-shadow:0 0 0 3px rgba(20,92,255,.14)!important}.logo-area-modal{display:grid!important;grid-template-columns:220px 1fr!important;gap:16px!important;margin-bottom:16px!important}.logo-preview-box{min-height:150px!important;border:1.5px dashed #3a6191!important;border-radius:18px!important;background:var(--azul50)!important;display:grid!important;place-items:center!important;text-align:center!important;overflow:hidden}.logo-preview-box img{max-width:100%;max-height:145px;object-fit:contain}.responsaveis-box{padding:14px!important;border:1px solid var(--borda)!important;border-radius:16px!important;background:var(--azul50)!important}.lista-responsaveis{display:grid!important;gap:8px!important;margin-top:10px!important}.modal-responsavel-interno{display:none!important;margin-top:14px!important}.modal-responsavel-interno.ativo{display:block!important}.status-msg{min-height:0;margin-top:8px;font-weight:850}.modal-pix-topo{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin:-22px -22px 18px!important;padding:16px 18px!important;background:linear-gradient(135deg,var(--azul900),var(--azul700),var(--azul500))!important;color:#fff!important}.modal-pix-topo strong,.modal-pix-topo span{color:#fff!important}.modal-pix-topo button{width:38px!important;height:38px!important;padding:0!important;background:#081a3a!important;color:var(--azul500)!important;border-color:#fff!important}.pix-loading,.pix-erro{padding:14px;border-radius:6px;background:var(--azul50);border:1px solid var(--borda);font-weight:900}.pix-erro{background:#081a3a5f5;color:#991b1b;border-color:#fecaca}.pix-resumo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.pix-resumo div{padding:12px;border-radius:6px;background:var(--azul50);border:1px solid var(--borda)}.pix-label{display:block;color:var(--azul700);font-size:12px;font-weight:950;text-transform:uppercase;margin:10px 0 5px}#pix-copia-cola{width:100%;min-height:96px;border:1px solid var(--borda);border-radius:6px;padding:10px;box-sizing:border-box}.pix-acoes{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.pix-qrcode-box{text-align:center}.pix-qrcode-box img{max-width:230px;width:100%}.painel-login-card{width:min(520px,calc(100% - 22px));margin:34px auto;padding:24px;border-radius:6px;background:#081a3a;border:1px solid var(--borda);box-shadow:0 18px 42px rgba(20,92,255,.12);text-align:center}.painel-login-card h1{margin:0 0 8px;font-size:30px}.painel-login-card p{color:var(--muted);font-weight:760;line-height:1.45}
-    footer{text-align:center;color:var(--muted);font-weight:800;padding:24px 12px}footer a{color:var(--azul500);text-decoration:none;font-weight:950}
-    @media(max-width:820px){.painel-header-simples,.perfil-layout,.logo-area-modal{grid-template-columns:1fr!important}.painel-pix-grid{grid-template-columns:1fr!important}.perfil-dados-grid,.plano-atual-grid,.grid-painel,.pix-resumo{grid-template-columns:1fr!important}.painel-card{padding:18px!important}.painel-header-simples{padding:24px 18px!important}.acoes-painel,.botoes-modal-painel{display:grid!important;grid-template-columns:1fr!important}button,.btn-editar-perfil,.btn-senha,.btn-salvar,.btn-confirmar,.btn-cancelar,.btn-excluir-conta{width:100%!important}.painel-subtitulo{font-size:15px!important}}
+    :root{
+      --fs-azul:#1565C0;
+      --fs-azul-escuro:#07111F;
+      --fs-amarelo:#F6B500;
+      --fs-branco:#FFFFFF;
+      --fs-verde:#22C55E;
+      --fs-texto:#102033;
+      --fs-muted:#5B6B7D;
+      --fs-borda:#DCE7F3;
+      --fs-fundo:#F4F8FC;
+      --fs-perigo:#DC2626;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#07111F 0,#0B1C31 290px,var(--fs-fundo) 290px);color:var(--fs-texto)}
+    .hidden{display:none!important}
+    .painel-container-simples{width:min(1120px,calc(100% - 24px));margin:0 auto 40px;padding:24px 0;display:grid;gap:18px}
+    .painel-header-simples{position:relative;overflow:hidden;padding:30px;border-radius:24px;background:linear-gradient(135deg,#FFFFFF 0,#EDF5FF 70%,#FFF7D6 100%);border:1px solid rgba(255,255,255,.45);box-shadow:0 24px 60px rgba(0,0,0,.2)}
+    .painel-header-simples::after{content:"EFEX";position:absolute;right:24px;top:20px;color:rgba(21,101,192,.08);font-size:72px;font-weight:950;letter-spacing:-.08em}
+    .painel-header-simples h1{position:relative;z-index:1;margin:0 0 8px;font-size:clamp(32px,5vw,48px);line-height:1;color:var(--fs-azul-escuro);letter-spacing:-.05em}
+    .painel-subtitulo{position:relative;z-index:1;max-width:760px;margin:0;color:#36516E;font-size:17px;line-height:1.5;font-weight:700}
+    .painel-aviso,.painel-pix-intro,.dica-seguranca{padding:14px 16px;border-radius:14px;border:1px solid var(--fs-borda);border-left:5px solid var(--fs-azul);background:#fff;color:#3E5873;font-weight:700;line-height:1.5}
+    .painel-card{padding:22px;border:1px solid var(--fs-borda);border-radius:22px;background:#fff;box-shadow:0 16px 40px rgba(7,17,31,.08);overflow:hidden}
+    .painel-card>h2{display:flex;align-items:center;gap:10px;margin:0 0 18px;padding-bottom:13px;border-bottom:1px solid var(--fs-borda);font-size:24px;color:var(--fs-azul-escuro);letter-spacing:-.03em}
+    .painel-card>h2::before{content:"";width:10px;height:30px;border-radius:999px;background:linear-gradient(180deg,var(--fs-amarelo),#FFD85A)}
+    .perfil-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;align-items:start}
+    .perfil-logo-card{padding:16px;border:1px solid var(--fs-borda);border-radius:18px;background:#F8FBFF}
+    .perfil-logo-box,.logo-preview-box{min-height:150px;display:grid;place-items:center;padding:14px;overflow:hidden;border:1.5px dashed #9DB8D6;border-radius:16px;background:#fff;color:var(--fs-muted);font-weight:800;text-align:center}
+    .perfil-logo-box img,.logo-preview-box img{display:none;max-width:100%;max-height:145px;object-fit:contain}
+    .perfil-logo-label{display:block;margin-top:10px;color:var(--fs-azul);font-weight:900;text-align:center}
+    .perfil-dados-grid,.plano-atual-grid,.grid-painel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .info-card{min-width:0;padding:15px;border:1px solid var(--fs-borda);border-left:5px solid var(--fs-azul);border-radius:15px;background:#F9FBFE}
+    .info-card.full,.campo-painel-full{grid-column:1/-1}
+    .info-card strong{display:block;margin-bottom:6px;color:#46627E;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+    .info-card span{display:block;color:var(--fs-azul-escuro);font-size:16px;font-weight:850;overflow-wrap:anywhere}
+    .plano-badge{display:inline-flex!important;width:max-content;max-width:100%;padding:7px 11px;border-radius:999px;border:1px solid var(--fs-borda);background:#EEF4FA;color:#31506F;font-size:12px!important;font-weight:950!important}
+    .plano-essencial{background:#E9F3FF!important;color:#0C56A6!important;border-color:#9AC7F5!important}
+    .plano-pro{background:#FFF4C7!important;color:#7A5600!important;border-color:#F6B500!important}
+    .plano-gratis{background:#F1F5F9!important;color:#475569!important}
+    .acoes-painel,.botoes-modal-painel,.upload-row,.pix-acoes{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;justify-content:flex-end;align-items:center}
+    button,.btn-editar-perfil,.btn-senha,.btn-salvar,.btn-confirmar,.btn-upload-logo,.painel-pix-opcoes button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 14px;border:1px solid var(--fs-azul);border-radius:12px;background:var(--fs-azul);color:#fff;font-weight:900;text-decoration:none;cursor:pointer;box-shadow:0 10px 22px rgba(21,101,192,.18)}
+    button:hover,.btn-editar-perfil:hover,.btn-upload-logo:hover{filter:brightness(.96)}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .btn-senha,.btn-cancelar,.btn-remover-logo,.painel-pix-opcoes button.secundario{background:#fff;color:var(--fs-azul);border-color:#B7CDE4;box-shadow:none}
+    .btn-excluir-conta,.btn-perigo{background:#FFF1F2;color:#B91C1C;border-color:#FECACA;box-shadow:none}
+    .btn-excluir-conta:hover,.btn-perigo:hover{background:var(--fs-perigo);color:#fff}
+    .painel-plano-aviso{padding:14px 16px;margin-bottom:16px;border-radius:14px;border:1px solid var(--fs-borda);font-weight:800;line-height:1.45}
+    .plano-ok{background:#ECFDF3;color:#087443;border-color:#A7F3D0}.plano-alerta,.plano-gratis{background:#EFF6FF;color:#174D82;border-color:#BFDBFE}.plano-erro,.dica-perigo{background:#FFF1F2;color:#991B1B;border-color:#FECACA}
+    .painel-pix-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+    .painel-pix-plano{position:relative;padding:20px;border:1px solid var(--fs-borda);border-radius:18px;background:#fff;box-shadow:0 12px 28px rgba(7,17,31,.06)}
+    .painel-pix-plano::before{content:"";position:absolute;inset:0 0 auto;height:5px;border-radius:18px 18px 0 0;background:var(--fs-azul)}
+    .painel-pix-plano.destaque{border-color:#E0B225;background:linear-gradient(180deg,#FFFDF4,#fff)}
+    .painel-pix-plano.destaque::before{background:var(--fs-amarelo)}
+    .painel-pix-plano h3{margin:10px 0 4px;color:var(--fs-azul-escuro);font-size:23px}
+    .painel-preco{margin:0 0 10px;color:var(--fs-azul);font-size:30px;font-weight:950;letter-spacing:-.04em}.painel-preco small{font-size:13px;color:var(--fs-muted)}
+    .painel-pix-plano ul{margin:12px 0 16px;padding-left:20px;color:#45617C;line-height:1.55;font-weight:650}
+    .painel-pix-opcoes{display:grid;gap:9px}.painel-pix-regra{margin-top:14px;color:var(--fs-muted);font-size:13px;font-weight:750;line-height:1.45}
+    .modal-overlay-painel,.modal-pix-overlay{position:fixed;inset:0;z-index:50000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(7,17,31,.78);backdrop-filter:blur(8px);overflow:auto}
+    .modal-painel,.modal-pix-card{width:min(760px,100%);max-height:calc(100vh - 36px);overflow:auto;margin:auto;padding:22px;border:1px solid var(--fs-borda);border-radius:22px;background:#fff;box-shadow:0 28px 70px rgba(0,0,0,.35)}
+    .modal-painel.pequeno{width:min(460px,100%)}.modal-painel h2,.modal-painel h3{margin:0 0 14px;color:var(--fs-azul-escuro)}
+    .campo-painel{display:grid;gap:6px;margin-bottom:11px}.campo-painel label{color:#345571;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+    .campo-painel input,.campo-painel select,.campo-painel textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid #C9D8E8;border-radius:12px;background:#fff;color:var(--fs-azul-escuro);font-weight:700;outline:none}
+    .campo-painel input:focus,.campo-painel select:focus{border-color:var(--fs-azul);box-shadow:0 0 0 3px rgba(21,101,192,.13)}
+    .logo-area-modal{display:grid;grid-template-columns:220px 1fr;gap:16px;margin-bottom:16px}.responsaveis-box{padding:14px;border:1px solid var(--fs-borda);border-radius:16px;background:#F8FBFF}.lista-responsaveis{display:grid;gap:8px;margin-top:10px}.modal-responsavel-interno{display:none;margin-top:14px}.status-msg{margin-top:8px;font-weight:850}
+    .modal-pix-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-22px -22px 18px;padding:16px 18px;background:linear-gradient(135deg,var(--fs-azul-escuro),var(--fs-azul));color:#fff}.modal-pix-topo div{display:grid;gap:3px}.modal-pix-topo button{width:38px;height:38px;padding:0;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.5)}
+    .pix-loading,.pix-erro{padding:14px;border:1px solid var(--fs-borda);border-radius:12px;background:#F8FBFF;font-weight:900}.pix-erro{background:#FFF1F2;color:#991B1B;border-color:#FECACA}.pix-resumo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.pix-resumo div{padding:12px;border:1px solid var(--fs-borda);border-radius:12px;background:#F8FBFF}.pix-label{display:block;margin:10px 0 5px;color:#345571;font-size:12px;font-weight:950;text-transform:uppercase}#pix-copia-cola{width:100%;min-height:96px;padding:10px;border:1px solid var(--fs-borda);border-radius:12px}.pix-qrcode-box{text-align:center}.pix-qrcode-box img{max-width:230px;width:100%}
+    .painel-login-card{width:min(520px,calc(100% - 22px));margin:34px auto;padding:24px;border:1px solid var(--fs-borda);border-radius:20px;background:#fff;box-shadow:0 18px 42px rgba(0,0,0,.18);text-align:center}.painel-login-card h1{margin:0 0 8px;font-size:30px}.painel-login-card p{color:var(--fs-muted);font-weight:700;line-height:1.45}
+    footer{text-align:center;color:#728195;font-weight:750;padding:24px 12px}footer a{color:var(--fs-azul);text-decoration:none;font-weight:900}
+    @media(max-width:820px){body{background:linear-gradient(180deg,#07111F 0,#0B1C31 220px,var(--fs-fundo) 220px)}.painel-header-simples,.perfil-layout,.logo-area-modal{grid-template-columns:1fr}.painel-pix-grid,.perfil-dados-grid,.plano-atual-grid,.grid-painel,.pix-resumo{grid-template-columns:1fr}.painel-card{padding:18px}.painel-header-simples{padding:24px 18px}.painel-header-simples::after{font-size:48px}.acoes-painel,.botoes-modal-painel{display:grid;grid-template-columns:1fr}button,.btn-editar-perfil,.btn-senha,.btn-salvar,.btn-confirmar,.btn-cancelar,.btn-excluir-conta{width:100%}}
   </style>
 </head>
 <body>
@@ -54,7 +89,7 @@
   <div id="auth-area" style="display:none;">
     <section class="painel-login-card">
       <h1>Acesse sua conta</h1>
-      <p>Entre para editar os dados da empresa, acompanhar seu plano e renovar o Premium.</p>
+      <p>Entre para editar os dados da empresa, acompanhar seu plano e administrar seus créditos Efex.</p>
       <a class="btn-editar-perfil" href="/index.html?login=1&dest=/painel.html">Entrar no FS Orçamentos</a>
     </section>
   </div>
@@ -62,22 +97,17 @@
   <div id="conteudo-protegido" style="display:none;">
     <main class="container painel-container painel-container-simples">
       <section class="painel-header painel-header-simples">
-        <div>
-          <h1>Painel</h1>
-          <p class="painel-subtitulo">Perfil da empresa, responsáveis, segurança da conta e assinatura Premium em um só lugar.</p>
-        </div>
+        <h1>Minha Conta</h1>
+        <p class="painel-subtitulo">Dados da empresa, responsáveis, segurança, assinatura e saldo Efex em um único lugar.</p>
       </section>
 
-      <div class="painel-aviso">O FS Orçamentos trabalha com dois planos: Grátis para gerar PDF e Premium para salvar, enviar link por WhatsApp, receber aprovação online, usar recorrentes, Caixa e relatórios.</div>
+      <div class="painel-aviso">O FS Orçamentos possui três níveis: Gratuito, Premium Essencial e Premium PRO. Os créditos Efex também podem ser comprados separadamente.</div>
 
       <section class="painel-card">
         <h2>Dados da empresa</h2>
         <div class="perfil-layout">
           <div class="perfil-logo-card">
-            <div class="perfil-logo-box">
-              <span id="perfil-logo-placeholder">Nenhuma logo cadastrada</span>
-              <img id="perfil-logo-img" src="" alt="Logo da empresa">
-            </div>
+            <div class="perfil-logo-box"><span id="perfil-logo-placeholder">Nenhuma logo cadastrada</span><img id="perfil-logo-img" src="" alt="Logo da empresa"></div>
             <span class="perfil-logo-label">Identidade visual</span>
           </div>
           <div>
@@ -89,149 +119,119 @@
               <div class="info-card full"><strong>Endereço</strong><span id="perfil-endereco">-</span></div>
             </div>
             <div class="acoes-painel">
-              <button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">✏️ Editar dados</button>
-              <button type="button" class="btn-senha" onclick="abrirModalSenha()">🔐 Alterar senha</button>
-              <button type="button" class="btn-excluir-conta" onclick="abrirModalExcluirConta()">🗑️ Excluir conta</button>
+              <button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">Editar dados</button>
+              <button type="button" class="btn-senha" onclick="abrirModalSenha()">Alterar senha</button>
+              <button type="button" class="btn-excluir-conta" onclick="abrirModalExcluirConta()">Excluir conta</button>
             </div>
           </div>
         </div>
       </section>
 
       <section id="plano-painel" class="painel-card">
-        <h2>Plano atual</h2>
+        <h2>Plano e carteira Efex</h2>
         <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
         <div class="perfil-dados-grid plano-atual-grid">
-          <div class="info-card"><strong>Plano</strong><span id="perfil-plano" class="plano-badge">Plano Grátis</span></div>
+          <div class="info-card"><strong>Plano</strong><span id="perfil-plano" class="plano-badge">Plano Gratuito</span></div>
           <div class="info-card"><strong>Status</strong><span id="perfil-plano-status">-</span></div>
-          <div class="info-card"><strong>Expira em</strong><span id="perfil-plano-expira">-</span></div>
-          <div class="info-card info-card-assinatura full"><strong>Assinatura</strong><span>Renove ou ative o Premium por Pix nesta página.</span></div>
+          <div class="info-card"><strong>Renovação / expiração</strong><span id="perfil-plano-expira">-</span></div>
+          <div class="info-card"><strong>Créditos do plano</strong><span id="perfil-creditos-mensais">5 créditos de boas-vindas</span></div>
+          <div class="info-card full"><strong>Saldo disponível</strong><span id="perfil-saldo-efex">Carregando...</span></div>
         </div>
       </section>
 
       <section id="renovar-plano-pix-painel" class="painel-card painel-assinatura-pix">
-        <h2>Assinatura Premium via Pix</h2>
-        <div class="painel-pix-intro">Ao renovar um plano ativo, os novos dias são somados ao prazo atual. Se o plano estiver vencido, o período começa a contar a partir da confirmação do pagamento.</div>
+        <h2>Assinaturas via Pix</h2>
+        <div class="painel-pix-intro">Após a confirmação do Pix, o plano e os créditos mensais correspondentes são aplicados automaticamente à conta.</div>
         <div class="painel-pix-grid">
           <article class="painel-pix-plano">
-            <h3>1 mês</h3>
-            <p>Ideal para começar e validar o uso no dia a dia.</p>
-            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixPlanoPremium('mensal')">Assinar · R$ 29,90</button></div>
+            <h3>Premium Essencial</h3>
+            <p class="painel-preco">R$ 14,90 <small>/ mês</small></p>
+            <ul><li>Histórico na nuvem</li><li>Caixa e relatórios</li><li>Aprovação pelo WhatsApp</li><li>15 créditos Efex por mês</li></ul>
+            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixProduto('assinatura_essencial')">Assinar Essencial</button></div>
           </article>
           <article class="painel-pix-plano destaque">
-            <h3>6 meses</h3>
-            <p>Melhor para economizar no lançamento. Equivale a menos de R$ 25 por mês.</p>
-            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixPlanoPremium('semestral')">Assinar · R$ 149,90</button></div>
-          </article>
-          <article class="painel-pix-plano">
-            <h3>12 meses</h3>
-            <p>Plano anual de lançamento para usar todos os recursos Premium.</p>
-            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixPlanoPremium('anual')">Assinar · R$ 299,90</button></div>
+            <h3>Premium PRO</h3>
+            <p class="painel-preco">R$ 29,90 <small>/ mês</small></p>
+            <ul><li>Todos os recursos do Essencial</li><li>30 créditos Efex por mês</li><li>Prioridade de processamento</li><li>Acesso a recursos futuros</li></ul>
+            <div class="painel-pix-opcoes"><button type="button" onclick="gerarPixProduto('assinatura_pro')">Assinar PRO</button></div>
           </article>
         </div>
-        <div class="painel-pix-regra">Premium libera orçamentos salvos, link de aprovação, envio por WhatsApp, recorrentes, Caixa, relatórios e uso sem anúncios.</div>
+        <div class="painel-pix-regra">A autorização real dos recursos deve ser validada no Supabase. O estado exibido nesta página funciona apenas como interface do usuário.</div>
       </section>
     </main>
 
-    <div id="modal-editar-perfil" class="modal-overlay-painel">
+    <div id="modal-editar-perfil" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-labelledby="titulo-editar-perfil">
       <div class="modal-painel">
-        <h2>Editar dados da empresa</h2>
+        <h2 id="titulo-editar-perfil">Editar dados da empresa</h2>
         <form id="form-cadastro-perfil" onsubmit="salvarPerfil(event)">
           <div class="logo-area-modal">
             <div class="logo-preview-box"><span id="logo-placeholder">Nenhuma logo cadastrada</span><img id="preview-logo" src="" alt="Pré-visualização da logo da empresa"></div>
             <div class="logo-info">
               <h3>Logo da empresa</h3>
-              <p>Envie uma imagem PNG, JPG, JPEG ou WEBP. A logo salva aparecerá automaticamente nos seus orçamentos.</p>
+              <p>Envie PNG, JPG, JPEG ou WEBP. A logo salva aparecerá automaticamente nos orçamentos.</p>
               <div class="upload-row">
                 <label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label>
                 <button type="button" class="btn-remover-logo" onclick="removerLogoPerfil()">Remover logo</button>
-                <input type="file" id="logo_file" class="input-logo-escondido" accept="image/png, image/jpeg, image/webp" style="display:none;">
+                <input type="file" id="logo_file" accept="image/png, image/jpeg, image/webp" hidden>
                 <input type="hidden" id="foto_url">
               </div>
-              <div id="status-logo" class="status-msg"></div>
+              <div id="status-logo" class="status-msg" aria-live="polite"></div>
             </div>
           </div>
-
           <div class="grid-painel">
-            <div class="campo-painel"><label>Responsável selecionado <span>*</span></label><select id="responsavel_selecionado" required></select></div>
-            <div class="campo-painel"><label>Nome da empresa <span>*</span></label><input type="text" id="nome_empresa" required placeholder="Nome da sua empresa ou negócio"></div>
-            <div class="campo-painel"><label>WhatsApp / Telefone <span>*</span></label><input type="tel" id="telefone_empresa" required placeholder="Ex: (18) 99999-9999"></div>
-            <div class="campo-painel"><label>CNPJ / CPF</label><input type="text" id="cnpj_empresa" placeholder="00.000.000/0000-00"></div>
-            <div class="campo-painel campo-painel-full"><label>Endereço</label><input type="text" id="endereco_empresa" placeholder="Rua, número, bairro, cidade/UF"></div>
+            <div class="campo-painel"><label for="responsavel_selecionado">Responsável selecionado *</label><select id="responsavel_selecionado" required></select></div>
+            <div class="campo-painel"><label for="nome_empresa">Nome da empresa *</label><input type="text" id="nome_empresa" required placeholder="Nome da sua empresa ou negócio"></div>
+            <div class="campo-painel"><label for="telefone_empresa">WhatsApp / Telefone *</label><input type="tel" id="telefone_empresa" required placeholder="Ex: (18) 99999-9999"></div>
+            <div class="campo-painel"><label for="cnpj_empresa">CNPJ / CPF</label><input type="text" id="cnpj_empresa" placeholder="00.000.000/0000-00"></div>
+            <div class="campo-painel campo-painel-full"><label for="endereco_empresa">Endereço</label><input type="text" id="endereco_empresa" placeholder="Rua, número, bairro, cidade/UF"></div>
           </div>
-
           <div class="responsaveis-box">
-            <div class="responsaveis-topo">
-              <div><h3>Responsáveis pelo orçamento</h3><p>Cadastre e selecione quem aparecerá como responsável nos orçamentos gerados.</p></div>
-              <button type="button" class="btn-editar-perfil" onclick="abrirModalResponsavelInterno()">+ Adicionar</button>
-            </div>
+            <div class="responsaveis-topo"><div><h3>Responsáveis pelo orçamento</h3><p>Cadastre quem poderá aparecer como responsável nos orçamentos.</p></div><button type="button" class="btn-editar-perfil" onclick="abrirModalResponsavelInterno()">Adicionar</button></div>
             <div id="lista-responsaveis" class="lista-responsaveis">Carregando responsáveis...</div>
           </div>
-
-          <div id="status-perfil" class="status-msg"></div>
-          <div class="botoes-modal-painel">
-            <button type="button" class="btn-cancelar" onclick="fecharModalEditarPerfil()">Cancelar</button>
-            <button type="submit" class="btn-salvar">Salvar alterações</button>
-          </div>
+          <div id="status-perfil" class="status-msg" aria-live="polite"></div>
+          <div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalEditarPerfil()">Cancelar</button><button type="submit" class="btn-salvar">Salvar alterações</button></div>
         </form>
-
         <div id="modal-responsavel-interno" class="modal-responsavel-interno">
-          <div class="modal-responsavel-card">
-            <h3>Novo responsável</h3>
-            <div class="campo-painel"><label>Nome do responsável</label><input type="text" id="novo-responsavel-nome" placeholder="Ex: João Silva"></div>
-            <div id="status-responsavel" class="status-msg"></div>
-            <div class="botoes-modal-painel">
-              <button type="button" class="btn-cancelar" onclick="fecharModalResponsavelInterno()">Cancelar</button>
-              <button type="button" class="btn-confirmar" onclick="salvarResponsavel()">Salvar responsável</button>
-            </div>
-          </div>
+          <div class="modal-responsavel-card"><h3>Novo responsável</h3><div class="campo-painel"><label for="novo-responsavel-nome">Nome do responsável</label><input type="text" id="novo-responsavel-nome" placeholder="Ex: João Silva"></div><div id="status-responsavel" class="status-msg" aria-live="polite"></div><div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalResponsavelInterno()">Cancelar</button><button type="button" class="btn-confirmar" onclick="salvarResponsavel()">Salvar responsável</button></div></div>
         </div>
       </div>
     </div>
 
-    <div id="modal-senha" class="modal-overlay-painel">
+    <div id="modal-senha" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-labelledby="titulo-alterar-senha">
       <div class="modal-painel pequeno">
-        <h2>Alterar senha</h2>
-        <div class="dica-seguranca">Para sua segurança, informe sua senha atual antes de cadastrar uma nova senha.</div>
-        <div class="campo-painel"><label>Senha atual</label><input type="password" id="senha_atual" autocomplete="current-password" placeholder="Digite sua senha atual"></div>
-        <div class="campo-painel"><label>Nova senha</label><input type="password" id="nova_senha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres"></div>
-        <div class="campo-painel"><label>Confirmar nova senha</label><input type="password" id="confirmar_senha" autocomplete="new-password" placeholder="Digite a nova senha novamente"></div>
-        <div id="status-senha" class="status-msg"></div>
-        <div class="botoes-modal-painel">
-          <button type="button" class="btn-cancelar" onclick="fecharModalSenha()">Cancelar</button>
-          <button type="button" class="btn-confirmar" onclick="alterarSenhaSegura()">Confirmar alteração</button>
-        </div>
+        <h2 id="titulo-alterar-senha">Alterar senha</h2>
+        <div class="dica-seguranca">Informe sua senha atual antes de cadastrar uma nova senha.</div>
+        <div class="campo-painel"><label for="senha_atual">Senha atual</label><input type="password" id="senha_atual" autocomplete="current-password"></div>
+        <div class="campo-painel"><label for="nova_senha">Nova senha</label><input type="password" id="nova_senha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres"></div>
+        <div class="campo-painel"><label for="confirmar_senha">Confirmar nova senha</label><input type="password" id="confirmar_senha" autocomplete="new-password"></div>
+        <div id="status-senha" class="status-msg" aria-live="polite"></div>
+        <div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalSenha()">Cancelar</button><button type="button" class="btn-confirmar" onclick="alterarSenhaSegura()">Confirmar alteração</button></div>
       </div>
     </div>
 
-    <div id="modal-excluir-conta" class="modal-overlay-painel">
+    <div id="modal-excluir-conta" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-labelledby="titulo-excluir-conta">
       <div class="modal-painel pequeno">
-        <h2>Excluir conta</h2>
+        <h2 id="titulo-excluir-conta">Excluir conta</h2>
         <div class="dica-seguranca dica-perigo">Esta ação é permanente. Sua conta, perfil, orçamentos, notificações, responsáveis e logo serão removidos.</div>
-        <div class="campo-painel"><label>Digite EXCLUIR para confirmar</label><input type="text" id="confirmar_excluir_conta" placeholder="EXCLUIR"></div>
-        <div id="status-excluir-conta" class="status-msg"></div>
-        <div class="botoes-modal-painel">
-          <button type="button" class="btn-cancelar" onclick="fecharModalExcluirConta()">Cancelar</button>
-          <button type="button" class="btn-confirmar btn-perigo" onclick="excluirMinhaConta()">Excluir definitivamente</button>
-        </div>
+        <div class="campo-painel"><label for="confirmar_excluir_conta">Digite EXCLUIR para confirmar</label><input type="text" id="confirmar_excluir_conta" placeholder="EXCLUIR"></div>
+        <div id="status-excluir-conta" class="status-msg" aria-live="polite"></div>
+        <div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalExcluirConta()">Cancelar</button><button type="button" class="btn-confirmar btn-perigo" onclick="excluirMinhaConta()">Excluir definitivamente</button></div>
       </div>
     </div>
 
-    <div id="modal-pix-basico" class="modal-pix-overlay">
+    <div id="modal-pix-basico" class="modal-pix-overlay" role="dialog" aria-modal="true" aria-labelledby="pix-modal-titulo">
       <div class="modal-pix-card">
-        <div class="modal-pix-topo">
-          <div><strong>Pagamento via Pix</strong><span id="pix-modal-subtitulo">Plano Premium</span></div>
-          <button type="button" onclick="fecharModalPixBasico()">×</button>
-        </div>
-        <div id="pix-loading" class="pix-loading">Gerando Pix, aguarde...</div>
-        <div id="pix-conteudo" class="pix-conteudo" style="display:none;">
-          <div class="pix-resumo"><div><small>Plano</small><strong id="pix-plano-label">Premium</strong></div><div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div></div>
-          <div class="pix-qrcode-box"><img id="pix-qrcode-img" src="" alt="QR Code Pix"></div>
-          <label class="pix-label">Pix copia e cola</label>
-          <textarea id="pix-copia-cola" readonly></textarea>
+        <div class="modal-pix-topo"><div><strong id="pix-modal-titulo">Pagamento via Pix</strong><span id="pix-modal-subtitulo">FS Orçamentos</span></div><button type="button" aria-label="Fechar pagamento" onclick="fecharModalPixBasico()">×</button></div>
+        <div id="pix-loading" class="pix-loading">Gerando Pix...</div>
+        <div id="pix-conteudo" class="pix-conteudo hidden">
+          <div class="pix-resumo"><div><small>Produto</small><strong id="pix-plano-label">-</strong></div><div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div></div>
+          <div class="pix-qrcode-box"><img id="pix-qrcode-img" class="hidden" src="" alt="QR Code Pix"></div>
+          <label class="pix-label" for="pix-copia-cola">Pix copia e cola</label><textarea id="pix-copia-cola" readonly></textarea>
           <div class="pix-acoes"><button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button><button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button></div>
-          <p class="pix-aviso">Após a confirmação do Pix, seu Premium será liberado automaticamente.</p>
+          <p class="pix-aviso">Após a confirmação, o produto será aplicado automaticamente à sua conta.</p>
         </div>
-        <div id="pix-erro" class="pix-erro" style="display:none;"></div>
+        <div id="pix-erro" class="pix-erro hidden"></div>
       </div>
     </div>
   </div>
@@ -243,23 +243,9 @@
   <script src="auth.js"></script>
   <script src="ui.js"></script>
   <script src="pagamentos.js"></script>
-  <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
   <script src="painel.js"></script>
-  <script>
-    window.planoLabel = function(plano){ return String(plano || '').toLowerCase() === 'premium' ? 'Plano Premium' : 'Plano Grátis'; };
-    window.montarAvisoPlano = function(perfil){
-      const plano = String(perfil?.plano || 'gratis').toLowerCase();
-      const status = String(perfil?.plano_status || 'ativo').toLowerCase();
-      const dias = typeof window.diasAteExpirar === 'function' ? window.diasAteExpirar(perfil?.plano_expira_em) : null;
-      if (plano !== 'premium') return { tipo:'gratis', texto:'Você está no Plano Grátis. Ative o Premium para salvar orçamentos, enviar link por WhatsApp, receber aprovação online, usar recorrentes, Caixa e relatórios.' };
-      if (status === 'cancelado') return { tipo:'erro', texto:'Seu Premium está cancelado. Renove para voltar a usar os recursos avançados.' };
-      if (status === 'expirado' || (dias !== null && dias < 0)) return { tipo:'erro', texto:'Seu Premium expirou. Renove para continuar usando os recursos avançados.' };
-      if (dias !== null && dias <= 7) return { tipo:'alerta', texto:`Seu Premium vence ${dias === 0 ? 'hoje' : `em ${dias} dia(s)`}. Renove para evitar bloqueio dos recursos avançados.` };
-      return { tipo:'ok', texto:'Seu Premium está ativo.' };
-    };
-    window.usuarioJaTemPlanoPago = function(perfil){ return String(perfil?.plano || localStorage.getItem('usuario_plano') || 'gratis').toLowerCase() === 'premium'; };
-  </script>
+  <script src="planos.js"></script>
 </body>
 </html>
