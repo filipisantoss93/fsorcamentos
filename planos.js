@@ -203,7 +203,7 @@ function adicionarEfexNaHomePublica() {
   secao.setAttribute('aria-labelledby', 'home-efex-titulo');
   secao.innerHTML = `
     <div class="home-efex-imagem">
-      <img src="/assets/efex-home.svg?v=5968b2e" alt="EfeX, auxiliar de diagnóstico mecânico com inteligência artificial do FS Orçamentos" width="450" height="450" loading="eager" fetchpriority="high">
+      <img src="/efex-img.JPG?v=64fa986" alt="EfeX, auxiliar de diagnóstico mecânico com inteligência artificial do FS Orçamentos" width="450" height="450" loading="eager" fetchpriority="high">
     </div>
     <div class="home-efex-conteudo">
       <span class="home-efex-selo">Novo no FS Orçamentos</span>
