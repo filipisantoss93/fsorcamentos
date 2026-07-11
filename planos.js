@@ -114,12 +114,22 @@
     setTimeout(carregar, 900);
   }
 
+  function carregarGestaoLinksOrcamentos() {
+    const path = String(location.pathname || '').toLowerCase();
+    if (!path.endsWith('/orcamentos.html') && !path.endsWith('/orcamentos')) return;
+    if (document.getElementById('fs-orcamentos-links-js')) return;
+    const script = document.createElement('script');
+    script.id = 'fs-orcamentos-links-js';
+    script.src = '/orcamentos-links.js?v=20260711-links-seguros';
+    document.body.appendChild(script);
+  }
+
   window.fsLabelNivelPlano = labelNivel;
   window.fsCreditosDoNivel = creditosDoNivel;
   window.carregarStatusPlanoPagina = carregar;
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarSincronizacao);
-  else iniciarSincronizacao();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); });
+  else { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); }
 
   if (window._supabase?.auth) {
     _supabase.auth.onAuthStateChange((_evento, sessao) => {
