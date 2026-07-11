@@ -4,575 +4,161 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
-  <meta name="theme-color" content="#334155">
-  <title>Efex | Diagnóstico automotivo com IA</title>
-  <meta name="description" content="Efex: assistente técnico automotivo com análise de sintomas, fotos, DTC, medições e geração de rascunho de orçamento.">
-  <link rel="stylesheet" href="/style.css?v=20260711-efex">
+  <meta name="theme-color" content="#082f49">
+  <title>Efex | Especialistas automotivos com IA</title>
+  <meta name="description" content="Efex: especialistas automotivos com IA para diagnóstico, imagens, orçamento, preços e comunicação com o cliente.">
+  <link rel="stylesheet" href="/style.css?v=20260711-efex-modular">
   <link rel="icon" type="image/png" href="/favicon.png">
   <style>
-    .efex-page{width:min(1240px,calc(100% - 24px));margin:0 auto;padding:18px 0 52px;display:grid;gap:14px;color:var(--fs-text,#243447)}
-    .efex-card{background:#fff;border:1px solid var(--fs-border,#d6dee6);box-shadow:none;padding:14px}
-    .efex-hero{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:14px;align-items:stretch;background:#f8fafc;border-top:2px solid #475569}
-    .efex-tag{display:inline-flex;width:max-content;padding:5px 8px;border:1px solid #cbd5e1;background:#edf2f6;color:#475569;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-    .efex-hero h1{margin:10px 0 6px;font-size:clamp(30px,5vw,52px);line-height:1;letter-spacing:-.04em;color:#243447}
-    .efex-hero p{margin:0;max-width:800px;color:#5f6f7f;line-height:1.5}
-    .efex-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-    .efex-metric{display:grid;align-content:center;min-height:82px;padding:11px;background:#fff;border:1px solid #d6dee6}
-    .efex-metric span{font-size:11px;font-weight:700;color:#5f6f7f;text-transform:uppercase;letter-spacing:.04em}
-    .efex-metric strong{margin-top:5px;font-size:20px;color:#243447}
-    .efex-badge-ok{color:#166534!important}.efex-badge-danger{color:#b91c1c!important}
-    .efex-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(400px,.95fr);gap:14px;align-items:start}
-    .efex-column{display:grid;gap:12px}
-    .efex-section-head{margin:-14px -14px 14px;padding:11px 14px;background:#475569;color:#fff;border-bottom:2px solid #334155}
-    .efex-section-head h2,.efex-section-head h3{margin:0;color:#fff;font-size:17px}.efex-section-head p{margin:4px 0 0;color:#e2e8f0;font-size:12px}
-    .efex-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.efex-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.efex-field{display:grid;gap:5px}.efex-field.full{grid-column:1/-1}
-    .efex-field label{font-size:12px;font-weight:700;color:#475569}.efex-field input,.efex-field select,.efex-field textarea{width:100%;min-height:38px;padding:9px;border:1px solid #cbd5e1;background:#fff;color:#243447;box-shadow:none}.efex-field textarea{min-height:96px;resize:vertical}.efex-field small,.efex-footnote{color:#64748b;font-size:11px;line-height:1.4}
-    .efex-actions{display:flex;flex-wrap:wrap;gap:8px}.efex-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:8px 12px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-weight:700;cursor:pointer;text-decoration:none}.efex-btn.primary{background:#475569;color:#fff;border-color:#334155}.efex-btn.success{background:#166534;color:#fff;border-color:#14532d}.efex-btn.danger{background:#fff1f1;color:#991b1b;border-color:#fecaca}.efex-btn:disabled{opacity:.55;cursor:not-allowed}
-    .efex-upload{display:grid;gap:10px;padding:12px;border:1px dashed #94a3b8;background:#f8fafc}.efex-file-input{position:absolute;inline-size:1px;block-size:1px;opacity:0;pointer-events:none}.efex-previews{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.efex-preview{position:relative;aspect-ratio:4/3;border:1px solid #cbd5e1;background:#e2e8f0;overflow:hidden}.efex-preview img{width:100%;height:100%;object-fit:cover}.efex-preview button{position:absolute;right:4px;top:4px;width:28px;height:28px;padding:0;border:1px solid #fff;background:rgba(15,23,42,.82);color:#fff;font-size:18px;cursor:pointer}
-    .efex-progress{display:none;padding:11px;border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;font-weight:700}.efex-progress.ativo{display:block}
-    .efex-placeholder{padding:26px;text-align:center;border:1px dashed #94a3b8;background:#f8fafc;color:#64748b}.efex-result{display:none;gap:12px}.efex-result.ativo{display:grid}
-    .efex-result-block{padding:12px;border:1px solid #d6dee6;background:#fff}.efex-result-block h3{margin:0 0 8px;color:#334155;font-size:16px}.efex-result-block p{margin:0;line-height:1.55;color:#334155}.efex-result-block ul,.efex-result-block ol{margin:0;padding-left:20px;display:grid;gap:6px;color:#334155}
-    .efex-hypotheses{display:grid;gap:8px}.efex-hypothesis{padding:10px;border:1px solid #d6dee6;background:#f8fafc}.efex-hypothesis-top{display:flex;justify-content:space-between;gap:10px}.efex-hypothesis p{margin:6px 0 0;font-size:13px}.efex-confidence{font-size:11px;font-weight:700;text-transform:uppercase;color:#475569}
-    .efex-table-wrap{overflow:auto;border:1px solid #d6dee6}.efex-table{width:100%;min-width:680px;border-collapse:collapse}.efex-table th{padding:9px;background:#475569;color:#fff;text-align:left;font-size:11px;text-transform:uppercase}.efex-table td{padding:9px;border-bottom:1px solid #e2e8f0;vertical-align:top;font-size:13px}.efex-table td small{display:block;margin-top:4px;color:#64748b}.efex-price{white-space:nowrap;font-weight:700}.efex-source-list{margin:0;padding-left:17px;display:grid;gap:4px}.efex-source-list a{color:#1d4ed8;word-break:break-word}
-    .efex-alert{border-color:#fde68a;background:#fffbeb}.efex-alert h3{color:#92400e}.efex-chat-log{display:grid;gap:8px;max-height:360px;overflow:auto;padding:8px;border:1px solid #d6dee6;background:#f8fafc}.efex-message{max-width:90%;padding:9px 10px;border:1px solid #d6dee6;background:#fff;white-space:pre-wrap;line-height:1.45}.efex-message.user{justify-self:end;background:#475569;color:#fff;border-color:#334155}.efex-message.assistant{justify-self:start}
-    .efex-lock{display:none;text-align:center}.efex-lock.ativo{display:grid;gap:10px}.efex-lock h2{margin:0}.efex-lock p{margin:0;color:#64748b}
-    @media(max-width:980px){.efex-layout,.efex-hero{grid-template-columns:1fr}.efex-hero aside{order:-1}.efex-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
-    @media(max-width:620px){.efex-page{width:min(100% - 14px,1240px);padding-top:8px}.efex-grid,.efex-grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}.efex-field.full{grid-column:1/-1}.efex-metrics{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.efex-metric{min-height:72px;padding:8px}.efex-metric strong{font-size:15px}.efex-metric span{font-size:9px}.efex-previews{grid-template-columns:repeat(2,minmax(0,1fr))}.efex-btn{flex:1 1 140px}.efex-card{padding:11px}.efex-section-head{margin:-11px -11px 11px}}
+    :root{--efex-blue:#062f4f;--efex-blue-2:#0b4f78;--efex-yellow:#ffc400;--efex-green:#16a34a;--efex-bg:#eef4f8;--efex-text:#102536;--efex-muted:#5d7180;--efex-border:#ccdae4}
+    *{box-sizing:border-box}.efex-page{width:min(1240px,calc(100% - 24px));margin:auto;padding:18px 0 54px;display:grid;gap:16px;color:var(--efex-text)}
+    .efex-card{background:#fff;border:1px solid var(--efex-border);border-radius:18px;box-shadow:0 12px 34px rgba(6,47,79,.08);padding:18px}
+    .efex-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 270px;align-items:center;min-height:260px;padding:28px;background:linear-gradient(135deg,var(--efex-blue),var(--efex-blue-2));color:#fff;border:0}
+    .efex-hero:after{content:"";position:absolute;width:320px;height:320px;border-radius:50%;right:-90px;top:-150px;background:rgba(255,196,0,.14)}
+    .efex-hero-copy{position:relative;z-index:2}.efex-tag{display:inline-flex;padding:7px 11px;border-radius:999px;background:var(--efex-yellow);color:#183041;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+    .efex-hero h1{margin:12px 0 8px;color:#fff;font-size:clamp(32px,5vw,56px);letter-spacing:-.04em}.efex-hero p{max-width:700px;margin:0;color:#dcebf5;line-height:1.55}
+    .efex-character{position:relative;z-index:2;align-self:end;width:100%;max-height:250px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 16px 18px rgba(0,0,0,.22))}
+    .efex-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}.efex-metric{padding:10px 12px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.09)}.efex-metric span{display:block;color:#bdd5e4;font-size:10px;font-weight:800;text-transform:uppercase}.efex-metric strong{display:block;margin-top:4px;color:#fff;font-size:16px}.efex-badge-ok{color:#86efac!important}.efex-badge-danger{color:#fca5a5!important}
+    .efex-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.9fr);gap:16px;align-items:start}.efex-column{display:grid;gap:14px}
+    .efex-section-head{margin:-18px -18px 16px;padding:14px 18px;background:var(--efex-blue);border-radius:18px 18px 0 0;color:#fff}.efex-section-head h2{margin:0;color:#fff;font-size:17px}.efex-section-head p{margin:4px 0 0;color:#cfe0ea;font-size:12px}
+    .efex-specialists{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.efex-specialist{position:relative;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;padding:13px;border:1px solid var(--efex-border);border-radius:14px;background:#f8fbfd;cursor:pointer}.efex-specialist:hover{border-color:#7ca8c1}.efex-specialist input{margin-top:4px;accent-color:var(--efex-blue-2)}.efex-specialist strong{display:block;font-size:14px}.efex-specialist small{display:block;margin-top:3px;color:var(--efex-muted);line-height:1.35}.efex-specialist.required{background:#eaf5fb;border-color:#83b6d1}.efex-specialist .efex-chip{position:absolute;right:9px;top:9px;padding:3px 7px;border-radius:999px;background:#e2e8f0;color:#475569;font-size:9px;font-weight:800}.efex-specialist.required .efex-chip{background:var(--efex-yellow);color:#263746}
+    .efex-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.efex-level{position:relative;padding:13px;border:1px solid var(--efex-border);border-radius:14px;background:#fff;cursor:pointer}.efex-level input{position:absolute;opacity:0}.efex-level:has(input:checked){border:2px solid var(--efex-blue-2);background:#edf7fc;padding:12px}.efex-level strong{display:block}.efex-level small{display:block;margin-top:4px;color:var(--efex-muted);line-height:1.35}.efex-level em{display:inline-block;margin-top:8px;padding:3px 7px;border-radius:999px;background:#e8eef2;color:#425866;font-size:10px;font-style:normal;font-weight:800}
+    .efex-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.efex-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.efex-field{display:grid;gap:5px}.efex-field.full{grid-column:1/-1}.efex-field label{font-size:12px;font-weight:800;color:#334f61}.efex-field input,.efex-field select,.efex-field textarea{width:100%;min-height:42px;padding:10px 11px;border:1px solid var(--efex-border);border-radius:10px;background:#fff;color:var(--efex-text)}.efex-field textarea{min-height:112px;resize:vertical}.efex-field small,.efex-footnote{color:var(--efex-muted);font-size:11px;line-height:1.45}
+    details.efex-details{border:1px solid var(--efex-border);border-radius:12px;background:#f8fbfd}details.efex-details summary{padding:12px 14px;font-weight:800;cursor:pointer}details.efex-details>div{padding:0 14px 14px}
+    .efex-upload{display:grid;gap:10px;padding:14px;border:1px dashed #86a9bd;border-radius:14px;background:#f6fafc}.efex-file-input{position:absolute;width:1px;height:1px;opacity:0}.efex-previews{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.efex-preview{position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#dbe7ee}.efex-preview img{width:100%;height:100%;object-fit:cover}.efex-preview button{position:absolute;right:5px;top:5px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(5,31,48,.85);color:#fff;font-size:18px}
+    .efex-actions{display:flex;flex-wrap:wrap;gap:8px}.efex-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid var(--efex-border);border-radius:11px;background:#fff;color:#244052;font-weight:800;cursor:pointer;text-decoration:none}.efex-btn.primary{background:var(--efex-yellow);color:#193143;border-color:#e5ae00}.efex-btn.success{background:var(--efex-green);color:#fff;border-color:#15803d}.efex-btn.danger{color:#b91c1c;border-color:#fecaca}.efex-btn:disabled{opacity:.55;cursor:not-allowed}
+    .efex-estimate{display:grid;gap:7px;padding:14px;border-radius:14px;background:#edf7fc;border:1px solid #b6d9e9}.efex-estimate-row{display:flex;justify-content:space-between;gap:12px}.efex-estimate strong{color:var(--efex-blue)}
+    .efex-progress{display:none;margin-top:10px;padding:12px;border-radius:10px;background:#e9f6ff;color:#075985;font-weight:800}.efex-progress.ativo{display:block}.efex-placeholder{padding:30px;text-align:center;border:1px dashed #9eb5c3;border-radius:14px;background:#f8fbfd;color:var(--efex-muted)}.efex-result{display:none;gap:12px}.efex-result.ativo{display:grid}.efex-result-block{padding:14px;border:1px solid var(--efex-border);border-radius:14px;background:#fff}.efex-result-block h3{margin:0 0 9px;color:var(--efex-blue);font-size:16px}.efex-result-block p{margin:0;line-height:1.55}.efex-result-block ul,.efex-result-block ol{margin:0;padding-left:20px;display:grid;gap:6px}.efex-hypotheses{display:grid;gap:8px}.efex-hypothesis{padding:11px;border-radius:11px;background:#f5f9fb;border:1px solid var(--efex-border)}.efex-hypothesis-top{display:flex;justify-content:space-between;gap:8px}.efex-confidence{font-size:10px;font-weight:900;text-transform:uppercase;color:#517080}.efex-table-wrap{overflow:auto;border:1px solid var(--efex-border);border-radius:10px}.efex-table{width:100%;min-width:640px;border-collapse:collapse}.efex-table th{padding:9px;background:var(--efex-blue);color:#fff;text-align:left;font-size:11px}.efex-table td{padding:9px;border-bottom:1px solid #e5edf2;font-size:13px}.efex-price{white-space:nowrap;font-weight:800}.efex-source-list{margin:0;padding-left:17px}.efex-source-list a{color:#0369a1}.efex-chat-log{display:grid;gap:8px;max-height:320px;overflow:auto;padding:9px;border-radius:12px;background:#f6fafc}.efex-message{max-width:90%;padding:9px 11px;border-radius:12px;background:#fff;border:1px solid var(--efex-border);white-space:pre-wrap}.efex-message.user{justify-self:end;background:var(--efex-blue);color:#fff}.efex-lock{display:none;text-align:center}.efex-lock.ativo{display:grid;gap:10px}
+    .is-hidden{display:none!important}
+    @media(max-width:980px){.efex-layout,.efex-hero{grid-template-columns:1fr}.efex-character{max-height:220px}.efex-hero{padding-bottom:0}.efex-metrics{margin-bottom:18px}}
+    @media(max-width:650px){.efex-page{width:min(100% - 12px,1240px);padding-top:7px}.efex-card{padding:13px;border-radius:14px}.efex-section-head{margin:-13px -13px 13px;border-radius:14px 14px 0 0}.efex-specialists,.efex-levels{grid-template-columns:1fr}.efex-grid,.efex-grid.three{grid-template-columns:1fr}.efex-field.full{grid-column:auto}.efex-metrics{grid-template-columns:1fr 1fr}.efex-previews{grid-template-columns:repeat(2,1fr)}.efex-btn{flex:1 1 150px}.efex-hero{padding:20px 18px 0}.efex-character{max-height:190px}}
   </style>
 </head>
 <body>
   <div id="header-container"></div>
   <main class="efex-page">
     <section class="efex-card efex-hero">
-      <div>
-        <span class="efex-tag">Premium · Assistente técnico</span>
-        <h1>Efex</h1>
-        <p>Assistente de diagnóstico automotivo com análise de sintomas, códigos DTC, medições e fotos. O Efex pesquisa referências públicas de preços e prepara um rascunho de orçamento para revisão.</p>
+      <div class="efex-hero-copy">
+        <span class="efex-tag">Efex · Copiloto da oficina</span>
+        <h1>Escolha o especialista certo</h1>
+        <p>Use somente o que precisa em cada atendimento. Diagnóstico, imagens, orçamento, pesquisa de preços e explicação ao cliente funcionam como módulos independentes.</p>
+        <div class="efex-metrics">
+          <div class="efex-metric"><span>Plano</span><strong id="efex-plano">Verificando...</strong></div>
+          <div class="efex-metric"><span>Consultas atuais</span><strong id="efex-cota">—</strong></div>
+          <div class="efex-metric"><span>Modo selecionado</span><strong id="efex-modo-resumo">Equilibrado</strong></div>
+        </div>
       </div>
-      <aside class="efex-metrics" aria-label="Informações do Efex">
-        <div class="efex-metric"><span>Plano</span><strong id="efex-plano">Verificando...</strong></div>
-        <div class="efex-metric"><span>Consultas restantes</span><strong id="efex-cota">—</strong></div>
-        <div class="efex-metric"><span>Margem em peças</span><strong>+30%</strong></div>
-      </aside>
+      <img class="efex-character" src="/assets/efex-home.svg?v=b74d5cc" alt="Efex, especialista virtual do FS Orçamentos">
     </section>
 
     <section id="efex-lock" class="efex-card efex-lock">
-      <h2>Recurso exclusivo do plano Premium</h2>
-      <p>Ative o Premium para utilizar análise técnica com IA, pesquisa de referências e geração de rascunho.</p>
+      <h2>Recurso exclusivo do plano Premium</h2><p>Ative o Premium para utilizar os especialistas do Efex.</p>
       <div class="efex-actions"><a href="/planos.html#assinar-plano-premium" class="efex-btn primary">Ver plano Premium</a></div>
     </section>
 
     <section id="efex-app" class="efex-layout" hidden>
       <form id="efex-form" class="efex-column" autocomplete="off">
         <section class="efex-card">
-          <div class="efex-section-head"><h2>Dados do atendimento</h2><p>Identifique o cliente e o veículo para melhorar a compatibilidade das peças.</p></div>
-          <div class="efex-grid">
-            <div class="efex-field"><label for="efex-cliente">Cliente</label><input id="efex-cliente" maxlength="180" placeholder="Nome do cliente"></div>
-            <div class="efex-field"><label for="efex-whatsapp">WhatsApp</label><input id="efex-whatsapp" maxlength="40" inputmode="tel" placeholder="(00) 00000-0000"></div>
+          <div class="efex-section-head"><h2>1. Mini especialistas</h2><p>Ative apenas os módulos necessários para reduzir tempo e custo.</p></div>
+          <div class="efex-specialists">
+            <label class="efex-specialist required"><input type="checkbox" id="mod-diagnostico" checked disabled><span><strong>🔍 Diagnóstico técnico</strong><small>Hipóteses, causa provável e sequência objetiva de testes.</small></span><b class="efex-chip">BASE</b></label>
+            <label class="efex-specialist"><input type="checkbox" id="mod-imagens"><span><strong>📸 Analisar imagens</strong><small>Interpreta fotos de componentes, scanner, painel e desgaste.</small></span></label>
+            <label class="efex-specialist"><input type="checkbox" id="mod-orcamento"><span><strong>💼 Preparar orçamento</strong><small>Sugere peças, serviços e horas. Libera o rascunho no gerador.</small></span></label>
+            <label class="efex-specialist"><input type="checkbox" id="mod-precos"><span><strong>🛒 Pesquisar preços</strong><small>Consulta referências públicas. Use somente quando precisar de valores.</small></span></label>
+            <label class="efex-specialist"><input type="checkbox" id="mod-cliente"><span><strong>💬 Explicar ao cliente</strong><small>Cria uma explicação simples para aprovação do serviço.</small></span></label>
           </div>
-          <div class="efex-grid three" style="margin-top:10px">
+        </section>
+
+        <section class="efex-card">
+          <div class="efex-section-head"><h2>2. Profundidade da análise</h2><p>O nível controla raciocínio, tamanho da resposta e custo computacional.</p></div>
+          <div class="efex-levels">
+            <label class="efex-level"><input type="radio" name="nivel" value="economico"><strong>⚡ Econômico</strong><small>Triagem rápida, DTC e próximo teste. Ideal para dúvidas simples.</small><em>menor consumo</em></label>
+            <label class="efex-level"><input type="radio" name="nivel" value="equilibrado" checked><strong>🔧 Equilibrado</strong><small>Boa profundidade para a maioria dos atendimentos da oficina.</small><em>recomendado</em></label>
+            <label class="efex-level"><input type="radio" name="nivel" value="especialista"><strong>🧠 Especialista</strong><small>Caso complexo, medições, várias hipóteses e investigação detalhada.</small><em>maior consumo</em></label>
+          </div>
+        </section>
+
+        <section class="efex-card">
+          <div class="efex-section-head"><h2>3. Veículo e sintoma</h2><p>Informe primeiro o essencial. Os dados complementares ficam recolhidos.</p></div>
+          <div class="efex-grid three">
             <div class="efex-field"><label for="efex-marca">Marca</label><input id="efex-marca" maxlength="60" placeholder="Volkswagen"></div>
             <div class="efex-field"><label for="efex-modelo">Modelo</label><input id="efex-modelo" maxlength="80" placeholder="Saveiro"></div>
             <div class="efex-field"><label for="efex-ano">Ano</label><input id="efex-ano" maxlength="20" placeholder="2023"></div>
             <div class="efex-field"><label for="efex-motor">Motor</label><input id="efex-motor" maxlength="60" placeholder="1.6 MSI"></div>
             <div class="efex-field"><label for="efex-combustivel">Combustível</label><input id="efex-combustivel" maxlength="30" placeholder="Flex"></div>
-            <div class="efex-field"><label for="efex-km">Quilometragem</label><input id="efex-km" maxlength="30" inputmode="numeric" placeholder="85.000 km"></div>
+            <div class="efex-field"><label for="efex-km">Quilometragem</label><input id="efex-km" maxlength="30" placeholder="85.000 km"></div>
+            <div class="efex-field full"><label for="efex-sintoma">O que está acontecendo com o veículo? *</label><textarea id="efex-sintoma" required minlength="10" maxlength="4000" placeholder="Descreva o sintoma, quando ocorre, luzes no painel, ruídos, temperatura, rotação e serviços recentes."></textarea></div>
           </div>
+          <details class="efex-details" style="margin-top:10px"><summary>+ Informações técnicas complementares</summary><div class="efex-grid">
+            <div class="efex-field"><label for="efex-dtc">Códigos DTC</label><textarea id="efex-dtc" maxlength="1800" placeholder="P0302, U0100..."></textarea></div>
+            <div class="efex-field"><label for="efex-medicoes">Medições</label><textarea id="efex-medicoes" maxlength="2400" placeholder="Tensões, pressões, compressão, parâmetros..."></textarea></div>
+            <div class="efex-field"><label for="efex-testes">Testes realizados</label><textarea id="efex-testes" maxlength="2400"></textarea></div>
+            <div class="efex-field"><label for="efex-contexto">Histórico e contexto</label><textarea id="efex-contexto" maxlength="2400"></textarea></div>
+          </div></details>
+          <details class="efex-details" style="margin-top:10px"><summary>+ Cliente e preferências do orçamento</summary><div class="efex-grid">
+            <div class="efex-field"><label for="efex-cliente">Cliente</label><input id="efex-cliente" maxlength="180"></div>
+            <div class="efex-field"><label for="efex-whatsapp">WhatsApp</label><input id="efex-whatsapp" maxlength="40"></div>
+            <div class="efex-field"><label for="efex-valor-hora">Hora técnica</label><input id="efex-valor-hora" type="number" min="0" max="5000" step="0.01" value="150"></div>
+            <div class="efex-field"><label for="efex-qualidade-peca">Qualidade da peça</label><select id="efex-qualidade-peca"><option value="nova original ou OEM">Original/OEM</option><option value="nova de primeira linha" selected>Primeira linha</option><option value="nova econômica">Econômica</option><option value="remanufaturada quando tecnicamente adequada">Remanufaturada</option></select></div>
+          </div></details>
+        </section>
+
+        <section id="efex-fotos-card" class="efex-card is-hidden">
+          <div class="efex-section-head"><h2>4. Evidências visuais</h2><p>As fotos serão comprimidas antes do envio.</p></div>
+          <div class="efex-upload"><div><strong>Até 4 imagens</strong><div class="efex-footnote">Envie somente imagens que ajudem a confirmar o defeito.</div></div><div class="efex-actions"><input id="efex-fotos" class="efex-file-input" type="file" accept="image/jpeg,image/png,image/webp" multiple><label class="efex-btn" for="efex-fotos">Adicionar fotos</label><button id="efex-limpar-fotos" type="button" class="efex-btn danger">Remover todas</button></div><div id="efex-previews" class="efex-previews"></div></div>
         </section>
 
         <section class="efex-card">
-          <div class="efex-section-head"><h2>Informações técnicas</h2><p>Quanto mais objetiva for a descrição, melhor será o roteiro de testes.</p></div>
-          <div class="efex-grid">
-            <div class="efex-field full"><label for="efex-sintoma">Sintoma principal *</label><textarea id="efex-sintoma" required minlength="10" maxlength="4000" placeholder="Descreva quando ocorre, temperatura, rotação, velocidade, frequência, ruídos, luzes no painel e histórico recente."></textarea></div>
-            <div class="efex-field"><label for="efex-dtc">Códigos DTC</label><textarea id="efex-dtc" maxlength="1800" placeholder="Ex.: P0302, U0100, P0016"></textarea></div>
-            <div class="efex-field"><label for="efex-medicoes">Medições encontradas</label><textarea id="efex-medicoes" maxlength="2400" placeholder="Tensões, pressões, sinais, compressão, parâmetros de scanner..."></textarea></div>
-            <div class="efex-field"><label for="efex-testes">Testes já realizados</label><textarea id="efex-testes" maxlength="2400" placeholder="Relate inspeções, substituições temporárias e resultados."></textarea></div>
-            <div class="efex-field"><label for="efex-contexto">Histórico e contexto</label><textarea id="efex-contexto" maxlength="2400" placeholder="Serviços recentes, colisão, alagamento, combustível, modificações..."></textarea></div>
-          </div>
-          <div class="efex-grid" style="margin-top:10px">
-            <div class="efex-field"><label for="efex-valor-hora">Valor da hora técnica</label><input id="efex-valor-hora" type="number" min="0" max="5000" step="0.01" value="150"><small>Usado somente para sugerir mão de obra no rascunho.</small></div>
-            <div class="efex-field"><label for="efex-qualidade-peca">Qualidade de peça</label><select id="efex-qualidade-peca"><option value="nova original ou OEM">Original/OEM</option><option value="nova de primeira linha" selected>Primeira linha</option><option value="nova econômica">Econômica</option><option value="remanufaturada quando tecnicamente adequada">Remanufaturada</option></select></div>
-          </div>
-        </section>
-
-        <section class="efex-card">
-          <div class="efex-section-head"><h2>Fotos para análise</h2><p>Envie componentes, painel, scanner, medições, desgaste ou danos visíveis.</p></div>
-          <div class="efex-upload">
-            <div><strong>Fotos para análise</strong><div class="efex-footnote">Até 4 imagens. JPEG, PNG ou WebP. As fotos são comprimidas no aparelho antes do envio e não são salvas pelo Efex.</div></div>
-            <div class="efex-actions">
-              <input id="efex-fotos" class="efex-file-input" type="file" accept="image/jpeg,image/png,image/webp" multiple>
-              <label class="efex-btn" for="efex-fotos">Adicionar fotos</label>
-              <button id="efex-limpar-fotos" type="button" class="efex-btn danger">Remover todas</button>
-            </div>
-            <div id="efex-previews" class="efex-previews"></div>
-          </div>
-        </section>
-
-        <section class="efex-card">
-          <div class="efex-actions">
-            <button id="efex-analisar" type="submit" class="efex-btn primary">Analisar com o Efex</button>
-            <button id="efex-limpar" type="button" class="efex-btn">Limpar atendimento</button>
-          </div>
+          <div class="efex-estimate"><div class="efex-estimate-row"><span>Configuração</span><strong id="efex-configuracao">Diagnóstico · Equilibrado</strong></div><div class="efex-estimate-row"><span>Custo relativo</span><strong id="efex-custo-relativo">Médio</strong></div><div class="efex-footnote">O sistema de créditos será conectado nesta área na próxima etapa.</div></div>
+          <div class="efex-actions" style="margin-top:12px"><button id="efex-analisar" type="submit" class="efex-btn primary">Executar especialistas</button><button id="efex-limpar" type="button" class="efex-btn">Limpar</button></div>
           <div id="efex-progress" class="efex-progress" role="status" aria-live="polite"></div>
-          <p class="efex-footnote" style="margin:10px 0 0">O Efex é um apoio técnico. Confirme aplicação, procedimentos, torques, segurança e causa raiz antes de substituir peças ou apresentar o orçamento ao cliente.</p>
         </section>
       </form>
 
       <aside class="efex-column">
         <section class="efex-card">
-          <div class="efex-section-head"><h2>Resultado técnico</h2><p>Hipóteses, testes, peças, serviços e referências de mercado.</p></div>
-          <div id="efex-placeholder" class="efex-placeholder">Preencha o atendimento e clique em <strong>Analisar com o Efex</strong>.</div>
+          <div class="efex-section-head"><h2>Resultado dos especialistas</h2><p>Somente os módulos selecionados serão apresentados.</p></div>
+          <div id="efex-placeholder" class="efex-placeholder">Escolha os especialistas, descreva o problema e clique em <strong>Executar especialistas</strong>.</div>
           <div id="efex-result" class="efex-result">
             <div class="efex-result-block"><h3>Resumo</h3><p id="efex-resumo"></p></div>
-            <div class="efex-result-block"><h3>Hipóteses em ordem de probabilidade</h3><div id="efex-hipoteses" class="efex-hypotheses"></div></div>
+            <div class="efex-result-block"><h3>Hipóteses</h3><div id="efex-hipoteses" class="efex-hypotheses"></div></div>
             <div class="efex-result-block"><h3>Testes recomendados</h3><ol id="efex-testes-recomendados"></ol></div>
-            <div id="efex-alertas-wrap" class="efex-result-block efex-alert"><h3>Alertas técnicos e de segurança</h3><ul id="efex-alertas"></ul></div>
-            <div class="efex-result-block">
-              <h3>Peças e preço sugerido</h3>
-              <p class="efex-footnote" style="margin:0 0 9px">Cálculo: média das referências públicas válidas encontradas na web × 1,30. Frete, instalação e parcelamento não entram na média.</p>
-              <div class="efex-table-wrap"><table class="efex-table"><thead><tr><th>Peça</th><th>Referências</th><th>Média encontrada</th><th>Sugerido +30%</th></tr></thead><tbody id="efex-pecas"></tbody></table></div>
-            </div>
-            <div class="efex-result-block"><h3>Serviços sugeridos</h3><div class="efex-table-wrap"><table class="efex-table"><thead><tr><th>Serviço</th><th>Horas</th><th>Valor sugerido</th></tr></thead><tbody id="efex-servicos"></tbody></table></div></div>
-            <div class="efex-result-block"><h3>Fontes consultadas</h3><ul id="efex-fontes" class="efex-source-list"></ul></div>
-            <div class="efex-actions"><button id="efex-criar-rascunho" type="button" class="efex-btn success">Criar rascunho do orçamento</button></div>
+            <div id="efex-alertas-wrap" class="efex-result-block"><h3>Alertas</h3><ul id="efex-alertas"></ul></div>
+            <div id="efex-cliente-wrap" class="efex-result-block is-hidden"><h3>Explicação para o cliente</h3><p id="efex-explicacao-cliente"></p></div>
+            <div id="efex-pecas-wrap" class="efex-result-block is-hidden"><h3>Peças e referências</h3><div class="efex-table-wrap"><table class="efex-table"><thead><tr><th>Peça</th><th>Referências</th><th>Média</th><th>Sugerido +30%</th></tr></thead><tbody id="efex-pecas"></tbody></table></div></div>
+            <div id="efex-servicos-wrap" class="efex-result-block is-hidden"><h3>Serviços sugeridos</h3><div class="efex-table-wrap"><table class="efex-table"><thead><tr><th>Serviço</th><th>Horas</th><th>Valor</th></tr></thead><tbody id="efex-servicos"></tbody></table></div></div>
+            <div id="efex-fontes-wrap" class="efex-result-block is-hidden"><h3>Fontes consultadas</h3><ul id="efex-fontes" class="efex-source-list"></ul></div>
+            <div class="efex-actions"><button id="efex-criar-rascunho" type="button" class="efex-btn success is-hidden">Criar rascunho no gerador</button></div>
           </div>
         </section>
-
-        <section class="efex-card">
-          <div class="efex-section-head"><h2>Continuar análise</h2><p>Envie uma pergunta após o primeiro diagnóstico.</p></div>
-          <div id="efex-chat-log" class="efex-chat-log" aria-live="polite"></div>
-          <div class="efex-field" style="margin-top:9px"><label for="efex-pergunta">Pergunta complementar</label><textarea id="efex-pergunta" maxlength="1600" placeholder="Ex.: Qual teste devo priorizar antes de condenar o componente?"></textarea></div>
-          <div class="efex-actions" style="margin-top:8px"><button id="efex-enviar-pergunta" type="button" class="efex-btn primary">Enviar pergunta</button></div>
-        </section>
+        <section class="efex-card"><div class="efex-section-head"><h2>Pergunta complementar</h2><p>Aprofunde somente quando necessário.</p></div><div id="efex-chat-log" class="efex-chat-log"></div><div class="efex-field" style="margin-top:9px"><textarea id="efex-pergunta" maxlength="1600" placeholder="Qual teste devo priorizar?"></textarea></div><div class="efex-actions" style="margin-top:8px"><button id="efex-enviar-pergunta" type="button" class="efex-btn primary">Perguntar ao diagnóstico</button></div></section>
       </aside>
     </section>
   </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/config.js?v=20260711-efex"></script>
-  <script src="/auth.js"></script>
-  <script src="/planos.js"></script>
-  <script src="/carregar-menu.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/config.js?v=20260711-efex-modular"></script><script src="/auth.js"></script><script src="/planos.js"></script><script src="/carregar-menu.js"></script>
   <script>
-    (() => {
-      'use strict';
-      const $ = id => document.getElementById(id);
-      const MAX_FOTOS = 4;
-      const MAX_ORIGINAL_BYTES = 8 * 1024 * 1024;
-      const MAX_DIMENSAO = 1600;
-      const QUALIDADE_JPEG = .82;
-      const ESTADOS_ATIVOS = new Set(['ativo', 'pago', 'teste_gratis']);
-      const fotos = [];
-      const conversa = [];
-      let usuarioId = '';
-      let assinaturaAtual = null;
-      let resultadoAtual = null;
-      let enviando = false;
-
-      const texto = valor => String(valor ?? '').trim();
-      const normalizar = valor => texto(valor).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-      const moeda = valor => Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-      function assinaturaAtiva(assinatura) {
-        if (!assinatura || normalizar(assinatura.plano) !== 'premium' || !ESTADOS_ATIVOS.has(normalizar(assinatura.status))) return false;
-        if (!assinatura.expira_em) return true;
-        const expira = new Date(assinatura.expira_em);
-        return !Number.isNaN(expira.getTime()) && expira.getTime() >= Date.now();
-      }
-
-      function mostrarMensagem(mensagem, tipo = 'erro') {
-        const prefixo = tipo === 'erro' ? 'Erro: ' : '';
-        window.alert(prefixo + mensagem);
-      }
-
-      function escaparUrl(url) {
-        try {
-          const u = new URL(String(url || ''));
-          return ['https:', 'http:'].includes(u.protocol) ? u.href : '';
-        } catch (_) {
-          return '';
-        }
-      }
-
-      async function carregarAcesso() {
-        const { data: { session }, error } = await _supabase.auth.getSession();
-        if (error || !session?.user?.id) {
-          location.href = '/index.html?login=1&dest=' + encodeURIComponent('/efex.html');
-          return;
-        }
-
-        usuarioId = session.user.id;
-        const { data, error: erroAssinatura } = await _supabase
-          .from('assinaturas')
-          .select('plano,status,expira_em,limite_ia_mensal,consultas_ia_usadas,competencia_ia')
-          .eq('usuario_id', usuarioId)
-          .maybeSingle();
-
-        if (erroAssinatura) {
-          console.error(erroAssinatura);
-          $('efex-plano').textContent = 'Não disponível';
-          $('efex-lock').classList.add('ativo');
-          return;
-        }
-
-        assinaturaAtual = data;
-        const acesso = assinaturaAtiva(data);
-        $('efex-plano').textContent = acesso ? 'Premium ativo' : 'Sem acesso';
-        $('efex-plano').className = acesso ? 'efex-badge-ok' : 'efex-badge-danger';
-
-        const limite = Number(data?.limite_ia_mensal || 0);
-        const usadas = Number(data?.consultas_ia_usadas || 0);
-        $('efex-cota').textContent = acesso ? String(Math.max(limite - usadas, 0)) : '—';
-
-        if (!acesso) {
-          $('efex-lock').classList.add('ativo');
-          return;
-        }
-
-        $('efex-app').hidden = false;
-      }
-
-      function lerArquivoComoDataUrl(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(String(reader.result || ''));
-          reader.onerror = () => reject(new Error('Não foi possível ler a imagem.'));
-          reader.readAsDataURL(file);
-        });
-      }
-
-      function carregarImagem(dataUrl) {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = () => reject(new Error('Imagem inválida.'));
-          img.src = dataUrl;
-        });
-      }
-
-      async function comprimirFoto(file) {
-        if (!/^image\/(jpeg|png|webp)$/i.test(file.type)) throw new Error('Use somente JPEG, PNG ou WebP.');
-        if (file.size > MAX_ORIGINAL_BYTES) throw new Error('Cada imagem deve ter no máximo 8 MB.');
-
-        const original = await lerArquivoComoDataUrl(file);
-        const img = await carregarImagem(original);
-        const escala = Math.min(1, MAX_DIMENSAO / Math.max(img.naturalWidth, img.naturalHeight));
-        const largura = Math.max(1, Math.round(img.naturalWidth * escala));
-        const altura = Math.max(1, Math.round(img.naturalHeight * escala));
-        const canvas = document.createElement('canvas');
-        canvas.width = largura;
-        canvas.height = altura;
-        const ctx = canvas.getContext('2d', { alpha: false });
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, largura, altura);
-        ctx.drawImage(img, 0, 0, largura, altura);
-        return canvas.toDataURL('image/jpeg', QUALIDADE_JPEG);
-      }
-
-      function renderizarFotos() {
-        const container = $('efex-previews');
-        container.replaceChildren();
-
-        fotos.forEach((foto, indice) => {
-          const box = document.createElement('div');
-          box.className = 'efex-preview';
-          const img = document.createElement('img');
-          img.src = foto.dataUrl;
-          img.alt = foto.nome;
-          const remover = document.createElement('button');
-          remover.type = 'button';
-          remover.textContent = '×';
-          remover.setAttribute('aria-label', 'Remover ' + foto.nome);
-          remover.addEventListener('click', () => {
-            fotos.splice(indice, 1);
-            renderizarFotos();
-          });
-          box.append(img, remover);
-          container.appendChild(box);
-        });
-      }
-
-      async function adicionarFotos(files) {
-        for (const file of Array.from(files || [])) {
-          if (fotos.length >= MAX_FOTOS) break;
-          try {
-            const dataUrl = await comprimirFoto(file);
-            fotos.push({ nome: file.name || 'Foto', dataUrl });
-          } catch (erro) {
-            mostrarMensagem(erro.message || 'Não foi possível adicionar a imagem.');
-          }
-        }
-        renderizarFotos();
-        $('efex-fotos').value = '';
-      }
-
-      function dadosFormulario() {
-        return {
-          cliente_nome: texto($('efex-cliente').value),
-          cliente_whatsapp: texto($('efex-whatsapp').value),
-          veiculo: {
-            marca: texto($('efex-marca').value),
-            modelo: texto($('efex-modelo').value),
-            ano: texto($('efex-ano').value),
-            motor: texto($('efex-motor').value),
-            combustivel: texto($('efex-combustivel').value),
-            quilometragem: texto($('efex-km').value)
-          },
-          sintoma: texto($('efex-sintoma').value),
-          dtc: texto($('efex-dtc').value),
-          medicoes: texto($('efex-medicoes').value),
-          testes_realizados: texto($('efex-testes').value),
-          contexto: texto($('efex-contexto').value),
-          valor_hora: Number($('efex-valor-hora').value || 0),
-          qualidade_peca: texto($('efex-qualidade-peca').value)
-        };
-      }
-
-      function definirCarregando(ativo, mensagem) {
-        enviando = ativo;
-        $('efex-analisar').disabled = ativo;
-        $('efex-enviar-pergunta').disabled = ativo;
-        $('efex-criar-rascunho').disabled = ativo;
-        const progress = $('efex-progress');
-        progress.textContent = mensagem || 'Processando...';
-        progress.classList.toggle('ativo', ativo);
-      }
-
-      async function chamarEfex(payload) {
-        const { data, error } = await _supabase.functions.invoke('efex', { body: payload });
-        if (error) {
-          let detalhe = error.message || 'Falha ao acessar o Efex.';
-          try {
-            const contexto = error.context ? await error.context.json() : null;
-            detalhe = contexto?.error || contexto?.message || detalhe;
-          } catch (_) {}
-          throw new Error(detalhe);
-        }
-        if (!data?.ok) throw new Error(data?.error || 'O Efex não retornou uma resposta válida.');
-        return data;
-      }
-
-      function criarElemento(tag, classe, conteudo) {
-        const el = document.createElement(tag);
-        if (classe) el.className = classe;
-        if (conteudo !== undefined) el.textContent = String(conteudo);
-        return el;
-      }
-
-      function renderizarHipoteses(lista) {
-        const container = $('efex-hipoteses');
-        container.replaceChildren();
-        (lista || []).forEach(item => {
-          const card = criarElemento('div', 'efex-hypothesis');
-          const topo = criarElemento('div', 'efex-hypothesis-top');
-          const titulo = criarElemento('strong', '', item.titulo || 'Hipótese');
-          const confianca = criarElemento('span', 'efex-confidence', item.confianca || 'a confirmar');
-          topo.append(titulo, confianca);
-          const motivo = criarElemento('p', '', item.justificativa || '');
-          card.append(topo, motivo);
-          container.appendChild(card);
-        });
-      }
-
-      function renderizarLista(id, itens) {
-        const lista = $(id);
-        lista.replaceChildren();
-        (itens || []).forEach(item => lista.appendChild(criarElemento('li', '', item)));
-      }
-
-      function renderizarPecas(pecas) {
-        const corpo = $('efex-pecas');
-        corpo.replaceChildren();
-
-        (pecas || []).forEach(peca => {
-          const tr = document.createElement('tr');
-          const nome = document.createElement('td');
-          nome.appendChild(criarElemento('strong', '', peca.nome || 'Peça'));
-          if (peca.observacao) nome.appendChild(criarElemento('small', '', peca.observacao));
-
-          const refs = document.createElement('td');
-          const ul = criarElemento('ul', 'efex-source-list');
-          (peca.evidencias || []).forEach(ev => {
-            const li = document.createElement('li');
-            const url = escaparUrl(ev.url);
-            if (url) {
-              const a = document.createElement('a');
-              a.href = url;
-              a.target = '_blank';
-              a.rel = 'noopener noreferrer nofollow';
-              a.textContent = `${ev.loja || ev.titulo || 'Anúncio'} — ${moeda(ev.preco)}`;
-              li.appendChild(a);
-            } else {
-              li.textContent = `${ev.loja || ev.titulo || 'Referência'} — ${moeda(ev.preco)}`;
-            }
-            ul.appendChild(li);
-          });
-          if (!ul.childElementCount) ul.appendChild(criarElemento('li', '', 'Sem referências suficientes.'));
-          refs.appendChild(ul);
-
-          const media = criarElemento('td', 'efex-price', peca.preco_medio > 0 ? moeda(peca.preco_medio) : 'Não calculado');
-          const sugerido = criarElemento('td', 'efex-price', peca.preco_sugerido > 0 ? moeda(peca.preco_sugerido) : 'Revisar manualmente');
-          tr.append(nome, refs, media, sugerido);
-          corpo.appendChild(tr);
-        });
-
-        if (!corpo.childElementCount) {
-          const tr = document.createElement('tr');
-          const td = criarElemento('td', '', 'Nenhuma peça foi sugerida nesta análise.');
-          td.colSpan = 4;
-          tr.appendChild(td);
-          corpo.appendChild(tr);
-        }
-      }
-
-      function renderizarServicos(servicos) {
-        const corpo = $('efex-servicos');
-        corpo.replaceChildren();
-        (servicos || []).forEach(servico => {
-          const tr = document.createElement('tr');
-          tr.append(
-            criarElemento('td', '', servico.descricao || 'Serviço'),
-            criarElemento('td', 'efex-price', Number(servico.horas || 0).toLocaleString('pt-BR', { maximumFractionDigits: 1 })),
-            criarElemento('td', 'efex-price', Number(servico.valor_sugerido || 0) > 0 ? moeda(servico.valor_sugerido) : 'Definir no gerador')
-          );
-          corpo.appendChild(tr);
-        });
-      }
-
-      function renderizarFontes(fontes) {
-        const lista = $('efex-fontes');
-        lista.replaceChildren();
-        const unicas = new Map();
-        (fontes || []).forEach(fonte => {
-          const url = escaparUrl(fonte.url);
-          if (url && !unicas.has(url)) unicas.set(url, fonte);
-        });
-        unicas.forEach((fonte, url) => {
-          const li = document.createElement('li');
-          const a = document.createElement('a');
-          a.href = url;
-          a.target = '_blank';
-          a.rel = 'noopener noreferrer nofollow';
-          a.textContent = fonte.titulo || new URL(url).hostname;
-          li.appendChild(a);
-          lista.appendChild(li);
-        });
-        if (!lista.childElementCount) lista.appendChild(criarElemento('li', '', 'Nenhuma fonte pública foi retornada.'));
-      }
-
-      function adicionarMensagemChat(papel, mensagem) {
-        conversa.push({ papel, mensagem: texto(mensagem).slice(0, 3000) });
-        const log = $('efex-chat-log');
-        const item = criarElemento('div', `efex-message ${papel === 'usuario' ? 'user' : 'assistant'}`, mensagem);
-        log.appendChild(item);
-        log.scrollTop = log.scrollHeight;
-      }
-
-      function renderizarResultado(data) {
-        resultadoAtual = data.resultado;
-        $('efex-placeholder').style.display = 'none';
-        $('efex-result').classList.add('ativo');
-        $('efex-resumo').textContent = resultadoAtual.resumo || 'Sem resumo.';
-        renderizarHipoteses(resultadoAtual.hipoteses);
-        renderizarLista('efex-testes-recomendados', resultadoAtual.testes_recomendados);
-        renderizarLista('efex-alertas', resultadoAtual.alertas);
-        $('efex-alertas-wrap').style.display = (resultadoAtual.alertas || []).length ? '' : 'none';
-        renderizarPecas(resultadoAtual.pecas);
-        renderizarServicos(resultadoAtual.servicos);
-        renderizarFontes(data.fontes);
-        $('efex-cota').textContent = String(Math.max(Number(data.cota?.restantes || 0), 0));
-        adicionarMensagemChat('assistente', resultadoAtual.resumo || 'Análise concluída.');
-      }
-
-      async function analisar(event) {
-        event.preventDefault();
-        if (enviando) return;
-        const dados = dadosFormulario();
-        if (dados.sintoma.length < 10) {
-          mostrarMensagem('Descreva o sintoma com mais detalhes.');
-          $('efex-sintoma').focus();
-          return;
-        }
-
-        definirCarregando(true, 'Analisando sintomas, fotos e referências públicas de preços...');
-        try {
-          const resposta = await chamarEfex({
-            action: 'diagnosticar',
-            dados,
-            imagens: fotos.map(foto => foto.dataUrl),
-            conversa: conversa.slice(-8)
-          });
-          renderizarResultado(resposta);
-        } catch (erro) {
-          console.error(erro);
-          mostrarMensagem(erro.message || 'Não foi possível concluir a análise.');
-        } finally {
-          definirCarregando(false);
-        }
-      }
-
-      async function enviarPergunta() {
-        if (enviando || !resultadoAtual) return;
-        const pergunta = texto($('efex-pergunta').value);
-        if (pergunta.length < 3) return;
-        adicionarMensagemChat('usuario', pergunta);
-        $('efex-pergunta').value = '';
-        definirCarregando(true, 'Consultando o Efex...');
-        try {
-          const resposta = await chamarEfex({
-            action: 'diagnosticar',
-            dados: { ...dadosFormulario(), pergunta, resultado_anterior: resultadoAtual },
-            imagens: [],
-            conversa: conversa.slice(-10)
-          });
-          renderizarResultado(resposta);
-        } catch (erro) {
-          mostrarMensagem(erro.message || 'Não foi possível responder.');
-        } finally {
-          definirCarregando(false);
-        }
-      }
-
-      async function criarRascunho() {
-        if (enviando || !resultadoAtual) return;
-        definirCarregando(true, 'Criando rascunho no Supabase...');
-        try {
-          const resposta = await chamarEfex({
-            action: 'criar_rascunho',
-            dados: dadosFormulario(),
-            resultado: resultadoAtual
-          });
-          if (!resposta.orcamento_id) throw new Error('O rascunho foi criado sem identificador.');
-          location.href = '/gerador.html?orcamento_id=' + encodeURIComponent(resposta.orcamento_id);
-        } catch (erro) {
-          mostrarMensagem(erro.message || 'Não foi possível criar o rascunho.');
-          definirCarregando(false);
-        }
-      }
-
-      function limparTudo() {
-        $('efex-form').reset();
-        fotos.splice(0);
-        conversa.splice(0);
-        resultadoAtual = null;
-        renderizarFotos();
-        $('efex-chat-log').replaceChildren();
-        $('efex-result').classList.remove('ativo');
-        $('efex-placeholder').style.display = '';
-      }
-
-      $('efex-fotos').addEventListener('change', event => adicionarFotos(event.target.files));
-      $('efex-limpar-fotos').addEventListener('click', () => { fotos.splice(0); renderizarFotos(); });
-      $('efex-form').addEventListener('submit', analisar);
-      $('efex-enviar-pergunta').addEventListener('click', enviarPergunta);
-      $('efex-criar-rascunho').addEventListener('click', criarRascunho);
-      $('efex-limpar').addEventListener('click', limparTudo);
-      $('efex-pergunta').addEventListener('keydown', event => {
-        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') enviarPergunta();
-      });
-
-      carregarAcesso();
-    })();
+  (()=>{'use strict';const $=id=>document.getElementById(id),fotos=[],conversa=[];let resultadoAtual=null,enviando=false;const texto=v=>String(v??'').trim(),normalizar=v=>texto(v).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(),moeda=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});const ativos=new Set(['ativo','pago','teste_gratis']);
+  function assinaturaAtiva(a){if(!a||normalizar(a.plano)!=='premium'||!ativos.has(normalizar(a.status)))return false;if(!a.expira_em)return true;return new Date(a.expira_em).getTime()>=Date.now()}
+  async function carregarAcesso(){const {data:{session}}=await _supabase.auth.getSession();if(!session?.user?.id){location.href='/index.html?login=1&dest=%2Fefex.html';return}const {data,error}=await _supabase.from('assinaturas').select('plano,status,expira_em,limite_ia_mensal,consultas_ia_usadas').eq('usuario_id',session.user.id).maybeSingle();if(error){$('efex-lock').classList.add('ativo');return}const acesso=assinaturaAtiva(data);$('efex-plano').textContent=acesso?'Premium ativo':'Sem acesso';$('efex-plano').className=acesso?'efex-badge-ok':'efex-badge-danger';$('efex-cota').textContent=acesso?String(Math.max(Number(data?.limite_ia_mensal||0)-Number(data?.consultas_ia_usadas||0),0)):'—';if(acesso)$('efex-app').hidden=false;else $('efex-lock').classList.add('ativo')}
+  function configuracao(){const nivel=document.querySelector('[name=nivel]:checked')?.value||'equilibrado';return{nivel,modulos:{diagnostico:true,imagens:$('mod-imagens').checked,orcamento:$('mod-orcamento').checked,precos:$('mod-precos').checked,cliente:$('mod-cliente').checked}}}
+  function atualizarConfig(){const c=configuracao(),nomes=['Diagnóstico'];if(c.modulos.imagens)nomes.push('Imagens');if(c.modulos.orcamento)nomes.push('Orçamento');if(c.modulos.precos)nomes.push('Preços');if(c.modulos.cliente)nomes.push('Cliente');const peso={economico:1,equilibrado:2,especialista:4}[c.nivel]+(c.modulos.imagens?3:0)+(c.modulos.orcamento?2:0)+(c.modulos.precos?4:0)+(c.modulos.cliente?1:0);$('efex-configuracao').textContent=nomes.join(' + ')+' · '+c.nivel[0].toUpperCase()+c.nivel.slice(1);$('efex-modo-resumo').textContent=c.nivel[0].toUpperCase()+c.nivel.slice(1);$('efex-custo-relativo').textContent=peso<=2?'Baixo':peso<=6?'Médio':'Alto';$('efex-fotos-card').classList.toggle('is-hidden',!c.modulos.imagens);if(!c.modulos.imagens){fotos.splice(0);renderizarFotos()}}
+  function dadosFormulario(){return{cliente_nome:texto($('efex-cliente').value),cliente_whatsapp:texto($('efex-whatsapp').value),veiculo:{marca:texto($('efex-marca').value),modelo:texto($('efex-modelo').value),ano:texto($('efex-ano').value),motor:texto($('efex-motor').value),combustivel:texto($('efex-combustivel').value),quilometragem:texto($('efex-km').value)},sintoma:texto($('efex-sintoma').value),dtc:texto($('efex-dtc').value),medicoes:texto($('efex-medicoes').value),testes_realizados:texto($('efex-testes').value),contexto:texto($('efex-contexto').value),valor_hora:Number($('efex-valor-hora').value||0),qualidade_peca:texto($('efex-qualidade-peca').value)}}
+  function definirCarregando(a,m){enviando=a;['efex-analisar','efex-enviar-pergunta','efex-criar-rascunho'].forEach(id=>$(id).disabled=a);$('efex-progress').textContent=m||'Processando...';$('efex-progress').classList.toggle('ativo',a)}
+  async function chamarEfex(payload){const {data,error}=await _supabase.functions.invoke('efex',{body:payload});if(error){let d=error.message;try{const c=await error.context?.json();d=c?.error||d}catch{}throw new Error(d||'Falha ao acessar o Efex.')}if(!data?.ok)throw new Error(data?.error||'Resposta inválida.');return data}
+  function ler(file){return new Promise((r,j)=>{const x=new FileReader;x.onload=()=>r(String(x.result||''));x.onerror=()=>j(new Error('Falha ao ler imagem.'));x.readAsDataURL(file)})}function img(data){return new Promise((r,j)=>{const i=new Image;i.onload=()=>r(i);i.onerror=()=>j(new Error('Imagem inválida.'));i.src=data})}
+  async function comprimir(file){if(!/^image\/(jpeg|png|webp)$/i.test(file.type)||file.size>8*1024*1024)throw new Error('Use JPEG, PNG ou WebP de até 8 MB.');const i=await img(await ler(file)),e=Math.min(1,1280/Math.max(i.naturalWidth,i.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(i.naturalWidth*e);c.height=Math.round(i.naturalHeight*e);const x=c.getContext('2d',{alpha:false});x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(i,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.76)}
+  function renderizarFotos(){$('efex-previews').replaceChildren();fotos.forEach((f,n)=>{const b=document.createElement('div');b.className='efex-preview';const i=document.createElement('img');i.src=f.dataUrl;const bt=document.createElement('button');bt.type='button';bt.textContent='×';bt.onclick=()=>{fotos.splice(n,1);renderizarFotos()};b.append(i,bt);$('efex-previews').append(b)})}
+  async function adicionarFotos(files){for(const f of Array.from(files||[]).slice(0,4-fotos.length)){try{fotos.push({nome:f.name,dataUrl:await comprimir(f)})}catch(e){alert(e.message)}}renderizarFotos();$('efex-fotos').value=''}
+  const el=(tag,cls,t)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(t!==undefined)e.textContent=String(t);return e};function lista(id,itens){$(id).replaceChildren();(itens||[]).forEach(x=>$(id).append(el('li','',x)))}
+  function hipoteses(itens){$('efex-hipoteses').replaceChildren();(itens||[]).forEach(h=>{const c=el('div','efex-hypothesis'),top=el('div','efex-hypothesis-top');top.append(el('strong','',h.titulo||'Hipótese'),el('span','efex-confidence',h.confianca||'a confirmar'));c.append(top,el('p','',h.justificativa||''));$('efex-hipoteses').append(c)})}
+  function pecas(itens){$('efex-pecas').replaceChildren();(itens||[]).forEach(p=>{const tr=document.createElement('tr'),refs=document.createElement('td'),ul=el('ul','efex-source-list');(p.evidencias||[]).forEach(v=>{const li=document.createElement('li');if(v.url){const a=document.createElement('a');a.href=v.url;a.target='_blank';a.rel='noopener';a.textContent=(v.loja||v.titulo||'Referência')+' — '+moeda(v.preco);li.append(a)}else li.textContent='Sem preço público';ul.append(li)});refs.append(ul);tr.append(el('td','',p.nome||'Peça'),refs,el('td','efex-price',p.preco_medio?moeda(p.preco_medio):'—'),el('td','efex-price',p.preco_sugerido?moeda(p.preco_sugerido):'Revisar'));$('efex-pecas').append(tr)})}
+  function servicos(itens){$('efex-servicos').replaceChildren();(itens||[]).forEach(s=>{const tr=document.createElement('tr');tr.append(el('td','',s.descricao),el('td','efex-price',s.horas),el('td','efex-price',s.valor_sugerido?moeda(s.valor_sugerido):'—'));$('efex-servicos').append(tr)})}
+  function fontes(itens){$('efex-fontes').replaceChildren();(itens||[]).forEach(f=>{const li=document.createElement('li'),a=document.createElement('a');a.href=f.url;a.target='_blank';a.rel='noopener';a.textContent=f.titulo||f.url;li.append(a);$('efex-fontes').append(li)})}
+  function mensagem(p,m){conversa.push({papel:p,mensagem:texto(m).slice(0,3000)});$('efex-chat-log').append(el('div','efex-message '+(p==='usuario'?'user':'assistant'),m))}
+  function renderizar(data){resultadoAtual=data.resultado;$('efex-placeholder').style.display='none';$('efex-result').classList.add('ativo');$('efex-resumo').textContent=resultadoAtual.resumo||'Sem resumo';hipoteses(resultadoAtual.hipoteses);lista('efex-testes-recomendados',resultadoAtual.testes_recomendados);lista('efex-alertas',resultadoAtual.alertas);$('efex-alertas-wrap').classList.toggle('is-hidden',!(resultadoAtual.alertas||[]).length);$('efex-explicacao-cliente').textContent=resultadoAtual.explicacao_cliente||'';$('efex-cliente-wrap').classList.toggle('is-hidden',!resultadoAtual.explicacao_cliente);pecas(resultadoAtual.pecas);servicos(resultadoAtual.servicos);fontes(data.fontes);$('efex-pecas-wrap').classList.toggle('is-hidden',!(resultadoAtual.pecas||[]).length);$('efex-servicos-wrap').classList.toggle('is-hidden',!(resultadoAtual.servicos||[]).length);$('efex-fontes-wrap').classList.toggle('is-hidden',!(data.fontes||[]).length);$('efex-criar-rascunho').classList.toggle('is-hidden',!configuracao().modulos.orcamento);$('efex-cota').textContent=String(Math.max(Number(data.cota?.restantes||0),0));mensagem('assistente',resultadoAtual.resumo||'Análise concluída.')}
+  async function analisar(e){e.preventDefault();if(enviando)return;const dados=dadosFormulario();if(dados.sintoma.length<10){alert('Descreva melhor o sintoma.');return}const c=configuracao();if(c.modulos.imagens&&!fotos.length&&!confirm('O especialista de imagens está ativo, mas nenhuma foto foi adicionada. Continuar sem imagem?'))return;definirCarregando(true,'Executando somente os especialistas selecionados...');try{renderizar(await chamarEfex({action:'diagnosticar',dados,configuracao:c,imagens:c.modulos.imagens?fotos.map(f=>f.dataUrl):[],conversa:conversa.slice(-6)}))}catch(e){alert(e.message)}finally{definirCarregando(false)}}
+  async function perguntar(){if(enviando||!resultadoAtual)return;const p=texto($('efex-pergunta').value);if(p.length<3)return;mensagem('usuario',p);$('efex-pergunta').value='';definirCarregando(true,'Aprofundando o diagnóstico...');try{renderizar(await chamarEfex({action:'diagnosticar',dados:{...dadosFormulario(),pergunta:p,resultado_anterior:resultadoAtual},configuracao:{nivel:'economico',modulos:{diagnostico:true,imagens:false,orcamento:false,precos:false,cliente:false}},imagens:[],conversa:conversa.slice(-6)}))}catch(e){alert(e.message)}finally{definirCarregando(false)}}
+  async function rascunho(){if(!resultadoAtual)return;definirCarregando(true,'Criando rascunho...');try{const r=await chamarEfex({action:'criar_rascunho',dados:dadosFormulario(),resultado:resultadoAtual});location.href='/gerador.html?orcamento_id='+encodeURIComponent(r.orcamento_id)}catch(e){alert(e.message);definirCarregando(false)}}
+  document.querySelectorAll('[name=nivel],.efex-specialist input').forEach(x=>x.addEventListener('change',atualizarConfig));$('efex-fotos').addEventListener('change',e=>adicionarFotos(e.target.files));$('efex-limpar-fotos').onclick=()=>{fotos.splice(0);renderizarFotos()};$('efex-form').addEventListener('submit',analisar);$('efex-enviar-pergunta').onclick=perguntar;$('efex-criar-rascunho').onclick=rascunho;$('efex-limpar').onclick=()=>location.reload();atualizarConfig();carregarAcesso();})();
   </script>
-</body>
-</html>
+</body></html>
