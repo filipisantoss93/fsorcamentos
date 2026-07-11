@@ -18,7 +18,7 @@ const FS_EXTRA_CLIENTE_CONFIG = {
 function fsModoEmbedGestao(){try{const p=new URLSearchParams(location.search);return p.get('embed')==='1'||p.get('iframe')==='1'||window.parent!==window}catch(_){return false}}
 function aplicarModoEmbedGestao(){if(!fsModoEmbedGestao())return false;document.documentElement.classList.add('modo-embed-gestao');document.body?.classList.add('modo-embed-gestao');const h=document.getElementById('header-container');if(h){h.innerHTML='';h.style.display='none'}document.querySelectorAll('footer,.footer,.site-footer,.forum-footer').forEach(e=>e.style.display='none');return true}
 function fsGarantirCss(id,href){if(document.getElementById(id))return;const l=document.createElement('link');l.id=id;l.rel='stylesheet';l.href=href;document.head.appendChild(l)}
-function garantirCssHeaderFS(){fsGarantirCss('fs-header-clean-css','/header-clean.css?v=20260701-1');fsGarantirCss('fs-auth-clean-css','/auth-clean.css?v=20260701-1');fsGarantirCss('fs-brand-contrast-css','/brand-contrast-fix.css?v=20260701-1')}
+function garantirCssHeaderFS(){fsGarantirCss('fs-header-clean-css','/header-clean.css?v=20260701-1');fsGarantirCss('fs-auth-clean-css','/auth-clean.css?v=20260701-1')}
 function removerCssObsoletoTemaMarrom(){document.querySelectorAll('style').forEach(s=>{const t=s.textContent||'';if(t.includes('FS FORMAL THEME OVERRIDES')||t.includes('FS CONTRAST FIX')||t.includes('marrom no header')||t.includes('Cores oficiais: marrom'))s.remove()})}
 function fsNormalizarTextoMenu(v){const p=String(v||'gratis').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();return p==='basico'||p==='gestao'?'premium':p}
 function fsPaginaAtual(){const p=location.pathname||'/';return p==='/'?'/index.html':p}

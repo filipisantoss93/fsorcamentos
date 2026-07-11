@@ -6,15 +6,15 @@
 :root {
   --fs-navy: #07142f;
   --fs-navy-2: #0b1f46;
-  --fs-gold: #f5b625;
+  --fs-gold: #f6c443;
   --fs-gold-2: #ffc400;
   --fs-bg: #f4f8ff;
-  --fs-card: #ffffff;
-  --fs-border: #d8e6ff;
-  --fs-text: #06122f;
-  --fs-muted: #64748b;
+  --fs-card: #081a3a;
+  --fs-border:#294875;
+  --fs-text: #ffffff;
+  --fs-muted: #c8d5e8;
   --fs-danger: #dc2626;
-  --fs-success: #16a34a;
+  --fs-success: #22c55e;
 }
 
 /* Home Premium: ícones dos Atalhos principais menores, centralizados e discretos */
@@ -30,7 +30,7 @@
   min-height: 28px !important;
   max-width: 28px !important;
   max-height: 28px !important;
-  border-radius: 8px !important;
+  border-radius:6px !important;
   font-size: 13px !important;
   line-height: 1 !important;
   display: inline-flex !important;
@@ -48,7 +48,7 @@
   height: 24px !important;
   right: 18px !important;
   top: 18px !important;
-  border-radius: 8px !important;
+  border-radius:6px !important;
   opacity: .045 !important;
 }
 
@@ -76,11 +76,10 @@
    Gerador limpo
    ========================================================= */
 body:not(.gerando-pdf):has(.pagina-gerador) {
-  background:
-    radial-gradient(circle at 14% 0%, rgba(245, 182, 37, .13), transparent 30%),
+  background:radial-gradient(circle at 14% 0%, rgba(245, 182, 37, .13), transparent 30%),
     radial-gradient(circle at 88% 8%, rgba(7, 20, 47, .10), transparent 30%),
-    linear-gradient(180deg, #ffffff 0%, var(--fs-bg) 52%, #eaf3ff 100%) !important;
-  color: var(--fs-text) !important;
+    linear-gradient(180deg, #081a3a 0%, var(--fs-bg) 52%, #0c234b 100%) !important;
+  color:var(--fs-text) !important;
 }
 
 #btn-flutuante-gerador-global {
@@ -103,7 +102,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   width: min(1180px, calc(100% - 28px));
   margin: 0 auto;
   padding: 26px 0 45px;
-  color: var(--fs-text);
+  color:var(--fs-text);
 }
 
 .gerador-hero {
@@ -111,12 +110,11 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   overflow: hidden;
   padding: 28px;
   margin-bottom: 22px;
-  border: 1px solid var(--fs-border);
-  border-top: 6px solid var(--fs-gold);
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at 92% 12%, rgba(245, 182, 37, .18), transparent 34%),
-    linear-gradient(135deg, #ffffff 0%, #f8fbff 56%, #edf5ff 100%);
+  border:1px solid var(--fs-border);
+  border-top:6px solid var(--fs-gold);
+  border-radius:6px;
+  background:radial-gradient(circle at 92% 12%, rgba(245, 182, 37, .18), transparent 34%),
+    linear-gradient(135deg, #081a3a 0%, #f8fbff 56%, #0c234b 100%);
   box-shadow: 0 14px 36px rgba(7, 20, 47, .10);
 }
 
@@ -125,8 +123,8 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   position: absolute;
   width: 180px;
   height: 180px;
-  border-radius: 50%;
-  background: rgba(245, 182, 37, .14);
+  border-radius:50%;
+  background:rgba(245, 182, 37, .14);
   top: -80px;
   right: -70px;
 }
@@ -140,10 +138,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy));
-  color: var(--fs-gold);
-  border: 1px solid rgba(245, 182, 37, .72);
-  border-radius: 999px;
+  background:linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy));
+  color:var(--fs-gold);
+  border:1px solid rgba(245, 182, 37, .72);
+  border-radius:6px;
   padding: 8px 14px;
   margin-bottom: 12px;
   font-size: 12px;
@@ -153,7 +151,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .gerador-hero h1 {
   margin: 0 0 10px;
-  color: var(--fs-text);
+  color:var(--fs-text);
   font-size: clamp(28px, 5vw, 38px);
   line-height: 1.12;
 }
@@ -161,7 +159,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .gerador-hero p {
   margin: 0;
   max-width: 760px;
-  color: var(--fs-muted);
+  color:var(--fs-muted);
   font-size: 16px;
   line-height: 1.55;
 }
@@ -184,17 +182,17 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .modal-login-box,
 .teste-premium-inline-card,
 .fs-adsense-zone {
-  background: var(--fs-card) !important;
-  color: var(--fs-text) !important;
-  border: 1px solid var(--fs-border) !important;
+  background:#123d2b;
+  color:var(--fs-text) !important;
+  border:1px solid var(--fs-border) !important;
   box-shadow: 0 12px 30px rgba(7, 20, 47, .10) !important;
 }
 
 .gerador-card-principal {
   min-width: 0;
   padding: 22px;
-  border-top: 6px solid var(--fs-gold) !important;
-  border-radius: 16px;
+  border-top:6px solid var(--fs-gold) !important;
+  border-radius:6px;
 }
 
 .gerador-sidebar {
@@ -212,12 +210,12 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .calc-expansivel,
 .color-selector,
 .fs-adsense-zone {
-  border-radius: 14px;
+  border-radius:6px;
   padding: 16px;
 }
 
 .sidebar-card {
-  border-left: 5px solid var(--fs-gold) !important;
+  border-left:5px solid var(--fs-gold) !important;
 }
 
 .sidebar-card h3,
@@ -228,7 +226,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .pagina-gerador h2,
 .pagina-gerador h3,
 .pagina-gerador strong {
-  color: var(--fs-text) !important;
+  color:var(--fs-text) !important;
 }
 
 .sidebar-card p,
@@ -240,7 +238,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .emissor-info-principal small,
 .emissor-info-principal span,
 .emissor-readonly-grid span {
-  color: var(--fs-muted) !important;
+  color:var(--fs-muted) !important;
 }
 
 .sidebar-lista {
@@ -255,14 +253,14 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .help-item,
 .emissor-readonly-grid div,
 .item-row {
-  background: #ffffff !important;
-  border: 1px solid var(--fs-border) !important;
-  color: var(--fs-text) !important;
+  background:#081a3a !important;
+  border:1px solid var(--fs-border) !important;
+  color:var(--fs-text) !important;
 }
 
 .sidebar-lista li {
-  border-left: 4px solid var(--fs-gold) !important;
-  border-radius: 8px;
+  border-left:4px solid var(--fs-gold) !important;
+  border-radius:6px;
   padding: 9px;
   font-size: 13px;
   font-weight: 700;
@@ -273,18 +271,18 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   display: none;
   margin-bottom: 16px;
   padding: 14px;
-  border-radius: 10px;
-  background: #f8fbff;
-  border: 1px solid var(--fs-border);
-  border-left: 5px solid var(--fs-gold);
-  color: var(--fs-text);
+  border-radius:6px;
+  background:#f8fbff;
+  border:1px solid var(--fs-border);
+  border-left:5px solid var(--fs-gold);
+  color:var(--fs-text);
   font-weight: 800;
   line-height: 1.4;
 }
 
 .emissor-readonly-card {
   margin-bottom: 14px;
-  border-left: 6px solid var(--fs-gold) !important;
+  border-left:6px solid var(--fs-gold) !important;
 }
 
 .emissor-readonly-topo {
@@ -301,10 +299,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   display: grid;
   place-items: center;
   overflow: hidden;
-  border: 1px dashed #c8d7ee;
-  border-radius: 10px;
-  background: #f8fbff;
-  color: var(--fs-muted);
+  border:1px dashed #294875;
+  border-radius:6px;
+  background:#f8fbff;
+  color:var(--fs-muted);
   font-size: 12px;
   text-align: center;
 }
@@ -324,8 +322,8 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .emissor-readonly-grid div {
   min-width: 0;
-  border-left: 4px solid var(--fs-gold) !important;
-  border-radius: 10px;
+  border-left:4px solid var(--fs-gold) !important;
+  border-radius:6px;
   padding: 11px;
 }
 
@@ -365,10 +363,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  border: 1px solid rgba(245, 182, 37, .70) !important;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy)) !important;
-  color: #ffffff !important;
+  border:1px solid rgba(245, 182, 37, .70) !important;
+  border-radius:6px;
+  background:#123d2b;
+  color:#ffffff !important;
   box-shadow: 0 12px 26px rgba(7, 20, 47, .18) !important;
   font-weight: 900;
   text-decoration: none;
@@ -393,10 +391,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   gap: 7px;
   min-height: 44px;
   padding: 10px 15px;
-  border: 1px solid var(--fs-border) !important;
-  border-radius: 10px;
-  background: #ffffff !important;
-  color: var(--fs-navy) !important;
+  border:1px solid var(--fs-border) !important;
+  border-radius:6px;
+  background:#081a3a !important;
+  color:var(--fs-navy) !important;
   font-weight: 900;
   cursor: pointer;
 }
@@ -407,18 +405,18 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .btn-acao-pdf:hover,
 .btn-teste-premium:hover:not(:disabled),
 .btn-editar-dados-empresa:hover {
-  background: var(--fs-gold) !important;
-  color: var(--fs-navy) !important;
-  border-color: var(--fs-navy) !important;
+  background:#123d2b;
+  color:var(--fs-navy) !important;
+  border-color:var(--fs-navy) !important;
 }
 
 .dadositens {
   margin: 20px 0 12px;
   padding: 12px 14px;
-  border-radius: 10px;
-  background: #f8fbff;
-  border: 1px solid var(--fs-border);
-  border-left: 5px solid var(--fs-gold);
+  border-radius:6px;
+  background:#f8fbff;
+  border:1px solid var(--fs-border);
+  border-left:5px solid var(--fs-gold);
   font-size: 17px;
   font-weight: 950;
 }
@@ -449,13 +447,13 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .pagina-gerador select {
   width: 100%;
   min-height: 42px;
-  border: 1px solid var(--fs-border) !important;
-  border-radius: 9px;
-  background: #ffffff !important;
-  color: var(--fs-text) !important;
+  border:1px solid var(--fs-border) !important;
+  border-radius:6px;
+  background:#081a3a !important;
+  color:var(--fs-text) !important;
   padding: 10px 11px;
   font-size: 14px;
-  outline: none;
+  outline:none;
 }
 
 .campo-form textarea,
@@ -467,7 +465,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .pagina-gerador input:focus,
 .pagina-gerador textarea:focus,
 .pagina-gerador select:focus {
-  border-color: var(--fs-navy-2) !important;
+  border-color:var(--fs-navy-2) !important;
   box-shadow: 0 0 0 3px rgba(7, 20, 47, .14) !important;
 }
 
@@ -482,10 +480,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .btn-remove,
 .remove-btn {
   min-height: 38px;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  background: #fff5f5;
-  color: #b91c1c;
+  border:1px solid #fecaca;
+  border-radius:6px;
+  background:#081a3a5f5;
+  color:#b91c1c;
   font-weight: 900;
   cursor: pointer;
 }
@@ -494,7 +492,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   display: grid;
   gap: 9px;
   padding: 12px;
-  border-radius: 12px;
+  border-radius:6px;
 }
 
 .item-row {
@@ -503,33 +501,33 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   gap: 8px;
   align-items: center;
   padding: 8px;
-  border-radius: 10px;
+  border-radius:6px;
 }
 
 .item-row.header-labels {
-  background: var(--fs-navy) !important;
-  color: #ffffff !important;
+  background:var(--fs-navy) !important;
+  color:#ffffff !important;
   font-size: 12px;
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .item-row.header-labels span {
-  color: #ffffff !important;
+  color:#ffffff !important;
 }
 
 .total-container,
 .acoes-profissionais-orcamento,
 .calc-header {
-  background: linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy)) !important;
-  color: var(--fs-gold) !important;
-  border-color: rgba(245, 182, 37, .70) !important;
+  background:linear-gradient(135deg, var(--fs-navy-2), var(--fs-navy)) !important;
+  color:var(--fs-gold) !important;
+  border-color:rgba(245, 182, 37, .70) !important;
 }
 
 .total-container {
   margin: 16px 0 4px;
   padding: 16px;
-  border-radius: 12px;
+  border-radius:6px;
   text-align: right;
   font-size: 22px;
   font-weight: 950;
@@ -540,7 +538,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   justify-content: space-between;
   align-items: center;
   padding: 13px 14px;
-  border-radius: 10px;
+  border-radius:6px;
   cursor: pointer;
   font-weight: 950;
 }
@@ -556,7 +554,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .calc-secao-titulo {
   margin: 12px 0 8px;
-  color: var(--fs-text);
+  color:var(--fs-text);
   font-weight: 950;
 }
 
@@ -569,10 +567,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .btn-frase {
   min-height: 36px;
   padding: 8px 10px;
-  border: 1px solid var(--fs-border);
-  border-radius: 9px;
-  background: #ffffff;
-  color: var(--fs-text);
+  border:1px solid var(--fs-border);
+  border-radius:6px;
+  background:#081a3a;
+  color:var(--fs-text);
   font-weight: 800;
   cursor: pointer;
 }
@@ -592,23 +590,23 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .theme-dot {
   width: 34px;
   height: 34px;
-  border-radius: 50%;
-  border: 3px solid #ffffff;
-  outline: 1px solid var(--fs-border);
+  border-radius:50%;
+  border:3px solid #ffffff;
+  outline:1px solid var(--fs-border);
   cursor: pointer;
 }
 
 .theme-dot.ativo,
 .theme-dot.selected {
-  outline: 3px solid var(--fs-gold);
+  outline:3px solid var(--fs-gold);
 }
 
-.theme-dot.original { background: var(--fs-navy) !important; }
-.theme-dot.bw { background: linear-gradient(135deg, #111827 50%, #ffffff 50%); }
-.theme-dot.blue { background: #2563eb; }
-.theme-dot.green { background: #16a34a; }
-.theme-dot.yellow { background: #f59e0b; }
-.theme-dot.red { background: #dc2626; }
+.theme-dot.original { background:var(--fs-navy) !important; }
+.theme-dot.bw { background:linear-gradient(135deg, #111827 50%, #081a3a 50%); }
+.theme-dot.blue { background:#2563eb; }
+.theme-dot.green { background:#16a34a; }
+.theme-dot.yellow { background:#f59e0b; }
+.theme-dot.red { background:#dc2626; }
 
 .acoes-gerador-principal,
 .acoes-profissionais-botoes,
@@ -625,7 +623,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .previa-label {
   margin: 0 0 8px;
-  color: var(--fs-muted);
+  color:var(--fs-muted);
   font-size: 13px;
   font-weight: 900;
   text-transform: uppercase;
@@ -635,9 +633,9 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   overflow: auto;
   min-height: 220px;
   padding: 10px;
-  border: 1px dashed var(--fs-border);
-  border-radius: 12px;
-  background: #f8fbff;
+  border:1px dashed var(--fs-border);
+  border-radius:6px;
+  background:#f8fbff;
 }
 
 .pdf-documento {
@@ -645,8 +643,8 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   min-height: 1123px;
   margin: 0 auto;
   padding: 42px;
-  background: #ffffff;
-  color: #111827;
+  background:#081a3a;
+  color:#ffffff;
   font-family: Arial, Helvetica, sans-serif;
   box-shadow: 0 10px 30px rgba(15,23,42,.12);
 }
@@ -658,7 +656,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   align-items: center;
   padding-bottom: 18px;
   margin-bottom: 20px;
-  border-bottom: 4px solid var(--pdf-cor, #07142f);
+  border-bottom:4px solid var(--pdf-cor, #07142f);
 }
 
 .pdf-logo {
@@ -667,9 +665,9 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   display: grid;
   place-items: center;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  color: #64748b;
+  border:1px solid #294875;
+  border-radius:6px;
+  color:#c8d5e8;
   font-size: 12px;
 }
 
@@ -681,13 +679,13 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .pdf-titulo {
   margin: 0;
-  color: var(--pdf-cor, #07142f);
+  color:var(--pdf-cor, #ffffff);
   font-size: 28px;
 }
 
 .pdf-subtitulo {
   margin: 4px 0 0;
-  color: #64748b;
+  color:#c8d5e8;
   font-size: 13px;
 }
 
@@ -697,7 +695,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .pdf-bloco h3 {
   margin: 0 0 8px;
-  color: var(--pdf-cor, #07142f);
+  color:var(--pdf-cor, #ffffff);
   font-size: 15px;
   text-transform: uppercase;
 }
@@ -710,44 +708,44 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .pdf-info {
   padding: 9px;
-  border: 1px solid #e5e7eb;
-  border-left: 4px solid var(--pdf-cor, #07142f);
-  border-radius: 6px;
+  border:1px solid #294875;
+  border-left:4px solid var(--pdf-cor, #07142f);
+  border-radius:6px;
   font-size: 12px;
 }
 
 .pdf-info strong {
   display: block;
   margin-bottom: 2px;
-  color: #111827;
+  color:#ffffff;
 }
 
 .pdf-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse:collapse;
   margin-top: 8px;
   font-size: 12px;
 }
 
 .pdf-table th {
   padding: 9px;
-  background: var(--pdf-cor, #07142f);
-  color: #ffffff;
+  background:var(--pdf-cor, #07142f);
+  color:#ffffff;
   text-align: left;
 }
 
 .pdf-table td {
   padding: 9px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom:1px solid #294875;
 }
 
 .pdf-total {
   margin-top: 14px;
   padding: 14px;
-  background: var(--pdf-cor, #07142f);
-  color: #ffffff;
+  background:var(--pdf-cor, #07142f);
+  color:#ffffff;
   text-align: right;
-  border-radius: 8px;
+  border-radius:6px;
   font-size: 20px;
   font-weight: 950;
 }
@@ -756,12 +754,12 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   display: none;
   margin-top: 14px;
   padding: 14px;
-  border-radius: 12px;
+  border-radius:6px;
 }
 
 .acoes-profissionais-orcamento strong,
 .acoes-profissionais-orcamento span {
-  color: inherit !important;
+  color:inherit !important;
 }
 
 .acoes-profissionais-orcamento-topo {
@@ -784,10 +782,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .btn-float {
   min-width: 48px;
   min-height: 48px;
-  border-radius: 999px;
-  border: 1px solid var(--fs-border);
-  background: #ffffff;
-  color: var(--fs-navy);
+  border-radius:6px;
+  border:1px solid var(--fs-border);
+  background:#081a3a;
+  color:var(--fs-navy);
   font-size: 18px;
   font-weight: 900;
   box-shadow: 0 12px 24px rgba(7,20,47,.18);
@@ -801,9 +799,9 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 
 .btn-float-whatsapp,
 .btn-acao-whatsapp {
-  background: #16a34a !important;
-  color: #ffffff !important;
-  border-color: #15803d !important;
+  background:#16a34a !important;
+  color:#ffffff !important;
+  border-color:#15803d !important;
 }
 
 .fs-adsense-zone {
@@ -815,7 +813,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 .adsense-label {
   display: block;
   margin-bottom: 8px;
-  color: var(--fs-muted) !important;
+  color:var(--fs-muted) !important;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
@@ -830,7 +828,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   justify-content: center;
   z-index: 20000;
   padding: 18px;
-  background: rgba(15, 23, 42, .76);
+  background:rgba(15, 23, 42, .76);
   overflow-y: auto;
 }
 
@@ -839,8 +837,8 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   width: min(100%, 460px);
   margin: 24px auto;
   padding: 22px;
-  border-radius: 14px;
-  border-top: 6px solid var(--fs-gold) !important;
+  border-radius:6px;
+  border-top:6px solid var(--fs-gold) !important;
 }
 
 .btn-fechar-login,
@@ -848,10 +846,10 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
   float: right;
   width: 34px;
   height: 34px;
-  border: none;
-  border-radius: 8px;
-  background: var(--fs-danger);
-  color: #ffffff;
+  border:none;
+  border-radius:6px;
+  background:var(--fs-danger);
+  color:#ffffff;
   font-size: 22px;
   font-weight: 900;
   cursor: pointer;
@@ -864,7 +862,7 @@ body:not(.gerando-pdf):has(.pagina-gerador) {
 }
 
 body.gerando-pdf {
-  background: #ffffff !important;
+  background:#081a3a !important;
 }
 
 body.gerando-pdf #header-container,
@@ -887,8 +885,8 @@ body.gerando-pdf #area-previa {
   display: block !important;
   padding: 0 !important;
   margin: 0 !important;
-  background: #ffffff !important;
-  border: 0 !important;
+  background:#081a3a !important;
+  border:0 !important;
   box-shadow: none !important;
   overflow: visible !important;
   max-width: none !important;
@@ -905,7 +903,7 @@ body.gerando-pdf #conteudo-pdf > div {
   box-shadow: none !important;
   margin: 0 !important;
   transform: none !important;
-  background: #ffffff !important;
+  background:#081a3a !important;
 }
 
 @media (max-width: 980px) {
@@ -923,7 +921,7 @@ body.gerando-pdf #conteudo-pdf > div {
   .home-premium #premium-dashboard .dash-card {
     min-height: 98px !important;
     padding: 13px 13px 12px !important;
-    border-radius: 14px !important;
+    border-radius:6px !important;
   }
 
   .home-premium .premium-grid .shortcut-icon {
@@ -933,7 +931,7 @@ body.gerando-pdf #conteudo-pdf > div {
     min-height: 24px !important;
     max-width: 24px !important;
     max-height: 24px !important;
-    border-radius: 7px !important;
+    border-radius:6px !important;
     font-size: 11.5px !important;
     margin-bottom: 17px !important;
   }
@@ -944,7 +942,7 @@ body.gerando-pdf #conteudo-pdf > div {
     height: 22px !important;
     right: 18px !important;
     top: 18px !important;
-    border-radius: 7px !important;
+    border-radius:6px !important;
     opacity: .04 !important;
   }
 
@@ -964,7 +962,7 @@ body.gerando-pdf #conteudo-pdf > div {
   .gerador-hero,
   .gerador-card-principal {
     padding: 16px;
-    border-radius: 14px;
+    border-radius:6px;
   }
 
   .grid-duplo-gerador,
