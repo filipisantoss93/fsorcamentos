@@ -1,8 +1,88 @@
-<link rel="stylesheet" href="/style.css?v=20260711-interface-profissional-4">
+<link rel="stylesheet" href="/style.css?v=20260711-interface-profissional-5">
 <style id="fs-tema-compacto-ajustes-finais">
 @media screen {
   html body [class][class],html body [class][class]::before,html body [class][class]::after,
   html body [id],html body [id]::before,html body [id]::after{border-radius:0!important}
+
+  /* Identificação Premium global: diamante dourado no lugar do texto */
+  html body :is(
+    .fs-premium-diamante,
+    .forum-plano-selo.premium,
+    .plano-badge.premium,
+    .plano-badge.plano-premium,
+    #perfil-plano.plano-premium,
+    .badge-premium,
+    .premium-badge,
+    .fs-badge-premium,
+    .status-premium,
+    .selo-premium,
+    .tag-premium,
+    .premium-selo,
+    .badge[data-plano="premium"],
+    .fs-badge[data-plano="premium"],
+    .plano-badge[data-plano="premium"]
+  ){
+    display:inline-grid!important;
+    place-items:center!important;
+    width:20px!important;
+    min-width:20px!important;
+    max-width:20px!important;
+    height:20px!important;
+    min-height:20px!important;
+    max-height:20px!important;
+    margin:0 0 0 4px!important;
+    padding:0!important;
+    overflow:visible!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    color:#a66f00!important;
+    -webkit-text-fill-color:#a66f00!important;
+    font-size:0!important;
+    line-height:1!important;
+    vertical-align:middle!important;
+    box-shadow:none!important;
+    text-shadow:none!important;
+  }
+  html body :is(
+    .fs-premium-diamante,
+    .forum-plano-selo.premium,
+    .plano-badge.premium,
+    .plano-badge.plano-premium,
+    #perfil-plano.plano-premium,
+    .badge-premium,
+    .premium-badge,
+    .fs-badge-premium,
+    .status-premium,
+    .selo-premium,
+    .tag-premium,
+    .premium-selo,
+    .badge[data-plano="premium"],
+    .fs-badge[data-plano="premium"],
+    .plano-badge[data-plano="premium"]
+  )::before{
+    content:"◆"!important;
+    display:block!important;
+    color:#a66f00!important;
+    -webkit-text-fill-color:#a66f00!important;
+    font-size:15px!important;
+    line-height:1!important;
+  }
+  html body .forum-autor-texto strong{display:flex!important;align-items:center!important;gap:2px!important;min-width:0!important}
+  html body .forum-autor-texto .forum-plano-selo.premium{flex:0 0 20px!important}
+
+  /* O menu já controla quais links Premium ficam visíveis. A combinação
+     abaixo identifica com segurança o usuário logado Premium no header. */
+  html body .main-header:has(#btn-menu-mobile-sair[style*="inline-flex"]):has(.nav-menu li:has(a[data-plano-min="premium"]):not([style*="display: none"])) #usuario-saudacao::after{
+    content:"◆"!important;
+    display:inline-block!important;
+    margin-left:6px!important;
+    color:#a66f00!important;
+    -webkit-text-fill-color:#a66f00!important;
+    font-size:14px!important;
+    line-height:1!important;
+    vertical-align:1px!important;
+  }
 
   html body .biblioteca-status-card,html body .biblioteca-modal-topo,html body .status-plano-box{background:var(--fs-navy-2)!important;color:#fff!important;border-color:var(--fs-navy)!important;box-shadow:none!important}
   html body .biblioteca-status-card *,html body .biblioteca-modal-topo *,html body .status-plano-box *{color:inherit!important;-webkit-text-fill-color:inherit!important}
