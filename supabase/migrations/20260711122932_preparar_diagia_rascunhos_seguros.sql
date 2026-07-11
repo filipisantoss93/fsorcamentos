@@ -184,7 +184,7 @@ after insert or update of plano, plano_status, plano_expira_em on public.perfis
 for each row
 execute function private.fs_sincronizar_assinatura_perfil();
 
-create or replace function public.fs_consumir_cota_diagia(p_usuario_id uuid)
+create or replace function public.fs_consumir_cota_efex(p_usuario_id uuid)
 returns jsonb
 language plpgsql
 security definer
@@ -252,8 +252,8 @@ begin
 end;
 $$;
 
-revoke execute on function public.fs_consumir_cota_diagia(uuid) from public, anon, authenticated;
-grant execute on function public.fs_consumir_cota_diagia(uuid) to service_role;
+revoke execute on function public.fs_consumir_cota_efex(uuid) from public, anon, authenticated;
+grant execute on function public.fs_consumir_cota_efex(uuid) to service_role;
 
 alter table public.orcamentos
 drop constraint if exists orcamentos_status_check;
