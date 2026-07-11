@@ -1,4 +1,71 @@
-<link rel="stylesheet" href="/style.css?v=20260711-compacto-cinza-azulado">
+<link rel="stylesheet" href="/style.css?v=20260711-compacto-cinza-azulado-2">
+<style id="fs-tema-compacto-ajustes-finais">
+  @media screen {
+    html body [class][class],
+    html body [class][class]::before,
+    html body [class][class]::after,
+    html body :is(#fs-radius-zero,[id]),
+    html body :is(#fs-radius-zero,[id])::before,
+    html body :is(#fs-radius-zero,[id])::after {
+      border-radius: 0 !important;
+    }
+
+    html body .biblioteca-status-card,
+    html body .biblioteca-modal-topo,
+    html body .status-plano-box {
+      background: var(--fs-navy-2) !important;
+      color: #fff !important;
+      border-color: var(--fs-navy) !important;
+      box-shadow: none !important;
+    }
+
+    html body .biblioteca-status-card *,
+    html body .biblioteca-modal-topo *,
+    html body .status-plano-box * {
+      color: inherit !important;
+      -webkit-text-fill-color: inherit !important;
+    }
+
+    html body .head .btn:not(.primary),
+    html body .section-head .btn:not(.primary),
+    html body .modal-head button,
+    html body .modal-pix-topo button,
+    html body .auth-logo-box .btn-fechar-login {
+      background: #fff !important;
+      color: var(--fs-navy) !important;
+      -webkit-text-fill-color: var(--fs-navy) !important;
+      border-color: #fff !important;
+    }
+
+    html body .head .btn:not(.primary) *,
+    html body .section-head .btn:not(.primary) *,
+    html body .modal-head button *,
+    html body .modal-pix-topo button *,
+    html body .auth-logo-box .btn-fechar-login * {
+      color: inherit !important;
+      -webkit-text-fill-color: inherit !important;
+    }
+
+    html body .bar-fill {
+      background: var(--fs-navy-2) !important;
+    }
+
+    html body .dash .cols,
+    html body .dash .cols2 {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 8px !important;
+    }
+  }
+
+  @media screen and (max-width: 560px) {
+    html body .dash .cols,
+    html body .dash .cols2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 7px !important;
+    }
+  }
+</style>
 <header class="main-header">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos">
