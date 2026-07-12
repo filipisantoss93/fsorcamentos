@@ -1,56 +1,249 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#07111F">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Política de Privacidade | FS Orçamentos</title>
-  <meta name="description" content="Entenda como o FS Orçamentos trata dados de conta, empresa, clientes, orçamentos, pagamentos, cookies e suporte conforme a LGPD.">
+  <meta name="theme-color" content="#07111F">
+  <meta name="description" content="Saiba como o FS Orçamentos trata dados de conta, empresa, clientes, veículos, orçamentos, pagamentos, cookies e informações enviadas ao EfeX, conforme a LGPD.">
   <meta name="author" content="Filipi Aparecido dos Santos">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://fsorcamentos.com.br/privacidade.html">
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/institucional.css">
   <link rel="icon" href="/favicon.png">
+  <title>Política de Privacidade | FS Orçamentos</title>
 </head>
 <body>
+  <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo</a>
   <div id="header-container"></div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script><script src="auth.js"></script><script src="ui.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script src="notificacoes.js"></script>
 
-  <main class="fs-inst-page">
-    <section class="fs-inst-hero">
-      <span class="fs-inst-kicker">Privacidade e LGPD</span>
-      <h1>Sua privacidade é prioridade.</h1>
-      <p>Esta Política explica quais dados podem ser tratados pelo FS Orçamentos, por que são necessários e quais direitos você possui.</p>
-      <div class="fs-inst-meta"><span>Atualizado em 12/07/2026</span><span>Não vendemos dados pessoais</span><span>Aplicável no Brasil</span></div>
-    </section>
-
-    <section class="fs-inst-grid">
-      <article class="fs-inst-card fs-inst-card--blue"><div class="fs-inst-icon" aria-hidden="true">🗂️</div><h2>Dados tratados</h2><p>Informações de conta, empresa, clientes, veículos, orçamentos, pagamentos, uso técnico e suporte.</p></article>
-      <article class="fs-inst-card fs-inst-card--success"><div class="fs-inst-icon" aria-hidden="true">🔒</div><h2>Segurança</h2><p>Autenticação, controle de acesso e regras de banco de dados ajudam a reduzir acessos indevidos.</p></article>
-      <article class="fs-inst-card fs-inst-card--yellow"><div class="fs-inst-icon" aria-hidden="true">⚖️</div><h2>Seus direitos</h2><p>Você pode solicitar confirmação, acesso, correção e exclusão quando aplicável.</p></article>
-    </section>
-
-    <section class="fs-legal-layout">
-      <aside class="fs-inst-nav" aria-label="Navegação da política de privacidade">
-        <a href="#coleta">Dados coletados</a><a href="#uso">Finalidades</a><a href="#compartilhamento">Compartilhamento</a><a href="#cookies">Cookies</a><a href="#retencao">Retenção</a><a href="#direitos">Direitos</a>
-      </aside>
-      <div class="fs-legal-content">
-        <article id="coleta" class="fs-inst-card"><h2>1. Quais dados podem ser tratados</h2><ul><li><strong>Conta:</strong> nome, e-mail, identificador, sessão e autenticação.</li><li><strong>Empresa:</strong> nome, responsável, telefone, CPF/CNPJ, endereço, logo e preferências.</li><li><strong>Operação:</strong> clientes, veículos, itens, serviços, valores, observações, status e documentos.</li><li><strong>Financeiro:</strong> plano, cobrança, identificador, valor, data e status do pagamento.</li><li><strong>Técnicos:</strong> navegador, dispositivo, logs, cookies e armazenamento local.</li></ul></article>
-        <article id="uso" class="fs-inst-card fs-inst-card--blue"><h2>2. Para que usamos</h2><p>Para criar e proteger a conta, preencher documentos, salvar dados autorizados, processar pagamentos, prestar suporte, prevenir fraude, corrigir erros, cumprir obrigações legais e melhorar a plataforma.</p></article>
-        <article id="compartilhamento" class="fs-inst-card"><h2>3. Compartilhamento e operadores</h2><p>Dados podem ser compartilhados com provedores de autenticação, banco de dados, hospedagem, pagamento, comunicação, análise e publicidade somente na medida necessária à prestação do serviço. Não vendemos dados pessoais.</p></article>
-        <article id="cookies" class="fs-inst-card fs-inst-card--yellow"><h2>4. Cookies, armazenamento local e anúncios</h2><p>A plataforma pode usar cookies e armazenamento local para sessão, preferências, segurança e desempenho. Páginas públicas e contas gratuitas podem exibir anúncios de terceiros, sujeitos às políticas desses provedores.</p></article>
-        <article id="retencao" class="fs-inst-card"><h2>5. Segurança e retenção</h2><p>Adotamos medidas técnicas e organizacionais compatíveis com o serviço. Dados são mantidos enquanto necessários à conta, prestação do serviço, prevenção de fraude, suporte, defesa de direitos ou obrigação legal.</p></article>
-        <article id="direitos" class="fs-inst-card fs-inst-card--success"><h2>6. Direitos do titular</h2><p>Nos termos da LGPD, você pode solicitar confirmação de tratamento, acesso, correção, informação sobre compartilhamento, anonimização, bloqueio ou exclusão quando aplicável. A solicitação pode exigir validação de identidade.</p></article>
-        <article class="fs-inst-card"><h2>7. Alterações e contato</h2><p>Esta Política pode ser atualizada por mudanças legais, técnicas ou comerciais. Dúvidas e solicitações devem ser enviadas pela página de contato.</p></article>
+  <main id="conteudo-principal" class="fs-inst-page">
+    <section class="fs-inst-hero" aria-labelledby="titulo-pagina">
+      <span class="fs-inst-kicker">Privacidade, segurança e LGPD</span>
+      <h1 id="titulo-pagina">Sua privacidade é prioridade.</h1>
+      <p>Esta Política explica quais dados podem ser tratados pelo FS Orçamentos, para quais finalidades, com quem podem ser compartilhados e como você pode exercer seus direitos.</p>
+      <div class="fs-inst-meta" aria-label="Informações da política">
+        <span>Atualizada em 12 de julho de 2026</span>
+        <span>Versão 2.0</span>
+        <span>Não vendemos dados pessoais</span>
+        <span>Aplicável no Brasil</span>
       </div>
     </section>
 
-    <section class="fs-inst-final"><h2>Fale conosco sobre privacidade</h2><p>Para solicitar acesso, correção ou exclusão, informe o e-mail cadastrado e descreva sua solicitação. Nunca envie sua senha.</p><div class="fs-inst-actions"><a class="fs-inst-btn fs-inst-btn--primary" href="/contato.html">Abrir atendimento</a><a class="fs-inst-btn" href="/termos.html">Ler Termos de Uso</a></div></section>
+    <section class="fs-inst-grid" aria-label="Resumo da política">
+      <article class="fs-inst-card fs-inst-card--blue">
+        <div class="fs-inst-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h8"/></svg>
+        </div>
+        <h2>Dados tratados</h2>
+        <p>Dados de conta, empresa, clientes, veículos, orçamentos, pagamentos, suporte, segurança e conteúdos enviados ao EfeX.</p>
+      </article>
+
+      <article class="fs-inst-card fs-inst-card--success">
+        <div class="fs-inst-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h2>Proteção e controle</h2>
+        <p>Utilizamos autenticação, controle de acesso, regras de banco de dados e medidas técnicas compatíveis com o serviço.</p>
+      </article>
+
+      <article class="fs-inst-card fs-inst-card--yellow">
+        <div class="fs-inst-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <h2>Seus direitos</h2>
+        <p>Você pode solicitar confirmação, acesso, correção, informação, portabilidade, oposição, bloqueio ou exclusão quando aplicável.</p>
+      </article>
+    </section>
+
+    <section class="fs-legal-layout">
+      <aside class="fs-inst-nav" aria-label="Navegação da Política de Privacidade">
+        <a href="#controlador">Quem somos</a>
+        <a href="#papeis">Responsabilidades</a>
+        <a href="#coleta">Dados tratados</a>
+        <a href="#uso">Finalidades</a>
+        <a href="#efex">EfeX e IA</a>
+        <a href="#compartilhamento">Compartilhamento</a>
+        <a href="#cookies">Cookies</a>
+        <a href="#retencao">Retenção</a>
+        <a href="#direitos">Seus direitos</a>
+        <a href="#seguranca">Segurança</a>
+        <a href="#contato-privacidade">Contato</a>
+      </aside>
+
+      <div class="fs-legal-content">
+        <article id="controlador" class="fs-inst-card fs-inst-card--blue">
+          <h2>1. Quem somos e a quem esta Política se aplica</h2>
+          <p>O FS Orçamentos é uma plataforma digital criada e administrada por Filipi Aparecido dos Santos para auxiliar empresas e profissionais na criação, gestão e envio de orçamentos, no acompanhamento financeiro e no uso de recursos de inteligência artificial.</p>
+          <p>Esta Política se aplica aos visitantes das páginas públicas, usuários cadastrados, representantes das empresas usuárias e pessoas cujos dados sejam inseridos em orçamentos ou atendimentos realizados por meio da plataforma.</p>
+          <p>Para os dados da conta, cobrança, segurança, suporte e funcionamento da plataforma, o FS Orçamentos atua como responsável pelas decisões essenciais do tratamento. O canal oficial para assuntos de privacidade está disponível na página de contato.</p>
+        </article>
+
+        <article id="papeis" class="fs-inst-card">
+          <h2>2. Dados cadastrados pelas empresas usuárias</h2>
+          <p>As empresas e profissionais que utilizam o FS Orçamentos podem inserir dados de seus próprios clientes, veículos, serviços e documentos. Nesses casos, o usuário decide quais informações serão cadastradas e deve possuir fundamento legítimo para utilizá-las.</p>
+          <ul>
+            <li>O usuário deve coletar somente os dados necessários para o atendimento e para a emissão do orçamento.</li>
+            <li>Dados sensíveis ou informações excessivas não devem ser inseridos em campos livres, anexos ou solicitações ao EfeX.</li>
+            <li>O usuário é responsável pela exatidão, origem e atualização dos dados que cadastra.</li>
+            <li>O FS Orçamentos processa essas informações para disponibilizar as funcionalidades solicitadas, proteger a plataforma e cumprir obrigações aplicáveis.</li>
+          </ul>
+        </article>
+
+        <article id="coleta" class="fs-inst-card fs-inst-card--yellow">
+          <h2>3. Quais dados podem ser tratados</h2>
+          <ul>
+            <li><strong>Conta e autenticação:</strong> nome, e-mail, identificador do usuário, sessão, credenciais protegidas e registros de acesso.</li>
+            <li><strong>Empresa e perfil:</strong> nome da empresa, responsável, telefone, CPF ou CNPJ, endereço, logotipo e preferências.</li>
+            <li><strong>Clientes e veículos:</strong> nome, contato, documento, endereço, dados do veículo, placa, quilometragem e observações inseridas pelo usuário.</li>
+            <li><strong>Orçamentos e operação:</strong> produtos, peças, serviços, valores, descontos, condições, status, documentos, imagens e histórico de alterações.</li>
+            <li><strong>Financeiro e cobrança:</strong> plano, valor, identificadores da transação, data, status e informações necessárias à conciliação. O FS Orçamentos não precisa armazenar dados completos de cartão quando o pagamento é processado diretamente por um provedor especializado.</li>
+            <li><strong>Uso técnico:</strong> endereço IP, navegador, dispositivo, sistema operacional, eventos de segurança, logs, cookies e armazenamento local.</li>
+            <li><strong>Suporte:</strong> mensagens, anexos, dados de contato e informações necessárias para investigar dúvidas ou falhas.</li>
+            <li><strong>EfeX:</strong> textos, imagens, descrições técnicas, dados de veículos e outros conteúdos enviados voluntariamente para análise ou geração assistida.</li>
+          </ul>
+        </article>
+
+        <article id="uso" class="fs-inst-card fs-inst-card--blue">
+          <h2>4. Finalidades e fundamentos do tratamento</h2>
+          <p>Os dados podem ser utilizados para:</p>
+          <ul>
+            <li><strong>Executar o serviço contratado:</strong> criar a conta, salvar configurações, gerar documentos, manter orçamentos e disponibilizar funcionalidades.</li>
+            <li><strong>Processar cobranças:</strong> identificar pagamentos, administrar planos, créditos e recargas e cumprir obrigações contábeis ou fiscais.</li>
+            <li><strong>Proteger a plataforma:</strong> autenticar usuários, prevenir abuso, fraude e acessos indevidos, investigar incidentes e preservar evidências.</li>
+            <li><strong>Prestar suporte:</strong> responder solicitações, corrigir falhas e manter comunicações relacionadas ao serviço.</li>
+            <li><strong>Aprimorar o produto:</strong> analisar desempenho, estabilidade e uso agregado para melhorar recursos e experiência.</li>
+            <li><strong>Cumprir obrigações legais:</strong> atender autoridades competentes, ordens judiciais e deveres regulatórios.</li>
+            <li><strong>Enviar comunicações comerciais:</strong> quando houver consentimento, relação legítima ou outra hipótese legal aplicável, sempre respeitando os meios de cancelamento disponíveis.</li>
+          </ul>
+          <p>Conforme o contexto, o tratamento poderá se apoiar na execução de contrato, cumprimento de obrigação legal ou regulatória, exercício regular de direitos, prevenção à fraude, legítimo interesse ou consentimento.</p>
+        </article>
+
+        <article id="efex" class="fs-inst-card fs-inst-card--success">
+          <h2>5. EfeX e recursos de inteligência artificial</h2>
+          <p>O EfeX utiliza inteligência artificial para interpretar solicitações, analisar conteúdos e auxiliar na elaboração de respostas, diagnósticos preliminares e rascunhos de orçamento.</p>
+          <ul>
+            <li>O conteúdo enviado pode ser processado por provedores tecnológicos contratados para executar o recurso.</li>
+            <li>O usuário deve remover informações pessoais desnecessárias antes de enviar textos, documentos ou imagens.</li>
+            <li>As respostas podem conter imprecisões e não substituem inspeção técnica, diagnóstico profissional, medição, teste ou revisão humana.</li>
+            <li>O usuário deve revisar descrições, peças, valores, recomendações e documentos antes de utilizá-los ou enviá-los a terceiros.</li>
+            <li>O FS Orçamentos não utiliza o EfeX para tomar, de forma autônoma, decisões jurídicas ou financeiras que produzam efeitos relevantes sobre o titular.</li>
+          </ul>
+          <p>As condições de retenção e uso dos dados pelo provedor de inteligência artificial dependem da configuração técnica e contratual adotada pela plataforma. O FS Orçamentos busca utilizar configurações adequadas à prestação do serviço e à proteção das informações.</p>
+        </article>
+
+        <article id="compartilhamento" class="fs-inst-card">
+          <h2>6. Compartilhamento, operadores e transferência internacional</h2>
+          <p>Dados podem ser compartilhados somente na medida necessária com fornecedores que apoiam a operação da plataforma, incluindo:</p>
+          <ul>
+            <li>autenticação, banco de dados, armazenamento e infraestrutura em nuvem;</li>
+            <li>hospedagem, distribuição de conteúdo e monitoramento técnico;</li>
+            <li>processamento de pagamentos, Pix, cobrança e conciliação;</li>
+            <li>inteligência artificial e processamento de conteúdo;</li>
+            <li>comunicação, suporte, envio de e-mails e notificações;</li>
+            <li>análise de desempenho, segurança e prevenção de fraude;</li>
+            <li>publicidade em páginas ou planos que ofereçam esse modelo.</li>
+          </ul>
+          <p>Alguns fornecedores podem manter infraestrutura fora do Brasil. Nessas situações, os dados poderão ser transferidos internacionalmente conforme as regras aplicáveis, os contratos firmados e as medidas de proteção oferecidas pelos respectivos provedores.</p>
+          <p>O FS Orçamentos não vende dados pessoais. Informações também poderão ser compartilhadas para cumprimento de obrigação legal, ordem judicial, solicitação de autoridade competente, defesa de direitos ou proteção da segurança da plataforma e de seus usuários.</p>
+        </article>
+
+        <article id="cookies" class="fs-inst-card fs-inst-card--yellow">
+          <h2>7. Cookies, armazenamento local e publicidade</h2>
+          <p>A plataforma pode utilizar cookies, tecnologias semelhantes e armazenamento local para:</p>
+          <ul>
+            <li><strong>Funcionalidade essencial:</strong> manter sessão, autenticação, segurança e continuidade da navegação.</li>
+            <li><strong>Preferências:</strong> recordar configurações, dados temporários e escolhas realizadas pelo usuário.</li>
+            <li><strong>Desempenho:</strong> identificar erros, medir estabilidade e compreender o funcionamento da aplicação.</li>
+            <li><strong>Publicidade:</strong> exibir anúncios em páginas públicas ou contas gratuitas, quando esse recurso estiver ativo.</li>
+          </ul>
+          <p>O usuário pode controlar cookies pelas configurações do navegador. O bloqueio de tecnologias essenciais pode impedir o funcionamento correto da autenticação ou de determinados recursos. Quando exigido, tecnologias não essenciais deverão depender de escolha do usuário.</p>
+        </article>
+
+        <article id="retencao" class="fs-inst-card">
+          <h2>8. Retenção, exclusão e cópias de segurança</h2>
+          <p>Os dados são mantidos pelo período necessário para disponibilizar a conta e as funcionalidades, cumprir obrigações legais, processar pagamentos, prevenir fraude, prestar suporte, exercer direitos ou resolver disputas.</p>
+          <ul>
+            <li>Dados ativos de conta, clientes e orçamentos podem permanecer enquanto a conta ou o respectivo registro estiver ativo.</li>
+            <li>O usuário poderá excluir registros quando a funcionalidade estiver disponível ou solicitar atendimento.</li>
+            <li>Após o encerramento da conta, determinados dados poderão ser mantidos por prazo adicional quando necessários para obrigações legais, segurança, cobrança ou defesa de direitos.</li>
+            <li>Cópias residuais podem permanecer temporariamente em backups protegidos até a substituição ou expiração do ciclo de cópia.</li>
+            <li>Dados anonimizados ou agregados, que não permitam identificar o titular de forma razoável, poderão ser mantidos para estatísticas e melhoria do serviço.</li>
+          </ul>
+        </article>
+
+        <article id="direitos" class="fs-inst-card fs-inst-card--success">
+          <h2>9. Direitos dos titulares</h2>
+          <p>Nos termos da LGPD e observadas as hipóteses legais, o titular pode solicitar:</p>
+          <ul>
+            <li>confirmação da existência de tratamento;</li>
+            <li>acesso aos dados;</li>
+            <li>correção de dados incompletos, inexatos ou desatualizados;</li>
+            <li>anonimização, bloqueio ou eliminação de dados desnecessários, excessivos ou tratados irregularmente;</li>
+            <li>portabilidade, quando tecnicamente e legalmente aplicável;</li>
+            <li>informação sobre entidades com as quais houve compartilhamento;</li>
+            <li>informação sobre a possibilidade de não fornecer consentimento e suas consequências;</li>
+            <li>revogação do consentimento e eliminação dos dados tratados com base nele, respeitadas as exceções legais;</li>
+            <li>oposição a tratamento realizado em desconformidade com a legislação;</li>
+            <li>revisão de decisão exclusivamente automatizada, caso esse tipo de decisão venha a ser adotado.</li>
+          </ul>
+          <p>A solicitação pode exigir validação de identidade. Quando o pedido envolver dados inseridos por uma empresa usuária sobre seu próprio cliente, o titular poderá ser orientado a procurar diretamente essa empresa, conforme a responsabilidade aplicável ao caso.</p>
+        </article>
+
+        <article id="seguranca" class="fs-inst-card fs-inst-card--blue">
+          <h2>10. Segurança e incidentes</h2>
+          <p>O FS Orçamentos adota medidas técnicas e organizacionais compatíveis com o porte e a natureza da plataforma, incluindo conexão protegida, autenticação, controles de acesso, regras de banco de dados, registros técnicos e restrição de privilégios.</p>
+          <p>Nenhum sistema conectado à internet é absolutamente invulnerável. O usuário também deve proteger sua senha, manter seus dispositivos atualizados, evitar compartilhar sessões e comunicar imediatamente qualquer suspeita de acesso indevido.</p>
+          <p>Incidentes relevantes serão avaliados e, quando aplicável, serão adotadas medidas de contenção, investigação e comunicação aos titulares ou às autoridades competentes.</p>
+        </article>
+
+        <article id="menores" class="fs-inst-card">
+          <h2>11. Crianças e adolescentes</h2>
+          <p>A criação de conta e a contratação da plataforma são destinadas a pessoas maiores de 18 anos ou legalmente autorizadas. O FS Orçamentos não busca coletar intencionalmente dados de crianças para cadastro de contas.</p>
+          <p>Usuários não devem inserir dados de crianças ou adolescentes em campos livres, anexos ou solicitações ao EfeX, salvo quando houver necessidade legítima, autorização e cumprimento das exigências legais aplicáveis.</p>
+        </article>
+
+        <article id="alteracoes" class="fs-inst-card fs-inst-card--yellow">
+          <h2>12. Alterações desta Política</h2>
+          <p>Esta Política pode ser atualizada para refletir mudanças legais, técnicas, comerciais ou operacionais. A versão vigente será publicada nesta página com a respectiva data de atualização.</p>
+          <p>Quando uma alteração for relevante, o FS Orçamentos poderá apresentar aviso na plataforma ou utilizar os meios de contato disponíveis.</p>
+        </article>
+
+        <article id="contato-privacidade" class="fs-inst-card fs-inst-card--success">
+          <h2>13. Como exercer seus direitos ou falar sobre privacidade</h2>
+          <p>Para solicitar acesso, correção, exclusão, informação ou esclarecimento, utilize a página de contato e selecione o assunto relacionado à privacidade, quando disponível.</p>
+          <p>Informe o e-mail cadastrado, descreva objetivamente a solicitação e nunca envie sua senha. Poderemos solicitar dados adicionais estritamente necessários para confirmar sua identidade e evitar acesso indevido às informações.</p>
+          <div class="fs-inst-actions">
+            <a class="fs-inst-btn fs-inst-btn--primary" href="/contato.html">Abrir atendimento</a>
+            <a class="fs-inst-btn" href="/termos.html">Ler Termos de Uso</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="fs-inst-final" aria-labelledby="resumo-final">
+      <h2 id="resumo-final">Privacidade também depende de boas escolhas</h2>
+      <p>Cadastre somente dados necessários, revise os conteúdos gerados pelo EfeX, proteja sua senha e exclua informações que não precisem mais permanecer na plataforma.</p>
+      <div class="fs-inst-actions">
+        <a class="fs-inst-btn fs-inst-btn--primary" href="/contato.html">Falar com o FS Orçamentos</a>
+        <a class="fs-inst-btn" href="/termos.html">Consultar os Termos</a>
+      </div>
+    </section>
   </main>
 
-  <footer class="fs-inst-footer">© 2026 FS Orçamentos | <a href="/sobre.html">Sobre</a> | <a href="/termos.html">Termos</a> | <a href="/contato.html">Contato</a></footer>
+  <footer class="fs-inst-footer">
+    © 2026 FS Orçamentos |
+    <a href="/sobre.html">Sobre</a> |
+    <a href="/termos.html">Termos</a> |
+    <a href="/privacidade.html" aria-current="page">Privacidade</a> |
+    <a href="/contato.html">Contato</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="/config.js" defer></script>
+  <script src="/auth.js" defer></script>
+  <script src="/ui.js" defer></script>
+  <script src="/carregar-menu.js" defer></script>
 </body>
 </html>
