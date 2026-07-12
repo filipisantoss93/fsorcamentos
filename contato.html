@@ -1,120 +1,151 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#07111F">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
   <meta name="author" content="Filipi Aparecido dos Santos">
   <meta name="robots" content="index, follow">
-  <title>Contato e Suporte | FS Orçamentos</title>
   <meta name="description" content="Fale com o suporte do FS Orçamentos pelo WhatsApp para tirar dúvidas, relatar erros, tratar de planos e enviar sugestões.">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="FS Orçamentos">
   <meta property="og:url" content="https://fsorcamentos.com.br/contato.html">
-  <meta property="og:title" content="Contato e Suporte | FS Orçamentos">
+  <meta property="og:title" content="Contato e suporte | FS Orçamentos">
   <meta property="og:description" content="Suporte para usuários do FS Orçamentos.">
   <link rel="canonical" href="https://fsorcamentos.com.br/contato.html">
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/institucional.css">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <title>Contato e suporte | FS Orçamentos</title>
 </head>
 <body>
   <div id="header-container"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="auth.js"></script>
-  <script src="ui.js"></script>
-  <script src="planos.js"></script>
-  <script src="carregar-menu.js"></script>
-  <script src="notificacoes.js"></script>
-
   <main class="fs-inst-page">
     <section class="fs-inst-hero">
       <span class="fs-inst-kicker">Contato e suporte</span>
-      <h1>Fale com a equipe FS Orçamentos.</h1>
-      <p>Precisa de ajuda, encontrou um erro ou tem uma sugestão? Preencha os dados e abra uma conversa direta pelo WhatsApp.</p>
-      <div class="fs-inst-meta">
+      <h1>Conte com a equipe <span>FS Orçamentos.</span></h1>
+      <p>Precisa de ajuda, encontrou um erro ou quer sugerir uma melhoria? Organize as informações abaixo e continue o atendimento pelo WhatsApp.</p>
+      <div class="fs-inst-meta" aria-label="Tipos de atendimento">
         <span>Atendimento humano</span>
         <span>Suporte técnico</span>
         <span>Planos e assinatura</span>
       </div>
     </section>
 
-    <section class="fs-inst-grid">
+    <section class="fs-inst-grid" aria-label="Canais de suporte">
       <article class="fs-inst-card fs-inst-card--blue">
-        <div class="fs-inst-icon" aria-hidden="true">🛠️</div>
+        <div class="fs-inst-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5-5L7 4l3 3 2.7-2.7a4 4 0 0 0 2 5L5 19l-2 2 2 2 2-2 9.7-9.7a4 4 0 0 0 5-2.7l-3 3-3-3 3-3a4 4 0 0 0-4-1.3Z"/></svg>
+        </div>
         <h2>Suporte técnico</h2>
-        <p>Ajuda com acesso, perfil, geração de PDF, orçamentos, clientes e recursos da plataforma.</p>
+        <p>Ajuda com acesso, perfil, PDFs, orçamentos, clientes e recursos da plataforma.</p>
       </article>
+
       <article class="fs-inst-card fs-inst-card--yellow">
-        <div class="fs-inst-icon" aria-hidden="true">💡</div>
+        <div class="fs-inst-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.5 14.5A7 7 0 1 1 15.5 14.5C14.6 15.2 14 16.1 14 17h-4c0-.9-.6-1.8-1.5-2.5Z"/></svg>
+        </div>
         <h2>Sugestões</h2>
-        <p>Envie ideias de melhorias, novos recursos e ajustes que facilitem o trabalho da sua oficina.</p>
+        <p>Envie ideias de melhorias e recursos que facilitem a rotina da sua oficina.</p>
       </article>
+
       <article class="fs-inst-card fs-inst-card--success">
-        <div class="fs-inst-icon" aria-hidden="true">💳</div>
+        <div class="fs-inst-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h2"/></svg>
+        </div>
         <h2>Planos</h2>
-        <p>Tire dúvidas sobre recursos, cobranças, renovação, teste e ativação do plano.</p>
+        <p>Dúvidas sobre cobrança, renovação, cancelamento, teste e ativação do plano.</p>
       </article>
     </section>
 
     <section class="fs-inst-grid fs-inst-grid--two">
       <article class="fs-inst-panel">
         <h2>Enviar mensagem</h2>
-        <div class="fs-inst-form">
+        <p>Os dados serão usados somente para montar a mensagem que será aberta no WhatsApp.</p>
+
+        <form id="form-contato" class="fs-inst-form" novalidate>
           <div class="fs-inst-field">
             <label for="nome">Seu nome</label>
-            <input id="nome" autocomplete="name" placeholder="Digite seu nome">
+            <input id="nome" name="nome" type="text" autocomplete="name" maxlength="80" placeholder="Digite seu nome" required>
+            <span class="fs-inst-error" id="erro-nome"></span>
           </div>
+
+          <div class="fs-inst-field">
+            <label for="email">E-mail da conta</label>
+            <input id="email" name="email" type="email" autocomplete="email" maxlength="120" placeholder="seuemail@exemplo.com">
+            <small>Recomendado para assuntos de login, cobrança, privacidade ou assinatura.</small>
+            <span class="fs-inst-error" id="erro-email"></span>
+          </div>
+
           <div class="fs-inst-field">
             <label for="assunto">Assunto</label>
-            <select id="assunto">
+            <select id="assunto" name="assunto" required>
+              <option value="">Selecione um assunto</option>
               <option>Dúvida técnica</option>
               <option>Relatar erro</option>
-              <option>Planos e assinatura</option>
               <option>Problema com login</option>
+              <option>Planos e assinatura</option>
+              <option>Cobrança ou pagamento</option>
+              <option>Cancelamento de plano</option>
+              <option>Privacidade ou exclusão de dados</option>
               <option>Sugestão</option>
               <option>Outro assunto</option>
             </select>
+            <span class="fs-inst-error" id="erro-assunto"></span>
           </div>
+
           <div class="fs-inst-field">
             <label for="msg">Mensagem</label>
-            <textarea id="msg" placeholder="Descreva sua dúvida ou problema com detalhes"></textarea>
+            <textarea id="msg" name="mensagem" minlength="10" maxlength="1500" placeholder="Descreva sua dúvida ou problema com detalhes" required></textarea>
+            <div class="fs-inst-field-meta"><small>Não envie senhas ou dados bancários.</small><small id="contador-msg">0/1500</small></div>
+            <span class="fs-inst-error" id="erro-msg"></span>
           </div>
-          <button id="btn-enviar-contato" class="fs-inst-btn fs-inst-btn--primary" type="button">Abrir conversa no WhatsApp</button>
-        </div>
+
+          <div id="status-contato" class="fs-inst-status" role="alert" aria-live="polite"></div>
+          <button class="fs-inst-btn fs-inst-btn--success" type="submit" aria-label="Continuar atendimento pelo WhatsApp">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9 9 0 0 1-4-.9L3 21l1.7-4.4A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.5 8.5c.5 3 2 4.5 5 5"/></svg>
+            Continuar pelo WhatsApp
+          </button>
+          <small>O WhatsApp será aberto em uma nova guia. Anexe capturas de tela diretamente na conversa.</small>
+        </form>
       </article>
 
       <article class="fs-inst-panel fs-inst-faq">
         <h2>Dúvidas frequentes</h2>
         <details>
           <summary>Como recuperar o acesso?</summary>
-          <p>Use a opção de recuperação de senha na tela de login. Caso continue sem acesso, informe o e-mail cadastrado no suporte.</p>
+          <p>Use a recuperação de senha na tela de login. Se continuar sem acesso, informe o e-mail cadastrado no atendimento.</p>
         </details>
         <details>
           <summary>Meu PDF não foi gerado. O que fazer?</summary>
-          <p>Atualize a página, confira os campos obrigatórios e tente novamente. Persistindo, envie modelo do aparelho, navegador e uma captura do erro.</p>
+          <p>Atualize a página, confira os campos obrigatórios e tente novamente. Persistindo, informe aparelho, navegador e anexe uma captura do erro no WhatsApp.</p>
         </details>
         <details>
           <summary>Como cancelar ou alterar o plano?</summary>
-          <p>Entre em contato pelo formulário ao lado informando o e-mail da conta e o assunto “Planos e assinatura”.</p>
+          <p>Selecione o assunto correspondente e informe o e-mail cadastrado para localizar sua conta.</p>
         </details>
         <details>
           <summary>Como relatar um erro?</summary>
-          <p>Explique o que estava fazendo, qual página apresentou o problema e, quando possível, envie uma captura de tela.</p>
+          <p>Explique o que estava fazendo, qual página apresentou o problema e o resultado esperado.</p>
         </details>
       </article>
     </section>
 
     <section class="fs-inst-final">
       <h2>Para agilizar o atendimento</h2>
-      <p>Informe a página onde ocorreu o problema, o navegador utilizado e uma descrição objetiva do que aconteceu. Nunca envie sua senha.</p>
+      <p>Informe a página, aparelho, navegador e uma descrição objetiva do ocorrido. Nunca envie sua senha. Capturas de tela podem ser anexadas depois que o WhatsApp abrir.</p>
     </section>
   </main>
 
   <footer class="fs-inst-footer">© 2026 FS Orçamentos | <a href="/sobre.html">Sobre</a> | <a href="/privacidade.html">Privacidade</a> | <a href="/termos.html">Termos</a></footer>
-  <script src="/contato.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/config.js"></script>
+  <script src="/carregar-menu.js"></script>
+  <script src="/contato.js"></script>
 </body>
 </html>
