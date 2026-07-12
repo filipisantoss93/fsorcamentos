@@ -1,5 +1,5 @@
 (function aplicarIconesOficiaisFS(){
-  const versao='20260712-icons-2';
+  const versao='20260712-icons-4';
   const head=document.head;
   if(!head)return;
 
@@ -21,9 +21,9 @@
     head.appendChild(link);
   };
 
-  adicionar('icon','/assets/images/favicon.ico','image/x-icon');
-  adicionar('icon','/assets/images/favicon-16.png','image/png','16x16');
   adicionar('icon','/assets/images/favicon-32.png','image/png','32x32');
+  adicionar('shortcut icon','/assets/images/favicon-32.png','image/png','32x32');
+  adicionar('icon','/assets/images/favicon-16.png','image/png','16x16');
   adicionar('icon','/assets/images/favicon-48.png','image/png','48x48');
   adicionar('icon','/assets/images/favicon-64.png','image/png','64x64');
   adicionar('icon','/assets/images/icon-192.png','image/png','192x192');
