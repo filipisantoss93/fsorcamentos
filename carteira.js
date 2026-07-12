@@ -9,13 +9,11 @@
     return Number.isNaN(data.getTime()) ? 'Data não informada' : data.toLocaleString('pt-BR', { dateStyle:'short', timeStyle:'short' });
   };
 
-  const PACOTES = {
-    creditos_20:{creditos:20,valor:9.90,label:'20 créditos Efex',promocao:false},
-    creditos_50:{creditos:50,valor:24.90,label:'50 créditos Efex',promocao:false},
-    creditos_100:{creditos:100,valor:49.90,label:'100 créditos Efex',promocao:false},
-    creditos_200:{creditos:200,valor:99.90,label:'200 créditos Efex',promocao:false},
-    creditos_400:{creditos:400,valor:189.90,label:'400 créditos Efex',promocao:true}
-  };
+  let carregamentoInicialConcluido = false;
+
+  function produtos(){
+    return window.FS_PRODUTOS_COMERCIAIS || {};
+  }
 
   function escapar(valor){
     return String(valor ?? '')
@@ -26,6 +24,18 @@
       .replace(/'/g,'&#039;');
   }
 
+  function mostrarConteudo(mostrar){
+    const conteudo = $('conteudo-protegido');
+    if (conteudo) conteudo.classList.toggle('hidden', !mostrar);
+  }
+
+  function mostrarErroCarteira(mensagem = ''){
+    const erro = $('carteira-erro');
+    if (!erro) return;
+    erro.textContent = mensagem;
+    erro.classList.toggle('hidden', !mensagem);
+  }
+
   async function sessao(){
     try {
       const { data:{ session } } = await _supabase.auth.getSession();
@@ -34,6 +44,26 @@
       console.error('Erro ao obter sessão da carteira:', erro);
       return null;
     }
+  }
+
+  function irParaLogin(){
+    const destino = '/carteira.html' + (location.hash || '');
+    if (typeof fsIrParaLoginComDestino === 'function') {
+      fsIrParaLoginComDestino(destino);
+      return;
+    }
+    try { localStorage.setItem('fs_destino_apos_login', destino); } catch (_) {}
+    window.location.href = '/index.html?login=1&dest=' + encodeURIComponent(destino);
+  }
+
+  function assinaturaAtiva(assinatura){
+    if (!assinatura || !assinatura.status) return false;
+    const status = String(assinatura.status).toLowerCase();
+    const statusValido = ['ativo','active','pago','paid'].includes(status);
+    if (!statusValido) return false;
+    if (!assinatura.expira_em) return true;
+    const expira = new Date(assinatura.expira_em).getTime();
+    return Number.isFinite(expira) && expira > Date.now();
   }
 
   function nivelLabel(nivel, plano){
@@ -50,40 +80,63 @@
     return '5 créditos de boas-vindas';
   }
 
+  function preencherPacotes(){
+    const select = $('pacote-creditos');
+    if (!select) return;
+    const lista = Object.values(produtos()).filter(item => item?.tipo === 'creditos');
+    if (!lista.length) return;
+    const atual = select.value || 'creditos_50';
+    select.innerHTML = lista.map(item => `<option value="${escapar(item.codigo)}">${escapar(item.creditos)} créditos — ${escapar(moeda(item.valor))}</option>`).join('');
+    select.value = lista.some(item => item.codigo === atual) ? atual : (lista.find(item => item.codigo === 'creditos_50')?.codigo || lista[0].codigo);
+  }
+
   function atualizarResumoCarteira(){
     const codigo = $('pacote-creditos')?.value || 'creditos_50';
-    const pacote = PACOTES[codigo] || PACOTES.creditos_50;
+    const pacote = produtos()[codigo];
+    if (!pacote) return;
     if ($('resumo-pacote')) $('resumo-pacote').textContent = pacote.label;
     if ($('valor-pacote-creditos')) $('valor-pacote-creditos').textContent = moeda(pacote.valor);
-    if ($('resumo-promocao')) $('resumo-promocao').textContent = pacote.promocao ? 'Preço promocional exclusivo deste pacote' : 'Sem desconto aplicado';
+    if ($('resumo-promocao')) $('resumo-promocao').textContent = codigo === 'creditos_400' ? 'Preço promocional exclusivo deste pacote' : 'Sem desconto aplicado';
   }
 
   async function carregarCarteiraEfex(forcar = false){
     const session = await sessao();
     if (!session) {
-      window.location.href = '/index.html?login=1&dest=' + encodeURIComponent('/carteira.html');
+      mostrarConteudo(false);
+      irParaLogin();
       return;
     }
 
+    mostrarConteudo(true);
+    mostrarErroCarteira('');
     if ($('saldo-efex')) $('saldo-efex').textContent = forcar ? '...' : '—';
 
     try {
       const [saldoResp, perfilResp, assinaturaResp] = await Promise.all([
         _supabase.rpc('fs_meu_saldo_efex'),
         _supabase.from('perfis').select('plano,plano_status,plano_expira_em').eq('id', session.user.id).maybeSingle(),
-        _supabase.from('assinaturas').select('plano,nivel,status,expira_em').eq('usuario_id', session.user.id).maybeSingle()
+        _supabase.from('assinaturas')
+          .select('plano,nivel,status,expira_em')
+          .eq('usuario_id', session.user.id)
+          .order('expira_em', { ascending:false, nullsFirst:false })
+          .limit(1)
+          .maybeSingle()
       ]);
 
       if (saldoResp.error) throw saldoResp.error;
+      if (perfilResp.error) console.warn('Erro ao carregar perfil da carteira:', perfilResp.error);
+      if (assinaturaResp.error) console.warn('Erro ao carregar assinatura da carteira:', assinaturaResp.error);
+
       const saldoBruto = saldoResp.data;
       const saldo = Number(saldoBruto?.saldo ?? saldoBruto ?? 0) || 0;
       if ($('saldo-efex')) $('saldo-efex').textContent = String(saldo);
 
       const perfil = perfilResp.data || {};
       const assinatura = assinaturaResp.data || {};
-      const plano = assinatura.plano || perfil.plano || 'gratis';
-      const nivel = assinatura.nivel || (String(plano).toLowerCase() === 'premium' ? 'essencial' : 'gratis');
-      const expira = assinatura.expira_em || perfil.plano_expira_em || null;
+      const ativa = assinaturaAtiva(assinatura);
+      const plano = ativa ? (assinatura.plano || 'premium') : (perfil.plano || 'gratis');
+      const nivel = ativa ? (assinatura.nivel || 'essencial') : (String(plano).toLowerCase() === 'premium' ? 'essencial' : 'gratis');
+      const expira = ativa ? assinatura.expira_em : (perfil.plano_expira_em || null);
 
       if ($('carteira-plano')) $('carteira-plano').textContent = nivelLabel(nivel, plano);
       if ($('carteira-creditos-mensais')) $('carteira-creditos-mensais').textContent = creditosMensais(nivel, plano);
@@ -92,6 +145,7 @@
       console.error('Erro ao carregar carteira:', erro);
       if ($('saldo-efex')) $('saldo-efex').textContent = '—';
       if ($('carteira-plano')) $('carteira-plano').textContent = 'Não foi possível carregar';
+      mostrarErroCarteira('Não foi possível carregar sua carteira agora. Verifique sua conexão e tente novamente.');
     }
   }
 
@@ -141,40 +195,37 @@
     if (container) container.innerHTML = '';
 
     try {
-      let lista = [];
       const rpc = await _supabase.rpc('fs_extrato_efex', { limite:50 });
-      if (!rpc.error && Array.isArray(rpc.data)) {
-        lista = rpc.data;
-      } else {
-        const tabela = await _supabase
-          .from('efex_movimentacoes')
-          .select('*')
-          .eq('usuario_id', session.user.id)
-          .order('criado_em', { ascending:false })
-          .limit(50);
-        if (!tabela.error && Array.isArray(tabela.data)) lista = tabela.data;
-        else if (rpc.error && tabela.error) throw tabela.error;
-      }
-      renderizarExtrato(lista);
+      if (rpc.error) throw rpc.error;
+      renderizarExtrato(Array.isArray(rpc.data) ? rpc.data : []);
     } catch (erro) {
-      console.warn('Extrato Efex ainda não disponível:', erro);
+      console.warn('Extrato Efex indisponível:', erro);
       if (status) {
-        status.textContent = 'O saldo está ativo, mas o extrato detalhado ainda não foi disponibilizado pelo backend.';
+        status.textContent = 'O saldo está ativo, mas o extrato detalhado não pôde ser carregado agora.';
         status.classList.remove('hidden');
       }
     }
   }
 
+  async function atualizarCarteiraCompleta(){
+    await Promise.all([carregarCarteiraEfex(true), carregarExtratoEfex(true)]);
+  }
+
   document.addEventListener('DOMContentLoaded', async () => {
+    preencherPacotes();
     atualizarResumoCarteira();
-    await Promise.all([carregarCarteiraEfex(), carregarExtratoEfex()]);
+    await atualizarCarteiraCompleta();
+    carregamentoInicialConcluido = true;
   });
 
   _supabase?.auth?.onAuthStateChange?.((event, session) => {
-    if (!session) return;
-    carregarCarteiraEfex(true);
-    carregarExtratoEfex(true);
+    if (event === 'SIGNED_OUT' || !session) {
+      mostrarConteudo(false);
+      if (carregamentoInicialConcluido) irParaLogin();
+      return;
+    }
+    if (carregamentoInicialConcluido && event === 'SIGNED_IN') atualizarCarteiraCompleta();
   });
 
-  Object.assign(window, { carregarCarteiraEfex, carregarExtratoEfex, atualizarResumoCarteira });
+  Object.assign(window, { carregarCarteiraEfex, carregarExtratoEfex, atualizarResumoCarteira, atualizarCarteiraCompleta });
 })();
