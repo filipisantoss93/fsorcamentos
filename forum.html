@@ -2,17 +2,17 @@
 <html lang="pt-br">
 <head>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#07142f">
+  <meta name="theme-color" content="#07111f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fórum FS - Comunidade dos prestadores | FS Orçamentos</title>
-  <meta name="description" content="Fórum FS Orçamentos: comunidade para prestadores de serviço trocarem dúvidas, experiências, orçamentos, cobrança, garantia e rotina profissional.">
+  <title>Comunidade FS | FS Orçamentos</title>
+  <meta name="description" content="Comunidade profissional do FS Orçamentos para troca de experiências, dúvidas e soluções entre prestadores de serviço.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
-  <link id="forum-publicacao-modal-css-link" rel="stylesheet" href="forum-actions-menu.css?v=20260712-forum">
+  <link id="forum-publicacao-modal-css-link" rel="stylesheet" href="forum-actions-menu.css?v=20260712-social">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -23,21 +23,20 @@
 
   <main id="forum-conteudo" class="forum-page comunidade-page" style="display:none;">
     <section class="forum-hero comunidade-hero">
-      <button type="button" id="forum-meu-perfil-btn" class="forum-perfil-icone-btn" aria-label="Abrir meu perfil" title="Meu perfil">👤</button>
-
-      <div>
-        <span class="forum-tag">👥 Fórum FS</span>
-        <h1>Comunidade dos prestadores de serviço</h1>
-        <p>Compartilhe dúvidas e experiências sobre orçamento, cobrança, garantia, atendimento e rotina profissional.</p>
-
-        <div class="forum-top-search" role="search">
-          <label class="sr-only" for="forum-busca">Pesquisar publicações</label>
-          <input id="forum-busca" type="search" placeholder="Pesquisar publicações..." aria-label="Pesquisar publicações" autocomplete="off">
-        </div>
+      <div class="comunidade-hero-copy">
+        <span class="forum-tag">COMUNIDADE FS</span>
+        <h1>Profissionais ajudando profissionais</h1>
+        <p>Troque experiências, tire dúvidas e compartilhe soluções da rotina de serviços.</p>
       </div>
 
-      <div class="forum-hero-acoes">
-        <button type="button" id="forum-publicar-btn" class="forum-btn">+ Publicar</button>
+      <button type="button" id="forum-meu-perfil-btn" class="forum-perfil-icone-btn" aria-label="Abrir meu perfil" title="Meu perfil">
+        <span aria-hidden="true">👤</span>
+      </button>
+
+      <div class="forum-top-search" role="search">
+        <label class="sr-only" for="forum-busca">Pesquisar publicações</label>
+        <span class="forum-search-icon" aria-hidden="true">⌕</span>
+        <input id="forum-busca" type="search" placeholder="Pesquisar na comunidade" aria-label="Pesquisar publicações" autocomplete="off">
       </div>
     </section>
 
@@ -45,15 +44,34 @@
 
     <section class="forum-layout comunidade-layout">
       <div class="forum-coluna comunidade-feed-coluna">
+        <article class="forum-composer" aria-label="Criar publicação">
+          <button type="button" id="forum-publicar-btn" class="forum-composer-main">
+            <span class="forum-composer-avatar" aria-hidden="true">FS</span>
+            <span class="forum-composer-placeholder">Compartilhe uma dúvida ou experiência...</span>
+          </button>
+          <div class="forum-composer-actions" aria-hidden="true">
+            <span>📷 Foto</span>
+            <span>🔧 Serviço</span>
+            <span>💬 Dúvida</span>
+          </div>
+        </article>
+
         <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="forum-modal-titulo">
           <div class="forum-card-topo">
             <div>
               <h2 id="forum-modal-titulo">Criar publicação</h2>
-              <p>Compartilhe uma dúvida ou experiência profissional. Evite expor dados pessoais de clientes.</p>
+              <p>Compartilhe uma dúvida ou experiência profissional. Não exponha dados pessoais de clientes.</p>
             </div>
             <button type="button" id="forum-fechar-publicacao-btn" class="forum-btn-secundario">Fechar</button>
           </div>
         </article>
+
+        <div class="forum-feed-header">
+          <div>
+            <strong>Publicações recentes</strong>
+            <span>Conteúdo da comunidade FS</span>
+          </div>
+        </div>
 
         <section id="forum-lista-topicos" class="forum-lista forum-feed-lista forum-feed-direto" aria-label="Publicações da comunidade" aria-live="polite">
           <div class="forum-vazio">Carregando feed...</div>
@@ -61,22 +79,40 @@
       </div>
 
       <aside class="forum-coluna comunidade-sidebar">
-        <article class="forum-card branco comunidade-sidebar-card">
-          <h3>Rede profissional</h3>
-          <div class="forum-mini-lista">
-            <div class="forum-mini-item"><strong>Publique</strong><span>Dúvidas de orçamento, cobrança, garantia e atendimento.</span></div>
-            <div class="forum-mini-item"><strong>Interaja</strong><span>Curta, responda, siga perfis e acompanhe discussões.</span></div>
-            <div class="forum-mini-item"><strong>Aprenda</strong><span>Transforme experiências reais em conhecimento para vender melhor.</span></div>
+        <article class="forum-card comunidade-sidebar-card comunidade-perfil-card">
+          <div class="comunidade-sidebar-icon">FS</div>
+          <div>
+            <h3>Sua rede profissional</h3>
+            <p>Compartilhe conhecimento e fortaleça sua presença na comunidade.</p>
+          </div>
+          <button type="button" class="forum-sidebar-profile-btn" data-abrir-perfil>Ver meu perfil</button>
+        </article>
+
+        <article class="forum-card comunidade-sidebar-card">
+          <div class="forum-sidebar-title">
+            <span>Assuntos da comunidade</span>
+          </div>
+          <div class="forum-topic-links">
+            <span>Orçamentos</span>
+            <span>Diagnóstico</span>
+            <span>Cobrança</span>
+            <span>Garantia</span>
+            <span>Atendimento</span>
           </div>
         </article>
 
-        <article class="forum-card branco comunidade-sidebar-card">
-          <h3>Boas práticas</h3>
+        <article class="forum-card comunidade-sidebar-card comunidade-efex-card">
+          <span class="comunidade-efex-label">DICA DO EFEX</span>
+          <h3>Proteja os dados do cliente</h3>
+          <p>Antes de publicar uma foto, confira se placas, documentos, telefones e informações pessoais não estão visíveis.</p>
+        </article>
+
+        <article class="forum-card comunidade-sidebar-card comunidade-regras-card">
+          <h3>Convivência profissional</h3>
           <div class="forum-mini-lista">
-            <div class="forum-mini-item">Não publique dados pessoais de clientes.</div>
-            <div class="forum-mini-item">Explique o contexto com detalhes.</div>
-            <div class="forum-mini-item">Use fotos somente quando ajudarem na dúvida.</div>
-            <div class="forum-mini-item">Denuncie spam, ofensas ou conteúdo inadequado.</div>
+            <div class="forum-mini-item">Explique o contexto com clareza.</div>
+            <div class="forum-mini-item">Respeite opiniões e experiências diferentes.</div>
+            <div class="forum-mini-item">Denuncie spam ou conteúdo inadequado.</div>
           </div>
         </article>
       </aside>
@@ -97,5 +133,12 @@
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
   <script src="forum.js?v=20260712-forum"></script>
+  <script>
+    document.addEventListener('click', function (event) {
+      if (event.target.closest('[data-abrir-perfil]')) {
+        document.getElementById('forum-meu-perfil-btn')?.click();
+      }
+    });
+  </script>
 </body>
 </html>
