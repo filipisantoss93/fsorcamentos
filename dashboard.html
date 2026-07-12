@@ -5,71 +5,758 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Relatórios - FS Orçamentos</title>
   <meta name="robots" content="noindex,nofollow">
-  <link rel="stylesheet" href="style.css?v=20260712-relatorios-cores-finais">
+  <link rel="stylesheet" href="style.css?v=20260712-relatorios-isolados">
   <link rel="icon" type="image/png" href="favicon.png">
   <style id="fs-relatorios-theme">
-    :root{--fs-navy:#07111f;--fs-blue:#1565c0;--fs-blue-soft:#eaf3ff;--fs-yellow:#f6b500;--fs-yellow-soft:#fff7dc;--fs-green:#16834b;--fs-green-soft:#eaf7f0;--fs-red:#c93636;--fs-red-soft:#fdeeee;--fs-bg:#f4f7fb;--fs-card:#fff;--fs-text:#172033;--fs-muted:#667085;--fs-border:#d8e0ea;--fs-shadow:0 10px 28px rgba(7,17,31,.08)}
-    html body{background:var(--fs-bg)!important;color:var(--fs-text)!important}
-    html body main.dash{width:min(1180px,calc(100% - 28px));margin:0 auto;padding:24px 0 64px;display:grid;gap:16px;background:transparent!important;color:var(--fs-text)!important}
-    html body main.dash #relatorios-conteudo{display:grid;gap:16px;color:var(--fs-text)!important}
-    html body main.dash #relatorios-conteudo .card,html body main.dash #relatorios-bloqueio.card{background:var(--fs-card)!important;color:var(--fs-text)!important;border:1px solid var(--fs-border)!important;box-shadow:var(--fs-shadow)!important;overflow:hidden}
-    html body main.dash #relatorios-conteudo .hero,html body main.dash #relatorios-bloqueio.premium-lock{padding:28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;background:linear-gradient(135deg,var(--fs-navy),#102c55)!important;color:#fff!important;border-top:4px solid var(--fs-yellow)!important}
-    html body main.dash .hero h1,html body main.dash .premium-lock h1{margin:0 0 8px;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:clamp(28px,4vw,42px);line-height:1.05}
-    html body main.dash .hero p,html body main.dash .premium-lock p{margin:0;color:#d6e2f2!important;-webkit-text-fill-color:#d6e2f2!important;line-height:1.6}
-    html body main.dash .tag{display:inline-flex;padding:5px 10px;margin-bottom:10px;background:var(--fs-yellow)!important;color:var(--fs-navy)!important;-webkit-text-fill-color:var(--fs-navy)!important;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
-    .hero-actions,.filter-actions,.quick-filters{display:flex;gap:8px;flex-wrap:wrap}
-    html body main.dash #relatorios-conteudo .btn,html body main.dash #relatorios-bloqueio .btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 14px;border:1px solid var(--fs-border)!important;background:#fff!important;color:var(--fs-navy)!important;-webkit-text-fill-color:var(--fs-navy)!important;font-weight:800;text-decoration:none;cursor:pointer;transition:.18s ease}
-    html body main.dash #relatorios-conteudo .btn.primary,html body main.dash #relatorios-bloqueio .btn.primary{background:var(--fs-yellow)!important;color:var(--fs-navy)!important;-webkit-text-fill-color:var(--fs-navy)!important;border-color:var(--fs-yellow)!important}
-    html body main.dash #relatorios-conteudo .hero .btn.secondary,html body main.dash #relatorios-bloqueio .btn.secondary{background:rgba(21,101,192,.18)!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border-color:rgba(255,255,255,.28)!important}
-    html body main.dash #relatorios-conteudo .section-head{padding:16px 18px;background:var(--fs-navy)!important;color:#fff!important;display:flex;justify-content:space-between;gap:14px;align-items:center}
-    html body main.dash #relatorios-conteudo .section-head strong{color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:16px}
-    html body main.dash #relatorios-conteudo .section-head p{margin:4px 0 0;color:#c5d3e5!important;-webkit-text-fill-color:#c5d3e5!important;font-size:13px}
-    html body main.dash #relatorios-conteudo .section-head .btn:not(.primary){background:#fff!important;color:var(--fs-navy)!important;-webkit-text-fill-color:var(--fs-navy)!important;border-color:#fff!important}
-    html body main.dash #relatorios-conteudo .body{padding:18px;background:#fff!important;color:var(--fs-text)!important}
-    .filter-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.field{display:grid;gap:6px}
-    html body main.dash #relatorios-conteudo .field label{color:var(--fs-text)!important;-webkit-text-fill-color:var(--fs-text)!important;font-size:12px;font-weight:850;text-transform:uppercase}
-    html body main.dash #relatorios-conteudo .field input{min-height:42px;border:1px solid var(--fs-border)!important;padding:9px 11px;background:#fff!important;color:var(--fs-text)!important;-webkit-text-fill-color:var(--fs-text)!important}
-    .quick-filters{margin-top:12px}.quick-filters .btn{min-height:34px!important;padding:7px 10px!important;font-size:12px}.status-line{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font-size:12px}
-    html body main.dash #relatorios-conteudo .status-line,html body main.dash #relatorios-conteudo .status-line span{color:var(--fs-muted)!important;-webkit-text-fill-color:var(--fs-muted)!important}
-    html body main.dash #relatorios-conteudo .alert{padding:13px 15px;border:1px solid #f0b8b8!important;background:#fff1f1!important;color:#8f2020!important;-webkit-text-fill-color:#8f2020!important;font-weight:700}
-    html body main.dash #relatorios-conteudo .metrics-title{margin:6px 0 -6px;color:var(--fs-navy)!important;-webkit-text-fill-color:var(--fs-navy)!important;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.07em}
-    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    html body main.dash #relatorios-conteudo .metric{padding:16px;background:#fff!important;color:var(--fs-text)!important;border-top:3px solid #9ba7b7!important}
-    html body main.dash #relatorios-conteudo .metric.blue{background:var(--fs-blue-soft)!important;border-top-color:var(--fs-blue)!important}html body main.dash #relatorios-conteudo .metric.ok{background:var(--fs-green-soft)!important;border-top-color:var(--fs-green)!important}html body main.dash #relatorios-conteudo .metric.red{background:var(--fs-red-soft)!important;border-top-color:var(--fs-red)!important}
-    html body main.dash #relatorios-conteudo .metric>span,html body main.dash #relatorios-conteudo .metric>strong{display:block;color:var(--fs-text)!important;-webkit-text-fill-color:var(--fs-text)!important}html body main.dash #relatorios-conteudo .metric>span{font-size:11px;font-weight:900;text-transform:uppercase}html body main.dash #relatorios-conteudo .metric>strong{margin-top:5px;font-size:clamp(20px,2.4vw,28px);line-height:1.15}html body main.dash #relatorios-conteudo .metric>small{display:block;margin-top:7px;color:var(--fs-muted)!important;-webkit-text-fill-color:var(--fs-muted)!important;font-size:11px}
-    .cols{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}.cols2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grafico{display:grid;gap:11px}.bar-row{display:grid;grid-template-columns:64px minmax(100px,1fr) 116px;gap:10px;align-items:center}.bar-label,.bar-value{font-size:12px;font-weight:800}.bar-value{text-align:right}
-    html body main.dash #relatorios-conteudo .bar-label,html body main.dash #relatorios-conteudo .bar-value,html body main.dash #relatorios-conteudo .funil-item,html body main.dash #relatorios-conteudo .funil-item strong{color:var(--fs-text)!important;-webkit-text-fill-color:var(--fs-text)!important}
-    .bar-track,.funil-track{background:#dce8f6!important;overflow:hidden}.bar-track{height:22px}.bar-fill,.funil-fill{background:var(--fs-blue)!important}.bar-fill{height:100%;min-width:3px}.funil{display:grid;gap:12px}.funil-item>div:first-child{display:flex;justify-content:space-between;font-size:13px}.funil-track{height:9px;margin-top:5px}.funil-fill{height:100%}
-    html body main.dash #relatorios-conteudo .resumo-texto{padding:16px;background:var(--fs-blue-soft)!important;border-left:4px solid var(--fs-blue)!important;color:var(--fs-text)!important;-webkit-text-fill-color:var(--fs-text)!important;line-height:1.6;font-weight:650}
-    .ranking{display:grid;gap:8px}html body main.dash #relatorios-conteudo .rank-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:11px;border:1px solid var(--fs-border)!important;background:#f8fbff!important;color:var(--fs-text)!important}html body main.dash #relatorios-conteudo .rank-item strong{color:var(--fs-text)!important;-webkit-text-fill-color:var(--fs-text)!important}html body main.dash #relatorios-conteudo .rank-item small{display:block;margin-top:3px;color:var(--fs-muted)!important;-webkit-text-fill-color:var(--fs-muted)!important}
-    .table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse}html body main.dash #relatorios-conteudo .table th{background:var(--fs-blue-soft)!important;color:var(--fs-navy)!important;-webkit-text-fill-color:var(--fs-navy)!important;text-align:left;padding:11px;font-size:11px;text-transform:uppercase}html body main.dash #relatorios-conteudo .table td{padding:11px;border-bottom:1px solid var(--fs-border)!important;background:#fff!important;color:var(--fs-text)!important;-webkit-text-fill-color:var(--fs-text)!important;font-size:13px}
-    html body main.dash #relatorios-conteudo .status{display:inline-flex;padding:4px 8px;font-size:11px;font-weight:850;text-transform:capitalize}html body main.dash #relatorios-conteudo .status-aprovado{background:var(--fs-green-soft)!important;color:#126d3f!important;-webkit-text-fill-color:#126d3f!important}html body main.dash #relatorios-conteudo .status-recusado{background:var(--fs-red-soft)!important;color:#a82424!important;-webkit-text-fill-color:#a82424!important}html body main.dash #relatorios-conteudo .status-pendente{background:var(--fs-yellow-soft)!important;color:#765600!important;-webkit-text-fill-color:#765600!important}html body main.dash #relatorios-conteudo .status-outro{background:#eef0f4!important;color:#4b5565!important;-webkit-text-fill-color:#4b5565!important}
-    html body main.dash #relatorios-conteudo .empty{padding:24px;text-align:center;color:var(--fs-muted)!important;-webkit-text-fill-color:var(--fs-muted)!important;font-weight:700}.premium-lock{padding:42px 24px;text-align:center}.premium-lock p{max-width:620px;margin:0 auto 20px}.premium-lock .hero-actions{justify-content:center}.relatorios-carregando .metric strong,.relatorios-carregando .grafico,.relatorios-carregando .ranking,.relatorios-carregando .table-wrap{opacity:.55}
-    @media(max-width:980px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.hero,.filter-grid,.cols,.cols2{grid-template-columns:1fr}.hero-actions{justify-content:flex-start}html body main.dash #relatorios-conteudo .section-head{align-items:flex-start}}
-    @media(max-width:620px){html body main.dash{width:min(100% - 18px,1180px);padding-top:14px}.hero,html body main.dash #relatorios-conteudo .body{padding:16px}.metrics{grid-template-columns:1fr 1fr;gap:8px}html body main.dash #relatorios-conteudo .metric{padding:12px}html body main.dash #relatorios-conteudo .metric>strong{font-size:20px}html body main.dash #relatorios-conteudo .section-head{display:grid}.filter-actions .btn,.hero-actions .btn{flex:1}.bar-row{grid-template-columns:48px 1fr 86px;gap:7px}.bar-value{font-size:11px}.table thead{display:none}.table,.table tbody,.table tr,.table td{display:block;width:100%}.table tr{padding:8px 0;border-bottom:1px solid var(--fs-border)}html body main.dash #relatorios-conteudo .table td{display:grid;grid-template-columns:92px 1fr;gap:10px;border:0!important;padding:6px 10px}html body main.dash #relatorios-conteudo .table td::before{content:attr(data-label);font-weight:850;color:var(--fs-muted)!important;-webkit-text-fill-color:var(--fs-muted)!important;text-transform:uppercase;font-size:10px}}
+    body.pagina-relatorios {
+      background: #f4f7fb;
+    }
+
+    .fs-relatorios {
+      --r-navy: #07111f;
+      --r-blue: #1565c0;
+      --r-blue-soft: #eaf3ff;
+      --r-yellow: #f6b500;
+      --r-yellow-soft: #fff7dc;
+      --r-green: #16834b;
+      --r-green-soft: #eaf7f0;
+      --r-red: #c93636;
+      --r-red-soft: #fdeeee;
+      --r-card: #ffffff;
+      --r-text: #172033;
+      --r-muted: #667085;
+      --r-border: #d8e0ea;
+      --r-shadow: 0 10px 28px rgba(7, 17, 31, .08);
+
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 64px;
+      display: grid;
+      gap: 16px;
+      color: var(--r-text);
+    }
+
+    .fs-relatorios,
+    .fs-relatorios * {
+      box-sizing: border-box;
+    }
+
+    .fs-relatorios #relatorios-conteudo {
+      display: grid;
+      gap: 16px;
+      color: var(--r-text);
+    }
+
+    .fs-relatorios-card {
+      overflow: hidden;
+      background: var(--r-card);
+      color: var(--r-text);
+      border: 1px solid var(--r-border);
+      border-radius: 14px;
+      box-shadow: var(--r-shadow);
+    }
+
+    .fs-relatorios-hero,
+    .fs-relatorios-lock {
+      padding: 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      background: linear-gradient(135deg, var(--r-navy), #102c55);
+      color: #fff;
+      border-top: 4px solid var(--r-yellow);
+    }
+
+    .fs-relatorios-hero h1,
+    .fs-relatorios-lock h1 {
+      margin: 0 0 8px;
+      color: #fff;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.05;
+    }
+
+    .fs-relatorios-hero p,
+    .fs-relatorios-lock p {
+      margin: 0;
+      color: #d6e2f2;
+      line-height: 1.6;
+    }
+
+    .fs-relatorios-tag {
+      display: inline-flex;
+      width: max-content;
+      padding: 5px 10px;
+      margin-bottom: 10px;
+      background: var(--r-yellow);
+      color: var(--r-navy);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .fs-relatorios-actions,
+    .fs-relatorios-filter-actions,
+    .fs-relatorios-quick-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+
+    .fs-relatorios-btn {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border: 1px solid var(--r-border);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--r-navy);
+      font: inherit;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .fs-relatorios-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--r-blue);
+      box-shadow: 0 6px 16px rgba(21, 101, 192, .12);
+    }
+
+    .fs-relatorios-btn:focus-visible,
+    .fs-relatorios input:focus-visible {
+      outline: 3px solid rgba(21, 101, 192, .22);
+      outline-offset: 2px;
+    }
+
+    .fs-relatorios-btn.primary {
+      background: var(--r-yellow);
+      color: var(--r-navy);
+      border-color: var(--r-yellow);
+    }
+
+    .fs-relatorios-hero .fs-relatorios-btn.secondary,
+    .fs-relatorios-lock .fs-relatorios-btn.secondary {
+      background: rgba(21, 101, 192, .18);
+      color: #fff;
+      border-color: rgba(255, 255, 255, .28);
+    }
+
+    .fs-relatorios-btn:disabled {
+      opacity: .55;
+      cursor: wait;
+      transform: none;
+    }
+
+    .fs-relatorios-section-head {
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      background: var(--r-navy);
+      color: #fff;
+    }
+
+    .fs-relatorios-section-head strong {
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .fs-relatorios-section-head p {
+      margin: 4px 0 0;
+      color: #c5d3e5;
+      font-size: 13px;
+    }
+
+    .fs-relatorios-section-head .fs-relatorios-btn:not(.primary) {
+      background: #fff;
+      color: var(--r-navy);
+      border-color: #fff;
+    }
+
+    .fs-relatorios-body {
+      padding: 18px;
+      background: #fff;
+      color: var(--r-text);
+    }
+
+    .fs-relatorios-filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .fs-relatorios-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .fs-relatorios-field label {
+      margin: 0;
+      color: var(--r-text);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .fs-relatorios-field input {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 11px;
+      border: 1px solid var(--r-border);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--r-text);
+      box-shadow: none;
+    }
+
+    .fs-relatorios-field input:focus {
+      border-color: var(--r-blue);
+      box-shadow: 0 0 0 3px rgba(21, 101, 192, .12);
+    }
+
+    .fs-relatorios-quick-filters {
+      margin-top: 12px;
+    }
+
+    .fs-relatorios-quick-filters .fs-relatorios-btn {
+      min-height: 34px;
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .fs-relatorios-quick-filters .fs-relatorios-btn.ativo,
+    .fs-relatorios-quick-filters .fs-relatorios-btn[aria-pressed="true"] {
+      background: var(--r-blue);
+      color: #fff;
+      border-color: var(--r-blue);
+    }
+
+    .fs-relatorios-status-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      color: var(--r-muted);
+      font-size: 12px;
+    }
+
+    .fs-relatorios-status-line span {
+      color: inherit;
+    }
+
+    .fs-relatorios-alert {
+      padding: 13px 15px;
+      margin-bottom: 12px;
+      border: 1px solid #f0b8b8;
+      border-radius: 8px;
+      background: #fff1f1;
+      color: #8f2020;
+      font-weight: 700;
+    }
+
+    .fs-relatorios-metrics-title {
+      margin: 6px 0 -6px;
+      color: var(--r-navy);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .fs-relatorios-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .fs-relatorios-metric {
+      padding: 16px;
+      background: #fff;
+      color: var(--r-text);
+      border-top: 3px solid #9ba7b7;
+    }
+
+    .fs-relatorios-metric.blue {
+      background: var(--r-blue-soft);
+      border-top-color: var(--r-blue);
+    }
+
+    .fs-relatorios-metric.ok {
+      background: var(--r-green-soft);
+      border-top-color: var(--r-green);
+    }
+
+    .fs-relatorios-metric.red {
+      background: var(--r-red-soft);
+      border-top-color: var(--r-red);
+    }
+
+    .fs-relatorios-metric > span,
+    .fs-relatorios-metric > strong {
+      display: block;
+      color: var(--r-text);
+    }
+
+    .fs-relatorios-metric > span {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .fs-relatorios-metric > strong {
+      margin-top: 5px;
+      font-size: clamp(20px, 2.4vw, 28px);
+      line-height: 1.15;
+    }
+
+    .fs-relatorios-metric > small {
+      display: block;
+      margin-top: 7px;
+      color: var(--r-muted);
+      font-size: 11px;
+    }
+
+    .fs-relatorios-cols {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 16px;
+    }
+
+    .fs-relatorios-cols2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .fs-relatorios .grafico,
+    .fs-relatorios .ranking,
+    .fs-relatorios .funil {
+      display: grid;
+      gap: 11px;
+    }
+
+    .fs-relatorios .bar-row {
+      display: grid;
+      grid-template-columns: 64px minmax(100px, 1fr) 116px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .fs-relatorios .bar-label,
+    .fs-relatorios .bar-value,
+    .fs-relatorios .funil-item,
+    .fs-relatorios .funil-item strong {
+      color: var(--r-text);
+    }
+
+    .fs-relatorios .bar-label,
+    .fs-relatorios .bar-value {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .fs-relatorios .bar-value {
+      text-align: right;
+    }
+
+    .fs-relatorios .bar-track,
+    .fs-relatorios .funil-track {
+      overflow: hidden;
+      background: #dce8f6;
+      border-radius: 999px;
+    }
+
+    .fs-relatorios .bar-track {
+      height: 22px;
+    }
+
+    .fs-relatorios .bar-fill,
+    .fs-relatorios .funil-fill {
+      height: 100%;
+      background: var(--r-blue);
+    }
+
+    .fs-relatorios .bar-fill {
+      min-width: 3px;
+    }
+
+    .fs-relatorios .funil-item > div:first-child {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .fs-relatorios .funil-track {
+      height: 9px;
+      margin-top: 5px;
+    }
+
+    .fs-relatorios-resumo {
+      padding: 16px;
+      background: var(--r-blue-soft);
+      border-left: 4px solid var(--r-blue);
+      border-radius: 8px;
+      color: var(--r-text);
+      line-height: 1.6;
+      font-weight: 650;
+    }
+
+    .fs-relatorios .rank-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      padding: 11px;
+      border: 1px solid var(--r-border);
+      border-radius: 8px;
+      background: #f8fbff;
+      color: var(--r-text);
+    }
+
+    .fs-relatorios .rank-item strong {
+      color: var(--r-text);
+    }
+
+    .fs-relatorios .rank-item small {
+      display: block;
+      margin-top: 3px;
+      color: var(--r-muted);
+    }
+
+    .fs-relatorios .table-wrap {
+      width: 100%;
+      overflow: auto;
+      background: #fff;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .fs-relatorios .table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    .fs-relatorios .table thead,
+    .fs-relatorios .table th {
+      background: var(--r-blue-soft);
+      color: var(--r-navy);
+    }
+
+    .fs-relatorios .table th {
+      padding: 11px;
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .fs-relatorios .table td {
+      padding: 11px;
+      border-bottom: 1px solid var(--r-border);
+      background: #fff;
+      color: var(--r-text);
+      font-size: 13px;
+    }
+
+    .fs-relatorios .status {
+      display: inline-flex;
+      padding: 4px 8px;
+      border: 0;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: capitalize;
+    }
+
+    .fs-relatorios .status-aprovado {
+      background: var(--r-green-soft);
+      color: #126d3f;
+    }
+
+    .fs-relatorios .status-recusado {
+      background: var(--r-red-soft);
+      color: #a82424;
+    }
+
+    .fs-relatorios .status-pendente {
+      background: var(--r-yellow-soft);
+      color: #765600;
+    }
+
+    .fs-relatorios .status-outro {
+      background: #eef0f4;
+      color: #4b5565;
+    }
+
+    .fs-relatorios .empty {
+      padding: 24px;
+      text-align: center;
+      color: var(--r-muted);
+      font-weight: 700;
+    }
+
+    .fs-relatorios-lock {
+      grid-template-columns: 1fr;
+      padding: 42px 24px;
+      text-align: center;
+    }
+
+    .fs-relatorios-lock p {
+      max-width: 620px;
+      margin: 0 auto 20px;
+    }
+
+    .fs-relatorios-lock .fs-relatorios-actions {
+      justify-content: center;
+    }
+
+    .relatorios-carregando .fs-relatorios-metric strong,
+    .relatorios-carregando .fs-relatorios .grafico,
+    .relatorios-carregando .fs-relatorios .ranking,
+    .relatorios-carregando .fs-relatorios .table-wrap {
+      opacity: .55;
+    }
+
+    @media (max-width: 980px) {
+      .fs-relatorios-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .fs-relatorios-hero,
+      .fs-relatorios-filter-grid,
+      .fs-relatorios-cols,
+      .fs-relatorios-cols2 {
+        grid-template-columns: 1fr;
+      }
+
+      .fs-relatorios-actions {
+        justify-content: flex-start;
+      }
+
+      .fs-relatorios-section-head {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .fs-relatorios {
+        width: min(100% - 18px, 1180px);
+        padding-top: 14px;
+      }
+
+      .fs-relatorios-hero,
+      .fs-relatorios-body {
+        padding: 16px;
+      }
+
+      .fs-relatorios-metrics {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .fs-relatorios-metric {
+        padding: 12px;
+      }
+
+      .fs-relatorios-metric > strong {
+        font-size: 20px;
+      }
+
+      .fs-relatorios-section-head {
+        display: grid;
+      }
+
+      .fs-relatorios-filter-actions .fs-relatorios-btn,
+      .fs-relatorios-actions .fs-relatorios-btn {
+        flex: 1;
+      }
+
+      .fs-relatorios .bar-row {
+        grid-template-columns: 48px 1fr 86px;
+        gap: 7px;
+      }
+
+      .fs-relatorios .bar-value {
+        font-size: 11px;
+      }
+
+      .fs-relatorios .table thead {
+        display: none;
+      }
+
+      .fs-relatorios .table,
+      .fs-relatorios .table tbody,
+      .fs-relatorios .table tr,
+      .fs-relatorios .table td {
+        display: block;
+        width: 100%;
+      }
+
+      .fs-relatorios .table tr {
+        padding: 8px 0;
+        border-bottom: 1px solid var(--r-border);
+      }
+
+      .fs-relatorios .table td {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 10px;
+        padding: 6px 10px;
+        border: 0;
+      }
+
+      .fs-relatorios .table td::before {
+        content: attr(data-label);
+        color: var(--r-muted);
+        font-size: 10px;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+    }
   </style>
 </head>
-<body>
+<body class="pagina-relatorios">
   <div id="header-container"></div>
-  <main class="dash">
-    <section id="relatorios-bloqueio" class="card premium-lock" hidden>
-      <span class="tag">Recurso Premium</span><h1>Relatórios profissionais</h1><p>Acompanhe conversão de propostas, ticket médio, valores aprovados, fluxo de caixa e os serviços mais relevantes para sua oficina.</p>
-      <div class="hero-actions"><a class="btn primary" href="/planos.html#assinar-plano-premium">Conhecer planos</a><a class="btn secondary" href="/painel.html">Voltar à conta</a></div>
+
+  <main class="fs-relatorios">
+    <section id="relatorios-bloqueio" class="fs-relatorios-card fs-relatorios-lock" hidden>
+      <span class="fs-relatorios-tag">Recurso Premium</span>
+      <h1>Relatórios profissionais</h1>
+      <p>Acompanhe conversão de propostas, ticket médio, valores aprovados, fluxo de caixa e os serviços mais relevantes para sua oficina.</p>
+      <div class="fs-relatorios-actions">
+        <a class="fs-relatorios-btn primary" href="/planos.html#assinar-plano-premium">Conhecer planos</a>
+        <a class="fs-relatorios-btn secondary" href="/painel.html">Voltar à conta</a>
+      </div>
     </section>
+
     <div id="relatorios-conteudo" hidden>
-      <section class="card hero"><div><span class="tag">Premium</span><h1>Relatórios e desempenho</h1><p>Analise propostas, conversão comercial e movimentações financeiras sem confundir valor aprovado com receita efetivamente recebida.</p></div><div class="hero-actions"><a class="btn secondary" href="/orcamentos.html">Orçamentos</a><a class="btn primary" href="/fluxo-caixa.html">Abrir caixa</a></div></section>
-      <section class="card"><div class="section-head"><div><strong>Período analisado</strong><p>Use um intervalo rápido ou escolha as datas manualmente.</p></div><div class="filter-actions"><button id="btn-exportar" class="btn" type="button" data-acao-relatorio>Exportar CSV</button><button id="btn-atualizar" class="btn primary" type="button" data-acao-relatorio>Atualizar</button></div></div><div class="body"><div id="erro-relatorio" class="alert" role="alert" hidden></div><div class="filter-grid"><div class="field"><label for="dash-inicio">De</label><input id="dash-inicio" type="date"></div><div class="field"><label for="dash-fim">Até</label><input id="dash-fim" type="date"></div><button id="btn-buscar" class="btn primary" type="button" data-acao-relatorio>Buscar</button></div><div class="quick-filters" aria-label="Períodos rápidos"><button class="btn" type="button" data-periodo="7" data-acao-relatorio>7 dias</button><button class="btn" type="button" data-periodo="30" data-acao-relatorio>30 dias</button><button class="btn" type="button" data-periodo="90" data-acao-relatorio>90 dias</button><button class="btn" type="button" data-periodo="mes" data-acao-relatorio>Este mês</button></div><div class="status-line"><span id="status-relatorio">Preparando dados…</span><span id="periodo-comparacao"></span></div></div></section>
-      <h2 class="metrics-title">Desempenho comercial</h2>
-      <section class="metrics"><article class="card metric blue"><span>Orçamentos</span><strong id="m-orcamentos">0</strong><small id="v-orcamentos">—</small></article><article class="card metric"><span>Pendentes</span><strong id="m-pendentes">0</strong><small>Aguardando decisão</small></article><article class="card metric ok"><span>Aprovados</span><strong id="m-aprovados">0</strong><small>Propostas convertidas</small></article><article class="card metric red"><span>Recusados</span><strong id="m-recusados">0</strong><small>Propostas não convertidas</small></article><article class="card metric blue"><span>Conversão decididos</span><strong id="m-taxa">0%</strong><small>Aprovados ÷ aprovados + recusados</small></article><article class="card metric"><span>Conversão total</span><strong id="m-taxa-total">0%</strong><small>Aprovados ÷ total criado</small></article><article class="card metric ok"><span>Valor aprovado</span><strong id="m-total-aprovado">R$ 0,00</strong><small id="v-aprovado">—</small></article><article class="card metric"><span>Ticket médio aprovado</span><strong id="m-ticket">R$ 0,00</strong><small>Não representa recebimento</small></article></section>
-      <h2 class="metrics-title">Resultado financeiro registrado</h2>
-      <section class="metrics"><article class="card metric ok"><span>Entradas no caixa</span><strong id="m-entradas">R$ 0,00</strong><small id="v-entradas">—</small></article><article class="card metric red"><span>Saídas do caixa</span><strong id="m-saidas">R$ 0,00</strong><small>Despesas registradas</small></article><article class="card metric blue"><span>Saldo do período</span><strong id="m-saldo">R$ 0,00</strong><small id="v-saldo">—</small></article></section>
-      <section class="cols"><article class="card"><div class="section-head"><div><strong>Valor aprovado por mês</strong><p>Propostas aprovadas, não recebimentos.</p></div></div><div class="body"><div id="grafico-mensal" class="grafico"><div class="empty">Carregando…</div></div></div></article><article class="card"><div class="section-head"><div><strong>Funil comercial</strong><p>Distribuição dos orçamentos.</p></div></div><div class="body"><div id="funil-orcamentos" class="funil"></div></div></article></section>
-      <section class="card"><div class="section-head"><div><strong>Leitura rápida</strong><p>Resumo objetivo do período selecionado.</p></div></div><div class="body"><div id="resumo-relatorio" class="resumo-texto">Carregando…</div></div></section>
-      <section class="cols2"><article class="card"><div class="section-head"><div><strong>Serviços mais aprovados</strong><p>Somente itens de orçamentos aprovados.</p></div></div><div class="body"><div id="ranking-mao-obra" class="ranking"><div class="empty">Carregando…</div></div></div></article><article class="card"><div class="section-head"><div><strong>Produtos mais aprovados</strong><p>Somente itens de orçamentos aprovados.</p></div></div><div class="body"><div id="ranking-produtos" class="ranking"><div class="empty">Carregando…</div></div></div></article></section>
-      <section class="card"><div class="section-head"><div><strong>Últimos orçamentos</strong><p>Até 20 registros do período.</p></div><a class="btn" href="/orcamentos.html">Ver todos</a></div><div class="body"><div id="lista-orcamentos-relatorio" class="table-wrap"><div class="empty">Carregando…</div></div></div></section>
-      <section class="card"><div class="section-head"><div><strong>Últimos lançamentos do caixa</strong><p>Até 20 registros do período.</p></div><a class="btn" href="/fluxo-caixa.html">Ver caixa</a></div><div class="body"><div id="lista-caixa-relatorio" class="table-wrap"><div class="empty">Carregando…</div></div></div></section>
+      <section class="fs-relatorios-card fs-relatorios-hero">
+        <div>
+          <span class="fs-relatorios-tag">Premium</span>
+          <h1>Relatórios e desempenho</h1>
+          <p>Analise propostas, conversão comercial e movimentações financeiras sem confundir valor aprovado com receita efetivamente recebida.</p>
+        </div>
+        <div class="fs-relatorios-actions">
+          <a class="fs-relatorios-btn secondary" href="/orcamentos.html">Orçamentos</a>
+          <a class="fs-relatorios-btn primary" href="/fluxo-caixa.html">Abrir caixa</a>
+        </div>
+      </section>
+
+      <section class="fs-relatorios-card">
+        <div class="fs-relatorios-section-head">
+          <div>
+            <strong>Período analisado</strong>
+            <p>Use um intervalo rápido ou escolha as datas manualmente.</p>
+          </div>
+          <div class="fs-relatorios-filter-actions">
+            <button id="btn-exportar" class="fs-relatorios-btn" type="button" data-acao-relatorio>Exportar CSV</button>
+            <button id="btn-atualizar" class="fs-relatorios-btn primary" type="button" data-acao-relatorio>Atualizar</button>
+          </div>
+        </div>
+        <div class="fs-relatorios-body">
+          <div id="erro-relatorio" class="fs-relatorios-alert" role="alert" hidden></div>
+          <div class="fs-relatorios-filter-grid">
+            <div class="fs-relatorios-field">
+              <label for="dash-inicio">De</label>
+              <input id="dash-inicio" type="date">
+            </div>
+            <div class="fs-relatorios-field">
+              <label for="dash-fim">Até</label>
+              <input id="dash-fim" type="date">
+            </div>
+            <button id="btn-buscar" class="fs-relatorios-btn primary" type="button" data-acao-relatorio>Buscar</button>
+          </div>
+          <div class="fs-relatorios-quick-filters" aria-label="Períodos rápidos">
+            <button class="fs-relatorios-btn" type="button" data-periodo="7" data-acao-relatorio>7 dias</button>
+            <button class="fs-relatorios-btn" type="button" data-periodo="30" data-acao-relatorio>30 dias</button>
+            <button class="fs-relatorios-btn" type="button" data-periodo="90" data-acao-relatorio>90 dias</button>
+            <button class="fs-relatorios-btn" type="button" data-periodo="mes" data-acao-relatorio>Este mês</button>
+          </div>
+          <div class="fs-relatorios-status-line">
+            <span id="status-relatorio">Preparando dados…</span>
+            <span id="periodo-comparacao"></span>
+          </div>
+        </div>
+      </section>
+
+      <h2 class="fs-relatorios-metrics-title">Desempenho comercial</h2>
+      <section class="fs-relatorios-metrics">
+        <article class="fs-relatorios-card fs-relatorios-metric blue"><span>Orçamentos</span><strong id="m-orcamentos">0</strong><small id="v-orcamentos">—</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric"><span>Pendentes</span><strong id="m-pendentes">0</strong><small>Aguardando decisão</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric ok"><span>Aprovados</span><strong id="m-aprovados">0</strong><small>Propostas convertidas</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric red"><span>Recusados</span><strong id="m-recusados">0</strong><small>Propostas não convertidas</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric blue"><span>Conversão decididos</span><strong id="m-taxa">0%</strong><small>Aprovados ÷ aprovados + recusados</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric"><span>Conversão total</span><strong id="m-taxa-total">0%</strong><small>Aprovados ÷ total criado</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric ok"><span>Valor aprovado</span><strong id="m-total-aprovado">R$ 0,00</strong><small id="v-aprovado">—</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric"><span>Ticket médio aprovado</span><strong id="m-ticket">R$ 0,00</strong><small>Não representa recebimento</small></article>
+      </section>
+
+      <h2 class="fs-relatorios-metrics-title">Resultado financeiro registrado</h2>
+      <section class="fs-relatorios-metrics">
+        <article class="fs-relatorios-card fs-relatorios-metric ok"><span>Entradas no caixa</span><strong id="m-entradas">R$ 0,00</strong><small id="v-entradas">—</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric red"><span>Saídas do caixa</span><strong id="m-saidas">R$ 0,00</strong><small>Despesas registradas</small></article>
+        <article class="fs-relatorios-card fs-relatorios-metric blue"><span>Saldo do período</span><strong id="m-saldo">R$ 0,00</strong><small id="v-saldo">—</small></article>
+      </section>
+
+      <section class="fs-relatorios-cols">
+        <article class="fs-relatorios-card">
+          <div class="fs-relatorios-section-head"><div><strong>Valor aprovado por mês</strong><p>Propostas aprovadas, não recebimentos.</p></div></div>
+          <div class="fs-relatorios-body"><div id="grafico-mensal" class="grafico"><div class="empty">Carregando…</div></div></div>
+        </article>
+        <article class="fs-relatorios-card">
+          <div class="fs-relatorios-section-head"><div><strong>Funil comercial</strong><p>Distribuição dos orçamentos.</p></div></div>
+          <div class="fs-relatorios-body"><div id="funil-orcamentos" class="funil"></div></div>
+        </article>
+      </section>
+
+      <section class="fs-relatorios-card">
+        <div class="fs-relatorios-section-head"><div><strong>Leitura rápida</strong><p>Resumo objetivo do período selecionado.</p></div></div>
+        <div class="fs-relatorios-body"><div id="resumo-relatorio" class="fs-relatorios-resumo">Carregando…</div></div>
+      </section>
+
+      <section class="fs-relatorios-cols2">
+        <article class="fs-relatorios-card">
+          <div class="fs-relatorios-section-head"><div><strong>Serviços mais aprovados</strong><p>Somente itens de orçamentos aprovados.</p></div></div>
+          <div class="fs-relatorios-body"><div id="ranking-mao-obra" class="ranking"><div class="empty">Carregando…</div></div></div>
+        </article>
+        <article class="fs-relatorios-card">
+          <div class="fs-relatorios-section-head"><div><strong>Produtos mais aprovados</strong><p>Somente itens de orçamentos aprovados.</p></div></div>
+          <div class="fs-relatorios-body"><div id="ranking-produtos" class="ranking"><div class="empty">Carregando…</div></div></div>
+        </article>
+      </section>
+
+      <section class="fs-relatorios-card">
+        <div class="fs-relatorios-section-head">
+          <div><strong>Últimos orçamentos</strong><p>Até 20 registros do período.</p></div>
+          <a class="fs-relatorios-btn" href="/orcamentos.html">Ver todos</a>
+        </div>
+        <div class="fs-relatorios-body"><div id="lista-orcamentos-relatorio" class="table-wrap"><div class="empty">Carregando…</div></div></div>
+      </section>
+
+      <section class="fs-relatorios-card">
+        <div class="fs-relatorios-section-head">
+          <div><strong>Últimos lançamentos do caixa</strong><p>Até 20 registros do período.</p></div>
+          <a class="fs-relatorios-btn" href="/fluxo-caixa.html">Ver caixa</a>
+        </div>
+        <div class="fs-relatorios-body"><div id="lista-caixa-relatorio" class="table-wrap"><div class="empty">Carregando…</div></div></div>
+      </section>
     </div>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="auth.js"></script><script src="planos.js"></script><script src="carregar-menu.js"></script><script src="dashboard.js?v=20260712-relatorios-consolidado"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="planos.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="dashboard.js?v=20260712-relatorios-css-isolado"></script>
 </body>
 </html>
