@@ -33,12 +33,12 @@
 .main-header[aria-busy="true"] .header-user-card{opacity:.72}
 .main-header.fs-header-pronto .header-user-card{opacity:1;transition:opacity .2s ease}
 .menu-mobile-btn:focus-visible,.fs-menu-aprimorado a:focus-visible,.fs-menu-aprimorado button:focus-visible{outline:3px solid rgba(246,181,0,.75);outline-offset:2px}
-.fs-menu-backdrop{display:none;position:fixed;inset:0;z-index:19990;border:0;border-radius:0;background:rgba(1,8,20,.16);padding:0;cursor:default}
-.fs-menu-backdrop.visivel{display:block}
+.fs-menu-backdrop{display:none;position:fixed;inset:0;z-index:9990;border:0;border-radius:0;background:rgba(1,8,20,.16);padding:0;cursor:default;pointer-events:none}
+.fs-menu-backdrop.visivel{display:block;pointer-events:auto}
 body.fs-menu-aberto{overflow:hidden}
 @media(max-width:900px){
-  .header-menu-linha.fs-menu-aprimorado{position:fixed!important;top:0!important;right:0!important;width:min(88vw,360px)!important;height:100dvh!important;max-height:none!important;padding:12px!important;border-radius:0!important;border-top:0!important;border-left:1px solid #315982!important;z-index:20000!important;transform:translateX(102%);display:block!important;visibility:hidden;transition:transform .22s ease,visibility 0s linear .22s;overflow:auto;overscroll-behavior:contain}
-  .header-menu-linha.fs-menu-aprimorado.menu-aberto{transform:translateX(0);visibility:visible;transition:transform .22s ease}
+  .header-menu-linha.fs-menu-aprimorado{position:fixed!important;top:0!important;right:0!important;width:min(88vw,360px)!important;height:100dvh!important;max-height:none!important;padding:12px!important;border-radius:0!important;border-top:0!important;border-left:1px solid #315982!important;z-index:20000!important;transform:translateX(102%);display:block!important;visibility:hidden;transition:transform .22s ease,visibility 0s linear .22s;overflow:auto;overscroll-behavior:contain;pointer-events:none}
+  .header-menu-linha.fs-menu-aprimorado.menu-aberto{transform:translateX(0);visibility:visible;transition:transform .22s ease;pointer-events:auto}
   .fs-menu-aprimorado .nav-menu a,.fs-menu-aprimorado .btn-menu-mobile-entrar,.fs-menu-aprimorado .btn-menu-mobile-sair{min-height:44px}
   .fs-menu-grupo{padding-top:10px!important}
   #btn-header-entrar,#btn-header-sair{display:none!important}
