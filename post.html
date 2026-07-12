@@ -12,13 +12,14 @@
   <meta name="robots" content="noindex,nofollow">
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="/style.css?v=20260712-forum-base-4">
-  <link rel="stylesheet" href="/forum-social.css?v=20260712-redesign-1">
-  <link rel="stylesheet" href="/post.css?v=20260712-post-1">
+  <link rel="stylesheet" href="/forum-social.css?v=20260712-redesign-2">
+  <link rel="stylesheet" href="/post.css?v=20260712-post-2">
   <link rel="icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body class="forum-social-page">
   <div id="header-container"></div>
+
   <main id="post-page" class="post-page" hidden>
     <section class="post-hero">
       <div>
@@ -51,7 +52,7 @@
         <section id="post-comentar" class="forum-card post-comentar" aria-labelledby="comentar-titulo">
           <div class="comentar-topo">
             <div><span class="section-label">PARTICIPE</span><h2 id="comentar-titulo">Adicionar comentário</h2></div>
-            <span id="contador" class="contador">0/4000</span>
+            <span id="contador" class="contador" aria-live="polite">0/4000</span>
           </div>
           <form id="form-resposta">
             <label for="texto-resposta">Sua resposta</label>
@@ -64,7 +65,7 @@
         </section>
       </div>
 
-      <aside class="post-sidebar">
+      <aside class="post-sidebar" aria-label="Orientações da comunidade">
         <article class="forum-card comunidade-sidebar-card comunidade-efex-card">
           <span class="comunidade-efex-label">DICA DO EFEX</span>
           <h3>Ajude com contexto</h3>
@@ -84,9 +85,13 @@
 
   <div id="modal" class="modal" hidden>
     <div class="modal-fundo" data-fechar></div>
-    <section class="modal-painel" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <section class="modal-painel" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" aria-describedby="modal-descricao" tabindex="-1">
       <div class="modal-topo">
-        <div><span id="modal-label" class="section-label">AÇÃO</span><h2 id="modal-titulo">Confirmar</h2></div>
+        <div>
+          <span id="modal-label" class="section-label">AÇÃO</span>
+          <h2 id="modal-titulo">Confirmar</h2>
+          <p id="modal-descricao" class="sr-only">Confirme ou cancele a ação selecionada.</p>
+        </div>
         <button class="modal-fechar" type="button" data-fechar aria-label="Fechar">×</button>
       </div>
       <form id="modal-form">
@@ -99,11 +104,13 @@
     </section>
   </div>
 
-  <footer class="forum-footer">
+  <footer id="post-footer" class="forum-footer" hidden>
     <span>© 2026 FS Orçamentos</span>
-    <span> | </span><a href="/privacidade.html">Privacidade</a>
-    <span> | </span><a href="/termos.html">Termos</a>
-    <span> | </span><a href="/contato.html">Contato</a>
+    <nav aria-label="Links institucionais">
+      <a href="/privacidade.html">Privacidade</a>
+      <a href="/termos.html">Termos</a>
+      <a href="/contato.html">Contato</a>
+    </nav>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -111,6 +118,6 @@
   <script src="/auth.js"></script>
   <script src="/carregar-menu.js"></script>
   <script src="/notificacoes.js"></script>
-  <script src="/post.js?v=20260712-post-1"></script>
+  <script src="/post.js?v=20260712-post-2"></script>
 </body>
 </html>
