@@ -12,51 +12,72 @@
   <meta name="description" content="Comunidade profissional do FS Orçamentos para troca de experiências, dúvidas e soluções entre prestadores de serviço.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="/style.css?v=20260712-forum-base-4">
-  <link rel="stylesheet" href="/forum-social.css?v=20260712-redesign-2">
+  <link rel="stylesheet" href="/forum-social.css?v=20260712-profissional-1">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body class="forum-social-page">
   <div id="header-container"></div>
-  <div id="forum-pull-refresh-indicator" class="forum-pull-refresh-indicator" aria-live="polite">Puxe para atualizar</div>
 
   <main id="forum-conteudo" class="forum-page comunidade-page" style="display:none;">
-    <section class="forum-hero comunidade-hero" aria-labelledby="forum-titulo">
-      <div class="comunidade-hero-copy">
-        <span class="forum-tag">COMUNIDADE FS</span>
-        <h1 id="forum-titulo">Profissionais ajudando profissionais</h1>
-        <p>Troque experiências, tire dúvidas e compartilhe soluções da rotina de serviços.</p>
-      </div>
-
-      <button type="button" id="forum-meu-perfil-btn" class="forum-perfil-icone-btn" aria-label="Abrir meu perfil" title="Meu perfil">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-          <path fill="currentColor" d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5C21 16.5 17 14 12 14Z"/>
-        </svg>
-      </button>
-
+    <section class="forum-toolbar" aria-label="Ferramentas da comunidade">
       <div class="forum-top-search" role="search">
         <label class="sr-only" for="forum-busca">Pesquisar publicações</label>
-        <span class="forum-search-icon" aria-hidden="true">⌕</span>
-        <input id="forum-busca" type="search" placeholder="Pesquisar na comunidade" aria-label="Pesquisar publicações" autocomplete="off">
+        <svg class="forum-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="m21 19.6-4.8-4.8a7.5 7.5 0 1 0-1.4 1.4l4.8 4.8L21 19.6ZM5 10.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"/>
+        </svg>
+        <input id="forum-busca" type="search" placeholder="Buscar na comunidade..." aria-label="Pesquisar publicações" autocomplete="off">
       </div>
+      <button type="button" id="forum-publicar-btn" class="forum-nova-publicacao-btn">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M4 17.3V20h2.7l8-8-2.7-2.7-8 8Zm12.8-7.4c.3-.3.3-.8 0-1.1l-1.6-1.6a.8.8 0 0 0-1.1 0l-1.3 1.3 2.7 2.7 1.3-1.3Z"/></svg>
+        <span>Nova publicação</span>
+      </button>
     </section>
 
     <div id="forum-alerta" class="forum-alerta" role="status" aria-live="polite"></div>
 
     <section class="forum-layout comunidade-layout">
-      <div class="forum-coluna comunidade-feed-coluna">
-        <article class="forum-composer" aria-label="Criar publicação">
-          <button type="button" id="forum-publicar-btn" class="forum-composer-main">
-            <span class="forum-composer-avatar" aria-hidden="true">FS</span>
-            <span class="forum-composer-placeholder">Compartilhe uma dúvida ou experiência...</span>
-          </button>
-          <div class="forum-composer-actions" aria-hidden="true">
-            <span>📷 Foto</span>
-            <span>🔧 Serviço</span>
-            <span>💬 Dúvida</span>
+      <aside class="forum-coluna comunidade-sidebar" aria-label="Perfil e assuntos da comunidade">
+        <article class="forum-card comunidade-sidebar-card comunidade-perfil-card">
+          <div class="comunidade-perfil-topo">
+            <div id="forum-perfil-avatar" class="comunidade-sidebar-icon" aria-hidden="true">FS</div>
+            <div class="comunidade-perfil-identidade">
+              <h2 id="forum-perfil-saudacao">Olá</h2>
+              <div id="forum-perfil-plano" class="comunidade-perfil-plano">Plano Grátis</div>
+            </div>
           </div>
+          <button type="button" id="forum-meu-perfil-btn" class="forum-sidebar-profile-btn">Meu perfil</button>
         </article>
+
+        <article class="forum-card comunidade-sidebar-card comunidade-assuntos-card">
+          <div class="forum-sidebar-title"><span>Assuntos da comunidade</span></div>
+          <div class="forum-topic-links" aria-label="Filtrar por categoria">
+            <button type="button" data-categoria="" aria-pressed="true"><span aria-hidden="true">▦</span> Todos</button>
+            <button type="button" data-categoria="Orçamentos" aria-pressed="false"><span aria-hidden="true">▣</span> Orçamentos</button>
+            <button type="button" data-categoria="Cobrança e Pagamento" aria-pressed="false"><span aria-hidden="true">▤</span> Cobrança</button>
+            <button type="button" data-categoria="Garantia" aria-pressed="false"><span aria-hidden="true">◆</span> Garantia</button>
+            <button type="button" data-categoria="Atendimento ao Cliente" aria-pressed="false"><span aria-hidden="true">●</span> Atendimento</button>
+          </div>
+          <button type="button" id="forum-ver-categorias-btn" class="forum-sidebar-profile-btn forum-ver-categorias-btn">Ver todas as categorias</button>
+        </article>
+
+        <article class="forum-card comunidade-sidebar-card comunidade-efex-card">
+          <span class="comunidade-efex-label">DICA DO EFEX</span>
+          <h3>Proteja os dados do cliente</h3>
+          <p>Evite expor placas, documentos, telefones e endereços nas publicações.</p>
+          <div class="comunidade-efex-marca" aria-hidden="true">EfeX</div>
+        </article>
+      </aside>
+
+      <div class="forum-coluna comunidade-feed-coluna">
+        <div class="forum-feed-toolbar">
+          <div class="forum-feed-tabs" role="group" aria-label="Ordenar publicações">
+            <button type="button" data-ordenacao="recentes" aria-pressed="true">Mais recentes</button>
+            <button type="button" data-ordenacao="comentados" aria-pressed="false">Mais comentados</button>
+            <button type="button" data-ordenacao="resolvidos" aria-pressed="false">Resolvidos</button>
+          </div>
+        </div>
 
         <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="forum-modal-titulo" aria-describedby="forum-modal-descricao">
           <div class="forum-card-topo">
@@ -68,54 +89,10 @@
           </div>
         </article>
 
-        <div class="forum-feed-header">
-          <div>
-            <strong>Publicações recentes</strong>
-            <span>Conteúdo da comunidade FS</span>
-          </div>
-        </div>
-
         <section id="forum-lista-topicos" class="forum-lista forum-feed-lista forum-feed-direto" aria-label="Publicações da comunidade" aria-live="polite">
           <div class="forum-vazio">Carregando feed...</div>
         </section>
       </div>
-
-      <aside class="forum-coluna comunidade-sidebar" aria-label="Informações da comunidade">
-        <article class="forum-card comunidade-sidebar-card comunidade-perfil-card">
-          <div class="comunidade-sidebar-icon">FS</div>
-          <div>
-            <h3>Sua rede profissional</h3>
-            <p>Compartilhe conhecimento e fortaleça sua presença na comunidade.</p>
-          </div>
-          <a class="forum-sidebar-profile-btn" href="/perfil.html">Ver meu perfil</a>
-        </article>
-
-        <article class="forum-card comunidade-sidebar-card">
-          <div class="forum-sidebar-title"><span>Assuntos da comunidade</span></div>
-          <div class="forum-topic-links" aria-label="Filtrar por categoria">
-            <button type="button" data-categoria="" aria-pressed="false">Todos</button>
-            <button type="button" data-categoria="Orçamentos" aria-pressed="false">Orçamentos</button>
-            <button type="button" data-categoria="Cobrança e Pagamento" aria-pressed="false">Cobrança</button>
-            <button type="button" data-categoria="Garantia" aria-pressed="false">Garantia</button>
-            <button type="button" data-categoria="Atendimento ao Cliente" aria-pressed="false">Atendimento</button>
-          </div>
-        </article>
-
-        <article class="forum-card comunidade-sidebar-card comunidade-efex-card">
-          <span class="comunidade-efex-label">DICA DO EFEX</span>
-          <h3>Proteja os dados do cliente</h3>
-          <p>Antes de publicar uma foto, confira se placas, documentos, telefones e informações pessoais não estão visíveis.</p>
-        </article>
-
-        <article class="forum-card comunidade-sidebar-card comunidade-regras-card">
-          <h3>Convivência profissional</h3>
-          <div class="forum-mini-lista">
-            <div class="forum-mini-item">Explique o contexto com clareza.</div>
-            <div class="forum-mini-item">Respeite opiniões e experiências diferentes.</div>
-            <div class="forum-mini-item">Denuncie spam ou conteúdo inadequado.</div>
-          </div>
-        </article>
-      </aside>
     </section>
   </main>
 
@@ -134,6 +111,6 @@
   <script src="/planos.js"></script>
   <script src="/carregar-menu.js"></script>
   <script src="/notificacoes.js"></script>
-  <script src="/forum.js?v=20260712-feed-fix-2"></script>
+  <script src="/forum.js?v=20260712-profissional-1"></script>
 </body>
 </html>
