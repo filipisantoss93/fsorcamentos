@@ -44,13 +44,26 @@
     return naCarteira ? '/carteira.html#comprar-creditos' : '/planos.html' + (location.hash || '');
   }
 
+  function definirModalAberto(aberto){
+    const modal = $('modal-pix-basico');
+    if (!modal) return false;
+
+    modal.classList.toggle('is-open', aberto);
+    modal.classList.toggle('hidden', !aberto);
+    modal.toggleAttribute('hidden', !aberto);
+    modal.setAttribute('aria-hidden', aberto ? 'false' : 'true');
+    modal.style.removeProperty('display');
+    document.body.classList.toggle('modal-aberto', aberto);
+
+    return true;
+  }
+
   function abrir(){
     const modal = $('modal-pix-basico');
     if (!modal) return false;
     botaoOrigem = document.activeElement;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => modal.querySelector('button')?.focus(), 0);
+    definirModalAberto(true);
+    setTimeout(() => modal.querySelector('.modal-pix-topo button')?.focus(), 0);
     return true;
   }
 
@@ -61,9 +74,7 @@
   }
 
   function fechar(){
-    const modal = $('modal-pix-basico');
-    if (modal) modal.style.display = 'none';
-    document.body.style.overflow = '';
+    definirModalAberto(false);
     pararVerificacaoAutomatica();
     botaoOrigem?.focus?.();
   }
@@ -77,7 +88,6 @@
   }
 
   function loading(produto){
-    abrir();
     produtoAtual = produto;
     pagamentoId = null;
     pararVerificacaoAutomatica();
@@ -92,6 +102,7 @@
     $('pix-qrcode-img')?.classList.add('hidden');
     $('pix-qrcode-img')?.removeAttribute('src');
     if ($('pix-status')) $('pix-status').textContent = 'Aguardando geração do pagamento';
+    abrir();
   }
 
   function erro(mensagem){
@@ -214,13 +225,18 @@
   }
 
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && $('modal-pix-basico')?.style.display === 'flex') fechar();
+    if (event.key === 'Escape' && $('modal-pix-basico')?.classList.contains('is-open')) fechar();
   });
 
   document.addEventListener('click', event => {
     const modal = $('modal-pix-basico');
-    if (modal && event.target === modal) fechar();
+    if (modal?.classList.contains('is-open') && event.target === modal) fechar();
   });
+
+  function inicializar(){
+    definirModalAberto(false);
+    atualizarPacote();
+  }
 
   Object.assign(window, {
     gerarPixProduto:gerar,
@@ -232,6 +248,6 @@
     FS_PRODUTOS_COMERCIAIS:PRODUTOS
   });
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', atualizarPacote);
-  else atualizarPacote();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inicializar);
+  else inicializar();
 })();
