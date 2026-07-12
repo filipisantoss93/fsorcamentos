@@ -8,13 +8,13 @@ const FS_ROTAS_REMOVIDAS_MENU=['/gestao.html','/gestao','/clientes.html','/clien
 function fsModoEmbedGestao(){try{const p=new URLSearchParams(location.search);return p.get('embed')==='1'||p.get('iframe')==='1'||window.parent!==window}catch(_){return false}}
 function aplicarModoEmbedGestao(){if(!fsModoEmbedGestao())return false;document.documentElement.classList.add('modo-embed-gestao');document.body?.classList.add('modo-embed-gestao');const h=document.getElementById('header-container');if(h){h.innerHTML='';h.style.display='none'}document.querySelectorAll('footer,.footer,.site-footer,.forum-footer').forEach(e=>e.style.display='none');return true}
 function removerCssObsoletoTemaMarrom(){document.querySelectorAll('style').forEach(s=>{const t=s.textContent||'';if(t.includes('FS FORMAL THEME OVERRIDES')||t.includes('FS CONTRAST FIX')||t.includes('marrom no header')||t.includes('Cores oficiais: marrom'))s.remove()})}
-function fsNormalizarTextoMenu(v){const p=String(v||'gratis').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();return p==='basico'||p==='gestao'?'premium':p}
+function fsNormalizarTextoMenu(v){const bruto=String(v||'gratis').toLowerCase().normalize('NFD');const p=Array.from(bruto).filter(c=>{const n=c.charCodeAt(0);return n<768||n>879}).join('').trim();return p==='basico'||p==='gestao'?'premium':p}
 function fsPaginaAtual(){const p=location.pathname||'/';return p==='/'?'/index.html':p}
 function fsEstaNaPaginaGerador(){const p=fsPaginaAtual();return p.endsWith('/gerador.html')||p.endsWith('/gerador')}
 function fsEstaNaHome(){const p=fsPaginaAtual();return p==='/index.html'||p.endsWith('/index.html')}
 function fsDestinoProtegidoMenu(href){try{if(!href||href.startsWith('#')||href.startsWith('javascript:')||href.startsWith('mailto:')||href.startsWith('tel:'))return'';const u=new URL(href,location.origin);if(u.origin!==location.origin)return'';return`${u.pathname||'/index.html'}${u.search||''}${u.hash||''}`}catch(_){return''}}
-function fsNormalizarPathMenu(destino){let p=String(destino||'').split('?')[0].split('#')[0].replace(/\/$/,'').toLowerCase();return p||'/index.html'}
-function fsListaContemRotaMenu(lista,destino){const p=fsNormalizarPathMenu(destino);return lista.some(r=>p===r||p===r.replace(/\.html$/,''))}
+function fsNormalizarPathMenu(destino){let p=String(destino||'').split('?')[0].split('#')[0].toLowerCase();while(p.length>1&&p.endsWith('/'))p=p.slice(0,-1);return p||'/index.html'}
+function fsListaContemRotaMenu(lista,destino){const p=fsNormalizarPathMenu(destino);return lista.some(r=>{const semHtml=r.endsWith('.html')?r.slice(0,-5):r;return p===r||p===semHtml})}
 function fsEhRotaRemovidaMenu(destino){return fsListaContemRotaMenu(FS_ROTAS_REMOVIDAS_MENU,destino)}
 function fsEhRotaProtegidaMenu(destino){return fsListaContemRotaMenu(FS_ROTAS_PROTEGIDAS_MENU,destino)}
 function fsPlanoMinimoDaRotaMenu(destino){if(fsEhRotaRemovidaMenu(destino))return'removida';if(!fsEhRotaProtegidaMenu(destino))return'publico';if(fsListaContemRotaMenu(FS_ROTAS_PREMIUM_MENU,destino))return'premium';return'gratis'}
