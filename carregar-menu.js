@@ -38,17 +38,17 @@ function fsCarregarScript(id,src){
       if(existente.dataset.carregado==='sim'||existente.readyState==='complete'||existente.readyState==='loaded')return resolve();
       existente.addEventListener('load',resolve,{once:true});
       existente.addEventListener('error',reject,{once:true});
-      setTimeout(resolve,1200);
+      setTimeout(resolve,1500);
       return;
     }
-    const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;s.onload=()=>{s.dataset.carregado='sim';resolve()};s.onerror=reject;document.head.appendChild(s);
+    const s=document.createElement('script');s.id=id;s.src=src;s.async=true;s.onload=()=>{s.dataset.carregado='sim';resolve()};s.onerror=reject;document.head.appendChild(s);
   });
 }
 function garantirDependenciasHeader(){
   fsGarantirCss('fs-style-global','/style.css?v=20260712-header-blue-4','/style.css');
   fsGarantirCss('fs-header-clean-css','/header-clean.css?v=20260712-2','/header-clean.css');
   fsGarantirCss('fs-auth-clean-css','/auth-clean.css?v=20260712-2','/auth-clean.css');
-  fsGarantirCss('fs-menu-css','/menu-aprimorado.css?v=20260712-6','/menu-aprimorado.css');
+  fsGarantirCss('fs-menu-css','/menu-aprimorado.css?v=20260712-7','/menu-aprimorado.css');
   fsGarantirCss('fs-efex-css','/efex-mascote.css?v=20260712-1','/efex-mascote.css');
 }
 
@@ -58,7 +58,18 @@ function fsSalvarDestinoProtegidoMenu(destino){try{const d=fsDestinoProtegidoMen
 function fsAbrirLoginParaDestinoProtegido(destino){const d=fsSalvarDestinoProtegidoMenu(destino);fecharMenuMobileSeAberto();if(fsEstaNaHome()&&typeof window.abrirModalLogin==='function'){window.abrirModalLogin();return}location.href=`/index.html?login=1&dest=${encodeURIComponent(d)}`}
 async function obterSessaoAtualMenu(){try{if(!window._supabase)return null;const{data,error}=await _supabase.auth.getSession();return error?null:data?.session||null}catch(_){return null}}
 
-async function carregarHeaderHtmlMenu(){for(const c of ['/header.html','header.html','./header.html']){try{const r=await fetch(c,{cache:'no-store'});if(r.ok)return await r.text()}catch(_){}}throw new Error('Não foi possível carregar header.html.')}
+async function fsFetchComTimeout(url,timeout=4500){
+  const controller=typeof AbortController==='function'?new AbortController():null;
+  const timer=setTimeout(()=>controller?.abort(),timeout);
+  try{return await fetch(url,{cache:'no-cache',signal:controller?.signal})}finally{clearTimeout(timer)}
+}
+async function carregarHeaderHtmlMenu(){
+  let ultimoErro=null;
+  for(const c of ['/header.html','header.html']){
+    try{const r=await fsFetchComTimeout(c);if(r.ok)return await r.text();ultimoErro=new Error(`HTTP ${r.status} em ${c}`)}catch(e){ultimoErro=e}
+  }
+  throw ultimoErro||new Error('Não foi possível carregar header.html.');
+}
 function configurarLinksDoHeader(){document.querySelectorAll('.header-menu-linha a').forEach(link=>{if(link.dataset.fsHeaderLinkConfigurado==='sim')return;link.dataset.fsHeaderLinkConfigurado='sim';link.addEventListener('click',async e=>{const d=fsDestinoProtegidoMenu(link.getAttribute('href')||'');if(fsEhRotaRemovidaMenu(d)){e.preventDefault();location.href='/gerador.html';return}if(!fsEhRotaProtegidaMenu(d)){fecharMenuMobileSeAberto();return}const s=await obterSessaoAtualMenu();if(!s?.user?.id){e.preventDefault();fsAbrirLoginParaDestinoProtegido(d);return}if(!fsPlanoPermiteDestinoMenu(d)){e.preventDefault();fecharMenuMobileSeAberto();location.href='/planos.html#assinar-plano-premium';return}fecharMenuMobileSeAberto()})})}
 function configurarDropdownsHeader(){return}
 function marcarLinkAtivoHeader(){if(typeof window.fsAtualizarResumoHeader==='function')window.fsAtualizarResumoHeader()}
@@ -71,7 +82,7 @@ function controlarHeaderInteligente(){configurarHeaderInteligente()}
 
 function carregarDependenciasComponente(){
   const tarefas=[
-    fsCarregarScript('fs-menu-js','/menu-aprimorado.js?v=20260712-6'),
+    fsCarregarScript('fs-menu-js','/menu-aprimorado.js?v=20260712-7'),
     fsCarregarScript('fs-efex-js','/efex-mascote.js?v=20260712-1')
   ];
   if(fsEstaNaPaginaGerador())tarefas.push(fsCarregarScript('fs-gerador-extras-js','/gerador-extras.js?v=20260712-1'));
@@ -93,7 +104,7 @@ async function carregarMenu(){
       configurarLinksDoHeader();
       configurarDropdownsHeader();
       document.dispatchEvent(new CustomEvent('fs:header-carregado'));
-      carregarDependenciasComponente().then(()=>atualizarHeaderUsuario()).catch(()=>{});
+      carregarDependenciasComponente().catch(()=>{});
     }
     aplicarVisibilidadeMenuPorPlano();
   }catch(e){
@@ -134,13 +145,6 @@ async function inicializarMenuFS(){
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
   await controlarBotaoFlutuanteGeradorGlobal(s);
-  if(window._supabase){
-    _supabase.auth.onAuthStateChange(async(_,session)=>{
-      await atualizarHeaderUsuario();
-      if(fsRedirecionarIndexSePlanoNaoPermite(session,fsPaginaAtual()))return;
-      await controlarBotaoFlutuanteGeradorGlobal(session);
-    });
-  }
 }
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inicializarMenuFS,{once:true});else inicializarMenuFS();
