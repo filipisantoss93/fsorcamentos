@@ -37,7 +37,7 @@ function garantirDependenciasHeader(){
   fsGarantirCss('fs-style-global','/style.css?v=20260712-header-blue-4','/style.css');
   fsGarantirCss('fs-header-clean-css','/header-clean.css?v=20260712-2','/header-clean.css');
   fsGarantirCss('fs-auth-clean-css','/auth-clean.css?v=20260712-2','/auth-clean.css');
-  fsGarantirCss('fs-menu-css','/menu-aprimorado.css?v=20260712-4','/menu-aprimorado.css');
+  fsGarantirCss('fs-menu-css','/menu-aprimorado.css?v=20260712-5','/menu-aprimorado.css');
   fsGarantirCss('fs-efex-css','/efex-mascote.css?v=20260712-1','/efex-mascote.css');
 }
 
