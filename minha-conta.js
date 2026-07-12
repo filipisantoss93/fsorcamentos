@@ -94,7 +94,7 @@
       if(error) throw error;
       $('fs-compras-recentes').innerHTML=renderCompras(data?.compras_recentes || []);
       if(data?.admin?.eh_admin){
-        const admin=criarSecao('fs-admin-card','Administração FS',`<p class="painel-pix-intro">Acesso interno autorizado como <strong>${escapar(data.admin.papel || 'admin')}</strong>.</p><div class="fs-admin-acoes"><a href="/admin-financeiro.html">Dashboard financeiro</a></div>`);
+        const admin=criarSecao('fs-admin-card','Administração FS',`<p class="painel-pix-intro">Acesso interno autorizado como <strong>${escapar(data.admin.papel || 'admin')}</strong>.</p><div class="fs-admin-acoes"><a href="/admin.html">Painel administrativo</a><a href="/admin-financeiro.html">Dashboard financeiro</a></div>`);
         historico.insertAdjacentElement('afterend',admin);
       }
     }catch(err){
