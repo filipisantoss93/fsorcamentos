@@ -113,7 +113,8 @@ async function inicializarMenuFS(){
   await carregarMenu();
   const s=await obterSessaoAtualMenu();
   const d=fsPaginaAtual();
-  if(!s?.user?.id&&fsEhRotaProtegidaMenu(d)&&!fsEstaNaHome()){fsAbrirLoginParaDestinoProtegido(d);return}
+  // auth.js é a única autoridade para bloquear páginas e redirecionar ao login.
+  // O menu apenas aplica restrições de plano e gerencia seus próprios componentes.
   if(fsRedirecionarIndexSePlanoNaoPermite(s,d))return;
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
