@@ -7,8 +7,11 @@
 .fs-menu-aprimorado .nav-menu a:hover,.fs-menu-aprimorado .nav-menu a.ativo{background:#102846;color:#fff}
 .fs-menu-aprimorado .nav-menu a.ativo:after{background:#f6b500}
 .fs-menu-aprimorado .nav-menu a.ativo .fs-menu-ico{color:#f6b500}
-.fs-menu-aprimorado .link-destaque-gerador{background:rgba(246,181,0,.08)!important;color:#f6b500!important}
-.fs-menu-aprimorado .link-destaque-gerador:after{background:#f6b500!important}
+.fs-menu-aprimorado .link-destaque-gerador{color:#f6b500!important}
+.fs-menu-aprimorado .link-destaque-gerador:not(.ativo){background:rgba(246,181,0,.045)!important}
+.fs-menu-aprimorado .link-destaque-gerador:not(.ativo):after{background:transparent!important}
+.fs-menu-aprimorado .link-destaque-gerador.ativo{background:#102846!important}
+.fs-menu-aprimorado .link-destaque-gerador.ativo:after{background:#f6b500!important}
 .fs-menu-aprimorado .fs-menu-ico{font-size:17px;color:#d7e4f2}
 .fs-user-card-menu{grid-template-columns:48px minmax(0,1fr);padding:12px;margin-bottom:4px;border-color:#315982;background:linear-gradient(145deg,#123154,#0b1d35)}
 .fs-user-card-menu .header-user-icon{width:48px;height:48px}
@@ -30,5 +33,25 @@
 .main-header[aria-busy="true"] .header-user-card{opacity:.72}
 .main-header.fs-header-pronto .header-user-card{opacity:1;transition:opacity .2s ease}
 .menu-mobile-btn:focus-visible,.fs-menu-aprimorado a:focus-visible,.fs-menu-aprimorado button:focus-visible{outline:3px solid rgba(246,181,0,.75);outline-offset:2px}
-@media(max-width:900px){.header-menu-linha.fs-menu-aprimorado{overflow:auto;overscroll-behavior:contain}}
-@media(max-width:560px){.header-menu-linha.fs-menu-aprimorado{top:84px;right:10px;width:calc(100vw - 20px);max-height:calc(100dvh - 102px);padding:10px}.fs-menu-aprimorado .nav-menu a,.fs-menu-aprimorado .btn-menu-mobile-entrar,.fs-menu-aprimorado .btn-menu-mobile-sair{min-height:46px}.fs-menu-grupo{padding-top:11px!important}}
+.fs-menu-backdrop{display:none;position:fixed;inset:0;z-index:19990;border:0;border-radius:0;background:rgba(1,8,20,.68);padding:0;cursor:default}
+.fs-menu-backdrop.visivel{display:block}
+body.fs-menu-aberto{overflow:hidden}
+@media(max-width:900px){
+  .header-menu-linha.fs-menu-aprimorado{position:fixed!important;top:0!important;right:0!important;width:min(88vw,360px)!important;height:100dvh!important;max-height:none!important;padding:12px!important;border-radius:0!important;border-top:0!important;border-left:1px solid #315982!important;z-index:20000!important;transform:translateX(102%);display:block!important;visibility:hidden;transition:transform .22s ease,visibility 0s linear .22s;overflow:auto;overscroll-behavior:contain}
+  .header-menu-linha.fs-menu-aprimorado.menu-aberto{transform:translateX(0);visibility:visible;transition:transform .22s ease}
+  .fs-menu-aprimorado .nav-menu a,.fs-menu-aprimorado .btn-menu-mobile-entrar,.fs-menu-aprimorado .btn-menu-mobile-sair{min-height:44px}
+  .fs-menu-grupo{padding-top:10px!important}
+}
+@media(max-width:560px){
+  .header-shell{min-height:64px!important;width:calc(100% - 16px)!important;gap:8px!important}
+  .logo-fs,.logo-nav .logo-fs,.logo-nav>span:first-child{width:46px!important;height:46px!important;min-width:46px!important;border-radius:10px!important}
+  .logo-fs svg{width:34px!important;height:34px!important}
+  .logo-orcamentos,.logo-nav .logo-orcamentos{font-size:clamp(18px,5.2vw,23px)!important}
+  .logo-lockup small{display:none!important}
+  .header-usuario{gap:7px!important}
+  .btn-notificacoes-header,.menu-mobile-btn,.btn-header-entrar,.btn-header-sair{width:44px!important;min-width:44px!important;height:44px!important;border-radius:10px!important}
+  .menu-mobile-btn span{width:20px!important;height:2px!important}
+  .fs-user-card-menu{grid-template-columns:44px minmax(0,1fr);padding:10px}
+  .fs-user-card-menu .header-user-icon{width:44px;height:44px}
+  .fs-menu-aprimorado .nav-menu a,.fs-menu-aprimorado .btn-menu-mobile-entrar,.fs-menu-aprimorado .btn-menu-mobile-sair{font-size:13.5px;padding:9px 10px}
+}
