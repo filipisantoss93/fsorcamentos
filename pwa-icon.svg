@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title">
   <title id="title">FS Orçamentos</title>
-  <desc id="desc">Símbolo oficial FS em azul e amarelo sobre fundo azul-marinho.</desc>
-  <rect width="512" height="512" rx="112" fill="#07111f"/>
-  <rect x="36" y="36" width="440" height="440" rx="92" fill="none" stroke="#f6b500" stroke-width="10"/>
-  <path fill="#1565c0" d="M92 105h218v72H169v66h117v72H169v113H92z"/>
-  <path fill="#f6b500" d="M304 105h116v72H313c-31 0-31 55 0 55h40c116 0 116 196 0 196H225v-72h119c37 0 37-61 0-61h-38c-112 0-112-190-2-190z"/>
+  <rect width="1024" height="1024" fill="#07111F"/>
+  <rect x="122" y="122" width="780" height="780" rx="220" fill="none" stroke="#F6B500" stroke-width="14"/>
+  <text x="248" y="690" font-family="Arial,Helvetica,sans-serif" font-size="500" font-weight="800" fill="#1565C0">F</text>
+  <text x="455" y="690" font-family="Arial,Helvetica,sans-serif" font-size="500" font-weight="800" fill="#F6B500">S</text>
 </svg>

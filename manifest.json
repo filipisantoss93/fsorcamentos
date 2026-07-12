@@ -14,14 +14,14 @@
   "theme_color": "#07111f",
   "categories": ["business", "productivity", "automotive"],
   "icons": [
-    { "src": "/favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
-    { "src": "/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "/apple-touch-icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
   ],
   "shortcuts": [
-    { "name": "Novo orçamento", "short_name": "Orçamento", "description": "Criar um novo orçamento", "url": "/gerador.html?source=shortcut", "icons": [{ "src": "/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml" }] },
-    { "name": "Abrir Efex", "short_name": "Efex IA", "description": "Iniciar diagnóstico automotivo com IA", "url": "/efex.html?source=shortcut", "icons": [{ "src": "/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml" }] },
-    { "name": "Orçamentos", "short_name": "Orçamentos", "description": "Abrir orçamentos salvos", "url": "/orcamentos.html?source=shortcut", "icons": [{ "src": "/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml" }] },
-    { "name": "Caixa", "short_name": "Caixa", "description": "Abrir caixa de orçamentos pagos", "url": "/fluxo-caixa.html?source=shortcut", "icons": [{ "src": "/pwa-icon.svg", "sizes": "any", "type": "image/svg+xml" }] }
+    { "name": "Novo orçamento", "short_name": "Orçamento", "description": "Criar um novo orçamento", "url": "/gerador.html?source=shortcut", "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Abrir Efex", "short_name": "Efex IA", "description": "Iniciar diagnóstico automotivo com IA", "url": "/efex.html?source=shortcut", "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Orçamentos", "short_name": "Orçamentos", "description": "Abrir orçamentos salvos", "url": "/orcamentos.html?source=shortcut", "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Caixa", "short_name": "Caixa", "description": "Abrir caixa de orçamentos pagos", "url": "/fluxo-caixa.html?source=shortcut", "icons": [{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }] }
   ]
 }
