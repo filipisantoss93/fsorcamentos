@@ -1,0 +1,38 @@
+/* FS Orçamentos — experiência visual do Efex */
+:root{--efex-gold:#f6b500;--efex-blue:#1565c0;--efex-navy:#07111f;--efex-card:#0c1d35;--efex-border:#24456f;--efex-text:#fff;--efex-muted:#b8c7da}
+
+/* Assistente flutuante global */
+.fs-efex-assistant{position:fixed;right:20px;bottom:20px;z-index:24000;font-family:inherit}
+.fs-efex-assistant>summary{list-style:none;display:grid;place-items:center;width:72px;height:72px;border:2px solid var(--efex-gold);border-radius:50%;background:linear-gradient(145deg,#12365f,var(--efex-navy));box-shadow:0 16px 34px rgba(0,0,0,.38);cursor:pointer;overflow:hidden;transition:.2s}
+.fs-efex-assistant>summary::-webkit-details-marker{display:none}.fs-efex-assistant>summary:hover{transform:translateY(-3px);box-shadow:0 20px 38px rgba(0,0,0,.45)}
+.fs-efex-assistant>summary img{width:66px;height:66px;object-fit:contain;object-position:center top;transform:translateY(5px)}
+.fs-efex-panel{position:absolute;right:0;bottom:84px;width:min(330px,calc(100vw - 28px));padding:18px;border:1px solid var(--efex-border);border-top:3px solid var(--efex-gold);border-radius:16px;background:linear-gradient(155deg,#102846,var(--efex-navy));color:var(--efex-text);box-shadow:0 24px 60px rgba(0,0,0,.46)}
+.fs-efex-panel h3{margin:0;font-size:19px}.fs-efex-panel p{margin:7px 0 14px;color:var(--efex-muted);font-size:13px;line-height:1.45}.fs-efex-links{display:grid;gap:8px}.fs-efex-links a{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--efex-border);border-radius:10px;background:#10233d;color:#fff;text-decoration:none;font-size:13px;font-weight:800}.fs-efex-links a:hover{border-color:var(--efex-gold);background:#15345a}.fs-efex-links a:first-child{background:var(--efex-gold);border-color:var(--efex-gold);color:#14243a}
+
+/* Home pública */
+body:has(#home-publica) .home-hero{min-height:500px;background:radial-gradient(circle at 83% 35%,rgba(21,101,192,.38),transparent 30%),linear-gradient(145deg,#102846,#07111f)}
+body:has(#home-publica) .home-hero-character{max-height:430px;filter:drop-shadow(0 24px 28px rgba(0,0,0,.42));animation:efexFloat 5s ease-in-out infinite}
+body:has(#home-publica) .feature-card{position:relative;overflow:hidden;transition:.2s}.feature-card:hover{transform:translateY(-3px);border-color:var(--efex-gold)}
+body:has(#home-publica) .journey-step:nth-child(2),body:has(#home-publica) .journey-step:nth-child(3){border-color:rgba(246,181,0,.7);background:linear-gradient(145deg,#112d4f,#0b1c31)}
+body:has(#home-publica) .demo-chat{background:radial-gradient(circle at 10% 10%,rgba(21,101,192,.2),transparent 45%),var(--fs-card)}
+
+/* Página Efex */
+body:has(#efex-app) .hero{position:relative;min-height:360px;background:radial-gradient(circle at 83% 28%,rgba(246,181,0,.14),transparent 24%),radial-gradient(circle at 78% 42%,rgba(21,101,192,.38),transparent 40%),linear-gradient(135deg,#07111f,#0d2c50)}
+body:has(#efex-app) .hero .character{max-height:330px;filter:drop-shadow(0 20px 24px rgba(0,0,0,.38));animation:efexFloat 5s ease-in-out infinite}
+body:has(#efex-app) .card{transition:border-color .2s,transform .2s}body:has(#efex-app) form>.card:hover{border-color:#32679e}
+body:has(#efex-app) .specialist,body:has(#efex-app) .level{min-height:88px;transition:.18s}.specialist:hover,.level:hover{transform:translateY(-2px);border-color:#4e7cad}
+body:has(#efex-app) #efex-progress.active{position:relative;display:grid;gap:10px;padding:18px 18px 18px 66px;min-height:76px;border:1px solid #32679e;background:linear-gradient(135deg,#0b3155,#091b30);overflow:hidden}
+body:has(#efex-app) #efex-progress.active:before{content:'✦';position:absolute;left:18px;top:17px;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--efex-gold);color:#15253a;font-size:20px;animation:efexPulse 1.25s ease-in-out infinite}
+body:has(#efex-app) #efex-progress.active:after{content:'Interpretando sintomas  •  Comparando hipóteses  •  Preparando testes';display:block;color:#bcd2e9;font-size:11px;font-weight:700;line-height:1.5;letter-spacing:.01em}
+body:has(#efex-app) .post-analysis.active{animation:efexReveal .35s ease-out both}
+body:has(#efex-app) .hypothesis{border-left:3px solid var(--efex-gold)}
+
+@keyframes efexFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes efexPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(246,181,0,.35)}50%{transform:scale(1.08);box-shadow:0 0 0 10px rgba(246,181,0,0)}}
+@keyframes efexReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+@media(max-width:900px){.fs-efex-assistant{right:14px;bottom:14px}.fs-efex-assistant>summary{width:62px;height:62px}.fs-efex-assistant>summary img{width:58px;height:58px}.fs-efex-panel{bottom:74px}body:has(#home-publica) .home-hero{min-height:auto}body:has(#home-publica) .home-hero-character{max-height:320px}body:has(#efex-app) .hero .character{max-height:240px}}
+@media(max-width:560px){.fs-efex-assistant{right:10px;bottom:10px}.fs-efex-assistant>summary{width:56px;height:56px}.fs-efex-assistant>summary img{width:52px;height:52px}.fs-efex-panel{bottom:66px}.fs-efex-panel h3{font-size:17px}body:has(#efex-app) .metrics{grid-template-columns:1fr 1fr}body:has(#efex-app) #efex-progress.active{padding-left:58px}}
+
+/* Não sobrepor controles críticos */
+body:has(#efex-app) .fs-efex-assistant,body:has(.modal-login-overlay[style*="flex"]) .fs-efex-assistant{display:none}
