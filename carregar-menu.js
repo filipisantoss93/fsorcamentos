@@ -5,7 +5,12 @@ const FS_ROTAS_PROTEGIDAS_MENU=['/gerador.html','/gerador','/painel.html','/pain
 const FS_ROTAS_PREMIUM_MENU=['/orcamentos.html','/orcamentos','/dashboard.html','/dashboard','/fluxo-caixa.html','/fluxo-caixa'];
 const FS_ROTAS_REMOVIDAS_MENU=['/gestao.html','/gestao','/clientes.html','/clientes','/cliente.html','/cliente','/veiculos.html','/veiculos','/ordens.html','/ordens','/ordem.html','/ordem','/estoque.html','/estoque','/agenda.html','/agenda','/recorrentes.html','/recorrentes'];
 
-function fsModoEmbedGestao(){try{const p=new URLSearchParams(location.search);return p.get('embed')==='1'||p.get('iframe')==='1'||window.parent!==window}catch(_){return false}}
+function fsModoEmbedGestao(){
+  try{
+    const p=new URLSearchParams(location.search);
+    return p.get('embed')==='1'||p.get('iframe')==='1';
+  }catch(_){return false}
+}
 function aplicarModoEmbedGestao(){if(!fsModoEmbedGestao())return false;document.documentElement.classList.add('modo-embed-gestao');document.body?.classList.add('modo-embed-gestao');const h=document.getElementById('header-container');if(h){h.innerHTML='';h.style.display='none'}document.querySelectorAll('footer,.footer,.site-footer,.forum-footer').forEach(e=>e.style.display='none');return true}
 function removerCssObsoletoTemaMarrom(){document.querySelectorAll('style').forEach(s=>{const t=s.textContent||'';if(t.includes('FS FORMAL THEME OVERRIDES')||t.includes('FS CONTRAST FIX')||t.includes('marrom no header')||t.includes('Cores oficiais: marrom'))s.remove()})}
 function fsNormalizarTextoMenu(v){const bruto=String(v||'gratis').toLowerCase().normalize('NFD');const p=Array.from(bruto).filter(c=>{const n=c.charCodeAt(0);return n<768||n>879}).join('').trim();return p==='basico'||p==='gestao'?'premium':p}
@@ -29,7 +34,13 @@ function fsGarantirCss(id,href,trechoHref=''){
 function fsCarregarScript(id,src){
   return new Promise((resolve,reject)=>{
     const existente=document.getElementById(id);
-    if(existente){if(existente.dataset.carregado==='sim')resolve();else existente.addEventListener('load',resolve,{once:true});return}
+    if(existente){
+      if(existente.dataset.carregado==='sim'||existente.readyState==='complete'||existente.readyState==='loaded')return resolve();
+      existente.addEventListener('load',resolve,{once:true});
+      existente.addEventListener('error',reject,{once:true});
+      setTimeout(resolve,1200);
+      return;
+    }
     const s=document.createElement('script');s.id=id;s.src=src;s.defer=true;s.onload=()=>{s.dataset.carregado='sim';resolve()};s.onerror=reject;document.head.appendChild(s);
   });
 }
@@ -37,7 +48,7 @@ function garantirDependenciasHeader(){
   fsGarantirCss('fs-style-global','/style.css?v=20260712-header-blue-4','/style.css');
   fsGarantirCss('fs-header-clean-css','/header-clean.css?v=20260712-2','/header-clean.css');
   fsGarantirCss('fs-auth-clean-css','/auth-clean.css?v=20260712-2','/auth-clean.css');
-  fsGarantirCss('fs-menu-css','/menu-aprimorado.css?v=20260712-5','/menu-aprimorado.css');
+  fsGarantirCss('fs-menu-css','/menu-aprimorado.css?v=20260712-6','/menu-aprimorado.css');
   fsGarantirCss('fs-efex-css','/efex-mascote.css?v=20260712-1','/efex-mascote.css');
 }
 
@@ -47,7 +58,7 @@ function fsSalvarDestinoProtegidoMenu(destino){try{const d=fsDestinoProtegidoMen
 function fsAbrirLoginParaDestinoProtegido(destino){const d=fsSalvarDestinoProtegidoMenu(destino);fecharMenuMobileSeAberto();if(fsEstaNaHome()&&typeof window.abrirModalLogin==='function'){window.abrirModalLogin();return}location.href=`/index.html?login=1&dest=${encodeURIComponent(d)}`}
 async function obterSessaoAtualMenu(){try{if(!window._supabase)return null;const{data,error}=await _supabase.auth.getSession();return error?null:data?.session||null}catch(_){return null}}
 
-async function carregarHeaderHtmlMenu(){for(const c of ['/header.html','header.html','./header.html']){try{const r=await fetch(c,{cache:'no-cache'});if(r.ok)return await r.text()}catch(_){}}throw new Error('Não foi possível carregar header.html.')}
+async function carregarHeaderHtmlMenu(){for(const c of ['/header.html','header.html','./header.html']){try{const r=await fetch(c,{cache:'no-store'});if(r.ok)return await r.text()}catch(_){}}throw new Error('Não foi possível carregar header.html.')}
 function configurarLinksDoHeader(){document.querySelectorAll('.header-menu-linha a').forEach(link=>{if(link.dataset.fsHeaderLinkConfigurado==='sim')return;link.dataset.fsHeaderLinkConfigurado='sim';link.addEventListener('click',async e=>{const d=fsDestinoProtegidoMenu(link.getAttribute('href')||'');if(fsEhRotaRemovidaMenu(d)){e.preventDefault();location.href='/gerador.html';return}if(!fsEhRotaProtegidaMenu(d)){fecharMenuMobileSeAberto();return}const s=await obterSessaoAtualMenu();if(!s?.user?.id){e.preventDefault();fsAbrirLoginParaDestinoProtegido(d);return}if(!fsPlanoPermiteDestinoMenu(d)){e.preventDefault();fecharMenuMobileSeAberto();location.href='/planos.html#assinar-plano-premium';return}fecharMenuMobileSeAberto()})})}
 function configurarDropdownsHeader(){return}
 function marcarLinkAtivoHeader(){if(typeof window.fsAtualizarResumoHeader==='function')window.fsAtualizarResumoHeader()}
@@ -55,13 +66,16 @@ function aplicarVisibilidadeMenuPorPlano(){document.querySelectorAll('[data-plan
 async function verificarExpiracaoTestePremiumMenu(){try{if(!window._supabase)return null;const{data:{session}}=await _supabase.auth.getSession();if(!session?.user?.id)return null;const{data,error}=await _supabase.rpc('verificar_expiracao_teste_premium');if(error)return null;return data||null}catch(_){return null}}
 async function atualizarHeaderUsuario(){if(typeof window.fsAtualizarResumoHeader==='function')await window.fsAtualizarResumoHeader()}
 
-function configurarHeaderInteligente(){const h=document.getElementById('header-container');if(!h)return;h.classList.remove('header-oculto');h.classList.add('header-visivel')}
+function configurarHeaderInteligente(){const h=document.getElementById('header-container');if(!h)return;h.style.display='block';h.style.visibility='visible';h.classList.remove('header-oculto');h.classList.add('header-visivel')}
 function controlarHeaderInteligente(){configurarHeaderInteligente()}
 
-async function carregarDependenciasComponente(){
-  await fsCarregarScript('fs-menu-js','/menu-aprimorado.js?v=20260712-4');
-  await fsCarregarScript('fs-efex-js','/efex-mascote.js?v=20260712-1');
-  if(fsEstaNaPaginaGerador())await fsCarregarScript('fs-gerador-extras-js','/gerador-extras.js?v=20260712-1');
+function carregarDependenciasComponente(){
+  const tarefas=[
+    fsCarregarScript('fs-menu-js','/menu-aprimorado.js?v=20260712-6'),
+    fsCarregarScript('fs-efex-js','/efex-mascote.js?v=20260712-1')
+  ];
+  if(fsEstaNaPaginaGerador())tarefas.push(fsCarregarScript('fs-gerador-extras-js','/gerador-extras.js?v=20260712-1'));
+  return Promise.allSettled(tarefas);
 }
 
 async function carregarMenu(){
@@ -70,20 +84,23 @@ async function carregarMenu(){
   garantirDependenciasHeader();
   const h=document.getElementById('header-container');
   if(!h)return;
+  configurarHeaderInteligente();
   try{
     if(!headerJaCarregado){
       h.innerHTML=await carregarHeaderHtmlMenu();
-      h.style.display='block';
       headerJaCarregado=true;
+      configurarHeaderInteligente();
       configurarLinksDoHeader();
       configurarDropdownsHeader();
-      configurarHeaderInteligente();
-      await carregarDependenciasComponente();
+      document.dispatchEvent(new CustomEvent('fs:header-carregado'));
+      carregarDependenciasComponente().then(()=>atualizarHeaderUsuario()).catch(()=>{});
     }
-    await atualizarHeaderUsuario();
     aplicarVisibilidadeMenuPorPlano();
-    configurarHeaderInteligente();
-  }catch(e){console.error('Erro ao carregar menu:',e)}
+  }catch(e){
+    console.error('Erro ao carregar menu:',e);
+    h.style.display='block';
+    h.style.visibility='visible';
+  }
 }
 
 function fsRedirecionarIndexSePlanoNaoPermite(session,destino=fsPaginaAtual()){
@@ -113,8 +130,6 @@ async function inicializarMenuFS(){
   await carregarMenu();
   const s=await obterSessaoAtualMenu();
   const d=fsPaginaAtual();
-  // auth.js é a única autoridade para bloquear páginas e redirecionar ao login.
-  // O menu apenas aplica restrições de plano e gerencia seus próprios componentes.
   if(fsRedirecionarIndexSePlanoNaoPermite(s,d))return;
   abrirLoginAutomaticamenteSeSolicitado();
   await abrirGeradorAutomaticamenteSeSolicitado();
@@ -140,10 +155,3 @@ window.abrirGeradorGlobal=abrirGeradorGlobal;
 window.controlarBotaoFlutuanteGeradorGlobal=controlarBotaoFlutuanteGeradorGlobal;
 window.configurarHeaderInteligente=configurarHeaderInteligente;
 window.controlarHeaderInteligente=controlarHeaderInteligente;
-window.aplicarVisibilidadeMenuPorPlano=aplicarVisibilidadeMenuPorPlano;
-window.inicializarMenuFS=inicializarMenuFS;
-window.fsAbrirLoginParaDestinoProtegido=fsAbrirLoginParaDestinoProtegido;
-window.fsSalvarDestinoProtegidoMenu=fsSalvarDestinoProtegidoMenu;
-window.removerCssObsoletoTemaMarrom=removerCssObsoletoTemaMarrom;
-window.fsRedirecionarIndexSePlanoNaoPermite=fsRedirecionarIndexSePlanoNaoPermite;
-window.fsPlanoPermiteDestinoMenu=fsPlanoPermiteDestinoMenu;
