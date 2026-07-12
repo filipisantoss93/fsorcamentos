@@ -4,9 +4,20 @@
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
   const postId = params.get('id') || params.get('topico') || '';
-  const state = { session: null, profile: null, topic: null, replies: [], likedTopics: new Set(), likedReplies: new Set(), action: null, lastFocus: null };
+  const state = {
+    session: null,
+    profile: null,
+    topic: null,
+    replies: [],
+    likedTopics: new Set(),
+    likedReplies: new Set(),
+    action: null,
+    lastFocus: null
+  };
+
   const TOPIC_FIELDS = 'id,usuario_id,titulo,descricao,categoria,status,resolvido,foto_1_url,foto_2_url,autor_nome,autor_empresa,autor_foto_url,autor_plano,total_curtidas,total_respostas,criado_em';
   const REPLY_FIELDS = 'id,topico_id,usuario_id,resposta,marcada_como_solucao,autor_nome,autor_empresa,autor_foto_url,autor_plano,total_curtidas,criado_em';
+  const BUCKET_IMAGENS = 'forum-imagens';
 
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
   const normalize = value => String(value ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -31,6 +42,7 @@
 
   function showAlert(message = '', type = 'info') {
     const box = $('post-alerta');
+    if (!box) return;
     box.hidden = !message;
     box.textContent = message;
     box.className = `forum-alerta post-alerta-${type}`;
@@ -74,6 +86,7 @@
 
   function renderTopic() {
     const topic = state.topic;
+    if (!topic) return;
     const total = Number(topic.total_respostas ?? state.replies.length);
     const currentStatus = status();
     const badgeClass = normalize(currentStatus) === 'resolvido' ? 'verde' : normalize(currentStatus) === 'fechado' ? 'vermelho' : '';
@@ -91,11 +104,14 @@
   }
 
   function updateFormState() {
+    const textarea = $('texto-resposta');
+    const button = $('btn-responder');
+    if (!textarea || !button) return;
     const closed = isClosed();
-    $('texto-resposta').disabled = closed;
-    $('btn-responder').disabled = closed;
-    $('texto-resposta').placeholder = closed ? 'Esta publicação não aceita novos comentários.' : 'Descreva sua orientação, experiência ou solução com clareza.';
-    $('btn-responder').textContent = closed ? 'Comentários encerrados' : 'Enviar comentário';
+    textarea.disabled = closed;
+    button.disabled = closed;
+    textarea.placeholder = closed ? 'Esta publicação não aceita novos comentários.' : 'Descreva sua orientação, experiência ou solução com clareza.';
+    button.textContent = closed ? 'Comentários encerrados' : 'Enviar comentário';
   }
 
   async function loadContent() {
@@ -109,6 +125,8 @@
     if (repliesResult.error) throw repliesResult.error;
     state.topic = topicResult.data;
     state.replies = repliesResult.data || [];
+    state.likedTopics.clear();
+    state.likedReplies.clear();
     (likesResult.data || []).forEach(item => {
       if (item.topico_id) state.likedTopics.add(item.topico_id);
       if (item.resposta_id) state.likedReplies.add(item.resposta_id);
@@ -121,7 +139,7 @@
     const topicLike = type === 'topico';
     const set = topicLike ? state.likedTopics : state.likedReplies;
     const record = topicLike ? state.topic : state.replies.find(item => item.id === id);
-    if (!record) return;
+    if (!record || button.disabled) return;
     button.disabled = true;
     const liked = set.has(id);
     try {
@@ -131,19 +149,26 @@
         const { error } = await query;
         if (error) throw error;
         set.delete(id);
-        record.total_curtidas = Math.max(0, Number(record.total_curtidas || 0) - 1);
       } else {
         const payload = { usuario_id: state.session.user.id, [topicLike ? 'topico_id' : 'resposta_id']: id };
         const { error } = await _supabase.from('forum_curtidas').insert(payload);
         if (error && error.code !== '23505') throw error;
         set.add(id);
-        if (!error) record.total_curtidas = Number(record.total_curtidas || 0) + 1;
       }
+      const table = topicLike ? 'forum_topicos' : 'forum_respostas';
+      const { data } = await _supabase.from(table).select('total_curtidas').eq('id', id).maybeSingle();
+      if (data) record.total_curtidas = Number(data.total_curtidas || 0);
       topicLike ? renderTopic() : renderReplies();
     } catch (error) {
       console.error(error);
       showAlert('Não foi possível atualizar a curtida.', 'erro');
+    } finally {
+      button.disabled = false;
     }
+  }
+
+  function focusableElements() {
+    return [...$('modal').querySelectorAll('a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(element => !element.hidden && element.offsetParent !== null);
   }
 
   function openModal(options) {
@@ -156,7 +181,7 @@
     $('modal-confirmar').classList.toggle('perigo', Boolean(options.danger));
     $('modal').hidden = false;
     document.body.classList.add('modal-aberto');
-    setTimeout(() => $('modal').querySelector('input,textarea,select,button')?.focus(), 0);
+    setTimeout(() => focusableElements()[0]?.focus() || $('modal').querySelector('.modal-painel')?.focus(), 0);
   }
 
   function closeModal() {
@@ -169,13 +194,18 @@
   function editItem(type, id) {
     const topic = type === 'topico';
     const record = topic ? state.topic : state.replies.find(item => item.id === id);
+    if (!record) return;
     openModal({
-      label: 'EDITAR', title: topic ? 'Atualizar publicação' : 'Atualizar comentário', confirm: 'Salvar alterações',
-      fields: topic ? `<label for="m-titulo">Título</label><input id="m-titulo" minlength="8" maxlength="160" value="${escapeHtml(record.titulo)}" required><label for="m-texto">Descrição</label><textarea id="m-texto" minlength="20" maxlength="4000" required>${escapeHtml(plainText(record.descricao))}</textarea>` : `<label for="m-texto">Comentário</label><textarea id="m-texto" minlength="8" maxlength="4000" required>${escapeHtml(plainText(record.resposta))}</textarea>`,
+      label: 'EDITAR',
+      title: topic ? 'Atualizar publicação' : 'Atualizar comentário',
+      confirm: 'Salvar alterações',
+      fields: topic
+        ? `<label for="m-titulo">Título</label><input id="m-titulo" minlength="8" maxlength="120" value="${escapeHtml(record.titulo)}" required><label for="m-texto">Descrição</label><textarea id="m-texto" minlength="20" maxlength="4000" required>${escapeHtml(plainText(record.descricao))}</textarea>`
+        : `<label for="m-texto">Comentário</label><textarea id="m-texto" minlength="8" maxlength="4000" required>${escapeHtml(plainText(record.resposta))}</textarea>`,
       action: async () => {
         const text = $('m-texto').value.trim();
         const title = topic ? $('m-titulo').value.trim() : '';
-        if ((topic && title.length < 8) || (topic ? text.length < 20 : text.length < 8)) throw new Error('Revise o conteúdo antes de salvar.');
+        if ((topic && (title.length < 8 || title.length > 120)) || (topic ? text.length < 20 : text.length < 8)) throw new Error('Revise o conteúdo antes de salvar.');
         const payload = topic ? { titulo: title, descricao: text } : { resposta: text };
         const { error } = await _supabase.from(topic ? 'forum_topicos' : 'forum_respostas').update(payload).eq('id', record.id).eq('usuario_id', state.session.user.id);
         if (error) throw error;
@@ -186,73 +216,108 @@
     });
   }
 
+  function storagePathFromUrl(value) {
+    try {
+      const url = new URL(value);
+      const marker = `/storage/v1/object/public/${BUCKET_IMAGENS}/`;
+      const index = url.pathname.indexOf(marker);
+      return index >= 0 ? decodeURIComponent(url.pathname.slice(index + marker.length)) : '';
+    } catch { return ''; }
+  }
+
+  async function cleanupTopicImages() {
+    const paths = [state.topic?.foto_1_url, state.topic?.foto_2_url].map(storagePathFromUrl).filter(Boolean);
+    if (!paths.length) return;
+    const { error } = await _supabase.storage.from(BUCKET_IMAGENS).remove(paths);
+    if (error) console.warn('Não foi possível remover uma ou mais imagens da publicação:', error);
+  }
+
   function deleteItem(type, id) {
     const topic = type === 'topico';
-    openModal({ label: 'EXCLUSÃO', title: topic ? 'Excluir publicação?' : 'Excluir comentário?', confirm: 'Excluir definitivamente', danger: true, fields: `<p>${topic ? 'A publicação e os comentários vinculados serão removidos.' : 'Este comentário será removido.'} Esta ação não pode ser desfeita.</p>`, action: async () => {
-      const { error } = await _supabase.from(topic ? 'forum_topicos' : 'forum_respostas').delete().eq('id', id).eq('usuario_id', state.session.user.id);
-      if (error) throw error;
-      if (topic) location.href = '/forum.html';
-      else {
+    openModal({
+      label: 'EXCLUSÃO',
+      title: topic ? 'Excluir publicação?' : 'Excluir comentário?',
+      confirm: 'Excluir definitivamente',
+      danger: true,
+      fields: `<p>${topic ? 'A publicação e os comentários vinculados serão removidos.' : 'Este comentário será removido.'} Esta ação não pode ser desfeita.</p>`,
+      action: async () => {
+        const { error } = await _supabase.from(topic ? 'forum_topicos' : 'forum_respostas').delete().eq('id', id).eq('usuario_id', state.session.user.id);
+        if (error) throw error;
+        if (topic) {
+          await cleanupTopicImages();
+          location.href = '/forum.html';
+          return;
+        }
         state.replies = state.replies.filter(item => item.id !== id);
-        state.topic.total_respostas = Math.max(0, Number(state.topic.total_respostas || 0) - 1);
+        const { data } = await _supabase.from('forum_topicos').select('total_respostas').eq('id', state.topic.id).maybeSingle();
+        state.topic.total_respostas = Number(data?.total_respostas ?? state.replies.length);
         renderReplies();
         showAlert('Comentário excluído.', 'ok');
       }
-    }});
+    });
   }
 
   function markSolved(replyId = null) {
-    openModal({ label: 'SOLUÇÃO', title: replyId ? 'Marcar comentário como solução?' : 'Marcar publicação como resolvida?', confirm: 'Confirmar', fields: '<p>A publicação será identificada como resolvida e não aceitará novos comentários.</p>', action: async () => {
-      const { error } = await _supabase.rpc('fs_forum_marcar_solucao', { p_topico_id: state.topic.id, p_resposta_id: replyId });
-      if (error) throw error;
-      state.topic.resolvido = true;
-      state.topic.status = 'resolvido';
-      state.replies.forEach(item => { item.marcada_como_solucao = item.id === replyId; });
-      renderReplies();
-      showAlert('Publicação marcada como resolvida.', 'ok');
-    }});
+    openModal({
+      label: 'SOLUÇÃO',
+      title: replyId ? 'Marcar comentário como solução?' : 'Marcar publicação como resolvida?',
+      confirm: 'Confirmar',
+      fields: '<p>A publicação será identificada como resolvida e não aceitará novos comentários.</p>',
+      action: async () => {
+        const { error } = await _supabase.rpc('fs_forum_marcar_solucao', { p_topico_id: state.topic.id, p_resposta_id: replyId });
+        if (error) throw error;
+        state.topic.resolvido = true;
+        state.topic.status = 'resolvido';
+        state.replies.forEach(item => { item.marcada_como_solucao = item.id === replyId; });
+        renderReplies();
+        showAlert('Publicação marcada como resolvida.', 'ok');
+      }
+    });
   }
 
   function reportItem(type, id) {
-    openModal({ label: 'DENÚNCIA', title: 'Registrar denúncia', confirm: 'Enviar denúncia', fields: '<label for="m-motivo">Motivo</label><select id="m-motivo" required><option value="">Selecione</option><option>Spam ou propaganda</option><option>Conteúdo ofensivo</option><option>Informação perigosa ou enganosa</option><option>Exposição de dados pessoais</option><option>Conteúdo fora do tema</option><option>Outro</option></select><label for="m-detalhes">Detalhes opcionais</label><textarea id="m-detalhes" maxlength="500"></textarea>', action: async () => {
-      const reason = $('m-motivo').value;
-      const details = $('m-detalhes').value.trim();
-      if (!reason) throw new Error('Selecione o motivo.');
-      const payload = { usuario_id: state.session.user.id, motivo: details ? `${reason}: ${details}` : reason, [type === 'topico' ? 'topico_id' : 'resposta_id']: id };
-      const { error } = await _supabase.from('forum_denuncias').insert(payload);
-      if (error) throw error;
-      showAlert('Denúncia registrada para análise.', 'ok');
-    }});
+    openModal({
+      label: 'DENÚNCIA',
+      title: 'Registrar denúncia',
+      confirm: 'Enviar denúncia',
+      fields: '<label for="m-motivo">Motivo</label><select id="m-motivo" required><option value="">Selecione</option><option>Spam ou propaganda</option><option>Conteúdo ofensivo</option><option>Informação perigosa ou enganosa</option><option>Exposição de dados pessoais</option><option>Conteúdo fora do tema</option><option>Outro</option></select><label for="m-detalhes">Detalhes opcionais</label><textarea id="m-detalhes" maxlength="500"></textarea>',
+      action: async () => {
+        const reason = $('m-motivo').value;
+        const details = $('m-detalhes').value.trim();
+        if (!reason) throw new Error('Selecione o motivo.');
+        const payload = { usuario_id: state.session.user.id, motivo: details ? `${reason}: ${details}` : reason, [type === 'topico' ? 'topico_id' : 'resposta_id']: id };
+        const { error } = await _supabase.from('forum_denuncias').insert(payload);
+        if (error) throw error;
+        showAlert('Denúncia registrada para análise.', 'ok');
+      }
+    });
   }
 
   async function submitReply(event) {
     event.preventDefault();
+    if (isClosed()) return;
     const textarea = $('texto-resposta');
     const text = textarea.value.trim();
     if (text.length < 8) return showAlert('Escreva pelo menos 8 caracteres.', 'erro');
-    $('btn-responder').disabled = true;
+    const button = $('btn-responder');
+    button.disabled = true;
     try {
-      const email = state.session.user.email || '';
-      const payload = {
-        topico_id: state.topic.id,
-        usuario_id: state.session.user.id,
-        autor_nome: state.profile?.nome || localStorage.usuario_nome || email.split('@')[0],
-        autor_empresa: state.profile?.nome_empresa || localStorage.nome_empresa || '',
-        autor_foto_url: safeUrl(state.profile?.foto_url || localStorage.usuario_foto_url || ''),
-        resposta: text
-      };
-      const { data, error } = await _supabase.from('forum_respostas').insert(payload).select(REPLY_FIELDS).single();
+      const { data, error } = await _supabase.from('forum_respostas').insert({ topico_id: state.topic.id, resposta: text }).select(REPLY_FIELDS).single();
       if (error) throw error;
       state.replies.push(data);
-      state.topic.total_respostas = Number(state.topic.total_respostas || 0) + 1;
+      const { data: topicData } = await _supabase.from('forum_topicos').select('total_respostas,status').eq('id', state.topic.id).maybeSingle();
+      state.topic.total_respostas = Number(topicData?.total_respostas ?? state.replies.length);
+      if (topicData?.status) state.topic.status = topicData.status;
       textarea.value = '';
       $('contador').textContent = '0/4000';
       renderReplies();
       showAlert('Comentário enviado com sucesso.', 'ok');
     } catch (error) {
       console.error(error);
-      showAlert('Não foi possível enviar o comentário.', 'erro');
-    } finally { updateFormState(); }
+      showAlert(error.message || 'Não foi possível enviar o comentário.', 'erro');
+    } finally {
+      updateFormState();
+    }
   }
 
   function bindEvents() {
@@ -260,7 +325,7 @@
     $('texto-resposta').addEventListener('input', event => { $('contador').textContent = `${event.target.value.length}/4000`; });
     $('post-page').addEventListener('click', event => {
       const button = event.target.closest('[data-action]');
-      if (!button) return;
+      if (!button || !state.topic) return;
       const action = button.dataset.action;
       const id = button.dataset.id || state.topic.id;
       if (action === 'like-topico') toggleLike('topico', id, button);
@@ -277,19 +342,47 @@
       if (!state.action) return;
       const button = $('modal-confirmar');
       button.disabled = true;
-      try { await state.action(); closeModal(); }
-      catch (error) { console.error(error); showAlert(error.message || 'Não foi possível concluir a ação.', 'erro'); }
-      finally { button.disabled = false; }
+      try {
+        await state.action();
+        closeModal();
+      } catch (error) {
+        console.error(error);
+        showAlert(error.message || 'Não foi possível concluir a ação.', 'erro');
+      } finally {
+        button.disabled = false;
+      }
     });
-    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !$('modal').hidden) closeModal(); });
+    document.addEventListener('keydown', event => {
+      if ($('modal').hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const items = focusableElements();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
+  function revealPage() {
+    $('post-page').hidden = false;
+    $('post-footer').hidden = false;
   }
 
   async function init() {
-    $('post-page').hidden = false;
     try {
       if (!postId) throw new Error('Publicação inválida.');
       if (!window._supabase) throw new Error('Supabase não carregado.');
-      bindEvents();
       const { data, error } = await _supabase.auth.getSession();
       if (error) throw error;
       state.session = data.session;
@@ -299,11 +392,14 @@
         location.href = '/index.html?login=1&dest=' + encodeURIComponent(destination);
         return;
       }
+      bindEvents();
+      revealPage();
       const profileResult = await _supabase.from('perfis').select('nome,nome_empresa,foto_url').eq('id', state.session.user.id).maybeSingle();
       state.profile = profileResult.data || null;
       await loadContent();
     } catch (error) {
       console.error(error);
+      revealPage();
       $('post-card').innerHTML = `<div class="forum-vazio">${escapeHtml(error.message || 'Não foi possível carregar a publicação.')}</div>`;
       showAlert(error.message || 'Não foi possível carregar a publicação.', 'erro');
     }
