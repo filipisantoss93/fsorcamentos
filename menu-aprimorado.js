@@ -9,6 +9,18 @@
   const planoValido=(plano,status,expira)=>normalizar(plano)==='premium'&&!['cancelado','expirado','inativo'].includes(normalizar(status||'ativo'))&&(!expira||new Date(expira).getTime()>=Date.now());
   const labelNivel=n=>n==='pro'?'Premium PRO':n==='essencial'?'Premium Essencial':'Plano Gratuito';
 
+  function removerEfexDuplicado(){
+    const links=Array.from(document.querySelectorAll('.header-menu-linha a[href]')).filter(link=>{
+      try{return new URL(link.getAttribute('href'),location.origin).pathname.replace(/\/$/,'')==='/efex.html'}catch(_){return false}
+    });
+    links.slice(0,-1).forEach(link=>link.closest('li')?.remove());
+  }
+
+  removerEfexDuplicado();
+  const observadorMenu=new MutationObserver(()=>removerEfexDuplicado());
+  const menuObservado=document.querySelector('.header-menu-linha .nav-menu');
+  if(menuObservado)observadorMenu.observe(menuObservado,{childList:true,subtree:true});
+
   function setDisplay(el,valor){if(el)el.style.display=valor}
   function fecharMenu(){
     const menu=document.querySelector('.header-menu-linha');
@@ -96,6 +108,7 @@
   }
 
   function aplicarResumo(resumo){
+    removerEfexDuplicado();
     const saudacao=$('usuario-saudacao');
     const planoEl=$('fs-menu-plano');
     const saldoEl=$('fs-menu-saldo');
