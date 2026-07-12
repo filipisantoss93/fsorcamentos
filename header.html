@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/style.css?v=20260711-rebranding-efex">
+<link rel="stylesheet" href="/menu-aprimorado.css?v=20260712-1">
 <header class="main-header">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos — Diagnóstico inteligente. Orçamentos profissionais.">
@@ -6,26 +7,42 @@
       <span class="logo-lockup"><strong class="logo-orcamentos">ORÇAMENTOS</strong><small>Diagnóstico inteligente. Orçamentos profissionais.</small></span>
     </a>
 
-    <nav class="header-menu-linha" aria-label="Menu principal">
-      <div class="header-user-card">
+    <nav class="header-menu-linha fs-menu-aprimorado" aria-label="Menu principal">
+      <div class="header-user-card fs-user-card-menu">
         <span class="header-user-icon" aria-hidden="true">👤</span>
-        <span class="header-user-text"><strong id="usuario-saudacao">Olá, Convidado</strong><small>Bem-vindo de volta!</small></span>
+        <span class="header-user-text">
+          <strong id="usuario-saudacao">Olá, Convidado</strong>
+          <small id="fs-menu-plano">Acesse sua conta</small>
+          <small id="fs-menu-saldo" class="fs-menu-saldo">—</small>
+        </span>
       </div>
 
       <ul class="nav-menu nav-menu-compacto">
+        <li class="fs-menu-grupo">Principal</li>
         <li><a href="/index.html"><span class="fs-menu-ico">⌂</span><span>Início</span></a></li>
-        <li><a href="/gerador.html" class="link-destaque-gerador"><span class="fs-menu-ico">▣</span><span>Gerar</span></a></li>
-        <li><a href="/efex.html" data-plano-min="premium"><span class="fs-menu-ico">AI</span><span>Efex</span></a></li>
-        <li><a href="/carteira.html"><span class="fs-menu-ico">◈</span><span>Carteira</span></a></li>
+        <li><a href="/gerador.html" class="link-destaque-gerador"><span class="fs-menu-ico">▣</span><span>Gerar orçamento</span></a></li>
         <li><a href="/orcamentos.html" data-plano-min="premium"><span class="fs-menu-ico">☷</span><span>Orçamentos</span></a></li>
+        <li><a href="/efex.html"><span class="fs-menu-ico">✦</span><span>Efex</span></a></li>
+        <li><a href="/carteira.html"><span class="fs-menu-ico">◈</span><span>Carteira</span></a></li>
+
+        <li class="fs-menu-grupo">Gestão</li>
         <li><a href="/fluxo-caixa.html" data-plano-min="premium"><span class="fs-menu-ico">▤</span><span>Caixa</span></a></li>
         <li><a href="/dashboard.html" data-plano-min="premium"><span class="fs-menu-ico">▥</span><span>Relatórios</span></a></li>
-        <li><a href="/biblioteca.html"><span class="fs-menu-ico">◆</span><span>Biblioteca</span></a></li>
-        <li><a href="/forum.html"><span class="fs-menu-ico">☏</span><span>Fórum</span></a></li>
+
+        <li class="fs-menu-grupo">Conta</li>
         <li><a href="/painel.html"><span class="fs-menu-ico">◴</span><span>Minha Conta</span></a></li>
-        <li><a href="/planos.html"><span class="fs-menu-ico">◆</span><span>Planos</span></a></li>
+        <li><a href="/planos.html"><span class="fs-menu-ico">◇</span><span>Planos</span></a></li>
+
+        <li class="fs-menu-grupo">Recursos</li>
+        <li><a href="/biblioteca.html"><span class="fs-menu-ico">◆</span><span>Biblioteca</span><em class="fs-menu-badge">Em breve</em></a></li>
+        <li><a href="/forum.html"><span class="fs-menu-ico">☏</span><span>Fórum</span><em class="fs-menu-badge beta">Beta</em></a></li>
         <li><a href="/sobre.html"><span class="fs-menu-ico">ⓘ</span><span>Sobre</span></a></li>
         <li><a href="/contato.html"><span class="fs-menu-ico">✉</span><span>Contato</span></a></li>
+
+        <li id="fs-menu-cta" class="fs-menu-cta">
+          <a href="/efex.html"><strong>✦ Pergunte ao Efex</strong><small>Use seus créditos para apoiar um diagnóstico.</small></a>
+        </li>
+
         <li class="menu-mobile-auth">
           <button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico">↪</span><span>Entrar</span></button>
           <button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico">↩</span><span>Sair</span></button>
@@ -37,7 +54,7 @@
       <button type="button" id="btn-notificacoes" class="btn-notificacoes-header" onclick="abrirModalNotificacoes && abrirModalNotificacoes()" style="display:none;" title="Notificações" aria-label="Notificações">🔔<span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span></button>
       <button type="button" id="btn-header-entrar" class="btn-header-entrar" onclick="irParaLogin()" style="display:none;">Entrar</button>
       <button type="button" id="btn-header-sair" class="btn-header-sair" onclick="deslogar()" style="display:none;">Sair</button>
-      <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile()" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+      <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile();if(!window.fsMenuAprimoradoCarregado){window.fsMenuAprimoradoCarregado=true;const s=document.createElement('script');s.src='/menu-aprimorado.js?v=20260712-1';document.head.appendChild(s)}" aria-label="Abrir menu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
