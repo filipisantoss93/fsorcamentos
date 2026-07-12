@@ -11,9 +11,8 @@
   <title>Comunidade FS | FS Orçamentos</title>
   <meta name="description" content="Comunidade profissional do FS Orçamentos para troca de experiências, dúvidas e soluções entre prestadores de serviço.">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="stylesheet" href="/style.css?v=20260712-forum-clean-2">
-  <link rel="stylesheet" href="/forum-social.css?v=20260712-forum-clean-2">
-  <link rel="stylesheet" href="/forum-clean-fix.css?v=20260712-forum-clean-2">
+  <link rel="stylesheet" href="/style.css?v=20260712-forum-base-3">
+  <link rel="stylesheet" href="/forum-social.css?v=20260712-forum-consolidado-1">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -86,13 +85,11 @@
             <h3>Sua rede profissional</h3>
             <p>Compartilhe conhecimento e fortaleça sua presença na comunidade.</p>
           </div>
-          <button type="button" class="forum-sidebar-profile-btn" data-abrir-perfil>Ver meu perfil</button>
+          <a class="forum-sidebar-profile-btn" href="/perfil.html">Ver meu perfil</a>
         </article>
 
         <article class="forum-card comunidade-sidebar-card">
-          <div class="forum-sidebar-title">
-            <span>Assuntos da comunidade</span>
-          </div>
+          <div class="forum-sidebar-title">Assuntos da comunidade</div>
           <div class="forum-topic-links">
             <span>Orçamentos</span>
             <span>Diagnóstico</span>
@@ -133,13 +130,6 @@
   <script src="/planos.js"></script>
   <script src="/carregar-menu.js"></script>
   <script src="/notificacoes.js"></script>
-  <script src="/forum.js?v=20260712-forum-clean-2"></script>
-  <script>
-    document.addEventListener('click', function (event) {
-      if (event.target.closest('[data-abrir-perfil]')) {
-        document.getElementById('forum-meu-perfil-btn')?.click();
-      }
-    });
-  </script>
+  <script src="/forum.js?v=20260712-forum-consolidado-1"></script>
 </body>
 </html>
