@@ -8,28 +8,24 @@
   const normalizar=v=>String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
   const planoValido=(plano,status,expira)=>normalizar(plano)==='premium'&&!['cancelado','expirado','inativo'].includes(normalizar(status||'ativo'))&&(!expira||new Date(expira).getTime()>=Date.now());
   const labelNivel=n=>n==='pro'?'Premium PRO':n==='essencial'?'Premium Essencial':'Plano Gratuito';
+  const caminhoAtual=()=>{const p=location.pathname||'/';return p==='/'?'/index.html':p.replace(/\/$/,'')||'/index.html'};
 
-  function removerEfexDuplicado(){
-    const links=Array.from(document.querySelectorAll('.header-menu-linha a[href]')).filter(link=>{
-      try{return new URL(link.getAttribute('href'),location.origin).pathname.replace(/\/$/,'')==='/efex.html'}catch(_){return false}
-    });
-    links.slice(0,-1).forEach(link=>link.closest('li')?.remove());
-  }
-
-  removerEfexDuplicado();
-  const observadorMenu=new MutationObserver(()=>removerEfexDuplicado());
-  const menuObservado=document.querySelector('.header-menu-linha .nav-menu');
-  if(menuObservado)observadorMenu.observe(menuObservado,{childList:true,subtree:true});
+  let ultimoResumo=null;
+  let elementoFocoAnterior=null;
 
   function setDisplay(el,valor){if(el)el.style.display=valor}
-  function fecharMenu(){
-    const menu=document.querySelector('.header-menu-linha');
-    const header=document.querySelector('.main-header');
-    const botao=document.querySelector('.menu-mobile-btn');
-    menu?.classList.remove('menu-aberto');
-    header?.classList.remove('menu-aberto');
-    botao?.setAttribute('aria-expanded','false');
-    botao?.setAttribute('aria-label','Abrir menu');
+
+  function obterBackdrop(){
+    let backdrop=$('fs-menu-backdrop');
+    if(backdrop)return backdrop;
+    backdrop=document.createElement('button');
+    backdrop.type='button';
+    backdrop.id='fs-menu-backdrop';
+    backdrop.className='fs-menu-backdrop';
+    backdrop.setAttribute('aria-label','Fechar menu');
+    backdrop.addEventListener('click',fecharMenu);
+    document.body.appendChild(backdrop);
+    return backdrop;
   }
 
   function atualizarAcessibilidadeMenu(){
@@ -39,29 +35,61 @@
     const aberto=menu.classList.contains('menu-aberto');
     botao.setAttribute('aria-expanded',String(aberto));
     botao.setAttribute('aria-label',aberto?'Fechar menu':'Abrir menu');
+    menu.setAttribute('aria-hidden',String(!aberto));
+    obterBackdrop().classList.toggle('visivel',aberto);
+    document.body.classList.toggle('fs-menu-aberto',aberto);
   }
 
-  const toggleOriginal=window.toggleMenuMobile;
-  window.toggleMenuMobile=function(){
-    if(typeof toggleOriginal==='function')toggleOriginal();
-    else{
-      const menu=document.querySelector('.header-menu-linha');
-      const header=document.querySelector('.main-header');
-      menu?.classList.toggle('menu-aberto');
-      header?.classList.toggle('menu-aberto',menu?.classList.contains('menu-aberto'));
-    }
+  function fecharMenu({devolverFoco=true}={}){
+    const menu=document.querySelector('.header-menu-linha');
+    const header=document.querySelector('.main-header');
+    menu?.classList.remove('menu-aberto');
+    header?.classList.remove('menu-aberto');
     atualizarAcessibilidadeMenu();
+    if(devolverFoco){
+      const alvo=elementoFocoAnterior||document.querySelector('.menu-mobile-btn');
+      setTimeout(()=>alvo?.focus?.(),0);
+    }
+  }
+
+  function abrirMenu(){
+    const menu=document.querySelector('.header-menu-linha');
+    const header=document.querySelector('.main-header');
+    if(!menu)return;
+    elementoFocoAnterior=document.activeElement;
+    menu.classList.add('menu-aberto');
+    header?.classList.add('menu-aberto');
+    atualizarAcessibilidadeMenu();
+    setTimeout(()=>menu.querySelector('a:not([aria-disabled="true"]),button:not([disabled])')?.focus(),0);
+  }
+
+  window.toggleMenuMobile=function(){
+    const menu=document.querySelector('.header-menu-linha');
+    if(menu?.classList.contains('menu-aberto'))fecharMenu();
+    else abrirMenu();
   };
 
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')fecharMenu()});
-  document.addEventListener('click',e=>{
-    const header=document.querySelector('.main-header');
-    if(header?.classList.contains('menu-aberto')&&!header.contains(e.target))fecharMenu();
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')fecharMenu();
   });
 
+  function marcarLinkAtivo(){
+    const atual=caminhoAtual();
+    document.querySelectorAll('.header-menu-linha a[href]').forEach(link=>{
+      const href=link.getAttribute('href')||'';
+      let path='';
+      try{path=new URL(href,location.origin).pathname.replace(/\/$/,'')||'/index.html'}catch(_){return}
+      const ativo=path===atual;
+      link.classList.toggle('ativo',ativo);
+      if(ativo)link.setAttribute('aria-current','page');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
   async function obterResumo(){
-    if(!window._supabase)return {session:null};
-    const {data:{session}}=await _supabase.auth.getSession();
+    if(!window._supabase)return {session:null,erroSessao:true};
+    const sessaoResp=await _supabase.auth.getSession();
+    const session=sessaoResp?.data?.session||null;
     if(!session?.user?.id)return {session:null};
 
     const uid=session.user.id;
@@ -73,19 +101,20 @@
 
     const perfil=perfilResp.status==='fulfilled'?(perfilResp.value.data||{}):{};
     const assinatura=assinaturaResp.status==='fulfilled'?(assinaturaResp.value.data||{}):{};
-    const saldoData=saldoResp.status==='fulfilled'?saldoResp.value.data:0;
+    const saldoDisponivel=saldoResp.status==='fulfilled'&&!saldoResp.value.error;
+    const saldoData=saldoDisponivel?saldoResp.value.data:null;
     const expira=assinatura.expira_em||perfil.plano_expira_em||null;
     const status=assinatura.status||perfil.plano_status||'ativo';
     const premium=planoValido(assinatura.plano||perfil.plano,status,expira);
     const nivel=premium?normalizar(assinatura.nivel||perfil.plano_nivel||'essencial'):'gratis';
-    const saldo=Number(saldoData?.saldo??saldoData??0)||0;
+    const saldo=saldoDisponivel?(Number(saldoData?.saldo??saldoData??0)||0):null;
     const nome=perfil.nome||perfil.nome_empresa||session.user.user_metadata?.nome||session.user.user_metadata?.name||session.user.email?.split('@')[0]||'Usuário';
 
     localStorage.setItem('usuario_nome',nome);
     localStorage.setItem('usuario_email',session.user.email||'');
     localStorage.setItem('usuario_plano',premium?'premium':'gratis');
-    if(status)localStorage.setItem('usuario_plano_status',status);
-    if(expira)localStorage.setItem('usuario_plano_expira_em',expira);
+    if(status)localStorage.setItem('usuario_plano_status',status);else localStorage.removeItem('usuario_plano_status');
+    if(expira)localStorage.setItem('usuario_plano_expira_em',expira);else localStorage.removeItem('usuario_plano_expira_em');
 
     return {session,nome,premium,nivel,saldo};
   }
@@ -101,14 +130,14 @@
       link.addEventListener('click',e=>{
         if(localStorage.getItem('usuario_plano')==='premium')return;
         e.preventDefault();
-        fecharMenu();
+        fecharMenu({devolverFoco:false});
         location.href='/planos.html#assinar-plano-premium';
       });
     });
   }
 
   function aplicarResumo(resumo){
-    removerEfexDuplicado();
+    ultimoResumo=resumo;
     const saudacao=$('usuario-saudacao');
     const planoEl=$('fs-menu-plano');
     const saldoEl=$('fs-menu-saldo');
@@ -129,11 +158,13 @@
       setDisplay(notificacoes,'none');
       if(cta)cta.style.display='none';
       localStorage.removeItem('usuario_plano');
+      localStorage.removeItem('usuario_plano_status');
+      localStorage.removeItem('usuario_plano_expira_em');
       configurarLinksPremium(false);
     }else{
       if(saudacao)saudacao.textContent=`Olá, ${resumo.nome}`;
       if(planoEl)planoEl.textContent=labelNivel(resumo.nivel);
-      if(saldoEl)saldoEl.textContent=`${resumo.saldo} crédito${resumo.saldo===1?'':'s'} Efex`;
+      if(saldoEl)saldoEl.textContent=resumo.saldo===null?'Saldo Efex indisponível':`${resumo.saldo} crédito${resumo.saldo===1?'':'s'} Efex`;
       setDisplay(entrarD,'none');setDisplay(sairD,'inline-flex');
       setDisplay(entrarM,'none');setDisplay(sairM,'inline-flex');
       setDisplay(notificacoes,resumo.premium?'inline-flex':'none');
@@ -144,7 +175,7 @@
         const a=cta.querySelector('a');
         const strong=cta.querySelector('strong');
         const small=cta.querySelector('small');
-        if(resumo.saldo<=0){
+        if(resumo.saldo===0){
           if(a)a.href='/carteira.html';
           if(strong)strong.textContent='◈ Recarregar créditos';
           if(small)small.textContent='Escolha um pacote e pague por Pix.';
@@ -155,11 +186,13 @@
         }else{
           if(a)a.href='/efex.html';
           if(strong)strong.textContent='✦ Pergunte ao Efex';
-          if(small)small.textContent='Use seus créditos para apoiar um diagnóstico.';
+          if(small)small.textContent=resumo.saldo===null?'Acesse o especialista da oficina.':'Use seus créditos para apoiar um diagnóstico.';
         }
       }
     }
 
+    marcarLinkAtivo();
+    atualizarAcessibilidadeMenu();
     header?.setAttribute('aria-busy','false');
     header?.classList.add('fs-header-pronto');
   }
@@ -168,12 +201,20 @@
     try{aplicarResumo(await obterResumo())}
     catch(erro){
       console.warn('Não foi possível atualizar o resumo do menu:',erro);
-      aplicarResumo({session:null});
+      if(ultimoResumo?.session)aplicarResumo({...ultimoResumo,saldo:null});
+      else aplicarResumo({session:null});
     }
   }
 
+  marcarLinkAtivo();
+  atualizarAcessibilidadeMenu();
   atualizar();
+  setTimeout(atualizar,450);
+
   if(window._supabase){
     _supabase.auth.onAuthStateChange(()=>setTimeout(atualizar,0));
   }
+
+  window.fsAtualizarResumoHeader=atualizar;
+  window.fsFecharMenu=fecharMenu;
 })();
