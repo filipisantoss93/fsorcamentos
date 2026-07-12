@@ -1,5 +1,5 @@
 (() => {
-  const VERSION = '20260712-2';
+  const VERSION = '20260712-3';
   const BASE = '/assets/images/';
   const AVATAR = `${BASE}avatar-fundotransparente.PNG?v=${VERSION}`;
   const IMAGES = {
@@ -16,30 +16,21 @@
   };
 
   const contextos = {
-    '/planos.html': { image: IMAGES.home, title: 'Escolha o plano certo para sua oficina', text: 'Compare os recursos do FS Orçamentos e use o Efex conforme a necessidade da sua operação.' },
-    '/painel.html': { image: IMAGES.orcamento, title: 'Sua oficina organizada em um só lugar', text: 'Mantenha o perfil da empresa atualizado para gerar documentos profissionais e personalizados.' },
-    '/biblioteca.html': { image: IMAGES.diagnostico, title: 'Conhecimento técnico para a rotina da oficina', text: 'Consulte materiais, referências e conteúdos que apoiam diagnósticos mais seguros.' },
-    '/forum.html': { image: IMAGES.avatar, title: 'A comunidade também faz parte do diagnóstico', text: 'Compartilhe experiências, dúvidas e soluções com outros profissionais automotivos.' },
-    '/post.html': { image: IMAGES.avatar, title: 'Conteúdo técnico em destaque', text: 'Leia, participe e contribua com a comunidade FS Orçamentos.' },
-    '/perfil.html': { image: IMAGES.avatar, title: 'Seu perfil na comunidade', text: 'Organize sua presença profissional e acompanhe suas contribuições no fórum.' },
-    '/fluxo-caixa.html': { image: IMAGES.caixa, title: 'Controle financeiro com precisão', text: 'Registre entradas e saídas para acompanhar o resultado real da oficina e tomar decisões com segurança.' },
-    '/dashboard.html': { image: IMAGES.relatorios, title: 'Transforme dados em decisões', text: 'Acompanhe conversão, valores aprovados e movimentações financeiras em uma visão clara da operação.' },
-    '/relatorios.html': { image: IMAGES.relatorios, title: 'Relatórios claros para uma gestão melhor', text: 'Analise desempenho, faturamento e produtividade sem perder tempo.' },
-    '/contato.html': { image: IMAGES.home, title: 'Fale com o FS Orçamentos', text: 'Envie sua dúvida, sugestão ou solicitação de suporte.' },
-    '/sobre.html': { image: IMAGES.home, title: 'Tecnologia criada para oficinas', text: 'Conheça a proposta do FS Orçamentos e do especialista digital Efex.' }
-  };
-
-  const dicas = {
-    '/painel.html': 'Mantenha os dados e a logomarca da oficina atualizados. Eles são usados automaticamente nos documentos gerados.',
-    '/orcamentos.html': 'Orçamentos com descrição clara, fotos e prazo de validade tendem a transmitir mais confiança ao cliente.',
-    '/gerador.html': 'Revise quantidades, valores e observações antes de gerar o PDF para evitar retrabalho.',
-    '/fluxo-caixa.html': 'Registre cada movimentação no dia em que ela ocorrer. Valor aprovado não é o mesmo que dinheiro recebido.',
-    '/dashboard.html': 'Compare períodos equivalentes para identificar tendências reais e evitar conclusões distorcidas.',
-    '/relatorios.html': 'Compare períodos equivalentes para identificar tendências reais e evitar conclusões distorcidas.',
-    '/carteira.html': 'Acompanhe o saldo antes de iniciar uma análise com o Efex para evitar interrupções no atendimento.',
-    '/biblioteca.html': 'Use os materiais como apoio técnico e confirme sempre os procedimentos específicos do fabricante.',
-    '/forum.html': 'Ao publicar uma dúvida, informe modelo, ano, motorização, sintomas e testes já realizados.',
-    '/perfil.html': 'Um perfil profissional completo aumenta a confiança nas suas contribuições para a comunidade.'
+    '/fluxo-caixa.html': {
+      image: IMAGES.caixa,
+      title: 'Controle financeiro com precisão',
+      text: 'Registre entradas e saídas para acompanhar o resultado real da oficina e tomar decisões com segurança.'
+    },
+    '/dashboard.html': {
+      image: IMAGES.relatorios,
+      title: 'Transforme dados em decisões',
+      text: 'Acompanhe conversão, valores aprovados e movimentações financeiras em uma visão clara da operação.'
+    },
+    '/relatorios.html': {
+      image: IMAGES.relatorios,
+      title: 'Relatórios claros para uma gestão melhor',
+      text: 'Analise desempenho, faturamento e produtividade sem perder tempo.'
+    }
   };
 
   function normalizarCaminho() {
@@ -65,7 +56,7 @@
   }
 
   function criarAvatarCabecalho() {
-    return `<span class="fs-efex-avatar-selo"><img src="${AVATAR}" alt="" aria-hidden="true"></span>`;
+    return `<span class="fs-efex-avatar-selo" style="display:inline-grid;width:27px;height:27px;flex:0 0 27px;place-items:center;overflow:hidden;border-radius:50%;background:#fff"><img src="${AVATAR}" alt="" aria-hidden="true" style="display:block;width:27px!important;height:27px!important;max-width:27px!important;max-height:27px!important;object-fit:contain"></span>`;
   }
 
   function adicionarContextoDaPagina() {
@@ -77,7 +68,7 @@
     const card = document.createElement('section');
     card.className = 'fs-efex-contextual';
     card.setAttribute('aria-label', 'Mensagem do Efex');
-    card.innerHTML = `<div class="fs-efex-contextual-copy"><span class="fs-efex-contextual-tag">${criarAvatarCabecalho()}Efex · Especialista da oficina</span><h2>${cfg.title}</h2><p>${cfg.text}</p></div><img class="fs-efex-contextual-personagem" src="${cfg.image}" alt="Efex, mascote do FS Orçamentos" loading="lazy" decoding="async">`;
+    card.innerHTML = `<div class="fs-efex-contextual-copy"><span class="fs-efex-contextual-tag">Efex · Especialista da oficina</span><h2>${cfg.title}</h2><p>${cfg.text}</p></div><img class="fs-efex-contextual-personagem" src="${cfg.image}" alt="Efex, mascote do FS Orçamentos" loading="lazy" decoding="async" style="display:block;width:100%;max-width:250px;max-height:210px;object-fit:contain;justify-self:end">`;
     main.prepend(card);
   }
 
@@ -92,33 +83,23 @@
     card.className = 'fs-efex-dica';
     if (id) card.dataset.efexDicaId = id;
     card.setAttribute('aria-label', opcoes.titulo || 'Dica do Efex');
-    card.innerHTML = `<img class="fs-efex-dica-personagem" src="${IMAGES.dica}" alt="Efex dando uma dica" loading="lazy" decoding="async"><div class="fs-efex-dica-copy"><span class="fs-efex-dica-titulo">${criarAvatarCabecalho()}${opcoes.titulo || 'Dica do Efex'}</span><p></p></div>`;
+    card.innerHTML = `<img class="fs-efex-dica-personagem" src="${IMAGES.dica}" alt="Efex dando uma dica" loading="lazy" decoding="async" style="display:block;width:100%;max-width:130px;max-height:125px;object-fit:contain"><div class="fs-efex-dica-copy"><span class="fs-efex-dica-titulo">${criarAvatarCabecalho()}${opcoes.titulo || 'Dica do Efex'}</span><p></p></div>`;
     card.querySelector('p').textContent = texto;
     if (opcoes.posicao === 'inicio') destino.prepend(card);
     else destino.append(card);
     return card;
   }
 
-  function adicionarDicaAutomatica() {
-    const path = normalizarCaminho();
-    const mensagem = dicas[path];
-    if (!mensagem || document.querySelector('[data-efex-dica-id="automatica"]')) return;
-    const main = document.querySelector('main');
-    if (!main) return;
-    mostrarDicaEfex(mensagem, { id: 'automatica', destino: main });
-  }
-
   function atualizarBotaoFlutuante() {
     const botao = document.getElementById('btn-flutuante-gerador-global');
     if (!botao || botao.dataset.efexAplicado === 'sim') return;
     botao.dataset.efexAplicado = 'sim';
-    botao.innerHTML = `<img class="fs-efex-avatar-btn" src="${AVATAR}" alt="" aria-hidden="true"><span>Gerar orçamento</span>`;
+    botao.innerHTML = `<img class="fs-efex-avatar-btn" src="${AVATAR}" alt="" aria-hidden="true" style="width:38px;height:38px;max-width:38px;max-height:38px;object-fit:contain"><span>Gerar orçamento</span>`;
   }
 
   function aplicar() {
     substituirImagensPrincipais();
     adicionarContextoDaPagina();
-    adicionarDicaAutomatica();
     atualizarBotaoFlutuante();
   }
 
