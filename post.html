@@ -6,84 +6,111 @@
   <meta name="theme-color" content="#07111f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FS Orçamentos">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Publicação da Comunidade | FS Orçamentos</title>
   <meta name="description" content="Publicação da Comunidade FS com comentários e soluções profissionais.">
   <meta name="robots" content="noindex,nofollow">
   <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="/style.css?v=20260712-forum-base-3">
-  <link rel="stylesheet" href="/forum-social.css?v=20260712-forum-consolidado-1">
+  <link rel="stylesheet" href="/style.css?v=20260712-forum-base-4">
+  <link rel="stylesheet" href="/forum-social.css?v=20260712-redesign-1">
+  <link rel="stylesheet" href="/post.css?v=20260712-post-1">
   <link rel="icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <style>
-    .post-page{width:min(1180px,calc(100% - 24px));margin:auto;padding:18px 0 32px}.post-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px;border:1px solid var(--forum-border);border-top:3px solid var(--forum-yellow);border-radius:14px;background:linear-gradient(145deg,var(--forum-card-soft),var(--forum-bg));box-shadow:0 10px 28px #0003}.post-hero h1{margin:10px 0 6px;font-size:clamp(27px,4vw,40px);color:var(--forum-text)}.post-hero p,.post-card p,.post-card-topo p,.post-sidebar p{color:var(--forum-muted)}.post-voltar{display:inline-flex;align-items:center;min-height:42px;text-decoration:none;white-space:nowrap}.post-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;margin-top:18px;align-items:start}.post-main,.post-sidebar{display:grid;gap:14px;min-width:0}.post-card,.post-comentarios,.post-comentar{padding:18px}.post-topo{display:flex;justify-content:space-between;gap:14px}.post-badges{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:7px}.post-titulo{margin:18px 0 10px;font-size:clamp(24px,4vw,34px);line-height:1.2;color:var(--forum-text)}.post-texto,.resposta-texto{color:var(--forum-muted);line-height:1.68;overflow-wrap:anywhere}.post-texto p,.resposta-texto p{margin:0 0 10px}.post-acoes,.resposta-acoes{display:flex;align-items:center;gap:9px;margin-top:15px;padding-top:13px;border-top:1px solid var(--forum-border)}.forum-like-btn,.forum-link-btn{min-height:36px;padding:7px 11px;border:1px solid var(--forum-border);border-radius:9px;background:var(--forum-card-soft);color:var(--forum-muted);cursor:pointer}.solucao-btn{border-color:#22c55e88;background:#22c55e18;color:#a7f3bf}.menu-acoes{position:relative;margin-left:auto}.menu-acoes summary{width:38px;height:36px;display:grid;place-items:center;border:1px solid var(--forum-border);border-radius:9px;background:var(--forum-card-soft);cursor:pointer;list-style:none}.menu-acoes summary::-webkit-details-marker{display:none}.menu-lista{position:absolute;right:0;bottom:43px;z-index:20;width:165px;padding:6px;border:1px solid var(--forum-border);border-radius:10px;background:var(--forum-card);box-shadow:0 14px 32px #0006}.menu-lista button{width:100%;padding:9px;border:0;border-radius:7px;background:transparent;color:var(--forum-text);text-align:left}.menu-lista button:hover{background:var(--forum-card-soft)}.menu-lista .perigo{color:#fecaca}.post-card-topo,.comentar-topo{display:flex;justify-content:space-between;gap:14px}.post-card-topo h2,.comentar-topo h2{margin:5px 0;color:var(--forum-text)}.section-label{color:var(--forum-yellow);font-size:10px;font-weight:750;letter-spacing:.08em}.respostas{display:grid;gap:12px;margin-top:14px}.resposta{padding:15px;border:1px solid var(--forum-border);border-radius:12px;background:var(--forum-card-soft)}.resposta.solucao{border-color:#22c55e99;box-shadow:inset 3px 0 #22c55e}.resposta-topo{display:flex;justify-content:space-between;margin-bottom:11px;color:var(--forum-muted);font-size:11px}.resposta-texto{margin-top:12px}.contador{padding:6px 9px;border:1px solid var(--forum-border);border-radius:999px;color:var(--forum-muted);font-size:11px}.post-comentar label{display:block;margin:12px 0 7px;color:var(--forum-text);font-weight:600}.post-comentar textarea{width:100%;min-height:132px;resize:vertical;border:1px solid var(--forum-border);border-radius:10px;background:var(--forum-bg);color:var(--forum-text)}.form-rodape{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:12px}.form-rodape small{color:var(--forum-muted);line-height:1.45}.post-alerta-ok{border-left-color:#22c55e!important}.post-alerta-erro{border-left-color:#dc2626!important}.forum-alerta[hidden]{display:none}.modal[hidden]{display:none}.modal{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;padding:14px}.modal-fundo{position:absolute;inset:0;background:#030d22dc;backdrop-filter:blur(3px)}.modal-painel{position:relative;width:min(680px,100%);max-height:90vh;overflow:auto;padding:18px;border:1px solid var(--forum-border);border-top:3px solid var(--forum-yellow);border-radius:14px;background:var(--forum-card);box-shadow:0 20px 50px #0008}.modal-topo{display:flex;justify-content:space-between}.modal-topo h2{margin:5px 0;color:var(--forum-text)}.modal-fechar{width:38px;height:38px;border:1px solid var(--forum-border);border-radius:9px;background:var(--forum-card-soft);color:#fff;font-size:24px}.modal-campos label{display:block;margin:12px 0 7px;color:var(--forum-text);font-weight:600}.modal-campos input,.modal-campos textarea,.modal-campos select{width:100%;border:1px solid var(--forum-border);border-radius:10px;background:var(--forum-bg);color:var(--forum-text)}.modal-campos textarea{min-height:130px;resize:vertical}.modal-campos p{color:var(--forum-muted);line-height:1.55}.modal-acoes{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.modal-confirmar.perigo{background:#b91c1c;border-color:#dc2626}.modal-aberto{overflow:hidden}@media(max-width:900px){.post-layout{grid-template-columns:1fr}.post-sidebar{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.post-page{width:calc(100% - 16px);padding-top:10px}.post-hero{display:grid;padding:18px}.post-voltar{width:100%;justify-content:center}.post-topo{display:grid}.post-badges{justify-content:flex-start}.post-card,.post-comentarios,.post-comentar{padding:14px}.post-sidebar{grid-template-columns:1fr}.form-rodape,.modal-acoes{flex-direction:column;align-items:stretch}.form-rodape button,.modal-acoes button{width:100%}.post-acoes,.resposta-acoes{flex-wrap:wrap}}
-  </style>
 </head>
 <body class="forum-social-page">
   <div id="header-container"></div>
   <main id="post-page" class="post-page" hidden>
     <section class="post-hero">
-      <div><span class="forum-tag">COMUNIDADE FS</span><h1>Publicação da comunidade</h1><p>Experiências, orientações técnicas e soluções compartilhadas por profissionais.</p></div>
+      <div>
+        <span class="forum-tag">COMUNIDADE FS</span>
+        <h1>Publicação da comunidade</h1>
+        <p>Experiências, orientações técnicas e soluções compartilhadas por profissionais.</p>
+      </div>
       <a class="forum-btn-secundario post-voltar" href="/forum.html">← Voltar ao feed</a>
     </section>
+
     <div id="post-alerta" class="forum-alerta" role="status" aria-live="polite" hidden></div>
+
     <section class="post-layout">
       <div class="post-main">
-        <article id="post-card" class="forum-card post-card" aria-live="polite"><div class="forum-vazio">Carregando publicação...</div></article>
-        <section class="forum-card post-comentarios">
-          <div class="post-card-topo"><div><span class="section-label">CONVERSA</span><h2>Comentários</h2><p>Compartilhe informações úteis para ajudar outros profissionais.</p></div></div>
+        <article id="post-card" class="forum-card post-card" aria-live="polite">
+          <div class="forum-vazio">Carregando publicação...</div>
+        </article>
+
+        <section class="forum-card post-comentarios" aria-labelledby="comentarios-titulo">
+          <div class="post-card-topo">
+            <div>
+              <span class="section-label">CONVERSA</span>
+              <h2 id="comentarios-titulo">Comentários</h2>
+              <p>Compartilhe informações úteis para ajudar outros profissionais.</p>
+            </div>
+          </div>
           <div id="post-respostas" class="respostas" aria-live="polite"></div>
         </section>
-        <section id="post-comentar" class="forum-card post-comentar">
-          <div class="comentar-topo"><div><span class="section-label">PARTICIPE</span><h2>Adicionar comentário</h2></div><span id="contador" class="contador">0/4000</span></div>
-          <form id="form-resposta"><label for="texto-resposta">Sua resposta</label><textarea id="texto-resposta" minlength="8" maxlength="4000" required placeholder="Descreva sua orientação, experiência ou solução com clareza."></textarea><div class="form-rodape"><small>Não exponha dados pessoais de clientes.</small><button id="btn-responder" class="forum-btn" type="submit">Enviar comentário</button></div></form>
+
+        <section id="post-comentar" class="forum-card post-comentar" aria-labelledby="comentar-titulo">
+          <div class="comentar-topo">
+            <div><span class="section-label">PARTICIPE</span><h2 id="comentar-titulo">Adicionar comentário</h2></div>
+            <span id="contador" class="contador">0/4000</span>
+          </div>
+          <form id="form-resposta">
+            <label for="texto-resposta">Sua resposta</label>
+            <textarea id="texto-resposta" minlength="8" maxlength="4000" required placeholder="Descreva sua orientação, experiência ou solução com clareza."></textarea>
+            <div class="form-rodape">
+              <small>Não exponha dados pessoais de clientes.</small>
+              <button id="btn-responder" class="forum-btn" type="submit">Enviar comentário</button>
+            </div>
+          </form>
         </section>
       </div>
+
       <aside class="post-sidebar">
-        <article class="forum-card comunidade-sidebar-card comunidade-efex-card"><span class="comunidade-efex-label">DICA DO EFEX</span><h3>Ajude com contexto</h3><p>Informe sintomas, testes realizados e resultados encontrados.</p></article>
-        <article class="forum-card comunidade-sidebar-card"><div class="forum-sidebar-title">Boas práticas</div><div class="forum-mini-lista"><div class="forum-mini-item">Seja objetivo e respeitoso.</div><div class="forum-mini-item">Não publique dados do cliente.</div><div class="forum-mini-item">Marque a solução correta.</div></div></article>
+        <article class="forum-card comunidade-sidebar-card comunidade-efex-card">
+          <span class="comunidade-efex-label">DICA DO EFEX</span>
+          <h3>Ajude com contexto</h3>
+          <p>Informe sintomas, testes realizados e resultados encontrados.</p>
+        </article>
+        <article class="forum-card comunidade-sidebar-card">
+          <div class="forum-sidebar-title">Boas práticas</div>
+          <div class="forum-mini-lista">
+            <div class="forum-mini-item">Seja objetivo e respeitoso.</div>
+            <div class="forum-mini-item">Não publique dados do cliente.</div>
+            <div class="forum-mini-item">Marque a solução correta.</div>
+          </div>
+        </article>
       </aside>
     </section>
   </main>
-  <div id="modal" class="modal" hidden><div class="modal-fundo" data-fechar></div><section class="modal-painel" role="dialog" aria-modal="true" aria-labelledby="modal-titulo"><div class="modal-topo"><div><span id="modal-label" class="section-label">AÇÃO</span><h2 id="modal-titulo">Confirmar</h2></div><button class="modal-fechar" type="button" data-fechar aria-label="Fechar">×</button></div><form id="modal-form"><div id="modal-campos" class="modal-campos"></div><div class="modal-acoes"><button class="forum-btn-secundario" type="button" data-fechar>Cancelar</button><button id="modal-confirmar" class="forum-btn modal-confirmar" type="submit">Confirmar</button></div></form></section></div>
-  <footer class="forum-footer"><span>© 2026 FS Orçamentos</span><span> | </span><a href="/privacidade.html">Privacidade</a><span> | </span><a href="/termos.html">Termos</a><span> | </span><a href="/contato.html">Contato</a></footer>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-fundo" data-fechar></div>
+    <section class="modal-painel" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <div class="modal-topo">
+        <div><span id="modal-label" class="section-label">AÇÃO</span><h2 id="modal-titulo">Confirmar</h2></div>
+        <button class="modal-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+      </div>
+      <form id="modal-form">
+        <div id="modal-campos" class="modal-campos"></div>
+        <div class="modal-acoes">
+          <button class="forum-btn-secundario" type="button" data-fechar>Cancelar</button>
+          <button id="modal-confirmar" class="forum-btn modal-confirmar" type="submit">Confirmar</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <footer class="forum-footer">
+    <span>© 2026 FS Orçamentos</span>
+    <span> | </span><a href="/privacidade.html">Privacidade</a>
+    <span> | </span><a href="/termos.html">Termos</a>
+    <span> | </span><a href="/contato.html">Contato</a>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/config.js"></script><script src="/auth.js"></script><script src="/planos.js"></script><script src="/carregar-menu.js"></script><script src="/notificacoes.js"></script>
-  <script>
-  (()=>{'use strict';
-    const $=id=>document.getElementById(id),q=new URLSearchParams(location.search),postId=q.get('id')||q.get('topico')||'',st={sessao:null,perfil:null,topico:null,respostas:[],ct:new Set,cr:new Set,acao:null};
-    const T='id,usuario_id,titulo,descricao,categoria,status,resolvido,foto_1_url,foto_2_url,autor_nome,autor_empresa,autor_foto_url,autor_plano,total_curtidas,total_respostas,criado_em',R='id,topico_id,usuario_id,resposta,marcada_como_solucao,autor_nome,autor_empresa,autor_foto_url,autor_plano,total_curtidas,criado_em';
-    const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-    const norm=v=>String(v??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
-    const txt=v=>String(v??'').replace(/\\n/g,'\n').replace(/\r\n/g,'\n');
-    const html=v=>{const s=txt(v).trim();return s?s.split(/\n{2,}/).map(b=>`<p>${b.split('\n').map(esc).join('<br>')}</p>`).join(''):''};
-    const safe=v=>{try{const u=new URL(v,location.origin);return u.protocol==='https:'||u.origin===location.origin?u.href:''}catch{return''}};
-    const data=v=>{const d=new Date(v);return isNaN(d)?'':new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short'}).format(d)};
-    const status=()=>st.topico?.resolvido?'resolvido':st.topico?.status||'aberto',dono=()=>st.topico?.usuario_id===st.sessao?.user?.id,fechado=()=>norm(status())==='fechado';
-    function aviso(t,tipo='info'){const b=$('post-alerta');b.hidden=!t;b.textContent=t||'';b.className=`forum-alerta post-alerta-${tipo}`}
-    function nome(r){const atual=(r.usuario_id||r.user_id)===st.sessao?.user?.id,n=r.autor_nome||(atual?(st.perfil?.nome||localStorage.usuario_nome||'Você'):'Membro da comunidade'),e=r.autor_empresa||'';return `${atual?'Você':n}${e?' · '+e:''}`}
-    function iniciais(r){return String(r.autor_nome||nome(r)||'FS').split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'FS'}
-    function autor(r,sub=''){const id=r.usuario_id||r.user_id||'',foto=safe(r.autor_foto_url),av=foto?`<span class="forum-avatar"><img src="${esc(foto)}" alt="" loading="lazy"></span>`:`<span class="forum-avatar-placeholder">${esc(iniciais(r))}</span>`,c=`${av}<span class="forum-autor-texto"><strong>${esc(nome(r))}</strong>${sub?`<small>${esc(sub)}</small>`:''}</span>`;return id?`<a class="forum-autor-linha" href="/perfil.html?id=${encodeURIComponent(id)}">${c}</a>`:`<div class="forum-autor-linha">${c}</div>`}
-    function fotos(){const fs=[st.topico.foto_1_url,st.topico.foto_2_url].map(safe).filter(Boolean);return fs.length?`<div class="forum-fotos-grid">${fs.map((u,i)=>`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer"><img class="forum-foto" src="${esc(u)}" alt="Imagem ${i+1} anexada" loading="lazy"></a>`).join('')}</div>`:''}
-    function like(tipo,r){const c=tipo==='topico'?st.ct.has(r.id):st.cr.has(r.id),n=Math.max(0,Number(r.total_curtidas||0));return `<button class="forum-like-btn ${c?'curtido':''}" type="button" data-a="like-${tipo}" data-id="${esc(r.id)}" aria-pressed="${c}">👍 ${n}</button>`}
-    function menu(tipo,id,ehDono){return `<details class="menu-acoes"><summary aria-label="Mais ações">•••</summary><div class="menu-lista">${ehDono?`<button type="button" data-a="editar-${tipo}" data-id="${esc(id)}">Editar</button><button class="perigo" type="button" data-a="excluir-${tipo}" data-id="${esc(id)}">Excluir</button>`:''}<button type="button" data-a="denunciar-${tipo}" data-id="${esc(id)}">Denunciar</button></div></details>`}
-    function renderTopico(){const t=st.topico,n=Number(t.total_respostas??st.respostas.length),s=status(),cls=norm(s)==='resolvido'?'verde':norm(s)==='fechado'?'vermelho':'';$('post-card').innerHTML=`<div class="post-topo">${autor(t,data(t.criado_em))}<div class="post-badges"><span class="forum-badge">${esc(t.categoria||'Geral')}</span><span class="forum-badge ${cls}">${esc(s)}</span><span class="forum-badge azul">${n} comentário${n===1?'':'s'}</span></div></div><h1 class="post-titulo">${esc(t.titulo||'Publicação')}</h1><div class="post-texto">${html(t.descricao)}</div>${fotos()}<div class="post-acoes">${like('topico',t)}${dono()&&s!=='resolvido'&&!fechado()?'<button class="forum-link-btn solucao-btn" type="button" data-a="resolver">✓ Marcar como resolvido</button>':''}${menu('topico',t.id,dono())}</div>`;formStatus()}
-    function renderRespostas(){const box=$('post-respostas');if(!st.respostas.length)box.innerHTML='<div class="forum-vazio">Ainda não há comentários. Seja o primeiro a contribuir.</div>';else box.innerHTML=st.respostas.map(r=>{const dr=r.usuario_id===st.sessao.user.id;return `<article class="resposta ${r.marcada_como_solucao?'solucao':''}"><div class="resposta-topo"><span>${r.marcada_como_solucao?'✓ Solução marcada':'Comentário'}</span><span>${esc(data(r.criado_em))}</span></div>${autor(r)}<div class="resposta-texto">${html(r.resposta)}</div><div class="resposta-acoes">${like('resposta',r)}${dono()&&!r.marcada_como_solucao&&!fechado()?`<button class="forum-link-btn solucao-btn" type="button" data-a="solucao" data-id="${esc(r.id)}">✓ Marcar solução</button>`:''}${menu('resposta',r.id,dr)}</div></article>`}).join('');renderTopico()}
-    function formStatus(){const f=fechado(),ta=$('texto-resposta'),b=$('btn-responder');ta.disabled=b.disabled=f;ta.placeholder=f?'Esta publicação não aceita novos comentários.':'Descreva sua orientação, experiência ou solução com clareza.';b.textContent=f?'Comentários encerrados':'Enviar comentário'}
-    async function carregar(){const [tp,rs,cs]=await Promise.all([_supabase.from('forum_topicos').select(T).eq('id',postId).maybeSingle(),_supabase.from('forum_respostas').select(R).eq('topico_id',postId).order('marcada_como_solucao',{ascending:false}).order('criado_em',{ascending:true}).limit(200),_supabase.from('forum_curtidas').select('topico_id,resposta_id').eq('usuario_id',st.sessao.user.id).limit(1000)]);if(tp.error)throw tp.error;if(!tp.data)throw Error('Publicação não encontrada.');if(rs.error)throw rs.error;st.topico=tp.data;st.respostas=rs.data||[];(cs.data||[]).forEach(c=>{if(c.topico_id)st.ct.add(c.topico_id);if(c.resposta_id)st.cr.add(c.resposta_id)});document.title=`${st.topico.titulo}| Comunidade FS`;renderRespostas()}
-    async function alternar(tipo,id){const top=tipo==='topico',set=top?st.ct:st.cr,reg=top?st.topico:st.respostas.find(x=>x.id===id),cur=set.has(id);try{if(cur){let q=_supabase.from('forum_curtidas').delete().eq('usuario_id',st.sessao.user.id);q=top?q.eq('topico_id',id):q.eq('resposta_id',id);const{error}=await q;if(error)throw error;set.delete(id);reg.total_curtidas=Math.max(0,Number(reg.total_curtidas||0)-1)}else{const p={usuario_id:st.sessao.user.id};p[top?'topico_id':'resposta_id']=id;const{error}=await _supabase.from('forum_curtidas').insert(p);if(error&&error.code!=='23505')throw error;set.add(id);if(!error)reg.total_curtidas=Number(reg.total_curtidas||0)+1}top?renderTopico():renderRespostas()}catch(e){console.error(e);aviso('Não foi possível atualizar a curtida.','erro')}}
-    function abrir(o){st.acao=o.acao;$('modal-label').textContent=o.label||'AÇÃO';$('modal-titulo').textContent=o.titulo;$('modal-campos').innerHTML=o.campos||'';$('modal-confirmar').textContent=o.confirmar||'Confirmar';$('modal-confirmar').classList.toggle('perigo',!!o.perigo);$('modal').hidden=false;document.body.classList.add('modal-aberto')}
-    function fechar(){st.acao=null;$('modal').hidden=true;document.body.classList.remove('modal-aberto')}
-    function editar(tipo,id){const top=tipo==='topico',r=top?st.topico:st.respostas.find(x=>x.id===id);abrir({label:'EDITAR',titulo:top?'Atualizar publicação':'Atualizar comentário',confirmar:'Salvar alterações',campos:top?`<label for="m-titulo">Título</label><input id="m-titulo" minlength="8" maxlength="160" value="${esc(r.titulo)}" required><label for="m-texto">Descrição</label><textarea id="m-texto" minlength="20" maxlength="4000" required>${esc(txt(r.descricao))}</textarea>`:`<label for="m-texto">Comentário</label><textarea id="m-texto" minlength="8" maxlength="4000" required>${esc(txt(r.resposta))}</textarea>`,acao:async()=>{const texto=$('m-texto').value.trim(),titulo=top?$('m-titulo').value.trim():'';if((top&&titulo.length<8)||(top?texto.length<20:texto.length<8))throw Error('Revise o conteúdo antes de salvar.');const payload=top?{titulo,descricao:texto}:{resposta:texto};const{error}=await _supabase.from(top?'forum_topicos':'forum_respostas').update(payload).eq('id',r.id).eq('usuario_id',st.sessao.user.id);if(error)throw error;Object.assign(r,payload);renderRespostas();aviso('Alterações salvas.','ok')}})}
-    function excluir(tipo,id){const top=tipo==='topico';abrir({label:'EXCLUSÃO',titulo:top?'Excluir publicação?':'Excluir comentário?',confirmar:'Excluir definitivamente',perigo:true,campos:`<p>${top?'A publicação e os comentários vinculados serão removidos.':'Este comentário será removido.'} Esta ação não pode ser desfeita.</p>`,acao:async()=>{const{error}=await _supabase.from(top?'forum_topicos':'forum_respostas').delete().eq('id',id).eq('usuario_id',st.sessao.user.id);if(error)throw error;if(top)location.href='/forum.html';else{st.respostas=st.respostas.filter(x=>x.id!==id);renderRespostas();aviso('Comentário excluído.','ok')}}})}
-    function resolver(id){abrir({label:'SOLUÇÃO',titulo:id?'Marcar comentário como solução?':'Marcar publicação como resolvida?',confirmar:'Confirmar',campos:'<p>A publicação será identificada como resolvida.</p>',acao:async()=>{if(id){const a=await _supabase.from('forum_respostas').update({marcada_como_solucao:false}).eq('topico_id',st.topico.id);if(a.error)throw a.error;const b=await _supabase.from('forum_respostas').update({marcada_como_solucao:true}).eq('id',id).eq('topico_id',st.topico.id);if(b.error)throw b.error}const c=await _supabase.from('forum_topicos').update({resolvido:true,status:'resolvido'}).eq('id',st.topico.id).eq('usuario_id',st.sessao.user.id);if(c.error)throw c.error;st.topico.resolvido=true;st.topico.status='resolvido';if(id)st.respostas.forEach(x=>x.marcada_como_solucao=x.id===id);renderRespostas();aviso('Publicação marcada como resolvida.','ok')}})}
-    function denunciar(tipo,id){abrir({label:'DENÚNCIA',titulo:'Registrar denúncia',confirmar:'Enviar denúncia',campos:'<label for="m-motivo">Motivo</label><select id="m-motivo" required><option value="">Selecione</option><option>Spam ou propaganda</option><option>Conteúdo ofensivo</option><option>Informação perigosa ou enganosa</option><option>Exposição de dados pessoais</option><option>Conteúdo fora do tema</option><option>Outro</option></select><label for="m-detalhes">Detalhes opcionais</label><textarea id="m-detalhes" maxlength="500"></textarea>',acao:async()=>{const motivo=$('m-motivo').value,det=$('m-detalhes').value.trim();if(!motivo)throw Error('Selecione o motivo.');const p={usuario_id:st.sessao.user.id,motivo:det?`${motivo}: ${det}`:motivo};p[tipo==='topico'?'topico_id':'resposta_id']=id;const{error}=await _supabase.from('forum_denuncias').insert(p);if(error)throw error;aviso('Denúncia registrada para análise.','ok')}})}
-    $('form-resposta').addEventListener('submit',async e=>{e.preventDefault();const ta=$('texto-resposta'),texto=ta.value.trim();if(texto.length<8)return aviso('Escreva pelo menos 8 caracteres.','erro');$('btn-responder').disabled=true;try{const email=st.sessao.user.email||'',p={topico_id:st.topico.id,usuario_id:st.sessao.user.id,autor_nome:st.perfil?.nome||localStorage.usuario_nome||email.split('@')[0],autor_empresa:st.perfil?.nome_empresa||localStorage.nome_empresa||'',autor_foto_url:safe(st.perfil?.foto_url||localStorage.usuario_foto_url||''),resposta:texto},{data,error}=await _supabase.from('forum_respostas').insert(p).select(R).single();if(error)throw error;st.respostas.push(data);ta.value='';$('contador').textContent='0/4000';renderRespostas();aviso('Comentário enviado com sucesso.','ok')}catch(x){console.error(x);aviso('Não foi possível enviar o comentário.','erro')}finally{formStatus()}});
-    $('texto-resposta').addEventListener('input',e=>$('contador').textContent=`${e.target.value.length}/4000`);
-    $('post-page').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=b.dataset.id||st.topico.id;if(a==='like-topico')alternar('topico',id);else if(a==='like-resposta')alternar('resposta',id);else if(a==='editar-topico'||a==='editar-resposta')editar(a.endsWith('topico')?'topico':'resposta',id);else if(a==='excluir-topico'||a==='excluir-resposta')excluir(a.endsWith('topico')?'topico':'resposta',id);else if(a==='resolver')resolver();else if(a==='solucao')resolver(id);else if(a==='denunciar-topico'||a==='denunciar-resposta')denunciar(a.endsWith('topico')?'topico':'resposta',id)});
-    document.querySelectorAll('[data-fechar]').forEach(x=>x.addEventListener('click',fechar));document.addEventListener('keydown',e=>{if(e.key==='Escape')fechar()});$('modal-form').addEventListener('submit',async e=>{e.preventDefault();if(!st.acao)return;const b=$('modal-confirmar'),t=b.textContent;b.disabled=true;b.textContent='Processando...';try{await st.acao();fechar()}catch(x){console.error(x);aviso(x.message||'Não foi possível concluir a ação.','erro')}finally{b.disabled=false;b.textContent=t}});
-    async function iniciar(){$('post-page').hidden=false;try{if(!window._supabase)throw Error('Supabase não carregado.');const{data,error}=await _supabase.auth.getSession();if(error)throw error;st.sessao=data.session;if(!st.sessao){localStorage.fs_destino_apos_login=`/post.html?id=${postId}`;location.href='/index.html?login=1&dest='+encodeURIComponent(`/post.html?id=${postId}`);return}const p=await _supabase.from('perfis').select('nome,nome_empresa,foto_url').eq('id',st.sessao.user.id).maybeSingle();st.perfil=p.data||null;await carregar()}catch(x){console.error(x);$('post-card').innerHTML=`<div class="forum-vazio">${esc(x.message||'Não foi possível carregar a publicação.')}</div>`;aviso(x.message||'Não foi possível carregar a publicação.','erro')}}
-    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',iniciar,{once:true});else iniciar();
-  })();
-  </script>
+  <script src="/config.js"></script>
+  <script src="/auth.js"></script>
+  <script src="/carregar-menu.js"></script>
+  <script src="/notificacoes.js"></script>
+  <script src="/post.js?v=20260712-post-1"></script>
 </body>
 </html>
