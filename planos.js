@@ -40,6 +40,26 @@
     return !Number.isNaN(expira.getTime()) && expira.getTime() >= Date.now();
   }
 
+  function exibirConteudoProtegidoPainel() {
+    const conteudo = $('conteudo-protegido');
+    const authArea = $('auth-area');
+    if (conteudo) {
+      conteudo.removeAttribute('hidden');
+      conteudo.style.display = 'block';
+    }
+    if (authArea) authArea.style.display = 'none';
+  }
+
+  function sincronizarIndicadorOSExecucao() {
+    const origem = $('painel-os-execucao');
+    const destino = $('painel-os-execucao-resumo');
+    if (!origem || !destino) return;
+
+    const atualizar = () => { destino.textContent = origem.textContent || '0'; };
+    atualizar();
+    new MutationObserver(atualizar).observe(origem, { childList: true, characterData: true, subtree: true });
+  }
+
   function aplicarEstadoComercial({ perfil, assinatura, saldo }) {
     const plano = assinatura?.plano || perfil?.plano || 'gratis';
     const status = assinatura?.status || perfil?.plano_status || 'ativo';
@@ -82,6 +102,9 @@
       if ($('saldo-creditos-planos')) $('saldo-creditos-planos').textContent = '—';
       return;
     }
+
+    exibirConteudoProtegidoPainel();
+    sincronizarIndicadorOSExecucao();
 
     const uid = session.user.id;
     let perfil = null;
@@ -137,7 +160,7 @@
   }
 
   window.fsLabelNivelPlano = labelNivel;
-  window.fsCreditosDoNivel = creditosDoNivel;
+  window.fsCreditosDoNivelPlano = creditosDoNivel;
   window.carregarStatusPlanoPagina = carregar;
 
   const iniciarModulos = () => {
