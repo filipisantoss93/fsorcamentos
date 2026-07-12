@@ -28,10 +28,12 @@
   let perfilAtual = null;
   let topicosCache = [];
   let curtidasTopicos = new Set();
+  let curtidasEmProcessamento = new Set();
   let modalPreparado = false;
   let ultimoFoco = null;
   let buscaTimer = null;
   let previewUrls = [];
+  let categoriaAtiva = '';
 
   const esc = valor => String(valor ?? '')
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -109,7 +111,7 @@
 
   function autorHtml(topico) {
     const usuarioId = String(topico?.usuario_id || '');
-    const href = usuarioId ? `/perfil.html?id=${encodeURIComponent(usuarioId)}` : '#';
+    const href = usuarioId ? `/perfil.html?id=${encodeURIComponent(usuarioId)}` : '/perfil.html';
     return `<a class="forum-autor-linha" href="${href}" data-acao="perfil">
       ${avatarHtml(topico)}
       <span class="forum-autor-texto">
@@ -122,7 +124,7 @@
   function fotosHtml(topico) {
     const fotos = [topico?.foto_1_url, topico?.foto_2_url].filter(Boolean);
     if (!fotos.length) return '';
-    return `<div class="forum-fotos-grid">${fotos.map(url => `<a href="${esc(url)}" target="_blank" rel="noopener" data-acao="foto"><img class="forum-foto" src="${esc(url)}" alt="Foto anexada à publicação" loading="lazy"></a>`).join('')}</div>`;
+    return `<div class="forum-fotos-grid">${fotos.map(url => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" data-acao="foto"><img class="forum-foto" src="${esc(url)}" alt="Foto anexada à publicação" loading="lazy"></a>`).join('')}</div>`;
   }
 
   function renderizarTopicos(topicos) {
@@ -135,15 +137,17 @@
 
     lista.innerHTML = topicos.map(topico => {
       const curtido = curtidasTopicos.has(topico.id);
+      const processando = curtidasEmProcessamento.has(topico.id);
       const totalCurtidas = Math.max(0, Number(topico.total_curtidas || 0));
       const totalRespostas = Math.max(0, Number(topico.total_respostas || 0));
       const status = statusTopico(topico);
-      return `<article class="forum-topico" data-topico-id="${esc(topico.id)}" tabindex="0" role="link" aria-label="Abrir publicação: ${esc(topico.titulo)}">
+      const href = `/post.html?id=${encodeURIComponent(topico.id)}`;
+      return `<article class="forum-topico" data-topico-id="${esc(topico.id)}">
         <div class="forum-topico-cabecalho">
           ${autorHtml(topico)}
           ${status !== 'aberto' ? `<span class="forum-status ${statusClasse(status)}">${esc(status)}</span>` : ''}
         </div>
-        <h3>${esc(topico.titulo)}</h3>
+        <h3><a class="forum-topico-link" href="${href}" data-acao="abrir" data-topico-id="${esc(topico.id)}">${esc(topico.titulo)}</a></h3>
         <p>${esc(resumo(topico.descricao))}</p>
         ${fotosHtml(topico)}
         <div class="forum-meta-linha">
@@ -151,8 +155,8 @@
           <span>💬 ${totalRespostas} ${totalRespostas === 1 ? 'comentário' : 'comentários'}</span>
         </div>
         <div class="forum-acoes-linha">
-          <button type="button" class="forum-like-btn ${curtido ? 'curtido' : ''}" data-acao="curtir" data-topico-id="${esc(topico.id)}" aria-pressed="${curtido}">👍 ${totalCurtidas}</button>
-          <button type="button" class="forum-comentar-btn" data-acao="abrir" data-topico-id="${esc(topico.id)}">💬 Comentar</button>
+          <button type="button" class="forum-like-btn ${curtido ? 'curtido' : ''}" data-acao="curtir" data-topico-id="${esc(topico.id)}" aria-pressed="${curtido}" ${processando ? 'disabled' : ''}>👍 ${totalCurtidas}</button>
+          <a class="forum-comentar-btn" href="${href}" data-acao="abrir" data-topico-id="${esc(topico.id)}">💬 Comentar</a>
         </div>
       </article>`;
     }).join('');
@@ -160,9 +164,12 @@
 
   function filtrarTopicos() {
     const busca = normalizar(document.getElementById('forum-busca')?.value || '');
-    const filtrados = busca
-      ? topicosCache.filter(t => normalizar(`${t.titulo} ${t.descricao} ${t.categoria} ${t.autor_nome} ${t.autor_empresa}`).includes(busca))
-      : [...topicosCache];
+    const categoria = normalizar(categoriaAtiva);
+    const filtrados = topicosCache.filter(topico => {
+      const atendeBusca = !busca || normalizar(`${topico.titulo} ${topico.descricao} ${topico.categoria} ${topico.autor_nome} ${topico.autor_empresa}`).includes(busca);
+      const atendeCategoria = !categoria || normalizar(topico.categoria) === categoria;
+      return atendeBusca && atendeCategoria;
+    });
     renderizarTopicos(filtrados);
   }
 
@@ -192,7 +199,7 @@
         .from('forum_topicos')
         .select(CAMPOS_TOPICOS)
         .order('atualizado_em', { ascending: false })
-        .limit(30);
+        .limit(50);
       if (error) throw error;
       topicosCache = Array.isArray(data) ? data : [];
       await Promise.all([enriquecerPlanos(), carregarCurtidas()]);
@@ -206,9 +213,11 @@
   }
 
   async function alternarCurtida(topicoId) {
-    if (!sessaoAtual?.user?.id || !topicoId) return;
+    if (!sessaoAtual?.user?.id || !topicoId || curtidasEmProcessamento.has(topicoId)) return;
     const jaCurtido = curtidasTopicos.has(topicoId);
     const topico = topicosCache.find(t => t.id === topicoId);
+    curtidasEmProcessamento.add(topicoId);
+    filtrarTopicos();
     try {
       if (jaCurtido) {
         const { error } = await _supabase.from('forum_curtidas').delete().eq('usuario_id', sessaoAtual.user.id).eq('topico_id', topicoId);
@@ -218,13 +227,19 @@
       } else {
         const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: sessaoAtual.user.id, topico_id: topicoId });
         if (error && error.code !== '23505') throw error;
-        curtidasTopicos.add(topicoId);
-        if (topico) topico.total_curtidas = Number(topico.total_curtidas || 0) + 1;
+        if (!error) {
+          curtidasTopicos.add(topicoId);
+          if (topico) topico.total_curtidas = Number(topico.total_curtidas || 0) + 1;
+        } else {
+          await carregarCurtidas();
+        }
       }
-      filtrarTopicos();
     } catch (error) {
       console.error('Erro ao atualizar curtida:', error);
       mostrarAlerta('Não foi possível atualizar a curtida.', 'erro');
+    } finally {
+      curtidasEmProcessamento.delete(topicoId);
+      filtrarTopicos();
     }
   }
 
@@ -239,23 +254,16 @@
       if (acao) {
         const tipo = acao.dataset.acao;
         if (tipo === 'perfil' || tipo === 'foto') return;
-        event.preventDefault();
-        event.stopPropagation();
-        const id = acao.dataset.topicoId;
-        if (tipo === 'curtir') return void alternarCurtida(id);
-        if (tipo === 'abrir') return abrirTopico(id);
+        if (tipo === 'curtir') {
+          event.preventDefault();
+          event.stopPropagation();
+          return void alternarCurtida(acao.dataset.topicoId);
+        }
+        if (tipo === 'abrir') return;
       }
+      if (event.target.closest('a,button,input,select,textarea')) return;
       const card = event.target.closest('.forum-topico[data-topico-id]');
       if (card) abrirTopico(card.dataset.topicoId);
-    });
-
-    lista?.addEventListener('keydown', event => {
-      if (!['Enter', ' '].includes(event.key)) return;
-      if (event.target.closest('button,a,input,select,textarea')) return;
-      const card = event.target.closest('.forum-topico[data-topico-id]');
-      if (!card) return;
-      event.preventDefault();
-      abrirTopico(card.dataset.topicoId);
     });
   }
 
@@ -279,7 +287,7 @@
   function formularioHtml() {
     return `<form id="forum-form-topico" class="forum-form" novalidate>
       <label for="forum-topico-titulo">Título da publicação</label>
-      <input id="forum-topico-titulo" type="text" minlength="8" maxlength="120" required>
+      <input id="forum-topico-titulo" type="text" minlength="8" maxlength="120" required autocomplete="off">
       <label for="forum-topico-categoria">Categoria</label>
       <select id="forum-topico-categoria" required>${CATEGORIAS.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('')}</select>
       <label for="forum-topico-descricao">Conteúdo</label>
@@ -291,6 +299,27 @@
       <div id="forum-form-alerta" class="forum-alerta" role="status" aria-live="polite"></div>
       <button id="forum-btn-criar" type="submit" class="forum-btn">Publicar no fórum</button>
     </form>`;
+  }
+
+  function elementosFocaveis(container) {
+    return [...container.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')]
+      .filter(el => !el.hidden && el.offsetParent !== null);
+  }
+
+  function controlarFocoModal(event) {
+    const card = document.getElementById('forum-form-card');
+    if (!card?.classList.contains('ativo') || event.key !== 'Tab') return;
+    const focaveis = elementosFocaveis(card);
+    if (!focaveis.length) return;
+    const primeiro = focaveis[0];
+    const ultimo = focaveis[focaveis.length - 1];
+    if (event.shiftKey && document.activeElement === primeiro) {
+      event.preventDefault();
+      ultimo.focus();
+    } else if (!event.shiftKey && document.activeElement === ultimo) {
+      event.preventDefault();
+      primeiro.focus();
+    }
   }
 
   function prepararModal() {
@@ -310,7 +339,8 @@
         const fotos = validarFotos(event.target.files);
         const preview = document.getElementById('forum-preview-fotos');
         if (preview) preview.innerHTML = fotos.map(file => {
-          const url = URL.createObjectURL(file); previewUrls.push(url);
+          const url = URL.createObjectURL(file);
+          previewUrls.push(url);
           return `<img src="${url}" alt="Prévia da foto">`;
         }).join('');
         mostrarAlerta('', 'info', 'forum-form-alerta');
@@ -336,11 +366,12 @@
 
   function fecharModal() {
     const card = document.getElementById('forum-form-card');
-    if (!card) return;
+    if (!card?.classList.contains('ativo')) return;
     card.classList.remove('ativo');
     card.style.display = 'none';
     card.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    limparPreview();
     if (ultimoFoco instanceof HTMLElement) ultimoFoco.focus();
   }
 
@@ -349,7 +380,15 @@
     const caminho = `${sessaoAtual.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
     const { error } = await _supabase.storage.from(BUCKET_IMAGENS).upload(caminho, file, { contentType: file.type, cacheControl: '3600', upsert: false });
     if (error) throw error;
-    return _supabase.storage.from(BUCKET_IMAGENS).getPublicUrl(caminho).data.publicUrl;
+    const publicUrl = _supabase.storage.from(BUCKET_IMAGENS).getPublicUrl(caminho).data.publicUrl;
+    return { caminho, publicUrl };
+  }
+
+  async function removerUploads(caminhos) {
+    const validos = caminhos.filter(Boolean);
+    if (!validos.length) return;
+    const { error } = await _supabase.storage.from(BUCKET_IMAGENS).remove(validos);
+    if (error) console.warn('Não foi possível remover uploads incompletos:', error);
   }
 
   async function criarTopico(event) {
@@ -359,34 +398,50 @@
     const descricao = document.getElementById('forum-topico-descricao')?.value.trim();
     if (!titulo || titulo.length < 8) return mostrarAlerta('Informe um título com pelo menos 8 caracteres.', 'erro', 'forum-form-alerta');
     if (!descricao || descricao.length < 20) return mostrarAlerta('Descreva melhor a publicação.', 'erro', 'forum-form-alerta');
+    if (!CATEGORIAS.includes(categoria)) return mostrarAlerta('Selecione uma categoria válida.', 'erro', 'forum-form-alerta');
 
     const botao = document.getElementById('forum-btn-criar');
+    const uploads = [];
     if (botao) { botao.disabled = true; botao.textContent = 'Publicando…'; }
     try {
+      const files = validarFotos(document.getElementById('forum-topico-fotos')?.files || []);
+      for (const file of files) uploads.push(await uploadFoto(file));
+
       const email = sessaoAtual.user.email || '';
       const { data, error } = await _supabase.from('forum_topicos').insert({
         usuario_id: sessaoAtual.user.id,
         autor_nome: perfilAtual?.nome || localStorage.getItem('usuario_nome') || email.split('@')[0] || 'Membro',
         autor_empresa: perfilAtual?.nome_empresa || localStorage.getItem('nome_empresa') || '',
         autor_foto_url: perfilAtual?.foto_url || localStorage.getItem('usuario_foto_url') || '',
-        titulo, categoria: categoria || 'Outros', descricao, status: 'aberto', resolvido: false
+        titulo,
+        categoria,
+        descricao,
+        status: 'aberto',
+        resolvido: false,
+        foto_1_url: uploads[0]?.publicUrl || null,
+        foto_2_url: uploads[1]?.publicUrl || null
       }).select('id').single();
       if (error) throw error;
-
-      const files = validarFotos(document.getElementById('forum-topico-fotos')?.files || []);
-      if (files.length) {
-        const urls = [];
-        for (const file of files) urls.push(await uploadFoto(file));
-        const { error: erroFoto } = await _supabase.from('forum_topicos').update({ foto_1_url: urls[0] || null, foto_2_url: urls[1] || null }).eq('id', data.id).eq('usuario_id', sessaoAtual.user.id);
-        if (erroFoto) console.warn('Erro ao salvar fotos:', erroFoto);
-      }
       window.location.href = `/post.html?id=${encodeURIComponent(data.id)}`;
     } catch (error) {
+      await removerUploads(uploads.map(item => item.caminho));
       console.error('Erro ao publicar:', error);
       mostrarAlerta(error.message || 'Não foi possível publicar.', 'erro', 'forum-form-alerta');
     } finally {
       if (botao) { botao.disabled = false; botao.textContent = 'Publicar no fórum'; }
     }
+  }
+
+  function atualizarAvatarCompositor() {
+    const avatar = document.querySelector('.forum-composer-avatar');
+    if (!avatar) return;
+    const foto = String(perfilAtual?.foto_url || '').trim();
+    if (foto) {
+      avatar.innerHTML = `<img src="${esc(foto)}" alt="Sua foto de perfil">`;
+      return;
+    }
+    const nome = String(perfilAtual?.nome || sessaoAtual?.user?.email?.split('@')[0] || 'FS').trim();
+    avatar.textContent = nome.split(/\s+/).slice(0, 2).map(p => p[0] || '').join('').toUpperCase() || 'FS';
   }
 
   function prepararEventosGerais() {
@@ -400,13 +455,26 @@
       clearTimeout(buscaTimer);
       buscaTimer = setTimeout(filtrarTopicos, 250);
     });
-    document.addEventListener('keydown', event => { if (event.key === 'Escape') fecharModal(); });
+    document.querySelector('.forum-topic-links')?.addEventListener('click', event => {
+      const botao = event.target.closest('[data-categoria]');
+      if (!botao) return;
+      categoriaAtiva = botao.dataset.categoria || '';
+      document.querySelectorAll('[data-categoria]').forEach(item => item.setAttribute('aria-pressed', String(item === botao && Boolean(categoriaAtiva))));
+      filtrarTopicos();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') fecharModal();
+      controlarFocoModal(event);
+    });
   }
 
   async function inicializar() {
     const conteudo = document.getElementById('forum-conteudo');
-    if (conteudo) conteudo.style.display = 'block';
-    if (!window._supabase) return mostrarAlerta('Supabase não carregou.', 'erro');
+    const rodape = document.querySelector('.forum-footer');
+    if (!window._supabase) {
+      if (conteudo) conteudo.style.display = 'block';
+      return mostrarAlerta('Supabase não carregou.', 'erro');
+    }
 
     const { data, error } = await _supabase.auth.getSession();
     if (error || !data?.session?.user?.id) {
@@ -421,6 +489,9 @@
     prepararEventosGerais();
     prepararEventosFeed();
     prepararModal();
+    atualizarAvatarCompositor();
+    if (conteudo) conteudo.style.display = 'block';
+    if (rodape) rodape.style.display = 'flex';
     await carregarTopicos();
   }
 
