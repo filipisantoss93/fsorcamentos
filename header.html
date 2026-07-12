@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/style.css?v=20260712-header-blue-3">
-<link rel="stylesheet" href="/menu-aprimorado.css?v=20260712-3" onload="window.fsCarregarMenuAprimorado?.()">
+<link rel="stylesheet" href="/menu-aprimorado.css?v=20260712-3">
 <header class="main-header" aria-busy="true">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos — Diagnóstico inteligente. Orçamentos profissionais.">
@@ -58,4 +58,4 @@
     </div>
   </div>
 </header>
-<img src="/assets/fs-header-init.invalid" alt="" hidden onerror="window.fsCarregarMenuAprimorado?.()">
+<img src="/assets/fs-header-init.invalid" alt="" hidden onerror="if(!window.fsMenuAprimoradoCarregado){window.fsMenuAprimoradoCarregado=true;const s=document.createElement('script');s.src='/menu-aprimorado.js?v=20260712-3';s.defer=true;document.head.appendChild(s)}">
