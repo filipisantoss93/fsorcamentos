@@ -33,7 +33,7 @@
 .main-header[aria-busy="true"] .header-user-card{opacity:.72}
 .main-header.fs-header-pronto .header-user-card{opacity:1;transition:opacity .2s ease}
 .menu-mobile-btn:focus-visible,.fs-menu-aprimorado a:focus-visible,.fs-menu-aprimorado button:focus-visible{outline:3px solid rgba(246,181,0,.75);outline-offset:2px}
-.fs-menu-backdrop{display:none;position:fixed;inset:0;z-index:19990;border:0;border-radius:0;background:rgba(1,8,20,.68);padding:0;cursor:default}
+.fs-menu-backdrop{display:none;position:fixed;inset:0;z-index:19990;border:0;border-radius:0;background:rgba(1,8,20,.16);padding:0;cursor:default}
 .fs-menu-backdrop.visivel{display:block}
 body.fs-menu-aberto{overflow:hidden}
 @media(max-width:900px){
@@ -41,6 +41,8 @@ body.fs-menu-aberto{overflow:hidden}
   .header-menu-linha.fs-menu-aprimorado.menu-aberto{transform:translateX(0);visibility:visible;transition:transform .22s ease}
   .fs-menu-aprimorado .nav-menu a,.fs-menu-aprimorado .btn-menu-mobile-entrar,.fs-menu-aprimorado .btn-menu-mobile-sair{min-height:44px}
   .fs-menu-grupo{padding-top:10px!important}
+  #btn-header-entrar,#btn-header-sair{display:none!important}
+  #btn-notificacoes{display:inline-flex}
 }
 @media(max-width:560px){
   .header-shell{min-height:64px!important;width:calc(100% - 16px)!important;gap:8px!important}
