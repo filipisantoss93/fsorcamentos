@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Administração | FS Orçamentos</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png">
+  <style>
+    :root{--a:#1565C0;--n:#07111F;--y:#F6B500;--g:#22C55E;--b:#DCE7F3;--bg:#F4F8FC;--t:#102033;--m:#64748B;--r:#DC2626}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,var(--n) 0,#0B1C31 250px,var(--bg) 250px);color:var(--t)}
+    .admin{width:min(1240px,calc(100% - 24px));margin:auto;padding:24px 0 60px;display:grid;gap:16px}.card{background:#fff;border:1px solid var(--b);border-radius:18px;box-shadow:0 14px 34px rgba(7,17,31,.08);overflow:hidden}.hero{padding:26px;background:linear-gradient(135deg,#fff,#edf5ff,#fff7d6);border-top:5px solid var(--y)}.hero h1{margin:0 0 6px;font-size:clamp(30px,5vw,46px);letter-spacing:-.05em}.hero p{margin:0;color:#46627E;font-weight:700}.toolbar{padding:15px;display:grid;grid-template-columns:1fr auto auto;gap:9px}.toolbar input{min-height:44px;border:1px solid var(--b);border-radius:11px;padding:10px 12px}.btn{min-height:42px;padding:10px 14px;border:1px solid var(--a);border-radius:11px;background:var(--a);color:#fff;font-weight:900;cursor:pointer}.btn.alt{background:#fff;color:var(--a);border-color:#B7CDE4}.btn.gold{background:var(--y);border-color:var(--y);color:#172033}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{padding:17px;border-left:5px solid var(--a)}.metric:nth-child(2n){border-left-color:var(--y)}.metric span{display:block;color:var(--m);font-size:11px;font-weight:900;text-transform:uppercase}.metric strong{font-size:27px}.tabs{display:flex;gap:7px;flex-wrap:wrap;padding:13px}.tab{background:#fff;color:var(--n);border-color:var(--b)}.tab.ativo{background:var(--n);color:#fff}.painel{display:none}.painel.ativo{display:block}.head{padding:14px 16px;background:var(--n);color:#fff;display:flex;justify-content:space-between;align-items:center}.body{padding:15px}.table-wrap{overflow:auto;border:1px solid var(--b);border-radius:12px}.table{width:100%;border-collapse:collapse;min-width:980px}.table th{background:#EEF4FA;padding:10px;text-align:left;font-size:11px;text-transform:uppercase}.table td{padding:10px;border-bottom:1px solid var(--b);font-size:13px}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:#F1F5F9;font-size:10px;font-weight:950;text-transform:uppercase}.badge.ativo,.badge.pago,.badge.confirmado{background:#ECFDF3;color:#087443}.badge.pendente{background:#FFF7D6;color:#7A5600}.badge.expirado,.badge.cancelado{background:#FFF1F2;color:#991B1B}.empty{padding:24px;text-align:center;color:var(--m);font-weight:800}.modal{position:fixed;inset:0;z-index:50000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(7,17,31,.78)}.modal.ativo{display:flex}.modal-box{width:min(500px,100%);padding:22px;border-radius:18px;background:#fff}.field{display:grid;gap:6px;margin:12px 0}.field input{min-height:43px;border:1px solid var(--b);border-radius:10px;padding:10px}.acoes{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}@media(max-width:900px){.metrics{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr}.toolbar .btn{width:100%}}@media(max-width:560px){.metrics{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="admin">
+    <section class="card hero"><h1>Painel Administrativo</h1><p>Usuários, assinaturas, pagamentos, créditos e auditoria do FS Orçamentos.</p></section>
+    <section class="card toolbar"><input id="admin-busca" placeholder="Buscar por nome, empresa, e-mail, telefone ou UUID"><button class="btn" id="admin-buscar">Buscar</button><a class="btn alt" href="/admin-financeiro.html">Dashboard financeiro</a></section>
+    <section id="admin-metricas" class="metrics"></section>
+    <section class="card"><div class="tabs"><button class="btn tab ativo" data-tab="usuarios">Usuários</button><button class="btn tab" data-tab="assinaturas">Assinaturas</button><button class="btn tab" data-tab="pagamentos">Pagamentos</button><button class="btn tab" data-tab="auditoria">Auditoria</button></div></section>
+    <section id="painel-usuarios" class="card painel ativo"><div class="head"><strong>Usuários</strong></div><div class="body"><div id="lista-usuarios" class="table-wrap"><div class="empty">Carregando...</div></div></div></section>
+    <section id="painel-assinaturas" class="card painel"><div class="head"><strong>Assinaturas</strong></div><div class="body"><div id="lista-assinaturas" class="table-wrap"></div></div></section>
+    <section id="painel-pagamentos" class="card painel"><div class="head"><strong>Pagamentos Pix</strong></div><div class="body"><div id="lista-pagamentos" class="table-wrap"></div></div></section>
+    <section id="painel-auditoria" class="card painel"><div class="head"><strong>Auditoria</strong></div><div class="body"><div id="lista-auditoria" class="table-wrap"></div></div></section>
+  </main>
+  <div id="modal-creditos" class="modal" role="dialog" aria-modal="true"><div class="modal-box"><h2>Ajustar créditos Efex</h2><p id="credito-usuario"></p><div class="field"><label>Quantidade</label><input id="credito-delta" type="number" placeholder="Ex.: 20 ou -10"></div><div class="field"><label>Motivo</label><input id="credito-motivo" maxlength="200" placeholder="Motivo obrigatório"></div><div class="acoes"><button class="btn alt" id="credito-cancelar">Cancelar</button><button class="btn gold" id="credito-confirmar">Aplicar ajuste</button></div></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="auth.js"></script><script src="carregar-menu.js"></script><script src="admin.js"></script>
+</body>
+</html>
