@@ -7,7 +7,7 @@
   <title>Carteira Efex | FS Orçamentos</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/carteira.css?v=20260712-3">
+  <link rel="stylesheet" href="/carteira.css?v=20260712-4">
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
@@ -25,14 +25,15 @@
 
     <div id="carteira-erro" class="carteira-status carteira-status-erro hidden" role="alert" aria-live="assertive"></div>
 
-    <section class="carteira-grid-resumo">
+    <section class="carteira-grid-resumo" aria-label="Resumo da carteira">
       <article class="fs-card carteira-card carteira-saldo-card">
         <h2>Saldo disponível</h2>
         <strong id="saldo-efex" class="carteira-saldo-numero">—</strong>
         <p class="carteira-saldo-legenda">créditos Efex</p>
+        <p class="carteira-saldo-aviso">O consumo estimado é informado antes de cada análise.</p>
         <div class="carteira-acoes">
           <a class="btn carteira-btn-principal" href="#comprar-creditos">Recarregar créditos</a>
-          <button class="btn carteira-btn-secundario" type="button" onclick="atualizarCarteiraCompleta()">Atualizar carteira</button>
+          <button id="btn-atualizar-carteira" class="btn carteira-btn-secundario" type="button">Atualizar carteira</button>
         </div>
       </article>
 
@@ -43,8 +44,8 @@
         </div>
         <div class="carteira-plano-info">
           <div class="carteira-linha-info"><span>Plano atual</span><strong id="carteira-plano">Carregando...</strong></div>
-          <div class="carteira-linha-info"><span>Créditos mensais</span><strong id="carteira-creditos-mensais">—</strong></div>
-          <div class="carteira-linha-info"><span>Renovação / expiração</span><strong id="carteira-renovacao">—</strong></div>
+          <div class="carteira-linha-info"><span id="carteira-creditos-rotulo">Créditos por renovação</span><strong id="carteira-creditos-mensais">—</strong></div>
+          <div class="carteira-linha-info"><span id="carteira-renovacao-rotulo">Validade</span><strong id="carteira-renovacao">—</strong></div>
         </div>
       </article>
     </section>
@@ -52,25 +53,38 @@
     <section id="comprar-creditos" class="fs-card carteira-card carteira-compra-card">
       <div class="carteira-card-titulo">
         <span class="carteira-card-icone" aria-hidden="true">＋</span>
-        <h2>Comprar créditos Efex</h2>
-      </div>
-      <div class="carteira-compra-grid">
         <div>
-          <label for="pacote-creditos">Escolha o pacote</label>
-          <select id="pacote-creditos" onchange="atualizarPacoteCreditos();atualizarResumoCarteira()">
-            <option value="creditos_50" selected>50 créditos — R$ 24,90</option>
-          </select>
+          <h2>Comprar créditos Efex</h2>
+          <p class="carteira-subtitulo">Escolha um pacote. O valor final e a quantidade de créditos são sempre validados no servidor.</p>
         </div>
-        <button class="btn carteira-btn-principal" type="button" onclick="comprarPacoteSelecionado()">Gerar Pix</button>
       </div>
+
+      <div id="pacotes-creditos" class="carteira-pacotes-grid" role="radiogroup" aria-label="Pacotes de créditos"></div>
+      <select id="pacote-creditos" class="carteira-select-fallback" aria-label="Pacote de créditos"></select>
+
       <div class="carteira-compra-resumo">
         <div>
           <span id="resumo-pacote">50 créditos Efex</span>
           <small id="resumo-promocao">Sem desconto aplicado</small>
+          <small id="resumo-unitario">R$ 0,50 por crédito</small>
         </div>
         <strong id="valor-pacote-creditos">R$ 24,90</strong>
       </div>
-      <p class="carteira-ajuda">Os créditos comprados não substituem a assinatura. O pacote de 400 créditos possui preço promocional; os demais seguem o valor padrão oficial.</p>
+
+      <button id="btn-gerar-pix" class="btn carteira-btn-principal carteira-btn-comprar" type="button">Comprar com Pix</button>
+      <p class="carteira-ajuda">Os créditos comprados não substituem a assinatura. Pacotes promocionais são identificados antes da confirmação.</p>
+    </section>
+
+    <section class="fs-card carteira-card carteira-consumo-card" aria-labelledby="titulo-consumo-efex">
+      <div class="carteira-card-titulo">
+        <span class="carteira-card-icone" aria-hidden="true">i</span>
+        <h2 id="titulo-consumo-efex">Como os créditos são consumidos</h2>
+      </div>
+      <div class="carteira-consumo-grid">
+        <div><strong>Pergunta simples</strong><span>A partir de 1 crédito</span></div>
+        <div><strong>Análise técnica</strong><span>Consumo variável conforme a complexidade</span></div>
+        <div><strong>Análise com imagens</strong><span>Consumo maior, informado antes do envio</span></div>
+      </div>
     </section>
 
     <section class="fs-card carteira-card carteira-extrato-card">
@@ -82,22 +96,33 @@
           </div>
           <span class="carteira-selo">Movimentações Efex</span>
         </div>
-        <button class="btn btn-secondary carteira-btn-extrato" type="button" onclick="carregarExtratoEfex(true)">Atualizar extrato</button>
+        <button id="btn-atualizar-extrato" class="btn btn-secondary carteira-btn-extrato" type="button">Atualizar extrato</button>
       </div>
+
+      <div class="carteira-filtros">
+        <label for="filtro-extrato">Filtrar movimentações</label>
+        <select id="filtro-extrato">
+          <option value="todos">Todas</option>
+          <option value="entrada">Entradas</option>
+          <option value="saida">Consumos</option>
+        </select>
+      </div>
+
       <div id="extrato-status" class="carteira-status carteira-status-info" aria-live="polite">Carregando movimentações...</div>
       <div id="extrato-lista" class="carteira-extrato-lista"></div>
+      <button id="btn-carregar-mais" class="btn btn-secondary carteira-btn-carregar-mais hidden" type="button">Carregar mais</button>
       <p class="carteira-ajuda">Compras, bônus, créditos de assinatura, consumos e estornos aparecem aqui quando registrados no backend.</p>
     </section>
   </main>
 
-  <div id="modal-pix-basico" class="modal-pix-overlay carteira-modal" role="dialog" aria-modal="true" aria-labelledby="pix-modal-titulo" aria-describedby="pix-status">
-    <div class="modal-pix-card">
+  <div id="modal-pix-basico" class="modal-pix-overlay carteira-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pix-modal-titulo" aria-describedby="pix-status" hidden>
+    <div class="modal-pix-card" role="document">
       <div class="modal-pix-topo">
         <div>
           <strong id="pix-modal-titulo">Pagamento via Pix</strong>
           <span id="pix-modal-subtitulo">Créditos Efex</span>
         </div>
-        <button type="button" aria-label="Fechar pagamento" onclick="fecharModalPixBasico()">×</button>
+        <button id="btn-fechar-pix" type="button" aria-label="Fechar pagamento">×</button>
       </div>
       <div id="pix-loading" class="pix-loading" aria-live="polite">Gerando Pix...</div>
       <div id="pix-conteudo" class="hidden">
@@ -110,8 +135,8 @@
         <label class="pix-label" for="pix-copia-cola">Pix copia e cola</label>
         <textarea id="pix-copia-cola" readonly></textarea>
         <div class="pix-acoes">
-          <button class="btn btn-primary" type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button>
-          <button class="btn btn-secondary" type="button" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button>
+          <button id="btn-copiar-pix" class="btn btn-primary" type="button">Copiar Pix</button>
+          <button id="btn-verificar-pix" class="btn btn-secondary" type="button">Já paguei, verificar</button>
         </div>
         <p>O pagamento é verificado automaticamente. Após a confirmação, os créditos são aplicados à carteira sem recarregar a página.</p>
       </div>
@@ -125,9 +150,9 @@
   <script src="/config.js"></script>
   <script src="/auth.js"></script>
   <script src="/ui.js"></script>
-  <script src="/pagamentos.js"></script>
+  <script src="/pagamentos.js?v=20260712-4"></script>
   <script src="/carregar-menu.js"></script>
   <script src="/notificacoes.js"></script>
-  <script src="/carteira.js"></script>
+  <script src="/carteira.js?v=20260712-4"></script>
 </body>
 </html>
