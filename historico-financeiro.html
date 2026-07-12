@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1565C0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Histórico Financeiro | FS Orçamentos</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png">
+  <style>
+    :root{--azul:#1565C0;--escuro:#07111F;--amarelo:#F6B500;--verde:#22C55E;--bg:#F4F8FC;--card:#fff;--borda:#DCE7F3;--texto:#102033;--muted:#64748B;--vermelho:#DC2626}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,var(--escuro) 0,#0B1C31 260px,var(--bg) 260px);color:var(--texto)}
+    .wrap{width:min(1120px,calc(100% - 24px));margin:auto;padding:24px 0 56px;display:grid;gap:16px}
+    .hero,.card{background:var(--card);border:1px solid var(--borda);border-radius:22px;box-shadow:0 18px 42px rgba(7,17,31,.08)}
+    .hero{padding:26px;background:linear-gradient(135deg,#fff,#EDF5FF 68%,#FFF7D6)}.hero h1{margin:0 0 8px;font-size:clamp(30px,5vw,46px);letter-spacing:-.05em;color:var(--escuro)}.hero p{margin:0;color:#45617C;font-weight:700;line-height:1.5}
+    .filters{padding:18px;display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.field{display:grid;gap:6px}.field label{font-size:12px;font-weight:900;text-transform:uppercase;color:#385978}.field select{min-height:44px;padding:10px 12px;border:1px solid #C9D8E8;border-radius:12px;background:#fff;color:var(--texto);font-weight:750}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 15px;border:1px solid var(--azul);border-radius:12px;background:var(--azul);color:#fff;font-weight:900;cursor:pointer;text-decoration:none}.btn.secondary{background:#fff;color:var(--azul);border-color:#B8CCE1}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric{padding:18px;border-left:5px solid var(--azul)}.metric.ok{border-left-color:var(--verde)}.metric.warn{border-left-color:var(--amarelo)}.metric.red{border-left-color:var(--vermelho)}.metric span{display:block;color:var(--muted);font-size:11px;font-weight:900;text-transform:uppercase}.metric strong{display:block;margin-top:5px;font-size:25px;color:var(--escuro)}
+    .section-head{padding:16px 18px;border-bottom:1px solid var(--borda);display:flex;justify-content:space-between;gap:12px;align-items:center}.section-head h2{margin:0;font-size:22px;color:var(--escuro)}.list{padding:14px;display:grid;gap:10px}.item{display:grid;grid-template-columns:minmax(0,1.6fr) .7fr .7fr .8fr;gap:12px;align-items:center;padding:14px;border:1px solid var(--borda);border-radius:15px;background:#FAFCFF}.item strong{display:block;color:var(--escuro)}.item small{display:block;margin-top:4px;color:var(--muted);font-weight:700}.badge{display:inline-flex;width:max-content;padding:6px 9px;border-radius:999px;border:1px solid var(--borda);font-size:11px;font-weight:950;text-transform:uppercase}.badge.pago{background:#ECFDF3;color:#087443;border-color:#A7F3D0}.badge.pendente{background:#FFF8D8;color:#806000;border-color:#F5D76E}.badge.expirado,.badge.cancelado{background:#FFF1F2;color:#991B1B;border-color:#FECACA}.empty{padding:30px;text-align:center;color:var(--muted);font-weight:800}.pager{padding:14px 18px;border-top:1px solid var(--borda);display:flex;justify-content:space-between;gap:10px;align-items:center}.pager-info{color:var(--muted);font-weight:800}
+    @media(max-width:800px){.filters,.summary{grid-template-columns:1fr 1fr}.item{grid-template-columns:1fr 1fr}.item>div:first-child{grid-column:1/-1}}
+    @media(max-width:520px){.filters,.summary,.item{grid-template-columns:1fr}.item>div:first-child{grid-column:auto}.pager{display:grid}.pager .btn{width:100%}}
+  </style>
+</head>
+<body>
+  <div id="header-container"></div>
+  <main class="wrap">
+    <section class="hero"><h1>Histórico Financeiro</h1><p>Acompanhe assinaturas, compras de créditos Efex e o status de cada pagamento Pix.</p></section>
+    <section class="card filters">
+      <div class="field"><label for="f-status">Status</label><select id="f-status"><option value="">Todos</option><option value="pago">Pago</option><option value="pendente">Pendente</option><option value="expirado">Expirado</option></select></div>
+      <div class="field"><label for="f-tipo">Tipo</label><select id="f-tipo"><option value="">Todos</option><option value="assinatura">Assinaturas</option><option value="creditos">Créditos Efex</option></select></div>
+      <button class="btn" id="btn-filtrar">Filtrar</button>
+    </section>
+    <section class="summary">
+      <article class="card metric"><span>Total de registros</span><strong id="m-total">0</strong></article>
+      <article class="card metric ok"><span>Pagos na página</span><strong id="m-pagos">0</strong></article>
+      <article class="card metric warn"><span>Pendentes na página</span><strong id="m-pendentes">0</strong></article>
+      <article class="card metric red"><span>Expirados na página</span><strong id="m-expirados">0</strong></article>
+    </section>
+    <section class="card">
+      <div class="section-head"><h2>Pagamentos</h2><a class="btn secondary" href="/carteira.html">Abrir Carteira Efex</a></div>
+      <div id="historico-lista" class="list"><div class="empty">Carregando...</div></div>
+      <div class="pager"><button class="btn secondary" id="btn-anterior">Anterior</button><span id="pager-info" class="pager-info">Página 1</span><button class="btn secondary" id="btn-proxima">Próxima</button></div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script src="carregar-menu.js"></script>
+  <script src="historico-financeiro.js"></script>
+</body>
+</html>
