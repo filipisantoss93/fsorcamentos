@@ -19,7 +19,7 @@
     CHAVES_PLANO.forEach(chave => localStorage.removeItem(chave));
   }
 
-  await carregarScript('/js/biblioteca.js?v=20260712-2');
+  await carregarScript('/js/biblioteca.js?v=20260712-3');
   await carregarScript('/js/biblioteca-enhancements.js?v=20260712-1');
 
   function carregarScript(src) {
