@@ -12,49 +12,50 @@
   <meta name="description" content="Fórum FS Orçamentos: comunidade para prestadores de serviço trocarem dúvidas, experiências, orçamentos, cobrança, garantia e rotina profissional.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="style.css">
-  <link id="forum-publicacao-modal-css-link" rel="stylesheet" href="forum-actions-menu.css?v=20260705-post">
+  <link id="forum-publicacao-modal-css-link" rel="stylesheet" href="forum-actions-menu.css?v=20260712-forum">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
   <div id="header-container"></div>
-  <div id="forum-pull-refresh-indicator" class="forum-pull-refresh-indicator">Puxe para atualizar</div>
+  <div id="forum-pull-refresh-indicator" class="forum-pull-refresh-indicator" aria-live="polite">Puxe para atualizar</div>
 
   <main id="forum-conteudo" class="forum-page comunidade-page" style="display:none;">
     <section class="forum-hero comunidade-hero">
-      <button type="button" id="forum-meu-perfil-btn" class="forum-perfil-icone-btn" aria-label="Meu perfil" title="Meu perfil" onclick="forumAbrirMeuPerfil()">👤</button>
+      <button type="button" id="forum-meu-perfil-btn" class="forum-perfil-icone-btn" aria-label="Abrir meu perfil" title="Meu perfil">👤</button>
 
       <div>
         <span class="forum-tag">👥 Fórum FS</span>
         <h1>Comunidade dos prestadores de serviço</h1>
-        <p>Publique dúvidas, conte experiências, peça opinião sobre orçamento, cobrança, garantia, atendimento e rotina profissional. A ideia é juntar quem vive o serviço na prática.</p>
+        <p>Compartilhe dúvidas e experiências sobre orçamento, cobrança, garantia, atendimento e rotina profissional.</p>
 
         <div class="forum-top-search" role="search">
-          <input id="forum-busca" type="search" placeholder="Pesquisar publicações..." oninput="forumFiltrarTopicosLocal()" autocomplete="off">
+          <label class="sr-only" for="forum-busca">Pesquisar publicações</label>
+          <input id="forum-busca" type="search" placeholder="Pesquisar publicações..." aria-label="Pesquisar publicações" autocomplete="off">
         </div>
       </div>
 
       <div class="forum-hero-acoes">
-        <button type="button" class="forum-btn" onclick="forumMostrarFormularioNovoTopico()">+ Publicar</button>
+        <button type="button" id="forum-publicar-btn" class="forum-btn">+ Publicar</button>
       </div>
     </section>
 
-    <div id="forum-alerta" class="forum-alerta"></div>
+    <div id="forum-alerta" class="forum-alerta" role="status" aria-live="polite"></div>
 
     <section class="forum-layout comunidade-layout">
       <div class="forum-coluna comunidade-feed-coluna">
-        <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;" aria-hidden="true">
+        <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="forum-modal-titulo">
           <div class="forum-card-topo">
             <div>
-              <h2>Criar publicação</h2>
+              <h2 id="forum-modal-titulo">Criar publicação</h2>
               <p>Compartilhe uma dúvida ou experiência profissional. Evite expor dados pessoais de clientes.</p>
             </div>
-            <button type="button" class="forum-btn-secundario" onclick="forumOcultarFormularioNovoTopico()">Fechar</button>
+            <button type="button" id="forum-fechar-publicacao-btn" class="forum-btn-secundario">Fechar</button>
           </div>
         </article>
 
-        <section id="forum-lista-topicos" class="forum-lista forum-feed-lista forum-feed-direto" aria-label="Publicações da comunidade">
+        <section id="forum-lista-topicos" class="forum-lista forum-feed-lista forum-feed-direto" aria-label="Publicações da comunidade" aria-live="polite">
           <div class="forum-vazio">Carregando feed...</div>
         </section>
       </div>
@@ -95,67 +96,6 @@
   <script src="planos.js"></script>
   <script src="carregar-menu.js"></script>
   <script src="notificacoes.js"></script>
-  <script src="forum.js?v=20260705-post"></script>
-  <script>
-    (function abrirPostAoClicarNoFeed() {
-      document.addEventListener('click', function (event) {
-        const card = event.target.closest('.forum-topico[data-topico-id]');
-        if (!card) return;
-        if (event.target.closest('button,a,input,select,textarea,label')) return;
-        const id = card.dataset.topicoId || card.getAttribute('data-topico-id') || '';
-        if (!id) return;
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        window.location.href = `/post.html?id=${encodeURIComponent(id)}`;
-      }, true);
-    })();
-
-    (function instalarPullRefreshForum() {
-      let inicioY = 0;
-      let puxando = false;
-      let pronto = false;
-      let bloqueado = false;
-      const indicador = document.getElementById('forum-pull-refresh-indicator');
-      function topoDaPagina() { return (window.scrollY || document.documentElement.scrollTop || 0) <= 4; }
-      function mostrar(texto, classePronto) {
-        if (!indicador) return;
-        indicador.textContent = texto;
-        indicador.classList.add('ativo');
-        indicador.classList.toggle('pronto', !!classePronto);
-      }
-      function ocultar() { if (indicador) indicador.classList.remove('ativo', 'pronto'); }
-      window.addEventListener('touchstart', event => {
-        if (bloqueado || !topoDaPagina() || event.touches.length !== 1) return;
-        inicioY = event.touches[0].clientY;
-        puxando = true;
-        pronto = false;
-      }, { passive: true });
-      window.addEventListener('touchmove', event => {
-        if (!puxando || bloqueado || event.touches.length !== 1) return;
-        const delta = event.touches[0].clientY - inicioY;
-        if (delta < 28) return;
-        pronto = delta > 92;
-        mostrar(pronto ? 'Solte para atualizar' : 'Puxe para atualizar', pronto);
-      }, { passive: true });
-      window.addEventListener('touchend', async () => {
-        if (!puxando) return;
-        puxando = false;
-        if (!pronto || typeof window.forumCarregarTopicos !== 'function') {
-          ocultar();
-          return;
-        }
-        bloqueado = true;
-        mostrar('Atualizando feed...', true);
-        try { await window.forumCarregarTopicos(); }
-        finally {
-          setTimeout(() => {
-            ocultar();
-            bloqueado = false;
-          }, 700);
-        }
-      }, { passive: true });
-    })();
-  </script>
+  <script src="forum.js?v=20260712-forum"></script>
 </body>
 </html>
