@@ -54,7 +54,6 @@
             <button id="btn-salvar-bio" type="button" class="perfil-btn perfil-btn-primario">Salvar alterações</button>
             <button id="btn-cancelar-editor" type="button" class="perfil-btn">Cancelar</button>
           </div>
-          <p id="perfil-upload-status" class="perfil-upload-status" role="status" aria-live="polite"></p>
         </div>
         <div class="perfil-metricas" aria-label="Estatísticas do perfil">
           <div class="perfil-metrica"><strong id="perfil-total-posts">0</strong><span>Publicações</span></div>
@@ -80,17 +79,6 @@
       </div>
     </section>
   </main>
-  <div id="crop-modal" class="crop-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="crop-titulo">
-    <div class="crop-card" role="document">
-      <div class="crop-head"><strong id="crop-titulo">Recortar capa</strong><button id="btn-fechar-crop" type="button" aria-label="Fechar recorte">×</button></div>
-      <div class="crop-body">
-        <p class="crop-help">Arraste a imagem para enquadrar e ajuste o zoom. A imagem será comprimida antes do envio.</p>
-        <div id="crop-stage" class="crop-stage"><img id="crop-img" alt="Prévia da capa"><div class="crop-mask"></div></div>
-        <label class="crop-range" for="crop-zoom"><span>Zoom</span><input id="crop-zoom" type="range" min="1" max="3" step="0.01" value="1"></label>
-        <div class="crop-actions"><button id="btn-cancelar-crop" type="button">Cancelar</button><button id="btn-confirmar-crop" type="button" class="primary">Usar esta capa</button></div>
-      </div>
-    </div>
-  </div>
   <footer class="forum-footer"><span>© 2026 FS Orçamentos</span><span> | </span><a href="/forum.html">Comunidade</a><span> | </span><a href="/privacidade.html">Privacidade</a><span> | </span><a href="/termos.html">Termos</a></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/config.js"></script>
