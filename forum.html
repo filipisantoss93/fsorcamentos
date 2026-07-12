@@ -12,7 +12,7 @@
   <meta name="description" content="Comunidade profissional do FS Orçamentos para troca de experiências, dúvidas e soluções entre prestadores de serviço.">
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="/style.css?v=20260712-forum-base-4">
-  <link rel="stylesheet" href="/forum-social.css?v=20260712-redesign-1">
+  <link rel="stylesheet" href="/forum-social.css?v=20260712-redesign-2">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -22,15 +22,17 @@
   <div id="forum-pull-refresh-indicator" class="forum-pull-refresh-indicator" aria-live="polite">Puxe para atualizar</div>
 
   <main id="forum-conteudo" class="forum-page comunidade-page" style="display:none;">
-    <section class="forum-hero comunidade-hero">
+    <section class="forum-hero comunidade-hero" aria-labelledby="forum-titulo">
       <div class="comunidade-hero-copy">
         <span class="forum-tag">COMUNIDADE FS</span>
-        <h1>Profissionais ajudando profissionais</h1>
+        <h1 id="forum-titulo">Profissionais ajudando profissionais</h1>
         <p>Troque experiências, tire dúvidas e compartilhe soluções da rotina de serviços.</p>
       </div>
 
       <button type="button" id="forum-meu-perfil-btn" class="forum-perfil-icone-btn" aria-label="Abrir meu perfil" title="Meu perfil">
-        <span aria-hidden="true">👤</span>
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5 0-9 2.5-9 5.5V22h18v-2.5C21 16.5 17 14 12 14Z"/>
+        </svg>
       </button>
 
       <div class="forum-top-search" role="search">
@@ -56,13 +58,13 @@
           </div>
         </article>
 
-        <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="forum-modal-titulo">
+        <article id="forum-form-card" class="forum-card forum-form-card-social" style="display:none;" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="forum-modal-titulo" aria-describedby="forum-modal-descricao">
           <div class="forum-card-topo">
             <div>
               <h2 id="forum-modal-titulo">Criar publicação</h2>
-              <p>Compartilhe uma dúvida ou experiência profissional. Não exponha dados pessoais de clientes.</p>
+              <p id="forum-modal-descricao">Compartilhe uma dúvida ou experiência profissional. Não exponha dados pessoais de clientes.</p>
             </div>
-            <button type="button" id="forum-fechar-publicacao-btn" class="forum-btn-secundario">Fechar</button>
+            <button type="button" id="forum-fechar-publicacao-btn" class="forum-btn-secundario" aria-label="Fechar criação de publicação">Fechar</button>
           </div>
         </article>
 
@@ -78,7 +80,7 @@
         </section>
       </div>
 
-      <aside class="forum-coluna comunidade-sidebar">
+      <aside class="forum-coluna comunidade-sidebar" aria-label="Informações da comunidade">
         <article class="forum-card comunidade-sidebar-card comunidade-perfil-card">
           <div class="comunidade-sidebar-icon">FS</div>
           <div>
@@ -90,8 +92,12 @@
 
         <article class="forum-card comunidade-sidebar-card">
           <div class="forum-sidebar-title"><span>Assuntos da comunidade</span></div>
-          <div class="forum-topic-links">
-            <span>Orçamentos</span><span>Diagnóstico</span><span>Cobrança</span><span>Garantia</span><span>Atendimento</span>
+          <div class="forum-topic-links" aria-label="Filtrar por categoria">
+            <button type="button" data-categoria="" aria-pressed="false">Todos</button>
+            <button type="button" data-categoria="Orçamentos" aria-pressed="false">Orçamentos</button>
+            <button type="button" data-categoria="Cobrança e Pagamento" aria-pressed="false">Cobrança</button>
+            <button type="button" data-categoria="Garantia" aria-pressed="false">Garantia</button>
+            <button type="button" data-categoria="Atendimento ao Cliente" aria-pressed="false">Atendimento</button>
           </div>
         </article>
 
@@ -113,11 +119,13 @@
     </section>
   </main>
 
-  <footer class="forum-footer">
+  <footer class="forum-footer" style="display:none;">
     <span>© 2026 FS Orçamentos</span>
-    <span> | </span><a href="/privacidade.html">Privacidade</a>
-    <span> | </span><a href="/termos.html">Termos</a>
-    <span> | </span><a href="/contato.html">Contato</a>
+    <nav aria-label="Links institucionais do rodapé">
+      <a href="/privacidade.html">Privacidade</a>
+      <a href="/termos.html">Termos</a>
+      <a href="/contato.html">Contato</a>
+    </nav>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -126,6 +134,6 @@
   <script src="/planos.js"></script>
   <script src="/carregar-menu.js"></script>
   <script src="/notificacoes.js"></script>
-  <script src="/forum.js?v=20260712-feed-fix-1"></script>
+  <script src="/forum.js?v=20260712-feed-fix-2"></script>
 </body>
 </html>
