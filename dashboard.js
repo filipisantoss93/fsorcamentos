@@ -11,9 +11,13 @@
 
   const $ = id => document.getElementById(id);
   const PAGINA = 1000;
+  const MAX_DIAS = 730;
   const STATUS_APROVADOS = new Set(['aprovado', 'aprovada']);
   const STATUS_RECUSADOS = new Set(['recusado', 'recusada']);
-  const STATUS_PENDENTES = new Set(['pendente', 'enviado', 'enviada', 'visualizado', 'visualizada', 'aguardando', 'em analise']);
+  const STATUS_PENDENTES = new Set([
+    'pendente', 'enviado', 'enviada', 'visualizado', 'visualizada',
+    'aguardando', 'em analise', 'rascunho', 'aberto', 'aberta'
+  ]);
 
   function normalizar(valor, padrao = '') {
     return String(valor ?? padrao)
@@ -41,6 +45,12 @@
     const mes = String(data.getMonth() + 1).padStart(2, '0');
     const dia = String(data.getDate()).padStart(2, '0');
     return `${ano}-${mes}-${dia}`;
+  }
+
+  function proximoDiaISO(valor) {
+    const data = new Date(`${valor}T00:00:00`);
+    data.setDate(data.getDate() + 1);
+    return dataLocalISO(data);
   }
 
   function dataBR(valor) {
@@ -93,9 +103,22 @@
   }
 
   async function validarPremium(uid) {
+    if (window.FS_ESTADO_COMERCIAL) {
+      const estado = window.FS_ESTADO_COMERCIAL;
+      return planoAtivo(estado.plano, estado.status, estado.expira);
+    }
+
     const [perfilResp, assinaturaResp] = await Promise.all([
-      _supabase.from('perfis').select('plano,plano_status,plano_expira_em').eq('id', uid).maybeSingle(),
-      _supabase.from('assinaturas').select('plano,status,expira_em,nivel').eq('usuario_id', uid).maybeSingle()
+      _supabase.from('perfis')
+        .select('plano,plano_status,plano_expira_em')
+        .eq('id', uid)
+        .maybeSingle(),
+      _supabase.from('assinaturas')
+        .select('plano,status,expira_em,nivel,created_at')
+        .eq('usuario_id', uid)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
     ]);
 
     if (perfilResp.error && perfilResp.error.code !== 'PGRST116') throw perfilResp.error;
@@ -107,6 +130,11 @@
     const situacao = assinatura.status || perfil.plano_status || 'ativo';
     const expira = assinatura.expira_em || perfil.plano_expira_em || null;
     return planoAtivo(plano, situacao, expira);
+  }
+
+  function ocultarTudo() {
+    $('relatorios-conteudo')?.setAttribute('hidden', '');
+    $('relatorios-bloqueio')?.setAttribute('hidden', '');
   }
 
   function mostrarBloqueioPremium() {
@@ -136,8 +164,10 @@
   function validarIntervalo(inicio, fim) {
     if (!inicio || !fim) throw new Error('Informe a data inicial e a data final.');
     if (inicio > fim) throw new Error('A data inicial não pode ser posterior à data final.');
+    const hoje = dataLocalISO(new Date());
+    if (fim > hoje) throw new Error('A data final não pode estar no futuro.');
     const dias = Math.floor((new Date(`${fim}T00:00:00`) - new Date(`${inicio}T00:00:00`)) / 86400000) + 1;
-    if (dias > 730) throw new Error('Selecione um período de até 730 dias.');
+    if (dias > MAX_DIAS) throw new Error(`Selecione um período de até ${MAX_DIAS} dias.`);
     return dias;
   }
 
@@ -159,7 +189,7 @@
       botao.disabled = ativo;
       botao.setAttribute('aria-busy', ativo ? 'true' : 'false');
     });
-    setTexto('status-relatorio', ativo ? 'Atualizando dados…' : 'Dados atualizados');
+    if (ativo) setTexto('status-relatorio', 'Atualizando dados…');
   }
 
   function mostrarErro(mensagem) {
@@ -171,7 +201,10 @@
 
   function limparErro() {
     const caixa = $('erro-relatorio');
-    if (caixa) caixa.hidden = true;
+    if (caixa) {
+      caixa.hidden = true;
+      caixa.textContent = '';
+    }
   }
 
   async function buscarPaginado(tabela, colunas, filtros, ordem) {
@@ -195,7 +228,7 @@
       [
         { metodo: 'eq', coluna: 'usuario_id', valor: DASH.userId },
         { metodo: 'gte', coluna: 'criado_em', valor: `${inicio}T00:00:00` },
-        { metodo: 'lte', coluna: 'criado_em', valor: `${fim}T23:59:59` }
+        { metodo: 'lt', coluna: 'criado_em', valor: `${proximoDiaISO(fim)}T00:00:00` }
       ],
       { coluna: 'criado_em', ascending: false }
     );
@@ -239,13 +272,10 @@
     };
   }
 
-  function variacao(atual, anterior) {
-    if (!anterior) return atual ? 100 : 0;
-    return ((atual - anterior) / Math.abs(anterior)) * 100;
-  }
-
-  function textoVariacao(valor) {
-    const arredondado = Math.round(valor);
+  function textoVariacao(atual, anterior) {
+    if (!anterior) return atual ? 'novo no período' : 'sem variação';
+    const percentual = ((atual - anterior) / Math.abs(anterior)) * 100;
+    const arredondado = Math.round(percentual);
     if (!arredondado) return 'sem variação';
     return `${arredondado > 0 ? '+' : ''}${arredondado}%`;
   }
@@ -267,10 +297,10 @@
       'm-saldo': moeda(atual.saldo)
     };
     Object.entries(valores).forEach(([id, valor]) => setTexto(id, valor));
-    setTexto('v-orcamentos', textoVariacao(variacao(atual.total, anterior.total)));
-    setTexto('v-aprovado', textoVariacao(variacao(atual.valorAprovado, anterior.valorAprovado)));
-    setTexto('v-entradas', textoVariacao(variacao(atual.entradas, anterior.entradas)));
-    setTexto('v-saldo', textoVariacao(variacao(atual.saldo, anterior.saldo)));
+    setTexto('v-orcamentos', textoVariacao(atual.total, anterior.total));
+    setTexto('v-aprovado', textoVariacao(atual.valorAprovado, anterior.valorAprovado));
+    setTexto('v-entradas', textoVariacao(atual.entradas, anterior.entradas));
+    setTexto('v-saldo', textoVariacao(atual.saldo, anterior.saldo));
   }
 
   function chaveMes(valor) {
@@ -310,7 +340,7 @@
       .forEach(orcamento => {
         parseItens(orcamento.itens).forEach(item => {
           const tipoItem = normalizar(item.tipo);
-          const ehMaoObra = ['mao_obra', 'mao de obra', 'servico', 'serviço'].includes(tipoItem);
+          const ehMaoObra = ['mao_obra', 'mao de obra', 'servico'].includes(tipoItem);
           if ((tipo === 'mao_obra' && !ehMaoObra) || (tipo === 'produto' && ehMaoObra)) return;
           const descricao = String(item.descricao || item.nome || 'Item sem descrição').trim();
           const chave = normalizar(descricao);
@@ -340,6 +370,7 @@
       ['Aprovados', resumo.aprovados.length],
       ['Recusados', resumo.recusados.length]
     ];
+    if (resumo.outros.length) etapas.push(['Outros', resumo.outros.length]);
     setHTML('funil-orcamentos', etapas.map(([label, valor]) => `<div class="funil-item"><div><span>${escapar(label)}</span><strong>${valor}</strong></div><div class="funil-track"><div class="funil-fill" style="width:${Math.round((valor / base) * 100)}%"></div></div></div>`).join(''));
   }
 
@@ -353,7 +384,7 @@
     } else {
       texto = `Foram encontrados ${resumo.total} orçamento(s), mas nenhum aprovado. Há ${resumo.pendentes.length} proposta(s) pendente(s) para acompanhamento comercial.`;
     }
-    if (resumo.outros.length) texto += ` ${resumo.outros.length} orçamento(s) possuem status não classificado e ficaram fora do funil principal.`;
+    if (resumo.outros.length) texto += ` ${resumo.outros.length} orçamento(s) possuem status não classificado e aparecem na categoria “Outros”.`;
     setTexto('resumo-relatorio', texto);
   }
 
@@ -385,9 +416,18 @@
     renderTabelas();
   }
 
+  function marcarPeriodoAtivo(valor) {
+    document.querySelectorAll('[data-periodo]').forEach(botao => {
+      const ativo = botao.dataset.periodo === String(valor);
+      botao.classList.toggle('active', ativo);
+      botao.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+    });
+  }
+
   async function carregarDashboardFS() {
     if (DASH.carregando) return;
     limparErro();
+    let sucesso = false;
     try {
       const { inicio, fim } = intervaloAtual();
       validarIntervalo(inicio, fim);
@@ -404,12 +444,15 @@
       DASH.anterior = { orcamentos: orcamentosAnteriores, caixa: caixaAnterior };
       renderTudo();
       setTexto('periodo-comparacao', `Comparado com ${dataBR(anterior.inicio)} a ${dataBR(anterior.fim)}`);
+      setTexto('status-relatorio', 'Dados atualizados');
+      sucesso = true;
     } catch (erro) {
       console.error('Falha ao carregar relatórios:', erro);
       mostrarErro(erro?.message || 'Não foi possível carregar os relatórios. Tente novamente.');
       setTexto('status-relatorio', 'Falha na atualização');
     } finally {
       definirCarregando(false);
+      if (!sucesso) document.body.classList.remove('relatorios-carregando');
     }
   }
 
@@ -419,6 +462,7 @@
     inicio.setDate(fim.getDate() - dias + 1);
     $('dash-inicio').value = dataLocalISO(inicio);
     $('dash-fim').value = dataLocalISO(fim);
+    marcarPeriodoAtivo(dias);
     carregarDashboardFS();
   }
 
@@ -426,14 +470,18 @@
     const hoje = new Date();
     $('dash-inicio').value = dataLocalISO(new Date(hoje.getFullYear(), hoje.getMonth(), 1));
     $('dash-fim').value = dataLocalISO(hoje);
+    marcarPeriodoAtivo('mes');
     carregarDashboardFS();
   }
 
   function csvValor(valor) {
-    return `"${String(valor ?? '').replace(/"/g, '""')}"`;
+    let texto = String(valor ?? '');
+    if (/^[=+\-@\t\r]/.test(texto)) texto = `'${texto}`;
+    return `"${texto.replace(/"/g, '""')}"`;
   }
 
   function baixarCSV() {
+    limparErro();
     if (!DASH.orcamentos.length && !DASH.caixa.length) {
       mostrarErro('Não há dados para exportar no período selecionado.');
       return;
@@ -450,14 +498,18 @@
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   }
 
   function registrarEventos() {
-    $('btn-buscar')?.addEventListener('click', carregarDashboardFS);
+    $('btn-buscar')?.addEventListener('click', () => {
+      marcarPeriodoAtivo('');
+      carregarDashboardFS();
+    });
     $('btn-atualizar')?.addEventListener('click', carregarDashboardFS);
     $('btn-exportar')?.addEventListener('click', baixarCSV);
     document.querySelectorAll('[data-periodo]').forEach(botao => {
+      botao.setAttribute('aria-pressed', 'false');
       botao.addEventListener('click', () => {
         const periodo = botao.dataset.periodo;
         if (periodo === 'mes') aplicarMesAtual();
@@ -466,8 +518,18 @@
     });
   }
 
+  function configurarDatas() {
+    const hoje = dataLocalISO(new Date());
+    ['dash-inicio', 'dash-fim'].forEach(id => {
+      const input = $(id);
+      if (input) input.max = hoje;
+    });
+  }
+
   async function iniciarDashboardFS() {
+    ocultarTudo();
     registrarEventos();
+    configurarDatas();
     try {
       if (!window._supabase) throw new Error('Serviço de dados indisponível.');
       const { data: { session }, error } = await _supabase.auth.getSession();
@@ -486,12 +548,16 @@
       aplicarPeriodo(90);
     } catch (erro) {
       console.error('Falha ao iniciar relatórios:', erro);
-      mostrarConteudo();
-      mostrarErro(erro?.message || 'Não foi possível iniciar os relatórios.');
+      ocultarTudo();
+      const bloqueio = $('relatorios-bloqueio');
+      if (bloqueio) {
+        bloqueio.innerHTML = '<span class="tag">Indisponível</span><h1>Não foi possível abrir os relatórios</h1><p>O serviço de dados ou a validação do plano falhou. Atualize a página e tente novamente.</p><div class="hero-actions"><a class="btn primary" href="/painel.html">Voltar ao painel</a></div>';
+        bloqueio.removeAttribute('hidden');
+      }
     }
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarDashboardFS);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarDashboardFS, { once: true });
   else iniciarDashboardFS();
 
   window.carregarDashboardFS = carregarDashboardFS;
