@@ -114,32 +114,41 @@
     setTimeout(carregar, 900);
   }
 
-  function carregarGestaoLinksOrcamentos() {
-    const path = String(location.pathname || '').toLowerCase();
-    if (!path.endsWith('/orcamentos.html') && !path.endsWith('/orcamentos')) return;
-    if (document.getElementById('fs-orcamentos-links-js')) return;
+  function carregarScriptPagina(id, src, caminhos) {
+    const path = String(location.pathname || '/').toLowerCase().replace(/\/$/, '') || '/';
+    if (!caminhos.includes(path)) return;
+    if (document.getElementById(id)) return;
     const script = document.createElement('script');
-    script.id = 'fs-orcamentos-links-js';
-    script.src = '/orcamentos-links.js?v=20260711-links-seguros';
+    script.id = id;
+    script.src = src;
     document.body.appendChild(script);
   }
 
+  function carregarGestaoLinksOrcamentos() {
+    carregarScriptPagina('fs-orcamentos-links-js','/orcamentos-links.js?v=20260711-links-seguros',['/orcamentos.html','/orcamentos']);
+  }
+
   function carregarModuloMinhaConta() {
-    const path = String(location.pathname || '').toLowerCase();
-    if (!path.endsWith('/painel.html') && !path.endsWith('/painel')) return;
-    if (document.getElementById('fs-minha-conta-js')) return;
-    const script = document.createElement('script');
-    script.id = 'fs-minha-conta-js';
-    script.src = '/minha-conta.js?v=20260711-conta-consolidada';
-    document.body.appendChild(script);
+    carregarScriptPagina('fs-minha-conta-js','/minha-conta.js?v=20260711-conta-consolidada',['/painel.html','/painel']);
+  }
+
+  function carregarLandingDefinitiva() {
+    carregarScriptPagina('fs-landing-final-js','/landing-final.js?v=20260711-launch-ready',['/','/index','/index.html']);
   }
 
   window.fsLabelNivelPlano = labelNivel;
   window.fsCreditosDoNivel = creditosDoNivel;
   window.carregarStatusPlanoPagina = carregar;
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); carregarModuloMinhaConta(); });
-  else { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); carregarModuloMinhaConta(); }
+  const iniciarModulos = () => {
+    iniciarSincronizacao();
+    carregarGestaoLinksOrcamentos();
+    carregarModuloMinhaConta();
+    carregarLandingDefinitiva();
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarModulos);
+  else iniciarModulos();
 
   if (window._supabase?.auth) {
     _supabase.auth.onAuthStateChange((_evento, sessao) => {
