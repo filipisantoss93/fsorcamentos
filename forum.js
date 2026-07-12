@@ -1,4 +1,4 @@
-/* FS ORÇAMENTOS — Fórum consolidado */
+/* FS ORÇAMENTOS — Comunidade profissional */
 (function () {
   'use strict';
 
@@ -18,7 +18,7 @@
   const LIMITE_FOTO_BYTES = 2 * 1024 * 1024;
   const MIMES_FOTO = ['image/jpeg', 'image/png', 'image/webp'];
   const CAMPOS_TOPICOS = [
-    'id', 'usuario_id', 'autor_nome', 'autor_empresa', 'autor_foto_url',
+    'id', 'usuario_id', 'autor_nome', 'autor_empresa', 'autor_foto_url', 'autor_plano',
     'titulo', 'descricao', 'categoria', 'status', 'resolvido',
     'foto_1_url', 'foto_2_url', 'total_curtidas', 'total_respostas',
     'criado_em', 'atualizado_em'
@@ -34,6 +34,7 @@
   let buscaTimer = null;
   let previewUrls = [];
   let categoriaAtiva = '';
+  let ordenacaoAtiva = 'recentes';
 
   const esc = valor => String(valor ?? '')
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -42,28 +43,28 @@
   const normalizar = valor => String(valor ?? '').toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 
-  function resumo(texto, limite = 210) {
+  function resumo(texto, limite = 260) {
     const valor = String(texto ?? '').replace(/\\r\\n|\\n|\r\n/g, ' ').replace(/\s+/g, ' ').trim();
     return valor.length <= limite ? valor : `${valor.slice(0, limite).trim()}…`;
   }
 
-  function formatarData(valor) {
+  function formatarTempoRelativo(valor) {
     if (!valor) return '';
     const data = new Date(valor);
     if (Number.isNaN(data.getTime())) return '';
-    return data.toLocaleDateString('pt-BR') + ' ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const segundos = Math.max(0, Math.floor((Date.now() - data.getTime()) / 1000));
+    if (segundos < 60) return 'agora';
+    const minutos = Math.floor(segundos / 60);
+    if (minutos < 60) return `${minutos}min`;
+    const horas = Math.floor(minutos / 60);
+    if (horas < 24) return `${horas}h`;
+    const dias = Math.floor(horas / 24);
+    if (dias < 7) return `${dias}d`;
+    return data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
   }
 
   function statusTopico(topico) {
     return topico?.resolvido ? 'resolvido' : String(topico?.status || 'aberto');
-  }
-
-  function statusClasse(status) {
-    const valor = normalizar(status);
-    if (valor === 'resolvido') return 'verde';
-    if (valor === 'fechado') return 'vermelho';
-    if (valor === 'respondido') return 'azul';
-    return '';
   }
 
   function mostrarAlerta(texto, tipo = 'info', id = 'forum-alerta') {
@@ -88,8 +89,8 @@
 
   function seloPlanoHtml(registro) {
     const plano = planoFinal(registro?.autor_plano || registro?.plano);
-    const label = plano === 'premium' ? 'Premium' : plano === 'basico' ? 'Básico' : 'Grátis';
-    return `<span class="forum-plano-selo ${plano}">${label}</span>`;
+    const label = plano === 'premium' ? 'Plano Premium' : plano === 'basico' ? 'Plano Básico' : 'Plano Grátis';
+    return `<span class="forum-plano-selo ${plano}">◇ ${label}</span>`;
   }
 
   function nomeAutor(registro) {
@@ -115,8 +116,8 @@
     return `<a class="forum-autor-linha" href="${href}" data-acao="perfil">
       ${avatarHtml(topico)}
       <span class="forum-autor-texto">
-        <strong>${esc(nomeAutor(topico))} ${seloPlanoHtml(topico)}</strong>
-        <small>${esc(formatarData(topico.criado_em))}</small>
+        <strong>${esc(nomeAutor(topico))}</strong>
+        ${seloPlanoHtml(topico)}
       </span>
     </a>`;
   }
@@ -124,14 +125,33 @@
   function fotosHtml(topico) {
     const fotos = [topico?.foto_1_url, topico?.foto_2_url].filter(Boolean);
     if (!fotos.length) return '';
-    return `<div class="forum-fotos-grid">${fotos.map(url => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" data-acao="foto"><img class="forum-foto" src="${esc(url)}" alt="Foto anexada à publicação" loading="lazy"></a>`).join('')}</div>`;
+    return `<div class="forum-fotos-grid ${fotos.length === 1 ? 'uma-foto' : ''}">${fotos.map((url, index) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" data-acao="foto"><img class="forum-foto" src="${esc(url)}" alt="Foto ${index + 1} anexada à publicação" loading="lazy"></a>`).join('')}</div>`;
+  }
+
+  function topicosFiltradosOrdenados() {
+    const busca = normalizar(document.getElementById('forum-busca')?.value || '');
+    const categoria = normalizar(categoriaAtiva);
+    const filtrados = topicosCache.filter(topico => {
+      const atendeBusca = !busca || normalizar(`${topico.titulo} ${topico.descricao} ${topico.categoria} ${topico.autor_nome} ${topico.autor_empresa}`).includes(busca);
+      const atendeCategoria = !categoria || normalizar(topico.categoria) === categoria;
+      const atendeResolvido = ordenacaoAtiva !== 'resolvidos' || Boolean(topico.resolvido) || normalizar(topico.status) === 'resolvido';
+      return atendeBusca && atendeCategoria && atendeResolvido;
+    });
+
+    return filtrados.sort((a, b) => {
+      if (ordenacaoAtiva === 'comentados') {
+        const diferenca = Number(b.total_respostas || 0) - Number(a.total_respostas || 0);
+        if (diferenca) return diferenca;
+      }
+      return new Date(b.atualizado_em || b.criado_em).getTime() - new Date(a.atualizado_em || a.criado_em).getTime();
+    });
   }
 
   function renderizarTopicos(topicos) {
     const lista = document.getElementById('forum-lista-topicos');
     if (!lista) return;
     if (!topicos.length) {
-      lista.innerHTML = '<div class="forum-vazio">Nenhuma publicação encontrada.</div>';
+      lista.innerHTML = '<div class="forum-vazio">Nenhuma publicação encontrada com esses filtros.</div>';
       return;
     }
 
@@ -145,41 +165,29 @@
       return `<article class="forum-topico" data-topico-id="${esc(topico.id)}">
         <div class="forum-topico-cabecalho">
           ${autorHtml(topico)}
-          ${status !== 'aberto' ? `<span class="forum-status ${statusClasse(status)}">${esc(status)}</span>` : ''}
+          <div class="forum-topico-contexto">
+            <time datetime="${esc(topico.criado_em || '')}">${esc(formatarTempoRelativo(topico.criado_em))}</time>
+            <span class="forum-menu-icone" aria-hidden="true">⋮</span>
+          </div>
+        </div>
+        <div class="forum-topico-tags">
+          <span class="forum-categoria-tag">${esc(topico.categoria || 'Outros')}</span>
+          <span>${totalRespostas} ${totalRespostas === 1 ? 'comentário' : 'comentários'}</span>
+          ${status === 'resolvido' ? '<span class="forum-status verde">Resolvido</span>' : ''}
         </div>
         <h3><a class="forum-topico-link" href="${href}" data-acao="abrir" data-topico-id="${esc(topico.id)}">${esc(topico.titulo)}</a></h3>
         <p>${esc(resumo(topico.descricao))}</p>
         ${fotosHtml(topico)}
-        <div class="forum-meta-linha">
-          <span>🏷️ ${esc(topico.categoria || 'Outros')}</span>
-          <span>💬 ${totalRespostas} ${totalRespostas === 1 ? 'comentário' : 'comentários'}</span>
-        </div>
         <div class="forum-acoes-linha">
-          <button type="button" class="forum-like-btn ${curtido ? 'curtido' : ''}" data-acao="curtir" data-topico-id="${esc(topico.id)}" aria-pressed="${curtido}" ${processando ? 'disabled' : ''}>👍 ${totalCurtidas}</button>
-          <a class="forum-comentar-btn" href="${href}" data-acao="abrir" data-topico-id="${esc(topico.id)}">💬 Comentar</a>
+          <button type="button" class="forum-like-btn ${curtido ? 'curtido' : ''}" data-acao="curtir" data-topico-id="${esc(topico.id)}" aria-pressed="${curtido}" ${processando ? 'disabled' : ''}><span aria-hidden="true">♡</span> Curtir <strong>${totalCurtidas || ''}</strong></button>
+          <a class="forum-comentar-btn" href="${href}" data-acao="abrir" data-topico-id="${esc(topico.id)}"><span aria-hidden="true">◯</span> Comentar <strong>${totalRespostas || ''}</strong></a>
         </div>
       </article>`;
     }).join('');
   }
 
   function filtrarTopicos() {
-    const busca = normalizar(document.getElementById('forum-busca')?.value || '');
-    const categoria = normalizar(categoriaAtiva);
-    const filtrados = topicosCache.filter(topico => {
-      const atendeBusca = !busca || normalizar(`${topico.titulo} ${topico.descricao} ${topico.categoria} ${topico.autor_nome} ${topico.autor_empresa}`).includes(busca);
-      const atendeCategoria = !categoria || normalizar(topico.categoria) === categoria;
-      return atendeBusca && atendeCategoria;
-    });
-    renderizarTopicos(filtrados);
-  }
-
-  async function enriquecerPlanos() {
-    const ids = [...new Set(topicosCache.map(t => t.usuario_id).filter(Boolean))];
-    if (!ids.length) return;
-    const { data, error } = await _supabase.from('perfis').select('id,plano').in('id', ids);
-    if (error || !Array.isArray(data)) return;
-    const mapa = new Map(data.map(p => [p.id, p.plano || 'gratis']));
-    topicosCache.forEach(t => { if (mapa.has(t.usuario_id)) t.autor_plano = mapa.get(t.usuario_id); });
+    renderizarTopicos(topicosFiltradosOrdenados());
   }
 
   async function carregarCurtidas() {
@@ -202,7 +210,7 @@
         .limit(50);
       if (error) throw error;
       topicosCache = Array.isArray(data) ? data : [];
-      await Promise.all([enriquecerPlanos(), carregarCurtidas()]);
+      await carregarCurtidas();
       filtrarTopicos();
       mostrarAlerta('');
     } catch (error) {
@@ -223,20 +231,17 @@
         const { error } = await _supabase.from('forum_curtidas').delete().eq('usuario_id', sessaoAtual.user.id).eq('topico_id', topicoId);
         if (error) throw error;
         curtidasTopicos.delete(topicoId);
-        if (topico) topico.total_curtidas = Math.max(0, Number(topico.total_curtidas || 0) - 1);
       } else {
         const { error } = await _supabase.from('forum_curtidas').insert({ usuario_id: sessaoAtual.user.id, topico_id: topicoId });
         if (error && error.code !== '23505') throw error;
-        if (!error) {
-          curtidasTopicos.add(topicoId);
-          if (topico) topico.total_curtidas = Number(topico.total_curtidas || 0) + 1;
-        } else {
-          await carregarCurtidas();
-        }
+        curtidasTopicos.add(topicoId);
       }
+      const { data } = await _supabase.from('forum_topicos').select('total_curtidas').eq('id', topicoId).maybeSingle();
+      if (topico && data) topico.total_curtidas = Number(data.total_curtidas || 0);
     } catch (error) {
       console.error('Erro ao atualizar curtida:', error);
       mostrarAlerta('Não foi possível atualizar a curtida.', 'erro');
+      await carregarCurtidas();
     } finally {
       curtidasEmProcessamento.delete(topicoId);
       filtrarTopicos();
@@ -253,13 +258,12 @@
       const acao = event.target.closest('[data-acao]');
       if (acao) {
         const tipo = acao.dataset.acao;
-        if (tipo === 'perfil' || tipo === 'foto') return;
+        if (tipo === 'perfil' || tipo === 'foto' || tipo === 'abrir') return;
         if (tipo === 'curtir') {
           event.preventDefault();
           event.stopPropagation();
           return void alternarCurtida(acao.dataset.topicoId);
         }
-        if (tipo === 'abrir') return;
       }
       if (event.target.closest('a,button,input,select,textarea')) return;
       const card = event.target.closest('.forum-topico[data-topico-id]');
@@ -406,18 +410,10 @@
     try {
       const files = validarFotos(document.getElementById('forum-topico-fotos')?.files || []);
       for (const file of files) uploads.push(await uploadFoto(file));
-
-      const email = sessaoAtual.user.email || '';
       const { data, error } = await _supabase.from('forum_topicos').insert({
-        usuario_id: sessaoAtual.user.id,
-        autor_nome: perfilAtual?.nome || localStorage.getItem('usuario_nome') || email.split('@')[0] || 'Membro',
-        autor_empresa: perfilAtual?.nome_empresa || localStorage.getItem('nome_empresa') || '',
-        autor_foto_url: perfilAtual?.foto_url || localStorage.getItem('usuario_foto_url') || '',
         titulo,
         categoria,
         descricao,
-        status: 'aberto',
-        resolvido: false,
         foto_1_url: uploads[0]?.publicUrl || null,
         foto_2_url: uploads[1]?.publicUrl || null
       }).select('id').single();
@@ -432,16 +428,22 @@
     }
   }
 
-  function atualizarAvatarCompositor() {
-    const avatar = document.querySelector('.forum-composer-avatar');
-    if (!avatar) return;
+  function atualizarPerfilSidebar() {
+    const avatar = document.getElementById('forum-perfil-avatar');
+    const saudacao = document.getElementById('forum-perfil-saudacao');
+    const plano = document.getElementById('forum-perfil-plano');
+    const nome = String(perfilAtual?.nome || sessaoAtual?.user?.email?.split('@')[0] || 'profissional').trim();
     const foto = String(perfilAtual?.foto_url || '').trim();
-    if (foto) {
-      avatar.innerHTML = `<img src="${esc(foto)}" alt="Sua foto de perfil">`;
-      return;
+    if (saudacao) saudacao.textContent = `Olá, ${nome.split(/\s+/)[0]}`;
+    if (plano) {
+      const final = planoFinal(perfilAtual?.plano);
+      plano.textContent = final === 'premium' ? '◇ Plano Premium' : final === 'basico' ? '◇ Plano Básico' : '◇ Plano Grátis';
+      plano.className = `comunidade-perfil-plano ${final}`;
     }
-    const nome = String(perfilAtual?.nome || sessaoAtual?.user?.email?.split('@')[0] || 'FS').trim();
-    avatar.textContent = nome.split(/\s+/).slice(0, 2).map(p => p[0] || '').join('').toUpperCase() || 'FS';
+    if (avatar) {
+      if (foto) avatar.innerHTML = `<img src="${esc(foto)}" alt="Sua foto de perfil">`;
+      else avatar.textContent = nome.split(/\s+/).slice(0, 2).map(p => p[0] || '').join('').toUpperCase() || 'FS';
+    }
   }
 
   function prepararEventosGerais() {
@@ -459,7 +461,18 @@
       const botao = event.target.closest('[data-categoria]');
       if (!botao) return;
       categoriaAtiva = botao.dataset.categoria || '';
-      document.querySelectorAll('[data-categoria]').forEach(item => item.setAttribute('aria-pressed', String(item === botao && Boolean(categoriaAtiva))));
+      document.querySelectorAll('[data-categoria]').forEach(item => item.setAttribute('aria-pressed', String(item === botao)));
+      filtrarTopicos();
+    });
+    document.getElementById('forum-ver-categorias-btn')?.addEventListener('click', () => {
+      const card = document.querySelector('.comunidade-assuntos-card');
+      card?.classList.toggle('expandido');
+    });
+    document.querySelector('.forum-feed-tabs')?.addEventListener('click', event => {
+      const botao = event.target.closest('[data-ordenacao]');
+      if (!botao) return;
+      ordenacaoAtiva = botao.dataset.ordenacao || 'recentes';
+      document.querySelectorAll('[data-ordenacao]').forEach(item => item.setAttribute('aria-pressed', String(item === botao)));
       filtrarTopicos();
     });
     document.addEventListener('keydown', event => {
@@ -489,7 +502,7 @@
     prepararEventosGerais();
     prepararEventosFeed();
     prepararModal();
-    atualizarAvatarCompositor();
+    atualizarPerfilSidebar();
     if (conteudo) conteudo.style.display = 'block';
     if (rodape) rodape.style.display = 'flex';
     await carregarTopicos();
