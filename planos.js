@@ -124,12 +124,22 @@
     document.body.appendChild(script);
   }
 
+  function carregarModuloMinhaConta() {
+    const path = String(location.pathname || '').toLowerCase();
+    if (!path.endsWith('/painel.html') && !path.endsWith('/painel')) return;
+    if (document.getElementById('fs-minha-conta-js')) return;
+    const script = document.createElement('script');
+    script.id = 'fs-minha-conta-js';
+    script.src = '/minha-conta.js?v=20260711-conta-consolidada';
+    document.body.appendChild(script);
+  }
+
   window.fsLabelNivelPlano = labelNivel;
   window.fsCreditosDoNivel = creditosDoNivel;
   window.carregarStatusPlanoPagina = carregar;
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); });
-  else { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); carregarModuloMinhaConta(); });
+  else { iniciarSincronizacao(); carregarGestaoLinksOrcamentos(); carregarModuloMinhaConta(); }
 
   if (window._supabase?.auth) {
     _supabase.auth.onAuthStateChange((_evento, sessao) => {
