@@ -1,60 +1,61 @@
-<link rel="stylesheet" href="/style.css?v=20260712-header-blue-2">
-<link rel="stylesheet" href="/menu-aprimorado.css?v=20260712-2">
-<header class="main-header">
+<link rel="stylesheet" href="/style.css?v=20260712-header-blue-3">
+<link rel="stylesheet" href="/menu-aprimorado.css?v=20260712-3" onload="window.fsCarregarMenuAprimorado?.()">
+<header class="main-header" aria-busy="true">
   <div class="header-shell">
     <a href="/index.html" class="logo-nav" title="FS Orçamentos" aria-label="FS Orçamentos — Diagnóstico inteligente. Orçamentos profissionais.">
       <span class="logo-fs" aria-hidden="true"><svg viewBox="0 0 64 64" width="42" height="42" role="img"><path fill="#1565c0" d="M7 9h28v9H17v8h15v9H17v20H7z"/><path fill="#f6b500" d="M38 9h19v9H39c-4 0-4 7 0 7h7c17 0 17 30 0 30H25v-9h20c5 0 5-8 0-8h-7C22 38 22 9 38 9z"/></svg></span>
       <span class="logo-lockup"><strong class="logo-orcamentos">ORÇAMENTOS</strong><small>Diagnóstico inteligente. Orçamentos profissionais.</small></span>
     </a>
 
-    <nav class="header-menu-linha fs-menu-aprimorado" aria-label="Menu principal">
+    <nav id="menu-principal" class="header-menu-linha fs-menu-aprimorado" aria-label="Menu principal">
       <div class="header-user-card fs-user-card-menu">
         <span class="header-user-icon" aria-hidden="true">👤</span>
         <span class="header-user-text">
-          <strong id="usuario-saudacao">Olá, Convidado</strong>
-          <small id="fs-menu-plano">Acesse sua conta</small>
+          <strong id="usuario-saudacao">Carregando...</strong>
+          <small id="fs-menu-plano">Verificando sua conta</small>
           <small id="fs-menu-saldo" class="fs-menu-saldo">—</small>
         </span>
       </div>
 
       <ul class="nav-menu nav-menu-compacto">
         <li class="fs-menu-grupo">Principal</li>
-        <li><a href="/index.html"><span class="fs-menu-ico">⌂</span><span>Início</span></a></li>
-        <li><a href="/gerador.html" class="link-destaque-gerador"><span class="fs-menu-ico">▣</span><span>Gerar orçamento</span></a></li>
-        <li><a href="/orcamentos.html" data-plano-min="premium"><span class="fs-menu-ico">☷</span><span>Orçamentos</span></a></li>
-        <li><a href="/efex.html"><span class="fs-menu-ico">✦</span><span>Efex</span></a></li>
-        <li><a href="/carteira.html"><span class="fs-menu-ico">◈</span><span>Carteira</span></a></li>
+        <li><a href="/index.html"><span class="fs-menu-ico" aria-hidden="true">⌂</span><span>Início</span></a></li>
+        <li><a href="/gerador.html" class="link-destaque-gerador"><span class="fs-menu-ico" aria-hidden="true">▣</span><span>Gerar orçamento</span></a></li>
+        <li><a href="/orcamentos.html" data-plano-min="premium"><span class="fs-menu-ico" aria-hidden="true">☷</span><span>Orçamentos</span><em class="fs-menu-badge premium">Premium</em></a></li>
+        <li><a href="/efex.html"><span class="fs-menu-ico" aria-hidden="true">✦</span><span>Efex</span></a></li>
+        <li><a href="/carteira.html"><span class="fs-menu-ico" aria-hidden="true">◈</span><span>Carteira</span></a></li>
 
         <li class="fs-menu-grupo">Gestão</li>
-        <li><a href="/fluxo-caixa.html" data-plano-min="premium"><span class="fs-menu-ico">▤</span><span>Caixa</span></a></li>
-        <li><a href="/dashboard.html" data-plano-min="premium"><span class="fs-menu-ico">▥</span><span>Relatórios</span></a></li>
+        <li><a href="/fluxo-caixa.html" data-plano-min="premium"><span class="fs-menu-ico" aria-hidden="true">▤</span><span>Caixa</span><em class="fs-menu-badge premium">Premium</em></a></li>
+        <li><a href="/dashboard.html" data-plano-min="premium"><span class="fs-menu-ico" aria-hidden="true">▥</span><span>Relatórios</span><em class="fs-menu-badge premium">Premium</em></a></li>
 
         <li class="fs-menu-grupo">Conta</li>
-        <li><a href="/painel.html"><span class="fs-menu-ico">◴</span><span>Minha Conta</span></a></li>
-        <li><a href="/planos.html"><span class="fs-menu-ico">◇</span><span>Planos</span></a></li>
+        <li><a href="/painel.html"><span class="fs-menu-ico" aria-hidden="true">◴</span><span>Minha Conta</span></a></li>
+        <li><a href="/planos.html"><span class="fs-menu-ico" aria-hidden="true">◇</span><span>Planos</span></a></li>
 
         <li class="fs-menu-grupo">Recursos</li>
-        <li><a href="/biblioteca.html"><span class="fs-menu-ico">◆</span><span>Biblioteca</span><em class="fs-menu-badge">Em breve</em></a></li>
-        <li><a href="/forum.html"><span class="fs-menu-ico">☏</span><span>Fórum</span><em class="fs-menu-badge beta">Beta</em></a></li>
-        <li><a href="/sobre.html"><span class="fs-menu-ico">ⓘ</span><span>Sobre</span></a></li>
-        <li><a href="/contato.html"><span class="fs-menu-ico">✉</span><span>Contato</span></a></li>
+        <li><a href="/biblioteca.html"><span class="fs-menu-ico" aria-hidden="true">◆</span><span>Biblioteca</span><em class="fs-menu-badge">Em breve</em></a></li>
+        <li><a href="/forum.html"><span class="fs-menu-ico" aria-hidden="true">☏</span><span>Fórum</span><em class="fs-menu-badge beta">Beta</em></a></li>
+        <li><a href="/sobre.html"><span class="fs-menu-ico" aria-hidden="true">ⓘ</span><span>Sobre</span></a></li>
+        <li><a href="/contato.html"><span class="fs-menu-ico" aria-hidden="true">✉</span><span>Contato</span></a></li>
 
         <li id="fs-menu-cta" class="fs-menu-cta">
           <a href="/efex.html"><strong>✦ Pergunte ao Efex</strong><small>Use seus créditos para apoiar um diagnóstico.</small></a>
         </li>
 
         <li class="menu-mobile-auth">
-          <button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico">↪</span><span>Entrar</span></button>
-          <button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico">↩</span><span>Sair</span></button>
+          <button type="button" id="btn-menu-mobile-entrar" class="btn-menu-mobile-entrar" onclick="irParaLogin()" style="display:none;"><span class="fs-menu-ico" aria-hidden="true">↪</span><span>Entrar</span></button>
+          <button type="button" id="btn-menu-mobile-sair" class="btn-menu-mobile-sair" onclick="deslogar()" style="display:none;"><span class="fs-menu-ico" aria-hidden="true">↩</span><span>Sair</span></button>
         </li>
       </ul>
     </nav>
 
     <div class="header-usuario">
-      <button type="button" id="btn-notificacoes" class="btn-notificacoes-header" onclick="abrirModalNotificacoes && abrirModalNotificacoes()" style="display:none;" title="Notificações" aria-label="Notificações">🔔<span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span></button>
+      <button type="button" id="btn-notificacoes" class="btn-notificacoes-header" onclick="typeof window.abrirModalNotificacoes === 'function' && window.abrirModalNotificacoes()" style="display:none;" title="Notificações" aria-label="Notificações">🔔<span id="contador-notificacoes" class="contador-notificacoes" style="display:none;">0</span></button>
       <button type="button" id="btn-header-entrar" class="btn-header-entrar" onclick="irParaLogin()" style="display:none;">Entrar</button>
       <button type="button" id="btn-header-sair" class="btn-header-sair" onclick="deslogar()" style="display:none;">Sair</button>
-      <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile();if(!window.fsMenuAprimoradoCarregado){window.fsMenuAprimoradoCarregado=true;const s=document.createElement('script');s.src='/menu-aprimorado.js?v=20260712-2';document.head.appendChild(s)}" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+      <button type="button" class="menu-mobile-btn" onclick="toggleMenuMobile()" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
+<img src="/assets/fs-header-init.invalid" alt="" hidden onerror="window.fsCarregarMenuAprimorado?.()">
