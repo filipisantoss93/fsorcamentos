@@ -7,7 +7,7 @@
   <title>Carteira Efex | FS Orçamentos</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/carteira.css">
+  <link rel="stylesheet" href="/carteira.css?v=20260712-2">
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
@@ -15,8 +15,12 @@
 
   <main id="conteudo-protegido" class="fs-page carteira-page hidden">
     <section class="fs-page-header carteira-hero">
-      <h1>Carteira Efex</h1>
-      <p>Controle seu saldo, acompanhe movimentações e recarregue créditos para usar a IA que entende de oficina.</p>
+      <div class="carteira-hero-conteudo">
+        <span class="carteira-eyebrow">Créditos da inteligência automotiva</span>
+        <h1>Carteira Efex</h1>
+        <p>Controle seu saldo, acompanhe movimentações e recarregue créditos para usar a IA que entende de oficina.</p>
+      </div>
+      <div class="carteira-hero-icone" aria-hidden="true">⚡</div>
     </section>
 
     <div id="carteira-erro" class="carteira-status carteira-status-erro hidden" role="alert" aria-live="assertive"></div>
@@ -33,7 +37,10 @@
       </article>
 
       <article class="fs-card carteira-card carteira-plano-card">
-        <h2>Seu plano</h2>
+        <div class="carteira-card-titulo">
+          <span class="carteira-card-icone" aria-hidden="true">◆</span>
+          <h2>Seu plano</h2>
+        </div>
         <div class="carteira-plano-info">
           <div class="carteira-linha-info"><span>Plano atual</span><strong id="carteira-plano">Carregando...</strong></div>
           <div class="carteira-linha-info"><span>Créditos mensais</span><strong id="carteira-creditos-mensais">—</strong></div>
@@ -43,7 +50,10 @@
     </section>
 
     <section id="comprar-creditos" class="fs-card carteira-card carteira-compra-card">
-      <h2>Comprar créditos Efex</h2>
+      <div class="carteira-card-titulo">
+        <span class="carteira-card-icone" aria-hidden="true">＋</span>
+        <h2>Comprar créditos Efex</h2>
+      </div>
       <div class="carteira-compra-grid">
         <div>
           <label for="pacote-creditos">Escolha o pacote</label>
@@ -55,7 +65,7 @@
       </div>
       <div class="carteira-compra-resumo">
         <div>
-          <span id="resumo-pacote">50 créditos Efex</span><br>
+          <span id="resumo-pacote">50 créditos Efex</span>
           <small id="resumo-promocao">Sem desconto aplicado</small>
         </div>
         <strong id="valor-pacote-creditos">R$ 24,90</strong>
@@ -63,15 +73,18 @@
       <p class="carteira-ajuda">Os créditos comprados não substituem a assinatura. O pacote de 400 créditos possui preço promocional; os demais seguem o valor padrão oficial.</p>
     </section>
 
-    <section class="fs-card carteira-card">
+    <section class="fs-card carteira-card carteira-extrato-card">
       <div class="carteira-extrato-topo">
         <div>
-          <h2>Extrato da carteira</h2>
+          <div class="carteira-card-titulo">
+            <span class="carteira-card-icone" aria-hidden="true">≡</span>
+            <h2>Extrato da carteira</h2>
+          </div>
           <span class="carteira-selo">Movimentações Efex</span>
         </div>
-        <button class="btn btn-secondary" type="button" onclick="carregarExtratoEfex(true)">Atualizar extrato</button>
+        <button class="btn btn-secondary carteira-btn-extrato" type="button" onclick="carregarExtratoEfex(true)">Atualizar extrato</button>
       </div>
-      <div id="extrato-status" class="carteira-status" aria-live="polite">Carregando movimentações...</div>
+      <div id="extrato-status" class="carteira-status carteira-status-info" aria-live="polite">Carregando movimentações...</div>
       <div id="extrato-lista" class="carteira-extrato-lista"></div>
       <p class="carteira-ajuda">Compras, bônus, créditos de assinatura, consumos e estornos aparecem aqui quando registrados no backend.</p>
     </section>
