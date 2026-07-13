@@ -42,7 +42,14 @@ async function sincronizar(s){
 }
 function salvar(){if(restaurando||!$('efex-diagnostico-card')?.classList.contains('active'))return;const s=capturar(),hash=JSON.stringify(s.textos)+JSON.stringify(s.html)+s.sintoma;if(hash===ultimoHash)return;ultimoHash=hash;seguro(()=>localStorage.setItem(CHAVE,JSON.stringify(s)));sincronizar(s)}
 function novaAnalise(){localStorage.removeItem(CHAVE);localStorage.removeItem('fs_efex_analise_atual_id');location.reload()}
+function adicionarAcessoHistorico(){
+ if(document.getElementById('efex-abrir-historico'))return;
+ const link=document.createElement('a');link.id='efex-abrir-historico';link.href='/efex-historico.html';link.className='efex-btn secondary';link.textContent='Histórico de análises';
+ const acoes=document.querySelector('.efex-desktop-actions');if(acoes)acoes.appendChild(link);
+ const mobile=$('efex-mobile-action');if(mobile){const mini=link.cloneNode(true);mini.id='efex-abrir-historico-mobile';mini.setAttribute('aria-label','Abrir histórico de análises');mini.textContent='Histórico';mini.style.minHeight='48px';mobile.appendChild(mini);mobile.style.gridTemplateColumns='auto 1fr auto'}
+}
 function iniciar(){
+ adicionarAcessoHistorico();
  const salvo=seguro(()=>JSON.parse(localStorage.getItem(CHAVE)||'null'));
  if(salvo)setTimeout(()=>aplicar(salvo),500);
  const alvo=$('efex-diagnostico-card');if(alvo)new MutationObserver(()=>setTimeout(salvar,250)).observe(alvo,{subtree:true,childList:true,characterData:true,attributes:true});
