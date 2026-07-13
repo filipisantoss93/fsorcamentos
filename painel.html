@@ -9,55 +9,26 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="/manifest.json">
   <title>Painel | FS Orçamentos</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/painel.css?v=20260712">
+  <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.png">
-  <style>
-    :root{--fs-azul:#1565C0;--fs-azul-claro:#3B82F6;--fs-azul-escuro:#07111F;--fs-amarelo:#F6B500;--fs-branco:#FFFFFF;--fs-verde:#22C55E;--fs-vermelho:#EF4444;--fs-texto:#EAF2FC;--fs-muted:#91A4BA;--fs-borda:rgba(255,255,255,.09);--fs-card:#101D2D;--fs-card-2:#142337;--fs-fundo:#07111F}
-    *{box-sizing:border-box}
-    body{margin:0;background:radial-gradient(circle at 15% 0,rgba(21,101,192,.2),transparent 30%),linear-gradient(180deg,#07111F,#091727 55%,#07111F);color:var(--fs-texto);min-height:100vh}
-    .hidden,[hidden]{display:none!important}
-    .painel-container{width:min(1240px,calc(100% - 28px));margin:0 auto;padding:26px 0 54px;display:grid;gap:20px}
-    .painel-topo{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:30px;border:1px solid var(--fs-borda);border-radius:26px;background:linear-gradient(135deg,rgba(21,101,192,.28),rgba(16,29,45,.96) 52%,rgba(246,181,0,.09));box-shadow:0 24px 70px rgba(0,0,0,.24)}
-    .painel-topo::after{content:"EFEX";position:absolute;right:26px;top:8px;color:rgba(255,255,255,.035);font-size:84px;font-weight:950;letter-spacing:-.08em;pointer-events:none}
-    .painel-topo-conteudo{position:relative;z-index:1;max-width:760px}.painel-topo h1{margin:0 0 8px;font-size:clamp(32px,5vw,50px);line-height:1;letter-spacing:-.05em}.painel-topo p{margin:0;color:#B7C6D8;font-size:16px;line-height:1.55;font-weight:650}
-    .painel-topo-acoes{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
-    .btn,.btn-editar-perfil,.btn-senha,.btn-salvar,.btn-confirmar,.btn-upload-logo,.painel-pix-opcoes button,button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 15px;border:1px solid var(--fs-azul);border-radius:13px;background:var(--fs-azul);color:#fff;font-weight:900;text-decoration:none;cursor:pointer;box-shadow:0 10px 26px rgba(21,101,192,.22);transition:.18s ease}
-    button:hover,.btn:hover,.btn-editar-perfil:hover,.btn-upload-logo:hover{transform:translateY(-1px);filter:brightness(1.06)}button:disabled{opacity:.55;cursor:not-allowed;transform:none}
-    .btn-destaque{background:var(--fs-amarelo);border-color:var(--fs-amarelo);color:#07111F;box-shadow:0 12px 28px rgba(246,181,0,.18)}
-    .btn-secundario,.btn-senha,.btn-cancelar,.btn-remover-logo,.painel-pix-opcoes button.secundario{background:rgba(255,255,255,.04);color:#DCE9F8;border-color:rgba(255,255,255,.16);box-shadow:none}
-    .btn-perigo,.btn-excluir-conta{background:rgba(239,68,68,.1);color:#FCA5A5;border-color:rgba(239,68,68,.34);box-shadow:none}.btn-perigo:hover,.btn-excluir-conta:hover{background:var(--fs-vermelho);color:#fff}
-    .painel-aviso,.painel-pix-intro,.dica-seguranca{padding:14px 16px;border:1px solid var(--fs-borda);border-left:4px solid var(--fs-azul-claro);border-radius:14px;background:rgba(16,29,45,.92);color:#B9C8D9;font-weight:700;line-height:1.5}
-    .painel-grid-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.kpi{position:relative;overflow:hidden;min-height:138px;padding:20px;border:1px solid var(--fs-borda);border-radius:20px;background:linear-gradient(145deg,var(--fs-card-2),var(--fs-card));box-shadow:0 16px 42px rgba(0,0,0,.16)}.kpi::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--kpi-cor,var(--fs-azul-claro))}.kpi small{display:block;margin-bottom:12px;color:var(--fs-muted);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.kpi strong{display:block;color:#fff;font-size:clamp(25px,4vw,34px);line-height:1;letter-spacing:-.04em}.kpi span{display:block;margin-top:10px;color:#8FA3BA;font-size:12px;font-weight:700}.kpi-amarelo{--kpi-cor:var(--fs-amarelo)}.kpi-verde{--kpi-cor:var(--fs-verde)}
-    .painel-grid-principal{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.85fr);gap:18px;align-items:start}.painel-coluna{display:grid;gap:18px}
-    .painel-card{padding:22px;border:1px solid var(--fs-borda);border-radius:22px;background:linear-gradient(145deg,rgba(20,35,55,.96),rgba(12,25,40,.98));box-shadow:0 18px 50px rgba(0,0,0,.17);overflow:hidden}.painel-card-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--fs-borda)}.painel-card h2{margin:0;color:#fff;font-size:22px;letter-spacing:-.03em}.painel-card h3{margin:0;color:#fff}.painel-card-subtitulo{margin:5px 0 0;color:var(--fs-muted);font-size:13px;font-weight:700}.painel-link{color:#7EB8FF;text-decoration:none;font-weight:900;font-size:13px}.painel-link:hover{text-decoration:underline}
-    .acoes-rapidas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.acao-rapida{display:flex;align-items:center;gap:11px;min-height:74px;padding:13px;border:1px solid var(--fs-borda);border-radius:15px;background:rgba(255,255,255,.025);color:#EAF2FC;text-decoration:none;font-weight:850;transition:.18s ease}.acao-rapida:hover{transform:translateY(-2px);border-color:rgba(59,130,246,.45);background:rgba(21,101,192,.11)}.acao-icone{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:rgba(21,101,192,.18);color:#8AC1FF;font-size:19px}
-    .painel-tabela-wrapper{overflow:auto;border:1px solid var(--fs-borda);border-radius:15px}.painel-tabela{width:100%;border-collapse:collapse;background:rgba(5,15,27,.25)}.painel-tabela th,.painel-tabela td{padding:13px 14px;border-bottom:1px solid var(--fs-borda);text-align:left;white-space:nowrap}.painel-tabela th{color:#91A7C0;font-size:10px;text-transform:uppercase;letter-spacing:.07em;background:rgba(255,255,255,.025)}.painel-tabela td{color:#D8E5F4;font-size:13px;font-weight:700}.painel-tabela tbody tr{cursor:pointer;transition:.15s}.painel-tabela tbody tr:hover{background:rgba(21,101,192,.1)}.painel-tabela tbody tr:last-child td{border-bottom:0}.texto-forte{font-weight:950!important;color:#fff!important}.texto-direita{text-align:right!important}
-    .perfil-layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:18px;align-items:start}.perfil-logo-card{padding:15px;border:1px solid var(--fs-borda);border-radius:18px;background:rgba(255,255,255,.025)}.perfil-logo-box,.logo-preview-box{min-height:140px;display:grid;place-items:center;padding:14px;overflow:hidden;border:1.5px dashed rgba(145,164,186,.45);border-radius:15px;background:rgba(7,17,31,.55);color:var(--fs-muted);font-weight:800;text-align:center}.perfil-logo-box img,.logo-preview-box img{display:none;max-width:100%;max-height:135px;object-fit:contain}.perfil-logo-label{display:block;margin-top:10px;color:#7EB8FF;font-weight:900;text-align:center}.perfil-dados-grid,.plano-atual-grid,.grid-painel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.info-card{min-width:0;padding:14px;border:1px solid var(--fs-borda);border-radius:14px;background:rgba(255,255,255,.025)}.info-card.full,.campo-painel-full{grid-column:1/-1}.info-card strong{display:block;margin-bottom:6px;color:#91A7C0;font-size:10px;text-transform:uppercase;letter-spacing:.07em}.info-card span{display:block;color:#F2F7FD;font-size:15px;font-weight:850;overflow-wrap:anywhere}.plano-badge{display:inline-flex!important;width:max-content;max-width:100%;padding:7px 11px;border-radius:999px;border:1px solid rgba(126,184,255,.34);background:rgba(21,101,192,.14);color:#A9D1FF!important;font-size:12px!important;font-weight:950!important}.plano-pro{background:rgba(246,181,0,.12)!important;color:#FFD45B!important;border-color:rgba(246,181,0,.42)!important}.plano-gratis{background:rgba(148,163,184,.1)!important;color:#CBD5E1!important}.acoes-painel,.botoes-modal-painel,.upload-row,.pix-acoes{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px;justify-content:flex-end;align-items:center}
-    .painel-plano-aviso{padding:14px 16px;margin-bottom:16px;border-radius:14px;border:1px solid var(--fs-borda);font-weight:800;line-height:1.45}.plano-ok{background:rgba(34,197,94,.1);color:#86EFAC;border-color:rgba(34,197,94,.3)}.plano-alerta{background:rgba(59,130,246,.1);color:#93C5FD;border-color:rgba(59,130,246,.3)}.plano-erro,.dica-perigo{background:rgba(239,68,68,.1);color:#FCA5A5;border-color:rgba(239,68,68,.3)}
-    .painel-pix-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:14px}.painel-pix-plano{position:relative;padding:20px;border:1px solid var(--fs-borda);border-radius:18px;background:rgba(255,255,255,.025)}.painel-pix-plano::before{content:"";position:absolute;inset:0 0 auto;height:4px;border-radius:18px 18px 0 0;background:var(--fs-azul-claro)}.painel-pix-plano.destaque{border-color:rgba(246,181,0,.38);background:linear-gradient(180deg,rgba(246,181,0,.07),rgba(255,255,255,.025))}.painel-pix-plano.destaque::before{background:var(--fs-amarelo)}.painel-pix-plano h3{margin:8px 0 4px;font-size:21px}.painel-preco{margin:0 0 10px;color:#7EB8FF;font-size:29px;font-weight:950;letter-spacing:-.04em}.painel-preco small{font-size:12px;color:var(--fs-muted)}.painel-pix-plano ul{margin:12px 0 16px;padding-left:20px;color:#B2C1D2;line-height:1.6;font-weight:650}.painel-pix-opcoes{display:grid;gap:9px}.painel-pix-regra{margin-top:14px;color:var(--fs-muted);font-size:12px;font-weight:700;line-height:1.45}
-    .zona-perigo{border-color:rgba(239,68,68,.24);background:linear-gradient(145deg,rgba(61,20,27,.52),rgba(16,22,32,.98))}.zona-perigo p{color:#E7A9B0;line-height:1.5}.config-acoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.config-acao{padding:15px;border:1px solid var(--fs-borda);border-radius:15px;background:rgba(255,255,255,.025)}.config-acao strong{display:block;color:#fff;margin-bottom:5px}.config-acao p{min-height:38px;margin:0 0 12px;color:var(--fs-muted);font-size:12px;line-height:1.45}
-    .modal-overlay-painel,.modal-pix-overlay{position:fixed;inset:0;z-index:50000;display:none!important;pointer-events:none!important;align-items:center;justify-content:center;padding:18px;background:rgba(2,8,15,.84);backdrop-filter:blur(9px);overflow:auto}.modal-overlay-painel[style*="display: flex"],.modal-pix-overlay[style*="display: flex"]{display:flex!important;pointer-events:auto!important}.modal-painel,.modal-pix-card{width:min(760px,100%);max-height:calc(100vh - 36px);overflow:auto;margin:auto;padding:22px;border:1px solid var(--fs-borda);border-radius:22px;background:#101D2D;color:var(--fs-texto);box-shadow:0 30px 80px rgba(0,0,0,.5)}.modal-painel.pequeno{width:min(460px,100%)}.modal-painel h2,.modal-painel h3{margin:0 0 14px;color:#fff}.campo-painel{display:grid;gap:6px;margin-bottom:11px}.campo-painel label{color:#A7B8CB;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.campo-painel input,.campo-painel select,.campo-painel textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:#071523;color:#F2F7FD;font-weight:700;outline:none}.campo-painel input:focus,.campo-painel select:focus{border-color:var(--fs-azul-claro);box-shadow:0 0 0 3px rgba(59,130,246,.14)}.logo-area-modal{display:grid;grid-template-columns:210px 1fr;gap:16px;margin-bottom:16px}.responsaveis-box{padding:14px;border:1px solid var(--fs-borda);border-radius:16px;background:rgba(255,255,255,.025)}.responsaveis-topo{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.responsaveis-topo p{margin:4px 0;color:var(--fs-muted)}.lista-responsaveis{display:grid;gap:8px;margin-top:10px}.modal-responsavel-interno{display:none;margin-top:14px}.status-msg{margin-top:8px;font-weight:850}.modal-pix-topo{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-22px -22px 18px;padding:16px 18px;background:linear-gradient(135deg,var(--fs-azul-escuro),var(--fs-azul));color:#fff}.modal-pix-topo div{display:grid;gap:3px}.modal-pix-topo button{width:38px;height:38px;padding:0;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}.pix-loading,.pix-erro{padding:14px;border:1px solid var(--fs-borda);border-radius:12px;background:rgba(255,255,255,.03);font-weight:900}.pix-erro{background:rgba(239,68,68,.1);color:#FCA5A5;border-color:rgba(239,68,68,.3)}.pix-resumo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.pix-resumo div{padding:12px;border:1px solid var(--fs-borda);border-radius:12px;background:rgba(255,255,255,.025)}.pix-label{display:block;margin:10px 0 5px;color:#A7B8CB;font-size:11px;font-weight:950;text-transform:uppercase}#pix-copia-cola{width:100%;min-height:96px;padding:10px;border:1px solid var(--fs-borda);border-radius:12px;background:#071523;color:#fff}.pix-qrcode-box{text-align:center}.pix-qrcode-box img{max-width:230px;width:100%}
-    #auth-area{min-height:55vh;display:grid;place-items:center}.painel-loading{width:min(420px,calc(100% - 24px));padding:28px;border:1px solid var(--fs-borda);border-radius:20px;background:var(--fs-card);text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.25)}.painel-loading::before{content:"";display:block;width:38px;height:38px;margin:0 auto 14px;border:4px solid rgba(255,255,255,.12);border-top-color:var(--fs-amarelo);border-radius:50%;animation:girar .8s linear infinite}@keyframes girar{to{transform:rotate(360deg)}}.painel-loading strong{display:block;font-size:18px}.painel-loading span{display:block;margin-top:7px;color:var(--fs-muted);font-size:13px}footer{text-align:center;color:#728195;font-weight:700;padding:24px 12px}footer a{color:#7EB8FF;text-decoration:none;font-weight:900}
-    @media(max-width:960px){.painel-grid-principal{grid-template-columns:1fr}.painel-topo{align-items:flex-start}.painel-topo-acoes{max-width:310px}.perfil-layout{grid-template-columns:1fr}.perfil-logo-card{max-width:260px}}
-    @media(max-width:700px){.painel-container{width:min(100% - 18px,1240px);padding-top:14px}.painel-topo{display:grid;padding:22px 17px;border-radius:20px}.painel-topo::after{font-size:50px}.painel-topo-acoes{display:grid;grid-template-columns:1fr;width:100%;max-width:none}.painel-topo-acoes .btn{width:100%}.painel-card{padding:17px;border-radius:18px}.painel-card-topo{align-items:flex-start}.perfil-dados-grid,.plano-atual-grid,.grid-painel,.pix-resumo{grid-template-columns:1fr}.info-card.full,.campo-painel-full{grid-column:auto}.acoes-rapidas{grid-template-columns:1fr}.acoes-painel,.botoes-modal-painel{display:grid;grid-template-columns:1fr}.acoes-painel button,.botoes-modal-painel button{width:100%}.logo-area-modal{grid-template-columns:1fr}.responsaveis-topo{display:grid}.texto-direita{text-align:left!important}}
-  </style>
 </head>
 <body>
   <div id="header-container"></div>
 
   <div id="auth-area">
-    <section class="painel-loading" aria-live="polite">
+    <section class="painel-loading" aria-live="polite" aria-busy="true">
       <strong>Carregando seu painel</strong>
       <span>Validando sessão e buscando os dados da oficina...</span>
     </section>
   </div>
 
-  <div id="conteudo-protegido" hidden>
+  <div id="conteudo-protegido" style="display:none">
     <main class="painel-container">
-      <section class="painel-topo">
+      <section class="painel-topo" aria-labelledby="painel-titulo">
         <div class="painel-topo-conteudo">
-          <h1>Painel da oficina</h1>
+          <h1 id="painel-titulo">Painel da oficina</h1>
           <p>Acompanhe seus orçamentos, aprovações e informações importantes em um único lugar.</p>
         </div>
         <div class="painel-topo-acoes">
@@ -67,33 +38,36 @@
       </section>
 
       <section class="painel-grid-kpis" aria-label="Indicadores principais">
-        <article class="kpi"><small>Total de orçamentos</small><strong id="dash-total-orcamentos">0</strong><span id="dash-atualizado-em">Carregando...</span></article>
-        <article class="kpi kpi-amarelo"><small>Pendentes</small><strong id="dash-pendentes">0</strong><span>Aguardando resposta ou ação</span></article>
-        <article class="kpi kpi-verde"><small>Aprovados no mês</small><strong id="dash-aprovados-mes">0</strong><span id="dash-taxa-aprovacao">0%</span></article>
-        <article class="kpi kpi-verde"><small>Valor aprovado no mês</small><strong id="dash-valor-aprovado-mes">R$ 0,00</strong><span>Orçamentos aprovados</span></article>
+        <article class="kpi"><small>Total de orçamentos</small><strong id="dash-total-orcamentos">—</strong><span id="dash-atualizado-em">Carregando...</span></article>
+        <article class="kpi kpi-amarelo"><small>Pendentes</small><strong id="dash-pendentes">—</strong><span>Aguardando resposta ou ação</span></article>
+        <article class="kpi kpi-verde"><small>Aprovados no mês</small><strong id="dash-aprovados-mes">—</strong><span id="dash-taxa-aprovacao">—</span></article>
+        <article class="kpi kpi-verde"><small>Valor aprovado no mês</small><strong id="dash-valor-aprovado-mes">—</strong><span>Orçamentos aprovados</span></article>
       </section>
 
       <div class="painel-grid-principal">
         <div class="painel-coluna">
-          <section class="painel-card">
-            <div class="painel-card-topo"><div><h2>Últimos orçamentos</h2><p class="painel-card-subtitulo">Clique em uma linha para abrir o orçamento.</p></div><a class="painel-link" href="/orcamentos.html">Ver todos</a></div>
+          <section class="painel-card" aria-labelledby="ultimos-orcamentos-titulo">
+            <div class="painel-card-topo">
+              <div><h2 id="ultimos-orcamentos-titulo">Últimos orçamentos</h2><p class="painel-card-subtitulo">Clique em uma linha para abrir o orçamento.</p></div>
+              <a class="painel-link" href="/orcamentos.html">Ver todos</a>
+            </div>
             <div id="lista-ultimos-orcamentos-painel"><div class="painel-aviso">Carregando últimos orçamentos...</div></div>
           </section>
         </div>
 
         <aside class="painel-coluna">
-          <section class="painel-card">
-            <div class="painel-card-topo"><div><h2>Ações rápidas</h2><p class="painel-card-subtitulo">Atalhos para as tarefas mais usadas.</p></div></div>
+          <section class="painel-card" aria-labelledby="acoes-rapidas-titulo">
+            <div class="painel-card-topo"><div><h2 id="acoes-rapidas-titulo">Ações rápidas</h2><p class="painel-card-subtitulo">Atalhos para as tarefas mais usadas.</p></div></div>
             <div class="acoes-rapidas">
-              <a class="acao-rapida" href="/gerador.html"><span class="acao-icone">＋</span><span>Novo orçamento</span></a>
-              <a class="acao-rapida" href="/orcamentos.html"><span class="acao-icone">O</span><span>Meus orçamentos</span></a>
-              <a class="acao-rapida" href="/clientes.html"><span class="acao-icone">C</span><span>Clientes</span></a>
-              <a class="acao-rapida" href="/efex.html"><span class="acao-icone">E</span><span>Consultar EfeX</span></a>
+              <a class="acao-rapida" href="/gerador.html"><span class="acao-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span>Novo orçamento</span></a>
+              <a class="acao-rapida" href="/orcamentos.html"><span class="acao-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6M15 3v4h4"/></svg></span><span>Meus orçamentos</span></a>
+              <a class="acao-rapida" href="/clientes.html"><span class="acao-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M17 11a4 4 0 0 1 4 4v2"/></svg></span><span>Clientes</span></a>
+              <a class="acao-rapida" href="/efex.html"><span class="acao-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 1.8 4.7L19 9.5l-5.2 1.8L12 16l-1.8-4.7L5 9.5l5.2-1.8z"/><path d="m18 16 .8 2.2L21 19l-2.2.8L18 22l-.8-2.2L15 19l2.2-.8z"/></svg></span><span>Consultar EfeX</span></a>
             </div>
           </section>
 
-          <section id="plano-painel" class="painel-card">
-            <div class="painel-card-topo"><div><h2>Plano e EfeX</h2><p class="painel-card-subtitulo">Assinatura e saldo de créditos.</p></div><a class="painel-link" href="#renovar-plano-pix-painel">Ver planos</a></div>
+          <section id="plano-painel" class="painel-card" aria-labelledby="plano-titulo">
+            <div class="painel-card-topo"><div><h2 id="plano-titulo">Plano e EfeX</h2><p class="painel-card-subtitulo">Assinatura e saldo de créditos.</p></div><a class="painel-link" href="#renovar-plano-pix-painel">Ver planos</a></div>
             <div id="perfil-plano-aviso" class="painel-plano-aviso"></div>
             <div class="perfil-dados-grid plano-atual-grid">
               <div class="info-card"><strong>Plano</strong><span id="perfil-plano" class="plano-badge">Plano Gratuito</span></div>
@@ -106,8 +80,8 @@
         </aside>
       </div>
 
-      <section class="painel-card">
-        <div class="painel-card-topo"><div><h2>Dados da empresa</h2><p class="painel-card-subtitulo">Informações usadas nos orçamentos e documentos.</p></div><button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">Editar dados</button></div>
+      <section class="painel-card" aria-labelledby="dados-empresa-titulo">
+        <div class="painel-card-topo"><div><h2 id="dados-empresa-titulo">Dados da empresa</h2><p class="painel-card-subtitulo">Informações usadas nos orçamentos e documentos.</p></div><button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">Editar dados</button></div>
         <div class="perfil-layout">
           <div class="perfil-logo-card"><div class="perfil-logo-box"><span id="perfil-logo-placeholder">Nenhuma logo cadastrada</span><img id="perfil-logo-img" src="" alt="Logo da empresa"></div><span class="perfil-logo-label">Identidade visual</span></div>
           <div class="perfil-dados-grid">
@@ -120,59 +94,95 @@
         </div>
       </section>
 
-      <section id="renovar-plano-pix-painel" class="painel-card">
-        <div class="painel-card-topo"><div><h2>Assinaturas via Pix</h2><p class="painel-card-subtitulo">Ativação automática após a confirmação do pagamento.</p></div></div>
+      <section id="renovar-plano-pix-painel" class="painel-card" aria-labelledby="assinaturas-titulo">
+        <div class="painel-card-topo"><div><h2 id="assinaturas-titulo">Assinaturas via Pix</h2><p class="painel-card-subtitulo">Ativação automática após a confirmação do pagamento.</p></div></div>
         <div class="painel-pix-intro">Escolha o plano adequado ao volume da oficina. Os créditos EfeX são renovados conforme as regras da assinatura.</div>
         <div class="painel-pix-grid">
-          <article class="painel-pix-plano"><h3>Premium Essencial</h3><p class="painel-preco">R$ 14,90 <small>/ mês</small></p><ul><li>Histórico na nuvem</li><li>Caixa e relatórios</li><li>Aprovação pelo WhatsApp</li><li>15 créditos EfeX por mês</li></ul><div class="painel-pix-opcoes"><button type="button" onclick="gerarPixProduto('assinatura_essencial')">Assinar Essencial</button></div></article>
-          <article class="painel-pix-plano destaque"><h3>Premium PRO</h3><p class="painel-preco">R$ 29,90 <small>/ mês</small></p><ul><li>Todos os recursos do Essencial</li><li>30 créditos EfeX por mês</li><li>Prioridade de processamento</li><li>Acesso a recursos futuros</li></ul><div class="painel-pix-opcoes"><button type="button" onclick="gerarPixProduto('assinatura_pro')">Assinar PRO</button></div></article>
+          <article class="painel-pix-plano"><h3>Premium Essencial</h3><p class="painel-preco" data-produto-preco="assinatura_essencial">R$ 14,90 <small>/ mês</small></p><ul><li>Histórico na nuvem</li><li>Caixa e relatórios</li><li>Aprovação pelo WhatsApp</li><li>15 créditos EfeX por mês</li></ul><div class="painel-pix-opcoes"><button type="button" onclick="gerarPixProduto('assinatura_essencial')">Assinar Essencial</button></div></article>
+          <article class="painel-pix-plano destaque"><h3>Premium PRO</h3><p class="painel-preco" data-produto-preco="assinatura_pro">R$ 29,90 <small>/ mês</small></p><ul><li>Todos os recursos do Essencial</li><li>30 créditos EfeX por mês</li><li>Prioridade de processamento</li><li>Acesso a recursos futuros</li></ul><div class="painel-pix-opcoes"><button type="button" onclick="gerarPixProduto('assinatura_pro')">Assinar PRO</button></div></article>
         </div>
         <div class="painel-pix-regra">A autorização dos recursos é validada no Supabase. A interface não substitui as regras de segurança do backend.</div>
       </section>
 
-      <section class="painel-card">
-        <div class="painel-card-topo"><div><h2>Conta e segurança</h2><p class="painel-card-subtitulo">Gerencie a senha e os dados de acesso.</p></div></div>
+      <section class="painel-card" aria-labelledby="seguranca-titulo">
+        <div class="painel-card-topo"><div><h2 id="seguranca-titulo">Conta e segurança</h2><p class="painel-card-subtitulo">Gerencie a senha e os dados de acesso.</p></div></div>
         <div class="config-acoes">
           <div class="config-acao"><strong>Alterar senha</strong><p>Atualize sua senha após confirmar a credencial atual.</p><button type="button" class="btn-senha" onclick="abrirModalSenha()">Alterar senha</button></div>
           <div class="config-acao"><strong>Dados da oficina</strong><p>Atualize empresa, responsável, telefone, documento, endereço e logo.</p><button type="button" class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">Editar cadastro</button></div>
         </div>
       </section>
 
-      <section class="painel-card zona-perigo">
-        <div class="painel-card-topo"><div><h2>Zona de perigo</h2><p class="painel-card-subtitulo">Ações permanentes e irreversíveis.</p></div></div>
-        <p>A exclusão remove a conta e os dados associados por meio da função protegida do backend.</p>
-        <button type="button" class="btn-excluir-conta" onclick="abrirModalExcluirConta()">Excluir minha conta</button>
-      </section>
+      <details class="painel-card zona-perigo">
+        <summary>Opções avançadas da conta</summary>
+        <div class="zona-perigo-conteudo">
+          <h2>Zona de perigo</h2>
+          <p>A exclusão remove permanentemente a conta e os dados associados por meio da função protegida do backend.</p>
+          <button type="button" class="btn-excluir-conta" onclick="abrirModalExcluirConta()">Excluir minha conta</button>
+        </div>
+      </details>
     </main>
 
-    <div id="modal-editar-perfil" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-labelledby="titulo-editar-perfil">
+    <div id="modal-editar-perfil" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="titulo-editar-perfil" aria-describedby="descricao-editar-perfil">
       <div class="modal-painel">
+        <button type="button" class="modal-fechar" aria-label="Fechar edição dos dados" onclick="fecharModalEditarPerfil()">×</button>
         <h2 id="titulo-editar-perfil">Editar dados da empresa</h2>
+        <p id="descricao-editar-perfil" class="painel-card-subtitulo">Atualize as informações usadas nos seus orçamentos.</p>
         <form id="form-cadastro-perfil" onsubmit="salvarPerfil(event)">
-          <div class="logo-area-modal"><div class="logo-preview-box"><span id="logo-placeholder">Nenhuma logo cadastrada</span><img id="preview-logo" src="" alt="Pré-visualização da logo da empresa"></div><div class="logo-info"><h3>Logo da empresa</h3><p>Envie PNG, JPG, JPEG ou WEBP. A logo salva aparecerá automaticamente nos orçamentos.</p><div class="upload-row"><label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label><button type="button" class="btn-remover-logo" onclick="removerLogoPerfil()">Remover logo</button><input type="file" id="logo_file" accept="image/png, image/jpeg, image/webp" hidden><input type="hidden" id="foto_url"></div><div id="status-logo" class="status-msg" aria-live="polite"></div></div></div>
-          <div class="grid-painel"><div class="campo-painel"><label for="responsavel_selecionado">Responsável selecionado *</label><select id="responsavel_selecionado" required></select></div><div class="campo-painel"><label for="nome_empresa">Nome da empresa *</label><input type="text" id="nome_empresa" required placeholder="Nome da sua empresa ou negócio"></div><div class="campo-painel"><label for="telefone_empresa">WhatsApp / Telefone *</label><input type="tel" id="telefone_empresa" required placeholder="Ex: (18) 99999-9999"></div><div class="campo-painel"><label for="cnpj_empresa">CNPJ / CPF</label><input type="text" id="cnpj_empresa" placeholder="00.000.000/0000-00"></div><div class="campo-painel campo-painel-full"><label for="endereco_empresa">Endereço</label><input type="text" id="endereco_empresa" placeholder="Rua, número, bairro, cidade/UF"></div></div>
+          <div class="logo-area-modal"><div class="logo-preview-box"><span id="logo-placeholder">Nenhuma logo cadastrada</span><img id="preview-logo" src="" alt="Pré-visualização da logo da empresa"></div><div class="logo-info"><h3>Logo da empresa</h3><p>Envie PNG, JPG, JPEG ou WEBP com até 2 MB.</p><div class="upload-row"><label for="logo_file" class="btn-upload-logo">Selecionar nova logo</label><button type="button" class="btn-remover-logo" onclick="removerLogoPerfil()">Remover logo</button><input type="file" id="logo_file" accept="image/png,image/jpeg,image/webp" hidden><input type="hidden" id="foto_url"></div><div id="status-logo" class="status-msg" aria-live="polite"></div></div></div>
+          <div class="grid-painel">
+            <div class="campo-painel"><label for="responsavel_selecionado">Responsável selecionado *</label><select id="responsavel_selecionado" required></select></div>
+            <div class="campo-painel"><label for="nome_empresa">Nome da empresa *</label><input type="text" id="nome_empresa" required maxlength="120" autocomplete="organization" placeholder="Nome da sua empresa ou negócio"></div>
+            <div class="campo-painel"><label for="telefone_empresa">WhatsApp / Telefone *</label><input type="tel" id="telefone_empresa" required maxlength="20" inputmode="tel" autocomplete="tel" placeholder="Ex: (18) 99999-9999"></div>
+            <div class="campo-painel"><label for="cnpj_empresa">CNPJ / CPF</label><input type="text" id="cnpj_empresa" maxlength="18" inputmode="numeric" placeholder="00.000.000/0000-00"></div>
+            <div class="campo-painel campo-painel-full"><label for="endereco_empresa">Endereço</label><input type="text" id="endereco_empresa" maxlength="220" autocomplete="street-address" placeholder="Rua, número, bairro, cidade/UF"></div>
+          </div>
           <div class="responsaveis-box"><div class="responsaveis-topo"><div><h3>Responsáveis pelo orçamento</h3><p>Cadastre quem poderá aparecer como responsável nos orçamentos.</p></div><button type="button" class="btn-editar-perfil" onclick="abrirModalResponsavelInterno()">Adicionar</button></div><div id="lista-responsaveis" class="lista-responsaveis">Carregando responsáveis...</div></div>
           <div id="status-perfil" class="status-msg" aria-live="polite"></div>
           <div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalEditarPerfil()">Cancelar</button><button type="submit" class="btn-salvar">Salvar alterações</button></div>
         </form>
-        <div id="modal-responsavel-interno" class="modal-responsavel-interno"><div class="modal-responsavel-card"><h3>Novo responsável</h3><div class="campo-painel"><label for="novo-responsavel-nome">Nome do responsável</label><input type="text" id="novo-responsavel-nome" placeholder="Ex: João Silva"></div><div id="status-responsavel" class="status-msg" aria-live="polite"></div><div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalResponsavelInterno()">Cancelar</button><button type="button" class="btn-confirmar" onclick="salvarResponsavel()">Salvar responsável</button></div></div></div>
+        <div id="modal-responsavel-interno" class="modal-responsavel-interno"><div class="modal-responsavel-card"><h3>Novo responsável</h3><div class="campo-painel"><label for="novo-responsavel-nome">Nome do responsável</label><input type="text" id="novo-responsavel-nome" maxlength="100" placeholder="Ex: João Silva"></div><div id="status-responsavel" class="status-msg" aria-live="polite"></div><div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalResponsavelInterno()">Cancelar</button><button type="button" class="btn-confirmar" onclick="salvarResponsavel()">Salvar responsável</button></div></div></div>
       </div>
     </div>
 
-    <div id="modal-senha" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-labelledby="titulo-alterar-senha"><div class="modal-painel pequeno"><h2 id="titulo-alterar-senha">Alterar senha</h2><div class="dica-seguranca">Informe sua senha atual antes de cadastrar uma nova senha.</div><div class="campo-painel"><label for="senha_atual">Senha atual</label><input type="password" id="senha_atual" autocomplete="current-password"></div><div class="campo-painel"><label for="nova_senha">Nova senha</label><input type="password" id="nova_senha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres"></div><div class="campo-painel"><label for="confirmar_senha">Confirmar nova senha</label><input type="password" id="confirmar_senha" autocomplete="new-password"></div><div id="status-senha" class="status-msg" aria-live="polite"></div><div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalSenha()">Cancelar</button><button type="button" class="btn-confirmar" onclick="alterarSenhaSegura()">Confirmar alteração</button></div></div></div>
-    <div id="modal-excluir-conta" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-labelledby="titulo-excluir-conta"><div class="modal-painel pequeno"><h2 id="titulo-excluir-conta">Excluir conta</h2><div class="dica-seguranca dica-perigo">Esta ação é permanente. Sua conta e os dados associados serão removidos.</div><div class="campo-painel"><label for="confirmar_excluir_conta">Digite EXCLUIR para confirmar</label><input type="text" id="confirmar_excluir_conta" placeholder="EXCLUIR" autocomplete="off"></div><div id="status-excluir-conta" class="status-msg" aria-live="polite"></div><div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalExcluirConta()">Cancelar</button><button type="button" class="btn-confirmar btn-perigo" onclick="excluirMinhaConta()">Excluir definitivamente</button></div></div></div>
-    <div id="modal-pix-basico" class="modal-pix-overlay" role="dialog" aria-modal="true" aria-labelledby="pix-modal-titulo"><div class="modal-pix-card"><div class="modal-pix-topo"><div><strong id="pix-modal-titulo">Pagamento via Pix</strong><span id="pix-modal-subtitulo">FS Orçamentos</span></div><button type="button" aria-label="Fechar pagamento" onclick="fecharModalPixBasico()">×</button></div><div id="pix-loading" class="pix-loading">Gerando Pix...</div><div id="pix-conteudo" class="pix-conteudo hidden"><div class="pix-resumo"><div><small>Produto</small><strong id="pix-plano-label">-</strong></div><div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div></div><div class="pix-qrcode-box"><img id="pix-qrcode-img" class="hidden" src="" alt="QR Code Pix"></div><label class="pix-label" for="pix-copia-cola">Pix copia e cola</label><textarea id="pix-copia-cola" readonly></textarea><div class="pix-acoes"><button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button><button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button></div><p class="pix-aviso">Após a confirmação, o produto será aplicado automaticamente à sua conta.</p></div><div id="pix-erro" class="pix-erro hidden"></div></div></div>
+    <div id="modal-senha" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="titulo-alterar-senha" aria-describedby="descricao-alterar-senha">
+      <div class="modal-painel pequeno">
+        <button type="button" class="modal-fechar" aria-label="Fechar alteração de senha" onclick="fecharModalSenha()">×</button>
+        <h2 id="titulo-alterar-senha">Alterar senha</h2>
+        <div id="descricao-alterar-senha" class="dica-seguranca">Informe sua senha atual antes de cadastrar uma nova senha.</div>
+        <div class="campo-painel"><label for="senha_atual">Senha atual</label><input type="password" id="senha_atual" autocomplete="current-password"></div>
+        <div class="campo-painel"><label for="nova_senha">Nova senha</label><input type="password" id="nova_senha" minlength="8" autocomplete="new-password" placeholder="Mínimo de 8 caracteres"></div>
+        <div class="campo-painel"><label for="confirmar_senha">Confirmar nova senha</label><input type="password" id="confirmar_senha" minlength="8" autocomplete="new-password"></div>
+        <div id="status-senha" class="status-msg" aria-live="polite"></div>
+        <div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalSenha()">Cancelar</button><button type="button" class="btn-confirmar" onclick="alterarSenhaSegura()">Confirmar alteração</button></div>
+      </div>
+    </div>
+
+    <div id="modal-excluir-conta" class="modal-overlay-painel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="titulo-excluir-conta" aria-describedby="descricao-excluir-conta">
+      <div class="modal-painel pequeno">
+        <button type="button" class="modal-fechar" aria-label="Fechar exclusão da conta" onclick="fecharModalExcluirConta()">×</button>
+        <h2 id="titulo-excluir-conta">Excluir conta</h2>
+        <div id="descricao-excluir-conta" class="dica-seguranca dica-perigo">Esta ação é permanente. Sua conta e os dados associados serão removidos.</div>
+        <div class="campo-painel"><label for="confirmar_excluir_conta">Digite EXCLUIR para confirmar</label><input type="text" id="confirmar_excluir_conta" placeholder="EXCLUIR" autocomplete="off"></div>
+        <div id="status-excluir-conta" class="status-msg" aria-live="polite"></div>
+        <div class="botoes-modal-painel"><button type="button" class="btn-cancelar" onclick="fecharModalExcluirConta()">Cancelar</button><button type="button" class="btn-confirmar btn-perigo" onclick="excluirMinhaConta()">Excluir definitivamente</button></div>
+      </div>
+    </div>
+
+    <div id="modal-pix-basico" class="modal-pix-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pix-modal-titulo">
+      <div class="modal-pix-card"><div class="modal-pix-topo"><div><strong id="pix-modal-titulo">Pagamento via Pix</strong><span id="pix-modal-subtitulo">FS Orçamentos</span></div><button type="button" aria-label="Fechar pagamento" onclick="fecharModalPixBasico()">×</button></div><div id="pix-loading" class="pix-loading">Gerando Pix...</div><div id="pix-conteudo" class="pix-conteudo hidden"><div class="pix-resumo"><div><small>Produto</small><strong id="pix-plano-label">-</strong></div><div><small>Valor</small><strong id="pix-valor">R$ 0,00</strong></div></div><div class="pix-qrcode-box"><img id="pix-qrcode-img" class="hidden" src="" alt="QR Code Pix"></div><label class="pix-label" for="pix-copia-cola">Pix copia e cola</label><textarea id="pix-copia-cola" readonly></textarea><div class="pix-acoes"><button type="button" onclick="copiarPixCopiaCola()">Copiar Pix</button><button type="button" class="secundario" onclick="verificarPagamentoPixAtual()">Já paguei, verificar</button></div><p class="pix-aviso">Após a confirmação, o produto será aplicado automaticamente à sua conta.</p></div><div id="pix-erro" class="pix-erro hidden"></div></div>
+    </div>
   </div>
 
   <footer>&copy; 2026 FS Orçamentos | <a href="/privacidade.html">Privacidade</a> | <a href="/termos.html">Termos</a></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
-  <script src="auth.js"></script>
-  <script src="ui.js"></script>
-  <script src="pagamentos.js"></script>
-  <script src="carregar-menu.js"></script>
-  <script src="notificacoes.js"></script>
-  <script src="painel.js"></script>
-  <script src="planos.js"></script>
+  <script src="/config.js"></script>
+  <script src="/auth.js"></script>
+  <script src="/ui.js"></script>
+  <script src="/pagamentos.js"></script>
+  <script src="/carregar-menu.js"></script>
+  <script src="/notificacoes.js"></script>
+  <script src="/painel.js"></script>
+  <script src="/painel-ui.js?v=20260712"></script>
+  <script src="/planos.js"></script>
 </body>
 </html>
