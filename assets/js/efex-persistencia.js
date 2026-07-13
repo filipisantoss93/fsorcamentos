@@ -32,7 +32,8 @@ function aplicar(s){if(!s||!s.visibilidade?.diagnostico)return;restaurando=true;
  setTimeout(()=>{restaurando=false},200);
 }
 async function sincronizar(s){
- if(salvando||!s?.visibilidade?.diagnostico)return;salvando=true;
+ const nivelPlano=String(window.FS_EFEX_NIVEL||localStorage.getItem('usuario_nivel_plano')||'gratis').toLowerCase();
+ if(nivelPlano!=='pro'||salvando||!s?.visibilidade?.diagnostico)return;salvando=true;
  try{const {data:{session}}=await _supabase.auth.getSession();if(!session?.user?.id)return;
   const payload={usuario_id:session.user.id,titulo:s.titulo,cliente_nome:s.campos?.['efex-cliente']||null,veiculo:s.veiculo||null,sintoma:s.sintoma,dados_json:{campos:s.campos,checks:s.checks,nivel:s.nivel},configuracao_json:{resumo:s.configuracao},resultado_json:{textos:s.textos,html:s.html,visibilidade:s.visibilidade},fontes_json:[],conversa_json:[],creditos_consumidos:parseInt(s.custo,10)||0};
   const localId=localStorage.getItem('fs_efex_analise_atual_id');
