@@ -159,6 +159,10 @@
     carregarScriptPagina('fs-landing-final-js','/landing-final.js?v=20260711-launch-ready',['/','/index','/index.html']);
   }
 
+  function carregarPersistenciaEfex() {
+    carregarScriptPagina('fs-efex-persistencia-js','/assets/js/efex-persistencia.js?v=20260713-1',['/efex.html','/efex']);
+  }
+
   window.fsLabelNivelPlano = labelNivel;
   window.fsCreditosDoNivelPlano = creditosDoNivel;
   window.carregarStatusPlanoPagina = carregar;
@@ -168,6 +172,7 @@
     carregarGestaoLinksOrcamentos();
     carregarModuloMinhaConta();
     carregarLandingDefinitiva();
+    carregarPersistenciaEfex();
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarModulos);
