@@ -115,16 +115,16 @@ strong,b,.item-name,.total-label,.total-value,.price,.preco { color: var(--fs-te
 .contador-notificacoes { position:absolute; top:-7px; right:-7px; min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; border:2px solid var(--fs-bg); border-radius:4px; background:var(--fs-danger); color:#fff; font-size:10px; }
 
 /* ESTRUTURA GLOBAL */
-.fs-page,.page,.dashboard-page,.forum-page,.painel-page,.pagina-gerador,.pagina-painel,.pagina-planos,.home,.container,.painel-container,.biblioteca-page { width:min(1180px,calc(100% - 24px)); margin:0 auto; padding:14px 0 28px; color:var(--fs-text); }
-.container,.painel-container { margin:14px auto; padding:14px; }
-.card,.fs-card,.dashboard-card,.resumo-card,.plano-card,.forum-card,.painel-card,.info-card,.cliente-card,.veiculo-card,.ordem-card,.estoque-card,.agenda-card,.relatorio-card,.recorrente-card,.perfil-logo-card,.dashboard-metrica-card,.dashboard-mini-card,.dashboard-lista-item,.forum-topico,.forum-resposta,.forum-mini-item,.painel-premium-atalho,.painel-os-card,.manual-card,.sobre-card,.contato-card,.gerador-card-principal,.sidebar-card,.section-card,.preview-card,.benefits,.plano,.pix-card,.faq-card,.modal-card,.modal-content,.modal-box,.modal-pix-card,.biblioteca-card,.biblioteca-toolbar,.biblioteca-status-card,.biblioteca-conteudo-bloco,.biblioteca-categoria-select-card {
+.fs-page,.page,.dashboard-page,.forum-page,.pagina-gerador,.pagina-planos,.home,.container,.biblioteca-page { width:min(1180px,calc(100% - 24px)); margin:0 auto; padding:14px 0 28px; color:var(--fs-text); }
+.container { margin:14px auto; padding:14px; }
+.card,.fs-card,.dashboard-card,.resumo-card,.plano-card,.forum-card,.cliente-card,.veiculo-card,.ordem-card,.estoque-card,.agenda-card,.relatorio-card,.recorrente-card,.dashboard-metrica-card,.dashboard-mini-card,.dashboard-lista-item,.forum-topico,.forum-resposta,.forum-mini-item,.manual-card,.sobre-card,.contato-card,.gerador-card-principal,.sidebar-card,.section-card,.preview-card,.benefits,.plano,.pix-card,.faq-card,.modal-card,.modal-content,.modal-box,.modal-pix-card,.biblioteca-card,.biblioteca-toolbar,.biblioteca-status-card,.biblioteca-conteudo-bloco,.biblioteca-categoria-select-card {
   background:var(--fs-card);
   color:var(--fs-text);
   border:1px solid var(--fs-border);
   border-radius:var(--fs-radius-lg);
   box-shadow:var(--fs-shadow-soft);
 }
-.fs-page-header,.page-header,.dashboard-hero,.forum-hero,.painel-header,.painel-hero,.gerador-hero,.clientes-hero,.veiculos-hero,.ordens-hero,.estoque-hero,.agenda-hero,.relatorios-hero,.recorrentes-hero,.hero,.home-hero,.home-hero-venda,.biblioteca-hero {
+.fs-page-header,.page-header,.dashboard-hero,.forum-hero,.gerador-hero,.clientes-hero,.veiculos-hero,.ordens-hero,.estoque-hero,.agenda-hero,.relatorios-hero,.recorrentes-hero,.hero,.home-hero,.home-hero-venda,.biblioteca-hero {
   padding:18px;
   background:linear-gradient(145deg,var(--fs-navy-3),var(--fs-navy));
   color:#fff;
@@ -146,12 +146,12 @@ textarea { min-height:96px; resize:vertical; }
 /* BOTÕES */
 button,.btn,.fs-btn,.dashboard-btn,.forum-btn,.cliente-btn,.veiculo-btn,.ordem-btn,.estoque-btn,.agenda-btn,.relatorio-btn,.recorrente-btn { font-family:inherit; border-radius:8px; font-weight:650; }
 .btn,.fs-btn,.dashboard-btn,.forum-btn,.cliente-btn,.veiculo-btn,.ordem-btn,.estoque-btn,.agenda-btn,.relatorio-btn,.recorrente-btn { min-height:38px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:8px 12px; border:1px solid transparent; cursor:pointer; text-decoration:none; }
-.btn-primary,.fs-btn-primary,.btn.primary,.dashboard-btn,.forum-btn,.btn-add,.btn-extra,.btn-gerar-orcamento-painel,.btn-editar-perfil,.btn-plano-painel,.btn-ver-ordens-painel,.btn-generate,.home-btn.primary,.generate-btn { background:var(--fs-gold); color:#14243a; border-color:var(--fs-gold); }
-.btn-secondary,.fs-btn-secondary,.btn.secondary,.dashboard-btn-secundario,.forum-btn-secundario,.btn-limpar,.btn-senha,.home-btn.secondary { background:var(--fs-card-soft); color:#fff; border-color:var(--fs-border); }
+.btn-primary,.fs-btn-primary,.btn.primary,.dashboard-btn,.forum-btn,.btn-add,.btn-extra,.btn-generate,.home-btn.primary,.generate-btn { background:var(--fs-gold); color:#14243a; border-color:var(--fs-gold); }
+.btn-secondary,.fs-btn-secondary,.btn.secondary,.dashboard-btn-secundario,.forum-btn-secundario,.btn-limpar,.home-btn.secondary { background:var(--fs-card-soft); color:#fff; border-color:var(--fs-border); }
 .btn-premium,.btn.gold,.fs-btn-premium,.home-btn.premium { background:var(--fs-success-dark); color:#fff; border-color:var(--fs-success); }
 .btn-success,.fs-btn-success,.btn-aprovar { background:var(--fs-success); color:#052e16; border-color:#16a34a; }
 .btn-whatsapp,.dashboard-btn-whatsapp,.btn-whatsapp-empresa { background:#25d366; color:#052e16; border-color:#16a34a; }
-.btn-danger,.fs-btn-danger,.forum-btn-perigo,.btn-remove,.btn-excluir-conta,.btn-recusar { background:var(--fs-danger-soft); color:#fecaca; border-color:#7f1d1d; }
+.btn-danger,.fs-btn-danger,.forum-btn-perigo,.btn-remove,.btn-recusar { background:var(--fs-danger-soft); color:#fecaca; border-color:#7f1d1d; }
 
 /* TABELAS E STATUS */
 .fs-table-wrap,.table-wrap,.tabela-wrapper { width:100%; overflow-x:auto; background:var(--fs-card); border:1px solid var(--fs-border); border-radius:10px; }
@@ -231,7 +231,7 @@ footer a,.site-footer a,.footer a,.forum-footer a,.home-footer a { color:var(--f
 #btn-flutuante-gerador-global { display:none; }
 
 @media (max-width: 900px) {
-  .fs-page,.page,.dashboard-page,.forum-page,.painel-page,.pagina-gerador,.pagina-painel,.pagina-planos,.home,.container,.painel-container,.biblioteca-page { width:min(100% - 18px,1180px); padding:12px 0 24px; }
+  .fs-page,.page,.dashboard-page,.forum-page,.pagina-gerador,.pagina-planos,.home,.container,.biblioteca-page { width:min(100% - 18px,1180px); padding:12px 0 24px; }
   .header-shell,.header-topo { width:min(100% - 18px,1180px); min-height:74px; }
   .header-menu-linha { position:fixed; top:86px; right:12px; width:min(318px,calc(100vw - 28px)); max-height:calc(100dvh - 112px); overflow-y:auto; }
 }
