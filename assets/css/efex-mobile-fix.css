@@ -168,13 +168,13 @@
     transition: opacity .22s ease, transform .22s ease !important;
   }
 
-  .efex-mobile-action.is-ready:not(.has-result) {
+  body:has(#efex-sintoma:valid):not(:has(#efex-diagnostico-card.active)) .efex-mobile-action:not(.efex-hidden) {
     opacity: 1 !important;
     pointer-events: auto !important;
     transform: translateY(0) !important;
   }
 
-  .efex-mobile-action.has-result {
+  body:has(#efex-diagnostico-card.active) .efex-mobile-action {
     display: none !important;
   }
 }
@@ -188,10 +188,6 @@
   .efex-chat-hero .efex-character-stage,
   .efex-chat-hero .efex-character {
     width: 118px !important;
-  }
-
-  .efex-chat-hero .efex-character-stage,
-  .efex-chat-hero .efex-character {
     height: 154px !important;
   }
 
