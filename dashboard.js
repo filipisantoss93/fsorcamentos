@@ -1,30 +1,17 @@
 (() => {
   'use strict';
 
-  const DASH = {
-    userId: null,
-    orcamentos: [],
-    caixa: [],
-    anterior: { orcamentos: [], caixa: [] },
-    carregando: false
-  };
-
+  const DASH = { userId: null, orcamentos: [], caixa: [], anterior: { orcamentos: [], caixa: [] }, carregando: false };
   const $ = id => document.getElementById(id);
   const PAGINA = 1000;
   const MAX_DIAS = 730;
   const STATUS_APROVADOS = new Set(['aprovado', 'aprovada']);
   const STATUS_RECUSADOS = new Set(['recusado', 'recusada']);
-  const STATUS_PENDENTES = new Set([
-    'pendente', 'enviado', 'enviada', 'visualizado', 'visualizada',
-    'aguardando', 'em analise', 'rascunho', 'aberto', 'aberta'
-  ]);
+  const STATUS_PENDENTES = new Set(['pendente', 'enviado', 'enviada', 'visualizado', 'visualizada', 'aguardando', 'em analise', 'rascunho', 'aberto', 'aberta']);
+  const PLANOS_RELATORIOS = new Set(['premium', 'premium pro', 'premium_pro', 'premium-pro', 'pro']);
 
   function normalizar(valor, padrao = '') {
-    return String(valor ?? padrao)
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .trim();
+    return String(valor ?? padrao).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   }
 
   function moeda(valor) {
@@ -32,19 +19,11 @@
   }
 
   function escapar(valor) {
-    return String(valor ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    return String(valor ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
   }
 
   function dataLocalISO(data) {
-    const ano = data.getFullYear();
-    const mes = String(data.getMonth() + 1).padStart(2, '0');
-    const dia = String(data.getDate()).padStart(2, '0');
-    return `${ano}-${mes}-${dia}`;
+    return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
   }
 
   function proximoDiaISO(valor) {
@@ -65,12 +44,8 @@
     return Number.isFinite(n) ? n : 0;
   }
 
-  function status(valor) {
-    return normalizar(valor, 'pendente');
-  }
-
   function tipoStatus(valor) {
-    const s = status(valor);
+    const s = normalizar(valor, 'pendente');
     if (STATUS_APROVADOS.has(s)) return 'aprovado';
     if (STATUS_RECUSADOS.has(s)) return 'recusado';
     if (STATUS_PENDENTES.has(s)) return 'pendente';
@@ -79,23 +54,22 @@
 
   function parseItens(itens) {
     if (Array.isArray(itens)) return itens;
-    if (typeof itens === 'string') {
-      try {
-        const convertido = JSON.parse(itens);
-        return Array.isArray(convertido) ? convertido : [];
-      } catch (_) {
-        return [];
-      }
+    if (typeof itens !== 'string') return [];
+    try {
+      const convertido = JSON.parse(itens);
+      return Array.isArray(convertido) ? convertido : [];
+    } catch (_) {
+      return [];
     }
-    return [];
   }
 
   function subtotalItem(item) {
     return numero(item.subtotal ?? item.total) || numero(item.valor ?? item.valor_unitario) * numero(item.qtd ?? item.quantidade ?? 1);
   }
 
-  function planoAtivo(plano, situacao, expiraEm) {
-    if (normalizar(plano) !== 'premium') return false;
+  function planoAtivo(plano, nivel, situacao, expiraEm) {
+    const identificadores = [plano, nivel].map(normalizar).filter(Boolean);
+    if (!identificadores.some(valor => PLANOS_RELATORIOS.has(valor))) return false;
     if (['cancelado', 'expirado', 'inativo', 'inadimplente'].includes(normalizar(situacao))) return false;
     if (!expiraEm) return true;
     const expira = new Date(expiraEm);
@@ -105,20 +79,12 @@
   async function validarPremium(uid) {
     if (window.FS_ESTADO_COMERCIAL) {
       const estado = window.FS_ESTADO_COMERCIAL;
-      return planoAtivo(estado.plano, estado.status, estado.expira);
+      return planoAtivo(estado.plano, estado.nivel || estado.planoNivel, estado.status, estado.expira);
     }
 
     const [perfilResp, assinaturaResp] = await Promise.all([
-      _supabase.from('perfis')
-        .select('plano,plano_status,plano_expira_em')
-        .eq('id', uid)
-        .maybeSingle(),
-      _supabase.from('assinaturas')
-        .select('plano,status,expira_em,nivel,created_at')
-        .eq('usuario_id', uid)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle()
+      _supabase.from('perfis').select('plano,plano_status,plano_expira_em').eq('id', uid).maybeSingle(),
+      _supabase.from('assinaturas').select('plano,status,expira_em,nivel,created_at').eq('usuario_id', uid).order('created_at', { ascending: false }).limit(1).maybeSingle()
     ]);
 
     if (perfilResp.error && perfilResp.error.code !== 'PGRST116') throw perfilResp.error;
@@ -126,10 +92,32 @@
 
     const perfil = perfilResp.data || {};
     const assinatura = assinaturaResp.data || {};
-    const plano = assinatura.plano || perfil.plano || 'gratis';
-    const situacao = assinatura.status || perfil.plano_status || 'ativo';
-    const expira = assinatura.expira_em || perfil.plano_expira_em || null;
-    return planoAtivo(plano, situacao, expira);
+    return planoAtivo(
+      assinatura.plano || perfil.plano || 'gratis',
+      assinatura.nivel,
+      assinatura.status || perfil.plano_status || 'ativo',
+      assinatura.expira_em || perfil.plano_expira_em || null
+    );
+  }
+
+  function carregarAjustesVisuais() {
+    if (!document.querySelector('link[data-dashboard-fixes]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/dashboard-fixes.css?v=20260713';
+      link.dataset.dashboardFixes = 'true';
+      document.head.appendChild(link);
+    }
+
+    document.querySelectorAll('.fs-relatorios-section-head strong').forEach(titulo => {
+      const texto = titulo.textContent.trim();
+      if (texto === 'Funil comercial') titulo.textContent = 'Distribuição por status';
+      if (texto === 'Valor aprovado por mês') titulo.textContent = 'Orçamentos criados por mês e atualmente aprovados';
+    });
+
+    document.querySelectorAll('.fs-relatorios-section-head p').forEach(texto => {
+      if (texto.textContent.includes('Propostas aprovadas')) texto.textContent = 'Agrupado pela data de criação enquanto não há histórico de aprovação.';
+    });
   }
 
   function ocultarTudo() {
@@ -197,14 +185,14 @@
     if (!caixa) return;
     caixa.textContent = mensagem;
     caixa.hidden = false;
+    caixa.closest('details')?.setAttribute('open', '');
   }
 
   function limparErro() {
     const caixa = $('erro-relatorio');
-    if (caixa) {
-      caixa.hidden = true;
-      caixa.textContent = '';
-    }
+    if (!caixa) return;
+    caixa.hidden = true;
+    caixa.textContent = '';
   }
 
   async function buscarPaginado(tabela, colunas, filtros, ordem) {
@@ -221,23 +209,27 @@
     return resultado;
   }
 
-  function buscarOrcamentos(inicio, fim) {
+  function filtrosOrcamentos(inicio, fim) {
+    return [
+      { metodo: 'eq', coluna: 'usuario_id', valor: DASH.userId },
+      { metodo: 'gte', coluna: 'criado_em', valor: `${inicio}T00:00:00` },
+      { metodo: 'lt', coluna: 'criado_em', valor: `${proximoDiaISO(fim)}T00:00:00` }
+    ];
+  }
+
+  function buscarOrcamentos(inicio, fim, detalhado = true) {
     return buscarPaginado(
       'orcamentos',
-      'cliente_nome,status,total,criado_em,itens',
-      [
-        { metodo: 'eq', coluna: 'usuario_id', valor: DASH.userId },
-        { metodo: 'gte', coluna: 'criado_em', valor: `${inicio}T00:00:00` },
-        { metodo: 'lt', coluna: 'criado_em', valor: `${proximoDiaISO(fim)}T00:00:00` }
-      ],
+      detalhado ? 'cliente_nome,status,total,criado_em,itens' : 'status,total,criado_em',
+      filtrosOrcamentos(inicio, fim),
       { coluna: 'criado_em', ascending: false }
     );
   }
 
-  function buscarCaixa(inicio, fim) {
+  function buscarCaixa(inicio, fim, detalhado = true) {
     return buscarPaginado(
       'fluxo_caixa',
-      'tipo,descricao,valor,data_movimento',
+      detalhado ? 'tipo,descricao,valor,data_movimento' : 'tipo,valor,data_movimento',
       [
         { metodo: 'eq', coluna: 'user_id', valor: DASH.userId },
         { metodo: 'gte', coluna: 'data_movimento', valor: inicio },
@@ -255,17 +247,13 @@
     const entradas = caixa.filter(item => normalizar(item.tipo) === 'entrada').reduce((soma, item) => soma + numero(item.valor), 0);
     const saidas = caixa.filter(item => normalizar(item.tipo) === 'saida').reduce((soma, item) => soma + numero(item.valor), 0);
     const valorAprovado = aprovados.reduce((soma, item) => soma + numero(item.total), 0);
+    const valorPendente = pendentes.reduce((soma, item) => soma + numero(item.total), 0);
     const decididos = aprovados.length + recusados.length;
     return {
-      total: orcamentos.length,
-      aprovados,
-      recusados,
-      pendentes,
-      outros,
-      entradas,
-      saidas,
+      total: orcamentos.length, aprovados, recusados, pendentes, outros, entradas, saidas,
       saldo: entradas - saidas,
       valorAprovado,
+      valorPendente,
       ticket: aprovados.length ? valorAprovado / aprovados.length : 0,
       taxaDecididos: decididos ? (aprovados.length / decididos) * 100 : 0,
       taxaTotal: orcamentos.length ? (aprovados.length / orcamentos.length) * 100 : 0
@@ -274,8 +262,7 @@
 
   function textoVariacao(atual, anterior) {
     if (!anterior) return atual ? 'novo no período' : 'sem variação';
-    const percentual = ((atual - anterior) / Math.abs(anterior)) * 100;
-    const arredondado = Math.round(percentual);
+    const arredondado = Math.round(((atual - anterior) / Math.abs(anterior)) * 100);
     if (!arredondado) return 'sem variação';
     return `${arredondado > 0 ? '+' : ''}${arredondado}%`;
   }
@@ -301,6 +288,8 @@
     setTexto('v-aprovado', textoVariacao(atual.valorAprovado, anterior.valorAprovado));
     setTexto('v-entradas', textoVariacao(atual.entradas, anterior.entradas));
     setTexto('v-saldo', textoVariacao(atual.saldo, anterior.saldo));
+    const infoPendente = $('m-pendentes')?.closest('.fs-relatorios-metric')?.querySelector('small');
+    if (infoPendente) infoPendente.textContent = `${moeda(atual.valorPendente)} aguardando decisão`;
   }
 
   function chaveMes(valor) {
@@ -315,41 +304,40 @@
   }
 
   function renderGraficoMensal() {
-    const aprovados = DASH.orcamentos.filter(item => tipoStatus(item.status) === 'aprovado');
     const mapa = {};
-    aprovados.forEach(item => {
+    DASH.orcamentos.filter(item => tipoStatus(item.status) === 'aprovado').forEach(item => {
       const chave = chaveMes(item.criado_em);
       if (chave) mapa[chave] = (mapa[chave] || 0) + numero(item.total);
     });
     const lista = Object.entries(mapa).sort((a, b) => a[0].localeCompare(b[0]));
     if (!lista.length) {
-      setHTML('grafico-mensal', '<div class="empty">Nenhum orçamento aprovado no período.</div>');
+      setHTML('grafico-mensal', '<div class="empty">Nenhum orçamento atualmente aprovado no período.</div>');
       return;
     }
     const maximo = Math.max(...lista.map(([, valor]) => valor), 1);
     setHTML('grafico-mensal', lista.map(([chave, valor]) => {
       const largura = Math.max(3, Math.round((valor / maximo) * 100));
-      return `<div class="bar-row"><div class="bar-label">${escapar(labelMes(chave))}</div><div class="bar-track" role="img" aria-label="${escapar(labelMes(chave))}: ${escapar(moeda(valor))}"><div class="bar-fill" style="width:${largura}%"></div></div><div class="bar-value">${escapar(moeda(valor))}</div></div>`;
+      const label = escapar(labelMes(chave));
+      const valorFormatado = escapar(moeda(valor));
+      return `<div class="bar-row"><div class="bar-label">${label}</div><div class="bar-track" role="img" aria-label="${label}: ${valorFormatado}"><div class="bar-fill" style="width:${largura}%"></div></div><div class="bar-value">${valorFormatado}</div></div>`;
     }).join(''));
   }
 
   function agruparItens(tipo) {
     const mapa = {};
-    DASH.orcamentos
-      .filter(orcamento => tipoStatus(orcamento.status) === 'aprovado')
-      .forEach(orcamento => {
-        parseItens(orcamento.itens).forEach(item => {
-          const tipoItem = normalizar(item.tipo);
-          const ehMaoObra = ['mao_obra', 'mao de obra', 'servico'].includes(tipoItem);
-          if ((tipo === 'mao_obra' && !ehMaoObra) || (tipo === 'produto' && ehMaoObra)) return;
-          const descricao = String(item.descricao || item.nome || 'Item sem descrição').trim();
-          const chave = normalizar(descricao);
-          if (!mapa[chave]) mapa[chave] = { descricao, qtd: 0, valor: 0, usos: 0 };
-          mapa[chave].qtd += numero(item.qtd ?? item.quantidade ?? 1);
-          mapa[chave].valor += subtotalItem(item);
-          mapa[chave].usos += 1;
-        });
+    DASH.orcamentos.filter(orcamento => tipoStatus(orcamento.status) === 'aprovado').forEach(orcamento => {
+      parseItens(orcamento.itens).forEach(item => {
+        const tipoItem = normalizar(item.tipo);
+        const ehMaoObra = ['mao_obra', 'mao de obra', 'servico'].includes(tipoItem);
+        if ((tipo === 'mao_obra' && !ehMaoObra) || (tipo === 'produto' && ehMaoObra)) return;
+        const descricao = String(item.descricao || item.nome || 'Item sem descrição').trim();
+        const chave = normalizar(descricao);
+        if (!mapa[chave]) mapa[chave] = { descricao, qtd: 0, valor: 0, usos: 0 };
+        mapa[chave].qtd += numero(item.qtd ?? item.quantidade ?? 1);
+        mapa[chave].valor += subtotalItem(item);
+        mapa[chave].usos += 1;
       });
+    });
     return Object.values(mapa).sort((a, b) => b.valor - a.valor || b.usos - a.usos).slice(0, 8);
   }
 
@@ -361,29 +349,21 @@
     setHTML(id, itens.map((item, indice) => `<div class="rank-item"><div><strong>${indice + 1}. ${escapar(item.descricao)}</strong><small>${item.usos} orçamento(s) aprovado(s) · qtd. ${numero(item.qtd).toLocaleString('pt-BR')}</small></div><strong>${escapar(moeda(item.valor))}</strong></div>`).join(''));
   }
 
-  function renderFunil() {
+  function renderDistribuicaoStatus() {
     const resumo = resumoDados();
     const base = Math.max(resumo.total, 1);
-    const etapas = [
-      ['Criados', resumo.total],
-      ['Pendentes', resumo.pendentes.length],
-      ['Aprovados', resumo.aprovados.length],
-      ['Recusados', resumo.recusados.length]
-    ];
-    if (resumo.outros.length) etapas.push(['Outros', resumo.outros.length]);
-    setHTML('funil-orcamentos', etapas.map(([label, valor]) => `<div class="funil-item"><div><span>${escapar(label)}</span><strong>${valor}</strong></div><div class="funil-track"><div class="funil-fill" style="width:${Math.round((valor / base) * 100)}%"></div></div></div>`).join(''));
+    const categorias = [['Pendentes', resumo.pendentes.length], ['Aprovados', resumo.aprovados.length], ['Recusados', resumo.recusados.length]];
+    if (resumo.outros.length) categorias.push(['Outros', resumo.outros.length]);
+    setHTML('funil-orcamentos', categorias.map(([label, valor]) => `<div class="funil-item"><div><span>${escapar(label)}</span><strong>${valor}</strong></div><div class="funil-track"><div class="funil-fill" style="width:${Math.round((valor / base) * 100)}%"></div></div></div>`).join(''));
   }
 
   function renderResumoTexto() {
     const resumo = resumoDados();
     let texto;
-    if (!resumo.total && !DASH.caixa.length) {
-      texto = 'Ainda não há dados neste período. Crie orçamentos e registre movimentações no caixa para alimentar os relatórios.';
-    } else if (resumo.aprovados.length) {
-      texto = `${resumo.aprovados.length} orçamento(s) aprovado(s), somando ${moeda(resumo.valorAprovado)} em propostas aprovadas. Esse valor não representa necessariamente dinheiro recebido. As entradas efetivas do caixa foram ${moeda(resumo.entradas)}.`;
-    } else {
-      texto = `Foram encontrados ${resumo.total} orçamento(s), mas nenhum aprovado. Há ${resumo.pendentes.length} proposta(s) pendente(s) para acompanhamento comercial.`;
-    }
+    if (!resumo.total && !DASH.caixa.length) texto = 'Ainda não há dados neste período. Crie orçamentos e registre movimentações no caixa para alimentar o dashboard.';
+    else if (resumo.aprovados.length) texto = `${resumo.aprovados.length} orçamento(s) aprovado(s), somando ${moeda(resumo.valorAprovado)} em propostas aprovadas. Esse valor não representa necessariamente dinheiro recebido. As entradas efetivas do caixa foram ${moeda(resumo.entradas)}.`;
+    else texto = `Foram encontrados ${resumo.total} orçamento(s), mas nenhum aprovado.`;
+    if (resumo.pendentes.length) texto += ` Existem ${resumo.pendentes.length} proposta(s) pendente(s), no valor de ${moeda(resumo.valorPendente)}, aguardando decisão.`;
     if (resumo.outros.length) texto += ` ${resumo.outros.length} orçamento(s) possuem status não classificado e aparecem na categoria “Outros”.`;
     setTexto('resumo-relatorio', texto);
   }
@@ -393,17 +373,11 @@
   }
 
   function renderTabelas() {
-    if (!DASH.orcamentos.length) {
-      setHTML('lista-orcamentos-relatorio', '<div class="empty">Nenhum orçamento no período.</div>');
-    } else {
-      setHTML('lista-orcamentos-relatorio', `<table class="table"><thead><tr><th>Data</th><th>Cliente</th><th>Status</th><th>Total</th></tr></thead><tbody>${DASH.orcamentos.slice(0, 20).map(item => `<tr><td data-label="Data">${dataBR(item.criado_em)}</td><td data-label="Cliente">${escapar(item.cliente_nome || '—')}</td><td data-label="Status"><span class="${classeStatus(item.status)}">${escapar(item.status || 'pendente')}</span></td><td data-label="Total">${escapar(moeda(item.total))}</td></tr>`).join('')}</tbody></table>`);
-    }
+    if (!DASH.orcamentos.length) setHTML('lista-orcamentos-relatorio', '<div class="empty">Nenhum orçamento no período.</div>');
+    else setHTML('lista-orcamentos-relatorio', `<table class="table"><thead><tr><th>Data</th><th>Cliente</th><th>Status</th><th>Total</th></tr></thead><tbody>${DASH.orcamentos.slice(0, 20).map(item => `<tr><td data-label="Data">${dataBR(item.criado_em)}</td><td data-label="Cliente">${escapar(item.cliente_nome || '—')}</td><td data-label="Status"><span class="${classeStatus(item.status)}">${escapar(item.status || 'pendente')}</span></td><td data-label="Total">${escapar(moeda(item.total))}</td></tr>`).join('')}</tbody></table>`);
 
-    if (!DASH.caixa.length) {
-      setHTML('lista-caixa-relatorio', '<div class="empty">Nenhum lançamento no período.</div>');
-    } else {
-      setHTML('lista-caixa-relatorio', `<table class="table"><thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Valor</th></tr></thead><tbody>${DASH.caixa.slice(0, 20).map(item => `<tr><td data-label="Data">${dataBR(item.data_movimento)}</td><td data-label="Tipo">${escapar(item.tipo || '—')}</td><td data-label="Descrição">${escapar(item.descricao || '—')}</td><td data-label="Valor">${escapar(moeda(item.valor))}</td></tr>`).join('')}</tbody></table>`);
-    }
+    if (!DASH.caixa.length) setHTML('lista-caixa-relatorio', '<div class="empty">Nenhum lançamento no período.</div>');
+    else setHTML('lista-caixa-relatorio', `<table class="table"><thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Valor</th></tr></thead><tbody>${DASH.caixa.slice(0, 20).map(item => `<tr><td data-label="Data">${dataBR(item.data_movimento)}</td><td data-label="Tipo">${escapar(item.tipo || '—')}</td><td data-label="Descrição">${escapar(item.descricao || '—')}</td><td data-label="Valor">${escapar(moeda(item.valor))}</td></tr>`).join('')}</tbody></table>`);
   }
 
   function renderTudo() {
@@ -411,7 +385,7 @@
     renderGraficoMensal();
     renderRanking('ranking-mao-obra', agruparItens('mao_obra'));
     renderRanking('ranking-produtos', agruparItens('produto'));
-    renderFunil();
+    renderDistribuicaoStatus();
     renderResumoTexto();
     renderTabelas();
   }
@@ -427,17 +401,16 @@
   async function carregarDashboardFS() {
     if (DASH.carregando) return;
     limparErro();
-    let sucesso = false;
     try {
       const { inicio, fim } = intervaloAtual();
       validarIntervalo(inicio, fim);
       const anterior = intervaloAnterior(inicio, fim);
       definirCarregando(true);
       const [orcamentos, caixa, orcamentosAnteriores, caixaAnterior] = await Promise.all([
-        buscarOrcamentos(inicio, fim),
-        buscarCaixa(inicio, fim),
-        buscarOrcamentos(anterior.inicio, anterior.fim),
-        buscarCaixa(anterior.inicio, anterior.fim)
+        buscarOrcamentos(inicio, fim, true),
+        buscarCaixa(inicio, fim, true),
+        buscarOrcamentos(anterior.inicio, anterior.fim, false),
+        buscarCaixa(anterior.inicio, anterior.fim, false)
       ]);
       DASH.orcamentos = orcamentos;
       DASH.caixa = caixa;
@@ -445,14 +418,12 @@
       renderTudo();
       setTexto('periodo-comparacao', `Comparado com ${dataBR(anterior.inicio)} a ${dataBR(anterior.fim)}`);
       setTexto('status-relatorio', 'Dados atualizados');
-      sucesso = true;
     } catch (erro) {
-      console.error('Falha ao carregar relatórios:', erro);
-      mostrarErro(erro?.message || 'Não foi possível carregar os relatórios. Tente novamente.');
+      console.error('Falha ao carregar dashboard:', erro);
+      mostrarErro(erro?.message || 'Não foi possível carregar o dashboard. Tente novamente.');
       setTexto('status-relatorio', 'Falha na atualização');
     } finally {
       definirCarregando(false);
-      if (!sucesso) document.body.classList.remove('relatorios-carregando');
     }
   }
 
@@ -494,7 +465,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `relatorio-fs-${$('dash-inicio').value}-a-${$('dash-fim').value}.csv`;
+    link.download = `dashboard-fs-${$('dash-inicio').value}-a-${$('dash-fim').value}.csv`;
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -502,19 +473,12 @@
   }
 
   function registrarEventos() {
-    $('btn-buscar')?.addEventListener('click', () => {
-      marcarPeriodoAtivo('');
-      carregarDashboardFS();
-    });
+    $('btn-buscar')?.addEventListener('click', () => { marcarPeriodoAtivo(''); carregarDashboardFS(); });
     $('btn-atualizar')?.addEventListener('click', carregarDashboardFS);
     $('btn-exportar')?.addEventListener('click', baixarCSV);
     document.querySelectorAll('[data-periodo]').forEach(botao => {
       botao.setAttribute('aria-pressed', 'false');
-      botao.addEventListener('click', () => {
-        const periodo = botao.dataset.periodo;
-        if (periodo === 'mes') aplicarMesAtual();
-        else aplicarPeriodo(Number(periodo));
-      });
+      botao.addEventListener('click', () => botao.dataset.periodo === 'mes' ? aplicarMesAtual() : aplicarPeriodo(Number(botao.dataset.periodo)));
     });
   }
 
@@ -528,6 +492,7 @@
 
   async function iniciarDashboardFS() {
     ocultarTudo();
+    carregarAjustesVisuais();
     registrarEventos();
     configurarDatas();
     try {
@@ -539,26 +504,20 @@
         return;
       }
       DASH.userId = session.user.id;
-      const premium = await validarPremium(DASH.userId);
-      if (!premium) {
+      if (!await validarPremium(DASH.userId)) {
         mostrarBloqueioPremium();
         return;
       }
       mostrarConteudo();
       aplicarPeriodo(90);
     } catch (erro) {
-      console.error('Falha ao iniciar relatórios:', erro);
-      ocultarTudo();
-      const bloqueio = $('relatorios-bloqueio');
-      if (bloqueio) {
-        bloqueio.innerHTML = '<span class="tag">Indisponível</span><h1>Não foi possível abrir os relatórios</h1><p>O serviço de dados ou a validação do plano falhou. Atualize a página e tente novamente.</p><div class="hero-actions"><a class="btn primary" href="/painel.html">Voltar ao painel</a></div>';
-        bloqueio.removeAttribute('hidden');
-      }
+      console.error('Falha ao iniciar dashboard:', erro);
+      mostrarConteudo();
+      mostrarErro(erro?.message || 'Não foi possível iniciar o dashboard.');
+      setTexto('status-relatorio', 'Falha ao iniciar');
     }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciarDashboardFS, { once: true });
   else iniciarDashboardFS();
-
-  window.carregarDashboardFS = carregarDashboardFS;
 })();
