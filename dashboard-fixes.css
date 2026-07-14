@@ -1,0 +1,31 @@
+.fs-relatorios-hero p,
+.fs-relatorios-lock p,
+.fs-relatorios-section-head p {
+  color: #cbd5e1;
+}
+
+.fs-relatorios-status-line,
+.fs-relatorios .rank-item small,
+.fs-relatorios-metric > small {
+  color: #aebbd0;
+}
+
+.fs-relatorios .status-aprovado {
+  background: rgba(34, 197, 94, .2);
+  color: #bbf7d0;
+}
+
+.fs-relatorios .status-recusado {
+  background: rgba(220, 38, 38, .2);
+  color: #fecaca;
+}
+
+.fs-relatorios .status-pendente {
+  background: rgba(246, 181, 0, .18);
+  color: #fde68a;
+}
+
+.fs-relatorios .bar-track,
+.fs-relatorios .funil-track {
+  background: #111f33;
+}
