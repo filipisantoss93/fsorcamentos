@@ -14,11 +14,16 @@
   const input=$('efex-fotos');
 
   const STATES={
-    recepcao:{src:'/assets/img/efex/efex-recepcao.png',label:'Pronto para analisar',tone:''},
-    analisando:{src:'/assets/img/efex/efex-analisando.png',label:'Analisando o veículo...',tone:'busy'},
-    pronto:{src:'/assets/img/efex/efex-pronto.png',label:'Análise concluída',tone:''},
-    erro:{src:'/assets/img/efex/efex-erro.png',label:'Não foi possível concluir',tone:'error'},
-    orcamento:{src:'/assets/img/efex/efex-orcamento.png',label:'Orçamento preparado',tone:''}
+    recepcao:{src:'/assets/images/efex-recepcao%20.PNG',label:'Pronto para analisar',tone:''},
+    aguardando:{src:'/assets/images/efex-aguardando.PNG',label:'Aguardando suas informações',tone:''},
+    analisando:{src:'/assets/images/efex-analisando.PNG',label:'Analisando o veículo...',tone:'busy'},
+    dadosSeguros:{src:'/assets/images/efex-dados-seguros.PNG',label:'Dados protegidos',tone:''},
+    concluido:{src:'/assets/images/efeX-concluido%20.PNG',label:'Análise concluída',tone:''},
+    gerandoOrcamento:{src:'/assets/images/efex-gerando-orcamento.PNG',label:'Gerando orçamento...',tone:'busy'},
+    orcamentoGerado:{src:'/assets/images/efex-orcamento-gerado.PNG',label:'Orçamento gerado',tone:''},
+    enviado:{src:'/assets/images/efex-enviado.PNG',label:'Orçamento enviado',tone:''},
+    aprovado:{src:'/assets/images/efex-orcamento-aprovado.PNG',label:'Orçamento aprovado',tone:''},
+    erro:{src:'/assets/images/efex-erro.PNG',label:'Não foi possível concluir',tone:'error'}
   };
 
   let current='recepcao';
@@ -28,54 +33,61 @@
     const state=STATES[name];
     if(!state||available.has(name))return;
     const image=new Image();
-    image.onload=()=>available.set(name,state.src);
+    image.onload=()=>{
+      available.set(name,state.src);
+      if(name===current)setState(name,true);
+    };
     image.onerror=()=>available.set(name,null);
     image.src=state.src;
   }
 
-  function setState(name){
+  function setState(name,immediate=false){
     const state=STATES[name]||STATES.recepcao;
     current=name;
+
     if(status){
       status.classList.remove('busy','error');
       if(state.tone)status.classList.add(state.tone);
       const label=status.querySelector('span:last-child');
       if(label)label.textContent=state.label;
     }
+
     if(!character)return;
     const next=available.get(name);
-    if(!next){
-      character.dataset.state=name;
-      return;
-    }
-    if(character.src.endsWith(next))return;
-    character.classList.add('is-changing');
-    setTimeout(()=>{
+    character.dataset.state=name;
+    if(!next||character.src.endsWith(next.replaceAll('%20',' ')))return;
+
+    const swap=()=>{
       character.src=next;
-      character.dataset.state=name;
       character.classList.remove('is-changing');
-    },160);
+    };
+
+    if(immediate){swap();return;}
+    character.classList.add('is-changing');
+    setTimeout(swap,160);
   }
 
   Object.keys(STATES).forEach(preload);
   setState('recepcao');
 
-  if(character){
-    character.addEventListener('error',()=>{
-      character.src=character.dataset.fallback||'/assets/efex-home.svg';
-    });
-  }
+  character?.addEventListener('error',()=>{
+    character.src=character.dataset.fallback||'/assets/efex-home.svg';
+  });
 
   function updateCounter(){
     if(counter&&symptom)counter.textContent=`${symptom.value.length}/4000`;
   }
-  symptom?.addEventListener('input',updateCounter);
+  symptom?.addEventListener('input',()=>{
+    updateCounter();
+    if(current==='recepcao'&&symptom.value.trim())setState('aguardando');
+    if(current==='aguardando'&&!symptom.value.trim())setState('recepcao');
+  });
   updateCounter();
 
   form?.addEventListener('submit',()=>setState('analisando'));
   $('efex-mobile-analisar')?.addEventListener('click',()=>setState('analisando'));
   $('efex-limpar')?.addEventListener('click',()=>setState('recepcao'));
-  $('efex-criar-rascunho')?.addEventListener('click',()=>setState('orcamento'));
+  $('efex-criar-rascunho')?.addEventListener('click',()=>setState('gerandoOrcamento'));
   $('efex-editar-diagnostico')?.addEventListener('click',()=>{
     window.scrollTo({top:Math.max(0,(symptom?.getBoundingClientRect().top||0)+window.scrollY-100),behavior:'smooth'});
     symptom?.focus({preventScroll:true});
@@ -83,14 +95,16 @@
 
   if(progress){
     new MutationObserver(()=>{
-      if(progress.classList.contains('active'))setState('analisando');
-      else if(result?.classList.contains('active'))setState('pronto');
+      if(progress.classList.contains('active')){
+        const message=progress.textContent.toLowerCase();
+        setState(message.includes('orçamento')?'gerandoOrcamento':'analisando');
+      }else if(result?.classList.contains('active'))setState('concluido');
     }).observe(progress,{attributes:true,childList:true,subtree:true});
   }
 
   if(result){
     new MutationObserver(()=>{
-      if(result.classList.contains('active'))setState('pronto');
+      if(result.classList.contains('active'))setState('concluido');
     }).observe(result,{attributes:true});
   }
 
