@@ -1,7 +1,7 @@
 let headerJaCarregado=false;
 let fsMenuInicializado=false;
 
-const FS_ROTAS_PROTEGIDAS_MENU=['/gerador.html','/gerador','/painel.html','/painel','/orcamentos.html','/orcamentos','/dashboard.html','/dashboard','/fluxo-caixa.html','/fluxo-caixa'];
+const FS_ROTAS_PROTEGIDAS_MENU=['/gerador.html','/gerador','/painel.html','/painel','/orcamentos.html','/orcamentos','/efex.html','/efex','/carteira.html','/carteira','/dashboard.html','/dashboard','/fluxo-caixa.html','/fluxo-caixa'];
 const FS_ROTAS_PREMIUM_MENU=['/orcamentos.html','/orcamentos','/dashboard.html','/dashboard','/fluxo-caixa.html','/fluxo-caixa'];
 const FS_ROTAS_REMOVIDAS_MENU=['/gestao.html','/gestao','/clientes.html','/clientes','/cliente.html','/cliente','/veiculos.html','/veiculos','/ordens.html','/ordens','/ordem.html','/ordem','/estoque.html','/estoque','/agenda.html','/agenda','/recorrentes.html','/recorrentes'];
 
@@ -70,7 +70,7 @@ async function carregarHeaderHtmlMenu(){
   }
   throw ultimoErro||new Error('Não foi possível carregar header.html.');
 }
-function configurarLinksDoHeader(){document.querySelectorAll('.header-menu-linha a').forEach(link=>{if(link.dataset.fsHeaderLinkConfigurado==='sim')return;link.dataset.fsHeaderLinkConfigurado='sim';link.addEventListener('click',async e=>{const d=fsDestinoProtegidoMenu(link.getAttribute('href')||'');if(fsEhRotaRemovidaMenu(d)){e.preventDefault();location.href='/gerador.html';return}if(!fsEhRotaProtegidaMenu(d)){fecharMenuMobileSeAberto();return}const s=await obterSessaoAtualMenu();if(!s?.user?.id){e.preventDefault();fsAbrirLoginParaDestinoProtegido(d);return}if(!fsPlanoPermiteDestinoMenu(d)){e.preventDefault();fecharMenuMobileSeAberto();location.href='/planos.html#assinar-plano-premium';return}fecharMenuMobileSeAberto()})})}
+function configurarLinksDoHeader(){document.querySelectorAll('.header-menu-linha a').forEach(link=>{if(link.dataset.fsHeaderLinkConfigurado==='sim')return;link.dataset.fsHeaderLinkConfigurado='sim';link.addEventListener('click',async e=>{const d=fsDestinoProtegidoMenu(link.getAttribute('href')||'');if(fsEhRotaRemovidaMenu(d)){e.preventDefault();location.href='/gerador.html';return}if(!fsEhRotaProtegidaMenu(d)){fecharMenuMobileSeAberto();return}e.preventDefault();const s=await obterSessaoAtualMenu();if(!s?.user?.id){fsAbrirLoginParaDestinoProtegido(d);return}if(!fsPlanoPermiteDestinoMenu(d)){fecharMenuMobileSeAberto();location.href='/planos.html#assinar-plano-premium';return}fecharMenuMobileSeAberto();location.href=d})})}
 function configurarDropdownsHeader(){return}
 function marcarLinkAtivoHeader(){if(typeof window.fsAtualizarResumoHeader==='function')window.fsAtualizarResumoHeader()}
 function aplicarVisibilidadeMenuPorPlano(){document.querySelectorAll('[data-plano-min]').forEach(link=>{const li=link.closest('li');if(li)li.style.display=''})}
