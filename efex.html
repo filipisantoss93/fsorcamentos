@@ -9,7 +9,7 @@
   <meta name="description" content="EfeX IA: diagnóstico automotivo, análise de imagens e geração de rascunhos de orçamento para oficinas.">
   <link rel="stylesheet" href="/style.css?v=20260713">
   <link rel="stylesheet" href="/assets/css/efex.css?v=20260713-premium">
-  <link rel="stylesheet" href="/assets/css/efex-hibrido.css?v=20260714-1">
+  <link rel="stylesheet" href="/assets/css/efex-hibrido.css?v=20260714-2">
   <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
@@ -44,7 +44,7 @@
     <section id="efex-app" class="efex-layout efex-hybrid-layout" hidden>
       <form id="efex-form" class="efex-column" autocomplete="off">
         <section class="efex-conversation-intro" aria-label="Orientação do EfeX">
-          <div class="efex-chat-avatar"><img src="/assets/images/efex-recepcao%20.PNG" alt=""></div>
+          <div class="efex-chat-avatar"><img src="/assets/images/efex-recepcao%20.PNG" alt="EfeX"></div>
           <div class="efex-bubble efex-bubble-assistant">
             <div class="efex-bubble-meta"><strong>EfeX</strong><span>Assistente técnico</span></div>
             <p>Olá! Descreva o problema e adicione somente os dados que você já possui. Nada será cobrado enquanto você estiver preenchendo.</p>
@@ -116,10 +116,10 @@
       </form>
 
       <aside class="efex-column efex-sticky">
-        <section class="efex-card efex-assistant-card"><div class="efex-assistant-head"><span class="efex-mini-avatar"><img src="/assets/images/efex-aguardando.PNG" alt=""></span><div><strong>EfeX</strong><span>Copiloto técnico da oficina</span></div><span class="efex-online">Online</span></div><p>O formulário organiza todas as informações antes da chamada paga. Assim você evita gastar créditos em várias mensagens curtas.</p></section>
+        <section class="efex-card efex-assistant-card"><div class="efex-assistant-head"><span class="efex-mini-avatar"><img src="/assets/images/efex-aguardando.PNG" alt="EfeX"></span><div><strong>EfeX</strong><span>Copiloto técnico da oficina</span></div><span class="efex-online">Online</span></div><p>O formulário organiza todas as informações antes da chamada paga. Assim você evita gastar créditos em várias mensagens curtas.</p></section>
 
         <section id="efex-diagnostico-card" class="efex-card efex-result-card efex-conversation-result">
-          <div class="efex-result-message-head"><div class="efex-chat-avatar small"><img src="/assets/images/efeX-concluido%20.PNG" alt=""></div><div><strong>EfeX</strong><span>Análise concluída</span></div></div>
+          <div class="efex-result-message-head"><div class="efex-chat-avatar small"><img src="/assets/images/efeX-concluido%20.PNG" alt="EfeX"></div><div><strong>EfeX</strong><span>Análise concluída</span></div></div>
           <div class="efex-bubble efex-bubble-assistant efex-result-bubble"><div class="efex-result"><div class="efex-block efex-summary-block"><h3>Resumo</h3><p id="efex-resumo"></p></div><div class="efex-block"><h3>Hipóteses</h3><div id="efex-hipoteses" class="efex-hypotheses"></div></div><div class="efex-block"><h3>Testes recomendados</h3><ol id="efex-testes-recomendados"></ol></div><div id="efex-alertas-wrap" class="efex-block"><h3>Alertas</h3><ul id="efex-alertas"></ul></div><div id="efex-cliente-wrap" class="efex-block efex-hidden"><h3>Explicação para o cliente</h3><p id="efex-explicacao-cliente"></p></div><div id="efex-pecas-wrap" class="efex-block efex-hidden"><h3>Peças</h3><div class="efex-table-wrap"><table class="efex-table"><thead><tr><th>Peça</th><th>Referência</th><th>Sugerido</th></tr></thead><tbody id="efex-pecas"></tbody></table></div></div><div id="efex-servicos-wrap" class="efex-block efex-hidden"><h3>Serviços</h3><div class="efex-table-wrap"><table class="efex-table"><thead><tr><th>Serviço</th><th>Horas</th><th>Valor</th></tr></thead><tbody id="efex-servicos"></tbody></table></div></div><div id="efex-fontes-wrap" class="efex-block efex-hidden"><h3>Fontes</h3><ul id="efex-fontes" class="efex-sources"></ul></div><div class="efex-result-actions"><button id="efex-criar-rascunho" type="button" class="efex-btn success efex-hidden">📄 Gerar orçamento profissional</button><button id="efex-editar-diagnostico" type="button" class="efex-btn secondary">✏️ Adicionar novos dados</button></div></div></div>
         </section>
 
@@ -127,7 +127,7 @@
           <div class="efex-title">Precisa complementar?</div><p class="efex-note">Cada pergunta complementar é uma nova chamada e custa 1 crédito. Reúna todas as informações antes de enviar.</p>
           <div id="efex-chat-log" class="efex-chat"></div>
           <div class="efex-quick-questions" aria-label="Perguntas rápidas"><button type="button" data-efex-question="Qual teste devo priorizar agora?">Teste prioritário</button><button type="button" data-efex-question="Existe risco de continuar usando o veículo?">Risco de uso</button><button type="button" data-efex-question="Explique este diagnóstico para o cliente de forma simples.">Explicar ao cliente</button><button type="button" data-efex-question="Revise o diagnóstico considerando os novos dados que vou informar.">Revisar diagnóstico</button></div>
-          <button id="efex-abrir-pergunta" type="button" class="efex-btn secondary efex-open-followup">Fazer pergunta complementar · 1 crédito</button>
+          <button id="efex-abrir-pergunta" type="button" class="efex-btn secondary efex-open-followup" aria-expanded="false" aria-controls="efex-followup-compose">Fazer pergunta complementar · 1 crédito</button>
           <div id="efex-followup-compose" class="efex-followup-compose" hidden><div class="efex-field"><textarea id="efex-pergunta" maxlength="1600" placeholder="Reúna aqui todos os novos dados e faça uma única pergunta..."></textarea></div><div class="efex-followup-warning">Ao enviar, 1 crédito será consumido.</div><button id="efex-enviar-pergunta" type="button" class="efex-btn primary">Confirmar e enviar · 1 crédito</button></div>
         </section>
       </aside>
@@ -136,6 +136,6 @@
 
   <div id="efex-mobile-action" class="efex-mobile-action efex-hidden"><div class="efex-mobile-cost"><span>Custo ao confirmar</span><strong id="efex-mobile-custo">2 créditos</strong></div><button id="efex-mobile-analisar" type="button" class="efex-btn primary">✨ Analisar com o EfeX</button></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/config.js"></script><script src="/auth.js"></script><script src="/planos.js"></script><script src="/carregar-menu.js"></script><script src="/assets/js/efex.js?v=20260713-4"></script><script src="/assets/js/efex-acesso-planos.js?v=20260713-1"></script><script src="/assets/js/efex-persistencia.js?v=20260713-2"></script><script src="/assets/js/efex-ui.js?v=20260714-2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/config.js"></script><script src="/auth.js"></script><script src="/planos.js"></script><script src="/carregar-menu.js"></script><script src="/assets/js/efex.js?v=20260713-4"></script><script src="/assets/js/efex-acesso-planos.js?v=20260713-1"></script><script src="/assets/js/efex-persistencia.js?v=20260713-2"></script><script src="/assets/js/efex-ui.js?v=20260714-3"></script>
 </body>
 </html>
