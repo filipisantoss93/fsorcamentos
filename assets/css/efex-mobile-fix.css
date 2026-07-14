@@ -1,0 +1,201 @@
+/* Correções específicas da primeira dobra e navegação mobile do EfeX */
+@media (max-width: 650px) {
+  .efex-hybrid-page {
+    width: min(100% - 12px, 1180px);
+    padding-top: 8px;
+  }
+
+  .efex-chat-hero {
+    display: grid !important;
+    grid-template-areas:
+      "character copy"
+      "metrics metrics"
+      "free free" !important;
+    grid-template-columns: 142px minmax(0, 1fr) !important;
+    grid-auto-rows: auto !important;
+    min-height: 0 !important;
+    gap: 12px 14px !important;
+    padding: 16px !important;
+    border-radius: 22px !important;
+    overflow: hidden !important;
+    align-items: center !important;
+    background:
+      radial-gradient(circle at 18% 25%, #1669c533, transparent 34%),
+      linear-gradient(145deg, #07172a, #0a294a) !important;
+  }
+
+  .efex-chat-hero::before,
+  .efex-chat-hero::after,
+  .efex-chat-hero .efex-character-glow {
+    display: none !important;
+  }
+
+  .efex-chat-hero .efex-character-stage {
+    grid-area: character !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    width: 142px !important;
+    height: 170px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .efex-chat-hero .efex-character {
+    display: block !important;
+    width: 142px !important;
+    height: 170px !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    filter: drop-shadow(0 12px 18px #0007) !important;
+  }
+
+  .efex-chat-hero .efex-hero-copy {
+    grid-area: copy !important;
+    display: block !important;
+    align-self: center !important;
+    min-width: 0 !important;
+  }
+
+  .efex-chat-hero .efex-tag {
+    display: inline-flex !important;
+    max-width: 100% !important;
+    padding: 7px 10px !important;
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+    letter-spacing: .055em !important;
+    white-space: normal !important;
+  }
+
+  .efex-chat-hero .efex-hero-copy h1 {
+    margin: 12px 0 6px !important;
+    font-size: clamp(38px, 12vw, 48px) !important;
+    line-height: .95 !important;
+    letter-spacing: -.04em !important;
+  }
+
+  .efex-chat-hero .efex-hero-copy p {
+    max-width: none !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    line-height: 1.38 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .efex-chat-hero .efex-character-status {
+    margin-top: 9px !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    font-size: 10px !important;
+  }
+
+  .efex-chat-hero .efex-metrics {
+    grid-area: metrics !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  .efex-chat-hero .efex-metric {
+    display: block !important;
+    min-width: 0 !important;
+    min-height: 68px !important;
+    padding: 11px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .efex-chat-hero .efex-metric:first-child {
+    grid-column: 1 / -1 !important;
+    min-height: 62px !important;
+  }
+
+  .efex-chat-hero .efex-metric span {
+    display: block !important;
+    margin-bottom: 5px !important;
+    font-size: 9px !important;
+    letter-spacing: .09em !important;
+    text-transform: uppercase !important;
+  }
+
+  .efex-chat-hero .efex-metric strong {
+    display: block !important;
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .efex-chat-hero .efex-metric strong::after {
+    display: none !important;
+  }
+
+  .efex-free-banner {
+    grid-area: free !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    gap: 4px 8px !important;
+    padding: 10px 12px !important;
+    border-radius: 12px !important;
+    font-size: 10px !important;
+    line-height: 1.35 !important;
+  }
+
+  .efex-free-banner strong {
+    white-space: nowrap !important;
+  }
+
+  .efex-conversation-intro {
+    margin-top: 0 !important;
+  }
+
+  .efex-conversation-intro .efex-bubble p {
+    margin-top: 6px !important;
+  }
+
+  .efex-mobile-action {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(calc(120% + env(safe-area-inset-bottom))) !important;
+    transition: opacity .22s ease, transform .22s ease !important;
+  }
+
+  .efex-mobile-action.is-ready:not(.has-result) {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+  }
+
+  .efex-mobile-action.has-result {
+    display: none !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .efex-chat-hero {
+    grid-template-columns: 118px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .efex-chat-hero .efex-character-stage,
+  .efex-chat-hero .efex-character {
+    width: 118px !important;
+  }
+
+  .efex-chat-hero .efex-character-stage,
+  .efex-chat-hero .efex-character {
+    height: 154px !important;
+  }
+
+  .efex-chat-hero .efex-hero-copy h1 {
+    font-size: 38px !important;
+  }
+}
