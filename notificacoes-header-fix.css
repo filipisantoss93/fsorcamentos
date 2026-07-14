@@ -1,0 +1,71 @@
+/* FS Orçamentos — correção consolidada do botão de notificações.
+   Mantém o sino com as mesmas dimensões e alinhamento do menu mobile,
+   mesmo quando notificacoes.js injeta seus estilos legados. */
+
+#header-container .btn-notificacoes-header {
+  position: relative !important;
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 52px !important;
+  border: 1px solid rgba(246,181,0,.55) !important;
+  border-radius: 11px !important;
+  background: linear-gradient(135deg,var(--fs-navy-3,#102846),var(--fs-navy,#07111f)) !important;
+  color: var(--fs-gold,#f6b500) !important;
+  box-shadow: var(--fs-shadow-soft,0 8px 22px rgba(0,0,0,.18)) !important;
+  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif !important;
+  font-size: 23px !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+#header-container .btn-notificacoes-header:hover {
+  filter: brightness(1.08);
+}
+
+#header-container .btn-notificacoes-header:focus-visible {
+  outline: 3px solid rgba(246,181,0,.38);
+  outline-offset: 3px;
+}
+
+#header-container .btn-notificacoes-header .contador-notificacoes {
+  position: absolute !important;
+  top: -7px !important;
+  right: -7px !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  padding: 0 4px !important;
+  display: inline-flex;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 2px solid var(--fs-bg,#07111f) !important;
+  border-radius: 999px !important;
+  background: var(--fs-danger,#dc2626) !important;
+  color: #fff !important;
+  font-family: Inter,"Segoe UI",system-ui,sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 520px) {
+  #header-container .btn-notificacoes-header {
+    width: 52px !important;
+    min-width: 52px !important;
+    max-width: 52px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    flex-basis: 52px !important;
+  }
+}
