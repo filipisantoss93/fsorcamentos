@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>Redefinir senha | FS Orçamentos</title>
+  <meta name="description" content="Crie uma nova senha para sua conta do FS Orçamentos.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body{min-height:100vh;margin:0;background:#07111f;color:#f5f7fb;font-family:Arial,sans-serif;display:grid;place-items:center;padding:20px;box-sizing:border-box}
+    .auth-page{width:min(440px,100%);background:linear-gradient(145deg,#101c30,#0b1628);border:1px solid rgba(255,255,255,.12);border-top:3px solid #f6c443;border-radius:14px;box-shadow:0 18px 48px rgba(0,0,0,.35);overflow:hidden}
+    .auth-head{padding:28px 24px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,.08)}
+    .brand{font-size:24px;font-weight:800}.brand strong{color:#f6c443}.auth-head h1{font-size:24px;margin:18px 0 8px}.auth-head p{margin:0;color:#aebbd0;line-height:1.5}
+    .auth-body{padding:24px}.campo{display:grid;gap:7px;margin-bottom:13px}.campo label{font-weight:700;font-size:14px}.campo input{min-height:46px;border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:0 12px;background:#0b1526;color:#fff;font-size:16px;outline:none}.campo input:focus{border-color:#f6c443}
+    button{width:100%;min-height:46px;margin-top:4px;border:0;border-radius:9px;background:#f6c443;color:#14243a;font-weight:800;font-size:15px;cursor:pointer}button:disabled{opacity:.65;cursor:wait}
+    .status{display:none;margin-bottom:16px;padding:12px 14px;border-radius:9px;line-height:1.45;font-size:14px}.status.ok{display:block;background:#123d2b;color:#b9f6ca;border:1px solid #278b53}.status.erro{display:block;background:#451b28;color:#fecaca;border:1px solid #8b3448}.status.info{display:block;background:#10233d;color:#d7e6ff;border:1px solid #28558c}
+    .voltar{display:block;text-align:center;margin-top:18px;color:#f6c443;text-decoration:none;font-weight:700}.regras{margin:14px 0 0;color:#8f9db2;font-size:13px;line-height:1.5}
+  </style>
+</head>
+<body>
+  <main class="auth-page">
+    <header class="auth-head">
+      <div class="brand"><strong>FS</strong> Orçamentos</div>
+      <h1>Crie uma nova senha</h1>
+      <p>Escolha uma senha nova para voltar a acessar sua conta.</p>
+    </header>
+    <section class="auth-body">
+      <div id="status" class="status info" role="status" aria-live="polite">Validando seu link de recuperação...</div>
+      <form id="form-nova-senha" style="display:none">
+        <div class="campo">
+          <label for="nova-senha">Nova senha</label>
+          <input id="nova-senha" type="password" autocomplete="new-password" minlength="6" placeholder="Mínimo de 6 caracteres" required>
+        </div>
+        <div class="campo">
+          <label for="confirmar-senha">Confirmar nova senha</label>
+          <input id="confirmar-senha" type="password" autocomplete="new-password" minlength="6" placeholder="Digite a senha novamente" required>
+        </div>
+        <button id="btn-salvar" type="submit">Salvar nova senha</button>
+        <p class="regras">Use pelo menos 6 caracteres e evite reutilizar senhas de outros serviços.</p>
+      </form>
+      <a class="voltar" href="/index.html?login=1">← Voltar para o login</a>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/config.js"></script>
+  <script>
+    if (!window._supabase) window._supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById('form-nova-senha');
+    const novaSenha = document.getElementById('nova-senha');
+    const confirmarSenha = document.getElementById('confirmar-senha');
+    const botao = document.getElementById('btn-salvar');
+    const statusBox = document.getElementById('status');
+    let sessaoRecuperacaoValida = false;
+
+    function mostrarStatus(tipo, mensagem) {
+      statusBox.className = `status ${tipo}`;
+      statusBox.textContent = mensagem;
+    }
+
+    async function validarRecuperacao() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+
+        if (code) {
+          const { error: exchangeError } = await _supabase.auth.exchangeCodeForSession(code);
+          if (exchangeError) console.warn('Não foi possível trocar o código de recuperação:', exchangeError);
+        }
+
+        const { data: { session }, error } = await _supabase.auth.getSession();
+        if (error) console.warn('Erro ao validar sessão de recuperação:', error);
+
+        if (session?.user) {
+          sessaoRecuperacaoValida = true;
+          form.style.display = 'block';
+          mostrarStatus('info', 'Link validado. Defina sua nova senha abaixo.');
+          return;
+        }
+
+        setTimeout(async () => {
+          const { data: { session: sessaoTardia } } = await _supabase.auth.getSession();
+          if (sessaoTardia?.user) {
+            sessaoRecuperacaoValida = true;
+            form.style.display = 'block';
+            mostrarStatus('info', 'Link validado. Defina sua nova senha abaixo.');
+          } else {
+            mostrarStatus('erro', 'Este link de recuperação é inválido ou expirou. Solicite um novo link para redefinir sua senha.');
+          }
+        }, 900);
+      } catch (error) {
+        console.error('Erro ao validar recuperação:', error);
+        mostrarStatus('erro', 'Não foi possível validar o link de recuperação. Solicite um novo link.');
+      }
+    }
+
+    _supabase.auth.onAuthStateChange((event, session) => {
+      if ((event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN') && session?.user) {
+        sessaoRecuperacaoValida = true;
+        form.style.display = 'block';
+        mostrarStatus('info', 'Link validado. Defina sua nova senha abaixo.');
+      }
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!sessaoRecuperacaoValida) {
+        mostrarStatus('erro', 'Sua sessão de recuperação não é válida. Solicite um novo link.');
+        return;
+      }
+
+      const senha = novaSenha.value;
+      const confirmacao = confirmarSenha.value;
+
+      if (senha.length < 6) {
+        mostrarStatus('erro', 'A nova senha deve ter pelo menos 6 caracteres.');
+        return;
+      }
+
+      if (senha !== confirmacao) {
+        mostrarStatus('erro', 'As senhas informadas não coincidem.');
+        return;
+      }
+
+      botao.disabled = true;
+      botao.textContent = 'Salvando...';
+
+      try {
+        const { error } = await _supabase.auth.updateUser({ password: senha });
+        if (error) {
+          console.error('Erro ao atualizar senha:', error);
+          mostrarStatus('erro', 'Não foi possível atualizar sua senha. Solicite um novo link e tente novamente.');
+          return;
+        }
+
+        mostrarStatus('ok', 'Senha alterada com sucesso. Você já pode entrar com sua nova senha.');
+        form.style.display = 'none';
+        await _supabase.auth.signOut();
+        setTimeout(() => { window.location.href = '/index.html?login=1'; }, 1800);
+      } catch (error) {
+        console.error('Erro inesperado ao atualizar senha:', error);
+        mostrarStatus('erro', 'Ocorreu um erro inesperado ao salvar sua senha. Tente novamente.');
+      } finally {
+        botao.disabled = false;
+        botao.textContent = 'Salvar nova senha';
+      }
+    });
+
+    validarRecuperacao();
+  </script>
+</body>
+</html>
