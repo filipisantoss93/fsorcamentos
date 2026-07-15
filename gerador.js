@@ -14,5 +14,6 @@
   carregarScript('gerador-core.js?v=20260715-polimento-v3')
     .then(() => carregarScript('gerador-ui-polimento.js?v=20260715-polimento-v4'))
     .then(() => carregarScript('gerador-persistencia-polimento.js?v=20260715-polimento-v1'))
+    .then(() => carregarScript('gerador-historico-polimento.js?v=20260715-polimento-v1'))
     .catch(error => console.error('Falha ao carregar o gerador:', error));
 })();
