@@ -74,6 +74,31 @@ function aplicarPolimentoGerador() {
     document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach(decorarLinhaItem);
   }
 
+  function ajustarEscalaPrevia() {
+    const container = document.getElementById('conteudo-pdf');
+    const folha = container?.querySelector('.pdf-documento');
+    if (!container || !folha) return;
+
+    if (window.innerWidth > 680 || document.body.classList.contains('gerando-pdf')) {
+      container.style.removeProperty('--pdf-preview-scale');
+      container.style.height = '';
+      return;
+    }
+
+    const larguraDisponivel = Math.max(1, container.clientWidth);
+    const escala = Math.min(1, larguraDisponivel / 794);
+    const alturaDocumento = Math.max(folha.scrollHeight, 1123);
+
+    container.style.setProperty('--pdf-preview-scale', String(escala));
+    container.style.height = `${Math.ceil(alturaDocumento * escala)}px`;
+  }
+
+  let resizePreviewTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizePreviewTimer);
+    resizePreviewTimer = setTimeout(ajustarEscalaPrevia, 120);
+  });
+
   window.calcularLinha = function calcularLinhaPolida(row) {
     const campoQtd = row?.querySelector('.qtd');
     const campoValor = row?.querySelector('.valor');
@@ -152,6 +177,8 @@ function aplicarPolimentoGerador() {
         </colgroup>
       `);
     }
+
+    requestAnimationFrame(ajustarEscalaPrevia);
   };
 
   const limparFormularioOriginal = window.limparFormulario;
@@ -168,6 +195,11 @@ function aplicarPolimentoGerador() {
     if (!forcar && temConteudo && !confirm('Iniciar um novo orçamento? Os dados ainda não salvos serão apagados.')) return;
     limparFormularioOriginal();
     inserirCamposCondicoes();
+    const container = document.getElementById('conteudo-pdf');
+    if (container) {
+      container.style.height = '';
+      container.style.removeProperty('--pdf-preview-scale');
+    }
     setTimeout(decorarTodasLinhas, 0);
   };
 
@@ -176,6 +208,7 @@ function aplicarPolimentoGerador() {
     inserirCamposCondicoes();
     carregarEstadoOriginal();
     decorarTodasLinhas();
+    requestAnimationFrame(ajustarEscalaPrevia);
   };
 
   async function baixarPDFPolido() {
@@ -194,6 +227,8 @@ function aplicarPolimentoGerador() {
     const nomeArquivo = typeof fsNomeArquivoSeguro === 'function' ? fsNomeArquivoSeguro(nomeBase) : 'orcamento';
 
     document.body.classList.add('gerando-pdf');
+    conteudoPdf.style.height = '';
+    conteudoPdf.style.removeProperty('--pdf-preview-scale');
     if (typeof fsAguardarRenderizacaoPDF === 'function') await fsAguardarRenderizacaoPDF(folha);
 
     const opt = {
@@ -224,6 +259,7 @@ function aplicarPolimentoGerador() {
       alert('Não foi possível gerar o PDF.');
     } finally {
       document.body.classList.remove('gerando-pdf');
+      requestAnimationFrame(ajustarEscalaPrevia);
     }
   }
 
@@ -248,5 +284,6 @@ function aplicarPolimentoGerador() {
     decorarTodasLinhas();
     garantirBaixarPDFPolido();
     if (typeof calcularTotal === 'function') calcularTotal();
+    ajustarEscalaPrevia();
   }, 100);
 }
