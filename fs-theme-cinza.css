@@ -15,6 +15,14 @@
   box-shadow: 0 0 0 3px rgba(239,68,68,.16) !important;
 }
 
+.item-campo-mobile {
+  display: contents;
+}
+
+.item-campo-mobile-label {
+  display: none;
+}
+
 /* Seletor mostra exatamente as cores usadas no PDF */
 .theme-dot.green { background: #15803d !important; }
 .theme-dot.yellow { background: #b45309 !important; }
@@ -68,8 +76,38 @@
     grid-template-columns: 1fr;
   }
 
-  .item-row input[aria-label='Descrição do item']::placeholder { color: #b8c7d8 !important; }
-  .item-row input[aria-label='Quantidade']::placeholder { color: #b8c7d8 !important; }
-  .item-row input[aria-label='Valor unitário']::placeholder { color: #b8c7d8 !important; }
-  .item-row input[aria-label='Subtotal']::placeholder { color: #b8c7d8 !important; }
+  .item-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .item-campo-mobile {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .item-campo-mobile-label {
+    display: block;
+    color: #c4d2e3 !important;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  .item-campo-desc-cell {
+    grid-column: 1 / -1;
+  }
+
+  .item-campo-subtotal input {
+    background: #0b223d !important;
+    font-weight: 900;
+  }
+
+  .item-row > .btn-remove {
+    grid-column: 1 / -1;
+    justify-self: end;
+    width: 44px;
+  }
 }
