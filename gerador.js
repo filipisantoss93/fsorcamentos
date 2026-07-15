@@ -1,7 +1,7 @@
 /* FS ORÇAMENTOS — carregador da camada de polimento do gerador */
 (function carregarGeradorCore() {
   const core = document.createElement('script');
-  core.src = 'gerador-core.js?v=20260715-polimento-v2';
+  core.src = 'gerador-core.js?v=20260715-polimento-v3';
   core.async = false;
   core.onload = aplicarPolimentoGerador;
   core.onerror = () => console.error('Não foi possível carregar o núcleo do gerador.');
@@ -39,7 +39,40 @@ function aplicarPolimentoGerador() {
     observacoesTitulo.insertAdjacentElement('afterend', grid);
   }
 
-  inserirCamposCondicoes();
+  function decorarLinhaItem(row) {
+    if (!row || row.classList.contains('header-labels')) return;
+
+    const campos = [
+      ['.desc-cell', 'Descrição'],
+      ['.qtd', 'Quantidade'],
+      ['.valor', 'Valor unitário'],
+      ['.subtotal', 'Subtotal']
+    ];
+
+    campos.forEach(([seletor, rotulo]) => {
+      const input = row.querySelector(seletor);
+      if (!input) return;
+
+      input.setAttribute('aria-label', rotulo);
+      if (seletor === '.qtd') input.setAttribute('min', '0.01');
+
+      if (input.parentElement?.classList.contains('item-campo-mobile')) return;
+
+      const wrapper = document.createElement('label');
+      wrapper.className = `item-campo-mobile item-campo-${seletor.replace('.', '')}`;
+      const legenda = document.createElement('span');
+      legenda.className = 'item-campo-mobile-label';
+      legenda.textContent = rotulo;
+
+      input.parentNode.insertBefore(wrapper, input);
+      wrapper.appendChild(legenda);
+      wrapper.appendChild(input);
+    });
+  }
+
+  function decorarTodasLinhas() {
+    document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach(decorarLinhaItem);
+  }
 
   window.calcularLinha = function calcularLinhaPolida(row) {
     const campoQtd = row?.querySelector('.qtd');
@@ -65,22 +98,10 @@ function aplicarPolimentoGerador() {
   window.adicionarLinha = function adicionarLinhaPolida(item = {}) {
     adicionarLinhaOriginal(item);
     const linhas = document.querySelectorAll('#itens-lista .item-row:not(.header-labels)');
-    const row = linhas[linhas.length - 1];
-    if (!row) return;
-    row.querySelector('.desc-cell')?.setAttribute('aria-label', 'Descrição do item');
-    row.querySelector('.qtd')?.setAttribute('aria-label', 'Quantidade');
-    row.querySelector('.qtd')?.setAttribute('min', '0.01');
-    row.querySelector('.valor')?.setAttribute('aria-label', 'Valor unitário');
-    row.querySelector('.subtotal')?.setAttribute('aria-label', 'Subtotal');
+    decorarLinhaItem(linhas[linhas.length - 1]);
   };
 
-  document.querySelectorAll('#itens-lista .item-row:not(.header-labels)').forEach(row => {
-    row.querySelector('.desc-cell')?.setAttribute('aria-label', 'Descrição do item');
-    row.querySelector('.qtd')?.setAttribute('aria-label', 'Quantidade');
-    row.querySelector('.qtd')?.setAttribute('min', '0.01');
-    row.querySelector('.valor')?.setAttribute('aria-label', 'Valor unitário');
-    row.querySelector('.subtotal')?.setAttribute('aria-label', 'Subtotal');
-  });
+  decorarTodasLinhas();
 
   const gerarPreviaOriginal = window.gerarPrevia;
   window.gerarPrevia = function gerarPreviaPolida(exibirAcoes = true) {
@@ -147,12 +168,14 @@ function aplicarPolimentoGerador() {
     if (!forcar && temConteudo && !confirm('Iniciar um novo orçamento? Os dados ainda não salvos serão apagados.')) return;
     limparFormularioOriginal();
     inserirCamposCondicoes();
+    setTimeout(decorarTodasLinhas, 0);
   };
 
   const carregarEstadoOriginal = window.carregarEstadoSalvo;
   window.carregarEstadoSalvo = function carregarEstadoSalvoPolido() {
     inserirCamposCondicoes();
     carregarEstadoOriginal();
+    decorarTodasLinhas();
   };
 
   async function baixarPDFPolido() {
@@ -211,11 +234,6 @@ function aplicarPolimentoGerador() {
   garantirBaixarPDFPolido();
   document.addEventListener('DOMContentLoaded', garantirBaixarPDFPolido, { once: true });
 
-  /*
-   * O núcleo é carregado dinamicamente. Se DOMContentLoaded já ocorreu,
-   * o listener original do gerador não roda. Nesse caso, inicializamos
-   * sessão/restauração explicitamente para recuperar o estado do localStorage.
-   */
   setTimeout(() => {
     inserirCamposCondicoes();
     const conteudo = document.getElementById('conteudo-gerador');
@@ -227,6 +245,7 @@ function aplicarPolimentoGerador() {
       carregarEstadoSalvo();
     }
 
+    decorarTodasLinhas();
     garantirBaixarPDFPolido();
     if (typeof calcularTotal === 'function') calcularTotal();
   }, 100);
