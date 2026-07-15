@@ -31,8 +31,36 @@
     if (document.getElementById('fs-login-google-fix-css')) return;
     var style = document.createElement('style');
     style.id = 'fs-login-google-fix-css';
-    style.textContent = '.login-social-box{width:100%!important;margin:0 0 18px!important}.login-social-btn.google{width:100%!important;min-height:52px!important;padding:10px 14px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;overflow:hidden!important;line-height:1.1!important}.login-social-btn.google img,.login-social-btn.google svg{width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important;object-fit:contain!important;flex:0 0 22px!important;display:block!important;margin:0!important;padding:0!important}.login-social-btn.google span{display:inline-block!important;flex:0 1 auto!important;white-space:nowrap!important;font-size:16px!important;line-height:1.1!important}';
+    style.textContent = '.login-social-box{width:100%!important;margin:0 0 18px!important}.login-social-btn.google{width:100%!important;min-height:52px!important;padding:10px 14px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;overflow:hidden!important;line-height:1.1!important}.login-social-btn.google img,.login-social-btn.google svg{width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px!important;max-height:22px!important;object-fit:contain!important;flex:0 0 22px!important;display:block!important;margin:0!important;padding:0!important}.login-social-btn.google span{display:inline-block!important;flex:0 1 auto!important;white-space:nowrap!important;font-size:16px!important;line-height:1.1!important}.fs-esqueci-senha{display:block;margin:-2px 0 14px;text-align:right;color:#f6c443!important;font-size:13px;font-weight:700;text-decoration:none}.fs-esqueci-senha:hover,.fs-esqueci-senha:focus{text-decoration:underline}';
     document.head.appendChild(style);
+  }
+
+  function instalarLinkRecuperacaoSenha() {
+    var senha = document.getElementById('auth-senha');
+    if (!senha || document.getElementById('fs-esqueci-senha')) return;
+
+    var grupoSenha = senha.closest ? senha.closest('.auth-campo-index') : null;
+    if (!grupoSenha || !grupoSenha.parentNode) return;
+
+    var link = document.createElement('a');
+    link.id = 'fs-esqueci-senha';
+    link.className = 'fs-esqueci-senha';
+    link.href = '/recuperar-senha.html';
+    link.textContent = 'Esqueci minha senha';
+    link.setAttribute('aria-label', 'Recuperar minha senha');
+    grupoSenha.insertAdjacentElement('afterend', link);
+
+    var alternar = document.getElementById('link-alternar');
+    if (alternar && !alternar.dataset.fsRecuperacaoListener) {
+      alternar.dataset.fsRecuperacaoListener = 'sim';
+      alternar.addEventListener('click', function () {
+        window.setTimeout(function () {
+          var titulo = document.getElementById('auth-titulo');
+          var emLogin = !titulo || String(titulo.textContent || '').toLowerCase().indexOf('acesse') !== -1;
+          link.style.display = emLogin ? 'block' : 'none';
+        }, 0);
+      });
+    }
   }
 
   async function fecharBrowserSeguro() {
@@ -182,6 +210,7 @@
   function instalar() {
     instalarCss();
     instalarDeepLinkListener();
+    instalarLinkRecuperacaoSenha();
     window.loginComGoogle = loginGoogleCorrigido;
 
     if (!window.__fsLoginGoogleFixClick) {
