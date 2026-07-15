@@ -1,7 +1,7 @@
 /* FS ORÇAMENTOS — carregador da camada de polimento do gerador */
 (function carregarGeradorCore() {
   const core = document.createElement('script');
-  core.src = 'gerador-core.js?v=20260715-polimento-v1';
+  core.src = 'gerador-core.js?v=20260715-polimento-v2';
   core.async = false;
   core.onload = aplicarPolimentoGerador;
   core.onerror = () => console.error('Não foi possível carregar o núcleo do gerador.');
@@ -41,7 +41,6 @@ function aplicarPolimentoGerador() {
 
   inserirCamposCondicoes();
 
-  const calcularLinhaOriginal = window.calcularLinha;
   window.calcularLinha = function calcularLinhaPolida(row) {
     const campoQtd = row?.querySelector('.qtd');
     const campoValor = row?.querySelector('.valor');
@@ -156,5 +155,79 @@ function aplicarPolimentoGerador() {
     carregarEstadoOriginal();
   };
 
-  if (typeof calcularTotal === 'function') calcularTotal();
+  async function baixarPDFPolido() {
+    const conteudoPdf = document.getElementById('conteudo-pdf');
+    if (!conteudoPdf?.innerHTML.trim()) {
+      alert('Gere a pré-visualização antes de baixar o PDF.');
+      return;
+    }
+
+    if (typeof fsSalvarOrcamentoSePlanoPermitido === 'function') {
+      await fsSalvarOrcamentoSePlanoPermitido('download_pdf');
+    }
+
+    const folha = conteudoPdf.firstElementChild || conteudoPdf;
+    const nomeBase = document.getElementById('titulo')?.value || 'orcamento';
+    const nomeArquivo = typeof fsNomeArquivoSeguro === 'function' ? fsNomeArquivoSeguro(nomeBase) : 'orcamento';
+
+    document.body.classList.add('gerando-pdf');
+    if (typeof fsAguardarRenderizacaoPDF === 'function') await fsAguardarRenderizacaoPDF(folha);
+
+    const opt = {
+      margin: 0,
+      filename: `${nomeArquivo}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: 794
+      },
+      jsPDF: {
+        unit: 'px',
+        format: [794, 1123],
+        orientation: 'portrait'
+      },
+      pagebreak: { mode: ['css', 'legacy'] }
+    };
+
+    try {
+      await html2pdf().set(opt).from(folha).save();
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      alert('Não foi possível gerar o PDF.');
+    } finally {
+      document.body.classList.remove('gerando-pdf');
+    }
+  }
+
+  function garantirBaixarPDFPolido() {
+    window.baixarPDF = baixarPDFPolido;
+  }
+
+  garantirBaixarPDFPolido();
+  document.addEventListener('DOMContentLoaded', garantirBaixarPDFPolido, { once: true });
+
+  /*
+   * O núcleo é carregado dinamicamente. Se DOMContentLoaded já ocorreu,
+   * o listener original do gerador não roda. Nesse caso, inicializamos
+   * sessão/restauração explicitamente para recuperar o estado do localStorage.
+   */
+  setTimeout(() => {
+    inserirCamposCondicoes();
+    const conteudo = document.getElementById('conteudo-gerador');
+    const estaOculto = !conteudo || getComputedStyle(conteudo).display === 'none';
+
+    if (estaOculto && typeof fsVerificarSessaoGerador === 'function') {
+      fsVerificarSessaoGerador();
+    } else if (typeof carregarEstadoSalvo === 'function') {
+      carregarEstadoSalvo();
+    }
+
+    garantirBaixarPDFPolido();
+    if (typeof calcularTotal === 'function') calcularTotal();
+  }, 100);
 }
