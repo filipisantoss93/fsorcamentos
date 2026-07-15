@@ -110,4 +110,25 @@
     justify-self: end;
     width: 44px;
   }
+
+  /* Mantém o documento em A4 internamente, mas reduz somente a prévia visual. */
+  #area-previa {
+    min-width: 0;
+  }
+
+  .pdf-folha {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .pdf-folha .pdf-documento {
+    width: 794px !important;
+    min-width: 794px !important;
+    margin: 0 !important;
+    transform: scale(var(--pdf-preview-scale, 1));
+    transform-origin: top left;
+  }
 }
